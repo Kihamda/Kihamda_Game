@@ -285,50 +285,50 @@ function App() {
 
   return (
     <GameShell title="N人 TikTakToe">
-    <div className="app">
-      {appState === "before" && (
-        <StartScreen
-          savedState={savedSnapshot}
-          newGameSettings={newGameSettings}
-          confirmationMode={confirmationMode}
-          onNewGameSettingsChange={setNewGameSettings}
-          onToggleConfirmation={setConfirmationMode}
-          onStartNewGame={initializeGame}
-          onResumeGame={handleResumeGame}
-          onClearSave={handleClearSave}
-          onAddPlayer={handleAddPlayer}
-          onRemovePlayer={handleRemovePlayer}
-          onUpdatePlayerName={handleUpdatePlayerName}
-          onUpdatePlayerMark={handleUpdatePlayerMark}
-          onUpdatePlayerColor={handleUpdatePlayerColor}
-        />
-      )}
+      <div className="app">
+        {appState === "before" && (
+          <StartScreen
+            savedState={savedSnapshot}
+            newGameSettings={newGameSettings}
+            confirmationMode={confirmationMode}
+            onNewGameSettingsChange={setNewGameSettings}
+            onToggleConfirmation={setConfirmationMode}
+            onStartNewGame={initializeGame}
+            onResumeGame={handleResumeGame}
+            onClearSave={handleClearSave}
+            onAddPlayer={handleAddPlayer}
+            onRemovePlayer={handleRemovePlayer}
+            onUpdatePlayerName={handleUpdatePlayerName}
+            onUpdatePlayerMark={handleUpdatePlayerMark}
+            onUpdatePlayerColor={handleUpdatePlayerColor}
+          />
+        )}
 
-      {appState === "in_progress" && (
-        <GameView
-          board={board}
-          gameSettings={currentGameSettings}
-          pendingMove={pendingMove}
-          currentPlayerIndex={currentPlayerIndex}
-          nextPlayerIndex={nextPlayerIndex}
-          isTransitioning={isTransitioning}
-          lastPlacedCell={lastPlacedCell}
-          isWinAnimation={isWinAnimation}
-          victoryMessage={victoryMessage}
-          isDraw={isDraw}
-          streak={streak}
-          moveCount={moveCount}
-          onCellClick={handleCellClick}
-          onConfirmMove={confirmMove}
-          onCancelPendingMove={cancelMove}
-          onReset={resetGame}
-        />
-      )}
+        {appState === "in_progress" && (
+          <GameView
+            board={board}
+            gameSettings={currentGameSettings}
+            pendingMove={pendingMove}
+            currentPlayerIndex={currentPlayerIndex}
+            nextPlayerIndex={nextPlayerIndex}
+            isTransitioning={isTransitioning}
+            lastPlacedCell={lastPlacedCell}
+            isWinAnimation={isWinAnimation}
+            victoryMessage={victoryMessage}
+            isDraw={isDraw}
+            streak={streak}
+            moveCount={moveCount}
+            onCellClick={handleCellClick}
+            onConfirmMove={confirmMove}
+            onCancelPendingMove={cancelMove}
+            onReset={resetGame}
+          />
+        )}
 
-      {appState === "after" && (
-        <ResultScreen winner={winner} onReset={resetGame} />
-      )}
-    </div>
+        {appState === "after" && (
+          <ResultScreen winner={winner} onReset={resetGame} />
+        )}
+      </div>
     </GameShell>
   );
 }
