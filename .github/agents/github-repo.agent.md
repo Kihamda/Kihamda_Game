@@ -1,6 +1,15 @@
 ---
 description: "GitHub MCP を使ってリモートリポジトリの状態を確認する。ブランチ・コミット・PR・Issue・CI状況の監視と報告が専門。"
-tools: ["codebase", "search", "runCommands", "fetch"]
+tools:
+  [
+    "search/codebase",
+    "search",
+    "execute/getTerminalOutput",
+    "execute/runInTerminal",
+    "read/terminalLastCommand",
+    "read/terminalSelection",
+    "web/fetch",
+  ]
 ---
 
 # GitHub Repo — リモートリポジトリ監視エージェント

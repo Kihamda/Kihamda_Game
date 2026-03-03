@@ -1,6 +1,6 @@
 ---
 description: "マーケティングコピー・ゲーム説明文・LP文面・ストア掲載文を専門的に執筆する。SEOキーワードを自然に織り込む。"
-tools: ["codebase", "editFiles", "search", "fetch"]
+tools: ["search/codebase", "edit/editFiles", "search", "web/fetch"]
 ---
 
 # Copywriter

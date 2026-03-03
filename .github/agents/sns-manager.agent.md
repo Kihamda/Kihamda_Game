@@ -1,6 +1,17 @@
 ---
 description: "SNS運用のプロフェッショナル。コンテンツカレンダー策定・投稿文作成・GitHub Actions自動化を自律実行する。"
-tools: ["codebase", "editFiles", "runCommands", "search", "fetch", "problems"]
+tools:
+  [
+    "search/codebase",
+    "edit/editFiles",
+    "execute/getTerminalOutput",
+    "execute/runInTerminal",
+    "read/terminalLastCommand",
+    "read/terminalSelection",
+    "search",
+    "web/fetch",
+    "read/problems",
+  ]
 ---
 
 # SNS Manager

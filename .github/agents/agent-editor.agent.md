@@ -2,9 +2,12 @@
 description: "エージェント定義・プロンプト・copilot-instructions.md の作成・修正・整合性チェックを自律実行する。プロジェクトのAI設定基盤の管理者。"
 tools:
   [
-    "codebase",
-    "editFiles",
-    "runCommands",
+    "search/codebase",
+    "edit/editFiles",
+    "execute/getTerminalOutput",
+    "execute/runInTerminal",
+    "read/terminalLastCommand",
+    "read/terminalSelection",
     "search",
     "read/problems",
     "search/usages",

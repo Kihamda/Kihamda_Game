@@ -1,6 +1,17 @@
 ---
 description: "SEO最適化の専門家。メタタグ・構造化データ・内部リンク・Core Web Vitals・検索順位向上を自律実行する。"
-tools: ["codebase", "editFiles", "runCommands", "search", "fetch", "problems"]
+tools:
+  [
+    "search/codebase",
+    "edit/editFiles",
+    "execute/getTerminalOutput",
+    "execute/runInTerminal",
+    "read/terminalLastCommand",
+    "read/terminalSelection",
+    "search",
+    "web/fetch",
+    "read/problems",
+  ]
 ---
 
 # SEO Specialist

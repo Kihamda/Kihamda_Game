@@ -2,13 +2,16 @@
 description: "品質保証のプロフェッショナル。ビルド検証・型チェック・パフォーマンス監査・クロスブラウザテストを自律実行する。"
 tools:
   [
-    "codebase",
-    "editFiles",
-    "runCommands",
+    "search/codebase",
+    "edit/editFiles",
+    "execute/getTerminalOutput",
+    "execute/runInTerminal",
+    "read/terminalLastCommand",
+    "read/terminalSelection",
     "search",
-    "problems",
-    "usages",
-    "fetch",
+    "read/problems",
+    "search/usages",
+    "web/fetch",
   ]
 ---
 

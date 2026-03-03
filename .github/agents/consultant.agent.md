@@ -1,6 +1,14 @@
 ﻿---
 description: "プロジェクト全体の相談役兼オーケストレーター。人間との唯一の窓口。日報に記録を残しながらサブエージェントにタスクを委譲する。"
-tools: ["codebase", "editFiles", "search", "fetch", "problems", "agent"]
+tools:
+  [
+    "search/codebase",
+    "edit/editFiles",
+    "search",
+    "web/fetch",
+    "read/problems",
+    "agent",
+  ]
 ---
 
 # 相談役 — プロジェクトオーケストレーター
