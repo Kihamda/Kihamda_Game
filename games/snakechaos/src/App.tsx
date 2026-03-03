@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
+import { useAudio, useHighScore, GameShell } from "../../../src/shared";
 
 // ── Constants ───────────────────────────────────────────────────────────────
 const GRID = 20;
@@ -62,61 +63,6 @@ interface ScorePopup {
   frame: number;
 }
 
-// ── Audio (Web Audio API, no library) ───────────────────────────────────────
-let _actx: AudioContext | null = null;
-function getAudioCtx(): AudioContext {
-  _actx ??= new AudioContext();
-  return _actx;
-}
-
-function playEat(): void {
-  const ctx = getAudioCtx();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.frequency.setValueAtTime(660, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.08);
-  gain.gain.setValueAtTime(0.25, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
-  osc.start();
-  osc.stop(ctx.currentTime + 0.12);
-}
-
-function playPowerUp(): void {
-  const ctx = getAudioCtx();
-  const freqs = [440, 554, 659, 880];
-  freqs.forEach((freq, i) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    const t = ctx.currentTime + i * 0.09;
-    osc.frequency.setValueAtTime(freq, t);
-    gain.gain.setValueAtTime(0.18, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
-    osc.start(t);
-    osc.stop(t + 0.09);
-  });
-}
-
-function playGameOver(): void {
-  const ctx = getAudioCtx();
-  const freqs = [440, 330, 220, 110];
-  freqs.forEach((freq, i) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    const t = ctx.currentTime + i * 0.15;
-    osc.frequency.setValueAtTime(freq, t);
-    gain.gain.setValueAtTime(0.25, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
-    osc.start(t);
-    osc.stop(t + 0.15);
-  });
-}
-
 // ── Pure helpers ─────────────────────────────────────────────────────────────
 function puColor(t: PUType): string {
   return t === "speedDown" ? "#4af" : t === "doubleScore" ? "#ff4" : "#fff";
@@ -160,7 +106,6 @@ function spawnParticles(gs: GS, x: number, y: number, color: string): void {
 }
 
 function makeInitialGS(): GS {
-  const hi = parseInt(localStorage.getItem("snakechaos_hi") ?? "0", 10);
   return {
     phase: "idle",
     snake: [
@@ -174,7 +119,7 @@ function makeInitialGS(): GS {
     pu: null,
     puCountdown: 5,
     score: 0,
-    highScore: hi,
+    highScore: 0,
     combo: 0,
     comboEnd: 0,
     effects: { speedDown: null, doubleScore: null, star: null },
@@ -211,25 +156,20 @@ function drawGame(canvas: HTMLCanvasElement, gs: GS): void {
   }
 
   const now = Date.now();
-  const starActive =
-    gs.effects.star !== null && gs.effects.star > now;
+  const starActive = gs.effects.star !== null && gs.effects.star > now;
 
   // Food
   ctx.font = `${CELL - 4}px serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(
-    "🍎",
-    gs.food.x * CELL + CELL / 2,
-    gs.food.y * CELL + CELL / 2
-  );
+  ctx.fillText("🍎", gs.food.x * CELL + CELL / 2, gs.food.y * CELL + CELL / 2);
 
   // Power-up
   if (gs.pu !== null) {
     ctx.fillText(
       puEmoji(gs.pu.type),
       gs.pu.pos.x * CELL + CELL / 2,
-      gs.pu.pos.y * CELL + CELL / 2
+      gs.pu.pos.y * CELL + CELL / 2,
     );
   }
 
@@ -252,7 +192,7 @@ function drawGame(canvas: HTMLCanvasElement, gs: GS): void {
       seg.y * CELL + 1,
       CELL - 2,
       CELL - 2,
-      i === 0 ? 6 : 3
+      i === 0 ? 6 : 3,
     );
     ctx.fill();
   });
@@ -280,11 +220,15 @@ export default function App() {
   // Store tick fn in ref to avoid stale closure in RAF
   const tickFnRef = useRef<() => void>(() => {});
 
+  const { playSweep, playArpeggio } = useAudio();
+  const sfxRef = useRef({ playSweep, playArpeggio });
+  useEffect(() => {
+    sfxRef.current = { playSweep, playArpeggio };
+  }, [playSweep, playArpeggio]);
+  const { best: highScore, update: updateHiScore } = useHighScore("snakechaos");
+
   const [phase, setPhase] = useState<Phase>("idle");
   const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(() =>
-    parseInt(localStorage.getItem("snakechaos_hi") ?? "0", 10)
-  );
   const [combo, setCombo] = useState(0);
   const [effects, setEffects] = useState<ActiveEffects>({
     speedDown: null,
@@ -316,8 +260,7 @@ export default function App() {
     let nx = head.x + (gs.dir === "R" ? 1 : gs.dir === "L" ? -1 : 0);
     let ny = head.y + (gs.dir === "D" ? 1 : gs.dir === "U" ? -1 : 0);
 
-    const starActive =
-      gs.effects.star !== null && gs.effects.star > now;
+    const starActive = gs.effects.star !== null && gs.effects.star > now;
 
     if (starActive) {
       nx = ((nx % GRID) + GRID) % GRID;
@@ -331,15 +274,17 @@ export default function App() {
     if (!starActive && (wallHit || selfHit)) {
       gs.phase = "gameover";
       gs.shakeEnd = now + 600;
-      if (gs.score > gs.highScore) {
-        gs.highScore = gs.score;
-        localStorage.setItem("snakechaos_hi", String(gs.score));
-        setHighScore(gs.score);
-      }
+      updateHiScore(gs.score);
       setPhase("gameover");
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 1000);
-      playGameOver();
+      sfxRef.current.playArpeggio(
+        [440, 330, 220, 110],
+        0.15,
+        "sine",
+        0.25,
+        0.15,
+      );
       return;
     }
 
@@ -363,7 +308,7 @@ export default function App() {
       gs.score += base * bonus;
       gs.food = randomFree(newSnake);
       spawnParticles(gs, nx, ny, "#39ff14");
-      playEat();
+      sfxRef.current.playSweep(660, 1320, 0.12, "sine", 0.25);
 
       if (gs.combo >= 3) comboLabel = ` COMBO×${gs.combo}!`;
 
@@ -398,7 +343,13 @@ export default function App() {
         gain = 50;
       }
       spawnParticles(gs, nx, ny, puColor(t));
-      playPowerUp();
+      sfxRef.current.playArpeggio(
+        [440, 554, 659, 880],
+        0.09,
+        "sine",
+        0.18,
+        0.09,
+      );
       gs.score += gain;
       scoreGain += gain;
       gs.pu = null;
@@ -407,13 +358,17 @@ export default function App() {
     gs.snake = newSnake;
 
     if (scoreGain > 0) {
-      addPopup(nx * CELL + CELL / 2, ny * CELL - 4, `+${scoreGain}${comboLabel}`);
+      addPopup(
+        nx * CELL + CELL / 2,
+        ny * CELL - 4,
+        `+${scoreGain}${comboLabel}`,
+      );
     }
 
     setScore(gs.score);
     setCombo(gs.combo);
     setEffects({ ...gs.effects });
-  }, [addPopup]);
+  }, [addPopup, updateHiScore]);
 
   // Keep tickFnRef current
   useEffect(() => {
@@ -467,7 +422,7 @@ export default function App() {
       setPopups((prev) =>
         prev
           .map((p) => ({ ...p, frame: p.frame + 1 }))
-          .filter((p) => p.frame < 60)
+          .filter((p) => p.frame < 60),
       );
 
       drawGame(canvas, gs);
@@ -567,9 +522,7 @@ export default function App() {
 
   // ── Start / Restart ────────────────────────────────────────────────────────
   const startGame = useCallback(() => {
-    const prevHi = gsRef.current.highScore;
     const fresh = makeInitialGS();
-    fresh.highScore = prevHi;
     fresh.phase = "playing";
     fresh.lastTick = Date.now();
     gsRef.current = fresh;
@@ -590,101 +543,100 @@ export default function App() {
   ];
 
   return (
-    <div className="app">
-      {/* Header */}
-      <div className="header">
-        <div className="score-group">
-          <span className="label">SCORE</span>
-          <span className="value">{score}</span>
-        </div>
-        <div className="score-group">
-          <span className="label">BEST</span>
-          <span className="value">{highScore}</span>
-        </div>
-        {combo >= 3 && (
-          <div className="combo-badge">COMBO ×{combo}!</div>
-        )}
-      </div>
-
-      {/* Active effects bar */}
-      <div className="effects-bar">
-        {effectItems.map(
-          (item) =>
-            item.active && (
-              <span key={item.cls} className={`eff-badge ${item.cls}`}>
-                {item.label}
-              </span>
-            )
-        )}
-      </div>
-
-      {/* Game area */}
-      <div className={`game-wrap${isShaking ? " shake" : ""}`}>
-        <canvas ref={canvasRef} width={BOARD} height={BOARD} />
-
-        {/* Score popups */}
-        {popups.map((p) => (
-          <div
-            key={p.id}
-            className="score-popup"
-            style={{
-              left: p.x,
-              top: p.y - p.frame * 1.2,
-              opacity: 1 - p.frame / 60,
-            }}
-          >
-            {p.text}
+    <GameShell title="Snake Chaos">
+      <div className="app">
+        <div className="header">
+          <div className="score-group">
+            <span className="label">SCORE</span>
+            <span className="value">{score}</span>
           </div>
-        ))}
+          <div className="score-group">
+            <span className="label">BEST</span>
+            <span className="value">{highScore}</span>
+          </div>
+          {combo >= 3 && <div className="combo-badge">COMBO ×{combo}!</div>}
+        </div>
 
-        {/* Start overlay */}
-        {phase === "idle" && (
-          <div className="overlay">
-            <div className="overlay-inner">
-              <h1 className="game-title">🐍 SNAKE CHAOS</h1>
-              <p className="overlay-hint">Arrow keys / WASD で操作</p>
-              <p className="overlay-hint">スワイプでも遊べる</p>
-              <button className="btn-start" onClick={startGame}>
-                GAME START
-              </button>
+        {/* Active effects bar */}
+        <div className="effects-bar">
+          {effectItems.map(
+            (item) =>
+              item.active && (
+                <span key={item.cls} className={`eff-badge ${item.cls}`}>
+                  {item.label}
+                </span>
+              ),
+          )}
+        </div>
+
+        {/* Game area */}
+        <div className={`game-wrap${isShaking ? " shake" : ""}`}>
+          <canvas ref={canvasRef} width={BOARD} height={BOARD} />
+
+          {/* Score popups */}
+          {popups.map((p) => (
+            <div
+              key={p.id}
+              className="score-popup"
+              style={{
+                left: p.x,
+                top: p.y - p.frame * 1.2,
+                opacity: 1 - p.frame / 60,
+              }}
+            >
+              {p.text}
             </div>
-          </div>
-        )}
+          ))}
 
-        {/* Game over overlay */}
-        {phase === "gameover" && (
-          <div className="overlay">
-            <div className="overlay-inner">
-              <h2 className="over-title">GAME OVER</h2>
-              <p className="over-score">SCORE &nbsp; {score}</p>
-              <p className="over-hi">BEST &nbsp; {highScore}</p>
-              <button className="btn-start" onClick={startGame}>
-                RESTART
-              </button>
+          {/* Start overlay */}
+          {phase === "idle" && (
+            <div className="overlay">
+              <div className="overlay-inner">
+                <h1 className="game-title">🐍 SNAKE CHAOS</h1>
+                <p className="overlay-hint">Arrow keys / WASD で操作</p>
+                <p className="overlay-hint">スワイプでも遊べる</p>
+                <button className="btn-start" onClick={startGame}>
+                  GAME START
+                </button>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
 
-      {/* Soft keys for mobile */}
-      <div className="softkeys">
-        <div className="sk-row">
-          <button className="sk-btn" onPointerDown={() => changeDir("U")}>
-            ▲
-          </button>
+          {/* Game over overlay */}
+          {phase === "gameover" && (
+            <div className="overlay">
+              <div className="overlay-inner">
+                <h2 className="over-title">GAME OVER</h2>
+                <p className="over-score">SCORE &nbsp; {score}</p>
+                <p className="over-hi">BEST &nbsp; {highScore}</p>
+                <button className="btn-start" onClick={startGame}>
+                  RESTART
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-        <div className="sk-row">
-          <button className="sk-btn" onPointerDown={() => changeDir("L")}>
-            ◀
-          </button>
-          <button className="sk-btn" onPointerDown={() => changeDir("D")}>
-            ▼
-          </button>
-          <button className="sk-btn" onPointerDown={() => changeDir("R")}>
-            ▶
-          </button>
+
+        {/* Soft keys for mobile */}
+        <div className="softkeys">
+          <div className="sk-row">
+            <button className="sk-btn" onPointerDown={() => changeDir("U")}>
+              ▲
+            </button>
+          </div>
+          <div className="sk-row">
+            <button className="sk-btn" onPointerDown={() => changeDir("L")}>
+              ◀
+            </button>
+            <button className="sk-btn" onPointerDown={() => changeDir("D")}>
+              ▼
+            </button>
+            <button className="sk-btn" onPointerDown={() => changeDir("R")}>
+              ▶
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </GameShell>
   );
 }

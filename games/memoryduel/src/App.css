@@ -4,12 +4,7 @@
   background: #111827;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 body {
-  margin: 0;
   min-height: 100vh;
   background: radial-gradient(circle at top, #1f2937, #030712 70%);
 }
@@ -198,18 +193,57 @@ h1 {
   animation: particleScatter 0.65s ease-out forwards;
 }
 
-.particle.p0 { background: #facc15; --dx: 0px;   --dy: -40px; }
-.particle.p1 { background: #38bdf8; --dx: 28px;  --dy: -28px; }
-.particle.p2 { background: #f87171; --dx: 40px;  --dy: 0px;   }
-.particle.p3 { background: #4ade80; --dx: 28px;  --dy: 28px;  }
-.particle.p4 { background: #c084fc; --dx: 0px;   --dy: 40px;  }
-.particle.p5 { background: #fb923c; --dx: -28px; --dy: 28px;  }
-.particle.p6 { background: #facc15; --dx: -40px; --dy: 0px;   }
-.particle.p7 { background: #38bdf8; --dx: -28px; --dy: -28px; }
+.particle.p0 {
+  background: #facc15;
+  --dx: 0px;
+  --dy: -40px;
+}
+.particle.p1 {
+  background: #38bdf8;
+  --dx: 28px;
+  --dy: -28px;
+}
+.particle.p2 {
+  background: #f87171;
+  --dx: 40px;
+  --dy: 0px;
+}
+.particle.p3 {
+  background: #4ade80;
+  --dx: 28px;
+  --dy: 28px;
+}
+.particle.p4 {
+  background: #c084fc;
+  --dx: 0px;
+  --dy: 40px;
+}
+.particle.p5 {
+  background: #fb923c;
+  --dx: -28px;
+  --dy: 28px;
+}
+.particle.p6 {
+  background: #facc15;
+  --dx: -40px;
+  --dy: 0px;
+}
+.particle.p7 {
+  background: #38bdf8;
+  --dx: -28px;
+  --dy: -28px;
+}
 
 @keyframes particleScatter {
-  0%   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0); opacity: 0; }
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+      scale(0);
+    opacity: 0;
+  }
 }
 
 /* ── MATCH ポップアップ ──────────────────────────────────────────────────── */
@@ -233,10 +267,22 @@ h1 {
 }
 
 @keyframes matchPopAnim {
-  0%   { opacity: 0; transform: translateX(-50%) translateY(0);    }
-  15%  { opacity: 1; transform: translateX(-50%) translateY(-4px);  }
-  60%  { opacity: 1; transform: translateX(-50%) translateY(-18px); }
-  100% { opacity: 0; transform: translateX(-50%) translateY(-30px); }
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0);
+  }
+  15% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-18px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px);
+  }
 }
 
 /* ── コンボ表示 ─────────────────────────────────────────────────────────── */
@@ -260,28 +306,60 @@ h1 {
 }
 
 @keyframes comboPop {
-  0%   { transform: scale(0.6); opacity: 0; }
-  100% { transform: scale(1);   opacity: 1; }
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* ── 画面シェイク ────────────────────────────────────────────────────────── */
 @keyframes shakeAnim {
-  0%   { transform: translateX(0); }
-  15%  { transform: translateX(-8px) rotate(-1deg); }
-  30%  { transform: translateX(7px) rotate(1deg); }
-  45%  { transform: translateX(-5px) rotate(-0.5deg); }
-  60%  { transform: translateX(4px) rotate(0.5deg); }
-  75%  { transform: translateX(-2px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-8px) rotate(-1deg);
+  }
+  30% {
+    transform: translateX(7px) rotate(1deg);
+  }
+  45% {
+    transform: translateX(-5px) rotate(-0.5deg);
+  }
+  60% {
+    transform: translateX(4px) rotate(0.5deg);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 @keyframes clearShakeAnim {
-  0%   { transform: translateX(0) scale(1); }
-  20%  { transform: translateX(-4px) scale(1.01); }
-  40%  { transform: translateX(4px) scale(1.01); }
-  60%  { transform: translateX(-3px) scale(1); }
-  80%  { transform: translateX(3px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0) scale(1);
+  }
+  20% {
+    transform: translateX(-4px) scale(1.01);
+  }
+  40% {
+    transform: translateX(4px) scale(1.01);
+  }
+  60% {
+    transform: translateX(-3px) scale(1);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .app.shake {
@@ -311,9 +389,17 @@ h1 {
 }
 
 @keyframes confettiFall {
-  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
-  80%  { opacity: 1; }
-  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
 }
 
 /* ── 勝者ポップアップ ────────────────────────────────────────────────────── */
@@ -348,6 +434,12 @@ h1 {
 }
 
 @keyframes winnerPopIn {
-  0%   { opacity: 0; transform: scale(0.7); }
-  100% { opacity: 1; transform: scale(1); }
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

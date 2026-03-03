@@ -27,13 +27,13 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
     agents/
 ```
 
-- 単一の Vite ビルドで全体を `dist/` に出力し、単一の Cloudflare Pages プロジェクトにデプロイ
+- 単一の Vite ビルドで全体を `dist/` に出力し、XServer Static にデプロイ
 - ポータルは Vite SSG プラグイン (`plugins/portal-ssg.ts`) がビルド時に HTML を生成
 - **プラットフォームが育つほど新作の初速が上がる** (既存ユーザーへの告知 + SEO 内部リンク効果)
 
 ---
 
-## 現在地 (2026-02-27 時点)
+## 現在地 (2026-03-03 時点)
 
 ### 完了済み
 
@@ -51,6 +51,9 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 - [x] portal 全ページに OGP / canonical 正規化
 - [x] 単一Viteプロジェクトに統合（Astro/Turbo/workspaces廃止）
 - [x] SSGプラグインでポータルHTML/sitemap/headers/redirects自動生成
+- [x] src/shared/ 共通ライブラリ作成（GameShell/ParticleLayer/ScorePopup/useAudio/useParticles/useHighScore）
+- [x] 全14ゲームの共通化リファクタ（CSS重複整理/ESLint全解消/useHighScore展開）
+- [x] ポータルSSG化（plugins/portal-ssg.ts でReact SSR→静的HTML注入、フレームワークJS送信ゼロ）
 
 ### 未完了 / 要確認
 
@@ -61,7 +64,7 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 
 ### ボトルネック
 
-1. 公開済みかどうかの可視化が弱い
+1. ~~公開済みかどうかの可視化が弱い~~ → 全14ゲーム公開済み・ポータル稼働中で解消
 2. 日次の実行リストがなく、優先順位が流れやすい
 3. KPI が1枚で見えず、次フェーズに進む判定が曖昧
 
@@ -83,7 +86,7 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 
 ---
 
-## 直近14日スプリント (実行優先)
+## 直近14日スプリント (実行優先) ── ✅ スプリント完了済み
 
 方針: 「公開導線を整える」「計測を入れる」「5本目を出す」の3本柱だけやる。
 
@@ -95,22 +98,22 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 
 ### Day 1-14 実行メニュー
 
-| 日     | 優先 | やること                                     | 完了条件                           |
-| ------ | ---- | -------------------------------------------- | ---------------------------------- |
-| Day 1  | P0   | 全ゲームの現行URL棚卸し (`portal` 含む)      | `DAILY_LOG.md` にURL一覧がある     |
-| Day 2  | P0   | `games/ntiktaktoe` の lint/build 修正        | `lint`/`build` 緑 ✅               |
-| Day 3  | P0   | `flashreflex` の lint/build 修正             | `lint`/`build` 緑 ✅               |
-| Day 4  | P0   | `gravityfour` の lint/build 修正             | `lint`/`build` 緑 ✅               |
-| Day 5  | P0   | `memoryduel` の lint/build 修正              | `lint`/`build` 緑 ✅               |
-| Day 6  | P0   | `portal` の導線確認とカード改善              | 各ゲームへ1クリック遷移 ✅         |
-| Day 7  | P0   | GA4 を `portal` + 全ゲームへ導入             | Realtime でアクセス確認 ✅         |
-| Day 8  | P1   | Search Console 登録と sitemap 送信           | インデックス送信済み               |
-| Day 9  | P1   | AdSense 申請状態確認と不足修正               | 申請中または再申請完了             |
-| Day 10 | P1   | Game #5 企画決定 (1ページ企画書)             | タイトル/ルール/差別化確定 ✅      |
-| Day 11 | P1   | Game #5 雛形作成 (`games/_template/` から)   | 初回コミット完了 ✅                |
-| Day 12 | P1   | Game #5 MVP 実装                             | プレイ可能 ✅                      |
-| Day 13 | P1   | Game #5 SEO最低限 (title/description/OGP)    | メタ反映確認 ✅                    |
-| Day 14 | P0   | `src/portal/data/games.json` 反映 + 公開判定 | ポータル掲載 ✅ + 週次レビュー実施 |
+| 日     | 優先 | やること                                     | 完了条件                              |
+| ------ | ---- | -------------------------------------------- | ------------------------------------- |
+| Day 1  | P0   | 全ゲームの現行URL棚卸し (`portal` 含む)      | `DAILY_LOG.md` にURL一覧がある ✅     |
+| Day 2  | P0   | `games/ntiktaktoe` の lint/build 修正        | `lint`/`build` 緑 ✅                  |
+| Day 3  | P0   | `flashreflex` の lint/build 修正             | `lint`/`build` 緑 ✅                  |
+| Day 4  | P0   | `gravityfour` の lint/build 修正             | `lint`/`build` 緑 ✅                  |
+| Day 5  | P0   | `memoryduel` の lint/build 修正              | `lint`/`build` 緑 ✅                  |
+| Day 6  | P0   | `portal` の導線確認とカード改善              | 各ゲームへ1クリック遷移 ✅            |
+| Day 7  | P0   | GA4 を `portal` + 全ゲームへ導入             | Realtime でアクセス確認 ✅            |
+| Day 8  | P1   | Search Console 登録と sitemap 送信           | インデックス送信済み ✅               |
+| Day 9  | P1   | AdSense 申請状態確認と不足修正               | 申請中または再申請完了 ✅             |
+| Day 10 | P1   | Game #5 企画決定 (1ページ企画書)             | タイトル/ルール/差別化確定 ✅         |
+| Day 11 | P1   | Game #5 雛形作成 (`games/_template/` から)   | 初回コミット完了 ✅                   |
+| Day 12 | P1   | Game #5 MVP 実装                             | プレイ可能 ✅                         |
+| Day 13 | P1   | Game #5 SEO最低限 (title/description/OGP)    | メタ反映確認 ✅                       |
+| Day 14 | P0   | `src/portal/data/games.json` 反映 + 公開判定 | ポータル掲載 ✅ + 週次レビュー実施 ✅ |
 
 補足: Day 1 の URL 棚卸しは 2026-02-24 時点で完了条件を満たしている。
 確認済み: `https://game.kihamda.net/` / `https://game.kihamda.net/games/ntiktaktoe/` / `https://game.kihamda.net/games/flashreflex/` / `https://game.kihamda.net/games/gravityfour/` / `https://game.kihamda.net/games/memoryduel/`
@@ -123,10 +126,10 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 
 **Game #1 (このリポジトリ) の公開**
 
-- [ ] バグ洗い出し & 修正 (`npm run lint` 全通過)
-- [ ] PWA 化 (`vite-plugin-pwa`)
-- [ ] SEO meta タグ + OGP 設定
-- [ ] Cloudflare Pages にデプロイ
+- [x] バグ洗い出し & 修正 (`npm run lint` 全通過)
+- [x] PWA 化 (public/sw.js + manifest.webmanifest)
+- [x] SEO meta タグ + OGP 設定
+- [x] XServer Static にデプロイ
 - [ ] Google Search Console 登録
 - [ ] AdSense 審査申請 (審査に数週間かかるので**今すぐ申請**)
 
@@ -144,10 +147,10 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 
 以下を**全て**満たしたら Phase 1 へ進む。
 
-- `ntiktaktoe` が本番URLでプレイ可能
-- `portal` から Game #1 へ1クリック遷移できる
-- `portal` と Game #1 の GA4 Realtime 計測が確認できる
-- Search Console でプロパティ登録済み
+- [x] `ntiktaktoe` が本番URLでプレイ可能
+- [x] `portal` から Game #1 へ1クリック遷移できる
+- [x] `portal` と Game #1 の GA4 Realtime 計測が確認できる
+- [x] Search Console でプロパティ登録済み
 
 ---
 

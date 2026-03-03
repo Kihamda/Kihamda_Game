@@ -16,9 +16,9 @@ src/
   shared/              # 全ゲーム共通 (GameShell, ParticleLayer, ScorePopup, useAudio, useParticles)
   portal/data/games.json  # ゲームメタデータ一元管理
 plugins/
-  portal-ssg.ts        # Viteプラグイン: ポータルHTML/sitemap/headers/redirects生成
+  portal-ssg.ts        # Viteプラグイン: ポータルHTML SSG注入
 public/                # 静的アセット (thumbnails, manifest.webmanifest, sw.js)
-index.html             # 開発用ランチャー (ビルド非対象)
+index.html             # ポータルエントリ（ビルド時は SSG でHTML注入済みの静的ページに変換）
 vite.config.ts         # マルチエントリ (games/*) + SSGプラグイン
 package.json           # 単一 (ルートのみ)
 ```
@@ -34,6 +34,7 @@ npm run build   # = tsc -b && vite build
 - 出力: `dist/` (ポータル + 全ゲーム + sitemap.xml + \_headers + \_redirects)
 - 所要時間: 約600ms
 - 個別ゲームのビルドコマンドは不要
+- prebuild: `scripts/prebuild.mjs` が `sitemap.xml` と `_redirects` を `public/` に生成
 
 ## URL 構造
 
@@ -42,17 +43,17 @@ npm run build   # = tsc -b && vite build
 
 ## デプロイ
 
-- Cloudflare Pages (無料・無制限帯域・グローバルCDN)
-- GitHub Actions → `npm run build` → `dist/` → CF Pages API
+- XServer Static (無料・静的ホスティング)
+- GitHub Actions → `npm run build` → `dist/` → FTPS で XServer Static へデプロイ
 
 ## ポータル
 
 `plugins/portal-ssg.ts` がビルド時に静的 HTML を生成:
 
-- ゲーム一覧ポータル (`dist/index.html`)
-- サイトマップ (`dist/sitemap.xml`)
-- キャッシュヘッダー (`dist/_headers`)
-- リダイレクト (`dist/_redirects`)
+- ゲーム一覧ポータル (`dist/index.html`) — SSG プラグインが `src/portal/App.tsx` を SSR して注入
+- サイトマップ (`public/sitemap.xml`) — `scripts/prebuild.mjs` が生成
+- キャッシュヘッダー (`public/_headers`) — 静的配置
+- リダイレクト (`public/_redirects`) — `scripts/prebuild.mjs` が生成
 
 データソース: `src/portal/data/games.json`
 

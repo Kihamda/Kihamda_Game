@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
+import { useAudio, GameShell, useHighScore } from "../../../src/shared";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -29,7 +30,7 @@ interface Question {
   displayColor: Color;
 }
 
-interface ScorePopup {
+interface ScorePopupItem {
   id: number;
   text: string;
 }
@@ -54,56 +55,6 @@ function generateQuestion(): Question {
 }
 
 // ---------------------------------------------------------------------------
-// Web Audio API
-// ---------------------------------------------------------------------------
-
-function playCorrectSound(ctx: AudioContext): void {
-  const t = ctx.currentTime;
-  [440, 660].forEach((freq, i) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.value = freq;
-    osc.type = "sine";
-    gain.gain.setValueAtTime(0.3, t + i * 0.12);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.12 + 0.2);
-    osc.start(t + i * 0.12);
-    osc.stop(t + i * 0.12 + 0.25);
-  });
-}
-
-function playWrongSound(ctx: AudioContext): void {
-  const t = ctx.currentTime;
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.frequency.value = 180;
-  osc.type = "sawtooth";
-  gain.gain.setValueAtTime(0.4, t);
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
-  osc.start(t);
-  osc.stop(t + 0.5);
-}
-
-function playComboSound(ctx: AudioContext): void {
-  const t = ctx.currentTime;
-  [523, 659, 784, 1047].forEach((freq, i) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.value = freq;
-    osc.type = "sine";
-    gain.gain.setValueAtTime(0.25, t + i * 0.1);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.1 + 0.25);
-    osc.start(t + i * 0.1);
-    osc.stop(t + i * 0.1 + 0.3);
-  });
-}
-
-// ---------------------------------------------------------------------------
 // App
 // ---------------------------------------------------------------------------
 
@@ -119,21 +70,19 @@ export default function App() {
   const [flashColor, setFlashColor] = useState("");
   const [isShaking, setIsShaking] = useState(false);
   const [showStreak, setShowStreak] = useState(false);
-  const [popups, setPopups] = useState<ScorePopup[]>([]);
+  const [popups, setPopups] = useState<ScorePopupItem[]>([]);
   const [bgColor, setBgColor] = useState(DEFAULT_BG);
 
-  const audioCtxRef = useRef<AudioContext | null>(null);
+  const { playArpeggio, playMiss, playFanfare } = useAudio();
+  const { best: bestScore, update: updateBest } = useHighScore("colorburst");
+  const scoreRef = useRef(0);
+  useEffect(() => {
+    scoreRef.current = score;
+  }, [score]);
   const startTimeRef = useRef<number>(0);
   const timeLimitRef = useRef<number>(3000);
   const popupIdRef = useRef(0);
   const processingRef = useRef(false);
-
-  const getAudioCtx = useCallback((): AudioContext => {
-    if (!audioCtxRef.current) {
-      audioCtxRef.current = new AudioContext();
-    }
-    return audioCtxRef.current;
-  }, []);
 
   /** 次の問題をセットしてタイマーをリセットする */
   const nextQuestion = useCallback((newQC: number): void => {
@@ -153,7 +102,7 @@ export default function App() {
     if (processingRef.current) return;
     processingRef.current = true;
 
-    playWrongSound(getAudioCtx());
+    playMiss();
     setIsShaking(true);
     setTimeout(() => setIsShaking(false), 500);
     setCombo(0);
@@ -162,6 +111,7 @@ export default function App() {
     setMisses(newMisses);
 
     if (newMisses >= 3) {
+      updateBest(scoreRef.current);
       setGameState("gameover");
       return;
     }
@@ -169,7 +119,7 @@ export default function App() {
     const newQC = questionCount + 1;
     setQuestionCount(newQC);
     nextQuestion(newQC);
-  }, [misses, questionCount, getAudioCtx, nextQuestion]);
+  }, [misses, questionCount, playMiss, nextQuestion, updateBest]);
 
   // ---------------------------------------------------------------------------
   // Timer interval — question / handleTimeout 変化のたびにリセット
@@ -206,16 +156,17 @@ export default function App() {
       const remaining = Math.max(0, 1 - elapsed / timeLimitRef.current);
 
       if (isCorrect) {
-        const timeBonus = Math.floor((remaining * timeLimitRef.current) / 1000) * 2;
+        const timeBonus =
+          Math.floor((remaining * timeLimitRef.current) / 1000) * 2;
         const gained = 10 + timeBonus;
 
-        playCorrectSound(getAudioCtx());
+        playArpeggio([440, 660], 0.2, "sine", 0.3, 0.12);
         setScore((s) => s + gained);
 
         const newCombo = combo + 1;
         setCombo(newCombo);
         if (newCombo % 5 === 0) {
-          playComboSound(getAudioCtx());
+          playFanfare();
           setShowStreak(true);
           setTimeout(() => setShowStreak(false), 1200);
         }
@@ -228,7 +179,7 @@ export default function App() {
         setPopups((p) => [...p, { id: pid, text: `+${gained} CORRECT!` }]);
         setTimeout(() => setPopups((p) => p.filter((x) => x.id !== pid)), 1000);
       } else {
-        playWrongSound(getAudioCtx());
+        playMiss();
         setIsShaking(true);
         setTimeout(() => setIsShaking(false), 500);
         setCombo(0);
@@ -237,6 +188,7 @@ export default function App() {
         setMisses(newMisses);
 
         if (newMisses >= 3) {
+          updateBest(scoreRef.current);
           setGameState("gameover");
           return;
         }
@@ -246,7 +198,18 @@ export default function App() {
       setQuestionCount(newQC);
       nextQuestion(newQC);
     },
-    [gameState, question, combo, misses, questionCount, getAudioCtx, nextQuestion],
+    [
+      gameState,
+      question,
+      combo,
+      misses,
+      questionCount,
+      playArpeggio,
+      playMiss,
+      playFanfare,
+      nextQuestion,
+      updateBest,
+    ],
   );
 
   // ---------------------------------------------------------------------------
@@ -277,109 +240,128 @@ export default function App() {
   // Render
   // ---------------------------------------------------------------------------
   return (
-    <div
-      className={`app${isShaking ? " shake" : ""}`}
-      style={{ background: bgColor } as React.CSSProperties}
-    >
-      {/* 正解フラッシュ */}
-      {isFlashing && (
-        <div className="flash-overlay" style={{ backgroundColor: flashColor }} />
-      )}
+    <GameShell title="Color Burst">
+      <div
+        className={`app${isShaking ? " shake" : ""}`}
+        style={{ background: bgColor } as React.CSSProperties}
+      >
+        {/* 正解フラッシュ */}
+        {isFlashing && (
+          <div
+            className="flash-overlay"
+            style={{ backgroundColor: flashColor }}
+          />
+        )}
 
-      {/* コンボ STREAK 演出 */}
-      {showStreak && <div className="streak-banner">STREAK!</div>}
+        {/* コンボ STREAK 演出 */}
+        {showStreak && <div className="streak-banner">STREAK!</div>}
 
-      {/* スコアポップアップ */}
-      {popups.map((p) => (
-        <div key={p.id} className="score-popup">
-          {p.text}
-        </div>
-      ))}
+        {/* スコアポップアップ */}
+        {popups.map((p) => (
+          <div key={p.id} className="score-popup">
+            {p.text}
+          </div>
+        ))}
 
-      {/* ============================================================
+        {/* ============================================================
           START SCREEN
       ============================================================ */}
-      {gameState === "start" && (
-        <div className="screen start-screen">
-          <h1 className="game-title">Color Burst</h1>
-          <p className="game-desc">テキストが「表示されている色」のボタンを押せ</p>
-          <p className="game-desc-sub">文字の意味に惑わされるな</p>
-          <button className="btn-start" onClick={startGame}>
-            START
-          </button>
-        </div>
-      )}
+        {gameState === "start" && (
+          <div className="screen start-screen">
+            <h1 className="game-title">Color Burst</h1>
+            <p className="game-desc">
+              テキストが「表示されている色」のボタンを押せ
+            </p>
+            <p className="game-desc-sub">文字の意味に惑わされるな</p>
+            <button className="btn-start" onClick={startGame}>
+              START
+            </button>
+          </div>
+        )}
 
-      {/* ============================================================
+        {/* ============================================================
           GAME SCREEN
       ============================================================ */}
-      {gameState === "playing" && (
-        <div className="screen game-screen">
-          {/* HUD */}
-          <div className="hud">
-            <div className="hud-score">
-              <span className="hud-label">SCORE</span>
-              <span className="hud-value">{score}</span>
+        {gameState === "playing" && (
+          <div className="screen game-screen">
+            {/* HUD */}
+            <div className="hud">
+              <div className="hud-score">
+                <span className="hud-label">SCORE</span>
+                <span className="hud-value">{score}</span>
+              </div>
+              <div className="hud-combo">
+                {combo >= 2 && <span className="combo-badge">x{combo}</span>}
+              </div>
+              <div className="hud-misses">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <span
+                    key={i}
+                    className={`heart${i < misses ? " heart-broken" : ""}`}
+                  >
+                    {i < misses ? "💔" : "❤️"}
+                  </span>
+                ))}
+              </div>
             </div>
-            <div className="hud-combo">
-              {combo >= 2 && <span className="combo-badge">x{combo}</span>}
+
+            {/* タイムバー */}
+            <div className="timebar-wrap">
+              <div
+                className={`timebar${timeLeft < 0.3 ? " timebar-danger" : ""}`}
+                style={{
+                  width: `${timeLeft * 100}%`,
+                  backgroundColor: timeLeft < 0.3 ? "#ef4444" : "#22c55e",
+                }}
+              />
             </div>
-            <div className="hud-misses">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <span key={i} className={`heart${i < misses ? " heart-broken" : ""}`}>
-                  {i < misses ? "💔" : "❤️"}
-                </span>
+
+            {/* ワード */}
+            <div className="word-area">
+              <span
+                className="word-text"
+                style={{ color: question.displayColor.hex }}
+              >
+                {question.word.name}
+              </span>
+            </div>
+
+            {/* カラーボタン */}
+            <div className="buttons-area">
+              {COLORS.map((color) => (
+                <button
+                  key={color.hex}
+                  className="color-btn"
+                  style={{ backgroundColor: color.hex }}
+                  onClick={() => handleAnswer(color)}
+                >
+                  {color.name}
+                </button>
               ))}
             </div>
           </div>
+        )}
 
-          {/* タイムバー */}
-          <div className="timebar-wrap">
-            <div
-              className={`timebar${timeLeft < 0.3 ? " timebar-danger" : ""}`}
-              style={{
-                width: `${timeLeft * 100}%`,
-                backgroundColor: timeLeft < 0.3 ? "#ef4444" : "#22c55e",
-              }}
-            />
-          </div>
-
-          {/* ワード */}
-          <div className="word-area">
-            <span className="word-text" style={{ color: question.displayColor.hex }}>
-              {question.word.name}
-            </span>
-          </div>
-
-          {/* カラーボタン */}
-          <div className="buttons-area">
-            {COLORS.map((color) => (
-              <button
-                key={color.hex}
-                className="color-btn"
-                style={{ backgroundColor: color.hex }}
-                onClick={() => handleAnswer(color)}
-              >
-                {color.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ============================================================
+        {/* ============================================================
           GAMEOVER SCREEN
       ============================================================ */}
-      {gameState === "gameover" && (
-        <div className="screen gameover-screen">
-          <h2 className="gameover-title">GAME OVER</h2>
-          <p className="final-score">SCORE: {score}</p>
-          <p className="final-questions">問題数: {questionCount}</p>
-          <button className="btn-start" onClick={startGame}>
-            もういちど
-          </button>
-        </div>
-      )}
-    </div>
+        {gameState === "gameover" && (
+          <div className="screen gameover-screen">
+            <h2 className="gameover-title">GAME OVER</h2>
+            <p className="final-score">SCORE: {score}</p>
+            <p
+              className="game-hiscore"
+              style={{ fontSize: 18, opacity: 0.7, margin: "4px 0 8px" }}
+            >
+              BEST: {bestScore}
+            </p>
+            <p className="final-questions">問題数: {questionCount}</p>
+            <button className="btn-start" onClick={startGame}>
+              もういちど
+            </button>
+          </div>
+        )}
+      </div>
+    </GameShell>
   );
 }

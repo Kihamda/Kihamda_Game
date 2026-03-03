@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
+import { useAudio, GameShell } from "../../../src/shared";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -58,59 +59,13 @@ function formatTime(ms: number): string {
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${String(centis).padStart(2, "0")}`;
 }
 
-// ─── Web Audio API ────────────────────────────────────────────────────────────
-
-function ensureAudioCtx(ref: { current: AudioContext | null }): AudioContext {
-  if (!ref.current || ref.current.state === "closed") {
-    ref.current = new AudioContext();
-  }
-  if (ref.current.state === "suspended") {
-    void ref.current.resume();
-  }
-  return ref.current;
-}
-
-function playTone(
-  ctx: AudioContext,
-  freq: number,
-  duration: number,
-  type: OscillatorType,
-  gain: number,
-  startOffset = 0,
-): void {
-  const osc = ctx.createOscillator();
-  const gainNode = ctx.createGain();
-  osc.connect(gainNode);
-  gainNode.connect(ctx.destination);
-  osc.frequency.value = freq;
-  osc.type = type;
-  gainNode.gain.setValueAtTime(gain, ctx.currentTime + startOffset);
-  gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startOffset + duration);
-  osc.start(ctx.currentTime + startOffset);
-  osc.stop(ctx.currentTime + startOffset + duration + 0.01);
-}
-
-function playCorrect(ctx: AudioContext, step: number, total: number): void {
-  const freq = 440 + (step / total) * 440;
-  playTone(ctx, freq, 0.1, "sine", 0.22);
-}
-
-function playWrong(ctx: AudioContext): void {
-  playTone(ctx, 160, 0.18, "sawtooth", 0.18);
-}
-
-function playClear(ctx: AudioContext): void {
-  const notes = [523.25, 659.25, 783.99, 1046.5];
-  notes.forEach((freq, i) => {
-    playTone(ctx, freq, 0.28, "sine", 0.32, i * 0.13);
-  });
-}
-
 // ─── Component ───────────────────────────────────────────────────────────────
 
 const PARTICLE_COLORS = ["#ff6b6b", "#ffd93d", "#6bcb77", "#4d96ff", "#c77dff"];
 
 const App = () => {
+  const { playTone: sharedPlayTone, playArpeggio, playMiss } = useAudio();
+
   const [difficulty, setDifficulty] = useState<Difficulty>("NORMAL");
   const [gameState, setGameState] = useState<GameState>("idle");
   const [grid, setGrid] = useState<number[]>([]);
@@ -120,7 +75,9 @@ const App = () => {
   const [shakeNum, setShakeNum] = useState<number | null>(null);
   const [elapsed, setElapsed] = useState(0);
   const [penalty, setPenalty] = useState(0);
-  const [bestTimes, setBestTimes] = useState<Partial<Record<Difficulty, number>>>(() => {
+  const [bestTimes, setBestTimes] = useState<
+    Partial<Record<Difficulty, number>>
+  >(() => {
     try {
       const saved = localStorage.getItem("numhunt_best");
       if (saved) {
@@ -139,7 +96,6 @@ const App = () => {
   const startTimeRef = useRef<number>(0);
   const penaltyRef = useRef(0);
   const rafRef = useRef<number>(0);
-  const audioCtxRef = useRef<AudioContext | null>(null);
   const particleIdRef = useRef(0);
   const waveTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
@@ -160,7 +116,9 @@ const App = () => {
 
     const { total, cols } = DIFF_CONFIG[difficulty];
     const seq = buildSequence(difficulty);
-    const nums = shuffleArray(Array.from({ length: cols * cols }, (_v, i) => i + 1).slice(0, total));
+    const nums = shuffleArray(
+      Array.from({ length: cols * cols }, (_v, i) => i + 1).slice(0, total),
+    );
 
     penaltyRef.current = 0;
     setPenalty(0);
@@ -178,7 +136,9 @@ const App = () => {
     startTimeRef.current = performance.now();
 
     const tick = () => {
-      setElapsed(performance.now() - startTimeRef.current + penaltyRef.current * 1000);
+      setElapsed(
+        performance.now() - startTimeRef.current + penaltyRef.current * 1000,
+      );
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
@@ -189,7 +149,8 @@ const App = () => {
       id: ++particleIdRef.current,
       x: x + (Math.random() - 0.5) * 50,
       y: y + (Math.random() - 0.5) * 50,
-      color: PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)]!,
+      color:
+        PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)]!,
     }));
     setParticles((prev) => [...prev, ...ps]);
     const ids = new Set(ps.map((p) => p.id));
@@ -208,8 +169,7 @@ const App = () => {
       const expected = sequence[nextIndex];
       if (num !== expected) {
         // Wrong tap
-        const ctx = ensureAudioCtx(audioCtxRef);
-        playWrong(ctx);
+        playMiss();
         penaltyRef.current += 0.5;
         setPenalty(penaltyRef.current);
         setShakeNum(num);
@@ -218,8 +178,8 @@ const App = () => {
       }
 
       // Correct tap
-      const ctx = ensureAudioCtx(audioCtxRef);
-      playCorrect(ctx, nextIndex, sequence.length);
+      const freq = 440 + (nextIndex / sequence.length) * 440;
+      sharedPlayTone(freq, 0.1, "sine", 0.22);
 
       const newTapped = new Set(tapped);
       newTapped.add(num);
@@ -232,10 +192,11 @@ const App = () => {
 
       // ── CLEAR ──
       stopTimer();
-      const finalMs = performance.now() - startTimeRef.current + penaltyRef.current * 1000;
+      const finalMs =
+        performance.now() - startTimeRef.current + penaltyRef.current * 1000;
       setElapsed(finalMs);
       setGameState("cleared");
-      playClear(ctx);
+      playArpeggio([523.25, 659.25, 783.99, 1046.5], 0.28, "sine", 0.32, 0.13);
 
       // Wave animation: light up cells in tap order
       const orderedNums = [...newTapped]; // insertion = tap order
@@ -261,7 +222,19 @@ const App = () => {
         }
       }
     },
-    [gameState, sequence, nextIndex, tapped, bestTimes, difficulty, addParticles, stopTimer],
+    [
+      gameState,
+      sequence,
+      nextIndex,
+      tapped,
+      bestTimes,
+      difficulty,
+      addParticles,
+      stopTimer,
+      playMiss,
+      sharedPlayTone,
+      playArpeggio,
+    ],
   );
 
   const handleChangeDifficulty = useCallback(
@@ -284,130 +257,138 @@ const App = () => {
   // ── Derived values ──
   const { cols } = DIFF_CONFIG[difficulty];
   const currentBest = bestTimes[difficulty];
-  const timeDiff = gameState === "playing" && currentBest !== undefined ? elapsed - currentBest : null;
+  const timeDiff =
+    gameState === "playing" && currentBest !== undefined
+      ? elapsed - currentBest
+      : null;
   const nextNum = sequence[nextIndex];
 
   return (
-    <div className="app">
-      {/* Particles layer */}
-      <div className="particles-layer" aria-hidden="true">
-        {particles.map((p) => (
-          <div
-            key={p.id}
-            className="particle"
-            style={{ left: p.x, top: p.y, background: p.color }}
-          />
-        ))}
-      </div>
-
-      <h1 className="title">Num Hunt</h1>
-
-      {/* Difficulty selector */}
-      <div className="difficulty-row" role="group" aria-label="難易度選択">
-        {DIFFICULTIES.map((d) => (
-          <button
-            key={d}
-            className={`diff-btn${difficulty === d ? " active" : ""}`}
-            onClick={() => handleChangeDifficulty(d)}
-            disabled={gameState === "playing"}
-            aria-label={`${d}: ${DIFF_CONFIG[d].description}`}
-          >
-            <span className="diff-label">{d}</span>
-            <span className="diff-desc">{DIFF_CONFIG[d].description}</span>
-          </button>
-        ))}
-      </div>
-
-      {/* Timer */}
-      <div className="timer-area">
-        <div className={`timer${gameState === "cleared" ? " timer--cleared" : ""}`}>
-          {formatTime(elapsed)}
+    <GameShell title="Num Hunt">
+      <div className="app">
+        {/* Particles layer */}
+        <div className="particles-layer" aria-hidden="true">
+          {particles.map((p) => (
+            <div
+              key={p.id}
+              className="particle"
+              style={{ left: p.x, top: p.y, background: p.color }}
+            />
+          ))}
         </div>
-        <div className="timer-sub">
-          {penalty > 0 && (
-            <span className="penalty">ペナルティ +{penalty.toFixed(1)}s</span>
-          )}
-          {timeDiff !== null && (
-            <span className={`time-diff${timeDiff < 0 ? " ahead" : " behind"}`}>
-              ベストより {timeDiff >= 0 ? "+" : ""}
-              {(timeDiff / 1000).toFixed(2)}秒
-            </span>
-          )}
-          {currentBest !== undefined && gameState !== "playing" && (
-            <span className="best-label">ベスト: {formatTime(currentBest)}</span>
-          )}
-        </div>
-      </div>
 
-      {/* Clear banner */}
-      {gameState === "cleared" && (
-        <div className="clear-banner">
-          <div className="clear-text">CLEAR!</div>
-          {isNewRecord && <div className="new-record">NEW RECORD!</div>}
-        </div>
-      )}
+        <h1 className="title">Num Hunt</h1>
 
-      {/* Controls */}
-      <div className="controls">
-        {gameState !== "playing" ? (
-          <button className="start-btn" onClick={startGame}>
-            {gameState === "cleared" ? "もう一度" : "スタート"}
-          </button>
-        ) : (
-          <button className="stop-btn" onClick={handleStop}>
-            やめる
-          </button>
-        )}
-        <label className="hint-toggle">
-          <input
-            type="checkbox"
-            checked={showHint}
-            onChange={(e) => setShowHint(e.target.checked)}
-          />
-          次の数字を表示
-        </label>
-      </div>
-
-      {/* Next hint */}
-      {showHint && gameState === "playing" && nextNum !== undefined && (
-        <div className="next-hint">
-          次: <span className="next-num">{nextNum}</span>
-          <span className="next-progress">
-            {nextIndex}/{sequence.length}
-          </span>
-        </div>
-      )}
-
-      {/* Grid */}
-      <div
-        className="grid"
-        style={{ "--cols": cols } as React.CSSProperties}
-      >
-        {grid.map((num) => {
-          const isTappedPlaying = gameState === "playing" && tapped.has(num);
-          const isWave = clearWave.has(num);
-          const isShaking = shakeNum === num;
-          return (
+        {/* Difficulty selector */}
+        <div className="difficulty-row" role="group" aria-label="難易度選択">
+          {DIFFICULTIES.map((d) => (
             <button
-              key={num}
-              className={[
-                "cell",
-                isTappedPlaying ? "cell--faded" : "",
-                isWave ? "cell--wave" : "",
-                isShaking ? "cell--shake" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              onClick={(e) => handleTap(num, e)}
-              disabled={isTappedPlaying || gameState !== "playing"}
-              aria-label={`数字 ${num}`}
+              key={d}
+              className={`diff-btn${difficulty === d ? " active" : ""}`}
+              onClick={() => handleChangeDifficulty(d)}
+              disabled={gameState === "playing"}
+              aria-label={`${d}: ${DIFF_CONFIG[d].description}`}
             >
-              {num}
+              <span className="diff-label">{d}</span>
+              <span className="diff-desc">{DIFF_CONFIG[d].description}</span>
             </button>
-          );
-        })}
+          ))}
+        </div>
+
+        {/* Timer */}
+        <div className="timer-area">
+          <div
+            className={`timer${gameState === "cleared" ? " timer--cleared" : ""}`}
+          >
+            {formatTime(elapsed)}
+          </div>
+          <div className="timer-sub">
+            {penalty > 0 && (
+              <span className="penalty">ペナルティ +{penalty.toFixed(1)}s</span>
+            )}
+            {timeDiff !== null && (
+              <span
+                className={`time-diff${timeDiff < 0 ? " ahead" : " behind"}`}
+              >
+                ベストより {timeDiff >= 0 ? "+" : ""}
+                {(timeDiff / 1000).toFixed(2)}秒
+              </span>
+            )}
+            {currentBest !== undefined && gameState !== "playing" && (
+              <span className="best-label">
+                ベスト: {formatTime(currentBest)}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Clear banner */}
+        {gameState === "cleared" && (
+          <div className="clear-banner">
+            <div className="clear-text">CLEAR!</div>
+            {isNewRecord && <div className="new-record">NEW RECORD!</div>}
+          </div>
+        )}
+
+        {/* Controls */}
+        <div className="controls">
+          {gameState !== "playing" ? (
+            <button className="start-btn" onClick={startGame}>
+              {gameState === "cleared" ? "もう一度" : "スタート"}
+            </button>
+          ) : (
+            <button className="stop-btn" onClick={handleStop}>
+              やめる
+            </button>
+          )}
+          <label className="hint-toggle">
+            <input
+              type="checkbox"
+              checked={showHint}
+              onChange={(e) => setShowHint(e.target.checked)}
+            />
+            次の数字を表示
+          </label>
+        </div>
+
+        {/* Next hint */}
+        {showHint && gameState === "playing" && nextNum !== undefined && (
+          <div className="next-hint">
+            次: <span className="next-num">{nextNum}</span>
+            <span className="next-progress">
+              {nextIndex}/{sequence.length}
+            </span>
+          </div>
+        )}
+
+        {/* Grid */}
+        <div className="grid" style={{ "--cols": cols } as React.CSSProperties}>
+          {grid.map((num) => {
+            const isTappedPlaying = gameState === "playing" && tapped.has(num);
+            const isWave = clearWave.has(num);
+            const isShaking = shakeNum === num;
+            return (
+              <button
+                key={num}
+                className={[
+                  "cell",
+                  isTappedPlaying ? "cell--faded" : "",
+                  isWave ? "cell--wave" : "",
+                  isShaking ? "cell--shake" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                onClick={(e) => handleTap(num, e)}
+                disabled={isTappedPlaying || gameState !== "playing"}
+                aria-label={`数字 ${num}`}
+              >
+                {num}
+              </button>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </GameShell>
   );
 };
 

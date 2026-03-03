@@ -1,5 +1,5 @@
 ---
-description: "モノレポ移行・ポータル構築・Cloudflare Pages デプロイを自律実行する。人間の手作業を最小化することが最優先。"
+description: "モノレポ移行・ポータル構築・XServer Static デプロイを自律実行する。人間の手作業を最小化することが最優先。"
 tools:
   [
     "search/codebase",
@@ -23,14 +23,14 @@ tools:
 単一の Vite プロジェクトに統合済み。Astro・Turborepo・個別 package.json は廃止された。
 
 ```
-[ホスティング] Cloudflare Pages (無料・無制限帯域・グローバルCDN)
-[デプロイ]    GitHub Actions → npm run build (= tsc -b && vite build) → dist/ → CF Pages API
+[ホスティング] XServer Static (無料・静的ホスティング)
+[デプロイ]    GitHub Actions → npm run build (= tsc -b && vite build) → dist/ → FTPS (GitHub Actions)
 [ルーティング] パスベース (全ゲームが同一ドメイン)
 
   /              ← ポータル (plugins/portal-ssg.ts が静的HTML生成)
   /games/[id]/  ← 各ゲーム (React SPA, Viteマルチエントリ)
 
-[キャッシュ]  Cloudflare エッジキャッシュ + Service Worker (2層)
+[キャッシュ]  Service Worker キャッシュ
 [PWA]        プラットフォーム全体で単一 SW + manifest (scope: /)
 ```
 
@@ -113,12 +113,12 @@ export default defineConfig({
 
 - `dist/index.html` — ゲーム一覧ポータル (SEO/OGP 付き)
 - `dist/sitemap.xml` — 全ゲームの URL を含むサイトマップ
-- `dist/_headers` — Cloudflare Pages キャッシュヘッダー
+- `dist/_headers` — キャッシュヘッダー
 - `dist/_redirects` — リダイレクトルール
 
 データソース: `src/portal/data/games.json`
 
-## Cloudflare Pages キャッシュ設定
+## キャッシュ設定
 
 `plugins/portal-ssg.ts` がビルド時に `dist/_headers` を生成する:
 
@@ -163,7 +163,7 @@ export default defineConfig({
 
 - このエージェントは通常 `consultant` エージェントから呼び出される
 - インフラ変更は影響範囲が大きいため、変更内容と影響範囲を明示して返すこと
-- 人間が手動で行う必要がある作業 (CF Pages 登録、DNS 設定等) は箇条書きで報告
+- 人間が手動で行う必要がある作業 (XServer Static 登録、DNS 設定等) は箇条書きで報告
 - ビルド成功確認済みの状態で返すこと
 
 ## 参照

@@ -1,9 +1,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
+import portalSSG from "./plugins/portal-ssg";
 import { resolve } from "path";
 import { readdirSync, existsSync } from "fs";
 import { fileURLToPath } from "url";
-import { portalSSG } from "./plugins/portal-ssg";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const gamesDir = resolve(__dirname, "games");
@@ -23,7 +23,10 @@ export default defineConfig({
     outDir: resolve(__dirname, "dist"),
     emptyOutDir: true,
     rollupOptions: {
-      input: gameEntries,
+      input: {
+        portal: resolve(__dirname, "index.html"),
+        ...gameEntries,
+      },
     },
   },
 });

@@ -5,6 +5,122 @@
 
 ---
 
+## 2026-03-03
+
+### 作業ログ
+
+- [完了] ポータルSSG化 → 担当: platform-architect
+
+### 修正内容
+
+#### ポータルSSGプラグイン実装
+
+- **plugins/portal-ssg.ts** 新規作成: Vite `closeBundle` フックでポータルApp.tsxをSSRビルド → `renderToStaticMarkup` で静的HTML生成 → dist/index.htmlに注入
+- **vite.config.ts**: `portalSSG()` プラグイン追加
+- **src/portal/App.tsx**: ランダムゲームリンクに `data-random-paths` 属性追加（SSG時はインラインscriptで差し替え）
+- **tsconfig.node.json**: `plugins` ディレクトリをincludeに追加
+
+#### 結果
+
+- dist/index.html に全14ゲームのカード・セクションが静的HTMLとして注入される
+- portal用React JSバンドル + React runtime preloadを除去（CSSのみ残存）
+- ランダムゲームリンクはインラインscript（100B未満）で動的化
+- ビルド: 成功、TSC/ESLint: エラー0
+
+### 今日の成果
+
+- ポータルLPがCSR → 完全SSGに移行。フレームワークJS送信ゼロ
+- プロジェクト全体クリーンアップ完了（次フェーズ準備）
+
+#### クリーンアップ内容
+
+**不要ファイル削除 (2件)**
+
+- `.github/workflows/deploy.yml` — 死んでたGitHub Pagesワークフロー
+- `.github/prompts/monorepo-migration.prompt.md` — 完了済みタスクプロンプト
+
+**Agent構文修正 (7件)**
+
+- consultant / seo-specialist / copywriter / github-repo / qa-tester / agent-editor / sns-manager の `.agent.md` — chatagentブロックの二重ネストを正規形式に修正
+
+**ホスティング統一: Cloudflare Pages → XServer Static (全ファイル)**
+
+- copilot-instructions.md / README.md / ROADMAP.md / YourSuckJobs.md
+- platform-architect / game-factory / growth の各agent.md
+- portal-setup / seo / sns-automation / platform-setup / new-game-full / pwa の各prompt.md
+- release-pipeline.yml
+
+**内容整合性修正**
+
+- copilot-instructions.md: SSGプラグイン説明を現行アーキテクチャに更新、index.html説明修正、Prompts/Workflowsテーブルから削除済みファイル除去
+- ROADMAP.md: 現在地を3/3に更新、完了済み3項目追加、Phase 0チェック完了、14日スプリント完了済み
+- YourSuckJobs.md: GitHub Pages無効化セクション削除、monorepo-migration参照削除
+- portal-setup.prompt.md: SSGアーキテクチャ説明を全面書き換え
+- seo.prompt.md: 存在しないrenderPortalHtml()参照を修正
+
+---
+
+## 2026-03-01
+
+### 作業ログ
+
+- [完了] 共通化リファクタのお残しチェック → 担当: consultant (横断調査)
+- [完了] 全問題の一括修正 → 担当: gamedev / consultant
+
+### 修正内容
+
+#### バグ修正
+
+- **brickblast**: `if (audio)` 未定義変数参照を修正 → 爆破音・HP減少音が正常に鳴るように
+- **brickblast**: 不要な `audioRef` (AudioContext二重管理) を削除、sfxRef のレンダー中ref更新を useEffect に移行
+
+#### デッドコード削除
+
+- **merge2048**: 旧Audio関数群 58行を削除
+- **dodgeblitz**: 旧Audio helper 72行を削除
+- **memoryduel**: 未使用 `playTone` import を削除
+- **typingblitz**: 未使用 `playTone` import を削除
+
+#### ESLint修正 (33件 → 0件)
+
+- **typingblitz**: completeWord / missWord / handleChange の useCallback deps 不足を修正
+- **brickblast**: sfxRef / highScoreRef のレンダー中ref更新を useEffect に移行
+- **colorburst**: scoreRef パターン導入で React Compiler問題を解消
+- **dodgeblitz**: sfxRef のレンダー中ref更新を useEffect に移行
+- **numhunt**: handleTap の deps 不足を修正
+- **snakechaos**: sfxRef のレンダー中ref更新を useEffect に移行
+- **taptarget**: syncDisplay / endGame の deps 不足を修正
+- **memoryduel**: 2つの useEffect に playArpeggio / playSweep deps を追加
+- **simonecho**: handleButtonPress から不要な hiScore dep を削除
+
+#### CSS重複整理
+
+- 13ゲームの CSS Reset 重複を削除 (\*, body の theme.css と同等部分)
+- 6ゲームの `@keyframes shake` を `game-shake` にリネーム (theme.css との名前衝突解消)
+- 4ゲームの `@keyframes float-up` を `game-float-up` にリネーム
+- 1ゲームの `@keyframes pulse` を `game-pulse` にリネーム
+- numhunt / typingblitz の :root から theme.css と同値の `--danger` / `--success` を削除
+
+#### useHighScore 展開
+
+- **colorburst**: useHighScore("colorburst") 導入、gameover画面にBEST表示追加
+- **typingblitz**: useHighScore("typingblitz") 導入、gameover画面にBEST表示追加
+- **brickblast**: useHighScore("brickblast") 導入、Canvas内にBEST表示追加
+- **gravityfour**: localStorage直接操作を useHighScore("gravityfour") に置換、最長連勝記録を管理
+
+### 最終結果
+
+- TSC: エラー 0
+- ESLint: エラー 0、警告 0 (33件 → 0件)
+- Vite build: 603ms 成功
+- 全14ゲーム + portal 正常
+
+### 残タスク
+
+- useParticles / ParticleLayer / ScorePopup の移行 (Canvas系ゲームは不可、DOM系5ゲームは検討可) → Phase 2以降
+
+---
+
 ## 2026-02-28
 
 ### 作業ログ
@@ -31,14 +147,18 @@
   - ビルド623ms・TSCエラー0で確認済み
 
 - [完了] 単一Vite SSGプロジェクトへの完全統合 → 担当: platform-architect
-  - Astro portal を廃止 → plugins/portal-ssg.ts (Vite SSGプラグイン) に移行
-  - ポータルHTML/sitemap.xml/\_headers/\_redirects をビルド時自動生成
+  - Astro portal を廃止 → plugins/portal-ssg.ts (Vite SSGプラグイン) に一旦移行
   - portal/src/data/games.json → src/portal/data/games.json に移動
   - portal/public/ → public/ に移動(thumbnails, manifest, sw.js)
   - portal/ ディレクトリ・packages/ ディレクトリ・turbo.json 全削除
-  - scripts/build-all.sh 廃止 → 単一 `npm run build` (= tsc -b && vite build) に統一
   - workspaces 削除・package.json に "type": "module" 追加
-  - ビルド618ms・TSCエラー0・ESLintエラー0で確認済み
+- [完了] SSGプラグイン廃止 → ポータルLP を React SPA + Viteエントリに統合 → 担当: platform-architect
+  - plugins/portal-ssg.ts (357行) を削除
+  - ポータルLPを src/portal/App.tsx + App.css + main.tsx としてReactコンポーネント化
+  - index.html を本番LP用HTMLエントリに書き換え、vite.config.ts のinputに追加
+  - sitemap.xml + \_redirects は scripts/prebuild.mjs (30行) で games.json から生成
+  - \_headers は public/ に静的配置
+  - build: `node scripts/prebuild.mjs && tsc -b && vite build` → 598ms・TSCエラー0
 - [完了] 全ドキュメント・agent・prompt・workflowの新アーキテクチャ対応 → 担当: agent-editor
   - .github/copilot-instructions.md 全面書き換え
   - 10エージェント (.github/agents/\*.agent.md) 更新
@@ -49,9 +169,10 @@
 ### 今日の成果
 
 - brickblast・molemania の2本のゲームのバグを修正
-- 単一Vite SSGプロジェクトに完全統合(Astro/Turbo/workspaces全廃止)
+- 単一Viteプロジェクトに完全統合(Astro/Turbo/workspaces/SSGプラグイン全廃止)
+- ポータルLPをReact SPA化してViteマルチエントリに直接統合
 - 全ドキュメント・エージェント設定・ワークフローを新アーキテクチャに更新
-- ビルド618ms、TSCエラー0、ESLintエラー0
+- ビルド598ms、TSCエラー0、ESLintエラー0
 
 ### 明日やること
 

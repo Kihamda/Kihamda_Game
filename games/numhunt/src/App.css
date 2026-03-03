@@ -1,18 +1,7 @@
-/* ── Reset ────────────────────────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 /* ── Variables ───────────────────────────────────────────────────────────── */
 :root {
   --accent: #5c6ef8;
   --accent-dark: #3d4fcf;
-  --danger: #ef4444;
-  --success: #22c55e;
   --text: #1a1a2e;
   --muted: #6b7280;
   --surface: #ffffff;
@@ -27,7 +16,11 @@ html,
 body {
   height: 100%;
   background: var(--bg);
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
   color: var(--text);
 }
 
@@ -179,12 +172,21 @@ body {
 .new-record {
   font-size: clamp(1rem, 4vw, 1.4rem);
   font-weight: 900;
-  background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #c77dff, #ff6b6b);
+  background: linear-gradient(
+    90deg,
+    #ff6b6b,
+    #ffd93d,
+    #6bcb77,
+    #4d96ff,
+    #c77dff,
+    #ff6b6b
+  );
   background-size: 300% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: popIn 0.4s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+  animation:
+    popIn 0.4s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both,
     rainbowScroll 2s linear infinite;
 }
 
@@ -208,7 +210,9 @@ body {
   letter-spacing: 0.04em;
   cursor: pointer;
   box-shadow: var(--shadow);
-  transition: transform 0.12s, box-shadow 0.12s;
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s;
 }
 
 .start-btn:hover {
@@ -287,7 +291,11 @@ body {
   color: var(--text);
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: background 0.12s, border-color 0.12s, transform 0.1s, opacity 0.1s;
+  transition:
+    background 0.12s,
+    border-color 0.12s,
+    transform 0.1s,
+    opacity 0.1s;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -321,7 +329,7 @@ body {
 
 /* Wrong tap: shake + red tint */
 .cell--shake {
-  animation: shake 0.4s ease-out;
+  animation: game-shake 0.4s ease-out;
   background: #fff0f0 !important;
   border-color: var(--danger) !important;
   color: var(--danger) !important;
@@ -382,7 +390,7 @@ body {
   }
 }
 
-@keyframes shake {
+@keyframes game-shake {
   0%,
   100% {
     transform: translateX(0);

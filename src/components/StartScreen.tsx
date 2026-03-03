@@ -40,7 +40,7 @@ const StartScreen = ({
   const normalizedSavedPlayerIndex = savedGameSettings
     ? Math.min(
         savedCurrentPlayerIndex,
-        Math.max(savedGameSettings.players.length - 1, 0)
+        Math.max(savedGameSettings.players.length - 1, 0),
       )
     : 0;
 
@@ -58,7 +58,7 @@ const StartScreen = ({
   const updateWinLength = (value: number) => {
     const max = Math.max(
       newGameSettings.board.width,
-      newGameSettings.board.height
+      newGameSettings.board.height,
     );
     const sanitized = Math.max(3, Math.min(max, value || 3));
     onNewGameSettingsChange({
@@ -161,7 +161,7 @@ const StartScreen = ({
                 min="3"
                 max={Math.max(
                   newGameSettings.board.width,
-                  newGameSettings.board.height
+                  newGameSettings.board.height,
                 )}
                 value={newGameSettings.winLength}
                 onChange={(e) => updateWinLength(parseInt(e.target.value, 10))}

@@ -31,7 +31,7 @@ Step 4: 以下の順でファイルを実装する:
 Step 5: ルートで npm run build を実行 (= tsc -b && vite build)
 Step 6: problems でエラーを確認し、すべて修正する (Step 5 に戻る)
 Step 7: src/portal/data/games.json に新エントリを追加する
-Step 8: 完了報告: 変更ファイル一覧 + 動作確認コマンド + CF Pages 自動デプロイの説明
+Step 8: 完了報告: 変更ファイル一覧 + 動作確認コマンド + FTPS で XServer Static へデプロイの説明
 ```
 
 ## ゲーム ID の命名規則

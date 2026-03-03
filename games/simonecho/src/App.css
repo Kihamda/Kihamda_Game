@@ -2,25 +2,19 @@
    Simon Echo — App.css
    ================================================ */
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 :root {
   --gap: 6px;
   --board-size: min(72vw, 72vh, 380px);
   --center-size: calc(var(--board-size) * 0.28);
 
-  --green-dark:  #144d14;
-  --green-lit:   #39ff14;
-  --red-dark:    #4d1414;
-  --red-lit:     #ff3939;
-  --blue-dark:   #14144d;
-  --blue-lit:    #4488ff;
+  --green-dark: #144d14;
+  --green-lit: #39ff14;
+  --red-dark: #4d1414;
+  --red-lit: #ff3939;
+  --blue-dark: #14144d;
+  --blue-lit: #4488ff;
   --yellow-dark: #4d4d14;
-  --yellow-lit:  #ffe833;
+  --yellow-lit: #ffe833;
 }
 
 body {
@@ -97,18 +91,23 @@ body {
 
 .ind-watch {
   color: #aaa;
-  animation: pulse 1s ease-in-out infinite;
+  animation: game-pulse 1s ease-in-out infinite;
 }
 
 .ind-turn {
   color: #ffdd44;
   font-weight: 700;
-  animation: pulse 0.6s ease-in-out infinite;
+  animation: game-pulse 0.6s ease-in-out infinite;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
+@keyframes game-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 
 /* ---- Board ---- */
@@ -167,10 +166,22 @@ body {
 }
 
 /* Round the outer corners to create the arc */
-.sector-green  { border-radius: 100% 0 0 0; background: var(--green-dark);  }
-.sector-red    { border-radius: 0 100% 0 0; background: var(--red-dark);    }
-.sector-yellow { border-radius: 0 0 0 100%; background: var(--yellow-dark); }
-.sector-blue   { border-radius: 0 0 100% 0; background: var(--blue-dark);   }
+.sector-green {
+  border-radius: 100% 0 0 0;
+  background: var(--green-dark);
+}
+.sector-red {
+  border-radius: 0 100% 0 0;
+  background: var(--red-dark);
+}
+.sector-yellow {
+  border-radius: 0 0 0 100%;
+  background: var(--yellow-dark);
+}
+.sector-blue {
+  border-radius: 0 0 100% 0;
+  background: var(--blue-dark);
+}
 
 /* --- Active (lit) state --- */
 .sector-green.active {
@@ -199,10 +210,18 @@ body {
 }
 
 /* hover highlight (only when not disabled) */
-.sector-green:not(:disabled):hover  { background: #1c6e1c; }
-.sector-red:not(:disabled):hover    { background: #6e1c1c; }
-.sector-yellow:not(:disabled):hover { background: #6e6e1c; }
-.sector-blue:not(:disabled):hover   { background: #1c1c6e; }
+.sector-green:not(:disabled):hover {
+  background: #1c6e1c;
+}
+.sector-red:not(:disabled):hover {
+  background: #6e1c1c;
+}
+.sector-yellow:not(:disabled):hover {
+  background: #6e6e1c;
+}
+.sector-blue:not(:disabled):hover {
+  background: #1c1c6e;
+}
 
 /* --- Error flash state --- */
 .sector.error {
@@ -210,8 +229,14 @@ body {
 }
 
 @keyframes sector-error-flash {
-  from { background: #330000; filter: none; }
-  to   { background: #ff2222; filter: brightness(1.3); }
+  from {
+    background: #330000;
+    filter: none;
+  }
+  to {
+    background: #ff2222;
+    filter: brightness(1.3);
+  }
 }
 
 /* --- Center circle --- */
@@ -245,7 +270,9 @@ body {
   transition: color 0.15s;
 }
 
-.center-btn:hover { color: #fff; }
+.center-btn:hover {
+  color: #fff;
+}
 
 .center-level {
   font-size: 1.4rem;
@@ -259,19 +286,44 @@ body {
   font-size: 1.6rem;
   font-weight: 700;
   pointer-events: none;
-  animation: float-up 0.8s ease forwards;
+  animation: game-float-up 0.8s ease forwards;
   z-index: 20;
 }
 
-.checkmark-green  { top: 20%; left: 20%; color: var(--green-lit); }
-.checkmark-red    { top: 20%; right: 20%; color: var(--red-lit); }
-.checkmark-yellow { bottom: 20%; left: 20%; color: var(--yellow-lit); }
-.checkmark-blue   { bottom: 20%; right: 20%; color: var(--blue-lit); }
+.checkmark-green {
+  top: 20%;
+  left: 20%;
+  color: var(--green-lit);
+}
+.checkmark-red {
+  top: 20%;
+  right: 20%;
+  color: var(--red-lit);
+}
+.checkmark-yellow {
+  bottom: 20%;
+  left: 20%;
+  color: var(--yellow-lit);
+}
+.checkmark-blue {
+  bottom: 20%;
+  right: 20%;
+  color: var(--blue-lit);
+}
 
-@keyframes float-up {
-  0%   { opacity: 1; transform: translateY(0) scale(1); }
-  60%  { opacity: 1; transform: translateY(-24px) scale(1.2); }
-  100% { opacity: 0; transform: translateY(-40px) scale(0.9); }
+@keyframes game-float-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-24px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.9);
+  }
 }
 
 /* ---- Level Clear Popup ---- */
@@ -295,29 +347,48 @@ body {
 }
 
 @keyframes ring-expand {
-  0%   { transform: scale(0.6); opacity: 1; }
-  100% { transform: scale(1.3); opacity: 0; }
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
 }
 
 .level-clear-text {
   font-size: 2.2rem;
   font-weight: 900;
   color: #ffe833;
-  text-shadow: 0 0 20px #ffe833, 0 0 40px rgba(255, 232, 51, 0.6);
-  animation: pop-in 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
-             fade-out 0.4s ease 0.7s forwards;
+  text-shadow:
+    0 0 20px #ffe833,
+    0 0 40px rgba(255, 232, 51, 0.6);
+  animation:
+    pop-in 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+    fade-out 0.4s ease 0.7s forwards;
   transform-origin: center;
   z-index: 1;
 }
 
 @keyframes pop-in {
-  0%   { transform: scale(0.4); opacity: 0; }
-  100% { transform: scale(1);   opacity: 1; }
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes fade-out {
-  0%   { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* ---- Game Over Banner ---- */
@@ -347,23 +418,44 @@ body {
   font-size: 1rem;
   font-weight: 700;
   color: #ffe833;
-  animation: pulse 0.8s ease-in-out infinite;
+  animation: game-pulse 0.8s ease-in-out infinite;
 }
 
 /* ---- Screen shake ---- */
 .shake {
-  animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  animation: game-shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97);
 }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%       { transform: translateX(-10px) rotate(-1deg); }
-  20%       { transform: translateX(10px) rotate(1deg); }
-  30%       { transform: translateX(-10px) rotate(-1deg); }
-  40%       { transform: translateX(10px) rotate(1deg); }
-  50%       { transform: translateX(-6px); }
-  60%       { transform: translateX(6px); }
-  70%       { transform: translateX(-3px); }
-  80%       { transform: translateX(3px); }
-  90%       { transform: translateX(-1px); }
+@keyframes game-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(-10px) rotate(-1deg);
+  }
+  20% {
+    transform: translateX(10px) rotate(1deg);
+  }
+  30% {
+    transform: translateX(-10px) rotate(-1deg);
+  }
+  40% {
+    transform: translateX(10px) rotate(1deg);
+  }
+  50% {
+    transform: translateX(-6px);
+  }
+  60% {
+    transform: translateX(6px);
+  }
+  70% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+  90% {
+    transform: translateX(-1px);
+  }
 }

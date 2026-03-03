@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
+import { useAudio, GameShell, useHighScore } from "../../../src/shared";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Phase = "title" | "playing" | "stageclear" | "gameover";
@@ -98,49 +99,6 @@ const POWER_LABEL: Record<Exclude<PowerType, "explosive">, string> = {
   paddle: "🔵 WIDE 8s",
   speed: "⚡ SLOW 6s",
 };
-
-// ─── Audio Helpers ────────────────────────────────────────────────────────────
-function tone(
-  ctx: AudioContext,
-  freq: number,
-  dur: number,
-  type: OscillatorType = "sine",
-  vol = 0.25,
-  delay = 0,
-) {
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
-  gain.gain.setValueAtTime(vol, ctx.currentTime + delay);
-  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + dur);
-  osc.start(ctx.currentTime + delay);
-  osc.stop(ctx.currentTime + delay + dur);
-}
-
-function playBlockBreak(ctx: AudioContext, hp: number) {
-  const freqs = [880, 660, 440] as const;
-  tone(ctx, freqs[3 - hp] ?? 440, 0.09, "square", 0.18);
-}
-
-function playPowerUp(ctx: AudioContext) {
-  [523, 659, 784, 1047].forEach((f, i) =>
-    tone(ctx, f, 0.12, "sine", 0.22, i * 0.07),
-  );
-}
-
-function playMiss(ctx: AudioContext) {
-  tone(ctx, 180, 0.18, "sawtooth", 0.35);
-  tone(ctx, 90, 0.4, "sawtooth", 0.28, 0.15);
-}
-
-function playStageClear(ctx: AudioContext) {
-  [523, 659, 784, 1047, 1319].forEach((f, i) =>
-    tone(ctx, f, 0.18, "sine", 0.28, i * 0.09),
-  );
-}
 
 // ─── Game Helpers ─────────────────────────────────────────────────────────────
 const BLOCK_COLORS: Record<number, string> = {
@@ -262,7 +220,21 @@ const App = () => {
     explosiveCharged: false,
     lastTime: 0,
   });
-  const audioRef = useRef<AudioContext | null>(null);
+  const {
+    playTone: sharedPlayTone,
+    playArpeggio,
+    playMiss: sharedPlayMiss,
+  } = useAudio();
+  // Bridge hook callbacks into the imperative game loop via refs
+  const { best: bestScore, update: updateBest } = useHighScore("brickblast");
+  const sfxRef = useRef({ sharedPlayTone, playArpeggio, sharedPlayMiss });
+  useEffect(() => {
+    sfxRef.current = { sharedPlayTone, playArpeggio, sharedPlayMiss };
+  }, [sharedPlayTone, playArpeggio, sharedPlayMiss]);
+  const highScoreRef = useRef({ bestScore, updateBest });
+  useEffect(() => {
+    highScoreRef.current = { bestScore, updateBest };
+  }, [bestScore, updateBest]);
   const rafRef = useRef<number>(0);
   const popupIdRef = useRef(0);
 
@@ -286,9 +258,6 @@ const App = () => {
       gs.mouseX = e.touches[0]!.clientX - rect.left;
     }
     function onPointerDown() {
-      if (!audioRef.current) {
-        audioRef.current = new AudioContext();
-      }
       if (gs.phase === "title") {
         startGame();
       } else if (gs.phase === "playing" && gs.ballAttached) {
@@ -385,7 +354,7 @@ const App = () => {
     }
 
     function destroyBlock(block: Block, ball: Ball) {
-      const audio = audioRef.current;
+      const sfx = sfxRef.current;
 
       if (ball.explosive) {
         // 3×3 area explosion
@@ -403,7 +372,8 @@ const App = () => {
             gs.score += b.hp;
             spawnParticles(gs.particles, b.x, b.y, b.w, b.h, blockColor(b.hp));
             maybeDrop(gs.droppingPowers, b.x + b.w / 2, b.y + b.h);
-            if (audio) playBlockBreak(audio, b.hp);
+            const freqs = [880, 660, 440] as const;
+            sfx.sharedPlayTone(freqs[3 - b.hp] ?? 440, 0.09, "square", 0.18);
           }
         });
         gs.blocks = gs.blocks.filter((b) => {
@@ -423,7 +393,13 @@ const App = () => {
         addPopup(block.x + block.w / 2, block.y, "💥 BLAST!", true);
       } else {
         block.hp--;
-        if (audio) playBlockBreak(audio, Math.max(block.hp, 1));
+        const freqs = [880, 660, 440] as const;
+        sfx.sharedPlayTone(
+          freqs[3 - Math.max(block.hp, 1)] ?? 440,
+          0.09,
+          "square",
+          0.18,
+        );
         if (block.hp <= 0) {
           gs.score += block.maxHp;
           spawnParticles(
@@ -557,10 +533,11 @@ const App = () => {
         gs.lives--;
         gs.combo = 0;
         gs.comboTimer = 0;
-        if (audioRef.current) playMiss(audioRef.current);
+        sfxRef.current.sharedPlayMiss();
         if (gs.lives <= 0) {
           gs.phase = "gameover";
           gs.stageDelay = 1.5;
+          highScoreRef.current.updateBest(gs.score);
         } else {
           gs.ballAttached = true;
         }
@@ -613,7 +590,13 @@ const App = () => {
       if (gs.blocks.length === 0 && !gs.ballAttached) {
         gs.phase = "stageclear";
         gs.stageDelay = 2;
-        if (audioRef.current) playStageClear(audioRef.current);
+        sfxRef.current.playArpeggio(
+          [523, 659, 784, 1047, 1319],
+          0.18,
+          "sine",
+          0.28,
+          0.09,
+        );
         setActivePowerBadges([...gs.activePowers]);
       }
 
@@ -627,7 +610,13 @@ const App = () => {
     }
 
     function applyPower(type: PowerType) {
-      if (audioRef.current) playPowerUp(audioRef.current);
+      sfxRef.current.playArpeggio(
+        [523, 659, 784, 1047],
+        0.12,
+        "sine",
+        0.22,
+        0.07,
+      );
       if (type === "explosive") {
         gs.explosiveCharged = true;
         gs.balls.forEach((b) => (b.explosive = true));
@@ -892,6 +881,13 @@ const App = () => {
         ctx.font = "15px monospace";
         ctx.fillText("クリック / タップで続ける", CW / 2, CH / 2 + 70);
       }
+      ctx.fillStyle = "rgba(255,255,255,0.4)";
+      ctx.font = "16px 'Segoe UI', system-ui, sans-serif";
+      ctx.fillText(
+        `BEST: ${highScoreRef.current.bestScore}`,
+        CW / 2,
+        CH / 2 + 50,
+      );
     }
 
     function roundRect(
@@ -935,31 +931,33 @@ const App = () => {
   }, [setPopups, setActivePowerBadges]);
 
   return (
-    <div className="game-wrapper">
-      <div className="game-container">
-        <canvas ref={canvasRef} width={CW} height={CH} />
-        <div className="popup-layer" aria-hidden="true">
-          {popups.map((p) => (
-            <div
-              key={p.id}
-              className={`score-popup${p.isCombo ? " combo" : ""}`}
-              style={{ left: p.x, top: p.y }}
-            >
-              {p.text}
-            </div>
-          ))}
-        </div>
-        {activePowerBadges.length > 0 && (
-          <div className="power-indicator" aria-live="polite">
-            {activePowerBadges.map((ap) => (
-              <div key={ap.type} className="power-badge">
-                {POWER_LABEL[ap.type]}
+    <GameShell title="Brick Blast">
+      <div className="game-wrapper">
+        <div className="game-container">
+          <canvas ref={canvasRef} width={CW} height={CH} />
+          <div className="popup-layer" aria-hidden="true">
+            {popups.map((p) => (
+              <div
+                key={p.id}
+                className={`score-popup${p.isCombo ? " combo" : ""}`}
+                style={{ left: p.x, top: p.y }}
+              >
+                {p.text}
               </div>
             ))}
           </div>
-        )}
+          {activePowerBadges.length > 0 && (
+            <div className="power-indicator" aria-live="polite">
+              {activePowerBadges.map((ap) => (
+                <div key={ap.type} className="power-badge">
+                  {POWER_LABEL[ap.type]}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </GameShell>
   );
 };
 

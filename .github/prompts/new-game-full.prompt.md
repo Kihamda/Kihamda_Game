@@ -114,7 +114,7 @@ import { GameShell, useAudio } from "../../../src/shared";
   git push origin main
   # → GitHub Actions (build-and-deploy.yml) が自動実行
   # → npm run build で dist/ に一括ビルド
-  # → Cloudflare Pages に自動デプロイ
+  # → FTPS で XServer Static に自動デプロイ
   # → URL: https://game.kihamda.net/games/[game-id]/
 
 【人間がやること】

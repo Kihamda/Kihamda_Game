@@ -32,7 +32,7 @@ function App() {
   const goTimeRef = useRef<number | null>(null);
   const prevBestRef = useRef<number | null>(null);
 
-  const { playTone, getAudioCtx } = useAudio();
+  const { playTone, playFanfare } = useAudio();
   const { particles, burst } = useParticles();
 
   const [phase, setPhase] = useState<Phase>("ready");
@@ -53,29 +53,6 @@ function App() {
       }
     };
   }, []);
-
-  // ---- Audio helpers ----
-  const playFanfare = () => {
-    try {
-      const ctx = getAudioCtx();
-      const notes = [523, 659, 784];
-      notes.forEach((freq, i) => {
-        const osc = ctx.createOscillator();
-        const gainNode = ctx.createGain();
-        osc.connect(gainNode);
-        gainNode.connect(ctx.destination);
-        osc.type = "triangle";
-        const t0 = ctx.currentTime + i * 0.13;
-        osc.frequency.setValueAtTime(freq, t0);
-        gainNode.gain.setValueAtTime(0.3, t0);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, t0 + 0.15);
-        osc.start(t0);
-        osc.stop(t0 + 0.15);
-      });
-    } catch {
-      /* audio unavailable */
-    }
-  };
 
   // ---- Particle helpers ----
   const spawnParticles = (count: number, mega = false) => {

@@ -159,5 +159,5 @@ jobs:
             echo "**ゲーム**: ${{ inputs.game_title }}" >> $GITHUB_STEP_SUMMARY
             echo "**URL**: ${{ inputs.game_url }}" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "> main への push 後、build-and-deploy.yml が Cloudflare Pages に自動デプロイします" >> $GITHUB_STEP_SUMMARY
+            echo "> main への push 後、build-and-deploy.yml が FTPS で XServer Static に自動デプロイします" >> $GITHUB_STEP_SUMMARY
           fi

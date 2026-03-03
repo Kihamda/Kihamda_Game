@@ -17,7 +17,7 @@ PWA はプラットフォーム全体で単一化済み。
 | `public/sw.js`                | Service Worker (手書き・静的配信)                  |
 
 - `public/` のファイルは `npm run build` 時に `dist/` にそのままコピーされる
-- Cloudflare Pages が `dist/` を配信するため、追加設定不要
+- XServer Static が `dist/` を配信するため、追加設定不要
 
 ## manifest.webmanifest
 

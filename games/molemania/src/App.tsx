@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
+import { useAudio, useHighScore, GameShell } from "../../../src/shared";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type MoleType = "normal" | "golden" | "bomb";
@@ -28,7 +29,6 @@ interface Particle {
 // ─── Constants ────────────────────────────────────────────────────────────────
 const HOLE_COUNT = 9;
 const GAME_DURATION = 60;
-const HIGH_SCORE_KEY = "molemania_highscore";
 const BASE_SPAWN_INTERVAL = 800;
 
 const MOLE_EMOJI: Record<MoleType, string> = {
@@ -63,82 +63,12 @@ function makeMoles(): MoleData[] {
   }));
 }
 
-// ─── Web Audio ────────────────────────────────────────────────────────────────
-let audioCtx: AudioContext | null = null;
-
-function getAudioCtx(): AudioContext {
-  if (!audioCtx) audioCtx = new AudioContext();
-  return audioCtx;
-}
-
-function playNormalHit(): void {
-  const ctx = getAudioCtx();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = "square";
-  osc.frequency.setValueAtTime(180, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.12);
-  gain.gain.setValueAtTime(0.28, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-  osc.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + 0.15);
-}
-
-function playGoldenHit(): void {
-  const ctx = getAudioCtx();
-  [880, 1320].forEach((freq, i) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.type = "sine";
-    const t = ctx.currentTime + i * 0.09;
-    osc.frequency.setValueAtTime(freq, t);
-    gain.gain.setValueAtTime(0.3, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
-    osc.start(t);
-    osc.stop(t + 0.18);
-  });
-}
-
-function playBombHit(): void {
-  const ctx = getAudioCtx();
-  const bufferSize = Math.ceil(ctx.sampleRate * 0.3);
-  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) {
-    data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
-  }
-  const src = ctx.createBufferSource();
-  src.buffer = buffer;
-  const gain = ctx.createGain();
-  src.connect(gain);
-  gain.connect(ctx.destination);
-  gain.gain.setValueAtTime(0.5, ctx.currentTime);
-  src.start(ctx.currentTime);
-}
-
-function playCombo(): void {
-  const ctx = getAudioCtx();
-  [523, 659, 784, 1047].forEach((freq, i) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.type = "sine";
-    const t = ctx.currentTime + i * 0.07;
-    osc.frequency.setValueAtTime(freq, t);
-    gain.gain.setValueAtTime(0.22, t);
-    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
-    osc.start(t);
-    osc.stop(t + 0.15);
-  });
-}
-
 // ─── Component ────────────────────────────────────────────────────────────────
 const App = () => {
+  const { playSweep, playArpeggio, playNoise, playFanfare } = useAudio();
+  const { best: highScore, update: updateHighScore } =
+    useHighScore("molemania");
+
   const [phase, setPhase] = useState<GamePhase>("idle");
   const [moles, setMoles] = useState<MoleData[]>(makeMoles());
   const [score, setScore] = useState(0);
@@ -148,10 +78,6 @@ const App = () => {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [shaking, setShaking] = useState(false);
   const [fever, setFever] = useState(false);
-  const [highScore, setHighScore] = useState<number>(() => {
-    const saved = localStorage.getItem(HIGH_SCORE_KEY);
-    return saved ? parseInt(saved, 10) : 0;
-  });
 
   // mutable refs that don't trigger re-renders
   const popupIdRef = useRef(0);
@@ -181,12 +107,8 @@ const App = () => {
     setPhase("gameover");
     setMoles(makeMoles());
     const finalScore = scoreRef.current;
-    setHighScore((prev) => {
-      const next = Math.max(prev, finalScore);
-      localStorage.setItem(HIGH_SCORE_KEY, String(next));
-      return next;
-    });
-  }, [clearAllTimers]);
+    updateHighScore(finalScore);
+  }, [clearAllTimers, updateHighScore]);
 
   // ── Spawn logic ──────────────────────────────────────────────────────────
   const doSpawn = useCallback(() => {
@@ -298,19 +220,19 @@ const App = () => {
         setCombo(0);
         setShaking(true);
         setTimeout(() => setShaking(false), 500);
-        playBombHit();
+        playNoise(0.3, 0.5);
       } else {
         comboRef.current += 1;
         const newCombo = comboRef.current;
         setCombo(newCombo);
         if (newCombo >= 5 && newCombo % 5 === 0) {
           setFever(true);
-          playCombo();
+          playFanfare();
           setTimeout(() => setFever(false), 900);
         } else if (hitType === "golden") {
-          playGoldenHit();
+          playArpeggio([880, 1320], 0.18, "sine", 0.3, 0.09);
         } else {
-          playNormalHit();
+          playSweep(180, 80, 0.15, "square", 0.28);
         }
       }
 
@@ -333,7 +255,7 @@ const App = () => {
         );
       }, 280);
     },
-    [addParticles, addPopup],
+    [addParticles, addPopup, playSweep, playArpeggio, playNoise, playFanfare],
   );
 
   // ── Start game ───────────────────────────────────────────────────────────
@@ -378,113 +300,115 @@ const App = () => {
     timePercent > 50 ? "#4ade80" : timePercent > 25 ? "#facc15" : "#f87171";
 
   return (
-    <div className={`app${shaking ? " shake" : ""}`}>
-      {/* ── Idle screen ── */}
-      {phase === "idle" && (
-        <div className="screen">
-          <h1 className="title">🐹 Mole Mania</h1>
-          <p className="desc">叩いて叩いて叩きまくれ</p>
-          {highScore > 0 && <p className="hi">Best: {highScore}</p>}
-          <button className="btn-start" onClick={startGame}>
-            START
-          </button>
-        </div>
-      )}
-
-      {/* ── Game over screen ── */}
-      {phase === "gameover" && (
-        <div className="screen">
-          <h1 className="title">Time Up!</h1>
-          <p className="final-score">{score}</p>
-          <p className="score-unit">点</p>
-          {score > 0 && score >= highScore && (
-            <p className="new-record">NEW RECORD!</p>
-          )}
-          <p className="hi">Best: {highScore}</p>
-          <button className="btn-start" onClick={startGame}>
-            RETRY
-          </button>
-        </div>
-      )}
-
-      {/* ── Playing ── */}
-      {phase === "playing" && (
-        <div className="game-wrap">
-          {/* HUD */}
-          <div className="hud">
-            <div className="hud-block">
-              <span className="hud-label">SCORE</span>
-              <span className="hud-value">{score}</span>
-            </div>
-
-            <div className="hud-center">
-              {combo > 1 && (
-                <div className={`combo${fever ? " fever" : ""}`}>
-                  {fever ? "🔥 FEVER!" : `x${combo} COMBO`}
-                </div>
-              )}
-            </div>
-
-            <div className="hud-block">
-              <span className="hud-label">TIME</span>
-              <span className="hud-value">{timeLeft}</span>
-            </div>
+    <GameShell title="Mole Mania">
+      <div className={`app${shaking ? " shake" : ""}`}>
+        {/* ── Idle screen ── */}
+        {phase === "idle" && (
+          <div className="screen">
+            <h1 className="title">🐹 Mole Mania</h1>
+            <p className="desc">叩いて叩いて叩きまくれ</p>
+            {highScore > 0 && <p className="hi">Best: {highScore}</p>}
+            <button className="btn-start" onClick={startGame}>
+              START
+            </button>
           </div>
+        )}
 
-          {/* Time bar */}
-          <div className="time-bar-track">
-            <div
-              className="time-bar-fill"
-              style={{ width: `${timePercent}%`, background: timerColor }}
-            />
+        {/* ── Game over screen ── */}
+        {phase === "gameover" && (
+          <div className="screen">
+            <h1 className="title">Time Up!</h1>
+            <p className="final-score">{score}</p>
+            <p className="score-unit">点</p>
+            {score > 0 && score >= highScore && (
+              <p className="new-record">NEW RECORD!</p>
+            )}
+            <p className="hi">Best: {highScore}</p>
+            <button className="btn-start" onClick={startGame}>
+              RETRY
+            </button>
           </div>
+        )}
 
-          {/* Grid */}
-          <div className="grid">
-            {moles.map((mole, i) => (
-              <div key={i} className="hole-wrap">
-                <div className="hole" />
-                {mole.active && (
-                  <div
-                    className={`mole mole-${mole.type}${mole.hitAnim ? " squish" : " rising"}`}
-                    onClick={(e) => !mole.hitAnim && whackMole(i, e)}
-                    onTouchStart={(e) => !mole.hitAnim && whackMole(i, e)}
-                  >
-                    {MOLE_EMOJI[mole.type]}
+        {/* ── Playing ── */}
+        {phase === "playing" && (
+          <div className="game-wrap">
+            {/* HUD */}
+            <div className="hud">
+              <div className="hud-block">
+                <span className="hud-label">SCORE</span>
+                <span className="hud-value">{score}</span>
+              </div>
+
+              <div className="hud-center">
+                {combo > 1 && (
+                  <div className={`combo${fever ? " fever" : ""}`}>
+                    {fever ? "🔥 FEVER!" : `x${combo} COMBO`}
                   </div>
                 )}
               </div>
+
+              <div className="hud-block">
+                <span className="hud-label">TIME</span>
+                <span className="hud-value">{timeLeft}</span>
+              </div>
+            </div>
+
+            {/* Time bar */}
+            <div className="time-bar-track">
+              <div
+                className="time-bar-fill"
+                style={{ width: `${timePercent}%`, background: timerColor }}
+              />
+            </div>
+
+            {/* Grid */}
+            <div className="grid">
+              {moles.map((mole, i) => (
+                <div key={i} className="hole-wrap">
+                  <div className="hole" />
+                  {mole.active && (
+                    <div
+                      className={`mole mole-${mole.type}${mole.hitAnim ? " squish" : " rising"}`}
+                      onClick={(e) => !mole.hitAnim && whackMole(i, e)}
+                      onTouchStart={(e) => !mole.hitAnim && whackMole(i, e)}
+                    >
+                      {MOLE_EMOJI[mole.type]}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── Particles ── */}
+        {particles.map((p) => (
+          <div
+            key={p.id}
+            className="particle-root"
+            style={{ left: p.x, top: p.y }}
+          >
+            {(["✨", "⭐", "✨", "⭐"] as const).map((s, i) => (
+              <span key={i} className={`particle p${i}`}>
+                {s}
+              </span>
             ))}
           </div>
-        </div>
-      )}
+        ))}
 
-      {/* ── Particles ── */}
-      {particles.map((p) => (
-        <div
-          key={p.id}
-          className="particle-root"
-          style={{ left: p.x, top: p.y }}
-        >
-          {(["✨", "⭐", "✨", "⭐"] as const).map((s, i) => (
-            <span key={i} className={`particle p${i}`}>
-              {s}
-            </span>
-          ))}
-        </div>
-      ))}
-
-      {/* ── Score popups ── */}
-      {popups.map((pop) => (
-        <div
-          key={pop.id}
-          className={`score-popup${pop.isBomb ? " popup-bomb" : pop.value >= 30 ? " popup-gold" : ""}`}
-          style={{ left: pop.x, top: pop.y }}
-        >
-          {pop.value > 0 ? `+${pop.value}` : pop.value}
-        </div>
-      ))}
-    </div>
+        {/* ── Score popups ── */}
+        {popups.map((pop) => (
+          <div
+            key={pop.id}
+            className={`score-popup${pop.isBomb ? " popup-bomb" : pop.value >= 30 ? " popup-gold" : ""}`}
+            style={{ left: pop.x, top: pop.y }}
+          >
+            {pop.value > 0 ? `+${pop.value}` : pop.value}
+          </div>
+        ))}
+      </div>
+    </GameShell>
   );
 };
 

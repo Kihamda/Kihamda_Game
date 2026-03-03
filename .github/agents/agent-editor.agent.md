@@ -1,4 +1,3 @@
-````chatagent
 ---
 description: "エージェント定義・プロンプト・copilot-instructions.md の作成・修正・整合性チェックを自律実行する。プロジェクトのAI設定基盤の管理者。"
 tools:
@@ -18,11 +17,11 @@ tools:
 
 ## 管轄ファイル
 
-| パス                                | 種別             | 説明                           |
-| ----------------------------------- | ---------------- | ------------------------------ |
-| `.github/agents/*.agent.md`         | エージェント定義 | 各サブエージェントの行動規範   |
-| `.github/prompts/*.prompt.md`       | プロンプト       | 再利用可能なタスクテンプレート |
-| `.github/copilot-instructions.md`   | プロジェクト設定 | Copilot全体への基本指示        |
+| パス                              | 種別             | 説明                           |
+| --------------------------------- | ---------------- | ------------------------------ |
+| `.github/agents/*.agent.md`       | エージェント定義 | 各サブエージェントの行動規範   |
+| `.github/prompts/*.prompt.md`     | プロンプト       | 再利用可能なタスクテンプレート |
+| `.github/copilot-instructions.md` | プロジェクト設定 | Copilot全体への基本指示        |
 
 ## 行動原則
 
@@ -80,17 +79,18 @@ tools:
 ### エージェント定義 (`.agent.md`)
 
 ```markdown
-\`\`\`chatagent
----
+## \`\`\`chatagent
+
 description: "一行で役割を説明"
 tools: ["tool1", "tool2"]
+
 ---
 
 # エージェント名 — サブタイトル
 
 本文...
 \`\`\`
-````
+```
 
 ### プロンプト (`.prompt.md`)
 
@@ -118,7 +118,3 @@ tools: ["tool1", "tool2"]
 - オーケストレーター: `.github/agents/consultant.agent.md`
 - 全エージェント: `.github/agents/`
 - 全プロンプト: `.github/prompts/`
-
-```
-
-```

@@ -1,6 +1,6 @@
 # extreme_tik_tok_toe platform
 
-ブラウザゲームプラットフォームのモノレポ。全ゲームを1リポジトリで管理し、Cloudflare Pages にデプロイする。
+ブラウザゲームプラットフォーム。全ゲームを単一リポジトリで管理し、XServer Static にデプロイする。
 
 **Portal**: https://game.kihamda.net/
 

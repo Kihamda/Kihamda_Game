@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
+import { useAudio, useHighScore, GameShell } from "../../../src/shared";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -108,77 +109,6 @@ function bulletsPerSecond(wave: number): number {
   return Math.min(3 + (wave - 1) * (17 / 9), 20);
 }
 
-// ─── Audio helpers (module-level, no React deps) ─────────────────────────────
-
-function getOrCreateAudio(ref: { current: AudioContext | null }): AudioContext | null {
-  if (!ref.current) {
-    try {
-      ref.current = new AudioContext();
-    } catch {
-      return null;
-    }
-  }
-  const ctx = ref.current;
-  if (ctx.state === "suspended") void ctx.resume();
-  return ctx;
-}
-
-function playNearMiss(ctx: AudioContext): void {
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(900, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(350, ctx.currentTime + 0.12);
-  gain.gain.setValueAtTime(0.25, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
-  osc.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + 0.12);
-}
-
-function playBomb(ctx: AudioContext): void {
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = "sawtooth";
-  osc.frequency.setValueAtTime(180, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(25, ctx.currentTime + 0.45);
-  gain.gain.setValueAtTime(0.5, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45);
-  osc.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + 0.45);
-}
-
-function playGameOver(ctx: AudioContext): void {
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(440, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.9);
-  gain.gain.setValueAtTime(0.4, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.9);
-  osc.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + 0.9);
-}
-
-function playWaveUp(ctx: AudioContext): void {
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = "square";
-  osc.frequency.setValueAtTime(280, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(700, ctx.currentTime + 0.18);
-  gain.gain.setValueAtTime(0.3, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
-  osc.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + 0.22);
-}
-
 // ─── Game state factory ───────────────────────────────────────────────────────
 
 function createGameState(w: number, h: number): GameState {
@@ -225,22 +155,58 @@ function spawnBullet(gs: GameState, w: number, h: number): void {
   const slow = gs.slowMs > 0 ? 0.35 : 1;
   const speed = speedBase * slow;
   const side = Math.floor(Math.random() * 4);
-  let x = 0, y = 0, vx = 0, vy = 0;
+  let x = 0,
+    y = 0,
+    vx = 0,
+    vy = 0;
   const spread = (Math.random() - 0.5) * 1.2;
   switch (side) {
-    case 0: x = Math.random() * w; y = -12; vx = spread * speed; vy = speed; break;
-    case 1: x = w + 12; y = Math.random() * h; vx = -speed; vy = spread * speed; break;
-    case 2: x = Math.random() * w; y = h + 12; vx = spread * speed; vy = -speed; break;
-    default: x = -12; y = Math.random() * h; vx = speed; vy = spread * speed; break;
+    case 0:
+      x = Math.random() * w;
+      y = -12;
+      vx = spread * speed;
+      vy = speed;
+      break;
+    case 1:
+      x = w + 12;
+      y = Math.random() * h;
+      vx = -speed;
+      vy = spread * speed;
+      break;
+    case 2:
+      x = Math.random() * w;
+      y = h + 12;
+      vx = spread * speed;
+      vy = -speed;
+      break;
+    default:
+      x = -12;
+      y = Math.random() * h;
+      vx = speed;
+      vy = spread * speed;
+      break;
   }
   const homingChance = Math.min(0.1 + gs.wave * 0.04, 0.4);
   const type: BulletType = Math.random() < homingChance ? "homing" : "normal";
-  gs.bullets.push({ id: gs.nextId++, x, y, vx, vy, radius: BULLET_RADIUS, type });
+  gs.bullets.push({
+    id: gs.nextId++,
+    x,
+    y,
+    vx,
+    vy,
+    radius: BULLET_RADIUS,
+    type,
+  });
 }
 
 function spawnLaser(gs: GameState, h: number): void {
   const y = 50 + Math.random() * (h - 100);
-  gs.lasers.push({ id: gs.nextId++, y, phase: "warning", timer: LASER_WARNING_MS });
+  gs.lasers.push({
+    id: gs.nextId++,
+    y,
+    phase: "warning",
+    timer: LASER_WARNING_MS,
+  });
 }
 
 function spawnItem(gs: GameState, w: number, h: number): void {
@@ -263,7 +229,8 @@ function spawnExplosion(gs: GameState, x: number, y: number): void {
     const speed = 3 + Math.random() * 6;
     gs.particles.push({
       id: gs.nextId++,
-      x, y,
+      x,
+      y,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       radius: 3 + Math.random() * 7,
@@ -285,9 +252,14 @@ function addFloat(
 ): void {
   gs.floatTexts.push({
     id: gs.nextId++,
-    x, y, text, color,
-    alpha: 1, vy: -1.5,
-    life: 900, maxLife: 900,
+    x,
+    y,
+    text,
+    color,
+    alpha: 1,
+    vy: -1.5,
+    life: 900,
+    maxLife: 900,
     fontSize,
   });
 }
@@ -380,7 +352,10 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
       b.vy += (dy / d) * str;
       const spd = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
       const cap = 3 + gs.wave * 0.35;
-      if (spd > cap) { b.vx = (b.vx / spd) * cap; b.vy = (b.vy / spd) * cap; }
+      if (spd > cap) {
+        b.vx = (b.vx / spd) * cap;
+        b.vy = (b.vy / spd) * cap;
+      }
     }
 
     // Cull off-screen
@@ -411,7 +386,7 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
       }
     }
   }
-  gs.bullets = gs.bullets.filter(b => !deadBullets.has(b.id));
+  gs.bullets = gs.bullets.filter((b) => !deadBullets.has(b.id));
 
   // ── Update lasers ──
   const deadLasers = new Set<number>();
@@ -436,12 +411,15 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
       }
     }
   }
-  gs.lasers = gs.lasers.filter(l => !deadLasers.has(l.id));
+  gs.lasers = gs.lasers.filter((l) => !deadLasers.has(l.id));
 
   // ── Update items ──
-  gs.items = gs.items.filter(item => {
+  gs.items = gs.items.filter((item) => {
     item.bobTimer += dt * 0.003;
-    if (dist2D(item.x, item.y, gs.playerX, gs.playerY) < item.radius + PLAYER_RADIUS) {
+    if (
+      dist2D(item.x, item.y, gs.playerX, gs.playerY) <
+      item.radius + PLAYER_RADIUS
+    ) {
       applyItem(gs, item, events);
       return false;
     }
@@ -480,7 +458,7 @@ function applyItem(gs: GameState, item: Item, events: GameEvent[]): void {
 
 function tickParticles(gs: GameState, dt: number): void {
   const f = dt / 16;
-  gs.particles = gs.particles.filter(p => {
+  gs.particles = gs.particles.filter((p) => {
     p.life -= dt;
     p.x += p.vx * f;
     p.y += p.vy * f;
@@ -492,7 +470,7 @@ function tickParticles(gs: GameState, dt: number): void {
 }
 
 function tickFloats(gs: GameState, dt: number): void {
-  gs.floatTexts = gs.floatTexts.filter(ft => {
+  gs.floatTexts = gs.floatTexts.filter((ft) => {
     ft.life -= dt;
     ft.y += ft.vy;
     ft.alpha = Math.max(0, ft.life / ft.maxLife);
@@ -515,7 +493,12 @@ function tickShake(gs: GameState, dt: number): void {
 
 // ─── Draw ────────────────────────────────────────────────────────────────────
 
-function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number): void {
+function draw(
+  ctx: CanvasRenderingContext2D,
+  gs: GameState,
+  w: number,
+  h: number,
+): void {
   ctx.save();
   ctx.translate(gs.shakeX, gs.shakeY);
 
@@ -557,7 +540,8 @@ function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number
       ctx.textBaseline = "middle";
       ctx.fillText("» LASER »", 10, l.y);
     } else {
-      const a = l.timer / LASER_ACTIVE_MS > 0.5 ? 1 : (l.timer / LASER_ACTIVE_MS) * 2;
+      const a =
+        l.timer / LASER_ACTIVE_MS > 0.5 ? 1 : (l.timer / LASER_ACTIVE_MS) * 2;
       ctx.strokeStyle = `rgba(100,220,255,${a})`;
       ctx.lineWidth = LASER_HALF_H * 2;
       ctx.shadowColor = "#4af";
@@ -588,7 +572,8 @@ function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number
     const bobY = Math.sin(item.bobTimer) * 4;
     ctx.save();
     ctx.translate(item.x, item.y + bobY);
-    const ringColor = item.type === "bomb" ? "#ff0" : item.type === "shield" ? "#4cf" : "#a0f";
+    const ringColor =
+      item.type === "bomb" ? "#ff0" : item.type === "shield" ? "#4cf" : "#a0f";
     ctx.shadowColor = ringColor;
     ctx.shadowBlur = 18;
     ctx.strokeStyle = ringColor;
@@ -600,7 +585,8 @@ function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number
     ctx.font = "16px serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    const icon = item.type === "bomb" ? "⭐" : item.type === "shield" ? "🛡" : "⏱";
+    const icon =
+      item.type === "bomb" ? "⭐" : item.type === "shield" ? "🛡" : "⏱";
     ctx.fillText(icon, 0, 1);
     ctx.restore();
   }
@@ -639,7 +625,13 @@ function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number
     ctx.shadowColor = "#4cf";
     ctx.shadowBlur = 14;
     ctx.beginPath();
-    ctx.arc(gs.playerX, gs.playerY, PLAYER_RADIUS + 8, -Math.PI / 2, -Math.PI / 2 + arc);
+    ctx.arc(
+      gs.playerX,
+      gs.playerY,
+      PLAYER_RADIUS + 8,
+      -Math.PI / 2,
+      -Math.PI / 2 + arc,
+    );
     ctx.stroke();
     ctx.shadowBlur = 0;
   }
@@ -685,7 +677,12 @@ function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number
   ctx.restore();
 }
 
-function drawHUD(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number): void {
+function drawHUD(
+  ctx: CanvasRenderingContext2D,
+  gs: GameState,
+  w: number,
+  h: number,
+): void {
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
   ctx.fillStyle = "rgba(255,255,255,0.9)";
@@ -749,13 +746,14 @@ const App = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [phase, setPhase] = useState<GamePhase>("waiting");
   const [finalScore, setFinalScore] = useState(0);
-  const [hiScore, setHiScore] = useState<number>(() => {
-    const v = localStorage.getItem("dodgeblitz_hi");
-    return v ? parseInt(v, 10) : 0;
-  });
+  const { best: hiScore, update: updateHiScore } = useHighScore("dodgeblitz");
 
   const gsRef = useRef<GameState | null>(null);
-  const audioCtxRef = useRef<AudioContext | null>(null);
+  const { playSweep, playMiss: sharedPlayMiss } = useAudio();
+  const sfxRef = useRef({ playSweep, sharedPlayMiss });
+  useEffect(() => {
+    sfxRef.current = { playSweep, sharedPlayMiss };
+  }, [playSweep, sharedPlayMiss]);
   const lastTsRef = useRef(0);
   const rafRef = useRef(0);
 
@@ -775,7 +773,10 @@ const App = () => {
   // Mouse / touch tracking
   useEffect(() => {
     const onMouse = (e: MouseEvent) => {
-      if (gsRef.current) { gsRef.current.cursorX = e.clientX; gsRef.current.cursorY = e.clientY; }
+      if (gsRef.current) {
+        gsRef.current.cursorX = e.clientX;
+        gsRef.current.cursorY = e.clientY;
+      }
     };
     const onTouch = (e: TouchEvent) => {
       if (gsRef.current && e.touches.length > 0) {
@@ -800,7 +801,8 @@ const App = () => {
     if (!ctx) return;
 
     const loop = (ts: number) => {
-      const dt = lastTsRef.current === 0 ? 16 : Math.min(ts - lastTsRef.current, 50);
+      const dt =
+        lastTsRef.current === 0 ? 16 : Math.min(ts - lastTsRef.current, 50);
       lastTsRef.current = ts;
 
       const gs = gsRef.current;
@@ -809,28 +811,22 @@ const App = () => {
       const events = update(gs, dt, canvas.width, canvas.height);
 
       for (const ev of events) {
-        const ac = getOrCreateAudio(audioCtxRef);
+        const sfx = sfxRef.current;
         switch (ev) {
           case "gameover":
-            if (ac) playGameOver(ac);
+            sfx.playSweep(440, 100, 0.9, "sine", 0.4);
             setFinalScore(gs.score);
-            setHiScore(prev => {
-              if (gs.score > prev) {
-                localStorage.setItem("dodgeblitz_hi", gs.score.toString());
-                return gs.score;
-              }
-              return prev;
-            });
+            updateHiScore(gs.score);
             setPhase("gameover");
             return;
           case "nearmiss":
-            if (ac) playNearMiss(ac);
+            sfx.playSweep(900, 350, 0.12, "sine", 0.25);
             break;
           case "bomb":
-            if (ac) playBomb(ac);
+            sfx.playSweep(180, 25, 0.45, "sawtooth", 0.5);
             break;
           case "waveup":
-            if (ac) playWaveUp(ac);
+            sfx.playSweep(280, 700, 0.22, "square", 0.3);
             break;
         }
       }
@@ -845,7 +841,7 @@ const App = () => {
       cancelAnimationFrame(rafRef.current);
       lastTsRef.current = 0;
     };
-  }, [phase]); // audioCtxRef/gsRef/hiScoreRef are stable refs; setters are stable
+  }, [phase, updateHiScore]);
 
   const startGame = () => {
     const canvas = canvasRef.current;
@@ -859,47 +855,52 @@ const App = () => {
   const finalSs = String(totalSec % 60).padStart(2, "0");
 
   return (
-    <div className="game-wrapper">
-      <canvas ref={canvasRef} />
+    <GameShell title="Dodge Blitz">
+      <div className="game-wrapper">
+        <canvas ref={canvasRef} />
 
-      {phase === "waiting" && (
-        <div className="overlay interactive">
-          <h1>DODGE BLITZ</h1>
-          <p className="subtitle">弾幕を掻い潜れ</p>
-          <button className="start-btn" onClick={startGame}>
-            START
-          </button>
-          <p className="how-to">
-            マウス / タッチ でプレイヤーを誘導
-            <br />
-            ⭐ボム &nbsp;&nbsp; 🛡シールド &nbsp;&nbsp; ⏱スロウ
-            <br />
-            🔴追尾弾 &nbsp;&nbsp; 💙レーザーに注意
-            <br />
-            <br />
-            BEST: {hiScore}
-          </p>
-        </div>
-      )}
+        {phase === "waiting" && (
+          <div className="overlay interactive">
+            <h1>DODGE BLITZ</h1>
+            <p className="subtitle">弾幕を掻い潜れ</p>
+            <button className="start-btn" onClick={startGame}>
+              START
+            </button>
+            <p className="how-to">
+              マウス / タッチ でプレイヤーを誘導
+              <br />
+              ⭐ボム &nbsp;&nbsp; 🛡シールド &nbsp;&nbsp; ⏱スロウ
+              <br />
+              🔴追尾弾 &nbsp;&nbsp; 💙レーザーに注意
+              <br />
+              <br />
+              BEST: {hiScore}
+            </p>
+          </div>
+        )}
 
-      {phase === "gameover" && (
-        <div className="overlay interactive">
-          <h1>GAME OVER</h1>
-          <p className="score-display">
-            SCORE: <span>{finalScore}</span>
-          </p>
-          <p className="score-display" style={{ fontSize: "1rem" }}>
-            TIME: <span>{finalMm}:{finalSs}</span>
-          </p>
-          <p className="hi-score">
-            BEST: <span>{hiScore}</span>
-          </p>
-          <button className="start-btn" onClick={startGame}>
-            RETRY
-          </button>
-        </div>
-      )}
-    </div>
+        {phase === "gameover" && (
+          <div className="overlay interactive">
+            <h1>GAME OVER</h1>
+            <p className="score-display">
+              SCORE: <span>{finalScore}</span>
+            </p>
+            <p className="score-display" style={{ fontSize: "1rem" }}>
+              TIME:{" "}
+              <span>
+                {finalMm}:{finalSs}
+              </span>
+            </p>
+            <p className="hi-score">
+              BEST: <span>{hiScore}</span>
+            </p>
+            <button className="start-btn" onClick={startGame}>
+              RETRY
+            </button>
+          </div>
+        )}
+      </div>
+    </GameShell>
   );
 };
 

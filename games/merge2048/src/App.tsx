@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import "./App.css";
+import { useAudio, useHighScore, GameShell } from "../../../src/shared";
 
-// ─── 定数 ───────────────────────────────────────────────────────────────────
+// ─── 定数 ───────────────────────────────────────────────────────────────────────
 
 const SIZE = 4;
 const WIN_VALUE = 2048;
-const BEST_SCORE_KEY = "merge2048_best";
 
 // ─── 型 ─────────────────────────────────────────────────────────────────────
 
@@ -59,14 +59,14 @@ function emptyBoard(): Board {
 function getEmptyCells(board: Board): Array<[number, number]> {
   const cells: Array<[number, number]> = [];
   for (let r = 0; r < SIZE; r++)
-    for (let c = 0; c < SIZE; c++)
-      if (board[r][c] === 0) cells.push([r, c]);
+    for (let c = 0; c < SIZE; c++) if (board[r][c] === 0) cells.push([r, c]);
   return cells;
 }
 
-function spawnTile(
-  board: Board,
-): { board: Board; pos: [number, number] | null } {
+function spawnTile(board: Board): {
+  board: Board;
+  pos: [number, number] | null;
+} {
   const empty = getEmptyCells(board);
   if (!empty.length) return { board, pos: null };
   const idx = Math.floor(Math.random() * empty.length);
@@ -86,9 +86,12 @@ interface SlideResult {
   changed: boolean;
 }
 
-function slideRowLeft(
-  row: number[],
-): { row: number[]; score: number; mergeIndices: number[]; mergeCount: number } {
+function slideRowLeft(row: number[]): {
+  row: number[];
+  score: number;
+  mergeIndices: number[];
+  mergeCount: number;
+} {
   const nz = row.filter((v) => v !== 0);
   const result: number[] = [];
   const mergeIndices: number[] = [];
@@ -189,60 +192,6 @@ function hasWon(board: Board): boolean {
   return board.some((row) => row.some((v) => v >= WIN_VALUE));
 }
 
-// ─── Web Audio ──────────────────────────────────────────────────────────────
-
-let _audioCtx: AudioContext | null = null;
-
-function getAudioCtx(): AudioContext {
-  _audioCtx ??= new AudioContext();
-  return _audioCtx;
-}
-
-function playTone(
-  freq: number,
-  type: OscillatorType,
-  vol: number,
-  start: number,
-  dur: number,
-) {
-  const ctx = getAudioCtx();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = type;
-  osc.frequency.value = freq;
-  gain.gain.setValueAtTime(vol, start);
-  gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
-  osc.start(start);
-  osc.stop(start + dur + 0.01);
-}
-
-function playMergeSound(value: number) {
-  try {
-    const freq = 180 + Math.log2(value) * 55;
-    playTone(freq, "sine", 0.18, getAudioCtx().currentTime, 0.14);
-  } catch { /* ブラウザ制限など無視 */ }
-}
-
-function playWinSound() {
-  try {
-    const ctx = getAudioCtx();
-    [523, 659, 784, 1047, 1319].forEach((freq, i) => {
-      playTone(freq, "sine", 0.22, ctx.currentTime + i * 0.13, 0.38);
-    });
-  } catch { /* ignore */ }
-}
-
-function playGameOverSound() {
-  try {
-    const ctx = getAudioCtx();
-    [440, 370, 311, 261].forEach((freq, i) => {
-      playTone(freq, "sawtooth", 0.14, ctx.currentTime + i * 0.22, 0.32);
-    });
-  } catch { /* ignore */ }
-}
-
 // ─── ID カウンター ────────────────────────────────────────────────────────────
 
 let _idCounter = 0;
@@ -253,14 +202,15 @@ function nextId(): number {
 // ─── コンポーネント ──────────────────────────────────────────────────────────
 
 export default function App() {
+  const { playTone, playArpeggio } = useAudio();
+  const { best: bestScore, update: updateBestScore } =
+    useHighScore("merge2048");
+
   const [board, setBoard] = useState<Board>(() => {
     const r1 = spawnTile(emptyBoard());
     return spawnTile(r1.board).board;
   });
   const [score, setScore] = useState(0);
-  const [bestScore, setBestScore] = useState(() =>
-    parseInt(localStorage.getItem(BEST_SCORE_KEY) ?? "0", 10),
-  );
   const [gameOver, setGameOver] = useState(false);
   const [won, setWon] = useState(false);
   const [keepPlaying, setKeepPlaying] = useState(false);
@@ -272,17 +222,6 @@ export default function App() {
 
   const comboTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
-
-  // ベストスコア更新
-  const updateBestScore = useCallback((s: number) => {
-    setBestScore((prev) => {
-      if (s > prev) {
-        localStorage.setItem(BEST_SCORE_KEY, String(s));
-        return s;
-      }
-      return prev;
-    });
-  }, []);
 
   // ゲームリセット
   const initGame = useCallback(() => {
@@ -347,12 +286,8 @@ export default function App() {
       if (mergeCount > 1) {
         setCombo(mergeCount);
         setComboVisible(true);
-        if (comboTimerRef.current !== null)
-          clearTimeout(comboTimerRef.current);
-        comboTimerRef.current = setTimeout(
-          () => setComboVisible(false),
-          1600,
-        );
+        if (comboTimerRef.current !== null) clearTimeout(comboTimerRef.current);
+        comboTimerRef.current = setTimeout(() => setComboVisible(false), 1600);
       }
 
       // 効果音
@@ -361,19 +296,29 @@ export default function App() {
           (m, [r, c]) => Math.max(m, next[r]?.[c] ?? 2),
           2,
         );
-        playMergeSound(maxVal);
+        const freq = 180 + Math.log2(maxVal) * 55;
+        playTone(freq, 0.14, "sine", 0.18);
       }
 
       // 勝利 / ゲームオーバー判定
       if (!won && hasWon(next)) {
         setWon(true);
-        playWinSound();
+        playArpeggio([523, 659, 784, 1047, 1319], 0.38, "sine", 0.22, 0.13);
       } else if (!canMove(next)) {
         setGameOver(true);
-        playGameOverSound();
+        playArpeggio([440, 370, 311, 261], 0.32, "sawtooth", 0.14, 0.22);
       }
     },
-    [board, score, gameOver, won, keepPlaying, updateBestScore],
+    [
+      board,
+      score,
+      gameOver,
+      won,
+      keepPlaying,
+      updateBestScore,
+      playTone,
+      playArpeggio,
+    ],
   );
 
   useEffect(() => {
@@ -419,125 +364,129 @@ export default function App() {
   const showOverlay = gameOver || showWinOverlay;
 
   return (
-    <div
-      className="app"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      {/* ヘッダー */}
-      <header className="header">
-        <h1 className="title">Merge 2048</h1>
-        <div className="header-right">
-          <div className="scores">
-            <div className="score-box">
-              <span className="score-label">SCORE</span>
-              <span className="score-value">{score}</span>
+    <GameShell title="Merge 2048">
+      <div
+        className="app"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* ヘッダー */}
+        <header className="header">
+          <h1 className="title">Merge 2048</h1>
+          <div className="header-right">
+            <div className="scores">
+              <div className="score-box">
+                <span className="score-label">SCORE</span>
+                <span className="score-value">{score}</span>
+              </div>
+              <div className="score-box">
+                <span className="score-label">BEST</span>
+                <span className="score-value">{bestScore}</span>
+              </div>
             </div>
-            <div className="score-box">
-              <span className="score-label">BEST</span>
-              <span className="score-value">{bestScore}</span>
-            </div>
+            <button className="new-game-btn" onClick={initGame}>
+              New Game
+            </button>
           </div>
-          <button className="new-game-btn" onClick={initGame}>
-            New Game
-          </button>
-        </div>
-      </header>
+        </header>
 
-      {/* コンボバッジ */}
-      <div className={`combo-badge ${comboVisible && combo > 1 ? "combo-visible" : ""}`}>
-        COMBO×{combo}
-      </div>
-
-      {/* グリッド */}
-      <div className="grid-wrapper">
-        {/* 背景セル */}
-        <div className="grid-bg">
-          {Array.from({ length: SIZE * SIZE }).map((_, i) => (
-            <div key={i} className="cell-bg" />
-          ))}
+        {/* コンボバッジ */}
+        <div
+          className={`combo-badge ${comboVisible && combo > 1 ? "combo-visible" : ""}`}
+        >
+          COMBO×{combo}
         </div>
 
-        {/* タイル */}
-        <div className="grid-tiles">
-          {board.map((row, r) =>
-            row.map((value, c) => {
-              if (value === 0) return null;
-              const key = `${r}-${c}`;
-              const isMerged = mergedCells.has(key);
-              const isNew = newCell === key;
-              const isWinTile = won && value >= WIN_VALUE;
-              return (
-                <div
-                  key={key}
-                  className={[
-                    "tile",
-                    tileFontClass(value),
-                    isMerged ? "tile-merged" : "",
-                    isNew ? "tile-new" : "",
-                    isWinTile ? "tile-win" : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
-                  style={
-                    {
-                      ...getTileStyle(value),
-                      "--r": r,
-                      "--c": c,
-                    } as React.CSSProperties
-                  }
-                >
-                  {value}
-                  {/* スコアポップアップ */}
-                  {popups
-                    .filter((p) => p.row === r && p.col === c)
-                    .map((p) => (
-                      <span key={p.id} className="score-popup">
-                        +{p.points}
-                      </span>
-                    ))}
-                </div>
-              );
-            }),
+        {/* グリッド */}
+        <div className="grid-wrapper">
+          {/* 背景セル */}
+          <div className="grid-bg">
+            {Array.from({ length: SIZE * SIZE }).map((_, i) => (
+              <div key={i} className="cell-bg" />
+            ))}
+          </div>
+
+          {/* タイル */}
+          <div className="grid-tiles">
+            {board.map((row, r) =>
+              row.map((value, c) => {
+                if (value === 0) return null;
+                const key = `${r}-${c}`;
+                const isMerged = mergedCells.has(key);
+                const isNew = newCell === key;
+                const isWinTile = won && value >= WIN_VALUE;
+                return (
+                  <div
+                    key={key}
+                    className={[
+                      "tile",
+                      tileFontClass(value),
+                      isMerged ? "tile-merged" : "",
+                      isNew ? "tile-new" : "",
+                      isWinTile ? "tile-win" : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    style={
+                      {
+                        ...getTileStyle(value),
+                        "--r": r,
+                        "--c": c,
+                      } as React.CSSProperties
+                    }
+                  >
+                    {value}
+                    {/* スコアポップアップ */}
+                    {popups
+                      .filter((p) => p.row === r && p.col === c)
+                      .map((p) => (
+                        <span key={p.id} className="score-popup">
+                          +{p.points}
+                        </span>
+                      ))}
+                  </div>
+                );
+              }),
+            )}
+          </div>
+
+          {/* オーバーレイ */}
+          {showOverlay && (
+            <div
+              className={`overlay ${showWinOverlay ? "overlay-win" : "overlay-lose"}`}
+            >
+              <div className="overlay-content">
+                {showWinOverlay ? (
+                  <>
+                    <div className="overlay-emoji">🎉</div>
+                    <div className="overlay-title">2048 達成！</div>
+                    <div className="overlay-sub">スコア: {score}</div>
+                    <button
+                      className="overlay-btn btn-continue"
+                      onClick={() => setKeepPlaying(true)}
+                    >
+                      続けてプレイ
+                    </button>
+                    <button className="overlay-btn" onClick={initGame}>
+                      New Game
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="overlay-title">Game Over</div>
+                    <div className="overlay-sub">スコア: {score}</div>
+                    <button className="overlay-btn" onClick={initGame}>
+                      もう一度
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
           )}
         </div>
 
-        {/* オーバーレイ */}
-        {showOverlay && (
-          <div
-            className={`overlay ${showWinOverlay ? "overlay-win" : "overlay-lose"}`}
-          >
-            <div className="overlay-content">
-              {showWinOverlay ? (
-                <>
-                  <div className="overlay-emoji">🎉</div>
-                  <div className="overlay-title">2048 達成！</div>
-                  <div className="overlay-sub">スコア: {score}</div>
-                  <button
-                    className="overlay-btn btn-continue"
-                    onClick={() => setKeepPlaying(true)}
-                  >
-                    続けてプレイ
-                  </button>
-                  <button className="overlay-btn" onClick={initGame}>
-                    New Game
-                  </button>
-                </>
-              ) : (
-                <>
-                  <div className="overlay-title">Game Over</div>
-                  <div className="overlay-sub">スコア: {score}</div>
-                  <button className="overlay-btn" onClick={initGame}>
-                    もう一度
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        )}
+        <p className="hint">矢印キー または スワイプで操作</p>
       </div>
-
-      <p className="hint">矢印キー または スワイプで操作</p>
-    </div>
+    </GameShell>
   );
 }

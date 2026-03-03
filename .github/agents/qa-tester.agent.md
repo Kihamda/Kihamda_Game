@@ -1,4 +1,3 @@
-```chatagent
 ---
 description: "品質保証のプロフェッショナル。ビルド検証・型チェック・パフォーマンス監査・クロスブラウザテストを自律実行する。"
 tools:
@@ -61,6 +60,7 @@ Step 3: OK / NG を報告
 ## チェックリスト
 
 ### ビルド品質
+
 - [ ] `npm run lint` エラー: 0件
 - [ ] `npm run build` 成功
 - [ ] TypeScript 型エラー: 0件
@@ -68,24 +68,28 @@ Step 3: OK / NG を報告
 - [ ] 未使用の変数・インポートなし
 
 ### パフォーマンス
+
 - [ ] JS バンドル: < 200KB (gzip)
 - [ ] CSS: 不要なスタイルなし
 - [ ] 画像: WebP + lazy loading
 - [ ] First Paint: < 1.5s (目安)
 
 ### 機能品質
+
 - [ ] ゲームフェーズ遷移: before → in_progress → after が正常
 - [ ] リセット: after → before で状態がクリアされる
 - [ ] localStorage: 設定が保存・復元される
 - [ ] エッジケース: 最小/最大盤面サイズ、プレイヤー数上限
 
 ### アクセシビリティ
+
 - [ ] キーボードでゲーム操作可能
 - [ ] ボタンに適切な aria-label
 - [ ] カラーコントラスト比 4.5:1 以上
 - [ ] フォーカスインジケータ表示
 
 ### モバイル対応
+
 - [ ] viewport meta タグ設定済み
 - [ ] タッチ操作でゲームプレイ可能
 - [ ] 横幅 320px でレイアウト崩れなし
@@ -110,5 +114,3 @@ Step 3: OK / NG を報告
 - Vite設定: `vite.config.ts`
 - SSGプラグイン: `plugins/portal-ssg.ts`
 - ゲームメタデータ: `src/portal/data/games.json`
-
-```
