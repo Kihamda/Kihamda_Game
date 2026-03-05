@@ -39,13 +39,130 @@ interface FloatEffect {
 
 type Phase = "idle" | "playing" | "gameover";
 
+type WordDifficulty = "SHORT" | "MIXED" | "LONG";
+type FallSpeed = "SLOW" | "NORMAL" | "FAST";
+type LifeCount = "CASUAL" | "NORMAL" | "HARDCORE";
+type SpawnRate = "RELAXED" | "NORMAL" | "INTENSE";
+
+interface GameSettings {
+  wordDifficulty: WordDifficulty;
+  fallSpeed: FallSpeed;
+  lifeCount: LifeCount;
+  spawnRate: SpawnRate;
+}
+
+const DEFAULT_SETTINGS: GameSettings = {
+  wordDifficulty: "MIXED",
+  fallSpeed: "NORMAL",
+  lifeCount: "NORMAL",
+  spawnRate: "NORMAL",
+};
+
+const STORAGE_KEY = "typingblitz_settings";
+
+function loadSettings(): GameSettings {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved)
+      return {
+        ...DEFAULT_SETTINGS,
+        ...(JSON.parse(saved) as Partial<GameSettings>),
+      };
+  } catch {
+    /* ignore */
+  }
+  return DEFAULT_SETTINGS;
+}
+
+function saveSettings(s: GameSettings) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+  } catch {
+    /* ignore */
+  }
+}
+
+// ─── Settings Configs ────────────────────────────────────────────────────────
+
+const WORD_DIFF_OPTIONS: {
+  key: WordDifficulty;
+  label: string;
+  desc: string;
+}[] = [
+  { key: "SHORT", label: "SHORT", desc: "3-4文字" },
+  { key: "MIXED", label: "MIXED", desc: "全単語" },
+  { key: "LONG", label: "LONG", desc: "5文字以上" },
+];
+
+const FALL_SPEED_CONFIG: Record<FallSpeed, { base: number; min: number }> = {
+  SLOW: { base: 12000, min: 5000 },
+  NORMAL: { base: 8500, min: 2800 },
+  FAST: { base: 5000, min: 1500 },
+};
+
+const FALL_SPEED_OPTIONS: { key: FallSpeed; label: string; desc: string }[] = [
+  { key: "SLOW", label: "SLOW", desc: "ゆっくり" },
+  { key: "NORMAL", label: "NORMAL", desc: "標準" },
+  { key: "FAST", label: "FAST", desc: "高速" },
+];
+
+const LIFE_COUNT_MAP: Record<LifeCount, number> = {
+  CASUAL: Infinity,
+  NORMAL: 5,
+  HARDCORE: 3,
+};
+
+const LIFE_COUNT_OPTIONS: { key: LifeCount; label: string; desc: string }[] = [
+  { key: "CASUAL", label: "CASUAL", desc: "無制限" },
+  { key: "NORMAL", label: "NORMAL", desc: "5" },
+  { key: "HARDCORE", label: "HARDCORE", desc: "3" },
+];
+
+const SPAWN_RATE_CONFIG: Record<SpawnRate, { base: number; min: number }> = {
+  RELAXED: { base: 3000, min: 1200 },
+  NORMAL: { base: 2200, min: 650 },
+  INTENSE: { base: 1500, min: 400 },
+};
+
+const SPAWN_RATE_OPTIONS: { key: SpawnRate; label: string; desc: string }[] = [
+  { key: "RELAXED", label: "RELAXED", desc: "のんびり" },
+  { key: "NORMAL", label: "NORMAL", desc: "標準" },
+  { key: "INTENSE", label: "INTENSE", desc: "猛烈" },
+];
+
+interface ActiveConfig {
+  wordPool: readonly string[];
+  fallBase: number;
+  fallMin: number;
+  spawnBase: number;
+  spawnMin: number;
+  maxLives: number;
+}
+
+function buildActiveConfig(
+  s: GameSettings,
+  words: readonly string[],
+): ActiveConfig {
+  const fall = FALL_SPEED_CONFIG[s.fallSpeed];
+  const spawn = SPAWN_RATE_CONFIG[s.spawnRate];
+  const pool =
+    s.wordDifficulty === "SHORT"
+      ? words.filter((w) => w.length <= 4)
+      : s.wordDifficulty === "LONG"
+        ? words.filter((w) => w.length >= 5)
+        : words;
+  return {
+    wordPool: pool,
+    fallBase: fall.base,
+    fallMin: fall.min,
+    spawnBase: spawn.base,
+    spawnMin: spawn.min,
+    maxLives: LIFE_COUNT_MAP[s.lifeCount],
+  };
+}
+
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const MAX_LIVES = 5;
-const BASE_FALL_MS = 8500;
-const MIN_FALL_MS = 2800;
-const BASE_SPAWN_MS = 2200;
-const MIN_SPAWN_MS = 650;
 const DIFFICULTY_RAMP_MS = 90_000;
 
 const WORDS: readonly string[] = [
@@ -171,16 +288,19 @@ const PARTICLE_COLORS = [
 let uid = 0;
 const nextId = () => ++uid;
 
-function randomWord(): string {
-  return WORDS[Math.floor(Math.random() * WORDS.length)];
+function randomWordFrom(pool: readonly string[]): string {
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
-function getDifficulty(elapsed: number): { fallMs: number; spawnMs: number } {
+function getDifficulty(
+  elapsed: number,
+  cfg: ActiveConfig,
+): { fallMs: number; spawnMs: number } {
   const t = Math.min(elapsed / DIFFICULTY_RAMP_MS, 1);
   const ease = t * t;
   return {
-    fallMs: BASE_FALL_MS - (BASE_FALL_MS - MIN_FALL_MS) * ease,
-    spawnMs: BASE_SPAWN_MS - (BASE_SPAWN_MS - MIN_SPAWN_MS) * ease,
+    fallMs: cfg.fallBase - (cfg.fallBase - cfg.fallMin) * ease,
+    spawnMs: cfg.spawnBase - (cfg.spawnBase - cfg.spawnMin) * ease,
   };
 }
 
@@ -190,12 +310,18 @@ const App = () => {
   const { playFanfare, playMiss, playClick } = useAudio();
   const { best: bestScore, update: updateBest } = useHighScore("typingblitz");
 
+  const [settings, setSettings] = useState<GameSettings>(loadSettings);
+  const activeConfigRef = useRef<ActiveConfig>(
+    buildActiveConfig(DEFAULT_SETTINGS, WORDS),
+  );
+
   const [phase, setPhase] = useState<Phase>("idle");
   const [words, setWords] = useState<FallingWord[]>([]);
   const [inputVal, setInputVal] = useState("");
   const [score, setScore] = useState(0);
   const [combo, setCombo] = useState(0);
-  const [lives, setLives] = useState(MAX_LIVES);
+  const [lives, setLives] = useState(5);
+  const [maxLives, setMaxLives] = useState(5);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [floatEffects, setFloatEffects] = useState<FloatEffect[]>([]);
   const [shake, setShake] = useState(false);
@@ -205,7 +331,7 @@ const App = () => {
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const phaseRef = useRef<Phase>("idle");
   const wordsRef = useRef<FallingWord[]>([]);
-  const livesRef = useRef(MAX_LIVES);
+  const livesRef = useRef(5);
   const comboRef = useRef(0);
   const scoreRef = useRef(0);
   const missedRef = useRef(new Set<number>());
@@ -235,6 +361,14 @@ const App = () => {
     const ro = new ResizeObserver(update);
     ro.observe(el);
     return () => ro.disconnect();
+  }, []);
+
+  const updateSetting = useCallback((patch: Partial<GameSettings>) => {
+    setSettings((prev) => {
+      const next = { ...prev, ...patch };
+      saveSettings(next);
+      return next;
+    });
   }, []);
 
   // ── Effect helpers ───────────────────────────────────────────────────────
@@ -400,13 +534,14 @@ const App = () => {
   // ── Spawn loop (rAF) ─────────────────────────────────────────────────────
 
   const spawnWord = useCallback(() => {
+    const cfg = activeConfigRef.current;
     const elapsed = Date.now() - gameStartRef.current;
-    const { fallMs } = getDifficulty(elapsed);
+    const { fallMs } = getDifficulty(elapsed, cfg);
     setWords((prev) => [
       ...prev,
       {
         id: nextId(),
-        text: randomWord(),
+        text: randomWordFrom(cfg.wordPool),
         x: 4 + Math.random() * 78,
         fallDuration: fallMs + (Math.random() - 0.5) * 600,
         spawnTime: Date.now(),
@@ -419,7 +554,7 @@ const App = () => {
     const tick = () => {
       if (phaseRef.current !== "playing") return;
       const elapsed = Date.now() - gameStartRef.current;
-      const { spawnMs } = getDifficulty(elapsed);
+      const { spawnMs } = getDifficulty(elapsed, activeConfigRef.current);
       if (Date.now() - lastSpawnRef.current >= spawnMs) {
         lastSpawnRef.current = Date.now();
         spawnWord();
@@ -433,6 +568,8 @@ const App = () => {
   // ── Start / restart ──────────────────────────────────────────────────────
 
   const startGame = useCallback(() => {
+    const cfg = buildActiveConfig(settings, WORDS);
+    activeConfigRef.current = cfg;
     uid = 0;
     missedRef.current.clear();
     completedRef.current.clear();
@@ -442,18 +579,19 @@ const App = () => {
     lastSpawnRef.current = Date.now() - 1_800;
     comboRef.current = 0;
     scoreRef.current = 0;
-    livesRef.current = MAX_LIVES;
+    livesRef.current = cfg.maxLives;
+    setMaxLives(cfg.maxLives);
     setWords([]);
     setInputVal("");
     setScore(0);
     setCombo(0);
-    setLives(MAX_LIVES);
+    setLives(cfg.maxLives);
     setParticles([]);
     setFloatEffects([]);
     setShake(false);
     setPhase("playing");
     setTimeout(() => inputRef.current?.focus(), 80);
-  }, []);
+  }, [settings]);
 
   // ── Active word: the earliest-to-expire word whose text starts with input ──
 
@@ -469,21 +607,27 @@ const App = () => {
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <GameShell title="Typing Blitz">
+    <GameShell title="Typing Blitz" gameId="typingblitz">
       <div className="app">
         {/* HUD */}
         <div className="hud">
           <div className="hud-score">SCORE: {score}</div>
           <div className="hud-lives">
-            {Array.from({ length: MAX_LIVES }, (_, i) => (
-              <span
-                key={i}
-                className="hud-life"
-                style={{ opacity: i < lives ? 1 : 0.18 }}
-              >
-                💙
+            {!isFinite(maxLives) ? (
+              <span className="hud-life" style={{ fontSize: "1.3em" }}>
+                ∞
               </span>
-            ))}
+            ) : (
+              Array.from({ length: maxLives }, (_, i) => (
+                <span
+                  key={i}
+                  className="hud-life"
+                  style={{ opacity: i < lives ? 1 : 0.18 }}
+                >
+                  💙
+                </span>
+              ))
+            )}
           </div>
           <div className="hud-combo" style={{ opacity: combo >= 2 ? 1 : 0 }}>
             {combo >= 2 ? `${combo}\u00d7 COMBO` : "\u00a0"}
@@ -561,18 +705,83 @@ const App = () => {
           {phase !== "playing" && (
             <div className="overlay">
               {phase === "idle" && (
-                <>
+                <div className="settings-screen">
                   <div className="overlay-title">TYPING BLITZ</div>
                   <p className="overlay-hint">
                     Words fall from above — type them before they hit the
-                    ground.
-                    <br />5 misses = Game Over &nbsp;&middot;&nbsp; Combo
-                    multiplier for streaks
+                    ground. Combo multiplier for streaks!
                   </p>
+
+                  <div className="settings-card">
+                    <div className="settings-card-label">Word Length</div>
+                    <div className="settings-btn-group">
+                      {WORD_DIFF_OPTIONS.map((o) => (
+                        <button
+                          key={o.key}
+                          className={`settings-btn${settings.wordDifficulty === o.key ? " active" : ""}`}
+                          onClick={() =>
+                            updateSetting({ wordDifficulty: o.key })
+                          }
+                        >
+                          {o.label}
+                          <span className="settings-btn-desc">{o.desc}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <div className="settings-card-label">Fall Speed</div>
+                    <div className="settings-btn-group">
+                      {FALL_SPEED_OPTIONS.map((o) => (
+                        <button
+                          key={o.key}
+                          className={`settings-btn${settings.fallSpeed === o.key ? " active" : ""}`}
+                          onClick={() => updateSetting({ fallSpeed: o.key })}
+                        >
+                          {o.label}
+                          <span className="settings-btn-desc">{o.desc}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <div className="settings-card-label">Lives</div>
+                    <div className="settings-btn-group">
+                      {LIFE_COUNT_OPTIONS.map((o) => (
+                        <button
+                          key={o.key}
+                          className={`settings-btn${settings.lifeCount === o.key ? " active" : ""}`}
+                          onClick={() => updateSetting({ lifeCount: o.key })}
+                        >
+                          {o.label}
+                          <span className="settings-btn-desc">{o.desc}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="settings-card">
+                    <div className="settings-card-label">Spawn Rate</div>
+                    <div className="settings-btn-group">
+                      {SPAWN_RATE_OPTIONS.map((o) => (
+                        <button
+                          key={o.key}
+                          className={`settings-btn${settings.spawnRate === o.key ? " active" : ""}`}
+                          onClick={() => updateSetting({ spawnRate: o.key })}
+                        >
+                          {o.label}
+                          <span className="settings-btn-desc">{o.desc}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   <button className="start-btn" onClick={startGame}>
                     START
                   </button>
-                </>
+                </div>
               )}
               {phase === "gameover" && (
                 <>
@@ -586,6 +795,12 @@ const App = () => {
                   </div>
                   <button className="start-btn" onClick={startGame}>
                     PLAY AGAIN
+                  </button>
+                  <button
+                    className="settings-link"
+                    onClick={() => setPhase("idle")}
+                  >
+                    Settings
                   </button>
                 </>
               )}

@@ -284,7 +284,7 @@ function App() {
   };
 
   return (
-    <GameShell title="N人 TikTakToe">
+    <GameShell title="N人 TikTakToe" gameId="ntiktaktoe">
       <div className="app">
         {appState === "before" && (
           <StartScreen

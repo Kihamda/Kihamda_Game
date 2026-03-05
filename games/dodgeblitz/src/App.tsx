@@ -90,6 +90,46 @@ interface GameState {
   nextId: number;
 }
 
+// ─── Settings ─────────────────────────────────────────────────────────────────
+
+interface GameSettings {
+  playerSize: "large" | "normal" | "small";
+  difficulty: "easy" | "normal" | "hard";
+  itemFrequency: "low" | "normal" | "high";
+  startWave: 1 | 2 | 3;
+}
+
+interface ResolvedSettings {
+  playerRadius: number;
+  speedMul: number;
+  countMul: number;
+  itemInterval: number;
+  startWave: number;
+}
+
+const DEFAULT_SETTINGS: GameSettings = {
+  playerSize: "normal",
+  difficulty: "normal",
+  itemFrequency: "normal",
+  startWave: 1,
+};
+
+const SETTINGS_KEY = "dodgeblitz_settings";
+
+function loadSettings(): GameSettings {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    if (raw) return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
+  } catch {
+    /* ignore */
+  }
+  return { ...DEFAULT_SETTINGS };
+}
+
+function saveSettings(s: GameSettings): void {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+}
+
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const PLAYER_RADIUS = 8;
@@ -105,18 +145,30 @@ const ITEM_SPAWN_INTERVAL = 7500;
 const LASER_SPAWN_BASE = 6000;
 const WAVE_DURATION_MS = 30000;
 
-function bulletsPerSecond(wave: number): number {
-  return Math.min(3 + (wave - 1) * (17 / 9), 20);
+function resolveSettings(s: GameSettings): ResolvedSettings {
+  return {
+    playerRadius: { large: 12, normal: PLAYER_RADIUS, small: 5 }[s.playerSize],
+    speedMul: { easy: 0.7, normal: 1, hard: 1.3 }[s.difficulty],
+    countMul: { easy: 0.7, normal: 1, hard: 1.3 }[s.difficulty],
+    itemInterval: { low: 12000, normal: ITEM_SPAWN_INTERVAL, high: 4000 }[
+      s.itemFrequency
+    ],
+    startWave: s.startWave,
+  };
+}
+
+function bulletsPerSecond(wave: number, countMul: number): number {
+  return Math.min(3 + (wave - 1) * (17 / 9), 20) * countMul;
 }
 
 // ─── Game state factory ───────────────────────────────────────────────────────
 
-function createGameState(w: number, h: number): GameState {
+function createGameState(w: number, h: number, rs: ResolvedSettings): GameState {
   return {
     phase: "playing",
     score: 0,
-    wave: 1,
-    survivalMs: 0,
+    wave: rs.startWave,
+    survivalMs: (rs.startWave - 1) * WAVE_DURATION_MS,
     playerX: w / 2,
     playerY: h / 2,
     cursorX: w / 2,
@@ -130,7 +182,7 @@ function createGameState(w: number, h: number): GameState {
     slowMs: 0,
     bulletSpawnTimer: 0,
     laserSpawnTimer: LASER_SPAWN_BASE,
-    itemSpawnTimer: ITEM_SPAWN_INTERVAL,
+    itemSpawnTimer: rs.itemInterval,
     scoreTimer: 0,
     waveUpDisplayTimer: 0,
     waveUpText: "",
@@ -150,8 +202,8 @@ function dist2D(ax: number, ay: number, bx: number, by: number): number {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-function spawnBullet(gs: GameState, w: number, h: number): void {
-  const speedBase = 2 + gs.wave * 0.4;
+function spawnBullet(gs: GameState, w: number, h: number, rs: ResolvedSettings): void {
+  const speedBase = (2 + gs.wave * 0.4) * rs.speedMul;
   const slow = gs.slowMs > 0 ? 0.35 : 1;
   const speed = speedBase * slow;
   const side = Math.floor(Math.random() * 4);
@@ -266,7 +318,7 @@ function addFloat(
 
 // ─── Update ───────────────────────────────────────────────────────────────────
 
-function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
+function update(gs: GameState, dt: number, w: number, h: number, rs: ResolvedSettings): GameEvent[] {
   if (gs.phase !== "playing") return [];
   const events: GameEvent[] = [];
 
@@ -311,15 +363,15 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
   gs.playerX += (gs.cursorX - gs.playerX) * PLAYER_LERP;
   gs.playerY += (gs.cursorY - gs.playerY) * PLAYER_LERP;
   // Clamp to canvas
-  gs.playerX = Math.max(PLAYER_RADIUS, Math.min(w - PLAYER_RADIUS, gs.playerX));
-  gs.playerY = Math.max(PLAYER_RADIUS, Math.min(h - PLAYER_RADIUS, gs.playerY));
+  gs.playerX = Math.max(rs.playerRadius, Math.min(w - rs.playerRadius, gs.playerX));
+  gs.playerY = Math.max(rs.playerRadius, Math.min(h - rs.playerRadius, gs.playerY));
 
   // ── Bullet spawning ──
-  const interval = 1000 / bulletsPerSecond(gs.wave);
+  const interval = 1000 / bulletsPerSecond(gs.wave, rs.countMul);
   gs.bulletSpawnTimer += dt;
   while (gs.bulletSpawnTimer >= interval) {
     gs.bulletSpawnTimer -= interval;
-    spawnBullet(gs, w, h);
+    spawnBullet(gs, w, h, rs);
   }
 
   // ── Laser spawning ──
@@ -333,7 +385,7 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
   gs.itemSpawnTimer -= dt;
   if (gs.itemSpawnTimer <= 0) {
     if (gs.items.length < 3) spawnItem(gs, w, h);
-    gs.itemSpawnTimer = ITEM_SPAWN_INTERVAL;
+    gs.itemSpawnTimer = rs.itemInterval;
   }
 
   // ── Update bullets ──
@@ -351,7 +403,7 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
       b.vx += (dx / d) * str;
       b.vy += (dy / d) * str;
       const spd = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
-      const cap = 3 + gs.wave * 0.35;
+      const cap = (3 + gs.wave * 0.35) * rs.speedMul;
       if (spd > cap) {
         b.vx = (b.vx / spd) * cap;
         b.vy = (b.vy / spd) * cap;
@@ -366,7 +418,7 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
 
     // Collision with player
     const d = dist2D(b.x, b.y, gs.playerX, gs.playerY);
-    const hitDist = b.radius + PLAYER_RADIUS;
+    const hitDist = b.radius + rs.playerRadius;
     if (d < hitDist) {
       if (gs.shieldMs > 0) {
         deadBullets.add(b.id);
@@ -402,8 +454,8 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
       }
     }
     if (l.phase === "active" && gs.shieldMs <= 0) {
-      const pTop = gs.playerY - PLAYER_RADIUS;
-      const pBot = gs.playerY + PLAYER_RADIUS;
+      const pTop = gs.playerY - rs.playerRadius;
+      const pBot = gs.playerY + rs.playerRadius;
       if (pTop < l.y + LASER_HALF_H && pBot > l.y - LASER_HALF_H) {
         gs.phase = "gameover";
         events.push("gameover");
@@ -418,7 +470,7 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
     item.bobTimer += dt * 0.003;
     if (
       dist2D(item.x, item.y, gs.playerX, gs.playerY) <
-      item.radius + PLAYER_RADIUS
+      item.radius + rs.playerRadius
     ) {
       applyItem(gs, item, events);
       return false;
@@ -498,6 +550,7 @@ function draw(
   gs: GameState,
   w: number,
   h: number,
+  rs: ResolvedSettings,
 ): void {
   ctx.save();
   ctx.translate(gs.shakeX, gs.shakeY);
@@ -613,7 +666,7 @@ function draw(
   ctx.fillStyle = playerGlow;
   ctx.shadowColor = playerGlow;
   ctx.shadowBlur = gs.shieldMs > 0 ? 32 : 18;
-  ctx.arc(gs.playerX, gs.playerY, PLAYER_RADIUS, 0, Math.PI * 2);
+  ctx.arc(gs.playerX, gs.playerY, rs.playerRadius, 0, Math.PI * 2);
   ctx.fill();
   ctx.shadowBlur = 0;
 
@@ -628,7 +681,7 @@ function draw(
     ctx.arc(
       gs.playerX,
       gs.playerY,
-      PLAYER_RADIUS + 8,
+      rs.playerRadius + 8,
       -Math.PI / 2,
       -Math.PI / 2 + arc,
     );
@@ -748,6 +801,18 @@ const App = () => {
   const [finalScore, setFinalScore] = useState(0);
   const { best: hiScore, update: updateHiScore } = useHighScore("dodgeblitz");
 
+  const [settings, setSettings] = useState<GameSettings>(loadSettings);
+  const resolvedRef = useRef<ResolvedSettings>(
+    resolveSettings(DEFAULT_SETTINGS),
+  );
+  const updateSettings = (partial: Partial<GameSettings>) => {
+    setSettings((prev) => {
+      const next = { ...prev, ...partial };
+      saveSettings(next);
+      return next;
+    });
+  };
+
   const gsRef = useRef<GameState | null>(null);
   const { playSweep, playMiss: sharedPlayMiss } = useAudio();
   const sfxRef = useRef({ playSweep, sharedPlayMiss });
@@ -808,7 +873,7 @@ const App = () => {
       const gs = gsRef.current;
       if (!gs) return;
 
-      const events = update(gs, dt, canvas.width, canvas.height);
+      const events = update(gs, dt, canvas.width, canvas.height, resolvedRef.current);
 
       for (const ev of events) {
         const sfx = sfxRef.current;
@@ -831,7 +896,7 @@ const App = () => {
         }
       }
 
-      draw(ctx, gs, canvas.width, canvas.height);
+      draw(ctx, gs, canvas.width, canvas.height, resolvedRef.current);
       rafRef.current = requestAnimationFrame(loop);
     };
 
@@ -846,7 +911,9 @@ const App = () => {
   const startGame = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    gsRef.current = createGameState(canvas.width, canvas.height);
+    const rs = resolveSettings(settings);
+    resolvedRef.current = rs;
+    gsRef.current = createGameState(canvas.width, canvas.height, rs);
     setPhase("playing");
   };
 
@@ -855,7 +922,7 @@ const App = () => {
   const finalSs = String(totalSec % 60).padStart(2, "0");
 
   return (
-    <GameShell title="Dodge Blitz">
+    <GameShell title="Dodge Blitz" gameId="dodgeblitz">
       <div className="game-wrapper">
         <canvas ref={canvasRef} />
 
@@ -863,6 +930,64 @@ const App = () => {
           <div className="overlay interactive">
             <h1>DODGE BLITZ</h1>
             <p className="subtitle">弾幕を掻い潜れ</p>
+            <div className="settings-panel">
+              <div className="setting-row">
+                <span className="setting-label">自機サイズ</span>
+                <div className="setting-options">
+                  {(["large", "normal", "small"] as const).map((v) => (
+                    <button
+                      key={v}
+                      className={`setting-btn${settings.playerSize === v ? " active" : ""}`}
+                      onClick={() => updateSettings({ playerSize: v })}
+                    >
+                      {v.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="setting-row">
+                <span className="setting-label">難易度</span>
+                <div className="setting-options">
+                  {(["easy", "normal", "hard"] as const).map((v) => (
+                    <button
+                      key={v}
+                      className={`setting-btn${settings.difficulty === v ? " active" : ""}`}
+                      onClick={() => updateSettings({ difficulty: v })}
+                    >
+                      {v.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="setting-row">
+                <span className="setting-label">アイテム頻度</span>
+                <div className="setting-options">
+                  {(["low", "normal", "high"] as const).map((v) => (
+                    <button
+                      key={v}
+                      className={`setting-btn${settings.itemFrequency === v ? " active" : ""}`}
+                      onClick={() => updateSettings({ itemFrequency: v })}
+                    >
+                      {v.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="setting-row">
+                <span className="setting-label">開始Wave</span>
+                <div className="setting-options">
+                  {([1, 2, 3] as const).map((v) => (
+                    <button
+                      key={v}
+                      className={`setting-btn${settings.startWave === v ? " active" : ""}`}
+                      onClick={() => updateSettings({ startWave: v })}
+                    >
+                      {v}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
             <button className="start-btn" onClick={startGame}>
               START
             </button>

@@ -141,9 +141,72 @@ jobs:
             .catch(e => { console.warn('⚠️  Twitter 投稿失敗:', e.message); process.exit(0); });
           SCRIPT
 
+  post-bluesky:
+    runs-on: ubuntu-latest
+    needs: build-check
+    if: "(github.event_name == 'workflow_dispatch' && inputs.post_to_twitter == 'true') || github.event_name == 'push'"
+    steps:
+      - name: Compose post text
+        id: post
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TITLE="${{ inputs.game_title }}"
+            URL="${{ inputs.game_url }}"
+            DESC="${{ inputs.game_description }}"
+          else
+            GAME_ID=$(echo "${{ github.ref_name }}" | sed 's|games/||' | sed 's|@.*||')
+            TITLE="$GAME_ID"
+            URL="https://game.kihamda.net/games/$GAME_ID/"
+            DESC="新しいブラウザゲームを公開しました！"
+          fi
+
+          cat <<- POSTEOF >> $GITHUB_OUTPUT
+          text<<EOF
+          🎮 新作公開！「${TITLE}」
+
+          ${DESC}
+
+          ▶ ${URL}
+
+          #ブラウザゲーム #無料ゲーム #indiegame
+          EOF
+          POSTEOF
+
+      - name: Post to Bluesky
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          POST_TEXT: ${{ steps.post.outputs.text }}
+        run: |
+          if [ -z "$BLUESKY_HANDLE" ]; then
+            echo "⚠️  BLUESKY_HANDLE が未設定です。投稿をスキップします。"
+            echo "   GitHub Secrets に以下を設定してください:"
+            echo "   - BLUESKY_HANDLE / BLUESKY_APP_PASSWORD"
+            exit 0
+          fi
+
+          cd /tmp
+          echo '{}' > package.json
+          npm install --silent @atproto/api
+
+          node - << 'SCRIPT'
+          const atproto = require('@atproto/api');
+          const Agent = atproto.BskyAgent || atproto.AtpAgent;
+          async function main() {
+            const agent = new Agent({ service: 'https://bsky.social' });
+            await agent.login({
+              identifier: process.env.BLUESKY_HANDLE,
+              password: process.env.BLUESKY_APP_PASSWORD,
+            });
+            await agent.post({ text: process.env.POST_TEXT });
+            console.log('✅ Bluesky 投稿成功');
+          }
+          main().catch(e => { console.warn('⚠️  Bluesky 投稿失敗:', e.message); process.exit(0); });
+          SCRIPT
+
   summary:
     runs-on: ubuntu-latest
-    needs: [build-check, post-twitter]
+    needs: [build-check, post-twitter, post-bluesky]
     if: always()
     steps:
       - name: Job Summary
@@ -154,6 +217,7 @@ jobs:
           echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
           echo "| Build Check | ${{ needs.build-check.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Twitter Post | ${{ needs.post-twitter.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Bluesky Post | ${{ needs.post-bluesky.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "**ゲーム**: ${{ inputs.game_title }}" >> $GITHUB_STEP_SUMMARY

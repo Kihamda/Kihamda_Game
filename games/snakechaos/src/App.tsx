@@ -2,10 +2,72 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
 import { useAudio, useHighScore, GameShell } from "../../../src/shared";
 
-// ── Constants ───────────────────────────────────────────────────────────────
-const GRID = 20;
-const CELL = 24;
-const BOARD = GRID * CELL; // 480px
+// ── Settings types ──────────────────────────────────────────────────────────
+type GridSize = "SMALL" | "MEDIUM" | "LARGE";
+type SpeedLevel = "EASY" | "NORMAL" | "FAST";
+type WallMode = "SOLID" | "WRAP";
+type PowerUpFreq = "LOW" | "NORMAL" | "HIGH";
+
+interface Settings {
+  gridSize: GridSize;
+  speed: SpeedLevel;
+  wallMode: WallMode;
+  powerUpFreq: PowerUpFreq;
+}
+
+interface GameConfig {
+  grid: number;
+  cell: number;
+  board: number;
+  initMs: number;
+  minMs: number;
+  wallMode: WallMode;
+  puBase: number;
+  puRange: number;
+}
+
+const STORAGE_KEY = "snakechaos_settings";
+const TARGET_BOARD = 480;
+const GRID_MAP: Record<GridSize, number> = { SMALL: 15, MEDIUM: 20, LARGE: 25 };
+const SPEED_MAP: Record<SpeedLevel, [number, number]> = {
+  EASY: [250, 120],
+  NORMAL: [200, 80],
+  FAST: [130, 50],
+};
+const PU_MAP: Record<PowerUpFreq, [number, number]> = {
+  LOW: [6, 6],
+  NORMAL: [3, 5],
+  HIGH: [1, 3],
+};
+
+const DEFAULT_SETTINGS: Settings = {
+  gridSize: "MEDIUM",
+  speed: "NORMAL",
+  wallMode: "SOLID",
+  powerUpFreq: "NORMAL",
+};
+
+function resolveConfig(s: Settings): GameConfig {
+  const grid = GRID_MAP[s.gridSize];
+  const cell = Math.floor(TARGET_BOARD / grid);
+  const [initMs, minMs] = SPEED_MAP[s.speed];
+  const [puBase, puRange] = PU_MAP[s.powerUpFreq];
+  return { grid, cell, board: grid * cell, initMs, minMs, wallMode: s.wallMode, puBase, puRange };
+}
+
+function loadSettings(): Settings {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { ...DEFAULT_SETTINGS };
+    return { ...DEFAULT_SETTINGS, ...(JSON.parse(raw) as Partial<Settings>) };
+  } catch {
+    return { ...DEFAULT_SETTINGS };
+  }
+}
+
+function saveSettings(s: Settings): void {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+}
 
 // ── Types ───────────────────────────────────────────────────────────────────
 type Dir = "U" | "D" | "L" | "R";
@@ -54,6 +116,7 @@ interface GS {
   tickMs: number;
   rafId: number | null;
   pid: number;
+  config: GameConfig;
 }
 interface ScorePopup {
   id: number;
@@ -71,24 +134,25 @@ function puEmoji(t: PUType): string {
   return t === "speedDown" ? "⚡" : t === "doubleScore" ? "💥" : "🛡️";
 }
 
-function randomFree(exclude: Pos[]): Pos {
+function randomFree(exclude: Pos[], grid: number): Pos {
   let p: Pos;
   do {
     p = {
-      x: Math.floor(Math.random() * GRID),
-      y: Math.floor(Math.random() * GRID),
+      x: Math.floor(Math.random() * grid),
+      y: Math.floor(Math.random() * grid),
     };
   } while (exclude.some((q) => q.x === p.x && q.y === p.y));
   return p;
 }
 
-function calcMs(score: number): number {
-  return Math.max(80, 200 - Math.floor(score / 50) * 10);
+function calcMs(score: number, initMs: number, minMs: number): number {
+  return Math.max(minMs, initMs - Math.floor(score / 50) * 10);
 }
 
 function spawnParticles(gs: GS, x: number, y: number, color: string): void {
-  const cx = x * CELL + CELL / 2;
-  const cy = y * CELL + CELL / 2;
+  const { cell } = gs.config;
+  const cx = x * cell + cell / 2;
+  const cy = y * cell + cell / 2;
   for (let i = 0; i < 10; i++) {
     const a = (i / 10) * Math.PI * 2;
     const s = 1.5 + Math.random() * 2;
@@ -105,19 +169,20 @@ function spawnParticles(gs: GS, x: number, y: number, color: string): void {
   }
 }
 
-function makeInitialGS(): GS {
+function makeInitialGS(config: GameConfig): GS {
+  const mid = Math.floor(config.grid / 2);
   return {
     phase: "idle",
     snake: [
-      { x: 10, y: 10 },
-      { x: 9, y: 10 },
-      { x: 8, y: 10 },
+      { x: mid, y: mid },
+      { x: mid - 1, y: mid },
+      { x: mid - 2, y: mid },
     ],
     dir: "R",
     nextDir: "R",
-    food: { x: 15, y: 10 },
+    food: { x: Math.min(mid + 5, config.grid - 1), y: mid },
     pu: null,
-    puCountdown: 5,
+    puCountdown: config.puBase + Math.floor(config.puRange / 2),
     score: 0,
     highScore: 0,
     combo: 0,
@@ -126,9 +191,10 @@ function makeInitialGS(): GS {
     particles: [],
     shakeEnd: 0,
     lastTick: 0,
-    tickMs: 200,
+    tickMs: config.initMs,
     rafId: null,
     pid: 0,
+    config,
   };
 }
 
@@ -136,22 +202,23 @@ function makeInitialGS(): GS {
 function drawGame(canvas: HTMLCanvasElement, gs: GS): void {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
+  const { grid, cell, board } = gs.config;
 
   // Background
   ctx.fillStyle = "#0a0a0a";
-  ctx.fillRect(0, 0, BOARD, BOARD);
+  ctx.fillRect(0, 0, board, board);
 
   // Subtle grid
   ctx.strokeStyle = "rgba(255,255,255,0.04)";
   ctx.lineWidth = 0.5;
-  for (let i = 0; i <= GRID; i++) {
+  for (let i = 0; i <= grid; i++) {
     ctx.beginPath();
-    ctx.moveTo(i * CELL, 0);
-    ctx.lineTo(i * CELL, BOARD);
+    ctx.moveTo(i * cell, 0);
+    ctx.lineTo(i * cell, board);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(0, i * CELL);
-    ctx.lineTo(BOARD, i * CELL);
+    ctx.moveTo(0, i * cell);
+    ctx.lineTo(board, i * cell);
     ctx.stroke();
   }
 
@@ -159,17 +226,17 @@ function drawGame(canvas: HTMLCanvasElement, gs: GS): void {
   const starActive = gs.effects.star !== null && gs.effects.star > now;
 
   // Food
-  ctx.font = `${CELL - 4}px serif`;
+  ctx.font = `${cell - 4}px serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("🍎", gs.food.x * CELL + CELL / 2, gs.food.y * CELL + CELL / 2);
+  ctx.fillText("🍎", gs.food.x * cell + cell / 2, gs.food.y * cell + cell / 2);
 
   // Power-up
   if (gs.pu !== null) {
     ctx.fillText(
       puEmoji(gs.pu.type),
-      gs.pu.pos.x * CELL + CELL / 2,
-      gs.pu.pos.y * CELL + CELL / 2,
+      gs.pu.pos.x * cell + cell / 2,
+      gs.pu.pos.y * cell + cell / 2,
     );
   }
 
@@ -188,10 +255,10 @@ function drawGame(canvas: HTMLCanvasElement, gs: GS): void {
     }
     ctx.beginPath();
     ctx.roundRect(
-      seg.x * CELL + 1,
-      seg.y * CELL + 1,
-      CELL - 2,
-      CELL - 2,
+      seg.x * cell + 1,
+      seg.y * cell + 1,
+      cell - 2,
+      cell - 2,
       i === 0 ? 6 : 3,
     );
     ctx.fill();
@@ -212,10 +279,33 @@ function drawGame(canvas: HTMLCanvasElement, gs: GS): void {
 // ── Opposite direction guard ──────────────────────────────────────────────────
 const OPPOSITE: Record<Dir, Dir> = { U: "D", D: "U", L: "R", R: "L" };
 
+// ── Setting option definitions ────────────────────────────────────────────
+const GRID_OPTIONS: { value: GridSize; label: string; sub: string }[] = [
+  { value: "SMALL", label: "15×15", sub: "狭い" },
+  { value: "MEDIUM", label: "20×20", sub: "標準" },
+  { value: "LARGE", label: "25×25", sub: "広い" },
+];
+const SPEED_OPTIONS: { value: SpeedLevel; label: string; sub: string }[] = [
+  { value: "EASY", label: "EASY", sub: "ゆっくり" },
+  { value: "NORMAL", label: "NORMAL", sub: "標準" },
+  { value: "FAST", label: "FAST", sub: "高速" },
+];
+const WALL_OPTIONS: { value: WallMode; label: string; sub: string }[] = [
+  { value: "SOLID", label: "SOLID", sub: "壁で死亡" },
+  { value: "WRAP", label: "WRAP", sub: "すり抜け" },
+];
+const PU_OPTIONS: { value: PowerUpFreq; label: string; sub: string }[] = [
+  { value: "LOW", label: "LOW", sub: "少ない" },
+  { value: "NORMAL", label: "NORMAL", sub: "標準" },
+  { value: "HIGH", label: "HIGH", sub: "多い" },
+];
+
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const gsRef = useRef<GS>(makeInitialGS());
+  const [settings, setSettings] = useState(loadSettings);
+  const currentConfig = resolveConfig(settings);
+  const gsRef = useRef<GS>(makeInitialGS(resolveConfig(loadSettings())));
   const popupIdRef = useRef(0);
   // Store tick fn in ref to avoid stale closure in RAF
   const tickFnRef = useRef<() => void>(() => {});
@@ -238,6 +328,23 @@ export default function App() {
   const [isShaking, setIsShaking] = useState(false);
   const [popups, setPopups] = useState<ScorePopup[]>([]);
 
+  // ── Sync config into idle GS when settings change ────────────────────────
+  useEffect(() => {
+    const gs = gsRef.current;
+    if (gs.phase !== "playing") gs.config = resolveConfig(settings);
+  }, [settings]);
+
+  const updateSetting = useCallback(
+    <K extends keyof Settings>(key: K, value: Settings[K]) => {
+      setSettings((prev) => {
+        const next = { ...prev, [key]: value };
+        saveSettings(next);
+        return next;
+      });
+    },
+    [],
+  );
+
   // ── Add a score popup ──────────────────────────────────────────────────────
   const addPopup = useCallback((x: number, y: number, text: string) => {
     setPopups((prev) => [
@@ -252,6 +359,8 @@ export default function App() {
     if (gs.phase !== "playing") return;
 
     const now = Date.now();
+    const { grid, cell, initMs, minMs } = gs.config;
+    const wrapMode = gs.config.wallMode === "WRAP";
     gs.dir = gs.nextDir;
 
     // New head position
@@ -262,13 +371,13 @@ export default function App() {
 
     const starActive = gs.effects.star !== null && gs.effects.star > now;
 
-    if (starActive) {
-      nx = ((nx % GRID) + GRID) % GRID;
-      ny = ((ny % GRID) + GRID) % GRID;
+    if (starActive || wrapMode) {
+      nx = ((nx % grid) + grid) % grid;
+      ny = ((ny % grid) + grid) % grid;
     }
 
     // Collision
-    const wallHit = nx < 0 || nx >= GRID || ny < 0 || ny >= GRID;
+    const wallHit = nx < 0 || nx >= grid || ny < 0 || ny >= grid;
     const selfHit = gs.snake.some((p) => p.x === nx && p.y === ny);
 
     if (!starActive && (wallHit || selfHit)) {
@@ -306,7 +415,7 @@ export default function App() {
       const bonus = gs.combo >= 3 ? 2 : 1;
       scoreGain += base * bonus;
       gs.score += base * bonus;
-      gs.food = randomFree(newSnake);
+      gs.food = randomFree(newSnake, grid);
       spawnParticles(gs, nx, ny, "#39ff14");
       sfxRef.current.playSweep(660, 1320, 0.12, "sine", 0.25);
 
@@ -318,12 +427,12 @@ export default function App() {
         const types: PUType[] = ["speedDown", "doubleScore", "star"];
         const t = types[Math.floor(Math.random() * types.length)];
         if (t !== undefined) {
-          gs.pu = { pos: randomFree([...newSnake, gs.food]), type: t };
+          gs.pu = { pos: randomFree([...newSnake, gs.food], grid), type: t };
         }
-        gs.puCountdown = 3 + Math.floor(Math.random() * 5);
+        gs.puCountdown = gs.config.puBase + Math.floor(Math.random() * gs.config.puRange);
       }
 
-      gs.tickMs = calcMs(gs.score);
+      gs.tickMs = calcMs(gs.score, initMs, minMs);
     } else {
       newSnake.pop();
     }
@@ -359,8 +468,8 @@ export default function App() {
 
     if (scoreGain > 0) {
       addPopup(
-        nx * CELL + CELL / 2,
-        ny * CELL - 4,
+        nx * cell + cell / 2,
+        ny * cell - 4,
         `+${scoreGain}${comboLabel}`,
       );
     }
@@ -522,7 +631,8 @@ export default function App() {
 
   // ── Start / Restart ────────────────────────────────────────────────────────
   const startGame = useCallback(() => {
-    const fresh = makeInitialGS();
+    const cfg = resolveConfig(settings);
+    const fresh = makeInitialGS(cfg);
     fresh.phase = "playing";
     fresh.lastTick = Date.now();
     gsRef.current = fresh;
@@ -532,7 +642,19 @@ export default function App() {
     setEffects({ speedDown: null, doubleScore: null, star: null });
     setIsShaking(false);
     setPopups([]);
-  }, []);
+  }, [settings]);
+
+  // ── Back to menu ───────────────────────────────────────────────────────
+  const backToMenu = useCallback(() => {
+    const cfg = resolveConfig(settings);
+    gsRef.current = makeInitialGS(cfg);
+    setPhase("idle");
+    setScore(0);
+    setCombo(0);
+    setEffects({ speedDown: null, doubleScore: null, star: null });
+    setIsShaking(false);
+    setPopups([]);
+  }, [settings]);
 
   // ── Effect bar helper ──────────────────────────────────────────────────────
   // deadline は RAF ループが null にするので、null チェックだけで十分
@@ -543,7 +665,7 @@ export default function App() {
   ];
 
   return (
-    <GameShell title="Snake Chaos">
+    <GameShell title="Snake Chaos" gameId="snakechaos">
       <div className="app">
         <div className="header">
           <div className="score-group">
@@ -571,7 +693,7 @@ export default function App() {
 
         {/* Game area */}
         <div className={`game-wrap${isShaking ? " shake" : ""}`}>
-          <canvas ref={canvasRef} width={BOARD} height={BOARD} />
+          <canvas ref={canvasRef} width={currentConfig.board} height={currentConfig.board} />
 
           {/* Score popups */}
           {popups.map((p) => (
@@ -591,10 +713,71 @@ export default function App() {
           {/* Start overlay */}
           {phase === "idle" && (
             <div className="overlay">
-              <div className="overlay-inner">
+              <div className="overlay-inner settings-panel">
                 <h1 className="game-title">🐍 SNAKE CHAOS</h1>
-                <p className="overlay-hint">Arrow keys / WASD で操作</p>
-                <p className="overlay-hint">スワイプでも遊べる</p>
+                <div className="settings-card">
+                  <div className="setting-row">
+                    <span className="setting-label">GRID</span>
+                    <div className="setting-options">
+                      {GRID_OPTIONS.map((o) => (
+                        <button
+                          key={o.value}
+                          className={`setting-btn${settings.gridSize === o.value ? " active" : ""}`}
+                          onClick={() => updateSetting("gridSize", o.value)}
+                        >
+                          <span className="sb-main">{o.label}</span>
+                          <span className="sb-sub">{o.sub}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="setting-row">
+                    <span className="setting-label">SPEED</span>
+                    <div className="setting-options">
+                      {SPEED_OPTIONS.map((o) => (
+                        <button
+                          key={o.value}
+                          className={`setting-btn${settings.speed === o.value ? " active" : ""}`}
+                          onClick={() => updateSetting("speed", o.value)}
+                        >
+                          <span className="sb-main">{o.label}</span>
+                          <span className="sb-sub">{o.sub}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="setting-row">
+                    <span className="setting-label">WALL</span>
+                    <div className="setting-options">
+                      {WALL_OPTIONS.map((o) => (
+                        <button
+                          key={o.value}
+                          className={`setting-btn${settings.wallMode === o.value ? " active" : ""}`}
+                          onClick={() => updateSetting("wallMode", o.value)}
+                        >
+                          <span className="sb-main">{o.label}</span>
+                          <span className="sb-sub">{o.sub}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="setting-row">
+                    <span className="setting-label">POWER UP</span>
+                    <div className="setting-options">
+                      {PU_OPTIONS.map((o) => (
+                        <button
+                          key={o.value}
+                          className={`setting-btn${settings.powerUpFreq === o.value ? " active" : ""}`}
+                          onClick={() => updateSetting("powerUpFreq", o.value)}
+                        >
+                          <span className="sb-main">{o.label}</span>
+                          <span className="sb-sub">{o.sub}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <p className="overlay-hint">Arrow keys / WASD / スワイプで操作</p>
                 <button className="btn-start" onClick={startGame}>
                   GAME START
                 </button>
@@ -611,6 +794,9 @@ export default function App() {
                 <p className="over-hi">BEST &nbsp; {highScore}</p>
                 <button className="btn-start" onClick={startGame}>
                   RESTART
+                </button>
+                <button className="btn-menu" onClick={backToMenu}>
+                  MENU
                 </button>
               </div>
             </div>

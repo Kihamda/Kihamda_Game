@@ -71,6 +71,38 @@ const MAX_MISSES = 5;
 const GAME_DURATION = 60;
 const BASE_SIZE = 80;
 
+// ─── Settings ─────────────────────────────────────────────────────────────────
+
+interface GameSettings {
+  gameDuration: 30 | 60 | 90 | 120;
+  maxMisses: 3 | 5 | -1;
+  baseSize: 55 | 80 | 110;
+  spawnMode: "calm" | "normal" | "busy";
+}
+
+const DEFAULT_SETTINGS: GameSettings = {
+  gameDuration: GAME_DURATION,
+  maxMisses: MAX_MISSES,
+  baseSize: BASE_SIZE,
+  spawnMode: "normal",
+};
+
+const SETTINGS_KEY = "taptarget_settings";
+
+function loadSettings(): GameSettings {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    if (!raw) return DEFAULT_SETTINGS;
+    return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
+  } catch {
+    return DEFAULT_SETTINGS;
+  }
+}
+
+function saveSettings(s: GameSettings): void {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+}
+
 function uid(): string {
   return Math.random().toString(36).slice(2, 9);
 }
@@ -98,6 +130,18 @@ const App = () => {
     useAudio();
   const { best: savedHighScore, update: updateHighScore } =
     useHighScore("taptarget");
+
+  const [settings, setSettings] = useState<GameSettings>(loadSettings);
+  const updateSetting = useCallback(
+    (patch: Partial<GameSettings>) => {
+      setSettings((prev) => {
+        const next = { ...prev, ...patch };
+        saveSettings(next);
+        return next;
+      });
+    },
+    [],
+  );
 
   const playSound = useCallback(
     (type: SoundType) => {
@@ -278,14 +322,21 @@ const App = () => {
         gs.misses += expired.length;
         gs.combo = 0;
         for (let i = 0; i < expired.length; i++) playSound("miss");
-        if (gs.misses >= MAX_MISSES) {
+        if (settings.maxMisses !== -1 && gs.misses >= settings.maxMisses) {
           endGame();
           return;
         }
       }
 
       // Spawn
-      const maxTargets = gs.elapsedMs > 30_000 ? 5 : 3;
+      const maxTargets =
+        settings.spawnMode === "calm"
+          ? 2
+          : settings.spawnMode === "busy"
+            ? 7
+            : gs.elapsedMs > 30_000
+              ? 5
+              : 3;
       if (
         gs.targets.length < maxTargets &&
         now - gs.lastSpawnAt >= gs.nextSpawnInterval
@@ -299,7 +350,7 @@ const App = () => {
             type: pickType(),
             spawnedAt: now,
             lifetime: 1000 + Math.random() * 1000,
-            baseSize: BASE_SIZE,
+            baseSize: settings.baseSize,
           },
         ];
         gs.lastSpawnAt = now;
@@ -310,7 +361,7 @@ const App = () => {
       // Recurse via ref to always use the latest closure
       rafRef.current = requestAnimationFrame((ts) => loopRef.current(ts));
     },
-    [endGame, playSound, syncDisplay],
+    [endGame, playSound, syncDisplay, settings],
   );
 
   // Keep loopRef up-to-date after each render (avoids stale closure in RAF)
@@ -412,7 +463,7 @@ const App = () => {
       targets: [],
       score: 0,
       misses: 0,
-      timeLeft: GAME_DURATION,
+      timeLeft: settings.gameDuration,
       combo: 0,
       lastSpawnAt: 0,
       nextSpawnInterval: 1200,
@@ -425,13 +476,13 @@ const App = () => {
       targets: [],
       score: 0,
       misses: 0,
-      timeLeft: GAME_DURATION,
+      timeLeft: settings.gameDuration,
       combo: 0,
       particles: [],
       floatingTexts: [],
       shaking: false,
     }));
-  }, []);
+  }, [settings]);
 
   // ── Render ─────────────────────────────────────────────────────────────────
   const {
@@ -450,7 +501,7 @@ const App = () => {
   const isNewRecord = phase === "gameover" && score >= highScore && score > 0;
 
   return (
-    <GameShell title="Tap Target">
+    <GameShell title="Tap Target" gameId="taptarget">
       <div className={`tt-app${shaking ? " shake" : ""}`}>
         {phase === "idle" && (
           <div className="tt-overlay">
@@ -460,8 +511,72 @@ const App = () => {
               <li>🔴 通常: +10 / +20 / +50pts</li>
               <li>⭐ ゴールデン: スコア×3</li>
               <li>💣 爆弾: -30pts（放置OK）</li>
-              <li>5ミスでゲームオーバー</li>
+              <li>
+                {settings.maxMisses === -1
+                  ? "ミス無制限（スコア勝負）"
+                  : `${settings.maxMisses}ミスでゲームオーバー`}
+              </li>
             </ul>
+
+            <div className="tt-settings">
+              <div className="tt-setting-row">
+                <span className="tt-setting-label">時間</span>
+                <div className="tt-btn-group">
+                  {([30, 60, 90, 120] as const).map((v) => (
+                    <button
+                      key={v}
+                      className={`tt-opt${settings.gameDuration === v ? " active" : ""}`}
+                      onClick={() => updateSetting({ gameDuration: v })}
+                    >
+                      {v}s
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="tt-setting-row">
+                <span className="tt-setting-label">ミス</span>
+                <div className="tt-btn-group">
+                  {([3, 5, -1] as const).map((v) => (
+                    <button
+                      key={v}
+                      className={`tt-opt${settings.maxMisses === v ? " active" : ""}`}
+                      onClick={() => updateSetting({ maxMisses: v })}
+                    >
+                      {v === -1 ? "∞" : `${v}回`}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="tt-setting-row">
+                <span className="tt-setting-label">サイズ</span>
+                <div className="tt-btn-group">
+                  {([110, 80, 55] as const).map((v) => (
+                    <button
+                      key={v}
+                      className={`tt-opt${settings.baseSize === v ? " active" : ""}`}
+                      onClick={() => updateSetting({ baseSize: v })}
+                    >
+                      {v === 110 ? "大" : v === 80 ? "普通" : "小"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="tt-setting-row">
+                <span className="tt-setting-label">出現数</span>
+                <div className="tt-btn-group">
+                  {(["calm", "normal", "busy"] as const).map((v) => (
+                    <button
+                      key={v}
+                      className={`tt-opt${settings.spawnMode === v ? " active" : ""}`}
+                      onClick={() => updateSetting({ spawnMode: v })}
+                    >
+                      {v === "calm" ? "少" : v === "normal" ? "普通" : "多"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
             {highScore > 0 && (
               <p className="tt-hs">ベストスコア: {highScore}</p>
             )}
@@ -480,6 +595,15 @@ const App = () => {
             <button className="tt-btn" onClick={startGame}>
               もう一度
             </button>
+            <button
+              className="tt-btn-link"
+              onClick={() => {
+                phaseRef.current = "idle";
+                setDisplay((d) => ({ ...d, phase: "idle" }));
+              }}
+            >
+              設定を変更する
+            </button>
           </div>
         )}
 
@@ -497,14 +621,18 @@ const App = () => {
                 ⏱ {timeLeft}s
               </span>
               <span className="tt-hud-misses">
-                {Array.from({ length: MAX_MISSES }, (_, i) => (
-                  <span
-                    key={i}
-                    className={`miss-dot${i < misses ? " filled" : ""}`}
-                  >
-                    ●
-                  </span>
-                ))}
+                {settings.maxMisses === -1 ? (
+                  <span className="miss-count">💀 {misses}</span>
+                ) : (
+                  Array.from({ length: settings.maxMisses }, (_, i) => (
+                    <span
+                      key={i}
+                      className={`miss-dot${i < misses ? " filled" : ""}`}
+                    >
+                      ●
+                    </span>
+                  ))
+                )}
               </span>
             </div>
 

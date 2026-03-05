@@ -6,22 +6,89 @@ import { useAudio, GameShell, useHighScore } from "../../../src/shared";
 // Constants
 // ---------------------------------------------------------------------------
 
-const COLORS = [
+interface Color {
+  name: string;
+  hex: string;
+}
+
+const ALL_COLORS: Color[] = [
   { name: "あか", hex: "#ef4444" },
   { name: "あお", hex: "#3b82f6" },
   { name: "みどり", hex: "#22c55e" },
   { name: "きいろ", hex: "#eab308" },
-] as const;
-
-type Color = (typeof COLORS)[number];
+  { name: "むらさき", hex: "#a855f7" },
+  { name: "オレンジ", hex: "#f97316" },
+  { name: "ピンク", hex: "#ec4899" },
+  { name: "シアン", hex: "#06b6d4" },
+];
 
 const BG_MAP: Record<string, string> = {
   "#ef4444": "linear-gradient(135deg, #2d0a0a 0%, #1a1a2e 100%)",
   "#3b82f6": "linear-gradient(135deg, #0a142d 0%, #1a1a2e 100%)",
   "#22c55e": "linear-gradient(135deg, #0a2d14 0%, #1a1a2e 100%)",
   "#eab308": "linear-gradient(135deg, #2d200a 0%, #1a1a2e 100%)",
+  "#a855f7": "linear-gradient(135deg, #1f0a2d 0%, #1a1a2e 100%)",
+  "#f97316": "linear-gradient(135deg, #2d180a 0%, #1a1a2e 100%)",
+  "#ec4899": "linear-gradient(135deg, #2d0a1f 0%, #1a1a2e 100%)",
+  "#06b6d4": "linear-gradient(135deg, #0a2d2d 0%, #1a1a2e 100%)",
 };
 const DEFAULT_BG = "linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%)";
+
+type ColorCount = 4 | 6 | 8;
+type TimePressure = "relaxed" | "normal" | "strict";
+
+interface Settings {
+  colorCount: ColorCount;
+  maxMisses: 1 | 3 | 5;
+  timePressure: TimePressure;
+}
+
+const DEFAULT_SETTINGS: Settings = {
+  colorCount: 4,
+  maxMisses: 3,
+  timePressure: "normal",
+};
+
+const STORAGE_KEY = "colorburst_settings";
+
+const TIME_MULTIPLIERS: Record<TimePressure, number> = {
+  relaxed: 1.5,
+  normal: 1.0,
+  strict: 0.7,
+};
+
+function loadSettings(): Settings {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return DEFAULT_SETTINGS;
+    const parsed = JSON.parse(raw) as Partial<Settings>;
+    const colorCount = parsed.colorCount;
+    const maxMisses = parsed.maxMisses;
+    const timePressure = parsed.timePressure;
+    return {
+      colorCount:
+        colorCount === 4 || colorCount === 6 || colorCount === 8
+          ? colorCount
+          : 4,
+      maxMisses:
+        maxMisses === 1 || maxMisses === 3 || maxMisses === 5
+          ? maxMisses
+          : 3,
+      timePressure:
+        timePressure === "relaxed" ||
+        timePressure === "normal" ||
+        timePressure === "strict"
+          ? timePressure
+          : "normal",
+    };
+  } catch {
+    return DEFAULT_SETTINGS;
+  }
+}
+
+function saveSettings(s: Settings): void {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+}
 
 type GameState = "start" | "playing" | "gameover";
 
@@ -39,19 +106,21 @@ interface ScorePopupItem {
 // Pure helpers
 // ---------------------------------------------------------------------------
 
-function getTimeLimit(questionCount: number): number {
-  if (questionCount < 6) return 3000;
-  if (questionCount < 11) return 2000;
-  return 1500;
+function getTimeLimit(questionCount: number, multiplier: number): number {
+  let base: number;
+  if (questionCount < 6) base = 3000;
+  else if (questionCount < 11) base = 2000;
+  else base = 1500;
+  return base * multiplier;
 }
 
-function generateQuestion(): Question {
-  const wordIdx = Math.floor(Math.random() * COLORS.length);
-  let colorIdx = Math.floor(Math.random() * COLORS.length);
+function generateQuestion(colors: Color[]): Question {
+  const wordIdx = Math.floor(Math.random() * colors.length);
+  let colorIdx = Math.floor(Math.random() * colors.length);
   if (colorIdx === wordIdx) {
-    colorIdx = (colorIdx + 1) % COLORS.length;
+    colorIdx = (colorIdx + 1) % colors.length;
   }
-  return { word: COLORS[wordIdx], displayColor: COLORS[colorIdx] };
+  return { word: colors[wordIdx], displayColor: colors[colorIdx] };
 }
 
 // ---------------------------------------------------------------------------
@@ -59,8 +128,11 @@ function generateQuestion(): Question {
 // ---------------------------------------------------------------------------
 
 export default function App() {
+  const [settings, setSettings] = useState<Settings>(loadSettings);
   const [gameState, setGameState] = useState<GameState>("start");
-  const [question, setQuestion] = useState<Question>(generateQuestion);
+  const [question, setQuestion] = useState<Question>(() =>
+    generateQuestion(ALL_COLORS.slice(0, DEFAULT_SETTINGS.colorCount)),
+  );
   const [score, setScore] = useState(0);
   const [combo, setCombo] = useState(0);
   const [misses, setMisses] = useState(0);
@@ -84,16 +156,28 @@ export default function App() {
   const popupIdRef = useRef(0);
   const processingRef = useRef(false);
 
-  /** 次の問題をセットしてタイマーをリセットする */
-  const nextQuestion = useCallback((newQC: number): void => {
-    const q = generateQuestion();
-    setQuestion(q);
-    setBgColor(BG_MAP[q.displayColor.hex] ?? DEFAULT_BG);
-    timeLimitRef.current = getTimeLimit(newQC);
-    startTimeRef.current = Date.now();
-    setTimeLeft(1);
-    processingRef.current = false;
+  const updateSettings = useCallback((next: Settings) => {
+    setSettings(next);
+    saveSettings(next);
   }, []);
+
+  /** 次の問題をセットしてタイマーをリセットする */
+  const nextQuestion = useCallback(
+    (newQC: number): void => {
+      const colors = ALL_COLORS.slice(0, settings.colorCount);
+      const q = generateQuestion(colors);
+      setQuestion(q);
+      setBgColor(BG_MAP[q.displayColor.hex] ?? DEFAULT_BG);
+      timeLimitRef.current = getTimeLimit(
+        newQC,
+        TIME_MULTIPLIERS[settings.timePressure],
+      );
+      startTimeRef.current = Date.now();
+      setTimeLeft(1);
+      processingRef.current = false;
+    },
+    [settings.colorCount, settings.timePressure],
+  );
 
   // ---------------------------------------------------------------------------
   // Timeout handler (定義は timer effect より先に必要)
@@ -110,7 +194,7 @@ export default function App() {
     const newMisses = misses + 1;
     setMisses(newMisses);
 
-    if (newMisses >= 3) {
+    if (newMisses >= settings.maxMisses) {
       updateBest(scoreRef.current);
       setGameState("gameover");
       return;
@@ -119,7 +203,7 @@ export default function App() {
     const newQC = questionCount + 1;
     setQuestionCount(newQC);
     nextQuestion(newQC);
-  }, [misses, questionCount, playMiss, nextQuestion, updateBest]);
+  }, [misses, questionCount, playMiss, nextQuestion, updateBest, settings.maxMisses]);
 
   // ---------------------------------------------------------------------------
   // Timer interval — question / handleTimeout 変化のたびにリセット
@@ -187,7 +271,7 @@ export default function App() {
         const newMisses = misses + 1;
         setMisses(newMisses);
 
-        if (newMisses >= 3) {
+        if (newMisses >= settings.maxMisses) {
           updateBest(scoreRef.current);
           setGameState("gameover");
           return;
@@ -209,6 +293,7 @@ export default function App() {
       playFanfare,
       nextQuestion,
       updateBest,
+      settings.maxMisses,
     ],
   );
 
@@ -227,20 +312,24 @@ export default function App() {
     setPopups([]);
     processingRef.current = false;
 
-    const q = generateQuestion();
+    const colors = ALL_COLORS.slice(0, settings.colorCount);
+    const q = generateQuestion(colors);
     setQuestion(q);
     setBgColor(BG_MAP[q.displayColor.hex] ?? DEFAULT_BG);
-    timeLimitRef.current = getTimeLimit(0);
+    timeLimitRef.current = getTimeLimit(
+      0,
+      TIME_MULTIPLIERS[settings.timePressure],
+    );
     startTimeRef.current = Date.now();
     setTimeLeft(1);
     setGameState("playing");
-  }, []);
+  }, [settings.colorCount, settings.timePressure]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
   return (
-    <GameShell title="Color Burst">
+    <GameShell title="Color Burst" gameId="colorburst">
       <div
         className={`app${isShaking ? " shake" : ""}`}
         style={{ background: bgColor } as React.CSSProperties}
@@ -273,6 +362,62 @@ export default function App() {
               テキストが「表示されている色」のボタンを押せ
             </p>
             <p className="game-desc-sub">文字の意味に惑わされるな</p>
+
+            <div className="settings-panel">
+              <div className="setting-group">
+                <span className="setting-label">色数</span>
+                <div className="setting-options">
+                  {([4, 6, 8] as const).map((n) => (
+                    <button
+                      key={n}
+                      className={`setting-btn${settings.colorCount === n ? " active" : ""}`}
+                      onClick={() =>
+                        updateSettings({ ...settings, colorCount: n })
+                      }
+                    >
+                      {n}色
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="setting-group">
+                <span className="setting-label">ミス許容</span>
+                <div className="setting-options">
+                  {([1, 3, 5] as const).map((n) => (
+                    <button
+                      key={n}
+                      className={`setting-btn${settings.maxMisses === n ? " active" : ""}`}
+                      onClick={() =>
+                        updateSettings({ ...settings, maxMisses: n })
+                      }
+                    >
+                      {n}回
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="setting-group">
+                <span className="setting-label">制限時間</span>
+                <div className="setting-options">
+                  {(["relaxed", "normal", "strict"] as const).map((t) => (
+                    <button
+                      key={t}
+                      className={`setting-btn${settings.timePressure === t ? " active" : ""}`}
+                      onClick={() =>
+                        updateSettings({ ...settings, timePressure: t })
+                      }
+                    >
+                      {t === "relaxed"
+                        ? "ゆるい"
+                        : t === "normal"
+                          ? "ふつう"
+                          : "きびしい"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
             <button className="btn-start" onClick={startGame}>
               START
             </button>
@@ -294,7 +439,7 @@ export default function App() {
                 {combo >= 2 && <span className="combo-badge">x{combo}</span>}
               </div>
               <div className="hud-misses">
-                {Array.from({ length: 3 }).map((_, i) => (
+                {Array.from({ length: settings.maxMisses }).map((_, i) => (
                   <span
                     key={i}
                     className={`heart${i < misses ? " heart-broken" : ""}`}
@@ -328,7 +473,7 @@ export default function App() {
 
             {/* カラーボタン */}
             <div className="buttons-area">
-              {COLORS.map((color) => (
+              {ALL_COLORS.slice(0, settings.colorCount).map((color) => (
                 <button
                   key={color.hex}
                   className="color-btn"

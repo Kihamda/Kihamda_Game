@@ -406,3 +406,82 @@ body,
 .shake {
   animation: game-shake 0.5s ease-out;
 }
+
+/* ── Settings ────────────────────────────────────────────────────────────── */
+.tt-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: min(90%, 360px);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tt-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.tt-setting-label {
+  font-size: clamp(0.75rem, 2.2vw, 0.9rem);
+  color: #aaa;
+  min-width: 4em;
+  flex-shrink: 0;
+}
+
+.tt-btn-group {
+  display: flex;
+  gap: 4px;
+}
+
+.tt-opt {
+  padding: 0.3rem 0.55rem;
+  font-size: clamp(0.7rem, 2vw, 0.85rem);
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #999;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tt-opt:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ccc;
+}
+
+.tt-opt.active {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 107, 0.3),
+    rgba(255, 159, 67, 0.3)
+  );
+  border-color: rgba(255, 107, 107, 0.6);
+  color: #fff;
+  box-shadow: 0 0 8px rgba(255, 107, 107, 0.25);
+}
+
+.tt-btn-link {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.15s;
+}
+
+.tt-btn-link:hover {
+  color: #ccc;
+}
+
+.miss-count {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ff4747;
+}

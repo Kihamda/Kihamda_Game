@@ -33,34 +33,37 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 
 ---
 
-## 現在地 (2026-03-03 時点)
+## 現在地 (2026-03-04 時点)
 
 ### 完了済み
 
 - [x] モノレポ化されている (`games/` と `portal/` が存在)
 - [x] Game #1 (`games/ntiktaktoe/`) が分離済み
 - [x] `games/_template/` が存在し、量産の土台がある
-- [x] Game #2〜#14 実装完了（flashreflex/gravityfour/memoryduel/snakechaos/merge2048/brickblast/molemania/colorburst/taptarget/simonecho/numhunt/dodgeblitz/typingblitz）
-- [x] `src/portal/data/games.json` によるメタデータ管理基盤がある（14本登録済み）
+- [x] Game #2〜#15 実装完了（flashreflex/gravityfour/memoryduel/snakechaos/merge2048/brickblast/molemania/colorburst/taptarget/simonecho/numhunt/dodgeblitz/typingblitz/minerush）
+- [x] `src/portal/data/games.json` によるメタデータ管理基盤がある（15本登録済み）
 - [x] 各ゲームの本番URLが揃っているか確認 (確定ドメイン: `https://game.kihamda.net/`)
 - [x] `portal/` 本番公開の確認 (`https://game.kihamda.net/` 到達確認済み)
 - [x] 全ゲームで `lint` と `build` がグリーンか横断確認
 - [x] 全ゲームにドーパミン強化演出（パーティクル/コンボ/ポップアップ/シェイク/WebAudio）追加
-- [x] 全14ゲームに SEO 三点セット（description / OGP / Twitter Card / canonical）追加
-- [x] 全14ゲームに GA4 (G-L7TY3RFZB7) 導入
+- [x] 全15ゲームに SEO 三点セット（description / OGP / Twitter Card / canonical）追加
+- [x] 全15ゲームに GA4 (G-L7TY3RFZB7) 導入
 - [x] portal 全ページに OGP / canonical 正規化
 - [x] 単一Viteプロジェクトに統合（Astro/Turbo/workspaces廃止）
 - [x] SSGプラグインでポータルHTML/sitemap/headers/redirects自動生成
 - [x] src/shared/ 共通ライブラリ作成（GameShell/ParticleLayer/ScorePopup/useAudio/useParticles/useHighScore）
 - [x] 全14ゲームの共通化リファクタ（CSS重複整理/ESLint全解消/useHighScore展開）
 - [x] ポータルSSG化（plugins/portal-ssg.ts でReact SSR→静的HTML注入、フレームワークJS送信ゼロ）
+- [x] 各ゲーム内から portal/他ゲームへの内部リンク追加（GameRecommendationsコンポーネント）
+- [x] SNS自動投稿ワークフロー構築（Bluesky/Twitter、週次定期投稿+リリース時投稿）
 
 ### 未完了 / 要確認
 
 - [ ] Search Console に `sitemap-index.xml` を送信（人間の作業）
 - [ ] AdSense 審査の申請・設置状態の確認（人間の作業）
 - [ ] PR作成 → main マージ → デプロイ（人間の作業）
-- [ ] 各ゲーム内から portal への内部リンク追加（Phase 1）
+- [ ] GitHub Secrets 設定: BLUESKY_HANDLE / BLUESKY_APP_PASSWORD（人間の作業 → SNS自動投稿有効化）
+- [ ] MineRush サムネイル (thumbnails/minerush.svg) 作成
 
 ### ボトルネック
 
@@ -312,7 +315,8 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
         ├── @copywriter         ゲーム説明文・LP・マーケティングコピー
         ├── @qa-tester          ビルド検証・品質チェック・パフォーマンス
         ├── @agent-editor       エージェント/プロンプト/Copilot設定管理
-        └── @github-repo        GitHub MCPでリモートリポ監視
+        ├── @github-repo        GitHub MCPでリモートリポ監視
+        └── @svg-artist         SVGサムネイル生成・更新 (640x360)
 ```
 
 ### 作業フロー例

@@ -10,9 +10,71 @@ import {
 
 type Phase = "ready" | "waiting" | "go" | "roundResult" | "finished";
 
-const TOTAL_ROUNDS = 5;
-const FALSE_START_PENALTY_MS = 700;
+// ---- Settings ----
+type RoundCount = 3 | 5 | 10 | 20;
+type WaitMode = "predictable" | "normal" | "tricky";
+type PenaltyMode = "mild" | "normal" | "severe";
+
+interface Settings {
+  rounds: RoundCount;
+  waitMode: WaitMode;
+  penaltyMode: PenaltyMode;
+}
+
+const DEFAULT_SETTINGS: Settings = {
+  rounds: 5,
+  waitMode: "normal",
+  penaltyMode: "normal",
+};
+
+const ROUND_OPTIONS: { value: RoundCount; label: string; desc: string }[] = [
+  { value: 3, label: "3", desc: "サクッと" },
+  { value: 5, label: "5", desc: "ふつう" },
+  { value: 10, label: "10", desc: "じっくり" },
+  { value: 20, label: "20", desc: "持久力" },
+];
+
+const WAIT_OPTIONS: { value: WaitMode; label: string; desc: string }[] = [
+  { value: "predictable", label: "PREDICTABLE", desc: "読みやすい" },
+  { value: "normal", label: "NORMAL", desc: "ふつう" },
+  { value: "tricky", label: "TRICKY", desc: "読めない" },
+];
+
+const PENALTY_OPTIONS: { value: PenaltyMode; label: string; desc: string }[] = [
+  { value: "mild", label: "MILD", desc: "300ms" },
+  { value: "normal", label: "NORMAL", desc: "700ms" },
+  { value: "severe", label: "SEVERE", desc: "1500ms" },
+];
+
+const WAIT_RANGES: Record<WaitMode, { min: number; range: number }> = {
+  predictable: { min: 1000, range: 1000 },
+  normal: { min: 1200, range: 2000 },
+  tricky: { min: 800, range: 4200 },
+};
+
+const PENALTY_VALUES: Record<PenaltyMode, number> = {
+  mild: 300,
+  normal: 700,
+  severe: 1500,
+};
+
 const STREAK_THRESHOLD_MS = 350;
+const STORAGE_KEY = "flashreflex_settings";
+
+function loadSettings(): Settings {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return DEFAULT_SETTINGS;
+    const parsed = JSON.parse(raw) as Partial<Settings>;
+    return { ...DEFAULT_SETTINGS, ...parsed };
+  } catch {
+    return DEFAULT_SETTINGS;
+  }
+}
+
+function saveSettings(s: Settings): void {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+}
 
 // Particle origin: approximate center of the .panel element
 const PARTICLE_ORIGIN_X = 300;
@@ -45,6 +107,19 @@ function App() {
   const [streak, setStreak] = useState(0);
   const [shakeClass, setShakeClass] = useState<"" | "shake" | "celebrate">("");
   const [rankLabel, setRankLabel] = useState("");
+
+  const [settings, setSettings] = useState<Settings>(loadSettings);
+  const totalRounds = settings.rounds;
+  const penaltyMs = PENALTY_VALUES[settings.penaltyMode];
+  const waitRange = WAIT_RANGES[settings.waitMode];
+
+  function updateSetting<K extends keyof Settings>(key: K, value: Settings[K]) {
+    setSettings((prev) => {
+      const next = { ...prev, [key]: value };
+      saveSettings(next);
+      return next;
+    });
+  }
 
   useEffect(() => {
     return () => {
@@ -82,8 +157,8 @@ function App() {
   }, [scores]);
 
   const falseStarts = useMemo(
-    () => scores.filter((score) => score === FALSE_START_PENALTY_MS).length,
-    [scores],
+    () => scores.filter((score) => score === penaltyMs).length,
+    [scores, penaltyMs],
   );
 
   const clearRoundTimer = () => {
@@ -99,7 +174,7 @@ function App() {
     setPhase("waiting");
     setStatusText("赤の間は待機 緑に変わった瞬間にタップ");
 
-    const delay = Math.floor(Math.random() * 2000) + 1200;
+    const delay = Math.floor(Math.random() * waitRange.range) + waitRange.min;
     timerRef.current = window.setTimeout(() => {
       goTimeRef.current = performance.now();
       setPhase("go");
@@ -113,7 +188,7 @@ function App() {
     const nextScores = [...scores, reactionMs];
     setScores(nextScores);
 
-    const isFalseStart = reactionMs === FALSE_START_PENALTY_MS;
+    const isFalseStart = reactionMs === penaltyMs;
     const isSlow = !isFalseStart && reactionMs > 500;
     const isGood = !isFalseStart && reactionMs <= STREAK_THRESHOLD_MS;
 
@@ -151,13 +226,13 @@ function App() {
       showPopup(`+${reactionMs}ms ${label}`);
     }
 
-    if (round >= TOTAL_ROUNDS) {
+    if (round >= totalRounds) {
       setPhase("finished");
       setStatusText("計測完了");
 
       // Perfect run?
       const allGood = nextScores.every(
-        (s) => s !== FALSE_START_PENALTY_MS && s <= STREAK_THRESHOLD_MS,
+        (s) => s !== penaltyMs && s <= STREAK_THRESHOLD_MS,
       );
       if (allGood) {
         window.setTimeout(() => spawnParticles(40, true), 200);
@@ -169,7 +244,7 @@ function App() {
         nextScores.reduce((a, b) => a + b, 0) / nextScores.length,
       );
       const finalFs = nextScores.filter(
-        (s) => s === FALSE_START_PENALTY_MS,
+        (s) => s === penaltyMs,
       ).length;
       const rank = getRank(finalAvg, finalFs);
       if (rank) window.setTimeout(() => setRankLabel(rank), 800);
@@ -208,8 +283,8 @@ function App() {
   const handleTap = () => {
     if (phase === "waiting") {
       clearRoundTimer();
-      setStatusText("フライング 700ms ペナルティ");
-      finishRound(FALSE_START_PENALTY_MS);
+      setStatusText(`フライング ${penaltyMs}ms ペナルティ`);
+      finishRound(penaltyMs);
       return;
     }
 
@@ -229,20 +304,20 @@ function App() {
   const latestScore = scores[scores.length - 1] ?? 0;
 
   return (
-    <GameShell title="Flash Reflex">
+    <GameShell title="Flash Reflex" gameId="flashreflex">
       <main className={`app${shakeClass ? ` ${shakeClass}` : ""}`}>
         <section className="panel">
           <ParticleLayer particles={particles} />
 
           <h1>Flash Reflex</h1>
-          <p className="subtitle">5ラウンド反応速度チャレンジ</p>
+          <p className="subtitle">{totalRounds}ラウンド反応速度チャレンジ</p>
 
           <div className="ruleBox">
             <h2>ルール</h2>
             <ul>
               <li>赤の間は待機 緑になったらすぐタップ</li>
-              <li>早押しはフライングで 700ms 扱い</li>
-              <li>5ラウンドの平均が小さいほど強い</li>
+              <li>早押しはフライングで {penaltyMs}ms 扱い</li>
+              <li>{totalRounds}ラウンドの平均が小さいほど強い</li>
             </ul>
           </div>
 
@@ -267,16 +342,66 @@ function App() {
 
           <div className="hud">
             <span>
-              Round {Math.min(round, TOTAL_ROUNDS)} / {TOTAL_ROUNDS}
+              Round {Math.min(round, totalRounds)} / {totalRounds}
             </span>
             <span>Best {best > 0 ? `${best} ms` : "-"}</span>
             <span>Avg {average > 0 ? `${average} ms` : "-"}</span>
           </div>
 
           {phase === "ready" && (
-            <button className="action" onClick={startGame} type="button">
-              スタート
-            </button>
+            <div className="settingsBlock">
+              <div className="settingGroup">
+                <h3>ラウンド数</h3>
+                <div className="settingButtons">
+                  {ROUND_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      className={`settingBtn${settings.rounds === opt.value ? " active" : ""}`}
+                      onClick={() => updateSetting("rounds", opt.value)}
+                      type="button"
+                    >
+                      <span>{opt.label}</span>
+                      <small>{opt.desc}</small>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="settingGroup">
+                <h3>待機時間の幅</h3>
+                <div className="settingButtons">
+                  {WAIT_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      className={`settingBtn${settings.waitMode === opt.value ? " active" : ""}`}
+                      onClick={() => updateSetting("waitMode", opt.value)}
+                      type="button"
+                    >
+                      <span>{opt.label}</span>
+                      <small>{opt.desc}</small>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="settingGroup">
+                <h3>フライングペナルティ</h3>
+                <div className="settingButtons">
+                  {PENALTY_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      className={`settingBtn${settings.penaltyMode === opt.value ? " active" : ""}`}
+                      onClick={() => updateSetting("penaltyMode", opt.value)}
+                      type="button"
+                    >
+                      <span>{opt.label}</span>
+                      <small>{opt.desc}</small>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <button className="action" onClick={startGame} type="button">
+                スタート
+              </button>
+            </div>
           )}
 
           {phase === "roundResult" && (

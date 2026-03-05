@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
 import { useAudio, GameShell, useHighScore } from "../../../src/shared";
 
@@ -100,6 +100,81 @@ const POWER_LABEL: Record<Exclude<PowerType, "explosive">, string> = {
   speed: "⚡ SLOW 6s",
 };
 
+// ─── Settings ─────────────────────────────────────────────────────────────────
+interface Settings {
+  lives: number;
+  baseSpeed: number;
+  paddleW: number;
+  powerDropRate: number;
+}
+
+const DEFAULT_SETTINGS: Settings = {
+  lives: 3,
+  baseSpeed: BASE_SPEED,
+  paddleW: BASE_PADDLE_W,
+  powerDropRate: POWER_DROP_CHANCE,
+};
+
+function loadSettings(): Settings {
+  try {
+    const raw = localStorage.getItem("brickblast_settings");
+    if (raw) {
+      const parsed = JSON.parse(raw) as Partial<Settings>;
+      return { ...DEFAULT_SETTINGS, ...parsed };
+    }
+  } catch {
+    /* ignore */
+  }
+  return { ...DEFAULT_SETTINGS };
+}
+
+function saveSettings(s: Settings): void {
+  localStorage.setItem("brickblast_settings", JSON.stringify(s));
+}
+
+const SETTING_OPTIONS: {
+  key: keyof Settings;
+  label: string;
+  choices: { value: number; label: string }[];
+}[] = [
+  {
+    key: "lives",
+    label: "初期ライフ",
+    choices: [
+      { value: 1, label: "1" },
+      { value: 3, label: "3" },
+      { value: 5, label: "5" },
+    ],
+  },
+  {
+    key: "baseSpeed",
+    label: "ボール速度",
+    choices: [
+      { value: 3.0, label: "SLOW" },
+      { value: 4.5, label: "NORMAL" },
+      { value: 6.0, label: "FAST" },
+    ],
+  },
+  {
+    key: "paddleW",
+    label: "パドルサイズ",
+    choices: [
+      { value: 120, label: "WIDE" },
+      { value: 80, label: "NORMAL" },
+      { value: 50, label: "NARROW" },
+    ],
+  },
+  {
+    key: "powerDropRate",
+    label: "パワーアップ出現率",
+    choices: [
+      { value: 0.08, label: "LOW" },
+      { value: 0.18, label: "NORMAL" },
+      { value: 0.35, label: "HIGH" },
+    ],
+  },
+];
+
 // ─── Game Helpers ─────────────────────────────────────────────────────────────
 const BLOCK_COLORS: Record<number, string> = {
   3: "#4488ff",
@@ -144,9 +219,9 @@ function makeBall(paddleX: number, paddleW: number, speed: number): Ball {
   };
 }
 
-function currentSpeed(state: GameState): number {
+function currentSpeed(state: GameState, baseSpeed: number): number {
   const hasSpeed = state.activePowers.some((p) => p.type === "speed");
-  return BASE_SPEED * (1 + state.stage * 0.08) * (hasSpeed ? 0.7 : 1);
+  return baseSpeed * (1 + state.stage * 0.08) * (hasSpeed ? 0.7 : 1);
 }
 
 function normalizeBall(ball: Ball, speed: number) {
@@ -181,8 +256,8 @@ function spawnParticles(
   }
 }
 
-function maybeDrop(drops: DroppingPower[], x: number, y: number) {
-  if (Math.random() < POWER_DROP_CHANCE) {
+function maybeDrop(drops: DroppingPower[], x: number, y: number, dropChance: number) {
+  if (Math.random() < dropChance) {
     const types: PowerType[] = ["multiball", "paddle", "speed", "explosive"];
     const type = types[Math.floor(Math.random() * types.length)]!;
     drops.push({ type, x, y, dy: 2.2 });
@@ -198,6 +273,14 @@ const POWER_DOT: Record<PowerType, string> = {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 const App = () => {
+  const [settings, setSettings] = useState<Settings>(loadSettings);
+  const [showTitle, setShowTitle] = useState(true);
+  const settingsRef = useRef(settings);
+  const startGameRef = useRef<(() => void) | null>(null);
+  useEffect(() => {
+    settingsRef.current = settings;
+  }, [settings]);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gsRef = useRef<GameState>({
     phase: "title",
@@ -259,7 +342,7 @@ const App = () => {
     }
     function onPointerDown() {
       if (gs.phase === "title") {
-        startGame();
+        return;
       } else if (gs.phase === "playing" && gs.ballAttached) {
         gs.ballAttached = false;
       } else if (gs.phase === "gameover" || gs.phase === "stageclear") {
@@ -268,7 +351,8 @@ const App = () => {
             gs.stage++;
             nextStage();
           } else {
-            startGame();
+            gs.phase = "title";
+            setShowTitle(true);
           }
         }
       }
@@ -282,7 +366,7 @@ const App = () => {
     function startGame() {
       gs.phase = "playing";
       gs.score = 0;
-      gs.lives = 3;
+      gs.lives = settingsRef.current.lives;
       gs.stage = 1;
       gs.combo = 0;
       gs.comboTimer = 0;
@@ -294,11 +378,14 @@ const App = () => {
       nextStage();
     }
 
+    startGameRef.current = startGame;
+
     function nextStage() {
+      const basePW = settingsRef.current.paddleW;
       gs.blocks = makeBlocks(gs.stage);
       gs.balls = [];
       gs.ballAttached = true;
-      gs.paddleW = hasPower("paddle") ? BASE_PADDLE_W * 1.5 : BASE_PADDLE_W;
+      gs.paddleW = hasPower("paddle") ? basePW * 1.5 : basePW;
       gs.paddleX = CW / 2 - gs.paddleW / 2;
       gs.particles = [];
       gs.droppingPowers = [];
@@ -371,7 +458,7 @@ const App = () => {
           if (colDist <= 1 && rowDist <= 1) {
             gs.score += b.hp;
             spawnParticles(gs.particles, b.x, b.y, b.w, b.h, blockColor(b.hp));
-            maybeDrop(gs.droppingPowers, b.x + b.w / 2, b.y + b.h);
+            maybeDrop(gs.droppingPowers, b.x + b.w / 2, b.y + b.h, settingsRef.current.powerDropRate);
             const freqs = [880, 660, 440] as const;
             sfx.sharedPlayTone(freqs[3 - b.hp] ?? 440, 0.09, "square", 0.18);
           }
@@ -414,6 +501,7 @@ const App = () => {
             gs.droppingPowers,
             block.x + block.w / 2,
             block.y + block.h,
+            settingsRef.current.powerDropRate,
           );
           gs.blocks = gs.blocks.filter((b) => b !== block);
           gs.combo++;
@@ -455,7 +543,8 @@ const App = () => {
       });
 
       // Paddle width
-      const targetPW = hasPower("paddle") ? BASE_PADDLE_W * 1.5 : BASE_PADDLE_W;
+      const basePW = settingsRef.current.paddleW;
+      const targetPW = hasPower("paddle") ? basePW * 1.5 : basePW;
       gs.paddleW = gs.paddleW + (targetPW - gs.paddleW) * 0.15;
 
       // Paddle movement
@@ -467,7 +556,7 @@ const App = () => {
       // Ball attached to paddle
       if (gs.ballAttached) {
         // recreate every frame so launch angle is fresh on release
-        gs.balls = [makeBall(gs.paddleX, gs.paddleW, currentSpeed(gs))];
+        gs.balls = [makeBall(gs.paddleX, gs.paddleW, currentSpeed(gs, settingsRef.current.baseSpeed))];
         const b = gs.balls[0]!;
         b.x = gs.paddleX + gs.paddleW / 2;
         b.y = PADDLE_Y - BALL_R - 1;
@@ -475,7 +564,7 @@ const App = () => {
         return;
       }
 
-      const speed = currentSpeed(gs);
+      const speed = currentSpeed(gs, settingsRef.current.baseSpeed);
 
       // Ball movement & collision
       const toRemove: Ball[] = [];
@@ -633,7 +722,7 @@ const App = () => {
         gs.shake = 10;
         if (gs.balls.length > 0 && !gs.ballAttached) {
           const src = gs.balls[0]!;
-          const spd = currentSpeed(gs);
+          const spd = currentSpeed(gs, settingsRef.current.baseSpeed);
           for (let i = 1; i < 3; i++) {
             const spread = (Math.PI / 6) * (i === 1 ? 1 : -1);
             const base = Math.atan2(src.dy, src.dx);
@@ -677,6 +766,7 @@ const App = () => {
             `SCORE: ${gs.score}`,
             "#ff4455",
             gs.stageDelay,
+            "クリック / タップでタイトルへ",
           );
       }
 
@@ -863,6 +953,7 @@ const App = () => {
       sub: string,
       color: string,
       delay: number,
+      hint = "クリック / タップで続ける",
     ) {
       ctx.fillStyle = "rgba(0,0,0,0.65)";
       ctx.fillRect(0, 0, CW, CH);
@@ -879,7 +970,7 @@ const App = () => {
       if (delay <= 0) {
         ctx.fillStyle = "rgba(255,255,255,0.45)";
         ctx.font = "15px monospace";
-        ctx.fillText("クリック / タップで続ける", CW / 2, CH / 2 + 70);
+        ctx.fillText(hint, CW / 2, CH / 2 + 70);
       }
       ctx.fillStyle = "rgba(255,255,255,0.4)";
       ctx.font = "16px 'Segoe UI', system-ui, sans-serif";
@@ -928,13 +1019,62 @@ const App = () => {
       canvas.removeEventListener("touchmove", onTouchMove);
       canvas.removeEventListener("pointerdown", onPointerDown);
     };
-  }, [setPopups, setActivePowerBadges]);
+  }, [setPopups, setActivePowerBadges, setShowTitle]);
+
+  const handleStart = useCallback(() => {
+    saveSettings(settings);
+    setShowTitle(false);
+    startGameRef.current?.();
+  }, [settings]);
+
+  const updateSetting = useCallback(
+    (key: keyof Settings, value: number) => {
+      setSettings((prev) => {
+        const next = { ...prev, [key]: value };
+        saveSettings(next);
+        return next;
+      });
+    },
+    [],
+  );
 
   return (
-    <GameShell title="Brick Blast">
+    <GameShell title="Brick Blast" gameId="brickblast">
       <div className="game-wrapper">
         <div className="game-container">
           <canvas ref={canvasRef} width={CW} height={CH} />
+          {showTitle && (
+            <div className="settings-overlay">
+              <div className="settings-panel">
+                <h1 className="settings-logo">
+                  <span className="logo-brick">BRICK</span>{" "}
+                  <span className="logo-blast">BLAST</span>
+                </h1>
+                <p className="settings-hint">
+                  マウス / タッチでパドルを操作
+                </p>
+                {SETTING_OPTIONS.map((group) => (
+                  <div key={group.key} className="setting-group">
+                    <div className="setting-label">{group.label}</div>
+                    <div className="setting-options">
+                      {group.choices.map((opt) => (
+                        <button
+                          key={opt.value}
+                          className={`setting-btn${settings[group.key] === opt.value ? " active" : ""}`}
+                          onClick={() => updateSetting(group.key, opt.value)}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                <button className="start-btn" onClick={handleStart}>
+                  START
+                </button>
+              </div>
+            </div>
+          )}
           <div className="popup-layer" aria-hidden="true">
             {popups.map((p) => (
               <div

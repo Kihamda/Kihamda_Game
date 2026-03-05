@@ -264,7 +264,7 @@ const App = () => {
   const nextNum = sequence[nextIndex];
 
   return (
-    <GameShell title="Num Hunt">
+    <GameShell title="Num Hunt" gameId="numhunt">
       <div className="app">
         {/* Particles layer */}
         <div className="particles-layer" aria-hidden="true">

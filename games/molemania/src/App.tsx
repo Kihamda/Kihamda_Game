@@ -5,6 +5,8 @@ import { useAudio, useHighScore, GameShell } from "../../../src/shared";
 // ─── Types ────────────────────────────────────────────────────────────────────
 type MoleType = "normal" | "golden" | "bomb";
 type GamePhase = "idle" | "playing" | "gameover";
+type SpeedLevel = "slow" | "normal" | "fast";
+type GoldenRateLevel = "low" | "normal" | "high";
 
 interface MoleData {
   active: boolean;
@@ -26,10 +28,44 @@ interface Particle {
   y: number;
 }
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-const HOLE_COUNT = 9;
-const GAME_DURATION = 60;
-const BASE_SPAWN_INTERVAL = 800;
+interface GameSettings {
+  gameDuration: number;
+  holeCount: number;
+  speed: SpeedLevel;
+  goldenRate: GoldenRateLevel;
+}
+
+// ─── Constants / Configs ──────────────────────────────────────────────────────
+const STORAGE_KEY = "molemania_settings";
+
+const DEFAULT_SETTINGS: GameSettings = {
+  gameDuration: 60,
+  holeCount: 9,
+  speed: "normal",
+  goldenRate: "normal",
+};
+
+const SPEED_CONFIG: Record<
+  SpeedLevel,
+  { baseInterval: number; maxFactor: number }
+> = {
+  slow: { baseInterval: 1200, maxFactor: 1.5 },
+  normal: { baseInterval: 800, maxFactor: 2.5 },
+  fast: { baseInterval: 500, maxFactor: 3.5 },
+};
+
+const GOLDEN_RATE_VALUES: Record<GoldenRateLevel, number> = {
+  low: 0.05,
+  normal: 0.15,
+  high: 0.3,
+};
+
+const GRID_COLS: Record<number, number> = { 6: 3, 9: 3, 12: 4 };
+
+const DURATION_OPTIONS = [15, 30, 60, 90] as const;
+const HOLE_OPTIONS = [6, 9, 12] as const;
+const SPEED_OPTIONS: SpeedLevel[] = ["slow", "normal", "fast"];
+const GOLDEN_OPTIONS: GoldenRateLevel[] = ["low", "normal", "high"];
 
 const MOLE_EMOJI: Record<MoleType, string> = {
   normal: "🐹",
@@ -50,17 +86,34 @@ const BASE_VISIBLE_DURATION: Record<MoleType, number> = {
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-function getSpeedFactor(elapsed: number): number {
-  // 1.0 at start → 2.5 at 60 s
-  return 1 + (elapsed / GAME_DURATION) * 1.5;
+function getSpeedFactor(
+  elapsed: number,
+  duration: number,
+  maxFactor: number,
+): number {
+  return 1 + (elapsed / duration) * (maxFactor - 1);
 }
 
-function makeMoles(): MoleData[] {
-  return Array.from({ length: HOLE_COUNT }, () => ({
+function makeMoles(count: number): MoleData[] {
+  return Array.from({ length: count }, () => ({
     active: false,
     type: "normal" as MoleType,
     hitAnim: false,
   }));
+}
+
+function loadSettings(): GameSettings {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
+  } catch {
+    /* ignore */
+  }
+  return { ...DEFAULT_SETTINGS };
+}
+
+function saveSettings(s: GameSettings): void {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -69,10 +122,15 @@ const App = () => {
   const { best: highScore, update: updateHighScore } =
     useHighScore("molemania");
 
+  const [settings, setSettings] = useState<GameSettings>(loadSettings);
+  const activeRef = useRef<GameSettings>(settings);
+
   const [phase, setPhase] = useState<GamePhase>("idle");
-  const [moles, setMoles] = useState<MoleData[]>(makeMoles());
+  const [moles, setMoles] = useState<MoleData[]>(
+    makeMoles(DEFAULT_SETTINGS.holeCount),
+  );
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
+  const [timeLeft, setTimeLeft] = useState(DEFAULT_SETTINGS.gameDuration);
   const [combo, setCombo] = useState(0);
   const [popups, setPopups] = useState<ScorePopup[]>([]);
   const [particles, setParticles] = useState<Particle[]>([]);
@@ -93,6 +151,17 @@ const App = () => {
   // ref holding current spawn fn to allow self-recursion without stale closure
   const spawnMoleFnRef = useRef<() => void>(() => undefined);
 
+  const updateSetting = useCallback(
+    <K extends keyof GameSettings>(key: K, value: GameSettings[K]) => {
+      setSettings((prev) => {
+        const next = { ...prev, [key]: value };
+        saveSettings(next);
+        return next;
+      });
+    },
+    [],
+  );
+
   // ── Timer cleanup ────────────────────────────────────────────────────────
   const clearAllTimers = useCallback(() => {
     if (spawnTimerRef.current) clearTimeout(spawnTimerRef.current);
@@ -105,17 +174,19 @@ const App = () => {
   const endGame = useCallback(() => {
     clearAllTimers();
     setPhase("gameover");
-    setMoles(makeMoles());
+    setMoles(makeMoles(activeRef.current.holeCount));
     const finalScore = scoreRef.current;
     updateHighScore(finalScore);
   }, [clearAllTimers, updateHighScore]);
 
   // ── Spawn logic ──────────────────────────────────────────────────────────
   const doSpawn = useCallback(() => {
+    const s = activeRef.current;
+    const speedCfg = SPEED_CONFIG[s.speed];
     const elapsed = (Date.now() - startTimeRef.current) / 1000;
-    const factor = getSpeedFactor(elapsed);
+    const factor = getSpeedFactor(elapsed, s.gameDuration, speedCfg.maxFactor);
+    const goldenRate = GOLDEN_RATE_VALUES[s.goldenRate];
 
-    // Capture spawn result outside the updater so we can run side effects after
     let spawnIdx: number | null = null;
     let spawnType: MoleType = "normal";
 
@@ -128,14 +199,14 @@ const App = () => {
 
       spawnIdx = freeIdxs[Math.floor(Math.random() * freeIdxs.length)];
       const r = Math.random();
-      spawnType = r < 0.15 ? "golden" : r < 0.3 ? "bomb" : "normal";
+      spawnType =
+        r < goldenRate ? "golden" : r < goldenRate + 0.15 ? "bomb" : "normal";
 
       return prev.map((m, i) =>
         i === spawnIdx ? { active: true, type: spawnType, hitAnim: false } : m,
       );
     });
 
-    // Register auto-hide timer outside the updater (side effect)
     if (spawnIdx !== null) {
       const idx = spawnIdx;
       const duration = BASE_VISIBLE_DURATION[spawnType] / factor;
@@ -146,7 +217,6 @@ const App = () => {
           missed = true;
           return cur.map((m, i) => (i === idx ? { ...m, active: false } : m));
         });
-        // reset combo outside the updater
         if (missed) {
           comboRef.current = 0;
           setCombo(0);
@@ -155,7 +225,7 @@ const App = () => {
       moleTimersRef.current.set(idx, t);
     }
 
-    const interval = BASE_SPAWN_INTERVAL / factor;
+    const interval = speedCfg.baseInterval / factor;
     spawnTimerRef.current = setTimeout(spawnMoleFnRef.current, interval);
   }, []);
 
@@ -260,14 +330,16 @@ const App = () => {
 
   // ── Start game ───────────────────────────────────────────────────────────
   const startGame = useCallback(() => {
+    activeRef.current = settings;
+    const speedCfg = SPEED_CONFIG[settings.speed];
     clearAllTimers();
     setPhase("playing");
-    setMoles(makeMoles());
+    setMoles(makeMoles(settings.holeCount));
     scoreRef.current = 0;
     setScore(0);
     comboRef.current = 0;
     setCombo(0);
-    setTimeLeft(GAME_DURATION);
+    setTimeLeft(settings.gameDuration);
     setPopups([]);
     setParticles([]);
     setShaking(false);
@@ -286,21 +358,22 @@ const App = () => {
 
     spawnTimerRef.current = setTimeout(
       spawnMoleFnRef.current,
-      BASE_SPAWN_INTERVAL,
+      speedCfg.baseInterval,
     );
-  }, [clearAllTimers, endGame]);
+  }, [clearAllTimers, endGame, settings]);
 
   // cleanup on unmount
   useEffect(() => {
     return () => clearAllTimers();
   }, [clearAllTimers]);
 
-  const timePercent = (timeLeft / GAME_DURATION) * 100;
+  const timePercent = (timeLeft / settings.gameDuration) * 100;
   const timerColor =
     timePercent > 50 ? "#4ade80" : timePercent > 25 ? "#facc15" : "#f87171";
+  const gridCols = GRID_COLS[settings.holeCount] ?? 3;
 
   return (
-    <GameShell title="Mole Mania">
+    <GameShell title="Mole Mania" gameId="molemania">
       <div className={`app${shaking ? " shake" : ""}`}>
         {/* ── Idle screen ── */}
         {phase === "idle" && (
@@ -308,6 +381,69 @@ const App = () => {
             <h1 className="title">🐹 Mole Mania</h1>
             <p className="desc">叩いて叩いて叩きまくれ</p>
             {highScore > 0 && <p className="hi">Best: {highScore}</p>}
+
+            <div className="settings-card">
+              <div className="setting-row">
+                <span className="setting-label">⏱ ゲーム時間</span>
+                <div className="setting-options">
+                  {DURATION_OPTIONS.map((v) => (
+                    <button
+                      key={v}
+                      className={`setting-btn${settings.gameDuration === v ? " active" : ""}`}
+                      onClick={() => updateSetting("gameDuration", v)}
+                    >
+                      {v}秒
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="setting-row">
+                <span className="setting-label">🕳️ 穴の数</span>
+                <div className="setting-options">
+                  {HOLE_OPTIONS.map((v) => (
+                    <button
+                      key={v}
+                      className={`setting-btn${settings.holeCount === v ? " active" : ""}`}
+                      onClick={() => updateSetting("holeCount", v)}
+                    >
+                      {v}穴
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="setting-row">
+                <span className="setting-label">🏃 出現速度</span>
+                <div className="setting-options">
+                  {SPEED_OPTIONS.map((v) => (
+                    <button
+                      key={v}
+                      className={`setting-btn${settings.speed === v ? " active" : ""}`}
+                      onClick={() => updateSetting("speed", v)}
+                    >
+                      {v.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="setting-row">
+                <span className="setting-label">🏅 ゴールデン率</span>
+                <div className="setting-options">
+                  {GOLDEN_OPTIONS.map((v) => (
+                    <button
+                      key={v}
+                      className={`setting-btn${settings.goldenRate === v ? " active" : ""}`}
+                      onClick={() => updateSetting("goldenRate", v)}
+                    >
+                      {v.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
             <button className="btn-start" onClick={startGame}>
               START
             </button>
@@ -363,7 +499,10 @@ const App = () => {
             </div>
 
             {/* Grid */}
-            <div className="grid">
+            <div
+              className="grid"
+              style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}
+            >
               {moles.map((mole, i) => (
                 <div key={i} className="hole-wrap">
                   <div className="hole" />

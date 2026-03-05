@@ -59,6 +59,134 @@ h1 {
   gap: 12px;
 }
 
+/* ---- Settings UI ---- */
+
+.setting-group {
+  display: grid;
+  gap: 6px;
+}
+
+.setting-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: #e2e8f0;
+  font-size: 14px;
+}
+
+.setting-chip {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.btn-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn-option {
+  border: 2px solid #475569;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #cbd5e1;
+  background: #1e293b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-option:hover:not(:disabled) {
+  border-color: #93c5fd;
+  color: #e2e8f0;
+}
+
+.btn-option.active {
+  border-color: #3b82f6;
+  background: #1d4ed8;
+  color: #fff;
+}
+
+.btn-option:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.player-setting {
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid #334155;
+}
+
+.name-input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #475569;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e2e8f0;
+  background: #1e293b;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.name-input:focus {
+  border-color: #3b82f6;
+}
+
+.name-input::placeholder {
+  color: #64748b;
+}
+
+.color-palette {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.color-swatch:hover:not(:disabled) {
+  transform: scale(1.15);
+}
+
+.color-swatch.selected {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.color-swatch.taken {
+  opacity: 0.25;
+}
+
+.color-swatch:disabled {
+  cursor: not-allowed;
+}
+
+.setting-hint {
+  color: #94a3b8;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* ---- Game UI ---- */
+
 .statusText {
   margin: 14px 0;
   font-weight: 700;
@@ -75,17 +203,8 @@ h1 {
   display: inline-block;
 }
 
-.chip.red {
-  background: #ef4444;
-}
-
-.chip.yellow {
-  background: #facc15;
-}
-
 .dropRow {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 8px;
   margin-bottom: 8px;
 }
@@ -108,7 +227,6 @@ h1 {
 
 .board {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 8px;
   padding: 10px;
   border-radius: 12px;
@@ -128,14 +246,6 @@ h1 {
   height: 86%;
   border-radius: 50%;
   background: #dbeafe;
-}
-
-.cell.red .piece {
-  background: radial-gradient(circle at 30% 30%, #fca5a5, #b91c1c 70%);
-}
-
-.cell.yellow .piece {
-  background: radial-gradient(circle at 30% 30%, #fde68a, #ca8a04 70%);
 }
 
 .cell.winning {
@@ -203,6 +313,16 @@ h1 {
 
   .hud {
     grid-template-columns: 1fr;
+  }
+
+  .btn-option {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .color-swatch {
+    width: 28px;
+    height: 28px;
   }
 }
 

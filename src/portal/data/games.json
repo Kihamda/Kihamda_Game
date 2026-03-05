@@ -139,6 +139,16 @@
       "tags": ["typing", "singleplayer", "arcade"],
       "publishedAt": "2026-02-25",
       "featured": false
+    },
+    {
+      "id": "minerush",
+      "title": "MineRush",
+      "description": "マインスイーパーをタイムアタック形式にリメイク。ステージが進むほど盤面が広がり地雷が増える",
+      "path": "/games/minerush/",
+      "thumbnail": "/thumbnails/minerush.svg",
+      "tags": ["puzzle", "singleplayer", "strategy"],
+      "publishedAt": "2026-03-04",
+      "featured": false
     }
   ]
 }

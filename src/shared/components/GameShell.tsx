@@ -1,5 +1,6 @@
 import "../theme.css";
 import type { ReactNode } from "react";
+import { GameRecommendations } from "./GameRecommendations";
 
 interface Props {
   children: ReactNode;
@@ -7,12 +8,15 @@ interface Props {
   title?: string;
   /** ポータルへの戻り先URL */
   portalUrl?: string;
+  /** ゲームID (おすすめゲーム表示用) */
+  gameId?: string;
 }
 
 export function GameShell({
   children,
   title,
   portalUrl = "https://game.kihamda.net/",
+  gameId,
 }: Props) {
   return (
     <div style={{ minHeight: "100vh", position: "relative" }}>
@@ -41,6 +45,7 @@ export function GameShell({
         </div>
       )}
       {children}
+      {gameId && <GameRecommendations currentGameId={gameId} />}
     </div>
   );
 }

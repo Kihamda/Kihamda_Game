@@ -27,12 +27,60 @@ type Card = {
 
 type ScoreState = Record<Player, number>;
 
-const SYMBOLS = ["🍙", "🍜", "🍣", "🍛", "🍤", "🍡", "🍓", "🍫"];
+const SYMBOLS = ["🍙", "🍜", "🍣", "🍛", "🍤", "🍡", "🍓", "🍫", "🍩", "🍪", "🍰", "🎂"];
 
-const PLAYER_LABEL: Record<Player, string> = {
-  p1: "プレイヤー1",
-  p2: "プレイヤー2",
+type CardCount = 12 | 16 | 20 | 24;
+type FlipTime = 350 | 700 | 1200;
+type ShuffleMode = "static" | "shuffle";
+
+type Settings = {
+  cardCount: CardCount;
+  flipTime: FlipTime;
+  playerNames: Record<Player, string>;
+  shuffleMode: ShuffleMode;
 };
+
+const STORAGE_KEY = "memoryduel_settings";
+
+const DEFAULT_SETTINGS: Settings = {
+  cardCount: 16,
+  flipTime: 700,
+  playerNames: { p1: "Player 1", p2: "Player 2" },
+  shuffleMode: "static",
+};
+
+const COLS_MAP: Record<CardCount, number> = { 12: 4, 16: 4, 20: 5, 24: 6 };
+
+const CARD_COUNT_OPTIONS: { value: CardCount; label: string; desc: string }[] = [
+  { value: 12, label: "12枚", desc: "6ペア" },
+  { value: 16, label: "16枚", desc: "8ペア" },
+  { value: 20, label: "20枚", desc: "10ペア" },
+  { value: 24, label: "24枚", desc: "12ペア" },
+];
+
+const FLIP_TIME_OPTIONS: { value: FlipTime; label: string; desc: string }[] = [
+  { value: 1200, label: "LONG", desc: "1200ms" },
+  { value: 700, label: "NORMAL", desc: "700ms" },
+  { value: 350, label: "SHORT", desc: "350ms" },
+];
+
+const SHUFFLE_OPTIONS: { value: ShuffleMode; label: string; desc: string }[] = [
+  { value: "static", label: "STATIC", desc: "固定" },
+  { value: "shuffle", label: "SHUFFLE", desc: "激ムズ" },
+];
+
+const loadSettings = (): Settings => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return DEFAULT_SETTINGS;
+    return { ...DEFAULT_SETTINGS, ...(JSON.parse(raw) as Partial<Settings>) };
+  } catch {
+    return DEFAULT_SETTINGS;
+  }
+};
+
+const saveSettings = (s: Settings) =>
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
 
 const nextPlayer = (player: Player): Player => (player === "p1" ? "p2" : "p1");
 
@@ -45,14 +93,28 @@ const shuffle = <T,>(values: T[]): T[] => {
   return result;
 };
 
-const createDeck = (): Card[] => {
-  const symbols = shuffle([...SYMBOLS, ...SYMBOLS]);
+const createDeck = (pairCount: number): Card[] => {
+  const selected = SYMBOLS.slice(0, pairCount);
+  const symbols = shuffle([...selected, ...selected]);
   return symbols.map((symbol, index) => ({
     id: index,
     symbol,
     state: "down",
     owner: null,
   }));
+};
+
+const shuffleUnmatched = (prev: Card[]): Card[] => {
+  const result = [...prev];
+  const indices = result.reduce<number[]>((acc, c, i) => {
+    if (c.state !== "matched") acc.push(i);
+    return acc;
+  }, []);
+  const shuffled = shuffle(indices.map((i) => result[i]));
+  indices.forEach((pos, i) => {
+    result[pos] = shuffled[i];
+  });
+  return result;
 };
 
 const App = () => {
@@ -63,8 +125,20 @@ const App = () => {
   const comboCountRef = useRef(0);
   const lastMatchPlayerRef = useRef<Player | null>(null);
 
+  const [settings, setSettings] = useState<Settings>(loadSettings);
+  const updateSettings = <K extends keyof Settings>(
+    key: K,
+    value: Settings[K],
+  ) => {
+    setSettings((prev) => {
+      const next = { ...prev, [key]: value };
+      saveSettings(next);
+      return next;
+    });
+  };
+
   const [phase, setPhase] = useState<Phase>("intro");
-  const [cards, setCards] = useState<Card[]>(() => createDeck());
+  const [cards, setCards] = useState<Card[]>(() => createDeck(8));
   const [turn, setTurn] = useState<Player>("p1");
   const [scores, setScores] = useState<ScoreState>({ p1: 0, p2: 0 });
   const [opened, setOpened] = useState<number[]>([]);
@@ -156,18 +230,17 @@ const App = () => {
           }, 1500);
         }
       } else {
-        setCards((prev) =>
-          prev.map((card, index) => {
+      setCards((prev) => {
+          const next = prev.map((card, index) => {
             if (index !== firstIndex && index !== secondIndex) {
               return card;
             }
-
-            return {
-              ...card,
-              state: "down",
-            };
-          }),
-        );
+            return { ...card, state: "down" as CardState };
+          });
+          return settings.shuffleMode === "shuffle"
+            ? shuffleUnmatched(next)
+            : next;
+        });
 
         setTurn((prev) => nextPlayer(prev));
 
@@ -183,8 +256,8 @@ const App = () => {
 
       setOpened([]);
       timerRef.current = null;
-    }, 700);
-  }, [cards, opened, turn, playArpeggio, playSweep]);
+    }, settings.flipTime);
+  }, [cards, opened, turn, playArpeggio, playSweep, settings]);
 
   // ── ゲームクリア演出 ───────────────────────────────────────────────────────
   useEffect(() => {
@@ -228,7 +301,7 @@ const App = () => {
     comboCountRef.current = 0;
     lastMatchPlayerRef.current = null;
 
-    setCards(createDeck());
+    setCards(createDeck(settings.cardCount / 2));
     setTurn("p1");
     setScores({ p1: 0, p2: 0 });
     setOpened([]);
@@ -269,11 +342,13 @@ const App = () => {
       return "引き分け";
     }
 
-    return scores.p1 > scores.p2 ? "勝者 プレイヤー1" : "勝者 プレイヤー2";
-  }, [scores.p1, scores.p2]);
+    return scores.p1 > scores.p2
+      ? `勝者 ${settings.playerNames.p1}`
+      : `勝者 ${settings.playerNames.p2}`;
+  }, [scores.p1, scores.p2, settings.playerNames]);
 
   return (
-    <GameShell title="Memory Duel">
+    <GameShell title="Memory Duel" gameId="memoryduel">
       <main
         className={`app${mismatchShake ? " shake" : ""}${clearShake ? " clearShake" : ""}`}
       >
@@ -323,9 +398,91 @@ const App = () => {
           </div>
 
           {phase === "intro" && (
-            <div className="introBlock">
-              <p>16枚 8ペアで対戦開始</p>
-              <button className="action" type="button" onClick={startGame}>
+            <div className="settingsBlock">
+              <div className="settingGroup">
+                <span className="settingLabel">カード枚数</span>
+                <div className="btnGroup">
+                  {CARD_COUNT_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      className={`btnOption${settings.cardCount === opt.value ? " selected" : ""}`}
+                      onClick={() => updateSettings("cardCount", opt.value)}
+                    >
+                      <strong>{opt.label}</strong>
+                      <span className="optDesc">{opt.desc}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="settingGroup">
+                <span className="settingLabel">めくり確認時間</span>
+                <div className="btnGroup">
+                  {FLIP_TIME_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      className={`btnOption${settings.flipTime === opt.value ? " selected" : ""}`}
+                      onClick={() => updateSettings("flipTime", opt.value)}
+                    >
+                      <strong>{opt.label}</strong>
+                      <span className="optDesc">{opt.desc}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="settingGroup">
+                <span className="settingLabel">シャッフルモード</span>
+                <div className="btnGroup">
+                  {SHUFFLE_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      className={`btnOption${settings.shuffleMode === opt.value ? " selected" : ""}`}
+                      onClick={() => updateSettings("shuffleMode", opt.value)}
+                    >
+                      <strong>{opt.label}</strong>
+                      <span className="optDesc">{opt.desc}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="settingGroup">
+                <span className="settingLabel">プレイヤー名</span>
+                <div className="nameInputs">
+                  <input
+                    type="text"
+                    className="nameInput"
+                    value={settings.playerNames.p1}
+                    onChange={(e) =>
+                      updateSettings("playerNames", {
+                        ...settings.playerNames,
+                        p1: e.target.value,
+                      })
+                    }
+                    placeholder="Player 1"
+                    maxLength={12}
+                  />
+                  <input
+                    type="text"
+                    className="nameInput"
+                    value={settings.playerNames.p2}
+                    onChange={(e) =>
+                      updateSettings("playerNames", {
+                        ...settings.playerNames,
+                        p2: e.target.value,
+                      })
+                    }
+                    placeholder="Player 2"
+                    maxLength={12}
+                  />
+                </div>
+              </div>
+
+              <button className="action startBtn" type="button" onClick={startGame}>
                 対戦開始
               </button>
             </div>
@@ -334,7 +491,7 @@ const App = () => {
           {phase !== "intro" && (
             <>
               <p className="statusText">
-                {!isFinished && <>手番 {PLAYER_LABEL[turn]}</>}
+                {!isFinished && <>手番 {settings.playerNames[turn]}</>}
                 {isFinished && <>{winnerText}</>}
               </p>
 
@@ -357,7 +514,7 @@ const App = () => {
                     key={player}
                     className={`scoreCard${turn === player && !isFinished ? " active" : ""}`}
                   >
-                    <span>{PLAYER_LABEL[player]}</span>
+                    <span>{settings.playerNames[player]}</span>
                     <strong>{scores[player]}</strong>
                     {/* MATCH ポップアップ */}
                     {matchPopupPlayer === player && (
@@ -369,7 +526,14 @@ const App = () => {
                 ))}
               </div>
 
-              <div className="board" role="grid" aria-label="memory duel board">
+              <div
+                className="board"
+                role="grid"
+                aria-label="memory duel board"
+                style={{
+                  gridTemplateColumns: `repeat(${COLS_MAP[settings.cardCount]}, minmax(0, 1fr))`,
+                }}
+              >
                 {cards.map((card, index) => {
                   const faceUp =
                     card.state === "up" || card.state === "matched";

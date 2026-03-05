@@ -5,6 +5,115 @@
 
 ---
 
+## 2026-03-05
+
+### 作業ログ
+
+- [完了] svg-artist エージェント新規作成 → 担当: consultant (直接作成)
+- [完了] public/thumbnails/minerush.svg 生成 → 担当: svg-artist → 結果: 成功
+
+### 修正内容
+
+#### svg-artist エージェント
+
+- **.github/agents/svg-artist.agent.md** 新規作成: SVGサムネイル生成専門エージェント
+- ゲームソース分析→既存SVGスタイル把握→640x360サムネイル生成の自律フロー
+- デザインルール・カラーパレット・SVGテクニック集を文書化
+
+#### MineRush サムネイル
+
+- **public/thumbnails/minerush.svg** 新規作成 (6,769 bytes)
+- 7x7マインスイーパーグリッド、数字色分け(1:青/2:緑/3:赤)、旗🚩×3、爆発地雷💣×1
+- グロー効果・パーティクル・STAGE/TIMER/MINES表示・BIG OPEN演出
+- Vite build: 成功
+
+### 今日の成果
+
+- SVG生成専門エージェント `svg-artist` を新設
+- 15本目 MineRush のサムネイルSVGを生成完了
+- **Batch1: 5ゲームに設定画面を追加** → 担当: gamedev → 結果: 成功
+
+### Batch1 設定画面追加 (5ゲーム)
+
+- **games/typingblitz**: ワード難易度(SHORT/MIXED/LONG)、落下速度(SLOW/NORMAL/FAST)、ライフ数(CASUAL∞/NORMAL5/HARDCORE3)、スポーン間隔(RELAXED/NORMAL/INTENSE)
+- **games/molemania**: ゲーム時間(15/30/60/90秒)、穴の数(6/9/12)、出現速度(SLOW/NORMAL/FAST)、ゴールデンモグラ出現率(LOW/NORMAL/HIGH)
+- **games/snakechaos**: グリッドサイズ(15/20/25)、初期速度(EASY/NORMAL/FAST)、壁モード(SOLID/WRAP)、パワーアップ頻度(LOW/NORMAL/HIGH)
+- **games/memoryduel**: カード枚数(12/16/20/24)、めくり確認時間(LONG/NORMAL/SHORT)、プレイヤー名(自由入力)、シャッフルモード(STATIC/SHUFFLE)
+- **games/brickblast**: 初期ライフ(1/3/5)、ボール速度(SLOW/NORMAL/FAST)、パドルサイズ(WIDE/NORMAL/NARROW)、パワーアップ出現率(LOW/NORMAL/HIGH)
+- 全設定はlocalStorageに永続化、デフォルト値なら既存と同じ動作
+- TSC: エラー0 / ESLint: エラー0 / Vite build: 成功
+
+### 次やること (Batch2)
+
+- ~~残り8ゲーム(FlashReflex/GravityFour/Merge2048/ColorBurst/TapTarget/SimonEcho/DodgeBlitz/MineRush)に設定画面を追加~~
+
+### Batch2 設定画面追加 (8ゲーム)
+
+- **games/flashreflex**: ラウンド数(3/5/10/20)、待機時間の幅(PREDICTABLE/NORMAL/TRICKY)、フライングペナルティ(MILD/NORMAL/SEVERE)
+- **games/gravityfour**: ボードサイズ(5×6/6×7/7×8)、勝利ライン数(3/4/5)、プレイヤー名(自由入力×2)、プレイヤーカラー(8色プリセット×2)
+- **games/merge2048**: ボードサイズ(3/4/5)、勝利目標値(512/1024/2048/4096)、ゲームモード(CLASSIC/ENDLESS)
+- **games/colorburst**: 色数(4/6/8)、ミス許容数(1/3/5)、制限時間(RELAXED/NORMAL/STRICT)
+- **games/taptarget**: ゲーム時間(30/60/90/120秒)、ミス許容数(3/5/∞)、ターゲットサイズ(LARGE/NORMAL/SMALL)、同時出現数上限(3段階)
+- **games/simonecho**: 色数(4/6/8)、テンポ(SLOW/NORMAL/FAST)、ミス許容回数(0/1/3)
+- **games/dodgeblitz**: 自機サイズ(LARGE/NORMAL/SMALL)、弾速難易度(EASY/NORMAL/HARD)、アイテム頻度(LOW/NORMAL/HIGH)、開始Wave(1/2/3)
+- **games/minerush**: 開始ステージ(1/3/5)、グリッドモード(AUTO/CUSTOM)、カスタムグリッド(rows/cols/mines)、フラグモード(STANDARD/TAP_FLAG)
+- 全設定はlocalStorageに永続化、デフォルト値なら既存と同じ動作
+- TSC: エラー0 / ESLint: エラー0 / Vite build: 成功
+
+---
+
+## 2026-03-04
+
+### 作業ログ
+
+- [完了] 全14ゲームに内部リンク追加 → 担当: gamedev
+- [完了] SNS自動化GitHub Actions構築 → 担当: platform-architect
+- [完了] 15本目ゲーム「MineRush」企画→実装→portal登録 → 担当: game-factory
+
+### 修正内容
+
+#### 内部リンク追加
+
+- **src/shared/components/GameRecommendations.tsx** 新規作成: games.jsonから現在のゲーム以外3本をランダム選出してカード表示
+- **src/shared/components/GameShell.tsx** 修正: `gameId` prop追加。指定時にGameRecommendationsを自動表示
+- **src/shared/index.ts** 修正: GameRecommendations export追加
+- **全14ゲームの App.tsx** 修正: GameShellに`gameId`プロップを追加
+
+#### SNS自動化
+
+- **.github/workflows/sns-post-weekly.yml** 新規作成: 毎週月曜9:00 JST(cron)で既存ゲームランダム紹介。Bluesky + Twitter両対応。シークレット未設定時はスキップ
+- **.github/workflows/release-pipeline.yml** 修正: Bluesky投稿ジョブ追加、summaryにBluesky結果表示追加
+- 必要なSecrets: BLUESKY_HANDLE / BLUESKY_APP_PASSWORD (Bluesky), TWITTER_API_KEY等 (Twitter)
+
+#### 新ゲーム MineRush
+
+- **games/minerush/** 新規作成: index.html / src/main.tsx / src/App.tsx / src/App.css
+- マインスイーパー × タイムアタック。ステージ制(6x6→10x10)、初手安全保証、連鎖パーティクル、BIG OPEN演出
+- SEO・OGP・GA4完備。shared全コンポーネント使用(GameShell/useAudio/useHighScore/ParticleLayer/ScorePopup)
+- **src/portal/data/games.json** に15本目として登録済み
+
+#### 検証結果
+
+- TSC: エラー0
+- ESLint: エラー0
+- Vite build: 成功 (sitemap 16 URLs)
+
+### 今日の成果
+
+- 全ゲームに「他のゲームで遊ぶ」内部リンク導入(SEO+回遊率向上)
+- SNS自動投稿ワークフロー2つ稼働準備完了(Bluesky/Twitter)
+- 15本目「MineRush」を企画→実装→portal登録まで完了
+- Phase 1ゲート要件の技術的準備がほぼ完了
+
+### 人間がやること
+
+- GitHub Secrets設定: BLUESKY_HANDLE / BLUESKY_APP_PASSWORD (Bluesky自動投稿の有効化)
+- PR作成 → mainマージ → デプロイ
+- MineRush用サムネイル(thumbnails/minerush.svg)作成
+- Search Console sitemap再送信
+
+---
+
 ## 2026-03-03
 
 ### 作業ログ
