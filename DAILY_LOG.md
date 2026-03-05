@@ -5,6 +5,29 @@
 
 ---
 
+## 2026-03-06
+
+### 作業ログ
+
+- [完了] MoleMania スコアバグ修正 → 担当: gamedev → 結果: 成功
+- [完了] MineRush 右クリックフラグ修正 → 担当: gamedev → 結果: 成功
+
+### 修正内容
+
+#### MoleMania バグ修正
+- `endGame()` を `setTimeLeft` updater の外へ移動 (ref ベースのタイマーに変更)
+- `onClick` + `onTouchStart` 二重バインドを `onPointerDown` に統一
+- `loadSettings` にフィールド別バリデーション追加 (不正なlocalStorage値でクラッシュしない)
+
+#### MineRush 右クリック対応
+- `onPtrDown` / `onPtrUp` で `e.button !== 0` をフィルタ
+- 右クリック (button === 2) は `onContextMenu` → `flagCell` のみで処理
+
+### 検証結果
+- TSC: エラー0 / ESLint: エラー0 / Vite build: 成功
+
+---
+
 ## 2026-03-05
 
 ### 作業ログ

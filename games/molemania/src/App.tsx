@@ -105,7 +105,15 @@ function makeMoles(count: number): MoleData[] {
 function loadSettings(): GameSettings {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
+    if (raw) {
+      const p = JSON.parse(raw);
+      return {
+        gameDuration: (DURATION_OPTIONS as readonly number[]).includes(p.gameDuration) ? p.gameDuration : DEFAULT_SETTINGS.gameDuration,
+        holeCount: (HOLE_OPTIONS as readonly number[]).includes(p.holeCount) ? p.holeCount : DEFAULT_SETTINGS.holeCount,
+        speed: SPEED_OPTIONS.includes(p.speed) ? p.speed : DEFAULT_SETTINGS.speed,
+        goldenRate: GOLDEN_OPTIONS.includes(p.goldenRate) ? p.goldenRate : DEFAULT_SETTINGS.goldenRate,
+      };
+    }
   } catch {
     /* ignore */
   }
@@ -150,6 +158,8 @@ const App = () => {
   );
   // ref holding current spawn fn to allow self-recursion without stale closure
   const spawnMoleFnRef = useRef<() => void>(() => undefined);
+  const timeLeftRef = useRef(DEFAULT_SETTINGS.gameDuration);
+  const endGameRef = useRef<() => void>(() => undefined);
 
   const updateSetting = useCallback(
     <K extends keyof GameSettings>(key: K, value: GameSettings[K]) => {
@@ -229,9 +239,10 @@ const App = () => {
     spawnTimerRef.current = setTimeout(spawnMoleFnRef.current, interval);
   }, []);
 
-  // keep the ref in sync with the latest callback (must be in effect, not render)
+  // keep refs in sync with the latest callbacks
   useEffect(() => {
     spawnMoleFnRef.current = doSpawn;
+    endGameRef.current = endGame;
   });
 
   // ── Particles / popups ───────────────────────────────────────────────────
@@ -258,7 +269,7 @@ const App = () => {
 
   // ── Whack ────────────────────────────────────────────────────────────────
   const whackMole = useCallback(
-    (idx: number, e: React.SyntheticEvent<HTMLDivElement>) => {
+    (idx: number, e: React.PointerEvent<HTMLDivElement>) => {
       // Capture position before React may null currentTarget
       const rect = e.currentTarget.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
@@ -346,21 +357,21 @@ const App = () => {
     setFever(false);
     startTimeRef.current = Date.now();
 
+    timeLeftRef.current = settings.gameDuration;
+
     tickTimerRef.current = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          endGame();
-          return 0;
-        }
-        return prev - 1;
-      });
+      timeLeftRef.current -= 1;
+      setTimeLeft(timeLeftRef.current);
+      if (timeLeftRef.current <= 0) {
+        endGameRef.current();
+      }
     }, 1000);
 
     spawnTimerRef.current = setTimeout(
       spawnMoleFnRef.current,
       speedCfg.baseInterval,
     );
-  }, [clearAllTimers, endGame, settings]);
+  }, [clearAllTimers, settings]);
 
   // cleanup on unmount
   useEffect(() => {
@@ -509,8 +520,7 @@ const App = () => {
                   {mole.active && (
                     <div
                       className={`mole mole-${mole.type}${mole.hitAnim ? " squish" : " rising"}`}
-                      onClick={(e) => !mole.hitAnim && whackMole(i, e)}
-                      onTouchStart={(e) => !mole.hitAnim && whackMole(i, e)}
+                      onPointerDown={(e) => !mole.hitAnim && whackMole(i, e)}
                     >
                       {MOLE_EMOJI[mole.type]}
                     </div>

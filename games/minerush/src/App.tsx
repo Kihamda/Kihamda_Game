@@ -492,7 +492,8 @@ const App = () => {
   /* ── Pointer events ── */
 
   const onPtrDown = useCallback(
-    (idx: number) => {
+    (idx: number, e: React.PointerEvent) => {
+      if (e.button !== 0) return;
       if (settings.flagMode === "TAP_FLAG") return;
       activeCellRef.current = idx;
       lpFiredRef.current = false;
@@ -507,6 +508,7 @@ const App = () => {
 
   const onPtrUp = useCallback(
     (idx: number, e: React.PointerEvent) => {
+      if (e.button !== 0) return;
       if (settings.flagMode === "TAP_FLAG") {
         const rect = containerRef.current?.getBoundingClientRect();
         const px = e.clientX - (rect?.left ?? 0);
@@ -717,7 +719,7 @@ const App = () => {
                   <div
                     key={i}
                     className={`mine-cell ${cls}`}
-                    onPointerDown={() => onPtrDown(i)}
+                    onPointerDown={(e) => onPtrDown(i, e)}
                     onPointerUp={(e) => onPtrUp(i, e)}
                     onPointerLeave={onPtrLeave}
                     onContextMenu={(e) => onCtxMenu(i, e)}
