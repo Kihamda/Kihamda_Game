@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 
 import StartScreen from "./components/StartScreen";
@@ -32,30 +32,31 @@ function App() {
   const initialDevicePrefs = useMemo(() => loadDevicePreferences(), []);
 
   const [appState, setAppState] = useState<"before" | "in_progress" | "after">(
-    initialSavedState?.appState || "before"
+    initialSavedState?.appState || "before",
   );
   const [currentGameSettings, setCurrentGameSettings] = useState<GameSettings>(
     initialSavedState?.gameSettings
       ? cloneGameSettings(initialSavedState.gameSettings)
-      : cloneGameSettings(initialDevicePrefs.lastGameSettings)
+      : cloneGameSettings(initialDevicePrefs.lastGameSettings),
   );
   const [newGameSettings, setNewGameSettings] = useState<GameSettings>(
-    cloneGameSettings(initialDevicePrefs.lastGameSettings)
+    cloneGameSettings(initialDevicePrefs.lastGameSettings),
   );
   const [board, setBoard] = useState<Board>(initialSavedState?.board || []);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(
-    initialSavedState?.currentPlayerIndex || 0
+    initialSavedState?.currentPlayerIndex || 0,
   );
   const [winner, setWinner] = useState<string | null>(
-    initialSavedState?.winner || null
+    initialSavedState?.winner || null,
   );
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [nextPlayerIndex, setNextPlayerIndex] = useState<number | null>(null);
   const [pendingMove, setPendingMove] = useState<PendingMove | null>(null);
-  const [savedSnapshot, setSavedSnapshot] =
-    useState<Partial<PersistedState> | null>(initialSavedState);
+  const savedSnapshotRef = useRef<Partial<PersistedState> | null>(
+    initialSavedState,
+  );
   const [confirmationMode, setConfirmationMode] = useState(
-    initialDevicePrefs.confirmationMode
+    initialDevicePrefs.confirmationMode,
   );
 
   useEffect(() => {
@@ -68,7 +69,7 @@ function App() {
       winner,
     };
     saveGameState(snapshot);
-    setSavedSnapshot(snapshot);
+    savedSnapshotRef.current = snapshot;
   }, [appState, currentGameSettings, board, currentPlayerIndex, winner]);
 
   useEffect(() => {
@@ -171,7 +172,7 @@ function App() {
     <div className="app">
       {appState === "before" && (
         <StartScreen
-          savedState={savedSnapshot}
+          savedState={savedSnapshotRef.current}
           newGameSettings={newGameSettings}
           confirmationMode={confirmationMode}
           onNewGameSettingsChange={setNewGameSettings}

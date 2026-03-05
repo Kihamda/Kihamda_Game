@@ -6,7 +6,7 @@
   "packageManager": "npm@11.6.0",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/prebuild.mjs && tsc -b && vite build",
+    "build": "node scripts/prebuild.mjs && tsc -b && eslint . && vite build",
     "preview": "vite preview",
     "lint": "eslint ."
   },
