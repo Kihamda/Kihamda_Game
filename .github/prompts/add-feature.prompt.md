@@ -62,5 +62,5 @@ StartScreen にプリセット選択ボタンを追加。
 
 ## 完了確認
 
-- `npm run build` が通ること
-- `npm run lint` がエラーなしで通ること
+- `npm run build` が通ること (ルートから実行)
+- `npm run lint` がエラーなしで通ること (ルートから実行)

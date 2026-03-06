@@ -1,106 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
-
-// ─── Web Audio ───────────────────────────────────────────────────────────────
-let _audioCtx: AudioContext | null = null;
-
-function getCtx(): AudioContext {
-  if (!_audioCtx || _audioCtx.state === "closed") {
-    _audioCtx = new AudioContext();
-  }
-  return _audioCtx;
-}
-
-function playFlipSound(): void {
-  try {
-    const ctx = getCtx();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.frequency.setValueAtTime(1200, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.08);
-    gain.gain.setValueAtTime(0.12, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.1);
-  } catch {
-    // ignore: AudioContext not supported
-  }
-}
-
-function playMatchSound(): void {
-  try {
-    const ctx = getCtx();
-    const schedule = [
-      { delay: 0, freq: 600 },
-      { delay: 0.1, freq: 900 },
-    ];
-    for (const { delay, freq } of schedule) {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.type = "triangle";
-      osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
-      gain.gain.setValueAtTime(0.2, ctx.currentTime + delay);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.15);
-      osc.start(ctx.currentTime + delay);
-      osc.stop(ctx.currentTime + delay + 0.15);
-    }
-  } catch {
-    // ignore
-  }
-}
-
-function playMismatchSound(): void {
-  try {
-    const ctx = getCtx();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.type = "sawtooth";
-    osc.frequency.setValueAtTime(200, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.2);
-    gain.gain.setValueAtTime(0.12, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + 0.2);
-  } catch {
-    // ignore
-  }
-}
-
-function playClearSound(): void {
-  try {
-    const ctx = getCtx();
-    const notes = [523, 659, 784, 1047];
-    notes.forEach((freq, i) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.type = "triangle";
-      const t = ctx.currentTime + i * 0.12;
-      osc.frequency.setValueAtTime(freq, t);
-      gain.gain.setValueAtTime(0.2, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
-      osc.start(t);
-      osc.stop(t + 0.25);
-    });
-  } catch {
-    // ignore
-  }
-}
+import { useAudio, GameShell } from "../../../src/shared";
 
 // Pre-generated confetti data (deterministic spread)
 const CONFETTI_PIECES = Array.from({ length: 60 }, (_, i) => ({
   id: i,
   left: (i * 1.6807) % 100,
-  color: ["#facc15", "#38bdf8", "#f87171", "#4ade80", "#c084fc", "#fb923c"][i % 6],
+  color: ["#facc15", "#38bdf8", "#f87171", "#4ade80", "#c084fc", "#fb923c"][
+    i % 6
+  ],
   animDelay: (i * 0.033) % 2,
-  animDuration: 1.5 + (i * 0.027) % 1.5,
+  animDuration: 1.5 + ((i * 0.027) % 1.5),
 }));
 
 type Player = "p1" | "p2";
@@ -117,12 +27,60 @@ type Card = {
 
 type ScoreState = Record<Player, number>;
 
-const SYMBOLS = ["🍙", "🍜", "🍣", "🍛", "🍤", "🍡", "🍓", "🍫"];
+const SYMBOLS = ["🍙", "🍜", "🍣", "🍛", "🍤", "🍡", "🍓", "🍫", "🍩", "🍪", "🍰", "🎂"];
 
-const PLAYER_LABEL: Record<Player, string> = {
-  p1: "プレイヤー1",
-  p2: "プレイヤー2",
+type CardCount = 12 | 16 | 20 | 24;
+type FlipTime = 350 | 700 | 1200;
+type ShuffleMode = "static" | "shuffle";
+
+type Settings = {
+  cardCount: CardCount;
+  flipTime: FlipTime;
+  playerNames: Record<Player, string>;
+  shuffleMode: ShuffleMode;
 };
+
+const STORAGE_KEY = "memoryduel_settings";
+
+const DEFAULT_SETTINGS: Settings = {
+  cardCount: 16,
+  flipTime: 700,
+  playerNames: { p1: "Player 1", p2: "Player 2" },
+  shuffleMode: "static",
+};
+
+const COLS_MAP: Record<CardCount, number> = { 12: 4, 16: 4, 20: 5, 24: 6 };
+
+const CARD_COUNT_OPTIONS: { value: CardCount; label: string; desc: string }[] = [
+  { value: 12, label: "12枚", desc: "6ペア" },
+  { value: 16, label: "16枚", desc: "8ペア" },
+  { value: 20, label: "20枚", desc: "10ペア" },
+  { value: 24, label: "24枚", desc: "12ペア" },
+];
+
+const FLIP_TIME_OPTIONS: { value: FlipTime; label: string; desc: string }[] = [
+  { value: 1200, label: "LONG", desc: "1200ms" },
+  { value: 700, label: "NORMAL", desc: "700ms" },
+  { value: 350, label: "SHORT", desc: "350ms" },
+];
+
+const SHUFFLE_OPTIONS: { value: ShuffleMode; label: string; desc: string }[] = [
+  { value: "static", label: "STATIC", desc: "固定" },
+  { value: "shuffle", label: "SHUFFLE", desc: "激ムズ" },
+];
+
+const loadSettings = (): Settings => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return DEFAULT_SETTINGS;
+    return { ...DEFAULT_SETTINGS, ...(JSON.parse(raw) as Partial<Settings>) };
+  } catch {
+    return DEFAULT_SETTINGS;
+  }
+};
+
+const saveSettings = (s: Settings) =>
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
 
 const nextPlayer = (player: Player): Player => (player === "p1" ? "p2" : "p1");
 
@@ -135,8 +93,9 @@ const shuffle = <T,>(values: T[]): T[] => {
   return result;
 };
 
-const createDeck = (): Card[] => {
-  const symbols = shuffle([...SYMBOLS, ...SYMBOLS]);
+const createDeck = (pairCount: number): Card[] => {
+  const selected = SYMBOLS.slice(0, pairCount);
+  const symbols = shuffle([...selected, ...selected]);
   return symbols.map((symbol, index) => ({
     id: index,
     symbol,
@@ -145,14 +104,41 @@ const createDeck = (): Card[] => {
   }));
 };
 
+const shuffleUnmatched = (prev: Card[]): Card[] => {
+  const result = [...prev];
+  const indices = result.reduce<number[]>((acc, c, i) => {
+    if (c.state !== "matched") acc.push(i);
+    return acc;
+  }, []);
+  const shuffled = shuffle(indices.map((i) => result[i]));
+  indices.forEach((pos, i) => {
+    result[pos] = shuffled[i];
+  });
+  return result;
+};
+
 const App = () => {
+  const { playSweep, playArpeggio } = useAudio();
+
   const timerRef = useRef<number | null>(null);
   const comboTimerRef = useRef<number | null>(null);
   const comboCountRef = useRef(0);
   const lastMatchPlayerRef = useRef<Player | null>(null);
 
+  const [settings, setSettings] = useState<Settings>(loadSettings);
+  const updateSettings = <K extends keyof Settings>(
+    key: K,
+    value: Settings[K],
+  ) => {
+    setSettings((prev) => {
+      const next = { ...prev, [key]: value };
+      saveSettings(next);
+      return next;
+    });
+  };
+
   const [phase, setPhase] = useState<Phase>("intro");
-  const [cards, setCards] = useState<Card[]>(() => createDeck());
+  const [cards, setCards] = useState<Card[]>(() => createDeck(8));
   const [turn, setTurn] = useState<Player>("p1");
   const [scores, setScores] = useState<ScoreState>({ p1: 0, p2: 0 });
   const [opened, setOpened] = useState<number[]>([]);
@@ -218,7 +204,7 @@ const App = () => {
         }));
 
         // ── マッチエフェクト ──────────────────────────────────────────────
-        playMatchSound();
+        playArpeggio([600, 900], 0.15, "triangle", 0.2, 0.1);
         setMatchAnim(new Set([firstIndex, secondIndex]));
         window.setTimeout(() => setMatchAnim(new Set()), 700);
         setMatchPopupPlayer(turn);
@@ -244,23 +230,22 @@ const App = () => {
           }, 1500);
         }
       } else {
-        setCards((prev) =>
-          prev.map((card, index) => {
+      setCards((prev) => {
+          const next = prev.map((card, index) => {
             if (index !== firstIndex && index !== secondIndex) {
               return card;
             }
-
-            return {
-              ...card,
-              state: "down",
-            };
-          }),
-        );
+            return { ...card, state: "down" as CardState };
+          });
+          return settings.shuffleMode === "shuffle"
+            ? shuffleUnmatched(next)
+            : next;
+        });
 
         setTurn((prev) => nextPlayer(prev));
 
         // ── ミスマッチエフェクト ──────────────────────────────────────────
-        playMismatchSound();
+        playSweep(200, 100, 0.2, "sawtooth", 0.12);
         setMismatchShake(true);
         window.setTimeout(() => setMismatchShake(false), 500);
 
@@ -271,8 +256,8 @@ const App = () => {
 
       setOpened([]);
       timerRef.current = null;
-    }, 700);
-  }, [cards, opened, turn]);
+    }, settings.flipTime);
+  }, [cards, opened, turn, playArpeggio, playSweep, settings]);
 
   // ── ゲームクリア演出 ───────────────────────────────────────────────────────
   useEffect(() => {
@@ -280,7 +265,7 @@ const App = () => {
       return;
     }
     const t0 = window.setTimeout(() => {
-      playClearSound();
+      playArpeggio([523, 659, 784, 1047], 0.25, "triangle", 0.2, 0.12);
       setShowConfetti(true);
       setShowWinnerPopup(true);
       setClearShake(true);
@@ -292,7 +277,7 @@ const App = () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
     };
-  }, [isFinished]);
+  }, [isFinished, playArpeggio]);
 
   const startGame = () => {
     if (timerRef.current !== null) {
@@ -316,7 +301,7 @@ const App = () => {
     comboCountRef.current = 0;
     lastMatchPlayerRef.current = null;
 
-    setCards(createDeck());
+    setCards(createDeck(settings.cardCount / 2));
     setTurn("p1");
     setScores({ p1: 0, p2: 0 });
     setOpened([]);
@@ -348,7 +333,7 @@ const App = () => {
       ),
     );
 
-    playFlipSound();
+    playSweep(1200, 800, 0.1, "sine", 0.12);
     setOpened((prev) => [...prev, index]);
   };
 
@@ -357,149 +342,247 @@ const App = () => {
       return "引き分け";
     }
 
-    return scores.p1 > scores.p2 ? "勝者 プレイヤー1" : "勝者 プレイヤー2";
-  }, [scores.p1, scores.p2]);
+    return scores.p1 > scores.p2
+      ? `勝者 ${settings.playerNames.p1}`
+      : `勝者 ${settings.playerNames.p2}`;
+  }, [scores.p1, scores.p2, settings.playerNames]);
 
   return (
-    <main className={`app${mismatchShake ? " shake" : ""}${clearShake ? " clearShake" : ""}`}>
-      {/* コンフェッティオーバーレイ */}
-      {showConfetti && (
-        <div className="confettiOverlay" aria-hidden="true">
-          {CONFETTI_PIECES.map((p) => (
-            <span
-              key={p.id}
-              className="confettiPiece"
-              style={{
-                left: `${p.left}%`,
-                backgroundColor: p.color,
-                animationDelay: `${p.animDelay}s`,
-                animationDuration: `${p.animDuration}s`,
-              }}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* 勝者ポップアップ */}
-      {showWinnerPopup && (
-        <div
-          className="winnerPopup"
-          role="status"
-          onClick={() => setShowWinnerPopup(false)}
-        >
-          <span className="winnerIcon">🏆</span>
-          <span className="winnerText">{winnerText}</span>
-          <span className="winnerSub">クリックで閉じる</span>
-        </div>
-      )}
-
-      <section className="panel">
-        <h1>Memory Duel</h1>
-        <p className="subtitle">ローカル2人の神経衰弱バトル</p>
-
-        <div className="ruleBox">
-          <h2>ルール</h2>
-          <ul>
-            <li>1ターンで2枚をめくる</li>
-            <li>同じ絵柄なら獲得して連続ターン</li>
-            <li>そろわなければ相手のターンへ交代</li>
-            <li>最終的に獲得ペア数の多い方が勝ち</li>
-          </ul>
-        </div>
-
-        {phase === "intro" && (
-          <div className="introBlock">
-            <p>16枚 8ペアで対戦開始</p>
-            <button className="action" type="button" onClick={startGame}>
-              対戦開始
-            </button>
+    <GameShell title="Memory Duel" gameId="memoryduel">
+      <main
+        className={`app${mismatchShake ? " shake" : ""}${clearShake ? " clearShake" : ""}`}
+      >
+        {/* コンフェッティオーバーレイ */}
+        {showConfetti && (
+          <div className="confettiOverlay" aria-hidden="true">
+            {CONFETTI_PIECES.map((p) => (
+              <span
+                key={p.id}
+                className="confettiPiece"
+                style={{
+                  left: `${p.left}%`,
+                  backgroundColor: p.color,
+                  animationDelay: `${p.animDelay}s`,
+                  animationDuration: `${p.animDuration}s`,
+                }}
+              />
+            ))}
           </div>
         )}
 
-        {phase !== "intro" && (
-          <>
-            <p className="statusText">
-              {!isFinished && <>手番 {PLAYER_LABEL[turn]}</>}
-              {isFinished && <>{winnerText}</>}
-            </p>
+        {/* 勝者ポップアップ */}
+        {showWinnerPopup && (
+          <div
+            className="winnerPopup"
+            role="status"
+            onClick={() => setShowWinnerPopup(false)}
+          >
+            <span className="winnerIcon">🏆</span>
+            <span className="winnerText">{winnerText}</span>
+            <span className="winnerSub">クリックで閉じる</span>
+          </div>
+        )}
 
-            {/* コンボ表示 */}
-            {showCombo && (
-              <div
-                className={`comboDisplay${comboDisplay >= 3 ? " onFire" : ""}`}
-                aria-live="polite"
-              >
-                {comboDisplay >= 3 && <span className="fireLabel">🔥 ON FIRE! </span>}
-                <span>COMBO ×{comboDisplay}</span>
-              </div>
-            )}
+        <section className="panel">
+          <h1>Memory Duel</h1>
+          <p className="subtitle">ローカル2人の神経衰弱バトル</p>
 
-            <div className="scoreRow">
-              {(["p1", "p2"] as const).map((player) => (
-                <div
-                  key={player}
-                  className={`scoreCard${turn === player && !isFinished ? " active" : ""}`}
-                >
-                  <span>{PLAYER_LABEL[player]}</span>
-                  <strong>{scores[player]}</strong>
-                  {/* MATCH ポップアップ */}
-                  {matchPopupPlayer === player && (
-                    <span className="matchPopup" aria-hidden="true">
-                      ✨ MATCH!
-                    </span>
-                  )}
+          <div className="ruleBox">
+            <h2>ルール</h2>
+            <ul>
+              <li>1ターンで2枚をめくる</li>
+              <li>同じ絵柄なら獲得して連続ターン</li>
+              <li>そろわなければ相手のターンへ交代</li>
+              <li>最終的に獲得ペア数の多い方が勝ち</li>
+            </ul>
+          </div>
+
+          {phase === "intro" && (
+            <div className="settingsBlock">
+              <div className="settingGroup">
+                <span className="settingLabel">カード枚数</span>
+                <div className="btnGroup">
+                  {CARD_COUNT_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      className={`btnOption${settings.cardCount === opt.value ? " selected" : ""}`}
+                      onClick={() => updateSettings("cardCount", opt.value)}
+                    >
+                      <strong>{opt.label}</strong>
+                      <span className="optDesc">{opt.desc}</span>
+                    </button>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
 
-            <div className="board" role="grid" aria-label="memory duel board">
-              {cards.map((card, index) => {
-                const faceUp = card.state === "up" || card.state === "matched";
-                const ownerClass = card.owner ? `owner-${card.owner}` : "";
-                const hasParticle = matchAnim.has(index);
+              <div className="settingGroup">
+                <span className="settingLabel">めくり確認時間</span>
+                <div className="btnGroup">
+                  {FLIP_TIME_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      className={`btnOption${settings.flipTime === opt.value ? " selected" : ""}`}
+                      onClick={() => updateSettings("flipTime", opt.value)}
+                    >
+                      <strong>{opt.label}</strong>
+                      <span className="optDesc">{opt.desc}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-                return (
-                  <button
-                    key={card.id}
-                    className={`card ${faceUp ? "open" : ""} ${card.state === "matched" ? "matched" : ""} ${ownerClass}`}
-                    type="button"
-                    onClick={() => handleCardClick(index)}
-                    disabled={
-                      phase !== "playing" ||
-                      isFinished ||
-                      lockBoard ||
-                      card.state !== "down"
+              <div className="settingGroup">
+                <span className="settingLabel">シャッフルモード</span>
+                <div className="btnGroup">
+                  {SHUFFLE_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      className={`btnOption${settings.shuffleMode === opt.value ? " selected" : ""}`}
+                      onClick={() => updateSettings("shuffleMode", opt.value)}
+                    >
+                      <strong>{opt.label}</strong>
+                      <span className="optDesc">{opt.desc}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="settingGroup">
+                <span className="settingLabel">プレイヤー名</span>
+                <div className="nameInputs">
+                  <input
+                    type="text"
+                    className="nameInput"
+                    value={settings.playerNames.p1}
+                    onChange={(e) =>
+                      updateSettings("playerNames", {
+                        ...settings.playerNames,
+                        p1: e.target.value,
+                      })
                     }
+                    placeholder="Player 1"
+                    maxLength={12}
+                  />
+                  <input
+                    type="text"
+                    className="nameInput"
+                    value={settings.playerNames.p2}
+                    onChange={(e) =>
+                      updateSettings("playerNames", {
+                        ...settings.playerNames,
+                        p2: e.target.value,
+                      })
+                    }
+                    placeholder="Player 2"
+                    maxLength={12}
+                  />
+                </div>
+              </div>
+
+              <button className="action startBtn" type="button" onClick={startGame}>
+                対戦開始
+              </button>
+            </div>
+          )}
+
+          {phase !== "intro" && (
+            <>
+              <p className="statusText">
+                {!isFinished && <>手番 {settings.playerNames[turn]}</>}
+                {isFinished && <>{winnerText}</>}
+              </p>
+
+              {/* コンボ表示 */}
+              {showCombo && (
+                <div
+                  className={`comboDisplay${comboDisplay >= 3 ? " onFire" : ""}`}
+                  aria-live="polite"
+                >
+                  {comboDisplay >= 3 && (
+                    <span className="fireLabel">🔥 ON FIRE! </span>
+                  )}
+                  <span>COMBO ×{comboDisplay}</span>
+                </div>
+              )}
+
+              <div className="scoreRow">
+                {(["p1", "p2"] as const).map((player) => (
+                  <div
+                    key={player}
+                    className={`scoreCard${turn === player && !isFinished ? " active" : ""}`}
                   >
-                    <span>{faceUp ? card.symbol : "?"}</span>
-                    {hasParticle && (
-                      <span className="particleBurst" aria-hidden="true">
-                        {Array.from({ length: 8 }, (_, i) => (
-                          <span key={i} className={`particle p${i}`} />
-                        ))}
+                    <span>{settings.playerNames[player]}</span>
+                    <strong>{scores[player]}</strong>
+                    {/* MATCH ポップアップ */}
+                    {matchPopupPlayer === player && (
+                      <span className="matchPopup" aria-hidden="true">
+                        ✨ MATCH!
                       </span>
                     )}
-                  </button>
-                );
-              })}
-            </div>
+                  </div>
+                ))}
+              </div>
 
-            <div className="actionRow">
-              <button className="action" type="button" onClick={startGame}>
-                もう一戦
-              </button>
-              <button
-                className="action secondary"
-                type="button"
-                onClick={() => setPhase("intro")}
+              <div
+                className="board"
+                role="grid"
+                aria-label="memory duel board"
+                style={{
+                  gridTemplateColumns: `repeat(${COLS_MAP[settings.cardCount]}, minmax(0, 1fr))`,
+                }}
               >
-                タイトルへ
-              </button>
-            </div>
-          </>
-        )}
-      </section>
-    </main>
+                {cards.map((card, index) => {
+                  const faceUp =
+                    card.state === "up" || card.state === "matched";
+                  const ownerClass = card.owner ? `owner-${card.owner}` : "";
+                  const hasParticle = matchAnim.has(index);
+
+                  return (
+                    <button
+                      key={card.id}
+                      className={`card ${faceUp ? "open" : ""} ${card.state === "matched" ? "matched" : ""} ${ownerClass}`}
+                      type="button"
+                      onClick={() => handleCardClick(index)}
+                      disabled={
+                        phase !== "playing" ||
+                        isFinished ||
+                        lockBoard ||
+                        card.state !== "down"
+                      }
+                    >
+                      <span>{faceUp ? card.symbol : "?"}</span>
+                      {hasParticle && (
+                        <span className="particleBurst" aria-hidden="true">
+                          {Array.from({ length: 8 }, (_, i) => (
+                            <span key={i} className={`particle p${i}`} />
+                          ))}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="actionRow">
+                <button className="action" type="button" onClick={startGame}>
+                  もう一戦
+                </button>
+                <button
+                  className="action secondary"
+                  type="button"
+                  onClick={() => setPhase("intro")}
+                >
+                  タイトルへ
+                </button>
+              </div>
+            </>
+          )}
+        </section>
+      </main>
+    </GameShell>
   );
 };
 

@@ -5,6 +5,352 @@
 
 ---
 
+## 2026-03-06
+
+### 作業ログ
+
+- [完了] MoleMania スコアバグ修正 → 担当: gamedev → 結果: 成功
+- [完了] MineRush 右クリックフラグ修正 → 担当: gamedev → 結果: 成功
+- [完了] src/App.tsx setState-in-effect ESLint違反修正 → 担当: gamedev → 結果: 成功 (useState→useRef)
+- [完了] 全12エージェントに「ワンショット最大化ポリシー」追加 → 担当: agent-editor → 結果: 成功
+
+### 修正内容
+
+#### MoleMania バグ修正
+
+- `endGame()` を `setTimeLeft` updater の外へ移動 (ref ベースのタイマーに変更)
+- `onClick` + `onTouchStart` 二重バインドを `onPointerDown` に統一
+- `loadSettings` にフィールド別バリデーション追加 (不正なlocalStorage値でクラッシュしない)
+
+#### MineRush 右クリック対応
+
+- `onPtrDown` / `onPtrUp` で `e.button !== 0` をフィルタ
+- 右クリック (button === 2) は `onContextMenu` → `flagCell` のみで処理
+
+### 検証結果
+
+- TSC: エラー0 / ESLint: エラー0 / Vite build: 成功
+
+---
+
+## 2026-03-05
+
+### 作業ログ
+
+- [完了] svg-artist エージェント新規作成 → 担当: consultant (直接作成)
+- [完了] public/thumbnails/minerush.svg 生成 → 担当: svg-artist → 結果: 成功
+
+### 修正内容
+
+#### svg-artist エージェント
+
+- **.github/agents/svg-artist.agent.md** 新規作成: SVGサムネイル生成専門エージェント
+- ゲームソース分析→既存SVGスタイル把握→640x360サムネイル生成の自律フロー
+- デザインルール・カラーパレット・SVGテクニック集を文書化
+
+#### MineRush サムネイル
+
+- **public/thumbnails/minerush.svg** 新規作成 (6,769 bytes)
+- 7x7マインスイーパーグリッド、数字色分け(1:青/2:緑/3:赤)、旗🚩×3、爆発地雷💣×1
+- グロー効果・パーティクル・STAGE/TIMER/MINES表示・BIG OPEN演出
+- Vite build: 成功
+
+### 今日の成果
+
+- SVG生成専門エージェント `svg-artist` を新設
+- 15本目 MineRush のサムネイルSVGを生成完了
+- **Batch1: 5ゲームに設定画面を追加** → 担当: gamedev → 結果: 成功
+
+### Batch1 設定画面追加 (5ゲーム)
+
+- **games/typingblitz**: ワード難易度(SHORT/MIXED/LONG)、落下速度(SLOW/NORMAL/FAST)、ライフ数(CASUAL∞/NORMAL5/HARDCORE3)、スポーン間隔(RELAXED/NORMAL/INTENSE)
+- **games/molemania**: ゲーム時間(15/30/60/90秒)、穴の数(6/9/12)、出現速度(SLOW/NORMAL/FAST)、ゴールデンモグラ出現率(LOW/NORMAL/HIGH)
+- **games/snakechaos**: グリッドサイズ(15/20/25)、初期速度(EASY/NORMAL/FAST)、壁モード(SOLID/WRAP)、パワーアップ頻度(LOW/NORMAL/HIGH)
+- **games/memoryduel**: カード枚数(12/16/20/24)、めくり確認時間(LONG/NORMAL/SHORT)、プレイヤー名(自由入力)、シャッフルモード(STATIC/SHUFFLE)
+- **games/brickblast**: 初期ライフ(1/3/5)、ボール速度(SLOW/NORMAL/FAST)、パドルサイズ(WIDE/NORMAL/NARROW)、パワーアップ出現率(LOW/NORMAL/HIGH)
+- 全設定はlocalStorageに永続化、デフォルト値なら既存と同じ動作
+- TSC: エラー0 / ESLint: エラー0 / Vite build: 成功
+
+### 次やること (Batch2)
+
+- ~~残り8ゲーム(FlashReflex/GravityFour/Merge2048/ColorBurst/TapTarget/SimonEcho/DodgeBlitz/MineRush)に設定画面を追加~~
+
+### Batch2 設定画面追加 (8ゲーム)
+
+- **games/flashreflex**: ラウンド数(3/5/10/20)、待機時間の幅(PREDICTABLE/NORMAL/TRICKY)、フライングペナルティ(MILD/NORMAL/SEVERE)
+- **games/gravityfour**: ボードサイズ(5×6/6×7/7×8)、勝利ライン数(3/4/5)、プレイヤー名(自由入力×2)、プレイヤーカラー(8色プリセット×2)
+- **games/merge2048**: ボードサイズ(3/4/5)、勝利目標値(512/1024/2048/4096)、ゲームモード(CLASSIC/ENDLESS)
+- **games/colorburst**: 色数(4/6/8)、ミス許容数(1/3/5)、制限時間(RELAXED/NORMAL/STRICT)
+- **games/taptarget**: ゲーム時間(30/60/90/120秒)、ミス許容数(3/5/∞)、ターゲットサイズ(LARGE/NORMAL/SMALL)、同時出現数上限(3段階)
+- **games/simonecho**: 色数(4/6/8)、テンポ(SLOW/NORMAL/FAST)、ミス許容回数(0/1/3)
+- **games/dodgeblitz**: 自機サイズ(LARGE/NORMAL/SMALL)、弾速難易度(EASY/NORMAL/HARD)、アイテム頻度(LOW/NORMAL/HIGH)、開始Wave(1/2/3)
+- **games/minerush**: 開始ステージ(1/3/5)、グリッドモード(AUTO/CUSTOM)、カスタムグリッド(rows/cols/mines)、フラグモード(STANDARD/TAP_FLAG)
+- 全設定はlocalStorageに永続化、デフォルト値なら既存と同じ動作
+- TSC: エラー0 / ESLint: エラー0 / Vite build: 成功
+
+---
+
+## 2026-03-04
+
+### 作業ログ
+
+- [完了] 全14ゲームに内部リンク追加 → 担当: gamedev
+- [完了] SNS自動化GitHub Actions構築 → 担当: platform-architect
+- [完了] 15本目ゲーム「MineRush」企画→実装→portal登録 → 担当: game-factory
+
+### 修正内容
+
+#### 内部リンク追加
+
+- **src/shared/components/GameRecommendations.tsx** 新規作成: games.jsonから現在のゲーム以外3本をランダム選出してカード表示
+- **src/shared/components/GameShell.tsx** 修正: `gameId` prop追加。指定時にGameRecommendationsを自動表示
+- **src/shared/index.ts** 修正: GameRecommendations export追加
+- **全14ゲームの App.tsx** 修正: GameShellに`gameId`プロップを追加
+
+#### SNS自動化
+
+- **.github/workflows/sns-post-weekly.yml** 新規作成: 毎週月曜9:00 JST(cron)で既存ゲームランダム紹介。Bluesky + Twitter両対応。シークレット未設定時はスキップ
+- **.github/workflows/release-pipeline.yml** 修正: Bluesky投稿ジョブ追加、summaryにBluesky結果表示追加
+- 必要なSecrets: BLUESKY_HANDLE / BLUESKY_APP_PASSWORD (Bluesky), TWITTER_API_KEY等 (Twitter)
+
+#### 新ゲーム MineRush
+
+- **games/minerush/** 新規作成: index.html / src/main.tsx / src/App.tsx / src/App.css
+- マインスイーパー × タイムアタック。ステージ制(6x6→10x10)、初手安全保証、連鎖パーティクル、BIG OPEN演出
+- SEO・OGP・GA4完備。shared全コンポーネント使用(GameShell/useAudio/useHighScore/ParticleLayer/ScorePopup)
+- **src/portal/data/games.json** に15本目として登録済み
+
+#### 検証結果
+
+- TSC: エラー0
+- ESLint: エラー0
+- Vite build: 成功 (sitemap 16 URLs)
+
+### 今日の成果
+
+- 全ゲームに「他のゲームで遊ぶ」内部リンク導入(SEO+回遊率向上)
+- SNS自動投稿ワークフロー2つ稼働準備完了(Bluesky/Twitter)
+- 15本目「MineRush」を企画→実装→portal登録まで完了
+- Phase 1ゲート要件の技術的準備がほぼ完了
+
+### 人間がやること
+
+- GitHub Secrets設定: BLUESKY_HANDLE / BLUESKY_APP_PASSWORD (Bluesky自動投稿の有効化)
+- PR作成 → mainマージ → デプロイ
+- MineRush用サムネイル(thumbnails/minerush.svg)作成
+- Search Console sitemap再送信
+
+---
+
+## 2026-03-03
+
+### 作業ログ
+
+- [完了] ポータルSSG化 → 担当: platform-architect
+
+### 修正内容
+
+#### ポータルSSGプラグイン実装
+
+- **plugins/portal-ssg.ts** 新規作成: Vite `closeBundle` フックでポータルApp.tsxをSSRビルド → `renderToStaticMarkup` で静的HTML生成 → dist/index.htmlに注入
+- **vite.config.ts**: `portalSSG()` プラグイン追加
+- **src/portal/App.tsx**: ランダムゲームリンクに `data-random-paths` 属性追加（SSG時はインラインscriptで差し替え）
+- **tsconfig.node.json**: `plugins` ディレクトリをincludeに追加
+
+#### 結果
+
+- dist/index.html に全14ゲームのカード・セクションが静的HTMLとして注入される
+- portal用React JSバンドル + React runtime preloadを除去（CSSのみ残存）
+- ランダムゲームリンクはインラインscript（100B未満）で動的化
+- ビルド: 成功、TSC/ESLint: エラー0
+
+### 今日の成果
+
+- ポータルLPがCSR → 完全SSGに移行。フレームワークJS送信ゼロ
+- プロジェクト全体クリーンアップ完了（次フェーズ準備）
+
+#### クリーンアップ内容
+
+**不要ファイル削除 (2件)**
+
+- `.github/workflows/deploy.yml` — 死んでたGitHub Pagesワークフロー
+- `.github/prompts/monorepo-migration.prompt.md` — 完了済みタスクプロンプト
+
+**Agent構文修正 (7件)**
+
+- consultant / seo-specialist / copywriter / github-repo / qa-tester / agent-editor / sns-manager の `.agent.md` — chatagentブロックの二重ネストを正規形式に修正
+
+**ホスティング統一: Cloudflare Pages → XServer Static (全ファイル)**
+
+- copilot-instructions.md / README.md / ROADMAP.md / YourSuckJobs.md
+- platform-architect / game-factory / growth の各agent.md
+- portal-setup / seo / sns-automation / platform-setup / new-game-full / pwa の各prompt.md
+- release-pipeline.yml
+
+**内容整合性修正**
+
+- copilot-instructions.md: SSGプラグイン説明を現行アーキテクチャに更新、index.html説明修正、Prompts/Workflowsテーブルから削除済みファイル除去
+- ROADMAP.md: 現在地を3/3に更新、完了済み3項目追加、Phase 0チェック完了、14日スプリント完了済み
+- YourSuckJobs.md: GitHub Pages無効化セクション削除、monorepo-migration参照削除
+- portal-setup.prompt.md: SSGアーキテクチャ説明を全面書き換え
+- seo.prompt.md: 存在しないrenderPortalHtml()参照を修正
+
+---
+
+## 2026-03-01
+
+### 作業ログ
+
+- [完了] 共通化リファクタのお残しチェック → 担当: consultant (横断調査)
+- [完了] 全問題の一括修正 → 担当: gamedev / consultant
+
+### 修正内容
+
+#### バグ修正
+
+- **brickblast**: `if (audio)` 未定義変数参照を修正 → 爆破音・HP減少音が正常に鳴るように
+- **brickblast**: 不要な `audioRef` (AudioContext二重管理) を削除、sfxRef のレンダー中ref更新を useEffect に移行
+
+#### デッドコード削除
+
+- **merge2048**: 旧Audio関数群 58行を削除
+- **dodgeblitz**: 旧Audio helper 72行を削除
+- **memoryduel**: 未使用 `playTone` import を削除
+- **typingblitz**: 未使用 `playTone` import を削除
+
+#### ESLint修正 (33件 → 0件)
+
+- **typingblitz**: completeWord / missWord / handleChange の useCallback deps 不足を修正
+- **brickblast**: sfxRef / highScoreRef のレンダー中ref更新を useEffect に移行
+- **colorburst**: scoreRef パターン導入で React Compiler問題を解消
+- **dodgeblitz**: sfxRef のレンダー中ref更新を useEffect に移行
+- **numhunt**: handleTap の deps 不足を修正
+- **snakechaos**: sfxRef のレンダー中ref更新を useEffect に移行
+- **taptarget**: syncDisplay / endGame の deps 不足を修正
+- **memoryduel**: 2つの useEffect に playArpeggio / playSweep deps を追加
+- **simonecho**: handleButtonPress から不要な hiScore dep を削除
+
+#### CSS重複整理
+
+- 13ゲームの CSS Reset 重複を削除 (\*, body の theme.css と同等部分)
+- 6ゲームの `@keyframes shake` を `game-shake` にリネーム (theme.css との名前衝突解消)
+- 4ゲームの `@keyframes float-up` を `game-float-up` にリネーム
+- 1ゲームの `@keyframes pulse` を `game-pulse` にリネーム
+- numhunt / typingblitz の :root から theme.css と同値の `--danger` / `--success` を削除
+
+#### useHighScore 展開
+
+- **colorburst**: useHighScore("colorburst") 導入、gameover画面にBEST表示追加
+- **typingblitz**: useHighScore("typingblitz") 導入、gameover画面にBEST表示追加
+- **brickblast**: useHighScore("brickblast") 導入、Canvas内にBEST表示追加
+- **gravityfour**: localStorage直接操作を useHighScore("gravityfour") に置換、最長連勝記録を管理
+
+### 最終結果
+
+- TSC: エラー 0
+- ESLint: エラー 0、警告 0 (33件 → 0件)
+- Vite build: 603ms 成功
+- 全14ゲーム + portal 正常
+
+### 残タスク
+
+- useParticles / ParticleLayer / ScorePopup の移行 (Canvas系ゲームは不可、DOM系5ゲームは検討可) → Phase 2以降
+
+---
+
+## 2026-02-28
+
+### 作業ログ
+
+- [完了] brickblast バグ修正 → ボールが飛んでいかない問題
+  - 原因: `update()` の attached ブロックで毎フレーム `b.dx = 0; b.dy = 0` を上書きしていた
+  - 修正: その2行を削除し、`makeBall()` が生成した速度をそのまま保持するようにした
+- [完了] molemania バグ修正 → 3体倒すと白画面フリーズ
+  - 原因: `setMoles` の updater 関数内で `setScore` / `setCombo` / `setShaking` / `setFever` / `setParticles` / `setPopups` を呼んでいた (React の state updater は純粋関数でなければならない)。また `doSpawn` の updater 内でもタイマー登録と `setCombo(0)` を呼んでいた
+  - 修正: `whackMole` を全面リファクタ — updater でモルの型・ポイントをローカル変数に捕捉し、全 setState・副作用を updater 外に移動。`doSpawn` も同様にタイマー登録と `setCombo(0)` を updater 外に移動
+
+- [完了] モノレポ最適化 → 担当: platform-architect
+  - A: 全15ゲームのdevDependenciesをルートに集約 → 成功
+  - B: packages/game-config 共有設定パッケージ作成 → 成功 (各ゲームへの適用は段階的に)
+  - C: Turborepo追加 → 成功 (ntiktaktoe 1.6s→25ms キャッシュHIT確認)
+- [完了] Viteマルチエントリ統合 + src/shared/ ライブラリ作成 → 担当: platform-architect + gamedev
+  - ルートvite.config.ts → 全14ゲームのindex.htmlをマルチエントリで自動検出 (638ms full build)
+  - src/shared/ 作成: theme.css / useAudio / useParticles / ParticleLayer / ScorePopup / GameShell
+  - flashreflexをPoC適用 → 重複コード約115行削除、ビルド確認済み
+- [完了] 単一Viteアプリ構造への完全移行 → 担当: platform-architect
+  - 各ゲームのpackage.json/vite.config.ts/tsconfig\*.json/eslint.config.js を削除 (95ファイル)
+  - tsconfig.app.json の include を games/\*/src まで拡張
+  - workspacesから games/\* を削除
+  - ビルド623ms・TSCエラー0で確認済み
+
+- [完了] 単一Vite SSGプロジェクトへの完全統合 → 担当: platform-architect
+  - Astro portal を廃止 → plugins/portal-ssg.ts (Vite SSGプラグイン) に一旦移行
+  - portal/src/data/games.json → src/portal/data/games.json に移動
+  - portal/public/ → public/ に移動(thumbnails, manifest, sw.js)
+  - portal/ ディレクトリ・packages/ ディレクトリ・turbo.json 全削除
+  - workspaces 削除・package.json に "type": "module" 追加
+- [完了] SSGプラグイン廃止 → ポータルLP を React SPA + Viteエントリに統合 → 担当: platform-architect
+  - plugins/portal-ssg.ts (357行) を削除
+  - ポータルLPを src/portal/App.tsx + App.css + main.tsx としてReactコンポーネント化
+  - index.html を本番LP用HTMLエントリに書き換え、vite.config.ts のinputに追加
+  - sitemap.xml + \_redirects は scripts/prebuild.mjs (30行) で games.json から生成
+  - \_headers は public/ に静的配置
+  - build: `node scripts/prebuild.mjs && tsc -b && vite build` → 598ms・TSCエラー0
+- [完了] 全ドキュメント・agent・prompt・workflowの新アーキテクチャ対応 → 担当: agent-editor
+  - .github/copilot-instructions.md 全面書き換え
+  - 10エージェント (.github/agents/\*.agent.md) 更新
+  - 9プロンプト (.github/prompts/\*.prompt.md) 更新
+  - 3ワークフロー (build-and-deploy/ci/release-pipeline .yml) 更新
+  - README.md・ROADMAP.md 更新
+
+### 今日の成果
+
+- brickblast・molemania の2本のゲームのバグを修正
+- 単一Viteプロジェクトに完全統合(Astro/Turbo/workspaces/SSGプラグイン全廃止)
+- ポータルLPをReact SPA化してViteマルチエントリに直接統合
+- 全ドキュメント・エージェント設定・ワークフローを新アーキテクチャに更新
+- ビルド598ms、TSCエラー0、ESLintエラー0
+
+### 明日やること
+
+- PR作成 → mainマージ → デプロイ(人間の作業)
+- Search Console に sitemap.xml を送信(人間の作業)
+- 引き続き ROADMAP.md のタスクを消化
+
+---
+
+## 2026-02-27
+
+### 作業ログ
+
+- [開始] Day13〜Day14 実行（SEO最低限・portal確認） → 担当: seo-specialist / consultant
+- [完了] Day13 全ゲームSEO最低限対応 → 結果: 成功
+  - 全14ゲームの `index.html` に `description` / OGP全5タグ / Twitter Card 3タグ / `canonical` を追加
+  - 新規10本には `GA4 (G-L7TY3RFZB7)` も追加（Day7で漏れていた分）
+  - portal `Layout.astro` に `canonicalUrl` / `ogType` prop を追加し OGP 全ページ対応
+  - portal index の title を "Game Portal" → "ブラウザゲームポータル | game.kihamda.net" に改善
+  - portal `[id].astro` ゲーム詳細ページも canonical を各ゲームURLに設定
+  - portal ビルド 15ページ成功・全体ビルド exit 0 確認
+- [完了] Day14 portal/src/data/games.json 確認 → 結果: 確認済み（14本登録済み・変更不要）
+- [メモ] Day14 の「公開判定・週次レビュー」は人間の作業として残す
+
+### 今日の成果
+
+- 全14ゲームにSEO三点セット（description・OGP・Twitter Card）を追加
+- GA4 未追加だった新規10本に一括追加（計測漏れ解消）
+- portal のタイトル・OGP・canonical を全ページ正規化
+- 14日スプリント Day 1〜7 + Day 10〜14（実装部分）が全て完了
+
+### 明日やること
+
+- **Day8**: Search Console に `sitemap-index.xml` を送信（人間の作業）
+- **Day9**: AdSense 申請状態確認（人間の作業）
+- **Day14 週次レビュー**: KPI確認・次週方針確定（人間の作業）
+- **PR作成 → main マージ → デプロイ**（人間の作業）
+- Phase 1 移行判定: SNS自動化・各ゲームへの内部リンク（portal誘導）実装着手
+
+---
+
 ## 2026-02-25
 
 ### 作業ログ

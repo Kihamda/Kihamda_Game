@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
+import { useAudio, GameShell, useHighScore } from "../../../src/shared";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Phase = "title" | "playing" | "stageclear" | "gameover";
@@ -99,46 +100,80 @@ const POWER_LABEL: Record<Exclude<PowerType, "explosive">, string> = {
   speed: "⚡ SLOW 6s",
 };
 
-// ─── Audio Helpers ────────────────────────────────────────────────────────────
-function tone(
-  ctx: AudioContext,
-  freq: number,
-  dur: number,
-  type: OscillatorType = "sine",
-  vol = 0.25,
-  delay = 0,
-) {
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
-  gain.gain.setValueAtTime(vol, ctx.currentTime + delay);
-  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + dur);
-  osc.start(ctx.currentTime + delay);
-  osc.stop(ctx.currentTime + delay + dur);
+// ─── Settings ─────────────────────────────────────────────────────────────────
+interface Settings {
+  lives: number;
+  baseSpeed: number;
+  paddleW: number;
+  powerDropRate: number;
 }
 
-function playBlockBreak(ctx: AudioContext, hp: number) {
-  const freqs = [880, 660, 440] as const;
-  tone(ctx, freqs[3 - hp] ?? 440, 0.09, "square", 0.18);
+const DEFAULT_SETTINGS: Settings = {
+  lives: 3,
+  baseSpeed: BASE_SPEED,
+  paddleW: BASE_PADDLE_W,
+  powerDropRate: POWER_DROP_CHANCE,
+};
+
+function loadSettings(): Settings {
+  try {
+    const raw = localStorage.getItem("brickblast_settings");
+    if (raw) {
+      const parsed = JSON.parse(raw) as Partial<Settings>;
+      return { ...DEFAULT_SETTINGS, ...parsed };
+    }
+  } catch {
+    /* ignore */
+  }
+  return { ...DEFAULT_SETTINGS };
 }
 
-function playPowerUp(ctx: AudioContext) {
-  [523, 659, 784, 1047].forEach((f, i) => tone(ctx, f, 0.12, "sine", 0.22, i * 0.07));
+function saveSettings(s: Settings): void {
+  localStorage.setItem("brickblast_settings", JSON.stringify(s));
 }
 
-function playMiss(ctx: AudioContext) {
-  tone(ctx, 180, 0.18, "sawtooth", 0.35);
-  tone(ctx, 90, 0.4, "sawtooth", 0.28, 0.15);
-}
-
-function playStageClear(ctx: AudioContext) {
-  [523, 659, 784, 1047, 1319].forEach((f, i) =>
-    tone(ctx, f, 0.18, "sine", 0.28, i * 0.09),
-  );
-}
+const SETTING_OPTIONS: {
+  key: keyof Settings;
+  label: string;
+  choices: { value: number; label: string }[];
+}[] = [
+  {
+    key: "lives",
+    label: "初期ライフ",
+    choices: [
+      { value: 1, label: "1" },
+      { value: 3, label: "3" },
+      { value: 5, label: "5" },
+    ],
+  },
+  {
+    key: "baseSpeed",
+    label: "ボール速度",
+    choices: [
+      { value: 3.0, label: "SLOW" },
+      { value: 4.5, label: "NORMAL" },
+      { value: 6.0, label: "FAST" },
+    ],
+  },
+  {
+    key: "paddleW",
+    label: "パドルサイズ",
+    choices: [
+      { value: 120, label: "WIDE" },
+      { value: 80, label: "NORMAL" },
+      { value: 50, label: "NARROW" },
+    ],
+  },
+  {
+    key: "powerDropRate",
+    label: "パワーアップ出現率",
+    choices: [
+      { value: 0.08, label: "LOW" },
+      { value: 0.18, label: "NORMAL" },
+      { value: 0.35, label: "HIGH" },
+    ],
+  },
+];
 
 // ─── Game Helpers ─────────────────────────────────────────────────────────────
 const BLOCK_COLORS: Record<number, string> = {
@@ -171,11 +206,7 @@ function makeBlocks(stage: number): Block[] {
   return blocks;
 }
 
-function makeBall(
-  paddleX: number,
-  paddleW: number,
-  speed: number,
-): Ball {
+function makeBall(paddleX: number, paddleW: number, speed: number): Ball {
   const ang = Math.PI * 0.3 + Math.random() * Math.PI * 0.4;
   const sign = Math.random() < 0.5 ? -1 : 1;
   return {
@@ -188,9 +219,9 @@ function makeBall(
   };
 }
 
-function currentSpeed(state: GameState): number {
+function currentSpeed(state: GameState, baseSpeed: number): number {
   const hasSpeed = state.activePowers.some((p) => p.type === "speed");
-  return BASE_SPEED * (1 + state.stage * 0.08) * (hasSpeed ? 0.7 : 1);
+  return baseSpeed * (1 + state.stage * 0.08) * (hasSpeed ? 0.7 : 1);
 }
 
 function normalizeBall(ball: Ball, speed: number) {
@@ -225,8 +256,8 @@ function spawnParticles(
   }
 }
 
-function maybeDrop(drops: DroppingPower[], x: number, y: number) {
-  if (Math.random() < POWER_DROP_CHANCE) {
+function maybeDrop(drops: DroppingPower[], x: number, y: number, dropChance: number) {
+  if (Math.random() < dropChance) {
     const types: PowerType[] = ["multiball", "paddle", "speed", "explosive"];
     const type = types[Math.floor(Math.random() * types.length)]!;
     drops.push({ type, x, y, dy: 2.2 });
@@ -242,6 +273,14 @@ const POWER_DOT: Record<PowerType, string> = {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 const App = () => {
+  const [settings, setSettings] = useState<Settings>(loadSettings);
+  const [showTitle, setShowTitle] = useState(true);
+  const settingsRef = useRef(settings);
+  const startGameRef = useRef<(() => void) | null>(null);
+  useEffect(() => {
+    settingsRef.current = settings;
+  }, [settings]);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gsRef = useRef<GameState>({
     phase: "title",
@@ -264,7 +303,21 @@ const App = () => {
     explosiveCharged: false,
     lastTime: 0,
   });
-  const audioRef = useRef<AudioContext | null>(null);
+  const {
+    playTone: sharedPlayTone,
+    playArpeggio,
+    playMiss: sharedPlayMiss,
+  } = useAudio();
+  // Bridge hook callbacks into the imperative game loop via refs
+  const { best: bestScore, update: updateBest } = useHighScore("brickblast");
+  const sfxRef = useRef({ sharedPlayTone, playArpeggio, sharedPlayMiss });
+  useEffect(() => {
+    sfxRef.current = { sharedPlayTone, playArpeggio, sharedPlayMiss };
+  }, [sharedPlayTone, playArpeggio, sharedPlayMiss]);
+  const highScoreRef = useRef({ bestScore, updateBest });
+  useEffect(() => {
+    highScoreRef.current = { bestScore, updateBest };
+  }, [bestScore, updateBest]);
   const rafRef = useRef<number>(0);
   const popupIdRef = useRef(0);
 
@@ -288,11 +341,8 @@ const App = () => {
       gs.mouseX = e.touches[0]!.clientX - rect.left;
     }
     function onPointerDown() {
-      if (!audioRef.current) {
-        audioRef.current = new AudioContext();
-      }
       if (gs.phase === "title") {
-        startGame();
+        return;
       } else if (gs.phase === "playing" && gs.ballAttached) {
         gs.ballAttached = false;
       } else if (gs.phase === "gameover" || gs.phase === "stageclear") {
@@ -301,7 +351,8 @@ const App = () => {
             gs.stage++;
             nextStage();
           } else {
-            startGame();
+            gs.phase = "title";
+            setShowTitle(true);
           }
         }
       }
@@ -315,7 +366,7 @@ const App = () => {
     function startGame() {
       gs.phase = "playing";
       gs.score = 0;
-      gs.lives = 3;
+      gs.lives = settingsRef.current.lives;
       gs.stage = 1;
       gs.combo = 0;
       gs.comboTimer = 0;
@@ -327,11 +378,14 @@ const App = () => {
       nextStage();
     }
 
+    startGameRef.current = startGame;
+
     function nextStage() {
+      const basePW = settingsRef.current.paddleW;
       gs.blocks = makeBlocks(gs.stage);
       gs.balls = [];
       gs.ballAttached = true;
-      gs.paddleW = hasPower("paddle") ? BASE_PADDLE_W * 1.5 : BASE_PADDLE_W;
+      gs.paddleW = hasPower("paddle") ? basePW * 1.5 : basePW;
       gs.paddleX = CW / 2 - gs.paddleW / 2;
       gs.particles = [];
       gs.droppingPowers = [];
@@ -343,7 +397,10 @@ const App = () => {
       return gs.activePowers.some((p) => p.type === type);
     }
 
-    function addActivePower(type: Exclude<PowerType, "explosive">, duration: number) {
+    function addActivePower(
+      type: Exclude<PowerType, "explosive">,
+      duration: number,
+    ) {
       const existing = gs.activePowers.find((p) => p.type === type);
       if (existing) {
         existing.remaining = Math.max(existing.remaining, duration);
@@ -384,7 +441,7 @@ const App = () => {
     }
 
     function destroyBlock(block: Block, ball: Ball) {
-      const audio = audioRef.current;
+      const sfx = sfxRef.current;
 
       if (ball.explosive) {
         // 3×3 area explosion
@@ -401,8 +458,9 @@ const App = () => {
           if (colDist <= 1 && rowDist <= 1) {
             gs.score += b.hp;
             spawnParticles(gs.particles, b.x, b.y, b.w, b.h, blockColor(b.hp));
-            maybeDrop(gs.droppingPowers, b.x + b.w / 2, b.y + b.h);
-            if (audio) playBlockBreak(audio, b.hp);
+            maybeDrop(gs.droppingPowers, b.x + b.w / 2, b.y + b.h, settingsRef.current.powerDropRate);
+            const freqs = [880, 660, 440] as const;
+            sfx.sharedPlayTone(freqs[3 - b.hp] ?? 440, 0.09, "square", 0.18);
           }
         });
         gs.blocks = gs.blocks.filter((b) => {
@@ -422,11 +480,29 @@ const App = () => {
         addPopup(block.x + block.w / 2, block.y, "💥 BLAST!", true);
       } else {
         block.hp--;
-        if (audio) playBlockBreak(audio, Math.max(block.hp, 1));
+        const freqs = [880, 660, 440] as const;
+        sfx.sharedPlayTone(
+          freqs[3 - Math.max(block.hp, 1)] ?? 440,
+          0.09,
+          "square",
+          0.18,
+        );
         if (block.hp <= 0) {
           gs.score += block.maxHp;
-          spawnParticles(gs.particles, block.x, block.y, block.w, block.h, blockColor(1));
-          maybeDrop(gs.droppingPowers, block.x + block.w / 2, block.y + block.h);
+          spawnParticles(
+            gs.particles,
+            block.x,
+            block.y,
+            block.w,
+            block.h,
+            blockColor(1),
+          );
+          maybeDrop(
+            gs.droppingPowers,
+            block.x + block.w / 2,
+            block.y + block.h,
+            settingsRef.current.powerDropRate,
+          );
           gs.blocks = gs.blocks.filter((b) => b !== block);
           gs.combo++;
           gs.comboTimer = COMBO_RESET_MS;
@@ -434,7 +510,12 @@ const App = () => {
           const pts = block.maxHp + bonus;
           gs.score += bonus;
           if (gs.combo >= 3) {
-            addPopup(block.x + block.w / 2, block.y, `${gs.combo}× COMBO!`, true);
+            addPopup(
+              block.x + block.w / 2,
+              block.y,
+              `${gs.combo}× COMBO!`,
+              true,
+            );
           } else {
             addPopup(block.x + block.w / 2, block.y, `+${pts}`, false);
           }
@@ -462,7 +543,8 @@ const App = () => {
       });
 
       // Paddle width
-      const targetPW = hasPower("paddle") ? BASE_PADDLE_W * 1.5 : BASE_PADDLE_W;
+      const basePW = settingsRef.current.paddleW;
+      const targetPW = hasPower("paddle") ? basePW * 1.5 : basePW;
       gs.paddleW = gs.paddleW + (targetPW - gs.paddleW) * 0.15;
 
       // Paddle movement
@@ -473,18 +555,16 @@ const App = () => {
 
       // Ball attached to paddle
       if (gs.ballAttached) {
-        gs.balls = [
-          makeBall(gs.paddleX, gs.paddleW, currentSpeed(gs)),
-        ];
+        // recreate every frame so launch angle is fresh on release
+        gs.balls = [makeBall(gs.paddleX, gs.paddleW, currentSpeed(gs, settingsRef.current.baseSpeed))];
         const b = gs.balls[0]!;
         b.x = gs.paddleX + gs.paddleW / 2;
         b.y = PADDLE_Y - BALL_R - 1;
-        b.dx = 0;
-        b.dy = 0;
+        // NOTE: keep dx/dy from makeBall — they become the launch velocity
         return;
       }
 
-      const speed = currentSpeed(gs);
+      const speed = currentSpeed(gs, settingsRef.current.baseSpeed);
 
       // Ball movement & collision
       const toRemove: Ball[] = [];
@@ -542,10 +622,11 @@ const App = () => {
         gs.lives--;
         gs.combo = 0;
         gs.comboTimer = 0;
-        if (audioRef.current) playMiss(audioRef.current);
+        sfxRef.current.sharedPlayMiss();
         if (gs.lives <= 0) {
           gs.phase = "gameover";
           gs.stageDelay = 1.5;
+          highScoreRef.current.updateBest(gs.score);
         } else {
           gs.ballAttached = true;
         }
@@ -557,7 +638,8 @@ const App = () => {
         while (gs.balls.length < 3) {
           const src = gs.balls[0]!;
           const spread = Math.PI * 0.15;
-          const angle = Math.atan2(src.dy, src.dx) + (Math.random() - 0.5) * spread;
+          const angle =
+            Math.atan2(src.dy, src.dx) + (Math.random() - 0.5) * spread;
           gs.balls.push({
             ...src,
             dx: Math.cos(angle) * speed,
@@ -597,18 +679,33 @@ const App = () => {
       if (gs.blocks.length === 0 && !gs.ballAttached) {
         gs.phase = "stageclear";
         gs.stageDelay = 2;
-        if (audioRef.current) playStageClear(audioRef.current);
+        sfxRef.current.playArpeggio(
+          [523, 659, 784, 1047, 1319],
+          0.18,
+          "sine",
+          0.28,
+          0.09,
+        );
         setActivePowerBadges([...gs.activePowers]);
       }
 
       // Stage delay countdown
-      if ((gs.phase === "stageclear" || gs.phase === "gameover") && gs.stageDelay > 0) {
+      if (
+        (gs.phase === "stageclear" || gs.phase === "gameover") &&
+        gs.stageDelay > 0
+      ) {
         gs.stageDelay -= dtSec;
       }
     }
 
     function applyPower(type: PowerType) {
-      if (audioRef.current) playPowerUp(audioRef.current);
+      sfxRef.current.playArpeggio(
+        [523, 659, 784, 1047],
+        0.12,
+        "sine",
+        0.22,
+        0.07,
+      );
       if (type === "explosive") {
         gs.explosiveCharged = true;
         gs.balls.forEach((b) => (b.explosive = true));
@@ -625,7 +722,7 @@ const App = () => {
         gs.shake = 10;
         if (gs.balls.length > 0 && !gs.ballAttached) {
           const src = gs.balls[0]!;
-          const spd = currentSpeed(gs);
+          const spd = currentSpeed(gs, settingsRef.current.baseSpeed);
           for (let i = 1; i < 3; i++) {
             const spread = (Math.PI / 6) * (i === 1 ? 1 : -1);
             const base = Math.atan2(src.dy, src.dx);
@@ -656,8 +753,21 @@ const App = () => {
         drawTitle();
       } else {
         drawGame();
-        if (gs.phase === "stageclear") drawOverlay("STAGE CLEAR!", `STAGE ${gs.stage}`, "#44ff88", gs.stageDelay);
-        if (gs.phase === "gameover") drawOverlay("GAME OVER", `SCORE: ${gs.score}`, "#ff4455", gs.stageDelay);
+        if (gs.phase === "stageclear")
+          drawOverlay(
+            "STAGE CLEAR!",
+            `STAGE ${gs.stage}`,
+            "#44ff88",
+            gs.stageDelay,
+          );
+        if (gs.phase === "gameover")
+          drawOverlay(
+            "GAME OVER",
+            `SCORE: ${gs.score}`,
+            "#ff4455",
+            gs.stageDelay,
+            "クリック / タップでタイトルへ",
+          );
       }
 
       ctx.restore();
@@ -688,7 +798,12 @@ const App = () => {
       const colors = ["#4488ff", "#44cc66", "#ff4455"];
       for (let i = 0; i < 8; i++) {
         ctx.fillStyle = colors[i % 3]!;
-        ctx.fillRect(BLK_OFFSET_X + i * (BLK_W + BLK_GAP), CH - 120, BLK_W, BLK_H);
+        ctx.fillRect(
+          BLK_OFFSET_X + i * (BLK_W + BLK_GAP),
+          CH - 120,
+          BLK_W,
+          BLK_H,
+        );
       }
     }
 
@@ -723,7 +838,8 @@ const App = () => {
         gs.activePowers.forEach((ap, i) => {
           const label = POWER_LABEL[ap.type];
           const barW = 80;
-          const maxDur = ap.type === "multiball" ? 10 : ap.type === "paddle" ? 8 : 6;
+          const maxDur =
+            ap.type === "multiball" ? 10 : ap.type === "paddle" ? 8 : 6;
           const ratio = ap.remaining / maxDur;
           const bx = CW - barW - 8;
           const by = 40 + i * 22;
@@ -784,7 +900,11 @@ const App = () => {
       // Paddle
       const px = gs.paddleX;
       const pw = gs.paddleW;
-      const padColor = gs.explosiveCharged ? "#ff8800" : hasPower("paddle") ? "#4488ff" : "#ccddff";
+      const padColor = gs.explosiveCharged
+        ? "#ff8800"
+        : hasPower("paddle")
+          ? "#4488ff"
+          : "#ccddff";
       ctx.fillStyle = padColor;
       ctx.beginPath();
       roundRect(ctx, px, PADDLE_Y, pw, PADDLE_H, 6);
@@ -808,7 +928,13 @@ const App = () => {
         ctx.shadowBlur = 0;
         // Shine
         ctx.beginPath();
-        ctx.arc(ball.x - ball.radius * 0.3, ball.y - ball.radius * 0.3, ball.radius * 0.35, 0, Math.PI * 2);
+        ctx.arc(
+          ball.x - ball.radius * 0.3,
+          ball.y - ball.radius * 0.3,
+          ball.radius * 0.35,
+          0,
+          Math.PI * 2,
+        );
         ctx.fillStyle = "rgba(255,255,255,0.5)";
         ctx.fill();
       }
@@ -822,7 +948,13 @@ const App = () => {
       }
     }
 
-    function drawOverlay(title: string, sub: string, color: string, delay: number) {
+    function drawOverlay(
+      title: string,
+      sub: string,
+      color: string,
+      delay: number,
+      hint = "クリック / タップで続ける",
+    ) {
       ctx.fillStyle = "rgba(0,0,0,0.65)";
       ctx.fillRect(0, 0, CW, CH);
       ctx.shadowColor = color;
@@ -838,8 +970,15 @@ const App = () => {
       if (delay <= 0) {
         ctx.fillStyle = "rgba(255,255,255,0.45)";
         ctx.font = "15px monospace";
-        ctx.fillText("クリック / タップで続ける", CW / 2, CH / 2 + 70);
+        ctx.fillText(hint, CW / 2, CH / 2 + 70);
       }
+      ctx.fillStyle = "rgba(255,255,255,0.4)";
+      ctx.font = "16px 'Segoe UI', system-ui, sans-serif";
+      ctx.fillText(
+        `BEST: ${highScoreRef.current.bestScore}`,
+        CW / 2,
+        CH / 2 + 50,
+      );
     }
 
     function roundRect(
@@ -880,34 +1019,85 @@ const App = () => {
       canvas.removeEventListener("touchmove", onTouchMove);
       canvas.removeEventListener("pointerdown", onPointerDown);
     };
-  }, [setPopups, setActivePowerBadges]);
+  }, [setPopups, setActivePowerBadges, setShowTitle]);
+
+  const handleStart = useCallback(() => {
+    saveSettings(settings);
+    setShowTitle(false);
+    startGameRef.current?.();
+  }, [settings]);
+
+  const updateSetting = useCallback(
+    (key: keyof Settings, value: number) => {
+      setSettings((prev) => {
+        const next = { ...prev, [key]: value };
+        saveSettings(next);
+        return next;
+      });
+    },
+    [],
+  );
 
   return (
-    <div className="game-wrapper">
-      <div className="game-container">
-        <canvas ref={canvasRef} width={CW} height={CH} />
-        <div className="popup-layer" aria-hidden="true">
-          {popups.map((p) => (
-            <div
-              key={p.id}
-              className={`score-popup${p.isCombo ? " combo" : ""}`}
-              style={{ left: p.x, top: p.y }}
-            >
-              {p.text}
+    <GameShell title="Brick Blast" gameId="brickblast">
+      <div className="game-wrapper">
+        <div className="game-container">
+          <canvas ref={canvasRef} width={CW} height={CH} />
+          {showTitle && (
+            <div className="settings-overlay">
+              <div className="settings-panel">
+                <h1 className="settings-logo">
+                  <span className="logo-brick">BRICK</span>{" "}
+                  <span className="logo-blast">BLAST</span>
+                </h1>
+                <p className="settings-hint">
+                  マウス / タッチでパドルを操作
+                </p>
+                {SETTING_OPTIONS.map((group) => (
+                  <div key={group.key} className="setting-group">
+                    <div className="setting-label">{group.label}</div>
+                    <div className="setting-options">
+                      {group.choices.map((opt) => (
+                        <button
+                          key={opt.value}
+                          className={`setting-btn${settings[group.key] === opt.value ? " active" : ""}`}
+                          onClick={() => updateSetting(group.key, opt.value)}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                <button className="start-btn" onClick={handleStart}>
+                  START
+                </button>
+              </div>
             </div>
-          ))}
-        </div>
-        {activePowerBadges.length > 0 && (
-          <div className="power-indicator" aria-live="polite">
-            {activePowerBadges.map((ap) => (
-              <div key={ap.type} className="power-badge">
-                {POWER_LABEL[ap.type]}
+          )}
+          <div className="popup-layer" aria-hidden="true">
+            {popups.map((p) => (
+              <div
+                key={p.id}
+                className={`score-popup${p.isCombo ? " combo" : ""}`}
+                style={{ left: p.x, top: p.y }}
+              >
+                {p.text}
               </div>
             ))}
           </div>
-        )}
+          {activePowerBadges.length > 0 && (
+            <div className="power-indicator" aria-live="polite">
+              {activePowerBadges.map((ap) => (
+                <div key={ap.type} className="power-badge">
+                  {POWER_LABEL[ap.type]}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </GameShell>
   );
 };
 

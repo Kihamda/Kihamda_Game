@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
+import { useAudio, useHighScore, GameShell } from "../../../src/shared";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -89,6 +90,46 @@ interface GameState {
   nextId: number;
 }
 
+// ─── Settings ─────────────────────────────────────────────────────────────────
+
+interface GameSettings {
+  playerSize: "large" | "normal" | "small";
+  difficulty: "easy" | "normal" | "hard";
+  itemFrequency: "low" | "normal" | "high";
+  startWave: 1 | 2 | 3;
+}
+
+interface ResolvedSettings {
+  playerRadius: number;
+  speedMul: number;
+  countMul: number;
+  itemInterval: number;
+  startWave: number;
+}
+
+const DEFAULT_SETTINGS: GameSettings = {
+  playerSize: "normal",
+  difficulty: "normal",
+  itemFrequency: "normal",
+  startWave: 1,
+};
+
+const SETTINGS_KEY = "dodgeblitz_settings";
+
+function loadSettings(): GameSettings {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    if (raw) return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
+  } catch {
+    /* ignore */
+  }
+  return { ...DEFAULT_SETTINGS };
+}
+
+function saveSettings(s: GameSettings): void {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+}
+
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const PLAYER_RADIUS = 8;
@@ -104,89 +145,30 @@ const ITEM_SPAWN_INTERVAL = 7500;
 const LASER_SPAWN_BASE = 6000;
 const WAVE_DURATION_MS = 30000;
 
-function bulletsPerSecond(wave: number): number {
-  return Math.min(3 + (wave - 1) * (17 / 9), 20);
+function resolveSettings(s: GameSettings): ResolvedSettings {
+  return {
+    playerRadius: { large: 12, normal: PLAYER_RADIUS, small: 5 }[s.playerSize],
+    speedMul: { easy: 0.7, normal: 1, hard: 1.3 }[s.difficulty],
+    countMul: { easy: 0.7, normal: 1, hard: 1.3 }[s.difficulty],
+    itemInterval: { low: 12000, normal: ITEM_SPAWN_INTERVAL, high: 4000 }[
+      s.itemFrequency
+    ],
+    startWave: s.startWave,
+  };
 }
 
-// ─── Audio helpers (module-level, no React deps) ─────────────────────────────
-
-function getOrCreateAudio(ref: { current: AudioContext | null }): AudioContext | null {
-  if (!ref.current) {
-    try {
-      ref.current = new AudioContext();
-    } catch {
-      return null;
-    }
-  }
-  const ctx = ref.current;
-  if (ctx.state === "suspended") void ctx.resume();
-  return ctx;
-}
-
-function playNearMiss(ctx: AudioContext): void {
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(900, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(350, ctx.currentTime + 0.12);
-  gain.gain.setValueAtTime(0.25, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
-  osc.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + 0.12);
-}
-
-function playBomb(ctx: AudioContext): void {
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = "sawtooth";
-  osc.frequency.setValueAtTime(180, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(25, ctx.currentTime + 0.45);
-  gain.gain.setValueAtTime(0.5, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45);
-  osc.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + 0.45);
-}
-
-function playGameOver(ctx: AudioContext): void {
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(440, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.9);
-  gain.gain.setValueAtTime(0.4, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.9);
-  osc.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + 0.9);
-}
-
-function playWaveUp(ctx: AudioContext): void {
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = "square";
-  osc.frequency.setValueAtTime(280, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(700, ctx.currentTime + 0.18);
-  gain.gain.setValueAtTime(0.3, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
-  osc.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + 0.22);
+function bulletsPerSecond(wave: number, countMul: number): number {
+  return Math.min(3 + (wave - 1) * (17 / 9), 20) * countMul;
 }
 
 // ─── Game state factory ───────────────────────────────────────────────────────
 
-function createGameState(w: number, h: number): GameState {
+function createGameState(w: number, h: number, rs: ResolvedSettings): GameState {
   return {
     phase: "playing",
     score: 0,
-    wave: 1,
-    survivalMs: 0,
+    wave: rs.startWave,
+    survivalMs: (rs.startWave - 1) * WAVE_DURATION_MS,
     playerX: w / 2,
     playerY: h / 2,
     cursorX: w / 2,
@@ -200,7 +182,7 @@ function createGameState(w: number, h: number): GameState {
     slowMs: 0,
     bulletSpawnTimer: 0,
     laserSpawnTimer: LASER_SPAWN_BASE,
-    itemSpawnTimer: ITEM_SPAWN_INTERVAL,
+    itemSpawnTimer: rs.itemInterval,
     scoreTimer: 0,
     waveUpDisplayTimer: 0,
     waveUpText: "",
@@ -220,27 +202,63 @@ function dist2D(ax: number, ay: number, bx: number, by: number): number {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-function spawnBullet(gs: GameState, w: number, h: number): void {
-  const speedBase = 2 + gs.wave * 0.4;
+function spawnBullet(gs: GameState, w: number, h: number, rs: ResolvedSettings): void {
+  const speedBase = (2 + gs.wave * 0.4) * rs.speedMul;
   const slow = gs.slowMs > 0 ? 0.35 : 1;
   const speed = speedBase * slow;
   const side = Math.floor(Math.random() * 4);
-  let x = 0, y = 0, vx = 0, vy = 0;
+  let x = 0,
+    y = 0,
+    vx = 0,
+    vy = 0;
   const spread = (Math.random() - 0.5) * 1.2;
   switch (side) {
-    case 0: x = Math.random() * w; y = -12; vx = spread * speed; vy = speed; break;
-    case 1: x = w + 12; y = Math.random() * h; vx = -speed; vy = spread * speed; break;
-    case 2: x = Math.random() * w; y = h + 12; vx = spread * speed; vy = -speed; break;
-    default: x = -12; y = Math.random() * h; vx = speed; vy = spread * speed; break;
+    case 0:
+      x = Math.random() * w;
+      y = -12;
+      vx = spread * speed;
+      vy = speed;
+      break;
+    case 1:
+      x = w + 12;
+      y = Math.random() * h;
+      vx = -speed;
+      vy = spread * speed;
+      break;
+    case 2:
+      x = Math.random() * w;
+      y = h + 12;
+      vx = spread * speed;
+      vy = -speed;
+      break;
+    default:
+      x = -12;
+      y = Math.random() * h;
+      vx = speed;
+      vy = spread * speed;
+      break;
   }
   const homingChance = Math.min(0.1 + gs.wave * 0.04, 0.4);
   const type: BulletType = Math.random() < homingChance ? "homing" : "normal";
-  gs.bullets.push({ id: gs.nextId++, x, y, vx, vy, radius: BULLET_RADIUS, type });
+  gs.bullets.push({
+    id: gs.nextId++,
+    x,
+    y,
+    vx,
+    vy,
+    radius: BULLET_RADIUS,
+    type,
+  });
 }
 
 function spawnLaser(gs: GameState, h: number): void {
   const y = 50 + Math.random() * (h - 100);
-  gs.lasers.push({ id: gs.nextId++, y, phase: "warning", timer: LASER_WARNING_MS });
+  gs.lasers.push({
+    id: gs.nextId++,
+    y,
+    phase: "warning",
+    timer: LASER_WARNING_MS,
+  });
 }
 
 function spawnItem(gs: GameState, w: number, h: number): void {
@@ -263,7 +281,8 @@ function spawnExplosion(gs: GameState, x: number, y: number): void {
     const speed = 3 + Math.random() * 6;
     gs.particles.push({
       id: gs.nextId++,
-      x, y,
+      x,
+      y,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       radius: 3 + Math.random() * 7,
@@ -285,16 +304,21 @@ function addFloat(
 ): void {
   gs.floatTexts.push({
     id: gs.nextId++,
-    x, y, text, color,
-    alpha: 1, vy: -1.5,
-    life: 900, maxLife: 900,
+    x,
+    y,
+    text,
+    color,
+    alpha: 1,
+    vy: -1.5,
+    life: 900,
+    maxLife: 900,
     fontSize,
   });
 }
 
 // ─── Update ───────────────────────────────────────────────────────────────────
 
-function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
+function update(gs: GameState, dt: number, w: number, h: number, rs: ResolvedSettings): GameEvent[] {
   if (gs.phase !== "playing") return [];
   const events: GameEvent[] = [];
 
@@ -339,15 +363,15 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
   gs.playerX += (gs.cursorX - gs.playerX) * PLAYER_LERP;
   gs.playerY += (gs.cursorY - gs.playerY) * PLAYER_LERP;
   // Clamp to canvas
-  gs.playerX = Math.max(PLAYER_RADIUS, Math.min(w - PLAYER_RADIUS, gs.playerX));
-  gs.playerY = Math.max(PLAYER_RADIUS, Math.min(h - PLAYER_RADIUS, gs.playerY));
+  gs.playerX = Math.max(rs.playerRadius, Math.min(w - rs.playerRadius, gs.playerX));
+  gs.playerY = Math.max(rs.playerRadius, Math.min(h - rs.playerRadius, gs.playerY));
 
   // ── Bullet spawning ──
-  const interval = 1000 / bulletsPerSecond(gs.wave);
+  const interval = 1000 / bulletsPerSecond(gs.wave, rs.countMul);
   gs.bulletSpawnTimer += dt;
   while (gs.bulletSpawnTimer >= interval) {
     gs.bulletSpawnTimer -= interval;
-    spawnBullet(gs, w, h);
+    spawnBullet(gs, w, h, rs);
   }
 
   // ── Laser spawning ──
@@ -361,7 +385,7 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
   gs.itemSpawnTimer -= dt;
   if (gs.itemSpawnTimer <= 0) {
     if (gs.items.length < 3) spawnItem(gs, w, h);
-    gs.itemSpawnTimer = ITEM_SPAWN_INTERVAL;
+    gs.itemSpawnTimer = rs.itemInterval;
   }
 
   // ── Update bullets ──
@@ -379,8 +403,11 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
       b.vx += (dx / d) * str;
       b.vy += (dy / d) * str;
       const spd = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
-      const cap = 3 + gs.wave * 0.35;
-      if (spd > cap) { b.vx = (b.vx / spd) * cap; b.vy = (b.vy / spd) * cap; }
+      const cap = (3 + gs.wave * 0.35) * rs.speedMul;
+      if (spd > cap) {
+        b.vx = (b.vx / spd) * cap;
+        b.vy = (b.vy / spd) * cap;
+      }
     }
 
     // Cull off-screen
@@ -391,7 +418,7 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
 
     // Collision with player
     const d = dist2D(b.x, b.y, gs.playerX, gs.playerY);
-    const hitDist = b.radius + PLAYER_RADIUS;
+    const hitDist = b.radius + rs.playerRadius;
     if (d < hitDist) {
       if (gs.shieldMs > 0) {
         deadBullets.add(b.id);
@@ -411,7 +438,7 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
       }
     }
   }
-  gs.bullets = gs.bullets.filter(b => !deadBullets.has(b.id));
+  gs.bullets = gs.bullets.filter((b) => !deadBullets.has(b.id));
 
   // ── Update lasers ──
   const deadLasers = new Set<number>();
@@ -427,8 +454,8 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
       }
     }
     if (l.phase === "active" && gs.shieldMs <= 0) {
-      const pTop = gs.playerY - PLAYER_RADIUS;
-      const pBot = gs.playerY + PLAYER_RADIUS;
+      const pTop = gs.playerY - rs.playerRadius;
+      const pBot = gs.playerY + rs.playerRadius;
       if (pTop < l.y + LASER_HALF_H && pBot > l.y - LASER_HALF_H) {
         gs.phase = "gameover";
         events.push("gameover");
@@ -436,12 +463,15 @@ function update(gs: GameState, dt: number, w: number, h: number): GameEvent[] {
       }
     }
   }
-  gs.lasers = gs.lasers.filter(l => !deadLasers.has(l.id));
+  gs.lasers = gs.lasers.filter((l) => !deadLasers.has(l.id));
 
   // ── Update items ──
-  gs.items = gs.items.filter(item => {
+  gs.items = gs.items.filter((item) => {
     item.bobTimer += dt * 0.003;
-    if (dist2D(item.x, item.y, gs.playerX, gs.playerY) < item.radius + PLAYER_RADIUS) {
+    if (
+      dist2D(item.x, item.y, gs.playerX, gs.playerY) <
+      item.radius + rs.playerRadius
+    ) {
       applyItem(gs, item, events);
       return false;
     }
@@ -480,7 +510,7 @@ function applyItem(gs: GameState, item: Item, events: GameEvent[]): void {
 
 function tickParticles(gs: GameState, dt: number): void {
   const f = dt / 16;
-  gs.particles = gs.particles.filter(p => {
+  gs.particles = gs.particles.filter((p) => {
     p.life -= dt;
     p.x += p.vx * f;
     p.y += p.vy * f;
@@ -492,7 +522,7 @@ function tickParticles(gs: GameState, dt: number): void {
 }
 
 function tickFloats(gs: GameState, dt: number): void {
-  gs.floatTexts = gs.floatTexts.filter(ft => {
+  gs.floatTexts = gs.floatTexts.filter((ft) => {
     ft.life -= dt;
     ft.y += ft.vy;
     ft.alpha = Math.max(0, ft.life / ft.maxLife);
@@ -515,7 +545,13 @@ function tickShake(gs: GameState, dt: number): void {
 
 // ─── Draw ────────────────────────────────────────────────────────────────────
 
-function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number): void {
+function draw(
+  ctx: CanvasRenderingContext2D,
+  gs: GameState,
+  w: number,
+  h: number,
+  rs: ResolvedSettings,
+): void {
   ctx.save();
   ctx.translate(gs.shakeX, gs.shakeY);
 
@@ -557,7 +593,8 @@ function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number
       ctx.textBaseline = "middle";
       ctx.fillText("» LASER »", 10, l.y);
     } else {
-      const a = l.timer / LASER_ACTIVE_MS > 0.5 ? 1 : (l.timer / LASER_ACTIVE_MS) * 2;
+      const a =
+        l.timer / LASER_ACTIVE_MS > 0.5 ? 1 : (l.timer / LASER_ACTIVE_MS) * 2;
       ctx.strokeStyle = `rgba(100,220,255,${a})`;
       ctx.lineWidth = LASER_HALF_H * 2;
       ctx.shadowColor = "#4af";
@@ -588,7 +625,8 @@ function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number
     const bobY = Math.sin(item.bobTimer) * 4;
     ctx.save();
     ctx.translate(item.x, item.y + bobY);
-    const ringColor = item.type === "bomb" ? "#ff0" : item.type === "shield" ? "#4cf" : "#a0f";
+    const ringColor =
+      item.type === "bomb" ? "#ff0" : item.type === "shield" ? "#4cf" : "#a0f";
     ctx.shadowColor = ringColor;
     ctx.shadowBlur = 18;
     ctx.strokeStyle = ringColor;
@@ -600,7 +638,8 @@ function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number
     ctx.font = "16px serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    const icon = item.type === "bomb" ? "⭐" : item.type === "shield" ? "🛡" : "⏱";
+    const icon =
+      item.type === "bomb" ? "⭐" : item.type === "shield" ? "🛡" : "⏱";
     ctx.fillText(icon, 0, 1);
     ctx.restore();
   }
@@ -627,7 +666,7 @@ function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number
   ctx.fillStyle = playerGlow;
   ctx.shadowColor = playerGlow;
   ctx.shadowBlur = gs.shieldMs > 0 ? 32 : 18;
-  ctx.arc(gs.playerX, gs.playerY, PLAYER_RADIUS, 0, Math.PI * 2);
+  ctx.arc(gs.playerX, gs.playerY, rs.playerRadius, 0, Math.PI * 2);
   ctx.fill();
   ctx.shadowBlur = 0;
 
@@ -639,7 +678,13 @@ function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number
     ctx.shadowColor = "#4cf";
     ctx.shadowBlur = 14;
     ctx.beginPath();
-    ctx.arc(gs.playerX, gs.playerY, PLAYER_RADIUS + 8, -Math.PI / 2, -Math.PI / 2 + arc);
+    ctx.arc(
+      gs.playerX,
+      gs.playerY,
+      rs.playerRadius + 8,
+      -Math.PI / 2,
+      -Math.PI / 2 + arc,
+    );
     ctx.stroke();
     ctx.shadowBlur = 0;
   }
@@ -685,7 +730,12 @@ function draw(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number
   ctx.restore();
 }
 
-function drawHUD(ctx: CanvasRenderingContext2D, gs: GameState, w: number, h: number): void {
+function drawHUD(
+  ctx: CanvasRenderingContext2D,
+  gs: GameState,
+  w: number,
+  h: number,
+): void {
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
   ctx.fillStyle = "rgba(255,255,255,0.9)";
@@ -749,13 +799,26 @@ const App = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [phase, setPhase] = useState<GamePhase>("waiting");
   const [finalScore, setFinalScore] = useState(0);
-  const [hiScore, setHiScore] = useState<number>(() => {
-    const v = localStorage.getItem("dodgeblitz_hi");
-    return v ? parseInt(v, 10) : 0;
-  });
+  const { best: hiScore, update: updateHiScore } = useHighScore("dodgeblitz");
+
+  const [settings, setSettings] = useState<GameSettings>(loadSettings);
+  const resolvedRef = useRef<ResolvedSettings>(
+    resolveSettings(DEFAULT_SETTINGS),
+  );
+  const updateSettings = (partial: Partial<GameSettings>) => {
+    setSettings((prev) => {
+      const next = { ...prev, ...partial };
+      saveSettings(next);
+      return next;
+    });
+  };
 
   const gsRef = useRef<GameState | null>(null);
-  const audioCtxRef = useRef<AudioContext | null>(null);
+  const { playSweep, playMiss: sharedPlayMiss } = useAudio();
+  const sfxRef = useRef({ playSweep, sharedPlayMiss });
+  useEffect(() => {
+    sfxRef.current = { playSweep, sharedPlayMiss };
+  }, [playSweep, sharedPlayMiss]);
   const lastTsRef = useRef(0);
   const rafRef = useRef(0);
 
@@ -775,7 +838,10 @@ const App = () => {
   // Mouse / touch tracking
   useEffect(() => {
     const onMouse = (e: MouseEvent) => {
-      if (gsRef.current) { gsRef.current.cursorX = e.clientX; gsRef.current.cursorY = e.clientY; }
+      if (gsRef.current) {
+        gsRef.current.cursorX = e.clientX;
+        gsRef.current.cursorY = e.clientY;
+      }
     };
     const onTouch = (e: TouchEvent) => {
       if (gsRef.current && e.touches.length > 0) {
@@ -800,42 +866,37 @@ const App = () => {
     if (!ctx) return;
 
     const loop = (ts: number) => {
-      const dt = lastTsRef.current === 0 ? 16 : Math.min(ts - lastTsRef.current, 50);
+      const dt =
+        lastTsRef.current === 0 ? 16 : Math.min(ts - lastTsRef.current, 50);
       lastTsRef.current = ts;
 
       const gs = gsRef.current;
       if (!gs) return;
 
-      const events = update(gs, dt, canvas.width, canvas.height);
+      const events = update(gs, dt, canvas.width, canvas.height, resolvedRef.current);
 
       for (const ev of events) {
-        const ac = getOrCreateAudio(audioCtxRef);
+        const sfx = sfxRef.current;
         switch (ev) {
           case "gameover":
-            if (ac) playGameOver(ac);
+            sfx.playSweep(440, 100, 0.9, "sine", 0.4);
             setFinalScore(gs.score);
-            setHiScore(prev => {
-              if (gs.score > prev) {
-                localStorage.setItem("dodgeblitz_hi", gs.score.toString());
-                return gs.score;
-              }
-              return prev;
-            });
+            updateHiScore(gs.score);
             setPhase("gameover");
             return;
           case "nearmiss":
-            if (ac) playNearMiss(ac);
+            sfx.playSweep(900, 350, 0.12, "sine", 0.25);
             break;
           case "bomb":
-            if (ac) playBomb(ac);
+            sfx.playSweep(180, 25, 0.45, "sawtooth", 0.5);
             break;
           case "waveup":
-            if (ac) playWaveUp(ac);
+            sfx.playSweep(280, 700, 0.22, "square", 0.3);
             break;
         }
       }
 
-      draw(ctx, gs, canvas.width, canvas.height);
+      draw(ctx, gs, canvas.width, canvas.height, resolvedRef.current);
       rafRef.current = requestAnimationFrame(loop);
     };
 
@@ -845,12 +906,14 @@ const App = () => {
       cancelAnimationFrame(rafRef.current);
       lastTsRef.current = 0;
     };
-  }, [phase]); // audioCtxRef/gsRef/hiScoreRef are stable refs; setters are stable
+  }, [phase, updateHiScore]);
 
   const startGame = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    gsRef.current = createGameState(canvas.width, canvas.height);
+    const rs = resolveSettings(settings);
+    resolvedRef.current = rs;
+    gsRef.current = createGameState(canvas.width, canvas.height, rs);
     setPhase("playing");
   };
 
@@ -859,47 +922,110 @@ const App = () => {
   const finalSs = String(totalSec % 60).padStart(2, "0");
 
   return (
-    <div className="game-wrapper">
-      <canvas ref={canvasRef} />
+    <GameShell title="Dodge Blitz" gameId="dodgeblitz">
+      <div className="game-wrapper">
+        <canvas ref={canvasRef} />
 
-      {phase === "waiting" && (
-        <div className="overlay interactive">
-          <h1>DODGE BLITZ</h1>
-          <p className="subtitle">弾幕を掻い潜れ</p>
-          <button className="start-btn" onClick={startGame}>
-            START
-          </button>
-          <p className="how-to">
-            マウス / タッチ でプレイヤーを誘導
-            <br />
-            ⭐ボム &nbsp;&nbsp; 🛡シールド &nbsp;&nbsp; ⏱スロウ
-            <br />
-            🔴追尾弾 &nbsp;&nbsp; 💙レーザーに注意
-            <br />
-            <br />
-            BEST: {hiScore}
-          </p>
-        </div>
-      )}
+        {phase === "waiting" && (
+          <div className="overlay interactive">
+            <h1>DODGE BLITZ</h1>
+            <p className="subtitle">弾幕を掻い潜れ</p>
+            <div className="settings-panel">
+              <div className="setting-row">
+                <span className="setting-label">自機サイズ</span>
+                <div className="setting-options">
+                  {(["large", "normal", "small"] as const).map((v) => (
+                    <button
+                      key={v}
+                      className={`setting-btn${settings.playerSize === v ? " active" : ""}`}
+                      onClick={() => updateSettings({ playerSize: v })}
+                    >
+                      {v.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="setting-row">
+                <span className="setting-label">難易度</span>
+                <div className="setting-options">
+                  {(["easy", "normal", "hard"] as const).map((v) => (
+                    <button
+                      key={v}
+                      className={`setting-btn${settings.difficulty === v ? " active" : ""}`}
+                      onClick={() => updateSettings({ difficulty: v })}
+                    >
+                      {v.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="setting-row">
+                <span className="setting-label">アイテム頻度</span>
+                <div className="setting-options">
+                  {(["low", "normal", "high"] as const).map((v) => (
+                    <button
+                      key={v}
+                      className={`setting-btn${settings.itemFrequency === v ? " active" : ""}`}
+                      onClick={() => updateSettings({ itemFrequency: v })}
+                    >
+                      {v.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="setting-row">
+                <span className="setting-label">開始Wave</span>
+                <div className="setting-options">
+                  {([1, 2, 3] as const).map((v) => (
+                    <button
+                      key={v}
+                      className={`setting-btn${settings.startWave === v ? " active" : ""}`}
+                      onClick={() => updateSettings({ startWave: v })}
+                    >
+                      {v}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <button className="start-btn" onClick={startGame}>
+              START
+            </button>
+            <p className="how-to">
+              マウス / タッチ でプレイヤーを誘導
+              <br />
+              ⭐ボム &nbsp;&nbsp; 🛡シールド &nbsp;&nbsp; ⏱スロウ
+              <br />
+              🔴追尾弾 &nbsp;&nbsp; 💙レーザーに注意
+              <br />
+              <br />
+              BEST: {hiScore}
+            </p>
+          </div>
+        )}
 
-      {phase === "gameover" && (
-        <div className="overlay interactive">
-          <h1>GAME OVER</h1>
-          <p className="score-display">
-            SCORE: <span>{finalScore}</span>
-          </p>
-          <p className="score-display" style={{ fontSize: "1rem" }}>
-            TIME: <span>{finalMm}:{finalSs}</span>
-          </p>
-          <p className="hi-score">
-            BEST: <span>{hiScore}</span>
-          </p>
-          <button className="start-btn" onClick={startGame}>
-            RETRY
-          </button>
-        </div>
-      )}
-    </div>
+        {phase === "gameover" && (
+          <div className="overlay interactive">
+            <h1>GAME OVER</h1>
+            <p className="score-display">
+              SCORE: <span>{finalScore}</span>
+            </p>
+            <p className="score-display" style={{ fontSize: "1rem" }}>
+              TIME:{" "}
+              <span>
+                {finalMm}:{finalSs}
+              </span>
+            </p>
+            <p className="hi-score">
+              BEST: <span>{hiScore}</span>
+            </p>
+            <button className="start-btn" onClick={startGame}>
+              RETRY
+            </button>
+          </div>
+        )}
+      </div>
+    </GameShell>
   );
 };
 

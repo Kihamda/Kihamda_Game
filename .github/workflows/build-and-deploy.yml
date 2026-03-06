@@ -25,117 +25,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # ── ジョブ 0: 変更検出 ────────────────────────────────────────────────
-  detect-changes:
-    runs-on: ubuntu-latest
-    outputs:
-      portal: ${{ steps.filter.outputs.portal }}
-      any_game: ${{ steps.games.outputs.any }}
-      game_ids: ${{ steps.games.outputs.ids }}
-      force_full: ${{ steps.force.outputs.full }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2 # HEAD と HEAD~1 の差分取得に必要
-
-      - name: Detect portal / scripts changes
-        uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            portal:
-              - 'portal/**'
-            full_rebuild:
-              - 'scripts/**'
-              - 'package.json'
-              - 'package-lock.json'
-
-      # フルビルドフラグ: scripts変更・依存変更・workflow_dispatch のいずれか
-      - name: Set force-full flag
-        id: force
-        run: |
-          if [ "${{ steps.filter.outputs.full_rebuild }}" = "true" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "full=true" >> $GITHUB_OUTPUT
-          else
-            echo "full=false" >> $GITHUB_OUTPUT
-          fi
-
-      # 変更されたゲームIDを検出 (例: ["ntiktaktoe","game2"])
-      - name: Detect changed game IDs
-        id: games
-        run: |
-          if [ "${{ steps.force.outputs.full }}" = "true" ]; then
-            IDS=$(ls games/ 2>/dev/null | grep -v '^_template$' | jq -R -s -c 'split("\n") | map(select(length > 0))')
-          else
-            BEFORE="${{ github.event.before }}"
-            [ "$BEFORE" = "0000000000000000000000000000000000000000" ] && BEFORE="HEAD~1"
-            IDS=$(git diff --name-only "$BEFORE" "${{ github.sha }}" 2>/dev/null \
-              | grep '^games/' \
-              | sed 's|^games/||; s|/.*||' \
-              | sort -u \
-              | grep -v '^_template$' \
-              | jq -R -s -c 'split("\n") | map(select(length > 0))' \
-              || echo '[]')
-          fi
-          echo "ids=$IDS" >> $GITHUB_OUTPUT
-          ANY=$(echo "$IDS" | jq '. | length > 0')
-          echo "any=$ANY" >> $GITHUB_OUTPUT
-          echo "変更ゲーム: $IDS"
-
-  # ── ジョブ 1: lint + build (変更ゲーム + portal) ─────────────────────
   build:
     runs-on: ubuntu-latest
-    needs: detect-changes
-    # 何も変わっていなければスキップ (workflow_dispatch は常に実行)
-    if: |
-      github.event_name == 'workflow_dispatch' ||
-      needs.detect-changes.outputs.portal == 'true' ||
-      needs.detect-changes.outputs.any_game == 'true'
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
-          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
-      # 変更ゲームのみ lint (フルビルド時は全ゲーム)
-      - name: Lint changed games
-        run: |
-          GAME_IDS='${{ needs.detect-changes.outputs.game_ids }}'
-          FORCE='${{ needs.detect-changes.outputs.force_full }}'
-          for pkg in games/*/package.json; do
-            game_dir="$(dirname "$pkg")"
-            game_id="$(basename "$game_dir")"
-            [ "$game_id" = "_template" ] && continue
-            # フルビルドでなければ変更対象のみ lint
-            if [ "$FORCE" != "true" ] && ! echo "$GAME_IDS" | jq -e --arg id "$game_id" '. | index($id) != null' > /dev/null 2>&1; then
-              echo "  ⏭  lint skip: $game_id (変更なし)"
-              continue
-            fi
-            echo "── lint: $game_id ──"
-            (cd "$game_dir" && npm run lint)
-          done
+      - name: Lint
+        run: npm run lint
 
-      - name: Lint portal
-        if: needs.detect-changes.outputs.portal == 'true' || needs.detect-changes.outputs.force_full == 'true'
-        run: |
-          cd portal
-          npm run lint --if-present
-
-      - name: Build platform (変更ゲーム + portal → dist/)
-        env:
-          BUILD_GAME_IDS: ${{ needs.detect-changes.outputs.game_ids }}
-          FORCE_FULL_BUILD: ${{ needs.detect-changes.outputs.force_full }}
-          PORTAL_CHANGED: ${{ needs.detect-changes.outputs.portal }}
-        run: bash scripts/build-all.sh
+      - name: Build
+        run: npm run build
 
       - name: Upload dist artifact
         uses: actions/upload-artifact@v4
@@ -144,7 +52,6 @@ jobs:
           path: dist/
           retention-days: 1
 
-  # ── ジョブ 2: XServer Static に FTPS でデプロイ ──────────────────────
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -157,10 +64,6 @@ jobs:
           name: platform-dist
           path: dist/
 
-      # SamKirkland/FTP-Deploy-Action:
-      # - 差分同期 (.ftp-deploy-sync-state.json でサーバー上のハッシュ管理)
-      # - 変更ファイルのみ転送するため2回目以降は高速
-      # - protocol: ftps = explicit TLS (STARTTLS) ← Xserver Static 推奨
       - name: Deploy to XServer Static via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -177,19 +80,11 @@ jobs:
             **/.git*/**
             **/node_modules/**
 
-      - name: Show deploy summary
+      - name: Deploy summary
         if: always()
         run: |
-          echo "## 🚀 デプロイ完了 (XServer Static)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| 項目 | 値 |" >> $GITHUB_STEP_SUMMARY
+          echo "## Deploy Complete" >> $GITHUB_STEP_SUMMARY
+          echo "| Item | Value |" >> $GITHUB_STEP_SUMMARY
           echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
-          echo "| プロトコル | FTPS (explicit TLS) |" >> $GITHUB_STEP_SUMMARY
-          echo "| サーバー | \`${{ secrets.FTP_SERVER }}\` |" >> $GITHUB_STEP_SUMMARY
-          echo "| アップロード先 | \`${{ vars.FTP_SERVER_DIR || 'public_html/' }}\` |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**サイト構造**:" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          echo "public_html/             → portal (ゲーム一覧)" >> $GITHUB_STEP_SUMMARY
-          echo "public_html/games/[id]/  → 各ゲーム" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "| Protocol | FTPS |" >> $GITHUB_STEP_SUMMARY
+          echo "| Server | \`${{ secrets.FTP_SERVER }}\` |" >> $GITHUB_STEP_SUMMARY

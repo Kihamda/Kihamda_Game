@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" fill="none">
+  <rect width="640" height="360" fill="#0b1220"/>
+  <defs>
+    <filter id="g"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="xg"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <!-- header -->
+  <text x="24" y="36" fill="#94a3b8" font-family="monospace" font-size="14" font-weight="700">STAGE 3</text>
+  <text x="320" y="36" text-anchor="middle" fill="#06b6d4" font-family="monospace" font-size="18" font-weight="700" filter="url(#g)">01:23.45</text>
+  <text x="616" y="36" text-anchor="end" fill="#94a3b8" font-family="monospace" font-size="14" font-weight="700">MINES 12</text>
+  <!-- opened cells -->
+  <g fill="#0d1825" stroke="#162030" stroke-width="1">
+    <!-- row 0: cols 0-2 -->
+    <rect x="188" y="54" width="36" height="36" rx="2"/>
+    <rect x="226" y="54" width="36" height="36" rx="2"/>
+    <rect x="264" y="54" width="36" height="36" rx="2"/>
+    <!-- row 1: cols 0-4 -->
+    <rect x="188" y="92" width="36" height="36" rx="2"/>
+    <rect x="226" y="92" width="36" height="36" rx="2"/>
+    <rect x="264" y="92" width="36" height="36" rx="2"/>
+    <rect x="302" y="92" width="36" height="36" rx="2"/>
+    <rect x="340" y="92" width="36" height="36" rx="2"/>
+    <!-- row 2: cols 0-2, 4 -->
+    <rect x="188" y="130" width="36" height="36" rx="2"/>
+    <rect x="226" y="130" width="36" height="36" rx="2"/>
+    <rect x="264" y="130" width="36" height="36" rx="2"/>
+    <rect x="340" y="130" width="36" height="36" rx="2"/>
+    <!-- row 3: cols 0-3 -->
+    <rect x="188" y="168" width="36" height="36" rx="2"/>
+    <rect x="226" y="168" width="36" height="36" rx="2"/>
+    <rect x="264" y="168" width="36" height="36" rx="2"/>
+    <rect x="302" y="168" width="36" height="36" rx="2"/>
+    <!-- row 4: cols 0-2 -->
+    <rect x="188" y="206" width="36" height="36" rx="2"/>
+    <rect x="226" y="206" width="36" height="36" rx="2"/>
+    <rect x="264" y="206" width="36" height="36" rx="2"/>
+    <!-- row 5: col 1 -->
+    <rect x="226" y="244" width="36" height="36" rx="2"/>
+  </g>
+  <!-- unopened cells -->
+  <g fill="#1e3045" stroke="#2a4a65" stroke-width="1">
+    <!-- row 0: cols 3-5 -->
+    <rect x="302" y="54" width="36" height="36" rx="3"/>
+    <rect x="340" y="54" width="36" height="36" rx="3"/>
+    <rect x="378" y="54" width="36" height="36" rx="3"/>
+    <!-- row 1: cols 5-6 -->
+    <rect x="378" y="92" width="36" height="36" rx="3"/>
+    <rect x="416" y="92" width="36" height="36" rx="3"/>
+    <!-- row 2: cols 5-6 -->
+    <rect x="378" y="130" width="36" height="36" rx="3"/>
+    <rect x="416" y="130" width="36" height="36" rx="3"/>
+    <!-- row 3: cols 5-6 -->
+    <rect x="378" y="168" width="36" height="36" rx="3"/>
+    <rect x="416" y="168" width="36" height="36" rx="3"/>
+    <!-- row 4: cols 3-6 -->
+    <rect x="302" y="206" width="36" height="36" rx="3"/>
+    <rect x="340" y="206" width="36" height="36" rx="3"/>
+    <rect x="378" y="206" width="36" height="36" rx="3"/>
+    <rect x="416" y="206" width="36" height="36" rx="3"/>
+    <!-- row 5: cols 2-6 -->
+    <rect x="264" y="244" width="36" height="36" rx="3"/>
+    <rect x="302" y="244" width="36" height="36" rx="3"/>
+    <rect x="340" y="244" width="36" height="36" rx="3"/>
+    <rect x="378" y="244" width="36" height="36" rx="3"/>
+    <rect x="416" y="244" width="36" height="36" rx="3"/>
+    <!-- row 6: all cols -->
+    <rect x="188" y="282" width="36" height="36" rx="3"/>
+    <rect x="226" y="282" width="36" height="36" rx="3"/>
+    <rect x="264" y="282" width="36" height="36" rx="3"/>
+    <rect x="302" y="282" width="36" height="36" rx="3"/>
+    <rect x="340" y="282" width="36" height="36" rx="3"/>
+    <rect x="378" y="282" width="36" height="36" rx="3"/>
+    <rect x="416" y="282" width="36" height="36" rx="3"/>
+  </g>
+  <!-- flag cells -->
+  <rect x="416" y="54" width="36" height="36" rx="3" fill="#1e3045" stroke="#2a4a65" stroke-width="1"/>
+  <rect x="302" y="130" width="36" height="36" rx="3" fill="#1e3045" stroke="#2a4a65" stroke-width="1"/>
+  <rect x="188" y="244" width="36" height="36" rx="3" fill="#1e3045" stroke="#2a4a65" stroke-width="1"/>
+  <!-- exploded mine -->
+  <rect x="340" y="168" width="36" height="36" rx="2" fill="#7f1d1d" filter="url(#xg)"/>
+  <!-- numbers -->
+  <g font-family="monospace" font-size="18" font-weight="700" text-anchor="middle">
+    <text x="206" y="78" fill="#3b82f6">1</text>
+    <text x="244" y="78" fill="#22c55e">2</text>
+    <text x="282" y="78" fill="#3b82f6">1</text>
+    <text x="244" y="116" fill="#3b82f6">1</text>
+    <text x="282" y="116" fill="#ef4444">3</text>
+    <text x="320" y="116" fill="#22c55e">2</text>
+    <text x="358" y="116" fill="#3b82f6">1</text>
+    <text x="282" y="154" fill="#3b82f6">1</text>
+    <text x="358" y="154" fill="#22c55e">2</text>
+    <text x="206" y="192" fill="#3b82f6">1</text>
+    <text x="282" y="192" fill="#3b82f6">1</text>
+    <text x="320" y="192" fill="#22c55e">2</text>
+    <text x="206" y="230" fill="#22c55e">2</text>
+    <text x="244" y="230" fill="#3b82f6">1</text>
+    <text x="282" y="230" fill="#3b82f6">1</text>
+    <text x="244" y="268" fill="#3b82f6">1</text>
+  </g>
+  <!-- flag emoji -->
+  <g font-size="16" text-anchor="middle">
+    <text x="434" y="80">🚩</text>
+    <text x="320" y="156">🚩</text>
+    <text x="206" y="270">🚩</text>
+  </g>
+  <!-- mine emoji -->
+  <text x="358" y="194" font-size="18" text-anchor="middle">💣</text>
+  <!-- explosion particles -->
+  <circle cx="335" cy="165" r="3" fill="#ef4444" opacity="0.9"/>
+  <circle cx="382" cy="176" r="4" fill="#ff6b6b" opacity="0.8"/>
+  <circle cx="365" cy="162" r="2.5" fill="#fca5a5" opacity="0.7"/>
+  <circle cx="350" cy="208" r="3" fill="#ef4444" opacity="0.85"/>
+  <circle cx="332" cy="198" r="2" fill="#ff9999" opacity="0.6"/>
+  <circle cx="378" cy="158" r="3" fill="#dc2626" opacity="0.9"/>
+  <circle cx="386" cy="192" r="2.5" fill="#f87171" opacity="0.7"/>
+  <circle cx="344" cy="156" r="2" fill="#fca5a5" opacity="0.6"/>
+  <circle cx="370" cy="204" r="2" fill="#ff6b6b" opacity="0.5"/>
+  <circle cx="328" cy="174" r="1.5" fill="#ff9999" opacity="0.7"/>
+  <!-- title -->
+  <text x="24" y="340" fill="#06b6d4" font-family="sans-serif" font-size="28" font-weight="700">MineRush</text>
+  <!-- BIG OPEN -->
+  <text x="616" y="340" text-anchor="end" fill="#fbbf24" font-family="monospace" font-size="16" font-weight="700" filter="url(#g)">BIG OPEN +8</text>
+</svg>

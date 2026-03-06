@@ -65,8 +65,8 @@ description: "斬新なブラウザゲームの企画を生成する。このプ
 1. `games/_template/` をコピー → `games/[game-id]/` に作成
 2. `games/[game-id]/src/` を企画に合わせて書き換え (`lib/types.ts` → `App.tsx` → `components/` の順)
 3. `.github/prompts/add-feature.prompt.md` を参考に機能実装
-4. Vercel に新プロジェクトを追加 (Root Directory: `games/[game-id]`) → `npm run build` が通ることを確認
-5. `portal/src/data/games.json` に新エントリを追入 → git push でポータル自動更新
+4. ルートで `npm run build` が通ることを確認
+5. `src/portal/data/games.json` に新エントリを追加 → git push でポータル自動更新
 6. SNS 自動投稿ワークフローをトリガー
 
 **プラットフォームに乗せることで**、既存ユーザーへの告知・SEO 内部リンク・AdSense が初日から機能する。

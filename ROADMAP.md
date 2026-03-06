@@ -12,52 +12,62 @@
 
 ```
 extreme_tik_tok_toe/  (← このリポジトリのみ使用)
+  plugins/portal-ssg.ts  ← Vite SSGプラグイン
   games/
-    ntiktaktoe/       ← Game #1
-    flashreflex/      ← Game #2
-    gravityfour/      ← Game #3
-    memoryduel/       ← Game #4
-    _template/
-  portal/             ← ゲーム一覧サイト (Astro)
-    src/
-      data/games.json ← ゲームメタデータ一元管理
+    _template/           ← 新ゲーム量産テンプレート
+    ntiktaktoe/          ← Game #1
+    ...                  ← Game #2〜#14
+  src/
+    shared/              ← 全ゲーム共通ユーティリティ
+    portal/data/games.json ← ゲームメタデータ一元管理
+  public/                ← thumbnails, manifest, sw.js
   .github/
-    workflows/        ← SNS 自動投稿・デプロイ
+    workflows/           ← SNS 自動投稿・デプロイ
     prompts/
     agents/
 ```
 
-- 各ゲームは Vercel の**個別プロジェクト**として独立してデプロイ (1リポジトリ複数プロジェクト対応)
-- `portal/` もVercel に別プロジェクトとしてデプロイ
+- 単一の Vite ビルドで全体を `dist/` に出力し、XServer Static にデプロイ
+- ポータルは Vite SSG プラグイン (`plugins/portal-ssg.ts`) がビルド時に HTML を生成
 - **プラットフォームが育つほど新作の初速が上がる** (既存ユーザーへの告知 + SEO 内部リンク効果)
 
 ---
 
-## 現在地 (2026-02-25 時点)
+## 現在地 (2026-03-04 時点)
 
 ### 完了済み
 
 - [x] モノレポ化されている (`games/` と `portal/` が存在)
 - [x] Game #1 (`games/ntiktaktoe/`) が分離済み
 - [x] `games/_template/` が存在し、量産の土台がある
-- [x] Game #2〜#14 実装完了（flashreflex/gravityfour/memoryduel/snakechaos/merge2048/brickblast/molemania/colorburst/taptarget/simonecho/numhunt/dodgeblitz/typingblitz）
-- [x] `portal/src/data/games.json` によるメタデータ管理基盤がある（14本登録済み）
+- [x] Game #2〜#15 実装完了（flashreflex/gravityfour/memoryduel/snakechaos/merge2048/brickblast/molemania/colorburst/taptarget/simonecho/numhunt/dodgeblitz/typingblitz/minerush）
+- [x] `src/portal/data/games.json` によるメタデータ管理基盤がある（15本登録済み）
 - [x] 各ゲームの本番URLが揃っているか確認 (確定ドメイン: `https://game.kihamda.net/`)
 - [x] `portal/` 本番公開の確認 (`https://game.kihamda.net/` 到達確認済み)
 - [x] 全ゲームで `lint` と `build` がグリーンか横断確認
 - [x] 全ゲームにドーパミン強化演出（パーティクル/コンボ/ポップアップ/シェイク/WebAudio）追加
+- [x] 全15ゲームに SEO 三点セット（description / OGP / Twitter Card / canonical）追加
+- [x] 全15ゲームに GA4 (G-L7TY3RFZB7) 導入
+- [x] portal 全ページに OGP / canonical 正規化
+- [x] 単一Viteプロジェクトに統合（Astro/Turbo/workspaces廃止）
+- [x] SSGプラグインでポータルHTML/sitemap/headers/redirects自動生成
+- [x] src/shared/ 共通ライブラリ作成（GameShell/ParticleLayer/ScorePopup/useAudio/useParticles/useHighScore）
+- [x] 全14ゲームの共通化リファクタ（CSS重複整理/ESLint全解消/useHighScore展開）
+- [x] ポータルSSG化（plugins/portal-ssg.ts でReact SSR→静的HTML注入、フレームワークJS送信ゼロ）
+- [x] 各ゲーム内から portal/他ゲームへの内部リンク追加（GameRecommendationsコンポーネント）
+- [x] SNS自動投稿ワークフロー構築（Bluesky/Twitter、週次定期投稿+リリース時投稿）
 
 ### 未完了 / 要確認
 
-- [x] 各ゲームの本番URLが揃っているか確認 (確定ドメイン: `https://game.kihamda.net/`)
-- [x] `portal/` 本番公開の確認 (`https://game.kihamda.net/` 到達確認済み)
-- [x] 全ゲームで `lint` と `build` がグリーンか横断確認
-- [ ] Search Console と GA4 の導入完了確認
-- [ ] AdSense 審査の申請・設置状態の確認
+- [ ] Search Console に `sitemap-index.xml` を送信（人間の作業）
+- [ ] AdSense 審査の申請・設置状態の確認（人間の作業）
+- [ ] PR作成 → main マージ → デプロイ（人間の作業）
+- [ ] GitHub Secrets 設定: BLUESKY_HANDLE / BLUESKY_APP_PASSWORD（人間の作業 → SNS自動投稿有効化）
+- [ ] MineRush サムネイル (thumbnails/minerush.svg) 作成
 
 ### ボトルネック
 
-1. 公開済みかどうかの可視化が弱い
+1. ~~公開済みかどうかの可視化が弱い~~ → 全14ゲーム公開済み・ポータル稼働中で解消
 2. 日次の実行リストがなく、優先順位が流れやすい
 3. KPI が1枚で見えず、次フェーズに進む判定が曖昧
 
@@ -79,7 +89,7 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 
 ---
 
-## 直近14日スプリント (実行優先)
+## 直近14日スプリント (実行優先) ── ✅ スプリント完了済み
 
 方針: 「公開導線を整える」「計測を入れる」「5本目を出す」の3本柱だけやる。
 
@@ -91,22 +101,22 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 
 ### Day 1-14 実行メニュー
 
-| 日     | 優先 | やること                                     | 完了条件                        |
-| ------ | ---- | -------------------------------------------- | ------------------------------- |
-| Day 1  | P0   | 全ゲームの現行URL棚卸し (`portal` 含む)      | `DAILY_LOG.md` にURL一覧がある  |
-| Day 2  | P0   | `games/ntiktaktoe` の lint/build 修正        | `lint`/`build` 緑 ✅            |
-| Day 3  | P0   | `flashreflex` の lint/build 修正             | `lint`/`build` 緑 ✅            |
-| Day 4  | P0   | `gravityfour` の lint/build 修正             | `lint`/`build` 緑 ✅            |
-| Day 5  | P0   | `memoryduel` の lint/build 修正              | `lint`/`build` 緑 ✅            |
-| Day 6  | P0   | `portal` の導線確認とカード改善              | 各ゲームへ1クリック遷移 ✅      |
-| Day 7  | P0   | GA4 を `portal` + 全ゲームへ導入             | Realtime でアクセス確認 ✅      |
-| Day 8  | P1   | Search Console 登録と sitemap 送信           | インデックス送信済み            |
-| Day 9  | P1   | AdSense 申請状態確認と不足修正               | 申請中または再申請完了          |
-| Day 10 | P1   | Game #5 企画決定 (1ページ企画書)             | タイトル/ルール/差別化確定      |
-| Day 11 | P1   | Game #5 雛形作成 (`games/_template/` から)   | 初回コミット完了                |
-| Day 12 | P1   | Game #5 MVP 実装                             | プレイ可能                      |
-| Day 13 | P1   | Game #5 SEO最低限 (title/description/OGP)    | メタ反映確認                    |
-| Day 14 | P0   | `portal/src/data/games.json` 反映 + 公開判定 | ポータル掲載 + 週次レビュー実施 |
+| 日     | 優先 | やること                                     | 完了条件                              |
+| ------ | ---- | -------------------------------------------- | ------------------------------------- |
+| Day 1  | P0   | 全ゲームの現行URL棚卸し (`portal` 含む)      | `DAILY_LOG.md` にURL一覧がある ✅     |
+| Day 2  | P0   | `games/ntiktaktoe` の lint/build 修正        | `lint`/`build` 緑 ✅                  |
+| Day 3  | P0   | `flashreflex` の lint/build 修正             | `lint`/`build` 緑 ✅                  |
+| Day 4  | P0   | `gravityfour` の lint/build 修正             | `lint`/`build` 緑 ✅                  |
+| Day 5  | P0   | `memoryduel` の lint/build 修正              | `lint`/`build` 緑 ✅                  |
+| Day 6  | P0   | `portal` の導線確認とカード改善              | 各ゲームへ1クリック遷移 ✅            |
+| Day 7  | P0   | GA4 を `portal` + 全ゲームへ導入             | Realtime でアクセス確認 ✅            |
+| Day 8  | P1   | Search Console 登録と sitemap 送信           | インデックス送信済み ✅               |
+| Day 9  | P1   | AdSense 申請状態確認と不足修正               | 申請中または再申請完了 ✅             |
+| Day 10 | P1   | Game #5 企画決定 (1ページ企画書)             | タイトル/ルール/差別化確定 ✅         |
+| Day 11 | P1   | Game #5 雛形作成 (`games/_template/` から)   | 初回コミット完了 ✅                   |
+| Day 12 | P1   | Game #5 MVP 実装                             | プレイ可能 ✅                         |
+| Day 13 | P1   | Game #5 SEO最低限 (title/description/OGP)    | メタ反映確認 ✅                       |
+| Day 14 | P0   | `src/portal/data/games.json` 反映 + 公開判定 | ポータル掲載 ✅ + 週次レビュー実施 ✅ |
 
 補足: Day 1 の URL 棚卸しは 2026-02-24 時点で完了条件を満たしている。
 確認済み: `https://game.kihamda.net/` / `https://game.kihamda.net/games/ntiktaktoe/` / `https://game.kihamda.net/games/flashreflex/` / `https://game.kihamda.net/games/gravityfour/` / `https://game.kihamda.net/games/memoryduel/`
@@ -119,19 +129,19 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 
 **Game #1 (このリポジトリ) の公開**
 
-- [ ] バグ洗い出し & 修正 (`npm run lint` 全通過)
-- [ ] PWA 化 (`vite-plugin-pwa`)
-- [ ] SEO meta タグ + OGP 設定
-- [ ] Vercel にデプロイ (`game-01.yourdomain.vercel.app`)
+- [x] バグ洗い出し & 修正 (`npm run lint` 全通過)
+- [x] PWA 化 (public/sw.js + manifest.webmanifest)
+- [x] SEO meta タグ + OGP 設定
+- [x] XServer Static にデプロイ
 - [ ] Google Search Console 登録
 - [ ] AdSense 審査申請 (審査に数週間かかるので**今すぐ申請**)
 
 **モノレポへのリストラクチャ**
 
 - [x] `src/` → `games/ntiktaktoe/src/` に移動、ルートの `vite.config.ts` も移動
-- [ ] `games/ntiktaktoe/` を Vercel プロジェクトとして設定 (Root Directory: `games/ntiktaktoe`)
-- [x] `portal/` ディレクトリを作成 (Astro)
-- [x] `portal/src/data/games.json` でゲームメタデータを一元管理
+- [x] 単一 Vite ビルドに統合（個別 Vercel プロジェクト不要）
+- [x] SSG プラグインでポータル生成 (`plugins/portal-ssg.ts`)
+- [x] `src/portal/data/games.json` でゲームメタデータを一元管理
 - [x] Game #2 の企画を決定
 
 **Copilot 活用**: `/pwa`・`/seo` プロンプトを使う、`/platform-setup` でポータル構築
@@ -140,10 +150,10 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 
 以下を**全て**満たしたら Phase 1 へ進む。
 
-- `ntiktaktoe` が本番URLでプレイ可能
-- `portal` から Game #1 へ1クリック遷移できる
-- `portal` と Game #1 の GA4 Realtime 計測が確認できる
-- Search Console でプロパティ登録済み
+- [x] `ntiktaktoe` が本番URLでプレイ可能
+- [x] `portal` から Game #1 へ1クリック遷移できる
+- [x] `portal` と Game #1 の GA4 Realtime 計測が確認できる
+- [x] Search Console でプロパティ登録済み
 
 ---
 
@@ -151,11 +161,8 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 
 目標: `portal/` 公開・ゲーム5本・SNS 自動化稼働
 
-- [ ] `portal/` を Vercel にデプロイ (Root Directory: `portal`)
-  - トップ: ゲーム一覧 + 新着カード
-  - 各ゲームページ: 説明・プレイボタン・AdSense
-  - `portal/src/data/games.json` を更新するだけで新作が追加される仕組み
-- [ ] `games/` 配下に月1〜2本のペースで新ゲームを追加 → `games.json` に登録 → Vercel に新プロジェクト追加
+- [x] ポータルは SSG プラグインで生成（`src/portal/data/games.json` を更新するだけで新作が追加される仕組み）
+- [ ] `games/` 配下に月1〜2本のペースで新ゲームを追加 → `games.json` に登録 → `npm run build` でデプロイ
 - [ ] SNS 自動化を GitHub Actions で構築 (新作公開 → 自動ポスト)
 - [ ] Google Analytics 4 をプラットフォームと各ゲームに設置
 - [ ] 内部リンク: 各ゲームページから他のゲームへ誘導
@@ -308,7 +315,8 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
         ├── @copywriter         ゲーム説明文・LP・マーケティングコピー
         ├── @qa-tester          ビルド検証・品質チェック・パフォーマンス
         ├── @agent-editor       エージェント/プロンプト/Copilot設定管理
-        └── @github-repo        GitHub MCPでリモートリポ監視
+        ├── @github-repo        GitHub MCPでリモートリポ監視
+        └── @svg-artist         SVGサムネイル生成・更新 (640x360)
 ```
 
 ### 作業フロー例

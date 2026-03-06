@@ -1,51 +1,50 @@
 ---
-description: "このゲームを PWA 化する。vite-plugin-pwa を使って Service Worker・manifest・オフライン対応を実装する。"
+description: "PWA はプラットフォーム全体で単一化済み。public/sw.js + public/manifest.webmanifest で運用中。"
 ---
 
-# PWA 化タスク
+# PWA 対応リファレンス
 
-**女案**: PWA はプラットフォーム全体で単一化する方針。
-`portal/` 内の `@vite-pwa/astro` の SW が scope `/` で全 `games/*` パスをカバーするため、
-**各ゲーム単体に `vite-plugin-pwa` を入れる必要はない**。
-
-portal 側の PWA 実装については `.github/prompts/portal-setup.prompt.md` を参照。
-
-上記の理由でこのプロンプトは PWA の応用範囲をカバーする。
-格第な PWA 実装雑務・デバッグに利用すること。
+PWA はプラットフォーム全体で単一化済み。
+各ゲームに `vite-plugin-pwa` や `@vite-pwa/astro` を入れる必要はない。
 
 ---
 
-## portal の PWA 構成 (組ⁿ込み階)
+## 現在の PWA 構成
 
-`portal/astro.config.mjs` で `@vite-pwa/astro` を設定済み。
-詳細は `.github/prompts/portal-setup.prompt.md` の Step 7 を参照。
+| ファイル                      | 役割                                               |
+| ----------------------------- | -------------------------------------------------- |
+| `public/manifest.webmanifest` | プラットフォーム全体 PWA マニフェスト (scope: `/`) |
+| `public/sw.js`                | Service Worker (手書き・静的配信)                  |
 
-## 個別ゲームでPWA対応を追加する場合 (不要なはず)
+- `public/` のファイルは `npm run build` 時に `dist/` にそのままコピーされる
+- XServer Static が `dist/` を配信するため、追加設定不要
 
-2. **Web App Manifest 設定**
-   - アプリ名: `n目並べ` (short_name: `n目並べ`)
-   - テーマカラー: `#5c6bc0` (既存のメインカラー)
-   - 背景色: `#e8eaf6`
-   - display: `standalone`
-   - アイコンは `public/icons/` に 192x192 と 512x512 を配置 (SVG でも可)
+## manifest.webmanifest
 
-3. **Service Worker 設定**
-   - `generateSW` 戦略を使用
-   - `dist/` 配下のアセットをすべてキャッシュ
-   - オフラインフォールバックを設定
+```json
+{
+  "name": "ブラウザゲームポータル",
+  "short_name": "GamePortal",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#1a1a2e",
+  "background_color": "#1a1a2e"
+}
+```
 
-4. **`index.html` への追加**
-   - `<meta name="theme-color">` タグ
-   - Apple Touch Icon 対応 meta タグ
+## Service Worker (sw.js)
 
-5. **インストールプロンプト (任意)**
-   - PWA インストールボタンを StartScreen に追加検討
+`public/sw.js` に手書きで配置。
+キャッシュ戦略:
 
-## 注意点
+- ゲームアセット (`/games/*/assets/*`) → CacheFirst
+- HTML → NetworkFirst
+- SW 自体 → `Cache-Control: no-store` (`plugins/portal-ssg.ts` が `_headers` で設定)
 
-- `vite.config.ts` の `base: "./"` 設定を維持する
-- TypeScript strict モードが有効なので型エラーを出さない
-- `import type` を使うべき場所では必ず使う
+## 個別ゲームで PWA 対応を追加する場合
+
+通常不要。プラットフォーム全体の SW が scope `/` でカバーしている。
 
 ## 完了確認
 

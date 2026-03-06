@@ -1,149 +1,73 @@
 ---
-description: "このモノレポに `portal/` ディレクトリを作成し、Astro でゲームポータルサイトを構築する。全ゲームを一元管理し AdSense を配置する。"
+description: "単一 Vite プロジェクトでゲームプラットフォーム全体をビルド・配信する現在のアーキテクチャ。"
 ---
 
-# ゲームポータルサイト構築タスク
+# ゲームプラットフォーム構築タスク
 
-**このリポジトリ内**に `portal/` ディレクトリを作成し、Astro でゲームプラットフォームのポータルサイトを構築してください。別リポジトリは作成しない。
+**このリポジトリは単一の Vite プロジェクト**として統合済み。Astro・Turborepo・個別 package.json は廃止された。
 
-## 設計方鷑
+## 現在のアーキテクチャ
 
-- **ゲームの追加 = `portal/src/data/games.json` に1エントリ追加するだけ**になるよう設計する
-- 各ゲーム (`games/*/`) は Vercel に別プロジェクトとして登録し、ポータルから iframe またはリダイレクトで配信
-- AdSense を全ページに配置
-- SEO ファースト — Astro の SSG で全ページを静的生成
+```
+games/
+  _template/           # 新作ゲームの雛形 (index.html + src/App.tsx + main.tsx)
+  [game-id]/           # 14本のReactゲーム (index.html + src/*)
+src/
+  shared/              # 全ゲーム共通 (GameShell, ParticleLayer, ScorePopup, useAudio, useParticles)
+  portal/data/games.json  # ゲームメタデータ一元管理
+plugins/
+  portal-ssg.ts        # Viteプラグイン: ポータルHTML SSG注入
+public/                # 静的アセット (thumbnails, manifest.webmanifest, sw.js)
+index.html             # ポータルエントリ（ビルド時は SSG でHTML注入済みの静的ページに変換）
+vite.config.ts         # マルチエントリ (games/*) + SSGプラグイン
+package.json           # 単一 (ルートのみ)
+```
 
 ---
 
-## Step 1: `portal/` ディレクトリの初期化
+## ビルド
 
 ```bash
-cd portal
-npm create astro@latest . -- --template minimal --typescript strict
-npm install
+npm run build   # = tsc -b && vite build
 ```
 
-**採用技術**:
+- 出力: `dist/` (ポータル + 全ゲーム + sitemap.xml + \_headers + \_redirects)
+- 所要時間: 約600ms
+- 個別ゲームのビルドコマンドは不要
+- prebuild: `scripts/prebuild.mjs` が `sitemap.xml` と `_redirects` を `public/` に生成
 
-- Astro (SSG) — SEO 最強、ゼロ JSデフォルト
-- TypeScript strict
-- Vercel デプロイ (Root Directory: `portal`)
+## URL 構造
 
----
+- `https://game.kihamda.net/` → ポータル (SSG生成)
+- `https://game.kihamda.net/games/[id]/` → 各ゲームSPA
 
-## Step 2: ゲームメタデータ管理
+## デプロイ
 
-`portal/src/data/games.json` を作成:
+- XServer Static (無料・静的ホスティング)
+- GitHub Actions → `npm run build` → `dist/` → FTPS で XServer Static へデプロイ
 
-```json
-[
-  {
-    "id": "ntiktaktoe",
-    "title": "n目並べ",
-    "description": "2〜10人対応！自由なボードサイズで遊べるアドバンスド三目並べ",
-    "url": "https://ntiktaktoe.vercel.app",
-    "thumbnail": "/thumbnails/ntiktaktoe.png",
-    "tags": ["ボードゲーム", "対戦", "2人", "複数人"],
-    "releaseDate": "2026-02-21",
-    "featured": true
-  }
-]
-```
+## ポータル
 
-`src/lib/games.ts` でスキーマ型を定義:
+`plugins/portal-ssg.ts` がビルド時に静的 HTML を生成:
 
-```ts
-export interface GameMeta {
-  id: string;
-  title: string;
-  description: string;
-  url: string;
-  thumbnail: string;
-  tags: string[];
-  releaseDate: string;
-  featured: boolean;
-}
-```
+- ゲーム一覧ポータル (`dist/index.html`) — SSG プラグインが `src/portal/App.tsx` を SSR して注入
+- サイトマップ (`public/sitemap.xml`) — `scripts/prebuild.mjs` が生成
+- キャッシュヘッダー (`public/_headers`) — 静的配置
+- リダイレクト (`public/_redirects`) — `scripts/prebuild.mjs` が生成
 
----
+データソース: `src/portal/data/games.json`
 
-## Step 3: ページ構成
+## PWA
 
-| ページ | パス           | 内容                               |
-| ------ | -------------- | ---------------------------------- |
-| トップ | `/`            | 新着・おすすめゲーム一覧 + AdSense |
-| 一覧   | `/games/`      | 全ゲーム + タグフィルター          |
-| 詳細   | `/games/[id]/` | 説明・iframe プレイ + AdSense      |
-| タグ   | `/tags/[tag]/` | タグ別一覧 (SEO ロングテール)      |
+- `public/manifest.webmanifest` — プラットフォーム全体 PWA マニフェスト (scope: `/`)
+- `public/sw.js` — Service Worker (手書き・静的配信)
+- 各ゲームに `vite-plugin-pwa` は不要
 
-各ページに以下を必ず含む:
+## 新ゲーム追加手順
 
-- `<title>` と `<meta name="description">`
-- OGP タグ (og:image は各ゲームのサムネイル)
-- 構造化データ (`@type: WebApplication`)
-- sitemap.xml 自動生成 (`@astrojs/sitemap`)
-
----
-
-## Step 4: AdSense 配置
-
-`src/components/AdUnit.astro` を作成:
-
-```astro
----
-interface Props {
-  slot: string
-  format?: 'auto' | 'rectangle' | 'horizontal'
-}
-const { slot, format = 'auto' } = Astro.props
----
-<ins class="adsbygoogle"
-  style="display:block"
-  data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-  data-ad-slot={slot}
-  data-ad-format={format}>
-</ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-```
-
-配置箇所:
-
-- ゲーム一覧: 6件ごとに1個
-- 詳細ページ: iframe の上下に各1個
-
----
-
-## Step 5: 新作ゲーム追加フロー
-
-新しいゲームをリリースするたびにやること:
-
-1. `games/_template/` をコピー → `games/[game-id]/` にリネーム (このリポジトリ内で作業)
-2. `games/[game-id]/src/` を書き換えてゲームを実装
-3. Vercel に新プロジェクトを追加 (Root Directory: `games/[game-id]`) → URL を取得
-4. `portal/src/data/games.json` に1エントリ追加 → git push → `portal/` 自動再ビルド
-5. SNS 自動投稿ワークフローをトリガー
-
----
-
-## Step 6: 内部リンク戦略
-
-各ゲーム詳細ページの下部に「他のゲームもプレイ」セクションを追加:
-
-- 同じタグを持つゲームを3〜4本表示
-- プラットフォーム全体の回遊率 → PV 増加 → AdSense 収益増加
-
----
-
-## Vercel デプロイ設定
-
-`vercel.json`:
-
-```json
-{
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "framework": "astro"
-}
-```
-
-独自ドメインは Vercel の無料プランで設定可能 (要ドメイン取得 — `.com` なら年¥1,500程度)。
+1. `games/_template/` を `games/[game-id]/` にコピー
+2. `src/` 内を実装 (共通ライブラリ: `import { GameShell, useAudio } from "../../../src/shared"`)
+3. `index.html` に title/meta/OGP/canonical/GA4 を設定
+4. `src/portal/data/games.json` にエントリ追加
+5. `public/thumbnails/[game-id].svg` にサムネイル追加
+6. `npm run build` で確認

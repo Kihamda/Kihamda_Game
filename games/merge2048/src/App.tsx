@@ -1,22 +1,51 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import "./App.css";
-
-// ─── 定数 ───────────────────────────────────────────────────────────────────
-
-const SIZE = 4;
-const WIN_VALUE = 2048;
-const BEST_SCORE_KEY = "merge2048_best";
+import { useAudio, useHighScore, GameShell } from "../../../src/shared";
 
 // ─── 型 ─────────────────────────────────────────────────────────────────────
 
 type Board = number[][];
 type Direction = "left" | "right" | "up" | "down";
+type GameMode = "classic" | "endless";
+type GamePhase = "menu" | "playing";
+
+interface Settings {
+  boardSize: 3 | 4 | 5;
+  winValue: 512 | 1024 | 2048 | 4096;
+  gameMode: GameMode;
+}
 
 interface PopupScore {
   id: number;
   points: number;
   row: number;
   col: number;
+}
+
+// ─── 設定の永続化 ───────────────────────────────────────────────────────────
+
+const SETTINGS_KEY = "merge2048_settings";
+const DEFAULT_SETTINGS: Settings = {
+  boardSize: 4,
+  winValue: 2048,
+  gameMode: "classic",
+};
+
+function loadSettings(): Settings {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as Partial<Settings>;
+      return { ...DEFAULT_SETTINGS, ...parsed };
+    }
+  } catch {
+    /* ignore */
+  }
+  return { ...DEFAULT_SETTINGS };
+}
+
+function saveSettings(s: Settings): void {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
 }
 
 // ─── タイル色テーブル ─────────────────────────────────────────────────────────
@@ -52,21 +81,22 @@ function tileFontClass(value: number): string {
 
 // ─── ボードロジック ──────────────────────────────────────────────────────────
 
-function emptyBoard(): Board {
-  return Array.from({ length: SIZE }, () => new Array<number>(SIZE).fill(0));
+function emptyBoard(size: number): Board {
+  return Array.from({ length: size }, () => new Array<number>(size).fill(0));
 }
 
 function getEmptyCells(board: Board): Array<[number, number]> {
+  const size = board.length;
   const cells: Array<[number, number]> = [];
-  for (let r = 0; r < SIZE; r++)
-    for (let c = 0; c < SIZE; c++)
-      if (board[r][c] === 0) cells.push([r, c]);
+  for (let r = 0; r < size; r++)
+    for (let c = 0; c < size; c++) if (board[r][c] === 0) cells.push([r, c]);
   return cells;
 }
 
-function spawnTile(
-  board: Board,
-): { board: Board; pos: [number, number] | null } {
+function spawnTile(board: Board): {
+  board: Board;
+  pos: [number, number] | null;
+} {
   const empty = getEmptyCells(board);
   if (!empty.length) return { board, pos: null };
   const idx = Math.floor(Math.random() * empty.length);
@@ -86,9 +116,12 @@ interface SlideResult {
   changed: boolean;
 }
 
-function slideRowLeft(
-  row: number[],
-): { row: number[]; score: number; mergeIndices: number[]; mergeCount: number } {
+function slideRowLeft(row: number[]): {
+  row: number[];
+  score: number;
+  mergeIndices: number[];
+  mergeCount: number;
+} {
   const nz = row.filter((v) => v !== 0);
   const result: number[] = [];
   const mergeIndices: number[] = [];
@@ -108,7 +141,7 @@ function slideRowLeft(
       i++;
     }
   }
-  while (result.length < SIZE) result.push(0);
+  while (result.length < row.length) result.push(0);
   return { row: result, score, mergeIndices, mergeCount };
 }
 
@@ -131,8 +164,9 @@ function doSlideLeft(board: Board): SlideResult {
 }
 
 function transpose(board: Board): Board {
-  return Array.from({ length: SIZE }, (_, r) =>
-    Array.from({ length: SIZE }, (_, c) => board[c]![r]!),
+  const size = board.length;
+  return Array.from({ length: size }, (_, r) =>
+    Array.from({ length: size }, (_, c) => board[c]![r]!),
   );
 }
 
@@ -141,6 +175,7 @@ function reverseRows(board: Board): Board {
 }
 
 function applySlide(board: Board, dir: Direction): SlideResult {
+  const size = board.length;
   switch (dir) {
     case "left": {
       return doSlideLeft(board);
@@ -151,7 +186,7 @@ function applySlide(board: Board, dir: Direction): SlideResult {
       return {
         ...res,
         board: reverseRows(res.board),
-        mergedCells: res.mergedCells.map(([r, c]) => [r, SIZE - 1 - c]),
+        mergedCells: res.mergedCells.map(([r, c]) => [r, size - 1 - c]),
       };
     }
     case "up": {
@@ -169,78 +204,25 @@ function applySlide(board: Board, dir: Direction): SlideResult {
       return {
         ...res,
         board: transpose(reverseRows(res.board)),
-        mergedCells: res.mergedCells.map(([r, c]) => [c, SIZE - 1 - r]),
+        mergedCells: res.mergedCells.map(([r, c]) => [c, size - 1 - r]),
       };
     }
   }
 }
 
 function canMove(board: Board): boolean {
+  const size = board.length;
   if (getEmptyCells(board).length > 0) return true;
-  for (let r = 0; r < SIZE; r++)
-    for (let c = 0; c < SIZE; c++) {
-      if (c + 1 < SIZE && board[r]![c] === board[r]![c + 1]) return true;
-      if (r + 1 < SIZE && board[r]![c] === board[r + 1]![c]) return true;
+  for (let r = 0; r < size; r++)
+    for (let c = 0; c < size; c++) {
+      if (c + 1 < size && board[r]![c] === board[r]![c + 1]) return true;
+      if (r + 1 < size && board[r]![c] === board[r + 1]![c]) return true;
     }
   return false;
 }
 
-function hasWon(board: Board): boolean {
-  return board.some((row) => row.some((v) => v >= WIN_VALUE));
-}
-
-// ─── Web Audio ──────────────────────────────────────────────────────────────
-
-let _audioCtx: AudioContext | null = null;
-
-function getAudioCtx(): AudioContext {
-  _audioCtx ??= new AudioContext();
-  return _audioCtx;
-}
-
-function playTone(
-  freq: number,
-  type: OscillatorType,
-  vol: number,
-  start: number,
-  dur: number,
-) {
-  const ctx = getAudioCtx();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.type = type;
-  osc.frequency.value = freq;
-  gain.gain.setValueAtTime(vol, start);
-  gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
-  osc.start(start);
-  osc.stop(start + dur + 0.01);
-}
-
-function playMergeSound(value: number) {
-  try {
-    const freq = 180 + Math.log2(value) * 55;
-    playTone(freq, "sine", 0.18, getAudioCtx().currentTime, 0.14);
-  } catch { /* ブラウザ制限など無視 */ }
-}
-
-function playWinSound() {
-  try {
-    const ctx = getAudioCtx();
-    [523, 659, 784, 1047, 1319].forEach((freq, i) => {
-      playTone(freq, "sine", 0.22, ctx.currentTime + i * 0.13, 0.38);
-    });
-  } catch { /* ignore */ }
-}
-
-function playGameOverSound() {
-  try {
-    const ctx = getAudioCtx();
-    [440, 370, 311, 261].forEach((freq, i) => {
-      playTone(freq, "sawtooth", 0.14, ctx.currentTime + i * 0.22, 0.32);
-    });
-  } catch { /* ignore */ }
+function hasWon(board: Board, winValue: number): boolean {
+  return board.some((row) => row.some((v) => v >= winValue));
 }
 
 // ─── ID カウンター ────────────────────────────────────────────────────────────
@@ -250,17 +232,49 @@ function nextId(): number {
   return _idCounter++;
 }
 
+// ─── 設定ボタングループ ──────────────────────────────────────────────────────
+
+function OptionGroup<T extends string | number>({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: { value: T; label: string }[];
+  value: T;
+  onChange: (v: T) => void;
+}) {
+  return (
+    <div className="option-group">
+      <div className="option-label">{label}</div>
+      <div className="option-buttons">
+        {options.map((opt) => (
+          <button
+            key={String(opt.value)}
+            className={`option-btn ${value === opt.value ? "option-active" : ""}`}
+            onClick={() => onChange(opt.value)}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── コンポーネント ──────────────────────────────────────────────────────────
 
 export default function App() {
-  const [board, setBoard] = useState<Board>(() => {
-    const r1 = spawnTile(emptyBoard());
-    return spawnTile(r1.board).board;
-  });
+  const { playTone, playArpeggio } = useAudio();
+  const { best: bestScore, update: updateBestScore } =
+    useHighScore("merge2048");
+
+  const [phase, setPhase] = useState<GamePhase>("menu");
+  const [settings, setSettings] = useState<Settings>(loadSettings);
+
+  const [board, setBoard] = useState<Board>(() => emptyBoard(4));
   const [score, setScore] = useState(0);
-  const [bestScore, setBestScore] = useState(() =>
-    parseInt(localStorage.getItem(BEST_SCORE_KEY) ?? "0", 10),
-  );
   const [gameOver, setGameOver] = useState(false);
   const [won, setWon] = useState(false);
   const [keepPlaying, setKeepPlaying] = useState(false);
@@ -273,20 +287,10 @@ export default function App() {
   const comboTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
-  // ベストスコア更新
-  const updateBestScore = useCallback((s: number) => {
-    setBestScore((prev) => {
-      if (s > prev) {
-        localStorage.setItem(BEST_SCORE_KEY, String(s));
-        return s;
-      }
-      return prev;
-    });
-  }, []);
-
   // ゲームリセット
   const initGame = useCallback(() => {
-    const r1 = spawnTile(emptyBoard());
+    const sz = settings.boardSize;
+    const r1 = spawnTile(emptyBoard(sz));
     const r2 = spawnTile(r1.board);
     setBoard(r2.board);
     setScore(0);
@@ -298,6 +302,16 @@ export default function App() {
     setMergedCells(new Set());
     setNewCell(null);
     setPopups([]);
+  }, [settings.boardSize]);
+
+  const startGame = useCallback(() => {
+    saveSettings(settings);
+    initGame();
+    setPhase("playing");
+  }, [settings, initGame]);
+
+  const backToMenu = useCallback(() => {
+    setPhase("menu");
   }, []);
 
   // 移動
@@ -347,12 +361,8 @@ export default function App() {
       if (mergeCount > 1) {
         setCombo(mergeCount);
         setComboVisible(true);
-        if (comboTimerRef.current !== null)
-          clearTimeout(comboTimerRef.current);
-        comboTimerRef.current = setTimeout(
-          () => setComboVisible(false),
-          1600,
-        );
+        if (comboTimerRef.current !== null) clearTimeout(comboTimerRef.current);
+        comboTimerRef.current = setTimeout(() => setComboVisible(false), 1600);
       }
 
       // 効果音
@@ -361,19 +371,34 @@ export default function App() {
           (m, [r, c]) => Math.max(m, next[r]?.[c] ?? 2),
           2,
         );
-        playMergeSound(maxVal);
+        const freq = 180 + Math.log2(maxVal) * 55;
+        playTone(freq, 0.14, "sine", 0.18);
       }
 
       // 勝利 / ゲームオーバー判定
-      if (!won && hasWon(next)) {
+      if (!won && hasWon(next, settings.winValue)) {
         setWon(true);
-        playWinSound();
+        if (settings.gameMode === "endless") {
+          setKeepPlaying(true);
+        }
+        playArpeggio([523, 659, 784, 1047, 1319], 0.38, "sine", 0.22, 0.13);
       } else if (!canMove(next)) {
         setGameOver(true);
-        playGameOverSound();
+        playArpeggio([440, 370, 311, 261], 0.32, "sawtooth", 0.14, 0.22);
       }
     },
-    [board, score, gameOver, won, keepPlaying, updateBestScore],
+    [
+      board,
+      score,
+      gameOver,
+      won,
+      keepPlaying,
+      settings.winValue,
+      settings.gameMode,
+      updateBestScore,
+      playTone,
+      playArpeggio,
+    ],
   );
 
   useEffect(() => {
@@ -415,129 +440,242 @@ export default function App() {
     }
   };
 
+  // ─── メニュー画面 ──────────────────────────────────────────────────────────
+
+  if (phase === "menu") {
+    return (
+      <GameShell title="Merge 2048" gameId="merge2048">
+        <div className="app">
+          <div className="menu">
+            <h1 className="menu-title">Merge 2048</h1>
+            <p className="menu-sub">タイルをスライドして合体させよう</p>
+
+            <div className="settings-panel">
+              <OptionGroup<number>
+                label="ボードサイズ"
+                options={[
+                  { value: 3, label: "3×3" },
+                  { value: 4, label: "4×4" },
+                  { value: 5, label: "5×5" },
+                ]}
+                value={settings.boardSize}
+                onChange={(v) =>
+                  setSettings((s) => ({
+                    ...s,
+                    boardSize: v as Settings["boardSize"],
+                  }))
+                }
+              />
+              <OptionGroup<number>
+                label="目標値"
+                options={[
+                  { value: 512, label: "512" },
+                  { value: 1024, label: "1024" },
+                  { value: 2048, label: "2048" },
+                  { value: 4096, label: "4096" },
+                ]}
+                value={settings.winValue}
+                onChange={(v) =>
+                  setSettings((s) => ({
+                    ...s,
+                    winValue: v as Settings["winValue"],
+                  }))
+                }
+              />
+              <OptionGroup<string>
+                label="ゲームモード"
+                options={[
+                  { value: "classic", label: "CLASSIC" },
+                  { value: "endless", label: "ENDLESS" },
+                ]}
+                value={settings.gameMode}
+                onChange={(v) =>
+                  setSettings((s) => ({ ...s, gameMode: v as GameMode }))
+                }
+              />
+            </div>
+
+            <button className="start-btn" onClick={startGame}>
+              ゲーム開始
+            </button>
+
+            {bestScore > 0 && (
+              <div className="menu-best">ハイスコア: {bestScore}</div>
+            )}
+          </div>
+        </div>
+      </GameShell>
+    );
+  }
+
+  // ─── プレイ画面 ────────────────────────────────────────────────────────────
+
+  const gridSize = settings.boardSize;
   const showWinOverlay = won && !keepPlaying;
   const showOverlay = gameOver || showWinOverlay;
+  const gridRepeat = `repeat(${gridSize}, 1fr)`;
 
   return (
-    <div
-      className="app"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      {/* ヘッダー */}
-      <header className="header">
-        <h1 className="title">Merge 2048</h1>
-        <div className="header-right">
-          <div className="scores">
-            <div className="score-box">
-              <span className="score-label">SCORE</span>
-              <span className="score-value">{score}</span>
+    <GameShell title="Merge 2048" gameId="merge2048">
+      <div
+        className="app"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* ヘッダー */}
+        <header className="header">
+          <h1 className="title">Merge 2048</h1>
+          <div className="header-right">
+            <div className="scores">
+              <div className="score-box">
+                <span className="score-label">SCORE</span>
+                <span className="score-value">{score}</span>
+              </div>
+              <div className="score-box">
+                <span className="score-label">BEST</span>
+                <span className="score-value">{bestScore}</span>
+              </div>
             </div>
-            <div className="score-box">
-              <span className="score-label">BEST</span>
-              <span className="score-value">{bestScore}</span>
-            </div>
+            <button className="new-game-btn" onClick={initGame}>
+              New Game
+            </button>
+            <button
+              className="settings-btn"
+              onClick={backToMenu}
+              title="設定"
+            >
+              ⚙
+            </button>
           </div>
-          <button className="new-game-btn" onClick={initGame}>
-            New Game
-          </button>
-        </div>
-      </header>
+        </header>
 
-      {/* コンボバッジ */}
-      <div className={`combo-badge ${comboVisible && combo > 1 ? "combo-visible" : ""}`}>
-        COMBO×{combo}
-      </div>
+        {settings.gameMode === "endless" && (
+          <div className="mode-badge">ENDLESS</div>
+        )}
 
-      {/* グリッド */}
-      <div className="grid-wrapper">
-        {/* 背景セル */}
-        <div className="grid-bg">
-          {Array.from({ length: SIZE * SIZE }).map((_, i) => (
-            <div key={i} className="cell-bg" />
-          ))}
+        {/* コンボバッジ */}
+        <div
+          className={`combo-badge ${comboVisible && combo > 1 ? "combo-visible" : ""}`}
+        >
+          COMBO×{combo}
         </div>
 
-        {/* タイル */}
-        <div className="grid-tiles">
-          {board.map((row, r) =>
-            row.map((value, c) => {
-              if (value === 0) return null;
-              const key = `${r}-${c}`;
-              const isMerged = mergedCells.has(key);
-              const isNew = newCell === key;
-              const isWinTile = won && value >= WIN_VALUE;
-              return (
-                <div
-                  key={key}
-                  className={[
-                    "tile",
-                    tileFontClass(value),
-                    isMerged ? "tile-merged" : "",
-                    isNew ? "tile-new" : "",
-                    isWinTile ? "tile-win" : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
-                  style={
-                    {
-                      ...getTileStyle(value),
-                      "--r": r,
-                      "--c": c,
-                    } as React.CSSProperties
-                  }
-                >
-                  {value}
-                  {/* スコアポップアップ */}
-                  {popups
-                    .filter((p) => p.row === r && p.col === c)
-                    .map((p) => (
-                      <span key={p.id} className="score-popup">
-                        +{p.points}
-                      </span>
-                    ))}
-                </div>
-              );
-            }),
+        {/* グリッド */}
+        <div className="grid-wrapper">
+          {/* 背景セル */}
+          <div
+            className="grid-bg"
+            style={{
+              gridTemplateColumns: gridRepeat,
+              gridTemplateRows: gridRepeat,
+            }}
+          >
+            {Array.from({ length: gridSize * gridSize }).map((_, i) => (
+              <div key={i} className="cell-bg" />
+            ))}
+          </div>
+
+          {/* タイル */}
+          <div
+            className="grid-tiles"
+            style={{
+              gridTemplateColumns: gridRepeat,
+              gridTemplateRows: gridRepeat,
+            }}
+          >
+            {board.map((row, r) =>
+              row.map((value, c) => {
+                if (value === 0) return null;
+                const key = `${r}-${c}`;
+                const isMerged = mergedCells.has(key);
+                const isNew = newCell === key;
+                const isWinTile = won && value >= settings.winValue;
+                return (
+                  <div
+                    key={key}
+                    className={[
+                      "tile",
+                      tileFontClass(value),
+                      isMerged ? "tile-merged" : "",
+                      isNew ? "tile-new" : "",
+                      isWinTile ? "tile-win" : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    style={
+                      {
+                        ...getTileStyle(value),
+                        "--r": r,
+                        "--c": c,
+                      } as React.CSSProperties
+                    }
+                  >
+                    {value}
+                    {/* スコアポップアップ */}
+                    {popups
+                      .filter((p) => p.row === r && p.col === c)
+                      .map((p) => (
+                        <span key={p.id} className="score-popup">
+                          +{p.points}
+                        </span>
+                      ))}
+                  </div>
+                );
+              }),
+            )}
+          </div>
+
+          {/* オーバーレイ */}
+          {showOverlay && (
+            <div
+              className={`overlay ${showWinOverlay ? "overlay-win" : "overlay-lose"}`}
+            >
+              <div className="overlay-content">
+                {showWinOverlay ? (
+                  <>
+                    <div className="overlay-emoji">🎉</div>
+                    <div className="overlay-title">
+                      {settings.winValue} 達成！
+                    </div>
+                    <div className="overlay-sub">スコア: {score}</div>
+                    <button
+                      className="overlay-btn btn-continue"
+                      onClick={() => setKeepPlaying(true)}
+                    >
+                      続けてプレイ
+                    </button>
+                    <button className="overlay-btn" onClick={initGame}>
+                      New Game
+                    </button>
+                    <button
+                      className="overlay-btn btn-menu"
+                      onClick={backToMenu}
+                    >
+                      設定変更
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="overlay-title">Game Over</div>
+                    <div className="overlay-sub">スコア: {score}</div>
+                    <button className="overlay-btn" onClick={initGame}>
+                      もう一度
+                    </button>
+                    <button
+                      className="overlay-btn btn-menu"
+                      onClick={backToMenu}
+                    >
+                      設定変更
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
           )}
         </div>
 
-        {/* オーバーレイ */}
-        {showOverlay && (
-          <div
-            className={`overlay ${showWinOverlay ? "overlay-win" : "overlay-lose"}`}
-          >
-            <div className="overlay-content">
-              {showWinOverlay ? (
-                <>
-                  <div className="overlay-emoji">🎉</div>
-                  <div className="overlay-title">2048 達成！</div>
-                  <div className="overlay-sub">スコア: {score}</div>
-                  <button
-                    className="overlay-btn btn-continue"
-                    onClick={() => setKeepPlaying(true)}
-                  >
-                    続けてプレイ
-                  </button>
-                  <button className="overlay-btn" onClick={initGame}>
-                    New Game
-                  </button>
-                </>
-              ) : (
-                <>
-                  <div className="overlay-title">Game Over</div>
-                  <div className="overlay-sub">スコア: {score}</div>
-                  <button className="overlay-btn" onClick={initGame}>
-                    もう一度
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        )}
+        <p className="hint">矢印キー または スワイプで操作</p>
       </div>
-
-      <p className="hint">矢印キー または スワイプで操作</p>
-    </div>
+    </GameShell>
   );
 }

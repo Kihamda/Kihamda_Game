@@ -1,30 +1,31 @@
 {
   "name": "extreme-tik-tok-toe-platform",
   "private": true,
+  "type": "module",
   "version": "0.1.0",
+  "packageManager": "npm@11.6.0",
   "scripts": {
-    "build": "bash scripts/build-all.sh",
-    "dev:ntiktaktoe":  "npm run dev --workspace ntiktaktoe",
-    "dev:flashreflex": "npm run dev --workspace flashreflex",
-    "dev:gravityfour": "npm run dev --workspace gravityfour",
-    "dev:memoryduel":  "npm run dev --workspace memoryduel",
-    "dev:snakechaos":  "npm run dev --workspace snakechaos",
-    "dev:merge2048":   "npm run dev --workspace merge2048",
-    "dev:brickblast":  "npm run dev --workspace brickblast",
-    "dev:molemania":   "npm run dev --workspace molemania",
-    "dev:colorburst":  "npm run dev --workspace colorburst",
-    "dev:taptarget":   "npm run dev --workspace taptarget",
-    "dev:simonecho":   "npm run dev --workspace simonecho",
-    "dev:numhunt":     "npm run dev --workspace numhunt",
-    "dev:dodgeblitz":  "npm run dev --workspace dodgeblitz",
-    "dev:typingblitz": "npm run dev --workspace typingblitz",
-    "dev:portal":      "npm run dev --workspace portal",
-    "build:ntiktaktoe": "npm run build --workspace ntiktaktoe",
-    "build:portal":     "npm run build --workspace portal",
-    "lint:all": "npm run lint --workspaces --if-present"
+    "dev": "vite",
+    "build": "node scripts/prebuild.mjs && tsc -b && eslint . && vite build",
+    "preview": "vite preview",
+    "lint": "eslint ."
   },
-  "workspaces": [
-    "games/*",
-    "portal"
-  ]
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^25.3.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react-swc": "^4.2.3",
+    "eslint": "^9.39.3",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.3.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.56.1",
+    "vite": "^7.3.1"
+  }
 }

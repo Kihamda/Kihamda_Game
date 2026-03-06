@@ -1,5 +1,5 @@
 ---
-description: "新しいゲームを企画から実装・PWA・SEO・portal登録まで全工程を完走する。これ1つで完成まで行ける。"
+description: "新しいゲームを企画から実装・SEO・portal登録まで全工程を完走する。これ1つで完成まで行ける。"
 ---
 
 # 新ゲーム全工程実行プロンプト
@@ -9,7 +9,7 @@ description: "新しいゲームを企画から実装・PWA・SEO・portal登録
 ## 入力として教えること (これだけでOK)
 
 ```
-ゲームID: [kebab-case の英数字]
+ゲームID: [英数字小文字の連結]
 タイトル: [日本語タイトル]
 一言説明: [〇〇するゲーム、60文字以内]
 ゲームの概要: [どんなゲームか、ルールの概要]
@@ -22,7 +22,8 @@ description: "新しいゲームを企画から実装・PWA・SEO・portal登録
 ### Phase A: コード実装
 
 1. `codebase` で `games/_template/` を読み込んで構造を把握する
-2. `games/[game-id]/` を `_template` から作成する
+2. `games/[game-id]/` を `_template` からコピーして作成する
+   (個別の `package.json` / `vite.config.ts` は不要。ルートに集約済み)
 3. 以下の順で実装する:
 
 **実装順序 (この順を守る)**:
@@ -32,69 +33,47 @@ games/[game-id]/src/lib/types.ts       ← ゲーム固有の型定義
 games/[game-id]/src/lib/constants.ts   ← 定数 (ボードサイズ、初期値など)
 games/[game-id]/src/lib/[game-id].ts   ← ゲームロジック純粋関数
 games/[game-id]/src/App.tsx            ← 状態管理・フェーズ制御
+games/[game-id]/src/App.css            ← ゲーム固有スタイル
 games/[game-id]/src/components/        ← StartScreen, GameView, ResultScreen
-games/[game-id]/index.html             ← SEO / OGP メタタグ
-games/[game-id]/vite.config.ts         ← base: '/games/[game-id]/' 必須
+games/[game-id]/index.html             ← SEO / OGP / canonical / GA4 メタタグ
 ```
 
-4. `cd games/[game-id] && npm install` を実行
-5. `npm run lint && npm run build` を実行
-6. エラーがあれば修正して 5 に戻る
-
-### Phase B: vite.config.ts の base パス設定
-
-`games/[game-id]/vite.config.ts` に **base パスを必ず設定**する。
-Cloudflare Pages の単一ドメイン配下 `/games/[game-id]/` に配置されるため必須。
+共通ライブラリを使う場合:
 
 ```ts
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-
-export default defineConfig({
-  base: "/games/[game-id]/", // game-id を実際の ID に変更
-  build: {
-    outDir: "dist",
-    assetsDir: "assets",
-  },
-  plugins: [react()],
-});
+import { GameShell, useAudio } from "../../../src/shared";
 ```
 
-**PWA について**: Service Worker と manifest は portal 側で一元管理するため、
-各ゲームに `vite-plugin-pwa` は不要。
+4. ルートで `npm run build` を実行 (= `tsc -b && vite build`)
+5. エラーがあれば修正して 4 に戻る
 
-### Phase C: SEO / OGP 設定
+### Phase B: SEO / OGP 設定
 
 `games/[game-id]/index.html` の `<head>` に追加:
 
 ```html
 <meta name="description" content="[一言説明]" />
 <meta name="keywords" content="[関連キーワード, ブラウザゲーム, 無料]" />
-<meta property="og:title" content="[ゲームタイトル]" />
+<meta property="og:title" content="[ゲームタイトル] - 無料ブラウザゲーム" />
 <meta property="og:description" content="[一言説明]" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://[game-id].vercel.app" />
-<meta property="og:image" content="https://[game-id].vercel.app/og-image.png" />
+<meta property="og:url" content="https://game.kihamda.net/games/[game-id]/" />
+<meta
+  property="og:image"
+  content="https://game.kihamda.net/thumbnails/[game-id].svg"
+/>
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="[ゲームタイトル]" />
 <meta
   name="twitter:image"
-  content="https://[game-id].vercel.app/og-image.png"
+  content="https://game.kihamda.net/thumbnails/[game-id].svg"
 />
-<link rel="canonical" href="https://[game-id].vercel.app" />
+<link rel="canonical" href="https://game.kihamda.net/games/[game-id]/" />
 ```
 
-`games/[game-id]/public/robots.txt`:
+### Phase C: portal 登録
 
-```
-User-agent: *
-Allow: /
-Sitemap: https://[CF-Pages-ドメイン]/sitemap.xml
-```
-
-### Phase D: portal 登録
-
-`portal/src/data/games.json` の `games` 配列に追加:
+`src/portal/data/games.json` の `games` 配列に追加:
 
 ```json
 {
@@ -102,7 +81,7 @@ Sitemap: https://[CF-Pages-ドメイン]/sitemap.xml
   "title": "[タイトル]",
   "description": "[一言説明]",
   "path": "/games/[game-id]/",
-  "thumbnail": "/thumbnails/[game-id].png",
+  "thumbnail": "/thumbnails/[game-id].svg",
   "tags": ["タグ1", "タグ2"],
   "publishedAt": "[今日の日付 YYYY-MM-DD]",
   "featured": false
@@ -117,28 +96,28 @@ Sitemap: https://[CF-Pages-ドメイン]/sitemap.xml
 ✅ 実装完了: games/[game-id]/
 
 変更ファイル:
-- games/[game-id]/src/lib/types.ts
-- games/[game-id]/src/lib/[game-id].ts
-- games/[game-id]/src/App.tsx
-- games/[game-id]/src/components/...
 - games/[game-id]/index.html
-- games/[game-id]/vite.config.ts  (base: '/games/[game-id]/')
-- portal/src/data/games.json
+- games/[game-id]/src/main.tsx
+- games/[game-id]/src/App.tsx
+- games/[game-id]/src/App.css
+- games/[game-id]/src/components/...
+- games/[game-id]/src/lib/...
+- src/portal/data/games.json
+- public/thumbnails/[game-id].svg
 
 動作確認:
-  cd games/[game-id] && npm run dev
+  npm run dev
   # ブラウザで http://localhost:5173/games/[game-id]/ にアクセス
 
 デプロイ:
   git add . && git commit -m "feat: add [game-id] game"
   git push origin main
   # → GitHub Actions (build-and-deploy.yml) が自動実行
-  # → scripts/build-all.sh で dist/ に一括ビルド
-  # → Cloudflare Pages に自動デプロイ
-  # → URL: https://[CF-Pages-ドメイン]/games/[game-id]/
+  # → npm run build で dist/ に一括ビルド
+  # → FTPS で XServer Static に自動デプロイ
+  # → URL: https://game.kihamda.net/games/[game-id]/
 
 【人間がやること】
-1. SNS 投稿: GitHub Actions の release-pipeline を手動トリガー
-   URL: https://[CF-Pages-ドメイン]/games/[game-id]/
-2. サムネイル製作: portal/public/thumbnails/[game-id].png (640x360)
+1. SNS 投稿: 新作告知を投稿
+   URL: https://game.kihamda.net/games/[game-id]/
 ```

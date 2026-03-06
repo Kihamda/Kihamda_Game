@@ -1,0 +1,227 @@
+name: Release Pipeline — Build & SNS Post
+
+# 新作ゲームリリース時に実行:
+# 1. ビルド最終確認
+# 2. Twitter / X に投稿
+#
+# 必要な GitHub Secrets:
+#   TWITTER_API_KEY            - Twitter API v2 Consumer Key
+#   TWITTER_API_SECRET         - Twitter API v2 Consumer Secret
+#   TWITTER_ACCESS_TOKEN       - Twitter API v2 Access Token
+#   TWITTER_ACCESS_TOKEN_SECRET - Twitter API v2 Access Token Secret
+#
+# 使い方:
+#   GitHub Actions タブ → "Release Pipeline" → "Run workflow"
+#   game_id と game_title と game_url を入力して実行
+
+on:
+  workflow_dispatch:
+    inputs:
+      game_id:
+        description: "ゲームID (例: ntiktaktoe)"
+        required: true
+        type: string
+      game_title:
+        description: "ゲームタイトル (例: n目並べ)"
+        required: true
+        type: string
+      game_url:
+        description: "ゲームの URL (例: https://game.kihamda.net/games/ntiktaktoe/)"
+        required: true
+        type: string
+      game_description:
+        description: "一言説明 (100文字以内)"
+        required: true
+        type: string
+      post_to_twitter:
+        description: "Twitter に投稿する"
+        required: false
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+  # タグ push でも起動できるようにする (games/ntiktaktoe@v1.0.0 形式)
+  push:
+    tags:
+      - "games/*@v*"
+
+jobs:
+  build-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve game ID
+        id: resolve
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            GAME_ID=$(echo "${{ github.ref_name }}" | sed 's|games/||' | sed 's|@.*||')
+          else
+            GAME_ID="${{ inputs.game_id }}"
+          fi
+          echo "game_id=$GAME_ID" >> $GITHUB_OUTPUT
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint & Build
+        run: npm run lint && npm run build
+
+  post-twitter:
+    runs-on: ubuntu-latest
+    needs: build-check
+    if: "(github.event_name == 'workflow_dispatch' && inputs.post_to_twitter == 'true') || github.event_name == 'push'"
+    steps:
+      - name: Compose tweet text
+        id: tweet
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TITLE="${{ inputs.game_title }}"
+            URL="${{ inputs.game_url }}"
+            DESC="${{ inputs.game_description }}"
+          else
+            GAME_ID=$(echo "${{ github.ref_name }}" | sed 's|games/||' | sed 's|@.*||')
+            TITLE="$GAME_ID"
+            URL="https://game.kihamda.net/games/$GAME_ID/"
+            DESC="新しいブラウザゲームを公開しました！"
+          fi
+
+          TEXT="🎮 新作公開！「${TITLE}」
+
+          ${DESC}
+
+          ▶ ${URL}
+
+          #ブラウザゲーム #無料ゲーム #indiegame"
+
+          echo "text<<EOF" >> $GITHUB_OUTPUT
+          echo "$TEXT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Post to Twitter / X
+        env:
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+          TWEET_TEXT: ${{ steps.tweet.outputs.text }}
+        run: |
+          if [ -z "$TWITTER_API_KEY" ]; then
+            echo "⚠️  TWITTER_API_KEY が未設定です。投稿をスキップします。"
+            echo "   GitHub Secrets に以下を設定してください:"
+            echo "   - TWITTER_API_KEY / TWITTER_API_SECRET"
+            echo "   - TWITTER_ACCESS_TOKEN / TWITTER_ACCESS_TOKEN_SECRET"
+            exit 0
+          fi
+
+          # twitter-api-v2 を一時インストールして投稿
+          cd /tmp
+          echo '{}' > package.json
+          npm install --silent twitter-api-v2
+
+          node - << 'SCRIPT'
+          const { TwitterApi } = require('/tmp/node_modules/twitter-api-v2');
+          const client = new TwitterApi({
+            appKey:     process.env.TWITTER_API_KEY,
+            appSecret:  process.env.TWITTER_API_SECRET,
+            accessToken: process.env.TWITTER_ACCESS_TOKEN,
+            accessSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+          });
+          client.v2.tweet(process.env.TWEET_TEXT)
+            .then(r => { console.log('✅ Twitter 投稿成功:', r.data.id); process.exit(0); })
+            .catch(e => { console.warn('⚠️  Twitter 投稿失敗:', e.message); process.exit(0); });
+          SCRIPT
+
+  post-bluesky:
+    runs-on: ubuntu-latest
+    needs: build-check
+    if: "(github.event_name == 'workflow_dispatch' && inputs.post_to_twitter == 'true') || github.event_name == 'push'"
+    steps:
+      - name: Compose post text
+        id: post
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TITLE="${{ inputs.game_title }}"
+            URL="${{ inputs.game_url }}"
+            DESC="${{ inputs.game_description }}"
+          else
+            GAME_ID=$(echo "${{ github.ref_name }}" | sed 's|games/||' | sed 's|@.*||')
+            TITLE="$GAME_ID"
+            URL="https://game.kihamda.net/games/$GAME_ID/"
+            DESC="新しいブラウザゲームを公開しました！"
+          fi
+
+          cat <<- POSTEOF >> $GITHUB_OUTPUT
+          text<<EOF
+          🎮 新作公開！「${TITLE}」
+
+          ${DESC}
+
+          ▶ ${URL}
+
+          #ブラウザゲーム #無料ゲーム #indiegame
+          EOF
+          POSTEOF
+
+      - name: Post to Bluesky
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          POST_TEXT: ${{ steps.post.outputs.text }}
+        run: |
+          if [ -z "$BLUESKY_HANDLE" ]; then
+            echo "⚠️  BLUESKY_HANDLE が未設定です。投稿をスキップします。"
+            echo "   GitHub Secrets に以下を設定してください:"
+            echo "   - BLUESKY_HANDLE / BLUESKY_APP_PASSWORD"
+            exit 0
+          fi
+
+          cd /tmp
+          echo '{}' > package.json
+          npm install --silent @atproto/api
+
+          node - << 'SCRIPT'
+          const atproto = require('@atproto/api');
+          const Agent = atproto.BskyAgent || atproto.AtpAgent;
+          async function main() {
+            const agent = new Agent({ service: 'https://bsky.social' });
+            await agent.login({
+              identifier: process.env.BLUESKY_HANDLE,
+              password: process.env.BLUESKY_APP_PASSWORD,
+            });
+            await agent.post({ text: process.env.POST_TEXT });
+            console.log('✅ Bluesky 投稿成功');
+          }
+          main().catch(e => { console.warn('⚠️  Bluesky 投稿失敗:', e.message); process.exit(0); });
+          SCRIPT
+
+  summary:
+    runs-on: ubuntu-latest
+    needs: [build-check, post-twitter, post-bluesky]
+    if: always()
+    steps:
+      - name: Job Summary
+        run: |
+          echo "## 🚀 Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| ステップ | 結果 |" >> $GITHUB_STEP_SUMMARY
+          echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build Check | ${{ needs.build-check.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Twitter Post | ${{ needs.post-twitter.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Bluesky Post | ${{ needs.post-bluesky.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "**ゲーム**: ${{ inputs.game_title }}" >> $GITHUB_STEP_SUMMARY
+            echo "**URL**: ${{ inputs.game_url }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "> main への push 後、build-and-deploy.yml が FTPS で XServer Static に自動デプロイします" >> $GITHUB_STEP_SUMMARY
+          fi

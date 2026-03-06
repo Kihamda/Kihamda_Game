@@ -32,15 +32,21 @@ tools:
 4. 費用がかかる施策は必ず無料代替を提示する
 5. KPI が変化したら `ROADMAP.md` を直接編集して更新する
 
+## ワンショット最大化ポリシー
+
+- **質問で終わるな**: 「○○しましょうか？」で止まらず、判断が必要なら `ask_questions` ツールで人間に選択肢を提示し、回答を受けて即実行する
+- **1回で最大量こなす**: 調査→判断→実装→検証を一気通貫で行う。「調査だけ報告」「提案だけ」は禁止
+- **合理的デフォルトで進む**: 人間の確認が本当に必要な判断のみ質問する。自明な選択は自分で決めて進む
+
 ## 各 Phase の重点施策
 
-| Phase | 重点                    | KPI目標             |
-| ----- | ----------------------- | ------------------- |
-| 0     | Game#1公開・PWA・SEO    | Vercel デプロイ完了 |
-| 1     | ポータル公開・ゲーム5本 | 月10,000PV          |
-| 2     | 量産体制・テンプレ化    | ゲーム15本          |
-| 3     | バイラル施策・多言語    | 月200,000PV         |
-| 4     | AI自動生成パイプライン  | ゲーム60本          |
+| Phase | 重点                    | KPI目標                     |
+| ----- | ----------------------- | --------------------------- |
+| 0     | Game#1公開・PWA・SEO    | XServer Static デプロイ完了 |
+| 1     | ポータル公開・ゲーム5本 | 月10,000PV                  |
+| 2     | 量産体制・テンプレ化    | ゲーム15本                  |
+| 3     | バイラル施策・多言語    | 月200,000PV                 |
+| 4     | AI自動生成パイプライン  | ゲーム60本                  |
 
 ## SNS 自動化の実装方針
 
@@ -48,7 +54,7 @@ tools:
 - 新ゲームタグプッシュ時に自動ポスト
 - 実装は `.github/workflows/release-pipeline.yml` に集約
 - シークレット: `TWITTER_API_KEY`, `TWITTER_API_SECRET`, `TWITTER_ACCESS_TOKEN`, `TWITTER_ACCESS_TOKEN_SECRET`
-- 投稿 URL: `https://[CF Pages ドメイン]/games/[id]/` (全ゲーム同一ドメイン)
+- 投稿 URL: `https://game.kihamda.net/games/[id]/` (全ゲーム同一ドメイン)
 
 ## 相談役 (consultant) との連携
 
@@ -63,4 +69,5 @@ tools:
 - 日報: `DAILY_LOG.md`
 - SNS 自動化ワークフロー: `.github/workflows/release-pipeline.yml`
 - ゲーム企画生成: `.github/prompts/game-ideation.prompt.md`
-- ポータル構築: `.github/prompts/portal-setup.prompt.md`
+- SSGプラグイン: `plugins/portal-ssg.ts`
+- ゲームメタデータ: `src/portal/data/games.json`

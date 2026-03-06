@@ -1,212 +1,130 @@
 ---
-description: "Astro ポータルサイト portal/ を構築する。ゲーム一覧・個別ページ・AdSense 枠・SEO を全部込みで実装する。"
+description: "Vite SSG プラグイン (plugins/portal-ssg.ts) でゲームポータルを生成する。ビルド時に src/portal/App.tsx を SSR して dist/index.html に静的 HTML を注入する。"
 ---
 
 # ポータルサイト構築タスク
 
-`portal/` ディレクトリに Astro 製のゲームポータルサイトを構築します。
-ポータルが育つほど新作ゲームの初速が上がる設計にします。
+`plugins/portal-ssg.ts` の Vite プラグインでゲームポータルサイトを生成します。
+Astro は廃止済。ポータルはビルド時に SSG プラグインが `src/portal/App.tsx` を SSR して `dist/index.html` に注入する。
 
 ---
 
-## 要件
+## 現在のアーキテクチャ
 
-- フレームワーク: Astro (静的サイト生成 = SSG)
-- デプロイ: Cloudflare Pages (全ゲーム + portal を一括 `dist/` にビルドして配信)
-- データ管理: `portal/src/data/games.json` 1ファイルで全ゲームを管理
-- AdSense: 各ゲームページに広告枠を設置
-- SEO: 各ゲームページで固有 title/description/OGP を設定
-- **PWA: プラットフォーム全体を単一 PWA として公開 (scope: `/`)**
-  - `public/manifest.webmanifest` でマニフェストを定義
-  - `@vite-pwa/astro` で Service Worker を生成
-  - SW の scope は `/` (全 `/games/*/` パスもカバー)
+- ポータル生成: `plugins/portal-ssg.ts` (Vite プラグイン)
+- データソース: `src/portal/data/games.json`
+- 出力先: `dist/index.html` (ビルド時自動生成)
+- デプロイ: XServer Static (GitHub Actions から FTPS でデプロイ)
+- PWA: `public/manifest.webmanifest` + `public/sw.js` (手書き・静的配信)
 
 ---
 
-## AI が自律実行する構築手順
+## SSG プラグインが行うこと
 
-### Step 1: Astro プロジェクト初期化
+`npm run build` (= `node scripts/prebuild.mjs && tsc -b && vite build`) 実行時:
 
-```bash
-cd portal
-npm create astro@latest . -- --template minimal --install --no-git --typescript strict
-npm install @vite-pwa/astro
-```
+### `plugins/portal-ssg.ts` (`closeBundle` フック)
 
-### Step 2: ファイル構成
+1. `src/portal/App.tsx` を SSR ビルド
+2. `renderToStaticMarkup` で静的 HTML に変換
+3. `dist/index.html` の `<div id="root">` に注入
+4. portal 用の React JS バンドルを除去（CSS のみ残存）
+5. ランダムゲームリンク用のインラインスクリプトを追加
 
-```
-portal/
-  src/
-    layouts/
-      BaseLayout.astro    # head タグ・SW 登録・AdSense・共通 CSS
-    components/
-      GameCard.astro       # ゲームカード (一覧用)
-      AdBanner.astro       # AdSense 広告コンポーネント
-      GameGrid.astro       # ゲーム一覧グリッド
-    pages/
-      index.astro          # トップ: 新着 + 全ゲーム一覧
-      games/
-        [id].astro         # 各ゲーム詳細ページ
-    data/
-      games.json           # ゲームメタデータ
-  public/
-    manifest.webmanifest   # プラットフォーム全体 PWA マニフェスト
-    thumbnails/            # ゲームサムネイル画像 (空 OK)
-    _headers               # Cloudflare Pages キャッシュヘッダー
-  astro.config.mjs         # output: 'static' + @vite-pwa/astro
-  package.json
-```
+### 静的ファイル生成
 
-### Step 3: games.json スキーマ
+- `scripts/prebuild.mjs` — `sitemap.xml` と `_redirects` を `public/` に生成（prebuild ステップ）
+- `public/_headers` — キャッシュヘッダー（静的配置）
+
+## プラグインの構成
+
+`plugins/portal-ssg.ts`:
 
 ```ts
-interface Game {
-  id: string; // kebab-case
-  title: string; // 日本語タイトル
-  description: string; // 60字以内の一言説明
-  path: string; // /games/[id]/  (同一ドメイン内パス)
-  thumbnail: string; // /thumbnails/[id].png
-  tags: string[]; // ジャンルタグ
-  publishedAt: string; // YYYY-MM-DD
-  featured: boolean; // トップ表示フラグ
+import type { Plugin } from "vite";
+
+export function portalSSG(): Plugin {
+  return {
+    name: "portal-ssg",
+    closeBundle() {
+      // 1. src/portal/App.tsx を SSR ビルド
+      // 2. renderToStaticMarkup で静的 HTML に変換
+      // 3. dist/index.html の <div id="root"> に注入
+      // 4. portal 用 React JS バンドルを除去
+      // 5. ランダムゲームリンク用インラインスクリプト追加
+    },
+  };
 }
 ```
 
-### Step 4: BaseLayout.astro
+## ゲームメタデータ
 
-```astro
----
-interface Props {
-  title: string;
-  description: string;
-  ogImage?: string;
-  canonicalUrl: string;
-}
-const { title, description, ogImage, canonicalUrl } = Astro.props;
-const ADSENSE_PUB_ID = import.meta.env.PUBLIC_ADSENSE_PUB_ID; // CF Pages 環境変数
----
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{title}</title>
-  <meta name="description" content={description}>
-  <link rel="canonical" href={canonicalUrl}>
-  <meta property="og:title" content={title}>
-  <meta property="og:description" content={description}>
-  <meta property="og:type" content="website">
-  <meta property="og:url" content={canonicalUrl}>
-  {ogImage && <meta property="og:image" content={ogImage}>}
-  <meta name="twitter:card" content="summary_large_image">
-  {ADSENSE_PUB_ID && (
-    <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUB_ID}`} crossorigin="anonymous"></script>
-  )}
-</head>
-<body>
-  <slot />
-</body>
-</html>
-```
-
-### Step 5: index.astro (トップページ)
-
-- featured ゲームをヒーローエリアに表示
-- 全ゲームを publishedAt 降順でグリッド表示
-- AdBanner を適切な位置 (ゲーム一覧の中間) に配置
-- 内部リンク: `game.path` を使って `/games/[id]/` へ遷移 (target=\_self)
-
-### Step 6: [id].astro (ゲーム詳細ページ)
-
-- getStaticPaths() で games.json から全 id を生成
-- ゲーム説明 + プレイボタン (`game.path` へのリンク)
-- 他のゲームへの内部リンク (3本)
-- AdBanner を上下に配置
-
-### Step 7: astro.config.mjs
-
-```ts
-import { defineConfig } from "astro/config";
-import { VitePWA } from "vite-plugin-pwa";
-
-export default defineConfig({
-  output: "static",
-  vite: {
-    plugins: [
-      VitePWA({
-        registerType: "autoUpdate",
-        scope: "/", // 全ゲーム (/games/*/) をカバー
-        manifest: false, // manifest.webmanifest は public/ に手書きで置く
-        workbox: {
-          globPatterns: ["**/*.{html,js,css,png,webp,svg,ico}"],
-          navigateFallback: null, // SSG なので navigateFallback は不要
-          runtimeCaching: [
-            {
-              // 各ゲームのアセットを訪問時にキャッシュ
-              urlPattern: /^\/games\/.+\/assets\//,
-              handler: "CacheFirst",
-              options: {
-                cacheName: "game-assets",
-                expiration: { maxAgeSeconds: 60 * 60 * 24 * 30 },
-              },
-            },
-          ],
-        },
-      }),
-    ],
-  },
-});
-```
-
-### Step 8: public/manifest.webmanifest
+`src/portal/data/games.json`:
 
 ```json
 {
-  "name": "ブラウザゲームポータル",
-  "short_name": "GamePortal",
-  "description": "無料ブラウザゲームが逆次リリースされるゲームプラットフォーム",
-  "start_url": "/",
-  "scope": "/",
-  "display": "standalone",
-  "theme_color": "#1a1a2e",
-  "background_color": "#1a1a2e",
-  "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+  "games": [
     {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "id": "ntiktaktoe",
+      "title": "n目並べ",
+      "description": "盤面サイズやプレイヤー人数を自由に調整できるエクストリームな n目並べ",
+      "path": "/games/ntiktaktoe/",
+      "thumbnail": "/thumbnails/ntiktaktoe.svg",
+      "tags": ["strategy", "multiplayer"],
+      "publishedAt": "2026-02-21",
+      "featured": true
     }
   ]
 }
 ```
 
-### Step 9: 動作確認
+## URL 構造
 
-```bash
-cd portal && npm run build
-# 全体ビルドの担はルートから:
-bash scripts/build-all.sh
+- `https://game.kihamda.net/` → ポータル (SSG 生成)
+- `https://game.kihamda.net/games/[id]/` → 各ゲーム SPA
+
+## PWA 構成
+
+- `public/manifest.webmanifest` — プラットフォーム全体 PWA マニフェスト (scope: `/`)
+- `public/sw.js` — Service Worker (手書き、静的配信)
+- 各ゲームに `vite-plugin-pwa` は **不要**
+
+## キャッシュ設定
+
+`public/_headers` に静的配置:
+
+```
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+/games/*/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+/sw.js
+  Cache-Control: no-store
+/manifest.webmanifest
+  Cache-Control: public, max-age=3600
 ```
 
----
+## ゲーム追加時の更新手順
 
-## ゲーム追加時の更新手順 (以後)
+`src/portal/data/games.json` の `games` 配列に追記するだけ。
+git push → GitHub Actions が `npm run build` → FTPS で XServer Static に自動デプロイ。
 
-`portal/src/data/games.json` の `games` 配列に追記するだけ。
-git push → GitHub Actions (build-and-deploy.yml) が全体を再ビルドして CF Pages に自動デプロイする。
+## ポータル HTML を変更する場合
+
+ポータルのメタタグは `index.html` の `<head>` で直接設定済み。
+
+`plugins/portal-ssg.ts` を編集すると SSG 生成内容を変更できる。
 
 ---
 
 ## 完了後の報告
 
 ```
-✅ portal/ 構築完了
+✅ ポータル更新完了
 
-[人間がやること]
-1. Cloudflare Pages プロジェクトで環境変数を設定:
-   PUBLIC_ADSENSE_PUB_ID=ca-pub-xxxxxxxx
-   (備考: AdSense 审査通過後まで広告は非表示)
-2. iconl-192.png / icon-512.png を portal/public/ に配置
+確認:
+  npm run build && npm run preview
+  # ブラウザで http://localhost:4173/ にアクセス
 ```

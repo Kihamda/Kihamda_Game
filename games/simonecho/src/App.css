@@ -2,25 +2,28 @@
    Simon Echo — App.css
    ================================================ */
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 :root {
   --gap: 6px;
   --board-size: min(72vw, 72vh, 380px);
   --center-size: calc(var(--board-size) * 0.28);
 
-  --green-dark:  #144d14;
-  --green-lit:   #39ff14;
-  --red-dark:    #4d1414;
-  --red-lit:     #ff3939;
-  --blue-dark:   #14144d;
-  --blue-lit:    #4488ff;
+  --green-dark: #144d14;
+  --green-lit: #39ff14;
+  --red-dark: #4d1414;
+  --red-lit: #ff3939;
+  --blue-dark: #14144d;
+  --blue-lit: #4488ff;
   --yellow-dark: #4d4d14;
-  --yellow-lit:  #ffe833;
+  --yellow-lit: #ffe833;
+
+  --purple-dark: #2d1450;
+  --purple-lit: #b44aff;
+  --orange-dark: #4d2e14;
+  --orange-lit: #ff8c39;
+  --pink-dark: #4d1440;
+  --pink-lit: #ff69b4;
+  --cyan-dark: #144d4d;
+  --cyan-lit: #39fff5;
 }
 
 body {
@@ -97,18 +100,23 @@ body {
 
 .ind-watch {
   color: #aaa;
-  animation: pulse 1s ease-in-out infinite;
+  animation: game-pulse 1s ease-in-out infinite;
 }
 
 .ind-turn {
   color: #ffdd44;
   font-weight: 700;
-  animation: pulse 0.6s ease-in-out infinite;
+  animation: game-pulse 0.6s ease-in-out infinite;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
+@keyframes game-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 
 /* ---- Board ---- */
@@ -167,10 +175,22 @@ body {
 }
 
 /* Round the outer corners to create the arc */
-.sector-green  { border-radius: 100% 0 0 0; background: var(--green-dark);  }
-.sector-red    { border-radius: 0 100% 0 0; background: var(--red-dark);    }
-.sector-yellow { border-radius: 0 0 0 100%; background: var(--yellow-dark); }
-.sector-blue   { border-radius: 0 0 100% 0; background: var(--blue-dark);   }
+.sector-green {
+  border-radius: 100% 0 0 0;
+  background: var(--green-dark);
+}
+.sector-red {
+  border-radius: 0 100% 0 0;
+  background: var(--red-dark);
+}
+.sector-yellow {
+  border-radius: 0 0 0 100%;
+  background: var(--yellow-dark);
+}
+.sector-blue {
+  border-radius: 0 0 100% 0;
+  background: var(--blue-dark);
+}
 
 /* --- Active (lit) state --- */
 .sector-green.active {
@@ -199,10 +219,18 @@ body {
 }
 
 /* hover highlight (only when not disabled) */
-.sector-green:not(:disabled):hover  { background: #1c6e1c; }
-.sector-red:not(:disabled):hover    { background: #6e1c1c; }
-.sector-yellow:not(:disabled):hover { background: #6e6e1c; }
-.sector-blue:not(:disabled):hover   { background: #1c1c6e; }
+.sector-green:not(:disabled):hover {
+  background: #1c6e1c;
+}
+.sector-red:not(:disabled):hover {
+  background: #6e1c1c;
+}
+.sector-yellow:not(:disabled):hover {
+  background: #6e6e1c;
+}
+.sector-blue:not(:disabled):hover {
+  background: #1c1c6e;
+}
 
 /* --- Error flash state --- */
 .sector.error {
@@ -210,8 +238,14 @@ body {
 }
 
 @keyframes sector-error-flash {
-  from { background: #330000; filter: none; }
-  to   { background: #ff2222; filter: brightness(1.3); }
+  from {
+    background: #330000;
+    filter: none;
+  }
+  to {
+    background: #ff2222;
+    filter: brightness(1.3);
+  }
 }
 
 /* --- Center circle --- */
@@ -245,7 +279,9 @@ body {
   transition: color 0.15s;
 }
 
-.center-btn:hover { color: #fff; }
+.center-btn:hover {
+  color: #fff;
+}
 
 .center-level {
   font-size: 1.4rem;
@@ -259,19 +295,44 @@ body {
   font-size: 1.6rem;
   font-weight: 700;
   pointer-events: none;
-  animation: float-up 0.8s ease forwards;
+  animation: game-float-up 0.8s ease forwards;
   z-index: 20;
 }
 
-.checkmark-green  { top: 20%; left: 20%; color: var(--green-lit); }
-.checkmark-red    { top: 20%; right: 20%; color: var(--red-lit); }
-.checkmark-yellow { bottom: 20%; left: 20%; color: var(--yellow-lit); }
-.checkmark-blue   { bottom: 20%; right: 20%; color: var(--blue-lit); }
+.checkmark-green {
+  top: 20%;
+  left: 20%;
+  color: var(--green-lit);
+}
+.checkmark-red {
+  top: 20%;
+  right: 20%;
+  color: var(--red-lit);
+}
+.checkmark-yellow {
+  bottom: 20%;
+  left: 20%;
+  color: var(--yellow-lit);
+}
+.checkmark-blue {
+  bottom: 20%;
+  right: 20%;
+  color: var(--blue-lit);
+}
 
-@keyframes float-up {
-  0%   { opacity: 1; transform: translateY(0) scale(1); }
-  60%  { opacity: 1; transform: translateY(-24px) scale(1.2); }
-  100% { opacity: 0; transform: translateY(-40px) scale(0.9); }
+@keyframes game-float-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-24px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.9);
+  }
 }
 
 /* ---- Level Clear Popup ---- */
@@ -295,29 +356,48 @@ body {
 }
 
 @keyframes ring-expand {
-  0%   { transform: scale(0.6); opacity: 1; }
-  100% { transform: scale(1.3); opacity: 0; }
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
 }
 
 .level-clear-text {
   font-size: 2.2rem;
   font-weight: 900;
   color: #ffe833;
-  text-shadow: 0 0 20px #ffe833, 0 0 40px rgba(255, 232, 51, 0.6);
-  animation: pop-in 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
-             fade-out 0.4s ease 0.7s forwards;
+  text-shadow:
+    0 0 20px #ffe833,
+    0 0 40px rgba(255, 232, 51, 0.6);
+  animation:
+    pop-in 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+    fade-out 0.4s ease 0.7s forwards;
   transform-origin: center;
   z-index: 1;
 }
 
 @keyframes pop-in {
-  0%   { transform: scale(0.4); opacity: 0; }
-  100% { transform: scale(1);   opacity: 1; }
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes fade-out {
-  0%   { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* ---- Game Over Banner ---- */
@@ -347,23 +427,259 @@ body {
   font-size: 1rem;
   font-weight: 700;
   color: #ffe833;
-  animation: pulse 0.8s ease-in-out infinite;
+  animation: game-pulse 0.8s ease-in-out infinite;
 }
 
 /* ---- Screen shake ---- */
 .shake {
-  animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  animation: game-shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97);
 }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%       { transform: translateX(-10px) rotate(-1deg); }
-  20%       { transform: translateX(10px) rotate(1deg); }
-  30%       { transform: translateX(-10px) rotate(-1deg); }
-  40%       { transform: translateX(10px) rotate(1deg); }
-  50%       { transform: translateX(-6px); }
-  60%       { transform: translateX(6px); }
-  70%       { transform: translateX(-3px); }
-  80%       { transform: translateX(3px); }
-  90%       { transform: translateX(-1px); }
+@keyframes game-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(-10px) rotate(-1deg);
+  }
+  20% {
+    transform: translateX(10px) rotate(1deg);
+  }
+  30% {
+    transform: translateX(-10px) rotate(-1deg);
+  }
+  40% {
+    transform: translateX(10px) rotate(1deg);
+  }
+  50% {
+    transform: translateX(-6px);
+  }
+  60% {
+    transform: translateX(6px);
+  }
+  70% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+  90% {
+    transform: translateX(-1px);
+  }
+}
+
+/* ================================================
+   Grid Layout (6/8 colors)
+   ================================================ */
+
+.board-wrapper-grid {
+  width: 100%;
+  height: auto;
+}
+
+.board-grid {
+  display: grid;
+  gap: var(--gap);
+  border-radius: 16px;
+  background: #111;
+  padding: var(--gap);
+  position: relative;
+  overflow: hidden;
+}
+
+.board-grid-6 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.board-grid-8 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.grid-sector {
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition:
+    filter 120ms ease,
+    transform 120ms ease;
+  aspect-ratio: 1;
+}
+
+.grid-sector:disabled {
+  cursor: default;
+}
+
+/* Grid sector backgrounds */
+.grid-sector.sector-green  { background: var(--green-dark); }
+.grid-sector.sector-red    { background: var(--red-dark); }
+.grid-sector.sector-yellow { background: var(--yellow-dark); }
+.grid-sector.sector-blue   { background: var(--blue-dark); }
+.grid-sector.sector-purple { background: var(--purple-dark); }
+.grid-sector.sector-orange { background: var(--orange-dark); }
+.grid-sector.sector-pink   { background: var(--pink-dark); }
+.grid-sector.sector-cyan   { background: var(--cyan-dark); }
+
+/* Grid hover */
+.grid-sector:not(:disabled):hover {
+  filter: brightness(1.4);
+}
+
+/* Grid error */
+.grid-sector.error {
+  animation: sector-error-flash 0.15s ease 3 alternate;
+}
+
+/* ---- New color active states ---- */
+.sector-purple.active {
+  background: var(--purple-lit);
+  filter: brightness(1.4) drop-shadow(0 0 16px var(--purple-lit));
+  transform: scale(1.04);
+}
+
+.sector-orange.active {
+  background: var(--orange-lit);
+  filter: brightness(1.4) drop-shadow(0 0 16px var(--orange-lit));
+  transform: scale(1.04);
+}
+
+.sector-pink.active {
+  background: var(--pink-lit);
+  filter: brightness(1.4) drop-shadow(0 0 16px var(--pink-lit));
+  transform: scale(1.04);
+}
+
+.sector-cyan.active {
+  background: var(--cyan-lit);
+  filter: brightness(1.4) drop-shadow(0 0 16px var(--cyan-lit));
+  transform: scale(1.04);
+}
+
+/* ---- Grid Center Overlay ---- */
+.grid-center-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(17, 17, 17, 0.85);
+  border-radius: 50%;
+  width: var(--center-size);
+  height: var(--center-size);
+  border: 2px solid #222;
+  pointer-events: none;
+}
+
+.grid-center-overlay .center-btn {
+  pointer-events: auto;
+}
+
+/* ---- Checkmarks: new colors ---- */
+.checkmark-purple {
+  top: 40%;
+  left: 10%;
+  color: var(--purple-lit);
+}
+
+.checkmark-orange {
+  top: 40%;
+  right: 10%;
+  color: var(--orange-lit);
+}
+
+.checkmark-pink {
+  bottom: 40%;
+  left: 10%;
+  color: var(--pink-lit);
+}
+
+.checkmark-cyan {
+  bottom: 40%;
+  right: 10%;
+  color: var(--cyan-lit);
+}
+
+/* 6-color checkmark positions */
+.board-wrapper-6 .checkmark-green  { top: 15%; left: 13%;  right: auto; bottom: auto; }
+.board-wrapper-6 .checkmark-red    { top: 15%; left: 45%;  right: auto; bottom: auto; }
+.board-wrapper-6 .checkmark-yellow { top: 15%; right: 13%; left: auto;  bottom: auto; }
+.board-wrapper-6 .checkmark-blue   { bottom: 15%; left: 13%;  right: auto; top: auto; }
+.board-wrapper-6 .checkmark-purple { bottom: 15%; left: 45%;  right: auto; top: auto; }
+.board-wrapper-6 .checkmark-orange { bottom: 15%; right: 13%; left: auto;  top: auto; }
+
+/* 8-color checkmark positions */
+.board-wrapper-8 .checkmark-green  { top: 15%; left: 8%;  right: auto; bottom: auto; }
+.board-wrapper-8 .checkmark-red    { top: 15%; left: 32%; right: auto; bottom: auto; }
+.board-wrapper-8 .checkmark-yellow { top: 15%; right: 32%; left: auto; bottom: auto; }
+.board-wrapper-8 .checkmark-blue   { top: 15%; right: 8%;  left: auto; bottom: auto; }
+.board-wrapper-8 .checkmark-purple { bottom: 15%; left: 8%;  right: auto; top: auto; }
+.board-wrapper-8 .checkmark-orange { bottom: 15%; left: 32%; right: auto; top: auto; }
+.board-wrapper-8 .checkmark-pink   { bottom: 15%; right: 32%; left: auto; top: auto; }
+.board-wrapper-8 .checkmark-cyan   { bottom: 15%; right: 8%;  left: auto; top: auto; }
+
+/* ================================================
+   Settings Panel
+   ================================================ */
+
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 300px;
+  padding: 12px 0;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.setting-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: #666;
+  text-transform: uppercase;
+  min-width: 56px;
+}
+
+.setting-options {
+  display: flex;
+  gap: 4px;
+}
+
+.setting-btn {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  color: #888;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.setting-btn:hover {
+  border-color: #555;
+  color: #ccc;
+}
+
+.setting-btn.selected {
+  background: #2a2a1a;
+  border-color: #ffe833;
+  color: #ffe833;
+}
+
+/* ---- Miss Counter ---- */
+.miss-counter {
+  font-size: 0.85em;
+  color: #ff8844;
+  font-weight: 400;
 }

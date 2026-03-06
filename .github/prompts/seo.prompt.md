@@ -1,83 +1,66 @@
 ---
-description: "SEO 対策・OGP タグ・sitemap.xml を追加してWeb検索からの流入を増やす。"
+description: "SEO 対策・OGP タグを追加してWeb検索からの流入を増やす。sitemap は SSG プラグインが自動生成。"
 ---
 
 # SEO / OGP 対応タスク
 
 このゲームが Google / Twitter / LINE などで発見・シェアされやすくなるよう対応してください。
 
-## Step 1: `index.html` メタタグ追加
+## Step 1: `games/[game-id]/index.html` メタタグ追加
 
 以下を `<head>` 内に追加:
 
 ```html
 <!-- 基本 SEO -->
-<meta
-  name="description"
-  content="2〜10人対応！自由なボードサイズで遊べるn目並べ。ブラウザで即プレイ"
-/>
-<meta
-  name="keywords"
-  content="n目並べ, 五目並べ, 三目並べ, tic-tac-toe, ボードゲーム, ブラウザゲーム"
-/>
-<link rel="canonical" href="https://YOUR_DOMAIN/" />
+<meta name="description" content="[ゲーム説明 120文字以内]" />
+<meta name="keywords" content="[キーワード], ブラウザゲーム, 無料" />
+<link rel="canonical" href="https://game.kihamda.net/games/[game-id]/" />
 
 <!-- OGP (Facebook / LINE) -->
-<meta
-  property="og:title"
-  content="n目並べ — 自由なルールで遊べる多人数対応ボードゲーム"
-/>
-<meta
-  property="og:description"
-  content="ボードサイズ・プレイヤー数・揃える数を自由に設定！ブラウザで即プレイ"
-/>
+<meta property="og:title" content="[ゲーム名] - 無料ブラウザゲーム" />
+<meta property="og:description" content="[ゲーム説明]" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://YOUR_DOMAIN/" />
-<meta property="og:image" content="https://YOUR_DOMAIN/og-image.png" />
+<meta property="og:url" content="https://game.kihamda.net/games/[game-id]/" />
+<meta
+  property="og:image"
+  content="https://game.kihamda.net/thumbnails/[game-id].svg"
+/>
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="[ゲーム名] - 無料ブラウザゲーム" />
 <meta
-  name="twitter:title"
-  content="n目並べ — 自由なルールで遊べる多人数対応ボードゲーム"
+  name="twitter:image"
+  content="https://game.kihamda.net/thumbnails/[game-id].svg"
 />
-<meta name="twitter:image" content="https://YOUR_DOMAIN/og-image.png" />
 ```
 
-## Step 2: `public/robots.txt` 作成
+## Step 2: sitemap.xml (自動生成)
+
+`plugins/portal-ssg.ts` がビルド時に `dist/sitemap.xml` を自動生成するのではなく、`scripts/prebuild.mjs` が `public/sitemap.xml` を生成する。
+`src/portal/data/games.json` の全ゲームの URL が含まれる。
+手動での sitemap 作成は不要。
+
+## Step 3: robots.txt
+
+`public/robots.txt` に配置 (既にあればそのまま):
 
 ```
 User-agent: *
 Allow: /
-Sitemap: https://YOUR_DOMAIN/sitemap.xml
+Sitemap: https://game.kihamda.net/sitemap.xml
 ```
 
-## Step 3: `public/sitemap.xml` 作成
+## Step 4: OGP 画像
 
-シングルページなのでシンプルに:
+`public/thumbnails/[game-id].svg` を作成する。
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://YOUR_DOMAIN/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-  </url>
-</urlset>
-```
+## ポータル側の SEO
 
-## Step 4: OGP 画像生成
+ポータルの meta/OGP/canonical は `plugins/portal-ssg.ts` が `src/portal/App.tsx` を SSR して生成。ポータルのメタタグは `index.html` の `<head>` で直接設定済み。
+変更する場合は `index.html` の `<head>` またはプラグインを編集する。
 
-`public/og-image.png` (1200x630px) を作成する。内容は:
+## 実際のドメイン
 
-- 背景: グラデーション `#e8eaf6 → #c5cae9`
-- タイトル: 「n目並べ」大きめフォント
-- キャッチコピー: 「2〜10人対応・自由なルール設定」
-- ゲームボードの簡易イメージ
-
-## 実際のドメインに差し替える箇所
-
-- `YOUR_DOMAIN` を公開 URL に変更
-- GitHub Pages なら `https://username.github.io/リポジトリ名`
-- Vercel なら自動割り当てドメイン
+- ポータル: `https://game.kihamda.net/`
+- 各ゲーム: `https://game.kihamda.net/games/[game-id]/`
