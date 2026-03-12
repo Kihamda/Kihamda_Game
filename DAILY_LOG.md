@@ -5,6 +5,49 @@
 
 ---
 
+## 2026-03-12
+
+### 作業ログ
+
+- [完了] AdSense不合格原因の調査 → 担当: consultant → kihamda.net + game.kihamda.net を網羅的に巡回
+- [完了] public/robots.txt 作成 → 担当: platform-architect → 結果: 成功
+- [完了] ポータルにフッター追加 → 担当: gamedev → 結果: 成功
+- [完了] 全15ゲームにフッター追加 (GameShell.tsx) → 担当: gamedev → 結果: 成功
+- [完了] 全15ゲームのindex.htmlにnoscriptテキスト追加 → 担当: gamedev → 結果: 成功
+
+### AdSense不合格の分析結果
+
+kihamda.net (WordPress) はプライバシーポリシー/About/Contact/robots.txt/sitemapが揃っており最低条件はクリア。
+game.kihamda.net (このリポ) が以下の理由でドメイン全体の評価を下げていた:
+
+- robots.txt が 404
+- プライバシーポリシー/連絡先/運営者情報への導線がゼロ
+- ゲームページがSPAで静的テキストコンテンツが皆無
+- フッターが存在しない
+
+### 修正内容
+
+- **public/robots.txt**: 全クローラー許可 + sitemap指定
+- **src/portal/App.tsx + App.css**: フッター追加 (プライバシーポリシー/お問い合わせ/運営者情報リンク→kihamda.net)
+- **src/shared/components/GameShell.tsx**: 全ゲーム共通フッター追加 (同上リンク)
+- **全15ゲームindex.html**: `<noscript>` タグでゲーム説明+ポータルリンク追加
+
+### 検証結果
+
+- TSC: エラー0 / ESLint: エラー0 / Vite build: 成功 (Portal SSG含む)
+- dist/index.html にフッターHTML確認
+- dist/robots.txt 出力確認
+- dist/games/\*/index.html にnoscript確認
+
+### 人間の宿題 (AdSense再申請前にやること)
+
+- kihamda.net の記事を最低あと8-10本追加 (現在12本、20本以上が目安)
+- kihamda.net の「成果物」ページの記述を更新 (Astro→Vite)
+- 記事の更新頻度を上げる (週1本ペース推奨)
+- main にマージ → デプロイ → 2-3日待ってから再申請
+
+---
+
 ## 2026-03-06
 
 ### 作業ログ

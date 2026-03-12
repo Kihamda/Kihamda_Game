@@ -87,76 +87,104 @@ function GameCard({ game, badge }: { game: Game; badge?: string }) {
 
 export default function App() {
   return (
-    <main>
-      <section className="hero" aria-labelledby="top-title">
-        <p className="eyebrow">今日の1本が見つかるゲームポータル</p>
-        <h1 id="top-title">遊ぶまで3秒 新着も定番もここで完結</h1>
-        <p className="lead">
-          反射神経で燃える日も じっくり頭を使いたい日もある
-          その気分に合わせてすぐ遊べるようにまとめた
-        </p>
-        <div className="hero-cta">
-          <a href="#new">新着から選ぶ</a>
-          <a href="#recommended">おすすめを見る</a>
+    <>
+      <main>
+        <section className="hero" aria-labelledby="top-title">
+          <p className="eyebrow">今日の1本が見つかるゲームポータル</p>
+          <h1 id="top-title">遊ぶまで3秒 新着も定番もここで完結</h1>
+          <p className="lead">
+            反射神経で燃える日も じっくり頭を使いたい日もある
+            その気分に合わせてすぐ遊べるようにまとめた
+          </p>
+          <div className="hero-cta">
+            <a href="#new">新着から選ぶ</a>
+            <a href="#recommended">おすすめを見る</a>
+            <a
+              href={randomGamePath}
+              data-random-paths={JSON.stringify(gamePaths)}
+            >
+              ランダムで1本
+            </a>
+          </div>
+          <div className="hero-stats" aria-label="ゲーム数サマリー">
+            <p>
+              <strong>{games.length}</strong> タイトル公開中
+            </p>
+            <p>
+              <strong>{newestGames.length}</strong> 件の新着
+            </p>
+            <p>
+              <strong>{featuredGames.length}</strong> 件の注目作
+            </p>
+          </div>
+        </section>
+
+        <section id="new" className="section">
+          <div className="section-head">
+            <h2>新着ゲーム</h2>
+            <p>追加されたばかりのゲーム まずはここから触るのが最短ルート</p>
+          </div>
+          <div className="grid">
+            {newestGames.map((g) => (
+              <GameCard key={g.id} game={g} badge="NEW" />
+            ))}
+          </div>
+        </section>
+
+        <section id="recommended" className="section">
+          <div className="section-head">
+            <h2>おすすめピック</h2>
+            <p>初見でも遊びやすいものを中心に 厳選して並べた</p>
+          </div>
+          <div className="grid">
+            {recommendedGames.map((g) => (
+              <GameCard
+                key={g.id}
+                game={g}
+                badge={g.featured ? "注目" : "PICK"}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section id="all" className="section">
+          <div className="section-head">
+            <h2>全タイトル</h2>
+            <p>迷ったら詳細を開いてルール確認 そのままワンタップでプレイへ</p>
+          </div>
+          <div className="grid">
+            {allGames.map((g) => (
+              <GameCard key={g.id} game={g} />
+            ))}
+          </div>
+        </section>
+      </main>
+      <footer className="portal-footer">
+        <div className="footer-links">
           <a
-            href={randomGamePath}
-            data-random-paths={JSON.stringify(gamePaths)}
+            href="https://kihamda.net/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            ランダムで1本
+            プライバシーポリシー
+          </a>
+          <a
+            href="https://kihamda.net/form"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            お問い合わせ
+          </a>
+          <a
+            href="https://kihamda.net/about"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            運営者情報
           </a>
         </div>
-        <div className="hero-stats" aria-label="ゲーム数サマリー">
-          <p>
-            <strong>{games.length}</strong> タイトル公開中
-          </p>
-          <p>
-            <strong>{newestGames.length}</strong> 件の新着
-          </p>
-          <p>
-            <strong>{featuredGames.length}</strong> 件の注目作
-          </p>
-        </div>
-      </section>
-
-      <section id="new" className="section">
-        <div className="section-head">
-          <h2>新着ゲーム</h2>
-          <p>追加されたばかりのゲーム まずはここから触るのが最短ルート</p>
-        </div>
-        <div className="grid">
-          {newestGames.map((g) => (
-            <GameCard key={g.id} game={g} badge="NEW" />
-          ))}
-        </div>
-      </section>
-
-      <section id="recommended" className="section">
-        <div className="section-head">
-          <h2>おすすめピック</h2>
-          <p>初見でも遊びやすいものを中心に 厳選して並べた</p>
-        </div>
-        <div className="grid">
-          {recommendedGames.map((g) => (
-            <GameCard
-              key={g.id}
-              game={g}
-              badge={g.featured ? "注目" : "PICK"}
-            />
-          ))}
-        </div>
-      </section>
-
-      <section id="all" className="section">
-        <div className="section-head">
-          <h2>全タイトル</h2>
-          <p>迷ったら詳細を開いてルール確認 そのままワンタップでプレイへ</p>
-        </div>
-        <div className="grid">
-          {allGames.map((g) => (
-            <GameCard key={g.id} game={g} />
-          ))}
-        </div>
-      </section>
-    </main>
+        <p className="footer-copy">&copy; 2024-2026 Kihamda.NET</p>
+      </footer>
+    </>
   );
 }

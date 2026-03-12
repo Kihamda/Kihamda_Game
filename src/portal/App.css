@@ -251,3 +251,35 @@ a {
     min-height: 100%;
   }
 }
+
+.portal-footer {
+  max-width: 1080px;
+  margin: 40px auto 0;
+  padding: 24px;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: #475569;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-copy {
+  margin: 0;
+  font-size: 12px;
+  color: #94a3b8;
+}

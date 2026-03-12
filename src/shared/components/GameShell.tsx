@@ -46,6 +46,64 @@ export function GameShell({
       )}
       {children}
       {gameId && <GameRecommendations currentGameId={gameId} />}
+      <footer
+        style={{
+          borderTop: "1px solid var(--border, #e2e8f0)",
+          padding: "20px 16px",
+          marginTop: 32,
+          textAlign: "center",
+          fontSize: 12,
+          color: "var(--text-dim, #94a3b8)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 20,
+            flexWrap: "wrap",
+            marginBottom: 8,
+          }}
+        >
+          <a
+            href="https://kihamda.net/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "var(--text-dim, #64748b)",
+              textDecoration: "none",
+              fontSize: 13,
+            }}
+          >
+            プライバシーポリシー
+          </a>
+          <a
+            href="https://kihamda.net/form"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "var(--text-dim, #64748b)",
+              textDecoration: "none",
+              fontSize: 13,
+            }}
+          >
+            お問い合わせ
+          </a>
+          <a
+            href="https://kihamda.net/about"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "var(--text-dim, #64748b)",
+              textDecoration: "none",
+              fontSize: 13,
+            }}
+          >
+            運営者情報
+          </a>
+        </div>
+        <p style={{ margin: 0 }}>&copy; 2024-2026 Kihamda.NET</p>
+      </footer>
     </div>
   );
 }
