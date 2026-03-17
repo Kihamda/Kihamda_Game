@@ -22,7 +22,7 @@ tools:
 ## 行動原則
 
 1. `codebase` で既存コードを把握してから実装する
-2. 実装後は必ずルートでコマンドを実行: `runCommands` で `npm run lint && npm run build` を通す
+2. 実装後は必ずルートでコマンドを実行し `npm run lint && npm run build` を通す
 3. `problems` で型エラー・lint エラーを確認し、すべて修正してから終了する
 4. 完了報告は「何を変更したか」「コマンド結果」のみ。余計な説明はしない
 
@@ -45,13 +45,13 @@ tools:
 ```
 games/
   _template/           # 新ゲームの雛形 (コピー元)
-  [game-id]/           # 14本のReactゲーム
+  [game-id]/           # ゲーム実装本体 (src/App.tsx)
 src/
+  App.tsx              # ルートSPAルーター (/ と /games/:id)
+  games/registry.ts    # import.meta.glob によるゲーム自動登録
   shared/              # 全ゲーム共通 (GameShell, ParticleLayer, ScorePopup, useAudio, useParticles)
   portal/data/games.json  # ゲームメタデータ一元管理
-plugins/
-  portal-ssg.ts        # Viteプラグイン: ポータルHTML/sitemap/headers/redirects生成
-vite.config.ts         # マルチエントリ (ルート唯一)
+vite.config.ts         # SPAビルド設定 (ルート唯一)
 package.json           # 単一 (ルートのみ)
 ```
 
@@ -69,11 +69,12 @@ npm run lint    # eslint . (ルートから一括)
 指示: 「○○ゲームを作って」と言われたら:
 
 1. `games/_template/` を `games/[game-id]/` にコピー
-2. `lib/types.ts` → `lib/constants.ts` → `lib/[logic].ts` → `App.tsx` → `components/` の順で実装
-3. 共通ライブラリは `import { GameShell, useAudio } from "../../../src/shared"` でインポート
-4. `npm run lint && npm run build` を実行 (ルートから)
-5. `src/portal/data/games.json` に新エントリを追加
-6. 完了を報告
+2. `games/[game-id]/src/App.tsx` を実装し、必要なら `App.css` と補助コンポーネントを追加
+3. 共通ライブラリは `@shared` エイリアスを優先して再利用する
+4. `src/portal/data/games.json` に新エントリを追加（`id` と `path: "/games/[game-id]/"` を一致）
+5. `public/thumbnails/[game-id].svg` を追加し、`/games/[game-id]` で表示確認
+6. `npm run lint && npm run build` を実行 (ルートから)
+7. 完了を報告
 
 ## ゲームフェーズフロー
 
@@ -91,5 +92,4 @@ npm run lint    # eslint . (ルートから一括)
 - 新ゲーム詳細手順: `.github/prompts/new-game-full.prompt.md`
 - PWA実装: `.github/prompts/pwa.prompt.md`
 - SEO実装: `.github/prompts/seo.prompt.md`
-- SSGプラグイン: `plugins/portal-ssg.ts`
 - ゲームメタデータ: `src/portal/data/games.json`

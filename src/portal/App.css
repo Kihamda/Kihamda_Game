@@ -1,4 +1,4 @@
-:root {
+.portal-page {
   color-scheme: light;
   font-family:
     Inter,
@@ -6,25 +6,22 @@
     -apple-system,
     Segoe UI,
     sans-serif;
-}
-
-body {
-  margin: 0;
+  min-height: 100vh;
   background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%);
   color: #0f172a;
 }
 
-main {
+.portal-main {
   max-width: 1080px;
   margin: 0 auto;
   padding: 24px;
 }
 
-a {
+.portal-page a {
   color: inherit;
 }
 
-.hero {
+.portal-page .hero {
   display: grid;
   gap: 14px;
   margin-bottom: 24px;
@@ -34,32 +31,32 @@ a {
   color: #f8fafc;
 }
 
-.eyebrow {
+.portal-page .eyebrow {
   margin: 0;
   font-size: 13px;
   font-weight: 700;
   color: #bfdbfe;
 }
 
-.hero h1 {
+.portal-page .hero h1 {
   margin: 0;
   font-size: clamp(26px, 5.5vw, 40px);
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
-.lead {
+.portal-page .lead {
   margin: 0;
   color: #cbd5e1;
   max-width: 60ch;
 }
 
-.hero-cta {
+.portal-page .hero-cta {
   display: grid;
   gap: 10px;
 }
 
-.hero-cta a {
+.portal-page .hero-cta a {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -72,18 +69,18 @@ a {
   color: #0f172a;
 }
 
-.hero-cta a:last-child {
+.portal-page .hero-cta a:last-child {
   background: #22d3ee;
   color: #0f172a;
 }
 
-.hero-stats {
+.portal-page .hero-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
 
-.hero-stats p {
+.portal-page .hero-stats p {
   margin: 0;
   padding: 10px;
   border-radius: 10px;
@@ -92,34 +89,34 @@ a {
   color: #cbd5e1;
 }
 
-.hero-stats strong {
+.portal-page .hero-stats strong {
   display: block;
   font-size: 18px;
   color: #f8fafc;
 }
 
-.section {
+.portal-page .section {
   display: grid;
   gap: 12px;
   margin-bottom: 26px;
 }
 
-.section-head h2 {
+.portal-page .section-head h2 {
   margin: 0;
   font-size: 22px;
 }
 
-.section-head p {
+.portal-page .section-head p {
   margin: 6px 0 0;
   color: #475569;
 }
 
-.grid {
+.portal-page .grid {
   display: grid;
   gap: 16px;
 }
 
-.card {
+.portal-page .card {
   display: grid;
   gap: 0;
   border-radius: 16px;
@@ -129,19 +126,19 @@ a {
   position: relative;
 }
 
-.card-cover-link {
+.portal-page .card-cover-link {
   position: absolute;
   inset: 0;
   border-radius: 16px;
   z-index: 0;
 }
 
-.thumb-link {
+.portal-page .thumb-link {
   display: block;
   text-decoration: none;
 }
 
-.card img {
+.portal-page .card img {
   width: 100%;
   height: auto;
   object-fit: cover;
@@ -150,23 +147,23 @@ a {
   display: block;
 }
 
-.content {
+.portal-page .content {
   padding: 16px;
 }
 
-.topline {
+.portal-page .topline {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 8px;
 }
 
-.content h2 {
+.portal-page .content h2 {
   margin: 0;
   font-size: clamp(20px, 4vw, 24px);
 }
 
-.badge {
+.portal-page .badge {
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
@@ -177,19 +174,19 @@ a {
   color: #1d4ed8;
 }
 
-.content p {
+.portal-page .content p {
   margin: 0 0 10px;
   color: #334155;
 }
 
-.tags {
+.portal-page .tags {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   margin-bottom: 14px;
 }
 
-.tags span {
+.portal-page .tags span {
   font-size: 12px;
   padding: 3px 8px;
   border-radius: 999px;
@@ -197,7 +194,7 @@ a {
   color: #3730a3;
 }
 
-.actions {
+.portal-page .actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -205,7 +202,7 @@ a {
   z-index: 1;
 }
 
-.actions a {
+.portal-page .actions a {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -219,40 +216,40 @@ a {
   background: #f8fafc;
 }
 
-.actions .play {
+.portal-page .actions .play {
   background: #1d4ed8;
   color: #fff;
   border-color: #1d4ed8;
 }
 
 @media (min-width: 760px) {
-  .hero {
+  .portal-page .hero {
     padding: 28px;
   }
 
-  .hero-cta {
+  .portal-page .hero-cta {
     display: flex;
     flex-wrap: wrap;
   }
 
-  .hero-cta a {
+  .portal-page .hero-cta a {
     justify-content: flex-start;
   }
 }
 
 @media (min-width: 720px) {
-  .card {
+  .portal-page .card {
     grid-template-columns: 200px 1fr;
     gap: 16px;
   }
 
-  .card img {
+  .portal-page .card img {
     height: 100%;
     min-height: 100%;
   }
 }
 
-.portal-footer {
+.portal-page .portal-footer {
   max-width: 1080px;
   margin: 40px auto 0;
   padding: 24px;
@@ -260,7 +257,7 @@ a {
   text-align: center;
 }
 
-.footer-links {
+.portal-page .footer-links {
   display: flex;
   justify-content: center;
   gap: 24px;
@@ -268,17 +265,17 @@ a {
   margin-bottom: 12px;
 }
 
-.footer-links a {
+.portal-page .footer-links a {
   font-size: 13px;
   color: #475569;
   text-decoration: none;
 }
 
-.footer-links a:hover {
+.portal-page .footer-links a:hover {
   text-decoration: underline;
 }
 
-.footer-copy {
+.portal-page .footer-copy {
   margin: 0;
   font-size: 12px;
   color: #94a3b8;

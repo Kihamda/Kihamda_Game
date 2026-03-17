@@ -1,217 +1,142 @@
-import { useEffect, useMemo, useState } from "react";
-import "./App.css";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import PortalApp from "./portal/App";
+import "./app/AppShell.css";
+import { getGameById } from "./games/metadata";
+import { gameComponents, hasGameComponent } from "./games/registry";
 
-import StartScreen from "./components/StartScreen";
-import GameView from "./components/GameView";
-import ResultScreen from "./components/ResultScreen";
-import { cloneGameSettings } from "./lib/settings";
-import {
-  loadGameState,
-  saveGameState,
-  clearSavedGame,
-  loadDevicePreferences,
-  saveDevicePreferences,
-} from "./lib/storage";
-import { createEmptyBoard, cloneBoard, checkWin } from "./lib/board";
-import {
-  addPlayerToSettings,
-  removePlayerFromSettings,
-  updatePlayerName,
-  updatePlayerMark,
-  updatePlayerColor,
-} from "./lib/players";
-import type {
-  Board,
-  GameSettings,
-  PendingMove,
-  PersistedState,
-} from "./lib/types";
+type Route =
+  | { type: "home" }
+  | { type: "game"; gameId: string }
+  | { type: "notFound" };
+
+function normalizePathname(pathname: string): string {
+  const withSlash = pathname.startsWith("/") ? pathname : `/${pathname}`;
+  const normalizedIndex = withSlash.replace(/\/index\.html$/, "/");
+
+  if (normalizedIndex !== "/" && normalizedIndex.endsWith("/")) {
+    return normalizedIndex.slice(0, -1);
+  }
+
+  return normalizedIndex;
+}
+
+function parseRoute(pathname: string): Route {
+  const normalized = normalizePathname(pathname);
+  if (normalized === "/") return { type: "home" };
+
+  const gameMatch = normalized.match(/^\/games\/([^/]+)$/);
+  if (gameMatch?.[1]) {
+    try {
+      return { type: "game", gameId: decodeURIComponent(gameMatch[1]) };
+    } catch {
+      return { type: "notFound" };
+    }
+  }
+
+  return { type: "notFound" };
+}
 
 function App() {
-  const initialSavedState = useMemo(() => loadGameState(), []);
-  const initialDevicePrefs = useMemo(() => loadDevicePreferences(), []);
-
-  const [appState, setAppState] = useState<"before" | "in_progress" | "after">(
-    initialSavedState?.appState || "before",
-  );
-  const [currentGameSettings, setCurrentGameSettings] = useState<GameSettings>(
-    initialSavedState?.gameSettings
-      ? cloneGameSettings(initialSavedState.gameSettings)
-      : cloneGameSettings(initialDevicePrefs.lastGameSettings),
-  );
-  const [newGameSettings, setNewGameSettings] = useState<GameSettings>(
-    cloneGameSettings(initialDevicePrefs.lastGameSettings),
-  );
-  const [board, setBoard] = useState<Board>(initialSavedState?.board || []);
-  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(
-    initialSavedState?.currentPlayerIndex || 0,
-  );
-  const [winner, setWinner] = useState<string | null>(
-    initialSavedState?.winner || null,
-  );
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [nextPlayerIndex, setNextPlayerIndex] = useState<number | null>(null);
-  const [pendingMove, setPendingMove] = useState<PendingMove | null>(null);
-  const [savedSnapshot, setSavedSnapshot] =
-    useState<Partial<PersistedState> | null>(initialSavedState);
-  const [confirmationMode, setConfirmationMode] = useState(
-    initialDevicePrefs.confirmationMode,
-  );
+  const [pathname, setPathname] = useState(() => window.location.pathname);
 
   useEffect(() => {
-    if (appState === "before") return;
-    const snapshot: PersistedState = {
-      appState,
-      gameSettings: currentGameSettings,
-      board,
-      currentPlayerIndex,
-      winner,
+    const onPopState = () => {
+      setPathname(window.location.pathname);
     };
-    saveGameState(snapshot);
-  }, [appState, currentGameSettings, board, currentPlayerIndex, winner]);
+
+    const onDocumentClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+        return;
+
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const anchor = target.closest("a[href]");
+      if (!(anchor instanceof HTMLAnchorElement)) return;
+      if (anchor.target || anchor.hasAttribute("download")) return;
+
+      const url = new URL(anchor.href, window.location.origin);
+      if (url.origin !== window.location.origin) return;
+      if (url.pathname === window.location.pathname && url.hash) return;
+
+      const nextRoute = parseRoute(url.pathname);
+      if (nextRoute.type === "notFound") return;
+
+      event.preventDefault();
+      window.history.pushState(
+        {},
+        "",
+        `${url.pathname}${url.search}${url.hash}`,
+      );
+      setPathname(url.pathname);
+    };
+
+    window.addEventListener("popstate", onPopState);
+    document.addEventListener("click", onDocumentClick);
+    return () => {
+      window.removeEventListener("popstate", onPopState);
+      document.removeEventListener("click", onDocumentClick);
+    };
+  }, []);
+
+  const route = useMemo(() => parseRoute(pathname), [pathname]);
 
   useEffect(() => {
-    saveDevicePreferences({
-      confirmationMode,
-      lastGameSettings: newGameSettings,
-    });
-  }, [confirmationMode, newGameSettings]);
+    const isGameRoute = route.type === "game";
+    document.body.classList.toggle("is-game-route", isGameRoute);
 
-  const initializeGame = () => {
-    const clonedSettings = cloneGameSettings(newGameSettings);
-    setCurrentGameSettings(clonedSettings);
-    setBoard(createEmptyBoard(clonedSettings));
-    setCurrentPlayerIndex(0);
-    setWinner(null);
-    setPendingMove(null);
-    setAppState("in_progress");
-  };
+    return () => {
+      document.body.classList.remove("is-game-route");
+    };
+  }, [route.type]);
 
-  const handleCellClick = (row: number, col: number) => {
-    if (board[row]?.[col] !== null || winner !== null || isTransitioning)
-      return;
+  if (route.type === "home") {
+    return <PortalApp />;
+  }
 
-    if (confirmationMode) {
-      setPendingMove({ row, col });
-    } else {
-      confirmMove(row, col);
+  if (route.type === "game") {
+    const game = getGameById(route.gameId);
+    if (!game || !hasGameComponent(route.gameId)) {
+      return <NotFound />;
     }
-  };
 
-  const confirmMove = (row: number, col: number) => {
-    const currentPlayer = currentGameSettings.players[currentPlayerIndex];
-    if (!currentPlayer) return;
-    const newBoard = cloneBoard(board);
-    newBoard[row][col] = currentPlayer.mark;
-    setBoard(newBoard);
-    setPendingMove(null);
-
-    if (checkWin(newBoard, row, col, currentPlayer.mark, currentGameSettings)) {
-      setTimeout(() => {
-        setWinner(currentPlayer.name);
-        setAppState("after");
-      }, 300);
-    } else {
-      const nextIndex =
-        (currentPlayerIndex + 1) % currentGameSettings.players.length;
-      setNextPlayerIndex(nextIndex);
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setCurrentPlayerIndex(nextIndex);
-        setNextPlayerIndex(null);
-        setIsTransitioning(false);
-      }, 1500);
+    const GameComponent = gameComponents[route.gameId];
+    if (!GameComponent) {
+      return <NotFound />;
     }
-  };
 
-  const cancelMove = () => {
-    setPendingMove(null);
-  };
+    return (
+      <Suspense fallback={<Loading gameTitle={game.title} />}>
+        <GameComponent />
+      </Suspense>
+    );
+  }
 
-  const handleAddPlayer = () => {
-    setNewGameSettings((prev) => addPlayerToSettings(prev));
-  };
+  return <NotFound />;
+}
 
-  const handleRemovePlayer = (index: number) => {
-    setNewGameSettings((prev) => removePlayerFromSettings(prev, index));
-  };
-
-  const handleUpdatePlayerName = (index: number, name: string) => {
-    setNewGameSettings((prev) => updatePlayerName(prev, index, name));
-  };
-
-  const handleUpdatePlayerMark = (index: number, mark: string) => {
-    setNewGameSettings((prev) => updatePlayerMark(prev, index, mark));
-  };
-
-  const handleUpdatePlayerColor = (index: number, color: string) => {
-    setNewGameSettings((prev) => updatePlayerColor(prev, index, color));
-  };
-
-  const resetGame = () => {
-    setSavedSnapshot({
-      appState,
-      gameSettings: currentGameSettings,
-      board,
-      currentPlayerIndex,
-      winner,
-    });
-    setAppState("before");
-    setPendingMove(null);
-    setIsTransitioning(false);
-    setNextPlayerIndex(null);
-  };
-
-  const handleResumeGame = () => {
-    setAppState("in_progress");
-  };
-
-  const handleClearSave = () => {
-    if (confirm("保存データを削除してリセットしますか？")) {
-      clearSavedGame();
-      window.location.reload();
-    }
-  };
-
+function Loading({ gameTitle }: { gameTitle: string }) {
   return (
-    <div className="app">
-      {appState === "before" && (
-        <StartScreen
-          savedState={savedSnapshot}
-          newGameSettings={newGameSettings}
-          confirmationMode={confirmationMode}
-          onNewGameSettingsChange={setNewGameSettings}
-          onToggleConfirmation={setConfirmationMode}
-          onStartNewGame={initializeGame}
-          onResumeGame={handleResumeGame}
-          onClearSave={handleClearSave}
-          onAddPlayer={handleAddPlayer}
-          onRemovePlayer={handleRemovePlayer}
-          onUpdatePlayerName={handleUpdatePlayerName}
-          onUpdatePlayerMark={handleUpdatePlayerMark}
-          onUpdatePlayerColor={handleUpdatePlayerColor}
-        />
-      )}
+    <main className="app-shell-center">
+      <section className="app-shell-card">
+        <p>{gameTitle} を読み込み中</p>
+      </section>
+    </main>
+  );
+}
 
-      {appState === "in_progress" && (
-        <GameView
-          board={board}
-          gameSettings={currentGameSettings}
-          pendingMove={pendingMove}
-          currentPlayerIndex={currentPlayerIndex}
-          nextPlayerIndex={nextPlayerIndex}
-          isTransitioning={isTransitioning}
-          onCellClick={handleCellClick}
-          onConfirmMove={confirmMove}
-          onCancelPendingMove={cancelMove}
-          onReset={resetGame}
-        />
-      )}
-
-      {appState === "after" && (
-        <ResultScreen winner={winner} onReset={resetGame} />
-      )}
-    </div>
+function NotFound() {
+  return (
+    <main className="app-shell-center">
+      <section className="app-shell-card">
+        <h1>ページが見つからない</h1>
+        <p>URLを確認して もう一度アクセスしてね</p>
+        <p>
+          <a href="/">ポータルへ戻る</a>
+        </p>
+      </section>
+    </main>
   );
 }
 

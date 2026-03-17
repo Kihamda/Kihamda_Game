@@ -1,0 +1,53 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+body.is-game-route {
+  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.app-shell-center {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #f8fafc;
+}
+
+.app-shell-card {
+  max-width: 480px;
+  width: 100%;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  padding: 20px;
+  color: #0f172a;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.app-shell-card h1 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.app-shell-card p {
+  margin: 0 0 10px;
+}
+
+.app-shell-card a {
+  color: #1d4ed8;
+}

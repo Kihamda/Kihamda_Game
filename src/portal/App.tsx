@@ -1,18 +1,6 @@
 import "./App.css";
-import gamesData from "./data/games.json";
-
-interface Game {
-  id: string;
-  title: string;
-  description: string;
-  path: string;
-  thumbnail: string;
-  tags: string[];
-  publishedAt: string;
-  featured: boolean;
-}
-
-const games = gamesData.games as Game[];
+import { games } from "../games/metadata";
+import type { GameMetadata } from "../games/metadata";
 
 const byDateDesc = [...games].sort(
   (a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt),
@@ -23,7 +11,7 @@ const newestGames = byDateDesc.slice(0, 2);
 
 const recommendedGames = [...games]
   .sort((a, b) => {
-    const score = (g: Game) => {
+    const score = (g: GameMetadata) => {
       let t = 0;
       if (g.featured) t += 3;
       if (g.tags.includes("multiplayer")) t += 2;
@@ -44,7 +32,7 @@ const gamePaths = allGames.map((g) => g.path);
 const randomGamePath =
   gamePaths[Math.floor(Math.random() * gamePaths.length)] ?? "/";
 
-function GameCard({ game, badge }: { game: Game; badge?: string }) {
+function GameCard({ game, badge }: { game: GameMetadata; badge?: string }) {
   return (
     <article className="card">
       <a
@@ -87,8 +75,8 @@ function GameCard({ game, badge }: { game: Game; badge?: string }) {
 
 export default function App() {
   return (
-    <>
-      <main>
+    <div className="portal-page">
+      <main className="portal-main">
         <section className="hero" aria-labelledby="top-title">
           <p className="eyebrow">今日の1本が見つかるゲームポータル</p>
           <h1 id="top-title">遊ぶまで3秒 新着も定番もここで完結</h1>
@@ -161,30 +149,12 @@ export default function App() {
       </main>
       <footer className="portal-footer">
         <div className="footer-links">
-          <a
-            href="https://kihamda.net/privacy-policy"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            プライバシーポリシー
-          </a>
-          <a
-            href="https://kihamda.net/form"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            お問い合わせ
-          </a>
-          <a
-            href="https://kihamda.net/about"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            運営者情報
-          </a>
+          <a href="/privacy-policy/">プライバシーポリシー</a>
+          <a href="/contact/">お問い合わせ</a>
+          <a href="/about/">運営者情報</a>
         </div>
         <p className="footer-copy">&copy; 2024-2026 Kihamda.NET</p>
       </footer>
-    </>
+    </div>
   );
 }

@@ -5,6 +5,39 @@
 
 ---
 
+## 2026-03-18
+
+### 作業ログ
+
+- 00:00 [開始] index.html大量残存の解消 + サイドバー統合 + 無スクロール化 → 担当: consultant（platform-architect / gamedev / qa-tester に順次委譲）
+- 01:00 [完了] index.html大量残存の解消 + サイドバー統合 + 無スクロール化 → 結果: 成功（games配下の個別index削除 + 無スクロール共通UI化）
+- 01:00 [メモ] `npm run lint` `npm run build` 成功、`/games/:id` と `/games/:id/index.html` 互換を維持
+
+### 今日の成果
+
+- `games/*/index.html` を全削除し単一SPA運用へ完全移行
+- フッター情報をサイドバーへ統合し、独立フッターを廃止
+- ゲーム画面を自動縮尺対応にして縦横スクロールを抑制
+
+## 2026-03-17
+
+### 作業ログ
+
+- 00:00 [開始] AdSense審査落ちの現状構成調査と報告書作成 → 担当: consultant（seo-specialist に委譲）
+- 00:10 [完了] AdSense審査落ちの現状構成調査と報告書作成 → 結果: 成功（`GPT-5.3-Codex.md` を作成）
+- 00:10 [メモ] 問題パネルエラー0を確認し `npm run build` 成功（sitemap生成 + tsc + eslint + vite build）
+- 00:30 [開始] ゲーム構造の抜本改修（単一SPA化・統一UX化・Agent整理） → 担当: consultant（platform-architect / gamedev / agent-editor / qa-tester に順次委譲）
+- 01:20 [完了] ゲーム構造の抜本改修（単一SPA化・統一UX化・Agent整理） → 結果: 成功（単一エントリ + /games/:id + 共通操作盤UIへ移行）
+- 01:20 [メモ] `/` `/games/:id` `/games/:id/index.html` 互換を確認し `npm run lint` `npm run build` ともに成功
+
+### 今日の成果
+
+- AdSense審査落ちの要因を現状構成ベースで分類し根拠付きレポート化
+- ルートに `GPT-5.3-Codex.md` を作成
+- 各ゲーム個別index依存を外し 単一SPAルーティングへ移行
+- PC左/モバイル上の統一操作盤と戻る導線を全ゲーム共通化
+- エージェント設定を新構成向けに軽量更新
+
 ## 2026-03-12
 
 ### 作業ログ
