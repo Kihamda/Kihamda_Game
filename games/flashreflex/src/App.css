@@ -1,14 +1,10 @@
 /* theme.css が :root / * / body の基本スタイルをカバー */
-body {
-  /* flashreflex固有の背景グラデーション */
-  background: radial-gradient(circle at top, #1f2937, #0b1220 55%);
-}
-
 .app {
-  min-height: 100vh;
+  min-height: 100%;
   display: grid;
   place-items: center;
   padding: 20px;
+  background: radial-gradient(circle at top, #1f2937, #0b1220 55%);
 }
 
 .panel {
@@ -20,7 +16,7 @@ body {
   box-shadow: 0 20px 60px rgba(2, 6, 23, 0.45);
 }
 
-h1 {
+.app h1 {
   margin: 0;
   font-size: 34px;
 }
@@ -295,7 +291,7 @@ h1 {
 }
 
 @media (max-width: 640px) {
-  h1 {
+  .app h1 {
     font-size: 28px;
   }
 

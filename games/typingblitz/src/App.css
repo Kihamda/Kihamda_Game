@@ -1,4 +1,4 @@
-:root {
+.typingblitz-root {
   --bg: #0a0a0f;
   --panel-bg: rgba(0, 0, 0, 0.85);
   --word-color: #d4d4d8;
@@ -9,10 +9,7 @@
   --input-active: #4ade80;
   --score-color: #60a5fa;
   --combo-color: #f97316;
-}
-
-html,
-body {
+  width: 100%;
   height: 100%;
   overflow: hidden;
   background: var(--bg);
@@ -20,16 +17,12 @@ body {
   font-family: "Courier New", Courier, monospace;
 }
 
-#root {
-  height: 100%;
-}
-
 /* ===== App Layout ===== */
-.app {
+.typingblitz-root .app {
   display: flex;
   flex-direction: column;
-  height: 100dvh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   background: var(--bg);
   overflow: hidden;
 }

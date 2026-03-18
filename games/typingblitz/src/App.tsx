@@ -607,222 +607,229 @@ const App = () => {
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <GameShell title="Typing Blitz" gameId="typingblitz">
-      <div className="app">
-        {/* HUD */}
-        <div className="hud">
-          <div className="hud-score">SCORE: {score}</div>
-          <div className="hud-lives">
-            {!isFinite(maxLives) ? (
-              <span className="hud-life" style={{ fontSize: "1.3em" }}>
-                ∞
-              </span>
-            ) : (
-              Array.from({ length: maxLives }, (_, i) => (
-                <span
-                  key={i}
-                  className="hud-life"
-                  style={{ opacity: i < lives ? 1 : 0.18 }}
-                >
-                  💙
+    <GameShell
+      title="Typing Blitz"
+      gameId="typingblitz"
+      layout="immersive"
+      minScale={0.34}
+    >
+      <div className="typingblitz-root">
+        <div className="app">
+          {/* HUD */}
+          <div className="hud">
+            <div className="hud-score">SCORE: {score}</div>
+            <div className="hud-lives">
+              {!isFinite(maxLives) ? (
+                <span className="hud-life" style={{ fontSize: "1.3em" }}>
+                  ∞
                 </span>
-              ))
+              ) : (
+                Array.from({ length: maxLives }, (_, i) => (
+                  <span
+                    key={i}
+                    className="hud-life"
+                    style={{ opacity: i < lives ? 1 : 0.18 }}
+                  >
+                    💙
+                  </span>
+                ))
+              )}
+            </div>
+            <div className="hud-combo" style={{ opacity: combo >= 2 ? 1 : 0 }}>
+              {combo >= 2 ? `${combo}\u00d7 COMBO` : "\u00a0"}
+            </div>
+          </div>
+
+          {/* Game area */}
+          <div
+            ref={gameAreaRef}
+            className={`game-area${shake ? " shake" : ""}`}
+            onClick={() => inputRef.current?.focus()}
+          >
+            {/* Falling words */}
+            {words.map((word) => {
+              const isActive = activeWord?.id === word.id;
+              const typedLen = isActive ? inputVal.length : 0;
+
+              return (
+                <span
+                  key={word.id}
+                  id={`w-${word.id}`}
+                  className={`falling-word${isActive ? " active" : ""}`}
+                  style={{
+                    left: `${word.x}%`,
+                    animationDuration: `${word.fallDuration}ms`,
+                  }}
+                >
+                  {[...word.text].map((ch, i) => {
+                    const cls =
+                      i < typedLen
+                        ? "ch-typed"
+                        : i === typedLen && isActive
+                          ? "ch-next"
+                          : "ch-pending";
+                    return (
+                      <span key={i} className={cls}>
+                        {ch}
+                      </span>
+                    );
+                  })}
+                </span>
+              );
+            })}
+
+            {/* Particles */}
+            {particles.map((p) => (
+              <div
+                key={p.id}
+                className="particle"
+                style={
+                  {
+                    left: p.x,
+                    top: p.y,
+                    background: p.color,
+                    "--tx": `${p.tx}px`,
+                    "--ty": `${p.ty}px`,
+                    "--dur": `${p.duration}ms`,
+                  } as React.CSSProperties & Record<string, string | number>
+                }
+              />
+            ))}
+
+            {/* Float effects */}
+            {floatEffects.map((e) => (
+              <div
+                key={e.id}
+                className="float-effect"
+                style={{ left: e.x, top: e.y, color: e.color }}
+              >
+                {e.text}
+              </div>
+            ))}
+
+            {/* Overlay */}
+            {phase !== "playing" && (
+              <div className="overlay">
+                {phase === "idle" && (
+                  <div className="settings-screen">
+                    <div className="overlay-title">TYPING BLITZ</div>
+                    <p className="overlay-hint">
+                      Words fall from above — type them before they hit the
+                      ground. Combo multiplier for streaks!
+                    </p>
+
+                    <div className="settings-card">
+                      <div className="settings-card-label">Word Length</div>
+                      <div className="settings-btn-group">
+                        {WORD_DIFF_OPTIONS.map((o) => (
+                          <button
+                            key={o.key}
+                            className={`settings-btn${settings.wordDifficulty === o.key ? " active" : ""}`}
+                            onClick={() =>
+                              updateSetting({ wordDifficulty: o.key })
+                            }
+                          >
+                            {o.label}
+                            <span className="settings-btn-desc">{o.desc}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="settings-card">
+                      <div className="settings-card-label">Fall Speed</div>
+                      <div className="settings-btn-group">
+                        {FALL_SPEED_OPTIONS.map((o) => (
+                          <button
+                            key={o.key}
+                            className={`settings-btn${settings.fallSpeed === o.key ? " active" : ""}`}
+                            onClick={() => updateSetting({ fallSpeed: o.key })}
+                          >
+                            {o.label}
+                            <span className="settings-btn-desc">{o.desc}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="settings-card">
+                      <div className="settings-card-label">Lives</div>
+                      <div className="settings-btn-group">
+                        {LIFE_COUNT_OPTIONS.map((o) => (
+                          <button
+                            key={o.key}
+                            className={`settings-btn${settings.lifeCount === o.key ? " active" : ""}`}
+                            onClick={() => updateSetting({ lifeCount: o.key })}
+                          >
+                            {o.label}
+                            <span className="settings-btn-desc">{o.desc}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="settings-card">
+                      <div className="settings-card-label">Spawn Rate</div>
+                      <div className="settings-btn-group">
+                        {SPAWN_RATE_OPTIONS.map((o) => (
+                          <button
+                            key={o.key}
+                            className={`settings-btn${settings.spawnRate === o.key ? " active" : ""}`}
+                            onClick={() => updateSetting({ spawnRate: o.key })}
+                          >
+                            {o.label}
+                            <span className="settings-btn-desc">{o.desc}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <button className="start-btn" onClick={startGame}>
+                      START
+                    </button>
+                  </div>
+                )}
+                {phase === "gameover" && (
+                  <>
+                    <div className="overlay-title">GAME OVER</div>
+                    <div className="overlay-subtitle">SCORE: {finalScore}</div>
+                    <div
+                      className="overlay-subtitle"
+                      style={{ fontSize: 16, opacity: 0.7 }}
+                    >
+                      BEST: {bestScore}
+                    </div>
+                    <button className="start-btn" onClick={startGame}>
+                      PLAY AGAIN
+                    </button>
+                    <button
+                      className="settings-link"
+                      onClick={() => setPhase("idle")}
+                    >
+                      Settings
+                    </button>
+                  </>
+                )}
+              </div>
             )}
           </div>
-          <div className="hud-combo" style={{ opacity: combo >= 2 ? 1 : 0 }}>
-            {combo >= 2 ? `${combo}\u00d7 COMBO` : "\u00a0"}
-          </div>
-        </div>
 
-        {/* Game area */}
-        <div
-          ref={gameAreaRef}
-          className={`game-area${shake ? " shake" : ""}`}
-          onClick={() => inputRef.current?.focus()}
-        >
-          {/* Falling words */}
-          {words.map((word) => {
-            const isActive = activeWord?.id === word.id;
-            const typedLen = isActive ? inputVal.length : 0;
-
-            return (
-              <span
-                key={word.id}
-                id={`w-${word.id}`}
-                className={`falling-word${isActive ? " active" : ""}`}
-                style={{
-                  left: `${word.x}%`,
-                  animationDuration: `${word.fallDuration}ms`,
-                }}
-              >
-                {[...word.text].map((ch, i) => {
-                  const cls =
-                    i < typedLen
-                      ? "ch-typed"
-                      : i === typedLen && isActive
-                        ? "ch-next"
-                        : "ch-pending";
-                  return (
-                    <span key={i} className={cls}>
-                      {ch}
-                    </span>
-                  );
-                })}
-              </span>
-            );
-          })}
-
-          {/* Particles */}
-          {particles.map((p) => (
-            <div
-              key={p.id}
-              className="particle"
-              style={
-                {
-                  left: p.x,
-                  top: p.y,
-                  background: p.color,
-                  "--tx": `${p.tx}px`,
-                  "--ty": `${p.ty}px`,
-                  "--dur": `${p.duration}ms`,
-                } as React.CSSProperties & Record<string, string | number>
-              }
+          {/* Input */}
+          <div className="input-area">
+            <input
+              ref={inputRef}
+              type="text"
+              className={`input-field${lives <= 2 && phase === "playing" ? " danger" : ""}`}
+              value={inputVal}
+              onChange={handleChange}
+              placeholder={phase === "playing" ? "type here..." : ""}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="none"
+              spellCheck={false}
+              disabled={phase !== "playing"}
             />
-          ))}
-
-          {/* Float effects */}
-          {floatEffects.map((e) => (
-            <div
-              key={e.id}
-              className="float-effect"
-              style={{ left: e.x, top: e.y, color: e.color }}
-            >
-              {e.text}
-            </div>
-          ))}
-
-          {/* Overlay */}
-          {phase !== "playing" && (
-            <div className="overlay">
-              {phase === "idle" && (
-                <div className="settings-screen">
-                  <div className="overlay-title">TYPING BLITZ</div>
-                  <p className="overlay-hint">
-                    Words fall from above — type them before they hit the
-                    ground. Combo multiplier for streaks!
-                  </p>
-
-                  <div className="settings-card">
-                    <div className="settings-card-label">Word Length</div>
-                    <div className="settings-btn-group">
-                      {WORD_DIFF_OPTIONS.map((o) => (
-                        <button
-                          key={o.key}
-                          className={`settings-btn${settings.wordDifficulty === o.key ? " active" : ""}`}
-                          onClick={() =>
-                            updateSetting({ wordDifficulty: o.key })
-                          }
-                        >
-                          {o.label}
-                          <span className="settings-btn-desc">{o.desc}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="settings-card">
-                    <div className="settings-card-label">Fall Speed</div>
-                    <div className="settings-btn-group">
-                      {FALL_SPEED_OPTIONS.map((o) => (
-                        <button
-                          key={o.key}
-                          className={`settings-btn${settings.fallSpeed === o.key ? " active" : ""}`}
-                          onClick={() => updateSetting({ fallSpeed: o.key })}
-                        >
-                          {o.label}
-                          <span className="settings-btn-desc">{o.desc}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="settings-card">
-                    <div className="settings-card-label">Lives</div>
-                    <div className="settings-btn-group">
-                      {LIFE_COUNT_OPTIONS.map((o) => (
-                        <button
-                          key={o.key}
-                          className={`settings-btn${settings.lifeCount === o.key ? " active" : ""}`}
-                          onClick={() => updateSetting({ lifeCount: o.key })}
-                        >
-                          {o.label}
-                          <span className="settings-btn-desc">{o.desc}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="settings-card">
-                    <div className="settings-card-label">Spawn Rate</div>
-                    <div className="settings-btn-group">
-                      {SPAWN_RATE_OPTIONS.map((o) => (
-                        <button
-                          key={o.key}
-                          className={`settings-btn${settings.spawnRate === o.key ? " active" : ""}`}
-                          onClick={() => updateSetting({ spawnRate: o.key })}
-                        >
-                          {o.label}
-                          <span className="settings-btn-desc">{o.desc}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <button className="start-btn" onClick={startGame}>
-                    START
-                  </button>
-                </div>
-              )}
-              {phase === "gameover" && (
-                <>
-                  <div className="overlay-title">GAME OVER</div>
-                  <div className="overlay-subtitle">SCORE: {finalScore}</div>
-                  <div
-                    className="overlay-subtitle"
-                    style={{ fontSize: 16, opacity: 0.7 }}
-                  >
-                    BEST: {bestScore}
-                  </div>
-                  <button className="start-btn" onClick={startGame}>
-                    PLAY AGAIN
-                  </button>
-                  <button
-                    className="settings-link"
-                    onClick={() => setPhase("idle")}
-                  >
-                    Settings
-                  </button>
-                </>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Input */}
-        <div className="input-area">
-          <input
-            ref={inputRef}
-            type="text"
-            className={`input-field${lives <= 2 && phase === "playing" ? " danger" : ""}`}
-            value={inputVal}
-            onChange={handleChange}
-            placeholder={phase === "playing" ? "type here..." : ""}
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="none"
-            spellCheck={false}
-            disabled={phase !== "playing"}
-          />
+          </div>
         </div>
       </div>
     </GameShell>

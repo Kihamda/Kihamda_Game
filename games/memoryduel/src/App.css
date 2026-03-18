@@ -1,19 +1,16 @@
-:root {
+.app {
   font-family: Inter, "Noto Sans JP", system-ui, sans-serif;
   color: #e2e8f0;
   background: #111827;
 }
 
-body {
-  min-height: 100vh;
-  background: radial-gradient(circle at top, #1f2937, #030712 70%);
-}
-
 .app {
-  min-height: 100vh;
+  min-height: 100%;
   display: grid;
   place-items: center;
   padding: 20px;
+  position: relative;
+  background: radial-gradient(circle at top, #1f2937, #030712 70%);
 }
 
 .panel {
@@ -25,7 +22,7 @@ body {
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
 }
 
-h1 {
+.app h1 {
   margin: 0;
   font-size: 34px;
 }
@@ -89,7 +86,10 @@ h1 {
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  transition: border-color 150ms, box-shadow 150ms, background 150ms;
+  transition:
+    border-color 150ms,
+    box-shadow 150ms,
+    background 150ms;
 }
 
 .btnOption:hover {
@@ -245,7 +245,7 @@ h1 {
 }
 
 @media (max-width: 700px) {
-  h1 {
+  .app h1 {
     font-size: 28px;
   }
 
@@ -478,7 +478,7 @@ h1 {
 
 /* ── コンフェッティ ──────────────────────────────────────────────────────── */
 .confettiOverlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 100;
@@ -503,14 +503,14 @@ h1 {
     opacity: 1;
   }
   100% {
-    transform: translateY(110vh) rotate(720deg);
+    transform: translateY(110%) rotate(720deg);
     opacity: 0;
   }
 }
 
 /* ── 勝者ポップアップ ────────────────────────────────────────────────────── */
 .winnerPopup {
-  position: fixed;
+  position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;

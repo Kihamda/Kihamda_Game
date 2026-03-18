@@ -163,7 +163,11 @@ function bulletsPerSecond(wave: number, countMul: number): number {
 
 // ─── Game state factory ───────────────────────────────────────────────────────
 
-function createGameState(w: number, h: number, rs: ResolvedSettings): GameState {
+function createGameState(
+  w: number,
+  h: number,
+  rs: ResolvedSettings,
+): GameState {
   return {
     phase: "playing",
     score: 0,
@@ -202,7 +206,12 @@ function dist2D(ax: number, ay: number, bx: number, by: number): number {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
-function spawnBullet(gs: GameState, w: number, h: number, rs: ResolvedSettings): void {
+function spawnBullet(
+  gs: GameState,
+  w: number,
+  h: number,
+  rs: ResolvedSettings,
+): void {
   const speedBase = (2 + gs.wave * 0.4) * rs.speedMul;
   const slow = gs.slowMs > 0 ? 0.35 : 1;
   const speed = speedBase * slow;
@@ -318,7 +327,13 @@ function addFloat(
 
 // ─── Update ───────────────────────────────────────────────────────────────────
 
-function update(gs: GameState, dt: number, w: number, h: number, rs: ResolvedSettings): GameEvent[] {
+function update(
+  gs: GameState,
+  dt: number,
+  w: number,
+  h: number,
+  rs: ResolvedSettings,
+): GameEvent[] {
   if (gs.phase !== "playing") return [];
   const events: GameEvent[] = [];
 
@@ -363,8 +378,14 @@ function update(gs: GameState, dt: number, w: number, h: number, rs: ResolvedSet
   gs.playerX += (gs.cursorX - gs.playerX) * PLAYER_LERP;
   gs.playerY += (gs.cursorY - gs.playerY) * PLAYER_LERP;
   // Clamp to canvas
-  gs.playerX = Math.max(rs.playerRadius, Math.min(w - rs.playerRadius, gs.playerX));
-  gs.playerY = Math.max(rs.playerRadius, Math.min(h - rs.playerRadius, gs.playerY));
+  gs.playerX = Math.max(
+    rs.playerRadius,
+    Math.min(w - rs.playerRadius, gs.playerX),
+  );
+  gs.playerY = Math.max(
+    rs.playerRadius,
+    Math.min(h - rs.playerRadius, gs.playerY),
+  );
 
   // ── Bullet spawning ──
   const interval = 1000 / bulletsPerSecond(gs.wave, rs.countMul);
@@ -797,6 +818,7 @@ function drawEffectBar(
 
 const App = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<GamePhase>("waiting");
   const [finalScore, setFinalScore] = useState(0);
   const { best: hiScore, update: updateHiScore } = useHighScore("dodgeblitz");
@@ -825,28 +847,48 @@ const App = () => {
   // Canvas resize
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const wrapper = wrapperRef.current;
+    if (!canvas || !wrapper) return;
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const nextWidth = Math.max(1, Math.floor(wrapper.clientWidth));
+      const nextHeight = Math.max(1, Math.floor(wrapper.clientHeight));
+      canvas.width = nextWidth;
+      canvas.height = nextHeight;
     };
     resize();
-    window.addEventListener("resize", resize);
-    return () => window.removeEventListener("resize", resize);
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(wrapper);
+    return () => resizeObserver.disconnect();
   }, []);
 
   // Mouse / touch tracking
   useEffect(() => {
+    const updateCursor = (clientX: number, clientY: number) => {
+      const canvas = canvasRef.current;
+      if (!gsRef.current || !canvas) return;
+
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return;
+
+      const ratioX = (clientX - rect.left) / rect.width;
+      const ratioY = (clientY - rect.top) / rect.height;
+
+      gsRef.current.cursorX = Math.max(
+        0,
+        Math.min(canvas.width, ratioX * canvas.width),
+      );
+      gsRef.current.cursorY = Math.max(
+        0,
+        Math.min(canvas.height, ratioY * canvas.height),
+      );
+    };
+
     const onMouse = (e: MouseEvent) => {
-      if (gsRef.current) {
-        gsRef.current.cursorX = e.clientX;
-        gsRef.current.cursorY = e.clientY;
-      }
+      updateCursor(e.clientX, e.clientY);
     };
     const onTouch = (e: TouchEvent) => {
-      if (gsRef.current && e.touches.length > 0) {
-        gsRef.current.cursorX = e.touches[0].clientX;
-        gsRef.current.cursorY = e.touches[0].clientY;
+      if (e.touches.length > 0) {
+        updateCursor(e.touches[0].clientX, e.touches[0].clientY);
       }
     };
     window.addEventListener("mousemove", onMouse);
@@ -873,7 +915,13 @@ const App = () => {
       const gs = gsRef.current;
       if (!gs) return;
 
-      const events = update(gs, dt, canvas.width, canvas.height, resolvedRef.current);
+      const events = update(
+        gs,
+        dt,
+        canvas.width,
+        canvas.height,
+        resolvedRef.current,
+      );
 
       for (const ev of events) {
         const sfx = sfxRef.current;
@@ -922,108 +970,115 @@ const App = () => {
   const finalSs = String(totalSec % 60).padStart(2, "0");
 
   return (
-    <GameShell title="Dodge Blitz" gameId="dodgeblitz">
-      <div className="game-wrapper">
-        <canvas ref={canvasRef} />
+    <GameShell
+      title="Dodge Blitz"
+      gameId="dodgeblitz"
+      layout="immersive"
+      minScale={0.34}
+    >
+      <div className="dodgeblitz-root">
+        <div className="game-wrapper" ref={wrapperRef}>
+          <canvas ref={canvasRef} />
 
-        {phase === "waiting" && (
-          <div className="overlay interactive">
-            <h1>DODGE BLITZ</h1>
-            <p className="subtitle">弾幕を掻い潜れ</p>
-            <div className="settings-panel">
-              <div className="setting-row">
-                <span className="setting-label">自機サイズ</span>
-                <div className="setting-options">
-                  {(["large", "normal", "small"] as const).map((v) => (
-                    <button
-                      key={v}
-                      className={`setting-btn${settings.playerSize === v ? " active" : ""}`}
-                      onClick={() => updateSettings({ playerSize: v })}
-                    >
-                      {v.toUpperCase()}
-                    </button>
-                  ))}
+          {phase === "waiting" && (
+            <div className="overlay interactive">
+              <h1>DODGE BLITZ</h1>
+              <p className="subtitle">弾幕を掻い潜れ</p>
+              <div className="settings-panel">
+                <div className="setting-row">
+                  <span className="setting-label">自機サイズ</span>
+                  <div className="setting-options">
+                    {(["large", "normal", "small"] as const).map((v) => (
+                      <button
+                        key={v}
+                        className={`setting-btn${settings.playerSize === v ? " active" : ""}`}
+                        onClick={() => updateSettings({ playerSize: v })}
+                      >
+                        {v.toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="setting-row">
+                  <span className="setting-label">難易度</span>
+                  <div className="setting-options">
+                    {(["easy", "normal", "hard"] as const).map((v) => (
+                      <button
+                        key={v}
+                        className={`setting-btn${settings.difficulty === v ? " active" : ""}`}
+                        onClick={() => updateSettings({ difficulty: v })}
+                      >
+                        {v.toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="setting-row">
+                  <span className="setting-label">アイテム頻度</span>
+                  <div className="setting-options">
+                    {(["low", "normal", "high"] as const).map((v) => (
+                      <button
+                        key={v}
+                        className={`setting-btn${settings.itemFrequency === v ? " active" : ""}`}
+                        onClick={() => updateSettings({ itemFrequency: v })}
+                      >
+                        {v.toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="setting-row">
+                  <span className="setting-label">開始Wave</span>
+                  <div className="setting-options">
+                    {([1, 2, 3] as const).map((v) => (
+                      <button
+                        key={v}
+                        className={`setting-btn${settings.startWave === v ? " active" : ""}`}
+                        onClick={() => updateSettings({ startWave: v })}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div className="setting-row">
-                <span className="setting-label">難易度</span>
-                <div className="setting-options">
-                  {(["easy", "normal", "hard"] as const).map((v) => (
-                    <button
-                      key={v}
-                      className={`setting-btn${settings.difficulty === v ? " active" : ""}`}
-                      onClick={() => updateSettings({ difficulty: v })}
-                    >
-                      {v.toUpperCase()}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="setting-row">
-                <span className="setting-label">アイテム頻度</span>
-                <div className="setting-options">
-                  {(["low", "normal", "high"] as const).map((v) => (
-                    <button
-                      key={v}
-                      className={`setting-btn${settings.itemFrequency === v ? " active" : ""}`}
-                      onClick={() => updateSettings({ itemFrequency: v })}
-                    >
-                      {v.toUpperCase()}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="setting-row">
-                <span className="setting-label">開始Wave</span>
-                <div className="setting-options">
-                  {([1, 2, 3] as const).map((v) => (
-                    <button
-                      key={v}
-                      className={`setting-btn${settings.startWave === v ? " active" : ""}`}
-                      onClick={() => updateSettings({ startWave: v })}
-                    >
-                      {v}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <button className="start-btn" onClick={startGame}>
+                START
+              </button>
+              <p className="how-to">
+                マウス / タッチ でプレイヤーを誘導
+                <br />
+                ⭐ボム &nbsp;&nbsp; 🛡シールド &nbsp;&nbsp; ⏱スロウ
+                <br />
+                🔴追尾弾 &nbsp;&nbsp; 💙レーザーに注意
+                <br />
+                <br />
+                BEST: {hiScore}
+              </p>
             </div>
-            <button className="start-btn" onClick={startGame}>
-              START
-            </button>
-            <p className="how-to">
-              マウス / タッチ でプレイヤーを誘導
-              <br />
-              ⭐ボム &nbsp;&nbsp; 🛡シールド &nbsp;&nbsp; ⏱スロウ
-              <br />
-              🔴追尾弾 &nbsp;&nbsp; 💙レーザーに注意
-              <br />
-              <br />
-              BEST: {hiScore}
-            </p>
-          </div>
-        )}
+          )}
 
-        {phase === "gameover" && (
-          <div className="overlay interactive">
-            <h1>GAME OVER</h1>
-            <p className="score-display">
-              SCORE: <span>{finalScore}</span>
-            </p>
-            <p className="score-display" style={{ fontSize: "1rem" }}>
-              TIME:{" "}
-              <span>
-                {finalMm}:{finalSs}
-              </span>
-            </p>
-            <p className="hi-score">
-              BEST: <span>{hiScore}</span>
-            </p>
-            <button className="start-btn" onClick={startGame}>
-              RETRY
-            </button>
-          </div>
-        )}
+          {phase === "gameover" && (
+            <div className="overlay interactive">
+              <h1>GAME OVER</h1>
+              <p className="score-display">
+                SCORE: <span>{finalScore}</span>
+              </p>
+              <p className="score-display" style={{ fontSize: "1rem" }}>
+                TIME:{" "}
+                <span>
+                  {finalMm}:{finalSs}
+                </span>
+              </p>
+              <p className="hi-score">
+                BEST: <span>{hiScore}</span>
+              </p>
+              <button className="start-btn" onClick={startGame}>
+                RETRY
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </GameShell>
   );

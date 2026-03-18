@@ -1,4 +1,4 @@
-:root {
+.app {
   --bg: #1a1410;
   --grid-bg: #bbada0;
   --cell-bg: rgba(238, 228, 218, 0.35);
@@ -16,11 +16,12 @@
 
 /* ─── アプリ全体 ─────────────────────────────────────────────────────────────── */
 .app {
-  min-height: 100dvh;
+  min-height: 100%;
   background: var(--bg);
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
   padding: 20px 16px 40px;
   gap: 16px;
   user-select: none;
@@ -99,7 +100,7 @@
 
 /* ─── コンボバッジ ───────────────────────────────────────────────────────────── */
 .combo-badge {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%);

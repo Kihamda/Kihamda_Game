@@ -17,6 +17,12 @@
   height: 100%;
 }
 
+.game-shell-main--immersive {
+  width: min(1900px, 100%);
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  gap: 10px;
+}
+
 .game-shell-panel {
   min-height: 0;
   height: 100%;
@@ -120,6 +126,10 @@
   padding: 8px;
 }
 
+.game-shell-frame--immersive {
+  padding: 0;
+}
+
 .game-shell-scale-viewport {
   position: relative;
   width: 100%;
@@ -137,12 +147,18 @@
 
 .game-shell-scale-content > * {
   min-width: min(100%, 1000px);
+  min-height: 0 !important;
+}
+
+.game-shell-scale-content--immersive > * {
+  min-width: 0;
 }
 
 .game-shell-meta {
   margin-top: auto;
   padding-top: 12px;
-  border-top: 1px solid color-mix(in srgb, var(--border, #334155) 72%, #ffffff 28%);
+  border-top: 1px solid
+    color-mix(in srgb, var(--border, #334155) 72%, #ffffff 28%);
 }
 
 .game-shell-meta-links {

@@ -284,7 +284,12 @@ function App() {
   };
 
   return (
-    <GameShell title="N人 TikTakToe" gameId="ntiktaktoe">
+    <GameShell
+      title="N人 TikTakToe"
+      gameId="ntiktaktoe"
+      layout="immersive"
+      minScale={0.34}
+    >
       <div className="app">
         {appState === "before" && (
           <StartScreen

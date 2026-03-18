@@ -1,6 +1,4 @@
-html,
-body,
-#root {
+.app {
   width: 100%;
   height: 100%;
 }
@@ -11,7 +9,7 @@ body,
 .app {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,7 +54,7 @@ body,
 }
 
 .flash-overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 100;
@@ -86,7 +84,7 @@ body,
 }
 
 .streak-banner {
-  position: fixed;
+  position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -117,7 +115,7 @@ body,
 }
 
 .score-popup {
-  position: fixed;
+  position: absolute;
   top: 48%;
   left: 50%;
   transform: translateX(-50%);

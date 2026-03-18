@@ -14,6 +14,10 @@ interface Props {
   portalUrl?: string;
   /** ゲームID (おすすめゲーム表示用) */
   gameId?: string;
+  /** スケールの下限値 */
+  minScale?: number;
+  /** 枠内レイアウトモード */
+  layout?: "default" | "immersive";
 }
 
 function buildControlHints(tags: string[] | undefined): string[] {
@@ -45,6 +49,8 @@ export function GameShell({
   description,
   portalUrl = "/",
   gameId,
+  minScale = 0.3,
+  layout = "default",
 }: Props) {
   const frameRef = useRef<HTMLDivElement>(null);
   const scaledContentRef = useRef<HTMLDivElement>(null);
@@ -81,15 +87,26 @@ export function GameShell({
       const contentWidth = scaledContentElement.scrollWidth;
       const contentHeight = scaledContentElement.scrollHeight;
 
-      if (frameWidth <= 0 || frameHeight <= 0 || contentWidth <= 0 || contentHeight <= 0) {
+      if (
+        frameWidth <= 0 ||
+        frameHeight <= 0 ||
+        contentWidth <= 0 ||
+        contentHeight <= 0
+      ) {
         setScale(1);
         return;
       }
 
-      const nextScale = Math.min(1, frameWidth / contentWidth, frameHeight / contentHeight);
-      const clampedScale = Math.max(0.45, Number(nextScale.toFixed(3)));
+      const nextScale = Math.min(
+        1,
+        frameWidth / contentWidth,
+        frameHeight / contentHeight,
+      );
+      const clampedScale = Math.max(minScale, Number(nextScale.toFixed(3)));
       setScale((previousScale) =>
-        Math.abs(previousScale - clampedScale) > 0.001 ? clampedScale : previousScale,
+        Math.abs(previousScale - clampedScale) > 0.001
+          ? clampedScale
+          : previousScale,
       );
     };
 
@@ -117,11 +134,11 @@ export function GameShell({
       mutationObserver.disconnect();
       resizeObserver.disconnect();
     };
-  }, [children]);
+  }, [children, minScale]);
 
   return (
-    <div className="game-shell-root">
-      <div className="game-shell-main">
+    <div className={`game-shell-root game-shell-root--${layout}`}>
+      <div className={`game-shell-main game-shell-main--${layout}`}>
         <aside className="game-shell-panel" aria-label="ゲーム操作パネル">
           <div className="game-shell-panel-inner">
             <button
@@ -157,7 +174,10 @@ export function GameShell({
               </button>
             </div>
 
-            <section className="game-shell-section game-shell-meta" aria-label="フッター情報">
+            <section
+              className="game-shell-section game-shell-meta"
+              aria-label="フッター情報"
+            >
               <h2>案内</h2>
               <div className="game-shell-meta-links">
                 <a href="/privacy-policy/">プライバシーポリシー</a>
@@ -170,13 +190,16 @@ export function GameShell({
         </aside>
 
         <section
-          className="game-shell-stage"
+          className={`game-shell-stage game-shell-stage--${layout}`}
           aria-label={`${resolvedTitle} のゲーム画面`}
         >
-          <div className="game-shell-frame" ref={frameRef}>
+          <div
+            className={`game-shell-frame game-shell-frame--${layout}`}
+            ref={frameRef}
+          >
             <div className="game-shell-scale-viewport">
               <div
-                className="game-shell-scale-content"
+                className={`game-shell-scale-content game-shell-scale-content--${layout}`}
                 ref={scaledContentRef}
                 style={{ transform: `translate(-50%, -50%) scale(${scale})` }}
               >

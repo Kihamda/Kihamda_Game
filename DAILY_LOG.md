@@ -12,12 +12,27 @@
 - 00:00 [開始] index.html大量残存の解消 + サイドバー統合 + 無スクロール化 → 担当: consultant（platform-architect / gamedev / qa-tester に順次委譲）
 - 01:00 [完了] index.html大量残存の解消 + サイドバー統合 + 無スクロール化 → 結果: 成功（games配下の個別index削除 + 無スクロール共通UI化）
 - 01:00 [メモ] `npm run lint` `npm run build` 成功、`/games/:id` と `/games/:id/index.html` 互換を維持
+- 01:20 [開始] フルスクリーン系ゲームの枠内全画面化 + NumHunt戻り時UI崩れ修正 → 担当: consultant（gamedev / qa-tester に順次委譲）
+- 02:00 [完了] フルスクリーン系ゲームの枠内全画面化 + NumHunt戻り時UI崩れ修正 → 結果: 成功（DodgeBlitz/TypingBlitzの枠内最大化 + NumHunt副作用除去）
+- 02:00 [メモ] `npm run lint` `npm run build` 成功、再発観点の最終検証を通過
+- 02:20 [開始] consultant運用ルールの強制明文化 + 全ゲーム同型不具合の横断修正 → 担当: consultant（agent-editor / gamedev / qa-tester に順次委譲）
+- 03:10 [完了] consultant運用ルールの強制明文化 + 全ゲーム同型不具合の横断修正 → 結果: 成功（提案停止禁止ルール強化 + 15ゲーム横断修正）
+- 03:10 [メモ] `npm run lint` `npm run build` 成功、全体エラー0を確認
+- 03:20 [開始] 同型崩れの継続運用を自動化（横断監視の仕組み化 + 追加修正） → 担当: consultant（gamedev / qa-tester に順次委譲）
+- 03:20 [開始] 同型崩れの継続運用を自動化（横断監視の仕組み化 + 追加修正） → 担当: consultant（gamedev / qa-tester に順次委譲）
+- 04:00 [開始] css-guard撤去 + 指定4ゲームの枠内全体表示修正（dodge/typing/mole/ntiktaktoe） → 担当: consultant（gamedev / qa-tester に順次委譲）
+- 04:25 [完了] css-guard撤去 + 指定4ゲームの枠内全体表示修正（dodge/typing/mole/ntiktaktoe） → 結果: 成功（guard削除 + 4ゲーム immersive 最適化）
+- 04:25 [メモ] `npm run lint` `npm run build` 成功、エラー0
 
 ### 今日の成果
 
 - `games/*/index.html` を全削除し単一SPA運用へ完全移行
 - フッター情報をサイドバーへ統合し、独立フッターを廃止
 - ゲーム画面を自動縮尺対応にして縦横スクロールを抑制
+- フルスクリーン系ゲームの枠内全画面表示を復元し、NumHuntのホーム遷移崩れを解消
+- consultantのagent定義に「提案型で止まるな、情報不足は質問ツールで回収」を強制追記
+- 全ゲーム横断でCSS副作用/枠内表示崩れを再点検して同型パターンを一括修正
+- `check:css-guard` を撤去し、指定4ゲームの枠内表示を最優先で再調整
 
 ## 2026-03-17
 

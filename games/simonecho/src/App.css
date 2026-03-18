@@ -2,7 +2,7 @@
    Simon Echo — App.css
    ================================================ */
 
-:root {
+.app {
   --gap: 6px;
   --board-size: min(72vw, 72vh, 380px);
   --center-size: calc(var(--board-size) * 0.28);
@@ -24,16 +24,9 @@
   --pink-lit: #ff69b4;
   --cyan-dark: #144d4d;
   --cyan-lit: #39fff5;
-}
-
-body {
   background: #0a0a0a;
   color: #fff;
   font-family: "Segoe UI", system-ui, sans-serif;
-  min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* ---- Layout ---- */
@@ -41,6 +34,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100%;
+  justify-content: center;
   gap: 12px;
   padding: 16px;
   max-width: 480px;
@@ -511,14 +506,30 @@ body {
 }
 
 /* Grid sector backgrounds */
-.grid-sector.sector-green  { background: var(--green-dark); }
-.grid-sector.sector-red    { background: var(--red-dark); }
-.grid-sector.sector-yellow { background: var(--yellow-dark); }
-.grid-sector.sector-blue   { background: var(--blue-dark); }
-.grid-sector.sector-purple { background: var(--purple-dark); }
-.grid-sector.sector-orange { background: var(--orange-dark); }
-.grid-sector.sector-pink   { background: var(--pink-dark); }
-.grid-sector.sector-cyan   { background: var(--cyan-dark); }
+.grid-sector.sector-green {
+  background: var(--green-dark);
+}
+.grid-sector.sector-red {
+  background: var(--red-dark);
+}
+.grid-sector.sector-yellow {
+  background: var(--yellow-dark);
+}
+.grid-sector.sector-blue {
+  background: var(--blue-dark);
+}
+.grid-sector.sector-purple {
+  background: var(--purple-dark);
+}
+.grid-sector.sector-orange {
+  background: var(--orange-dark);
+}
+.grid-sector.sector-pink {
+  background: var(--pink-dark);
+}
+.grid-sector.sector-cyan {
+  background: var(--cyan-dark);
+}
 
 /* Grid hover */
 .grid-sector:not(:disabled):hover {
@@ -603,22 +614,92 @@ body {
 }
 
 /* 6-color checkmark positions */
-.board-wrapper-6 .checkmark-green  { top: 15%; left: 13%;  right: auto; bottom: auto; }
-.board-wrapper-6 .checkmark-red    { top: 15%; left: 45%;  right: auto; bottom: auto; }
-.board-wrapper-6 .checkmark-yellow { top: 15%; right: 13%; left: auto;  bottom: auto; }
-.board-wrapper-6 .checkmark-blue   { bottom: 15%; left: 13%;  right: auto; top: auto; }
-.board-wrapper-6 .checkmark-purple { bottom: 15%; left: 45%;  right: auto; top: auto; }
-.board-wrapper-6 .checkmark-orange { bottom: 15%; right: 13%; left: auto;  top: auto; }
+.board-wrapper-6 .checkmark-green {
+  top: 15%;
+  left: 13%;
+  right: auto;
+  bottom: auto;
+}
+.board-wrapper-6 .checkmark-red {
+  top: 15%;
+  left: 45%;
+  right: auto;
+  bottom: auto;
+}
+.board-wrapper-6 .checkmark-yellow {
+  top: 15%;
+  right: 13%;
+  left: auto;
+  bottom: auto;
+}
+.board-wrapper-6 .checkmark-blue {
+  bottom: 15%;
+  left: 13%;
+  right: auto;
+  top: auto;
+}
+.board-wrapper-6 .checkmark-purple {
+  bottom: 15%;
+  left: 45%;
+  right: auto;
+  top: auto;
+}
+.board-wrapper-6 .checkmark-orange {
+  bottom: 15%;
+  right: 13%;
+  left: auto;
+  top: auto;
+}
 
 /* 8-color checkmark positions */
-.board-wrapper-8 .checkmark-green  { top: 15%; left: 8%;  right: auto; bottom: auto; }
-.board-wrapper-8 .checkmark-red    { top: 15%; left: 32%; right: auto; bottom: auto; }
-.board-wrapper-8 .checkmark-yellow { top: 15%; right: 32%; left: auto; bottom: auto; }
-.board-wrapper-8 .checkmark-blue   { top: 15%; right: 8%;  left: auto; bottom: auto; }
-.board-wrapper-8 .checkmark-purple { bottom: 15%; left: 8%;  right: auto; top: auto; }
-.board-wrapper-8 .checkmark-orange { bottom: 15%; left: 32%; right: auto; top: auto; }
-.board-wrapper-8 .checkmark-pink   { bottom: 15%; right: 32%; left: auto; top: auto; }
-.board-wrapper-8 .checkmark-cyan   { bottom: 15%; right: 8%;  left: auto; top: auto; }
+.board-wrapper-8 .checkmark-green {
+  top: 15%;
+  left: 8%;
+  right: auto;
+  bottom: auto;
+}
+.board-wrapper-8 .checkmark-red {
+  top: 15%;
+  left: 32%;
+  right: auto;
+  bottom: auto;
+}
+.board-wrapper-8 .checkmark-yellow {
+  top: 15%;
+  right: 32%;
+  left: auto;
+  bottom: auto;
+}
+.board-wrapper-8 .checkmark-blue {
+  top: 15%;
+  right: 8%;
+  left: auto;
+  bottom: auto;
+}
+.board-wrapper-8 .checkmark-purple {
+  bottom: 15%;
+  left: 8%;
+  right: auto;
+  top: auto;
+}
+.board-wrapper-8 .checkmark-orange {
+  bottom: 15%;
+  left: 32%;
+  right: auto;
+  top: auto;
+}
+.board-wrapper-8 .checkmark-pink {
+  bottom: 15%;
+  right: 32%;
+  left: auto;
+  top: auto;
+}
+.board-wrapper-8 .checkmark-cyan {
+  bottom: 15%;
+  right: 8%;
+  left: auto;
+  top: auto;
+}
 
 /* ================================================
    Settings Panel

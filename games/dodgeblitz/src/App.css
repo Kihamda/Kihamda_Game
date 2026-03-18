@@ -1,6 +1,4 @@
-html,
-body,
-#root {
+.dodgeblitz-root {
   width: 100%;
   height: 100%;
   background: #000;
@@ -8,7 +6,7 @@ body,
   font-family: "Courier New", Courier, monospace;
 }
 
-.game-wrapper {
+.dodgeblitz-root .game-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
@@ -17,12 +15,14 @@ body,
   justify-content: center;
 }
 
-canvas {
+.dodgeblitz-root canvas {
+  width: 100%;
+  height: 100%;
   display: block;
   cursor: none;
 }
 
-.overlay {
+.dodgeblitz-root .overlay {
   position: absolute;
   inset: 0;
   display: flex;
@@ -33,11 +33,11 @@ canvas {
   pointer-events: none;
 }
 
-.overlay.interactive {
+.dodgeblitz-root .overlay.interactive {
   pointer-events: auto;
 }
 
-.overlay h1 {
+.dodgeblitz-root .overlay h1 {
   font-size: clamp(2rem, 8vw, 4rem);
   font-weight: 900;
   color: #fff;
@@ -48,31 +48,31 @@ canvas {
   letter-spacing: 0.1em;
 }
 
-.overlay .subtitle {
+.dodgeblitz-root .overlay .subtitle {
   font-size: clamp(0.8rem, 2.5vw, 1.1rem);
   color: #7af;
   letter-spacing: 0.15em;
 }
 
-.overlay .score-display {
+.dodgeblitz-root .overlay .score-display {
   font-size: clamp(1rem, 3vw, 1.5rem);
   color: #fff;
 }
 
-.overlay .score-display span {
+.dodgeblitz-root .overlay .score-display span {
   color: #ff0;
 }
 
-.overlay .hi-score {
+.dodgeblitz-root .overlay .hi-score {
   font-size: clamp(0.75rem, 2vw, 1rem);
   color: #888;
 }
 
-.overlay .hi-score span {
+.dodgeblitz-root .overlay .hi-score span {
   color: #f80;
 }
 
-.start-btn {
+.dodgeblitz-root .start-btn {
   margin-top: 8px;
   padding: 12px 48px;
   font-size: clamp(1rem, 3vw, 1.3rem);
@@ -93,14 +93,14 @@ canvas {
     0 0 40px #7af4;
 }
 
-.start-btn:hover {
+.dodgeblitz-root .start-btn:hover {
   background: #7af;
   box-shadow:
     0 0 30px #7aff,
     0 0 60px #7af8;
 }
 
-.how-to {
+.dodgeblitz-root .how-to {
   font-size: clamp(0.65rem, 1.8vw, 0.85rem);
   color: #555;
   text-align: center;
@@ -110,7 +110,7 @@ canvas {
 
 /* ─── Settings Panel ─── */
 
-.settings-panel {
+.dodgeblitz-root .settings-panel {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -119,29 +119,29 @@ canvas {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
   max-width: 360px;
-  width: 90vw;
+  width: min(92%, 360px);
 }
 
-.setting-row {
+.dodgeblitz-root .setting-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
 
-.setting-label {
+.dodgeblitz-root .setting-label {
   font-size: clamp(0.7rem, 2vw, 0.85rem);
   color: #aaa;
   white-space: nowrap;
   min-width: 90px;
 }
 
-.setting-options {
+.dodgeblitz-root .setting-options {
   display: flex;
   gap: 4px;
 }
 
-.setting-btn {
+.dodgeblitz-root .setting-btn {
   padding: 4px 10px;
   font-size: clamp(0.6rem, 1.8vw, 0.75rem);
   font-family: inherit;
@@ -155,12 +155,12 @@ canvas {
   text-transform: uppercase;
 }
 
-.setting-btn:hover {
+.dodgeblitz-root .setting-btn:hover {
   color: #aaa;
   border-color: #555;
 }
 
-.setting-btn.active {
+.dodgeblitz-root .setting-btn.active {
   color: #fff;
   border-color: #7af;
   background: rgba(119, 170, 255, 0.15);

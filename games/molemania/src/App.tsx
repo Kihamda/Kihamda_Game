@@ -108,10 +108,20 @@ function loadSettings(): GameSettings {
     if (raw) {
       const p = JSON.parse(raw);
       return {
-        gameDuration: (DURATION_OPTIONS as readonly number[]).includes(p.gameDuration) ? p.gameDuration : DEFAULT_SETTINGS.gameDuration,
-        holeCount: (HOLE_OPTIONS as readonly number[]).includes(p.holeCount) ? p.holeCount : DEFAULT_SETTINGS.holeCount,
-        speed: SPEED_OPTIONS.includes(p.speed) ? p.speed : DEFAULT_SETTINGS.speed,
-        goldenRate: GOLDEN_OPTIONS.includes(p.goldenRate) ? p.goldenRate : DEFAULT_SETTINGS.goldenRate,
+        gameDuration: (DURATION_OPTIONS as readonly number[]).includes(
+          p.gameDuration,
+        )
+          ? p.gameDuration
+          : DEFAULT_SETTINGS.gameDuration,
+        holeCount: (HOLE_OPTIONS as readonly number[]).includes(p.holeCount)
+          ? p.holeCount
+          : DEFAULT_SETTINGS.holeCount,
+        speed: SPEED_OPTIONS.includes(p.speed)
+          ? p.speed
+          : DEFAULT_SETTINGS.speed,
+        goldenRate: GOLDEN_OPTIONS.includes(p.goldenRate)
+          ? p.goldenRate
+          : DEFAULT_SETTINGS.goldenRate,
       };
     }
   } catch {
@@ -160,6 +170,7 @@ const App = () => {
   const spawnMoleFnRef = useRef<() => void>(() => undefined);
   const timeLeftRef = useRef(DEFAULT_SETTINGS.gameDuration);
   const endGameRef = useRef<() => void>(() => undefined);
+  const appRef = useRef<HTMLDivElement>(null);
 
   const updateSetting = useCallback(
     <K extends keyof GameSettings>(key: K, value: GameSettings[K]) => {
@@ -272,8 +283,9 @@ const App = () => {
     (idx: number, e: React.PointerEvent<HTMLDivElement>) => {
       // Capture position before React may null currentTarget
       const rect = e.currentTarget.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
+      const appRect = appRef.current?.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2 - (appRect?.left ?? 0);
+      const cy = rect.top + rect.height / 2 - (appRect?.top ?? 0);
 
       // Capture hit info from inside updater (updater runs synchronously)
       let hitPoints = 0;
@@ -384,8 +396,13 @@ const App = () => {
   const gridCols = GRID_COLS[settings.holeCount] ?? 3;
 
   return (
-    <GameShell title="Mole Mania" gameId="molemania">
-      <div className={`app${shaking ? " shake" : ""}`}>
+    <GameShell
+      title="Mole Mania"
+      gameId="molemania"
+      layout="immersive"
+      minScale={0.34}
+    >
+      <div className={`app${shaking ? " shake" : ""}`} ref={appRef}>
         {/* ── Idle screen ── */}
         {phase === "idle" && (
           <div className="screen">

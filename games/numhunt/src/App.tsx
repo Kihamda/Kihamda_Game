@@ -98,6 +98,7 @@ const App = () => {
   const rafRef = useRef<number>(0);
   const particleIdRef = useRef(0);
   const waveTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const appRef = useRef<HTMLDivElement>(null);
 
   const stopTimer = useCallback(() => {
     if (rafRef.current) {
@@ -164,7 +165,13 @@ const App = () => {
       if (gameState !== "playing") return;
 
       const rect = e.currentTarget.getBoundingClientRect();
-      addParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      const appRect = appRef.current?.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      addParticles(
+        centerX - (appRect?.left ?? 0),
+        centerY - (appRect?.top ?? 0),
+      );
 
       const expected = sequence[nextIndex];
       if (num !== expected) {
@@ -265,127 +272,135 @@ const App = () => {
 
   return (
     <GameShell title="Num Hunt" gameId="numhunt">
-      <div className="app">
-        {/* Particles layer */}
-        <div className="particles-layer" aria-hidden="true">
-          {particles.map((p) => (
-            <div
-              key={p.id}
-              className="particle"
-              style={{ left: p.x, top: p.y, background: p.color }}
-            />
-          ))}
-        </div>
-
-        <h1 className="title">Num Hunt</h1>
-
-        {/* Difficulty selector */}
-        <div className="difficulty-row" role="group" aria-label="難易度選択">
-          {DIFFICULTIES.map((d) => (
-            <button
-              key={d}
-              className={`diff-btn${difficulty === d ? " active" : ""}`}
-              onClick={() => handleChangeDifficulty(d)}
-              disabled={gameState === "playing"}
-              aria-label={`${d}: ${DIFF_CONFIG[d].description}`}
-            >
-              <span className="diff-label">{d}</span>
-              <span className="diff-desc">{DIFF_CONFIG[d].description}</span>
-            </button>
-          ))}
-        </div>
-
-        {/* Timer */}
-        <div className="timer-area">
-          <div
-            className={`timer${gameState === "cleared" ? " timer--cleared" : ""}`}
-          >
-            {formatTime(elapsed)}
+      <div className="numhunt-root">
+        <div className="app" ref={appRef}>
+          {/* Particles layer */}
+          <div className="particles-layer" aria-hidden="true">
+            {particles.map((p) => (
+              <div
+                key={p.id}
+                className="particle"
+                style={{ left: p.x, top: p.y, background: p.color }}
+              />
+            ))}
           </div>
-          <div className="timer-sub">
-            {penalty > 0 && (
-              <span className="penalty">ペナルティ +{penalty.toFixed(1)}s</span>
-            )}
-            {timeDiff !== null && (
-              <span
-                className={`time-diff${timeDiff < 0 ? " ahead" : " behind"}`}
-              >
-                ベストより {timeDiff >= 0 ? "+" : ""}
-                {(timeDiff / 1000).toFixed(2)}秒
-              </span>
-            )}
-            {currentBest !== undefined && gameState !== "playing" && (
-              <span className="best-label">
-                ベスト: {formatTime(currentBest)}
-              </span>
-            )}
-          </div>
-        </div>
 
-        {/* Clear banner */}
-        {gameState === "cleared" && (
-          <div className="clear-banner">
-            <div className="clear-text">CLEAR!</div>
-            {isNewRecord && <div className="new-record">NEW RECORD!</div>}
-          </div>
-        )}
+          <h1 className="title">Num Hunt</h1>
 
-        {/* Controls */}
-        <div className="controls">
-          {gameState !== "playing" ? (
-            <button className="start-btn" onClick={startGame}>
-              {gameState === "cleared" ? "もう一度" : "スタート"}
-            </button>
-          ) : (
-            <button className="stop-btn" onClick={handleStop}>
-              やめる
-            </button>
-          )}
-          <label className="hint-toggle">
-            <input
-              type="checkbox"
-              checked={showHint}
-              onChange={(e) => setShowHint(e.target.checked)}
-            />
-            次の数字を表示
-          </label>
-        </div>
-
-        {/* Next hint */}
-        {showHint && gameState === "playing" && nextNum !== undefined && (
-          <div className="next-hint">
-            次: <span className="next-num">{nextNum}</span>
-            <span className="next-progress">
-              {nextIndex}/{sequence.length}
-            </span>
-          </div>
-        )}
-
-        {/* Grid */}
-        <div className="grid" style={{ "--cols": cols } as React.CSSProperties}>
-          {grid.map((num) => {
-            const isTappedPlaying = gameState === "playing" && tapped.has(num);
-            const isWave = clearWave.has(num);
-            const isShaking = shakeNum === num;
-            return (
+          {/* Difficulty selector */}
+          <div className="difficulty-row" role="group" aria-label="難易度選択">
+            {DIFFICULTIES.map((d) => (
               <button
-                key={num}
-                className={[
-                  "cell",
-                  isTappedPlaying ? "cell--faded" : "",
-                  isWave ? "cell--wave" : "",
-                  isShaking ? "cell--shake" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                onClick={(e) => handleTap(num, e)}
-                disabled={isTappedPlaying || gameState !== "playing"}
-                aria-label={`数字 ${num}`}
+                key={d}
+                className={`diff-btn${difficulty === d ? " active" : ""}`}
+                onClick={() => handleChangeDifficulty(d)}
+                disabled={gameState === "playing"}
+                aria-label={`${d}: ${DIFF_CONFIG[d].description}`}
               >
-                {num}
+                <span className="diff-label">{d}</span>
+                <span className="diff-desc">{DIFF_CONFIG[d].description}</span>
               </button>
-            );
-          })}
+            ))}
+          </div>
+
+          {/* Timer */}
+          <div className="timer-area">
+            <div
+              className={`timer${gameState === "cleared" ? " timer--cleared" : ""}`}
+            >
+              {formatTime(elapsed)}
+            </div>
+            <div className="timer-sub">
+              {penalty > 0 && (
+                <span className="penalty">
+                  ペナルティ +{penalty.toFixed(1)}s
+                </span>
+              )}
+              {timeDiff !== null && (
+                <span
+                  className={`time-diff${timeDiff < 0 ? " ahead" : " behind"}`}
+                >
+                  ベストより {timeDiff >= 0 ? "+" : ""}
+                  {(timeDiff / 1000).toFixed(2)}秒
+                </span>
+              )}
+              {currentBest !== undefined && gameState !== "playing" && (
+                <span className="best-label">
+                  ベスト: {formatTime(currentBest)}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Clear banner */}
+          {gameState === "cleared" && (
+            <div className="clear-banner">
+              <div className="clear-text">CLEAR!</div>
+              {isNewRecord && <div className="new-record">NEW RECORD!</div>}
+            </div>
+          )}
+
+          {/* Controls */}
+          <div className="controls">
+            {gameState !== "playing" ? (
+              <button className="start-btn" onClick={startGame}>
+                {gameState === "cleared" ? "もう一度" : "スタート"}
+              </button>
+            ) : (
+              <button className="stop-btn" onClick={handleStop}>
+                やめる
+              </button>
+            )}
+            <label className="hint-toggle">
+              <input
+                type="checkbox"
+                checked={showHint}
+                onChange={(e) => setShowHint(e.target.checked)}
+              />
+              次の数字を表示
+            </label>
+          </div>
+
+          {/* Next hint */}
+          {showHint && gameState === "playing" && nextNum !== undefined && (
+            <div className="next-hint">
+              次: <span className="next-num">{nextNum}</span>
+              <span className="next-progress">
+                {nextIndex}/{sequence.length}
+              </span>
+            </div>
+          )}
+
+          {/* Grid */}
+          <div
+            className="grid"
+            style={{ "--cols": cols } as React.CSSProperties}
+          >
+            {grid.map((num) => {
+              const isTappedPlaying =
+                gameState === "playing" && tapped.has(num);
+              const isWave = clearWave.has(num);
+              const isShaking = shakeNum === num;
+              return (
+                <button
+                  key={num}
+                  className={[
+                    "cell",
+                    isTappedPlaying ? "cell--faded" : "",
+                    isWave ? "cell--wave" : "",
+                    isShaking ? "cell--shake" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  onClick={(e) => handleTap(num, e)}
+                  disabled={isTappedPlaying || gameState !== "playing"}
+                  aria-label={`数字 ${num}`}
+                >
+                  {num}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </GameShell>
