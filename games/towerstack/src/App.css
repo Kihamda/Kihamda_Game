@@ -1,0 +1,273 @@
+.towerstack-container {
+  width: 500px;
+  height: 700px;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  overflow: hidden;
+  color: #fff;
+  user-select: none;
+}
+
+/* ヘッダー */
+.towerstack-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.towerstack-score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.towerstack-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.towerstack-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ゲームエリア */
+.towerstack-game-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.02) 50%, 
+    rgba(255, 255, 255, 0.05) 100%
+  );
+}
+
+.towerstack-game-inner {
+  position: absolute;
+  width: 400px;
+  height: 600px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: transform 0.3s ease-out;
+}
+
+/* ブロック */
+.towerstack-block {
+  position: absolute;
+  border-radius: 4px;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s;
+}
+
+.towerstack-block--moving {
+  animation: blockPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes blockPulse {
+  0%, 100% {
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+      0 0 20px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+      0 0 30px rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* パーフェクト表示 */
+.towerstack-perfect {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  font-weight: 800;
+  color: #FFD700;
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.8),
+    0 0 20px rgba(255, 215, 0, 0.5);
+  animation: perfectPop 0.5s ease-out;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.towerstack-streak {
+  display: block;
+  font-size: 24px;
+  margin-top: 8px;
+}
+
+@keyframes perfectPop {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* オーバーレイ */
+.towerstack-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 20;
+}
+
+.towerstack-overlay--win {
+  background: linear-gradient(180deg, 
+    rgba(76, 175, 80, 0.9) 0%, 
+    rgba(0, 0, 0, 0.9) 100%
+  );
+}
+
+.towerstack-title {
+  font-size: 48px;
+  font-weight: 800;
+  margin: 0 0 16px;
+  background: linear-gradient(135deg, #FF6B6B 0%, #FFD700 50%, #4CAF50 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.towerstack-instruction {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 32px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.towerstack-btn {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 16px 48px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+}
+
+.towerstack-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+}
+
+.towerstack-btn:active {
+  transform: translateY(0);
+}
+
+.towerstack-hint {
+  margin-top: 16px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* 結果画面 */
+.towerstack-result-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: #FF6B6B;
+}
+
+.towerstack-overlay--win .towerstack-result-title {
+  color: #FFD700;
+}
+
+.towerstack-result-score {
+  font-size: 72px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+
+.towerstack-result-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 24px;
+}
+
+.towerstack-stats {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.towerstack-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 16px 24px;
+  border-radius: 12px;
+}
+
+.towerstack-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.towerstack-stat-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.towerstack-congrats {
+  font-size: 18px;
+  color: #fff;
+  margin: 0 0 24px;
+}
+
+/* フッター */
+.towerstack-footer {
+  padding: 12px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.towerstack-footer p {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}

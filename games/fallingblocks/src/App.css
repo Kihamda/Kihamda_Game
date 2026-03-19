@@ -1,0 +1,184 @@
+/* Falling Blocks Styles */
+
+.fallingblocks-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 12px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.fallingblocks-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 12px;
+  z-index: 100;
+  color: #fff;
+  text-align: center;
+}
+
+.fallingblocks-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #00f5ff, #ff6b6b, #ffd43b, #4caf50);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.fallingblocks-instructions {
+  font-size: 1rem;
+  color: #aaa;
+  margin-bottom: 2rem;
+}
+
+.fallingblocks-final-score {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.fallingblocks-btn {
+  padding: 12px 32px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.fallingblocks-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.fallingblocks-game-area {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.fallingblocks-info-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 110px;
+}
+
+.fallingblocks-info-box {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.fallingblocks-info-label {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.fallingblocks-info-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.fallingblocks-next-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fallingblocks-board {
+  position: relative;
+  background: rgba(0, 0, 0, 0.5);
+  border: 3px solid #444;
+  border-radius: 4px;
+  touch-action: none;
+}
+
+.fallingblocks-cell {
+  box-sizing: border-box;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.fallingblocks-cell--empty {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fallingblocks-cell--ghost {
+  background: transparent;
+  border: 2px dashed;
+  opacity: 0.4;
+}
+
+.fallingblocks-mobile-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.fallingblocks-control-btn {
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  touch-action: manipulation;
+}
+
+.fallingblocks-control-btn:hover,
+.fallingblocks-control-btn:active {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.fallingblocks-control-btn--drop {
+  background: rgba(102, 126, 234, 0.4);
+}
+
+@media (max-width: 520px) {
+  .fallingblocks-container {
+    width: 100% !important;
+    height: auto !important;
+    padding: 10px;
+  }
+
+  .fallingblocks-game-area {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .fallingblocks-info-panel {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-width: auto;
+  }
+
+  .fallingblocks-info-box {
+    padding: 8px 12px;
+  }
+}

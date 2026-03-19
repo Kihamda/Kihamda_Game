@@ -1,695 +1,255 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { GameShell } from "@shared/components/GameShell";
 import "./App.css";
-import { useAudio, useHighScore, GameShell } from "../../../src/shared";
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-type TargetType = "normal" | "golden" | "bomb";
-type GamePhase = "idle" | "playing" | "gameover";
-type SoundType = "hit" | "perfect" | "golden" | "bomb" | "miss";
 
 interface Target {
-  id: string;
-  x: number; // % from left
-  y: number; // % from top
-  type: TargetType;
-  spawnedAt: number;
-  lifetime: number; // ms until fully shrunk
-  baseSize: number; // initial diameter px
-}
-
-interface Particle {
-  id: string;
+  id: number;
   x: number;
   y: number;
-  angle: number; // degrees
-  color: string;
-  delay: number; // animation-delay seconds
+  size: number;
+  createdAt: number;
 }
 
-interface FloatingText {
-  id: string;
-  text: string;
-  x: number;
-  y: number;
-  color: string;
-  isPerfect: boolean;
+type Phase = "ready" | "playing" | "ended";
+
+const GAME_WIDTH = 800;
+const GAME_HEIGHT = 600;
+const GAME_DURATION = 30000; // 30秒
+const TARGET_LIFETIME = 2000; // 2秒で自動消滅
+const BASE_TARGET_SIZE = 80;
+const MIN_TARGET_SIZE = 30;
+const SPAWN_INTERVAL_INITIAL = 1200;
+const SPAWN_INTERVAL_MIN = 400;
+
+function clamp(val: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, val));
 }
 
-/** Target enriched with its pre-computed size for the current render frame */
-interface DisplayTarget extends Target {
-  currentSizePx: number;
+function randomPosition(size: number): { x: number; y: number } {
+  const margin = size / 2 + 10;
+  return {
+    x: clamp(Math.random() * GAME_WIDTH, margin, GAME_WIDTH - margin),
+    y: clamp(Math.random() * GAME_HEIGHT, margin, GAME_HEIGHT - margin),
+  };
 }
 
-interface MutableGameState {
-  targets: Target[];
-  score: number;
-  misses: number;
-  timeLeft: number;
-  combo: number;
-  lastSpawnAt: number;
-  nextSpawnInterval: number;
-  timeSinceLastTick: number;
-  elapsedMs: number;
-}
+export default function App() {
+  const [phase, setPhase] = useState<Phase>("ready");
+  const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
+  const [targets, setTargets] = useState<Target[]>([]);
+  const [combo, setCombo] = useState(0);
+  const [currentSize, setCurrentSize] = useState(BASE_TARGET_SIZE);
+  const [hits, setHits] = useState(0);
+  const [misses, setMisses] = useState(0);
 
-interface DisplayState {
-  phase: GamePhase;
-  targets: DisplayTarget[];
-  score: number;
-  misses: number;
-  timeLeft: number;
-  combo: number;
-  particles: Particle[];
-  floatingTexts: FloatingText[];
-  shaking: boolean;
-  highScore: number;
-}
+  const nextIdRef = useRef(1);
+  const gameStartTimeRef = useRef(0);
+  const lastSpawnRef = useRef(0);
+  const animationFrameRef = useRef(0);
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
-const MAX_MISSES = 5;
-const GAME_DURATION = 60;
-const BASE_SIZE = 80;
-
-// ─── Settings ─────────────────────────────────────────────────────────────────
-
-interface GameSettings {
-  gameDuration: 30 | 60 | 90 | 120;
-  maxMisses: 3 | 5 | -1;
-  baseSize: 55 | 80 | 110;
-  spawnMode: "calm" | "normal" | "busy";
-}
-
-const DEFAULT_SETTINGS: GameSettings = {
-  gameDuration: GAME_DURATION,
-  maxMisses: MAX_MISSES,
-  baseSize: BASE_SIZE,
-  spawnMode: "normal",
-};
-
-const SETTINGS_KEY = "taptarget_settings";
-
-function loadSettings(): GameSettings {
-  try {
-    const raw = localStorage.getItem(SETTINGS_KEY);
-    if (!raw) return DEFAULT_SETTINGS;
-    return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
-  } catch {
-    return DEFAULT_SETTINGS;
-  }
-}
-
-function saveSettings(s: GameSettings): void {
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
-}
-
-function uid(): string {
-  return Math.random().toString(36).slice(2, 9);
-}
-
-function pickType(): TargetType {
-  const r = Math.random();
-  if (r < 0.1) return "bomb";
-  if (r < 0.25) return "golden";
-  return "normal";
-}
-
-/** 0 = just expired, 1 = just spawned */
-function sizeRatio(target: Target, now: number): number {
-  return Math.max(0, 1 - (now - target.spawnedAt) / target.lifetime);
-}
-
-function currentSize(target: Target, now: number): number {
-  return target.baseSize * sizeRatio(target, now);
-}
-
-// ─── Component ────────────────────────────────────────────────────────────────
-
-const App = () => {
-  const { playTone, playArpeggio, playSweep, playNoise, playClick } =
-    useAudio();
-  const { best: savedHighScore, update: updateHighScore } =
-    useHighScore("taptarget");
-
-  const [settings, setSettings] = useState<GameSettings>(loadSettings);
-  const updateSetting = useCallback(
-    (patch: Partial<GameSettings>) => {
-      setSettings((prev) => {
-        const next = { ...prev, ...patch };
-        saveSettings(next);
-        return next;
-      });
-    },
-    [],
-  );
-
-  const playSound = useCallback(
-    (type: SoundType) => {
-      switch (type) {
-        case "hit":
-          playClick();
-          break;
-        case "perfect":
-          playArpeggio([1047, 1319], 0.18, "sine", 0.3, 0.09);
-          break;
-        case "golden":
-          playSweep(1200, 2400, 0.2, "sine", 0.3);
-          break;
-        case "bomb":
-          playNoise(0.35, 0.5, 400);
-          break;
-        case "miss":
-          playTone(220, 0.22, "sine", 0.15);
-          break;
-      }
-    },
-    [playClick, playArpeggio, playSweep, playNoise, playTone],
-  );
-
-  // ── Mutable game state in ref (no stale-closure issues)
-  const gsRef = useRef<MutableGameState>({
-    targets: [],
-    score: 0,
-    misses: 0,
-    timeLeft: GAME_DURATION,
-    combo: 0,
-    lastSpawnAt: 0,
-    nextSpawnInterval: 1200,
-    timeSinceLastTick: 0,
-    elapsedMs: 0,
-  });
-
-  const phaseRef = useRef<GamePhase>("idle");
-  const rafRef = useRef<number>(0);
-  const lastTsRef = useRef<number>(0);
-  const particlesRef = useRef<Particle[]>([]);
-  const textsRef = useRef<FloatingText[]>([]);
-  const shakingRef = useRef(false);
-  const shakeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // ── React display state (drives renders)
-  const [display, setDisplay] = useState<DisplayState>({
-    phase: "idle",
-    targets: [] as DisplayTarget[],
-    score: 0,
-    misses: 0,
-    timeLeft: GAME_DURATION,
-    combo: 0,
-    particles: [],
-    floatingTexts: [],
-    shaking: false,
-    highScore: savedHighScore,
-  });
-
-  // ── Shake helper
-  const triggerShake = useCallback(() => {
-    shakingRef.current = true;
-    if (shakeTimerRef.current) clearTimeout(shakeTimerRef.current);
-    shakeTimerRef.current = setTimeout(() => {
-      shakingRef.current = false;
-    }, 500);
+  const getSpawnInterval = useCallback((elapsed: number) => {
+    const progress = elapsed / GAME_DURATION;
+    return Math.max(
+      SPAWN_INTERVAL_MIN,
+      SPAWN_INTERVAL_INITIAL - (SPAWN_INTERVAL_INITIAL - SPAWN_INTERVAL_MIN) * progress
+    );
   }, []);
 
-  // ── Particle spawn
-  const spawnParticles = useCallback(
-    (x: number, y: number, type: TargetType) => {
-      const palette =
-        type === "golden"
-          ? ["#FFD700", "#FFA500", "#FFEC5C"]
-          : type === "bomb"
-            ? ["#FF4500", "#FF6347", "#DC143C"]
-            : ["#FF6B6B", "#FFFFFF", "#FF9F43"];
-      const newOnes: Particle[] = Array.from({ length: 8 }, (_, i) => ({
-        id: uid(),
-        x,
-        y,
-        angle: i * 45,
-        color: palette[i % palette.length],
-        delay: i * 0.04,
-      }));
-      particlesRef.current = [...particlesRef.current, ...newOnes];
-      setTimeout(() => {
-        const ids = new Set(newOnes.map((p) => p.id));
-        particlesRef.current = particlesRef.current.filter(
-          (p) => !ids.has(p.id),
-        );
-      }, 900);
-    },
-    [],
-  );
+  const getTargetSize = useCallback((elapsed: number) => {
+    const progress = elapsed / GAME_DURATION;
+    return Math.max(MIN_TARGET_SIZE, BASE_TARGET_SIZE - (BASE_TARGET_SIZE - MIN_TARGET_SIZE) * progress);
+  }, []);
 
-  // ── Floating text spawn
-  const addText = useCallback(
-    (text: string, x: number, y: number, color: string, isPerfect = false) => {
-      const ft: FloatingText = { id: uid(), text, x, y, color, isPerfect };
-      textsRef.current = [...textsRef.current, ft];
-      setTimeout(() => {
-        textsRef.current = textsRef.current.filter((f) => f.id !== ft.id);
-      }, 1100);
-    },
-    [],
-  );
-
-  // ── sync helper (called every RAF frame)
-  const syncDisplay = useCallback(() => {
-    const gs = gsRef.current;
-    const now = performance.now();
-    setDisplay({
-      phase: "playing",
-      targets: gs.targets.map((t) => ({
-        ...t,
-        currentSizePx: currentSize(t, now),
-      })),
-      score: gs.score,
-      misses: gs.misses,
-      timeLeft: gs.timeLeft,
-      combo: gs.combo,
-      particles: [...particlesRef.current],
-      floatingTexts: [...textsRef.current],
-      shaking: shakingRef.current,
-      highScore: savedHighScore,
-    });
-  }, [savedHighScore]);
-
-  // ── Game over
-  const endGame = useCallback(() => {
-    phaseRef.current = "gameover";
-    cancelAnimationFrame(rafRef.current);
-    triggerShake();
-    const gs = gsRef.current;
-    updateHighScore(gs.score);
-    setDisplay((d) => ({
-      ...d,
-      phase: "gameover",
-      score: gs.score,
-      highScore: Math.max(savedHighScore, gs.score),
-      shaking: true,
-    }));
-  }, [triggerShake, updateHighScore, savedHighScore]);
-
-  // ── Game loop (useCallback so deps are explicit; loopRef keeps the latest version)
-  const loopRef = useRef<(ts: number) => void>(() => {
-    /* no-op initial */
-  });
-
-  const gameLoopFn = useCallback(
-    (timestamp: number) => {
-      if (phaseRef.current !== "playing") return;
-
-      if (lastTsRef.current === 0) lastTsRef.current = timestamp;
-      const dt = Math.min(timestamp - lastTsRef.current, 100);
-      lastTsRef.current = timestamp;
-
-      const gs = gsRef.current;
-      const now = performance.now();
-      gs.elapsedMs += dt;
-      gs.timeSinceLastTick += dt;
-
-      // 1-second countdown
-      if (gs.timeSinceLastTick >= 1000) {
-        gs.timeSinceLastTick -= 1000;
-        gs.timeLeft -= 1;
-        if (gs.timeLeft <= 0) {
-          endGame();
-          return;
-        }
-      }
-
-      // Expire targets → miss
-      const expired = gs.targets.filter((t) => sizeRatio(t, now) <= 0);
-      if (expired.length > 0) {
-        gs.targets = gs.targets.filter((t) => sizeRatio(t, now) > 0);
-        gs.misses += expired.length;
-        gs.combo = 0;
-        for (let i = 0; i < expired.length; i++) playSound("miss");
-        if (settings.maxMisses !== -1 && gs.misses >= settings.maxMisses) {
-          endGame();
-          return;
-        }
-      }
-
-      // Spawn
-      const maxTargets =
-        settings.spawnMode === "calm"
-          ? 2
-          : settings.spawnMode === "busy"
-            ? 7
-            : gs.elapsedMs > 30_000
-              ? 5
-              : 3;
-      if (
-        gs.targets.length < maxTargets &&
-        now - gs.lastSpawnAt >= gs.nextSpawnInterval
-      ) {
-        gs.targets = [
-          ...gs.targets,
-          {
-            id: uid(),
-            x: 10 + Math.random() * 80,
-            y: 18 + Math.random() * 67,
-            type: pickType(),
-            spawnedAt: now,
-            lifetime: 1000 + Math.random() * 1000,
-            baseSize: settings.baseSize,
-          },
-        ];
-        gs.lastSpawnAt = now;
-        gs.nextSpawnInterval = 700 + Math.random() * 700;
-      }
-
-      syncDisplay();
-      // Recurse via ref to always use the latest closure
-      rafRef.current = requestAnimationFrame((ts) => loopRef.current(ts));
-    },
-    [endGame, playSound, syncDisplay, settings],
-  );
-
-  // Keep loopRef up-to-date after each render (avoids stale closure in RAF)
-  useEffect(() => {
-    loopRef.current = gameLoopFn;
-  }, [gameLoopFn]);
-
-  // ── Start / stop RAF based on phase
-  useEffect(() => {
-    if (display.phase !== "playing") return;
-    lastTsRef.current = 0;
-    rafRef.current = requestAnimationFrame((ts) => loopRef.current(ts));
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [display.phase]);
-
-  // ── Target click handler
-  const handleTargetClick = useCallback(
-    (targetId: string) => {
-      // ensure AudioContext on first user gesture
-      const gs = gsRef.current;
-      if (phaseRef.current !== "playing") return;
-
-      const target = gs.targets.find((t) => t.id === targetId);
-      if (!target) return; // already expired or removed
-
-      const now = performance.now();
-      const ratio = sizeRatio(target, now);
-      const pct = ratio * 100;
-
-      // Remove from active targets
-      gs.targets = gs.targets.filter((t) => t.id !== targetId);
-
-      let baseScore: number;
-      let isPerfect = false;
-      let sound: SoundType = "hit";
-
-      if (target.type === "bomb") {
-        baseScore = -30;
-        sound = "bomb";
-        triggerShake();
-        addText("-30", target.x, target.y, "#FF4500");
-      } else {
-        if (pct > 60) {
-          baseScore = 10;
-        } else if (pct > 30) {
-          baseScore = 20;
-        } else {
-          baseScore = 50;
-          isPerfect = true;
-        }
-
-        if (target.type === "golden") {
-          baseScore *= 3;
-          sound = "golden";
-        } else if (isPerfect) {
-          sound = "perfect";
-        }
-
-        gs.combo += 1;
-      }
-
-      const mult =
-        target.type !== "bomb"
-          ? Math.min(3, 1 + Math.floor(gs.combo / 5) * 0.5)
-          : 1;
-      const finalScore = Math.round(baseScore * mult);
-      gs.score = Math.max(0, gs.score + finalScore);
-
-      playSound(sound);
-      spawnParticles(target.x, target.y, target.type);
-
-      if (isPerfect) {
-        addText("PERFECT!", target.x, target.y - 6, "#FFD700", true);
-      } else if (target.type !== "bomb") {
-        const label =
-          target.type === "golden" ? `⭐+${finalScore}` : `+${finalScore}`;
-        addText(
-          label,
-          target.x,
-          target.y,
-          target.type === "golden" ? "#FFD700" : "#7BED9F",
-        );
-      }
-
-      if (gs.combo > 0 && gs.combo % 5 === 0) {
-        addText(`${gs.combo} COMBO!`, 50, 45, "#FF6B81");
-      }
-    },
-    [triggerShake, addText, playSound, spawnParticles],
-  );
-
-  // ── Start game
-  const startGame = useCallback(() => {
-    particlesRef.current = [];
-    textsRef.current = [];
-    shakingRef.current = false;
-    phaseRef.current = "playing";
-    gsRef.current = {
-      targets: [],
-      score: 0,
-      misses: 0,
-      timeLeft: settings.gameDuration,
-      combo: 0,
-      lastSpawnAt: 0,
-      nextSpawnInterval: 1200,
-      timeSinceLastTick: 0,
-      elapsedMs: 0,
+  const spawnTarget = useCallback((size: number) => {
+    const { x, y } = randomPosition(size);
+    const newTarget: Target = {
+      id: nextIdRef.current++,
+      x,
+      y,
+      size,
+      createdAt: Date.now(),
     };
-    setDisplay((d) => ({
-      ...d,
-      phase: "playing",
-      targets: [],
-      score: 0,
-      misses: 0,
-      timeLeft: settings.gameDuration,
-      combo: 0,
-      particles: [],
-      floatingTexts: [],
-      shaking: false,
-    }));
-  }, [settings]);
+    setTargets((prev) => [...prev, newTarget]);
+  }, []);
 
-  // ── Render ─────────────────────────────────────────────────────────────────
-  const {
-    phase,
-    targets,
-    score,
-    misses,
-    timeLeft,
-    combo,
-    particles,
-    floatingTexts,
-    shaking,
-    highScore,
-  } = display;
+  const startGame = useCallback(() => {
+    setPhase("playing");
+    setScore(0);
+    setTimeLeft(GAME_DURATION);
+    setTargets([]);
+    setCombo(0);
+    setCurrentSize(BASE_TARGET_SIZE);
+    setHits(0);
+    setMisses(0);
+    nextIdRef.current = 1;
+    gameStartTimeRef.current = Date.now();
+    lastSpawnRef.current = 0;
+  }, []);
 
-  const isNewRecord = phase === "gameover" && score >= highScore && score > 0;
+  const handleTargetTap = useCallback((targetId: number, size: number) => {
+    setTargets((prev) => prev.filter((t) => t.id !== targetId));
+    
+    // 小さいターゲットほど高得点
+    const sizeBonus = Math.ceil((BASE_TARGET_SIZE - size) / 5) + 1;
+    const comboBonus = Math.min(combo + 1, 10);
+    const points = 10 * sizeBonus * comboBonus;
+    
+    setScore((prev) => prev + points);
+    setCombo((prev) => prev + 1);
+    setHits((prev) => prev + 1);
+  }, [combo]);
+
+  const handleMiss = useCallback(() => {
+    setCombo(0);
+    setMisses((prev) => prev + 1);
+  }, []);
+
+  const handleAreaClick = useCallback(
+    (e: React.MouseEvent | React.TouchEvent) => {
+      if (phase !== "playing") return;
+      
+      const target = e.target as HTMLElement;
+      if (!target.classList.contains("tt-target")) {
+        handleMiss();
+      }
+    },
+    [phase, handleMiss]
+  );
+
+  // ゲームループ
+  useEffect(() => {
+    if (phase !== "playing") return;
+
+    const gameLoop = () => {
+      const now = Date.now();
+      const elapsed = now - gameStartTimeRef.current;
+      const remaining = GAME_DURATION - elapsed;
+
+      if (remaining <= 0) {
+        setPhase("ended");
+        setTimeLeft(0);
+        return;
+      }
+
+      setTimeLeft(remaining);
+
+      // ターゲットサイズ更新
+      const size = getTargetSize(elapsed);
+      setCurrentSize(size);
+
+      // 期限切れターゲット削除
+      setTargets((prev) =>
+        prev.filter((t) => now - t.createdAt < TARGET_LIFETIME)
+      );
+
+      // スポーン処理
+      const spawnInterval = getSpawnInterval(elapsed);
+      if (now - lastSpawnRef.current > spawnInterval) {
+        spawnTarget(size);
+        lastSpawnRef.current = now;
+      }
+
+      animationFrameRef.current = requestAnimationFrame(gameLoop);
+    };
+
+    // 初回スポーン
+    spawnTarget(currentSize);
+    lastSpawnRef.current = Date.now();
+    animationFrameRef.current = requestAnimationFrame(gameLoop);
+
+    return () => {
+      cancelAnimationFrame(animationFrameRef.current);
+    };
+  }, [phase, getSpawnInterval, getTargetSize, spawnTarget, currentSize]);
+
+  const accuracy = hits + misses > 0 ? Math.round((hits / (hits + misses)) * 100) : 0;
 
   return (
-    <GameShell title="Tap Target" gameId="taptarget">
-      <div className={`tt-app${shaking ? " shake" : ""}`}>
-        {phase === "idle" && (
-          <div className="tt-overlay">
-            <h1 className="tt-title">Tap Target</h1>
-            <p className="tt-subtitle">縮むターゲットをすばやくタップ</p>
-            <ul className="tt-rules">
-              <li>🔴 通常: +10 / +20 / +50pts</li>
-              <li>⭐ ゴールデン: スコア×3</li>
-              <li>💣 爆弾: -30pts（放置OK）</li>
-              <li>
-                {settings.maxMisses === -1
-                  ? "ミス無制限（スコア勝負）"
-                  : `${settings.maxMisses}ミスでゲームオーバー`}
-              </li>
-            </ul>
+    <GameShell gameId="taptarget" layout="immersive">
+      <div
+        className="tt-container"
+        onClick={handleAreaClick}
+        onTouchStart={handleAreaClick}
+      >
+        {/* ヘッダー */}
+        <div className="tt-header">
+          <div className="tt-stat">
+            <span className="tt-stat-label">SCORE</span>
+            <span className="tt-stat-value">{score.toLocaleString()}</span>
+          </div>
+          <div className="tt-stat tt-stat--time">
+            <span className="tt-stat-label">TIME</span>
+            <span className="tt-stat-value">{(timeLeft / 1000).toFixed(1)}s</span>
+          </div>
+          <div className="tt-stat">
+            <span className="tt-stat-label">COMBO</span>
+            <span className={`tt-stat-value ${combo >= 5 ? "tt-combo-fire" : ""}`}>
+              x{combo}
+            </span>
+          </div>
+        </div>
 
-            <div className="tt-settings">
-              <div className="tt-setting-row">
-                <span className="tt-setting-label">時間</span>
-                <div className="tt-btn-group">
-                  {([30, 60, 90, 120] as const).map((v) => (
-                    <button
-                      key={v}
-                      className={`tt-opt${settings.gameDuration === v ? " active" : ""}`}
-                      onClick={() => updateSetting({ gameDuration: v })}
-                    >
-                      {v}s
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="tt-setting-row">
-                <span className="tt-setting-label">ミス</span>
-                <div className="tt-btn-group">
-                  {([3, 5, -1] as const).map((v) => (
-                    <button
-                      key={v}
-                      className={`tt-opt${settings.maxMisses === v ? " active" : ""}`}
-                      onClick={() => updateSetting({ maxMisses: v })}
-                    >
-                      {v === -1 ? "∞" : `${v}回`}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="tt-setting-row">
-                <span className="tt-setting-label">サイズ</span>
-                <div className="tt-btn-group">
-                  {([110, 80, 55] as const).map((v) => (
-                    <button
-                      key={v}
-                      className={`tt-opt${settings.baseSize === v ? " active" : ""}`}
-                      onClick={() => updateSetting({ baseSize: v })}
-                    >
-                      {v === 110 ? "大" : v === 80 ? "普通" : "小"}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="tt-setting-row">
-                <span className="tt-setting-label">出現数</span>
-                <div className="tt-btn-group">
-                  {(["calm", "normal", "busy"] as const).map((v) => (
-                    <button
-                      key={v}
-                      className={`tt-opt${settings.spawnMode === v ? " active" : ""}`}
-                      onClick={() => updateSetting({ spawnMode: v })}
-                    >
-                      {v === "calm" ? "少" : v === "normal" ? "普通" : "多"}
-                    </button>
-                  ))}
-                </div>
-              </div>
+        {/* ゲームエリア */}
+        <div className="tt-game-area">
+          {phase === "ready" && (
+            <div className="tt-overlay">
+              <h1 className="tt-title">Tap Target</h1>
+              <p className="tt-desc">
+                ランダムに出現するターゲットをタップ！<br />
+                小さいほど高得点。連続タップでコンボ！
+              </p>
+              <button className="tt-start-btn" onClick={startGame}>
+                START
+              </button>
             </div>
+          )}
 
-            {highScore > 0 && (
-              <p className="tt-hs">ベストスコア: {highScore}</p>
-            )}
-            <button className="tt-btn" onClick={startGame}>
-              スタート
-            </button>
-          </div>
-        )}
+          {phase === "ended" && (
+            <div className="tt-overlay">
+              <h2 className="tt-result-title">RESULT</h2>
+              <div className="tt-result-score">{score.toLocaleString()}</div>
+              <div className="tt-result-stats">
+                <div>ヒット: {hits}</div>
+                <div>ミス: {misses}</div>
+                <div>命中率: {accuracy}%</div>
+              </div>
+              <button className="tt-start-btn" onClick={startGame}>
+                RETRY
+              </button>
+            </div>
+          )}
 
-        {phase === "gameover" && (
-          <div className="tt-overlay">
-            <h1 className="tt-title">GAME OVER</h1>
-            <p className="tt-final-score">{score} pts</p>
-            {isNewRecord && <p className="tt-new-record">✨ NEW RECORD ✨</p>}
-            <p className="tt-hs">ベストスコア: {highScore}</p>
-            <button className="tt-btn" onClick={startGame}>
-              もう一度
-            </button>
-            <button
-              className="tt-btn-link"
-              onClick={() => {
-                phaseRef.current = "idle";
-                setDisplay((d) => ({ ...d, phase: "idle" }));
-              }}
-            >
-              設定を変更する
-            </button>
-          </div>
-        )}
+          {phase === "playing" &&
+            targets.map((target) => (
+              <button
+                key={target.id}
+                className="tt-target"
+                style={{
+                  left: target.x,
+                  top: target.y,
+                  width: target.size,
+                  height: target.size,
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleTargetTap(target.id, target.size);
+                }}
+                onTouchStart={(e) => {
+                  e.stopPropagation();
+                }}
+                aria-label={`ターゲット ${target.id}`}
+              />
+            ))}
+        </div>
 
+        {/* 難易度インジケータ */}
         {phase === "playing" && (
-          <>
-            {/* HUD */}
-            <div className="tt-hud">
-              <span className="tt-hud-score">🎯 {score}</span>
-              {combo >= 2 && (
-                <span className="tt-hud-combo">×{combo} COMBO</span>
-              )}
-              <span
-                className={`tt-hud-time${timeLeft <= 10 ? " pulse-red" : ""}`}
-              >
-                ⏱ {timeLeft}s
-              </span>
-              <span className="tt-hud-misses">
-                {settings.maxMisses === -1 ? (
-                  <span className="miss-count">💀 {misses}</span>
-                ) : (
-                  Array.from({ length: settings.maxMisses }, (_, i) => (
-                    <span
-                      key={i}
-                      className={`miss-dot${i < misses ? " filled" : ""}`}
-                    >
-                      ●
-                    </span>
-                  ))
-                )}
-              </span>
-            </div>
-
-            {/* Game area */}
-            <div className="tt-field">
-              {targets.map((t) => (
-                <button
-                  key={t.id}
-                  className={`tt-target tt-target--${t.type}`}
-                  style={{
-                    left: `${t.x}%`,
-                    top: `${t.y}%`,
-                    width: `${t.currentSizePx}px`,
-                    height: `${t.currentSizePx}px`,
-                    transform: "translate(-50%, -50%)",
-                  }}
-                  onClick={() => handleTargetClick(t.id)}
-                >
-                  {t.type === "golden" ? "⭐" : t.type === "bomb" ? "💣" : ""}
-                </button>
-              ))}
-
-              {particles.map((p) => (
-                <div
-                  key={p.id}
-                  className="tt-particle"
-                  style={
-                    {
-                      left: `${p.x}%`,
-                      top: `${p.y}%`,
-                      "--pt-angle": `${p.angle}deg`,
-                      "--pt-color": p.color,
-                      animationDelay: `${p.delay}s`,
-                    } as React.CSSProperties
-                  }
-                />
-              ))}
-
-              {floatingTexts.map((ft) => (
-                <div
-                  key={ft.id}
-                  className={`tt-float${ft.isPerfect ? " tt-float--perfect" : ""}`}
-                  style={{
-                    left: `${ft.x}%`,
-                    top: `${ft.y}%`,
-                    color: ft.color,
-                  }}
-                >
-                  {ft.text}
-                </div>
-              ))}
-            </div>
-          </>
+          <div className="tt-difficulty">
+            <span>サイズ: {Math.round(currentSize)}px</span>
+          </div>
         )}
       </div>
     </GameShell>
   );
-};
-
-export default App;
+}

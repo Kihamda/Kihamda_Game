@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" fill="none">
+  <rect width="640" height="360" fill="#1a1a2e"/>
+  
+  <!-- 8x8 Color Grid -->
+  <g transform="translate(60, 40)">
+    <!-- Row 0 -->
+    <rect x="0" y="0" width="32" height="32" rx="2" fill="#e74c3c"/>
+    <rect x="34" y="0" width="32" height="32" rx="2" fill="#e74c3c"/>
+    <rect x="68" y="0" width="32" height="32" rx="2" fill="#3498db"/>
+    <rect x="102" y="0" width="32" height="32" rx="2" fill="#f1c40f"/>
+    <rect x="136" y="0" width="32" height="32" rx="2" fill="#2ecc71"/>
+    <rect x="170" y="0" width="32" height="32" rx="2" fill="#9b59b6"/>
+    <rect x="204" y="0" width="32" height="32" rx="2" fill="#e67e22"/>
+    <rect x="238" y="0" width="32" height="32" rx="2" fill="#3498db"/>
+    
+    <!-- Row 1 -->
+    <rect x="0" y="34" width="32" height="32" rx="2" fill="#e74c3c"/>
+    <rect x="34" y="34" width="32" height="32" rx="2" fill="#f1c40f"/>
+    <rect x="68" y="34" width="32" height="32" rx="2" fill="#2ecc71"/>
+    <rect x="102" y="34" width="32" height="32" rx="2" fill="#e74c3c"/>
+    <rect x="136" y="34" width="32" height="32" rx="2" fill="#3498db"/>
+    <rect x="170" y="34" width="32" height="32" rx="2" fill="#f1c40f"/>
+    <rect x="204" y="34" width="32" height="32" rx="2" fill="#9b59b6"/>
+    <rect x="238" y="34" width="32" height="32" rx="2" fill="#2ecc71"/>
+    
+    <!-- Row 2 -->
+    <rect x="0" y="68" width="32" height="32" rx="2" fill="#3498db"/>
+    <rect x="34" y="68" width="32" height="32" rx="2" fill="#2ecc71"/>
+    <rect x="68" y="68" width="32" height="32" rx="2" fill="#9b59b6"/>
+    <rect x="102" y="68" width="32" height="32" rx="2" fill="#e67e22"/>
+    <rect x="136" y="68" width="32" height="32" rx="2" fill="#e74c3c"/>
+    <rect x="170" y="68" width="32" height="32" rx="2" fill="#3498db"/>
+    <rect x="204" y="68" width="32" height="32" rx="2" fill="#f1c40f"/>
+    <rect x="238" y="68" width="32" height="32" rx="2" fill="#e74c3c"/>
+    
+    <!-- Row 3 -->
+    <rect x="0" y="102" width="32" height="32" rx="2" fill="#f1c40f"/>
+    <rect x="34" y="102" width="32" height="32" rx="2" fill="#e74c3c"/>
+    <rect x="68" y="102" width="32" height="32" rx="2" fill="#3498db"/>
+    <rect x="102" y="102" width="32" height="32" rx="2" fill="#2ecc71"/>
+    <rect x="136" y="102" width="32" height="32" rx="2" fill="#9b59b6"/>
+    <rect x="170" y="102" width="32" height="32" rx="2" fill="#e67e22"/>
+    <rect x="204" y="102" width="32" height="32" rx="2" fill="#3498db"/>
+    <rect x="238" y="102" width="32" height="32" rx="2" fill="#f1c40f"/>
+    
+    <!-- Row 4 -->
+    <rect x="0" y="136" width="32" height="32" rx="2" fill="#9b59b6"/>
+    <rect x="34" y="136" width="32" height="32" rx="2" fill="#e67e22"/>
+    <rect x="68" y="136" width="32" height="32" rx="2" fill="#e74c3c"/>
+    <rect x="102" y="136" width="32" height="32" rx="2" fill="#f1c40f"/>
+    <rect x="136" y="136" width="32" height="32" rx="2" fill="#3498db"/>
+    <rect x="170" y="136" width="32" height="32" rx="2" fill="#2ecc71"/>
+    <rect x="204" y="136" width="32" height="32" rx="2" fill="#e74c3c"/>
+    <rect x="238" y="136" width="32" height="32" rx="2" fill="#9b59b6"/>
+    
+    <!-- Row 5 -->
+    <rect x="0" y="170" width="32" height="32" rx="2" fill="#e67e22"/>
+    <rect x="34" y="170" width="32" height="32" rx="2" fill="#3498db"/>
+    <rect x="68" y="170" width="32" height="32" rx="2" fill="#f1c40f"/>
+    <rect x="102" y="170" width="32" height="32" rx="2" fill="#9b59b6"/>
+    <rect x="136" y="170" width="32" height="32" rx="2" fill="#e74c3c"/>
+    <rect x="170" y="170" width="32" height="32" rx="2" fill="#f1c40f"/>
+    <rect x="204" y="170" width="32" height="32" rx="2" fill="#2ecc71"/>
+    <rect x="238" y="170" width="32" height="32" rx="2" fill="#3498db"/>
+    
+    <!-- Row 6 -->
+    <rect x="0" y="204" width="32" height="32" rx="2" fill="#2ecc71"/>
+    <rect x="34" y="204" width="32" height="32" rx="2" fill="#f1c40f"/>
+    <rect x="68" y="204" width="32" height="32" rx="2" fill="#e67e22"/>
+    <rect x="102" y="204" width="32" height="32" rx="2" fill="#3498db"/>
+    <rect x="136" y="204" width="32" height="32" rx="2" fill="#f1c40f"/>
+    <rect x="170" y="204" width="32" height="32" rx="2" fill="#e74c3c"/>
+    <rect x="204" y="204" width="32" height="32" rx="2" fill="#9b59b6"/>
+    <rect x="238" y="204" width="32" height="32" rx="2" fill="#e67e22"/>
+    
+    <!-- Row 7 -->
+    <rect x="0" y="238" width="32" height="32" rx="2" fill="#3498db"/>
+    <rect x="34" y="238" width="32" height="32" rx="2" fill="#9b59b6"/>
+    <rect x="68" y="238" width="32" height="32" rx="2" fill="#2ecc71"/>
+    <rect x="102" y="238" width="32" height="32" rx="2" fill="#e74c3c"/>
+    <rect x="136" y="238" width="32" height="32" rx="2" fill="#e67e22"/>
+    <rect x="170" y="238" width="32" height="32" rx="2" fill="#9b59b6"/>
+    <rect x="204" y="238" width="32" height="32" rx="2" fill="#f1c40f"/>
+    <rect x="238" y="238" width="32" height="32" rx="2" fill="#2ecc71"/>
+  </g>
+  
+  <!-- Flood effect from top-left -->
+  <g transform="translate(60, 40)">
+    <rect x="0" y="0" width="32" height="32" rx="2" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+    <rect x="34" y="0" width="32" height="32" rx="2" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+    <rect x="0" y="34" width="32" height="32" rx="2" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+    <rect x="34" y="102" width="32" height="32" rx="2" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  </g>
+  
+  <!-- Color palette -->
+  <g transform="translate(380, 60)">
+    <rect x="0" y="0" width="50" height="50" rx="8" fill="#e74c3c" stroke="#fff" stroke-width="3"/>
+    <rect x="60" y="0" width="50" height="50" rx="8" fill="#3498db"/>
+    <rect x="120" y="0" width="50" height="50" rx="8" fill="#2ecc71"/>
+    <rect x="0" y="60" width="50" height="50" rx="8" fill="#f1c40f"/>
+    <rect x="60" y="60" width="50" height="50" rx="8" fill="#9b59b6"/>
+    <rect x="120" y="60" width="50" height="50" rx="8" fill="#e67e22"/>
+  </g>
+  
+  <!-- Stats display -->
+  <text x="380" y="180" fill="#888" font-family="sans-serif" font-size="14">MOVES</text>
+  <text x="380" y="210" fill="#fff" font-family="sans-serif" font-size="28" font-weight="700">12 / 25</text>
+  
+  <text x="480" y="180" fill="#888" font-family="sans-serif" font-size="14">PROGRESS</text>
+  <text x="480" y="210" fill="#2ecc71" font-family="sans-serif" font-size="28" font-weight="700">48%</text>
+  
+  <!-- Progress bar -->
+  <rect x="380" y="230" width="200" height="10" rx="5" fill="rgba(255,255,255,0.1)"/>
+  <rect x="380" y="230" width="96" height="10" rx="5" fill="#2ecc71"/>
+  
+  <!-- Title -->
+  <text x="24" y="340" fill="#fff" font-family="sans-serif" font-size="26" font-weight="700">
+    <tspan fill="#e74c3c">C</tspan><tspan fill="#f1c40f">o</tspan><tspan fill="#2ecc71">l</tspan><tspan fill="#3498db">o</tspan><tspan fill="#9b59b6">r</tspan> Flood
+  </text>
+</svg>

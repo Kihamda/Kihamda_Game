@@ -1,551 +1,179 @@
-.app {
-  font-family: Inter, "Noto Sans JP", system-ui, sans-serif;
-  color: #e2e8f0;
-  background: #111827;
-}
-
-.app {
-  min-height: 100%;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  position: relative;
-  background: radial-gradient(circle at top, #1f2937, #030712 70%);
-}
-
-.panel {
-  width: min(760px, 100%);
-  border-radius: 18px;
-  padding: 22px;
-  background: rgba(17, 24, 39, 0.9);
-  border: 1px solid #374151;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-}
-
-.app h1 {
-  margin: 0;
-  font-size: 34px;
-}
-
-.subtitle {
-  margin: 6px 0 16px;
-  color: #93c5fd;
-}
-
-.ruleBox {
-  border: 1px solid #4b5563;
-  border-radius: 12px;
-  padding: 12px 14px;
-  background: rgba(3, 7, 18, 0.55);
-}
-
-.ruleBox h2 {
-  margin: 0 0 8px;
-  font-size: 16px;
-}
-
-.ruleBox ul {
-  margin: 0;
-  padding-left: 20px;
-  color: #d1d5db;
-}
-
-.settingsBlock {
-  margin-top: 14px;
-  display: grid;
-  gap: 16px;
-}
-
-.settingGroup {
-  display: grid;
-  gap: 8px;
-}
-
-.settingLabel {
-  font-size: 14px;
-  font-weight: 700;
-  color: #93c5fd;
-}
-
-.btnGroup {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.btnOption {
-  flex: 1;
-  min-width: 70px;
-  border: 1px solid #4b5563;
-  border-radius: 10px;
-  padding: 8px 6px;
-  background: rgba(3, 7, 18, 0.55);
-  color: #d1d5db;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  transition:
-    border-color 150ms,
-    box-shadow 150ms,
-    background 150ms;
-}
-
-.btnOption:hover {
-  border-color: #6b7280;
-  background: rgba(30, 41, 59, 0.7);
-}
-
-.btnOption.selected {
-  border-color: #38bdf8;
-  background: rgba(56, 189, 248, 0.12);
-  color: #e2e8f0;
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
-}
-
-.btnOption strong {
-  font-size: 15px;
-  color: inherit;
-}
-
-.optDesc {
-  font-size: 11px;
-  color: #6b7280;
-}
-
-.btnOption.selected .optDesc {
-  color: #93c5fd;
-}
-
-.nameInputs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.nameInput {
-  border: 1px solid #4b5563;
-  border-radius: 10px;
-  padding: 10px 12px;
-  background: rgba(3, 7, 18, 0.55);
-  color: #e2e8f0;
-  font-size: 14px;
-  font-family: inherit;
-  outline: none;
-  transition: border-color 150ms;
-}
-
-.nameInput:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
-}
-
-.nameInput::placeholder {
-  color: #6b7280;
-}
-
-.startBtn {
-  margin-top: 4px;
-  font-size: 18px;
-  padding: 14px;
-  width: 100%;
-}
-
-.statusText {
-  margin: 14px 0 10px;
-  font-weight: 700;
-}
-
-.scoreRow {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.scoreCard {
-  border: 1px solid #475569;
-  border-radius: 10px;
-  padding: 10px;
-  background: #1e293b;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.scoreCard.active {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
-}
-
-.scoreCard strong {
-  font-size: 24px;
-  color: #f8fafc;
-}
-
-.board {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.card {
-  aspect-ratio: 1 / 1;
-  border: 0;
-  border-radius: 12px;
-  cursor: pointer;
-  color: #e2e8f0;
-  font-size: 32px;
-  font-weight: 800;
-  background: linear-gradient(145deg, #334155, #0f172a);
-  transition: transform 120ms ease;
-}
-
-.card:active:not(:disabled) {
-  transform: scale(0.97);
-}
-
-.card.open {
-  background: linear-gradient(145deg, #e2e8f0, #cbd5e1);
-  color: #0f172a;
-}
-
-.card.matched.owner-p1 {
-  background: linear-gradient(145deg, #fde68a, #f59e0b);
-}
-
-.card.matched.owner-p2 {
-  background: linear-gradient(145deg, #a7f3d0, #10b981);
-}
-
-.card:disabled {
-  cursor: default;
-}
-
-.actionRow {
-  margin-top: 16px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.action {
-  border: 0;
-  border-radius: 10px;
-  padding: 10px 16px;
-  font-weight: 800;
-  cursor: pointer;
-  color: #111827;
-  background: #facc15;
-}
-
-.action.secondary {
-  background: #cbd5e1;
-}
-
-@media (max-width: 700px) {
-  .app h1 {
-    font-size: 28px;
-  }
-
-  .board {
-    gap: 6px;
-  }
-
-  .card {
-    font-size: 26px;
-  }
-
-  .btnGroup {
-    gap: 6px;
-  }
-
-  .btnOption {
-    min-width: 60px;
-    padding: 6px 4px;
-  }
-
-  .nameInputs {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* ─────────────────────────────────────────────────────────────────────────────
-   ドーパミン強化エフェクト
+   Memory Duel - 神経衰弱
 ───────────────────────────────────────────────────────────────────────────── */
 
-/* カード相対配置（パーティクル用） */
-.card {
-  position: relative;
-  overflow: visible;
-}
-
-/* ── パーティクルバースト ────────────────────────────────────────────────── */
-.particleBurst {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.particle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  animation: particleScatter 0.65s ease-out forwards;
-}
-
-.particle.p0 {
-  background: #facc15;
-  --dx: 0px;
-  --dy: -40px;
-}
-.particle.p1 {
-  background: #38bdf8;
-  --dx: 28px;
-  --dy: -28px;
-}
-.particle.p2 {
-  background: #f87171;
-  --dx: 40px;
-  --dy: 0px;
-}
-.particle.p3 {
-  background: #4ade80;
-  --dx: 28px;
-  --dy: 28px;
-}
-.particle.p4 {
-  background: #c084fc;
-  --dx: 0px;
-  --dy: 40px;
-}
-.particle.p5 {
-  background: #fb923c;
-  --dx: -28px;
-  --dy: 28px;
-}
-.particle.p6 {
-  background: #facc15;
-  --dx: -40px;
-  --dy: 0px;
-}
-.particle.p7 {
-  background: #38bdf8;
-  --dx: -28px;
-  --dy: -28px;
-}
-
-@keyframes particleScatter {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
-      scale(0);
-    opacity: 0;
-  }
-}
-
-/* ── MATCH ポップアップ ──────────────────────────────────────────────────── */
-.scoreCard {
-  position: relative;
-}
-
-.matchPopup {
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-size: 13px;
-  font-weight: 800;
-  color: #facc15;
-  text-shadow: 0 0 8px rgba(250, 204, 21, 0.8);
-  pointer-events: none;
-  animation: matchPopAnim 1.2s ease-out forwards;
-  z-index: 10;
-}
-
-@keyframes matchPopAnim {
-  0% {
-    opacity: 0;
-    transform: translateX(-50%) translateY(0);
-  }
-  15% {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-4px);
-  }
-  60% {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-18px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-30px);
-  }
-}
-
-/* ── コンボ表示 ─────────────────────────────────────────────────────────── */
-.comboDisplay {
-  text-align: center;
-  font-size: 18px;
-  font-weight: 900;
-  color: #38bdf8;
-  margin: 4px 0 8px;
-  letter-spacing: 1px;
-  animation: comboPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-.comboDisplay.onFire {
-  color: #fb923c;
-  text-shadow: 0 0 12px rgba(251, 146, 60, 0.7);
-}
-
-.fireLabel {
-  margin-right: 4px;
-}
-
-@keyframes comboPop {
-  0% {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* ── 画面シェイク ────────────────────────────────────────────────────────── */
-@keyframes shakeAnim {
-  0% {
-    transform: translateX(0);
-  }
-  15% {
-    transform: translateX(-8px) rotate(-1deg);
-  }
-  30% {
-    transform: translateX(7px) rotate(1deg);
-  }
-  45% {
-    transform: translateX(-5px) rotate(-0.5deg);
-  }
-  60% {
-    transform: translateX(4px) rotate(0.5deg);
-  }
-  75% {
-    transform: translateX(-2px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-@keyframes clearShakeAnim {
-  0% {
-    transform: translateX(0) scale(1);
-  }
-  20% {
-    transform: translateX(-4px) scale(1.01);
-  }
-  40% {
-    transform: translateX(4px) scale(1.01);
-  }
-  60% {
-    transform: translateX(-3px) scale(1);
-  }
-  80% {
-    transform: translateX(3px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.app.shake {
-  animation: shakeAnim 0.45s ease-out;
-}
-
-.app.clearShake {
-  animation: clearShakeAnim 0.55s ease-out;
-}
-
-/* ── コンフェッティ ──────────────────────────────────────────────────────── */
-.confettiOverlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 100;
+.md-root {
+  width: 900px;
+  height: 650px;
   overflow: hidden;
-}
-
-.confettiPiece {
-  position: absolute;
-  top: -12px;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-  animation: confettiFall linear forwards;
-}
-
-@keyframes confettiFall {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(110%) rotate(720deg);
-    opacity: 0;
-  }
-}
-
-/* ── 勝者ポップアップ ────────────────────────────────────────────────────── */
-.winnerPopup {
-  position: absolute;
-  inset: 0;
+  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #e2e8f0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  background: rgba(3, 7, 18, 0.72);
-  z-index: 200;
-  cursor: pointer;
-  animation: winnerPopIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  position: relative;
 }
 
-.winnerIcon {
-  font-size: 64px;
+/* ── スクリーン（開始・終了） ───────────────────────────────────────────── */
+.md-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  text-align: center;
 }
 
-.winnerText {
-  font-size: 32px;
-  font-weight: 900;
-  color: #facc15;
-  text-shadow: 0 0 24px rgba(250, 204, 21, 0.6);
+.md-title {
+  margin: 0;
+  font-size: 56px;
+  font-weight: 800;
+  color: #f8fafc;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-.winnerSub {
-  font-size: 13px;
+.md-desc {
+  margin: 0;
+  font-size: 20px;
   color: #94a3b8;
 }
 
-@keyframes winnerPopIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.7);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+.md-score {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+.md-rating {
+  margin: 0;
+  font-size: 24px;
+  color: #fbbf24;
+}
+
+/* ── ボタン ─────────────────────────────────────────────────────────────── */
+.md-btn {
+  border: none;
+  border-radius: 16px;
+  padding: 16px 48px;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.md-btn:hover {
+  transform: translateY(-2px);
+}
+
+.md-btn:active {
+  transform: translateY(1px);
+}
+
+.md-btn--start {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  box-shadow: 0 8px 24px rgba(34, 197, 94, 0.4);
+}
+
+.md-btn--restart {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+}
+
+/* ── ゲーム画面 ────────────────────────────────────────────────────────── */
+.md-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.md-hud {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+.md-turns {
+  font-size: 24px;
+  font-weight: 700;
+  color: #93c5fd;
+}
+
+/* ── カードグリッド ─────────────────────────────────────────────────────── */
+.md-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 120px);
+  grid-template-rows: repeat(4, 120px);
+  gap: 16px;
+  perspective: 1000px;
+}
+
+/* ── カード ─────────────────────────────────────────────────────────────── */
+.md-card {
+  width: 120px;
+  height: 120px;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+.md-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.md-card--flipped .md-card-inner {
+  transform: rotateY(180deg);
+}
+
+.md-card-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.md-card-front {
+  background: linear-gradient(145deg, #4f46e5 0%, #3730a3 100%);
+  border: 3px solid #6366f1;
+}
+
+.md-card-back {
+  background: linear-gradient(145deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 3px solid #94a3b8;
+  transform: rotateY(180deg);
+}
+
+/* ── マッチしたカード ────────────────────────────────────────────────────── */
+.md-card--matched .md-card-face.md-card-back {
+  background: linear-gradient(145deg, #bbf7d0 0%, #86efac 100%);
+  border-color: #22c55e;
+  animation: matchPulse 0.4s ease-out;
+}
+
+@keyframes matchPulse {
+  0% { transform: rotateY(180deg) scale(1); }
+  50% { transform: rotateY(180deg) scale(1.1); }
+  100% { transform: rotateY(180deg) scale(1); }
+}
+
+/* ── ホバーエフェクト ────────────────────────────────────────────────────── */
+.md-card:not(.md-card--flipped):not(.md-card--matched):hover .md-card-inner {
+  transform: rotateY(15deg);
+}
+
+.md-card:not(.md-card--flipped):not(.md-card--matched):hover .md-card-front {
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
 }

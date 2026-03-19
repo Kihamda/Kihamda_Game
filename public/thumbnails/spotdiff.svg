@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" fill="none">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  
+  <!-- Title -->
+  <text x="320" y="35" text-anchor="middle" fill="white" font-family="sans-serif" font-size="22" font-weight="900">🔍 Spot the Diff</text>
+  
+  <!-- Stats bar -->
+  <rect x="200" y="48" width="60" height="22" rx="11" fill="rgba(255,255,255,0.2)"/>
+  <text x="230" y="64" text-anchor="middle" fill="white" font-family="sans-serif" font-size="11" font-weight="700">Lv.3</text>
+  <rect x="268" y="48" width="100" height="22" rx="11" fill="rgba(255,255,255,0.2)"/>
+  <text x="318" y="64" text-anchor="middle" fill="white" font-family="sans-serif" font-size="11" font-weight="700">3/5 発見</text>
+  <rect x="376" y="48" width="80" height="22" rx="11" fill="rgba(255,255,255,0.2)"/>
+  <text x="416" y="64" text-anchor="middle" fill="white" font-family="sans-serif" font-size="11" font-weight="700">Score: 450</text>
+
+  <!-- Timer bar -->
+  <rect x="80" y="78" width="480" height="18" rx="9" fill="rgba(0,0,0,0.2)"/>
+  <rect x="80" y="78" width="340" height="18" rx="9" fill="#22c55e"/>
+  <text x="320" y="91" text-anchor="middle" fill="white" font-family="monospace" font-size="10" font-weight="700">42.15</text>
+
+  <!-- Left image (Original) -->
+  <text x="180" y="115" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="sans-serif" font-size="12" font-weight="700">ORIGINAL</text>
+  <rect x="40" y="122" width="280" height="200" rx="10" fill="#f8fafc"/>
+  
+  <!-- Shapes in left image -->
+  <circle cx="90" cy="165" r="25" fill="#ef4444"/>
+  <rect x="150" y="145" width="40" height="40" fill="#3b82f6"/>
+  <polygon points="250,145 270,185 230,185" fill="#22c55e"/>
+  
+  <polygon points="80,230 100,210 120,230 110,255 90,255" fill="#eab308"/>
+  <rect x="145" y="215" width="35" height="35" fill="#8b5cf6" transform="rotate(45 162 232)"/>
+  <circle cx="240" cy="240" r="22" fill="#ec4899"/>
+  
+  <polygon points="75,290 95,270 115,290 105,315 85,315" fill="#06b6d4"/>
+  <rect x="155" y="275" width="38" height="38" fill="#f97316"/>
+  <polygon points="255,280 275,310 235,310" fill="#6b7280"/>
+
+  <!-- Found markers on left -->
+  <circle cx="90" cy="165" r="28" fill="none" stroke="#fbbf24" stroke-width="3"/>
+  <circle cx="162" cy="232" r="28" fill="none" stroke="#fbbf24" stroke-width="3"/>
+  <circle cx="240" cy="240" r="28" fill="none" stroke="#fbbf24" stroke-width="3"/>
+
+  <!-- Right image (Modified) -->
+  <text x="460" y="115" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-family="sans-serif" font-size="12" font-weight="700">MODIFIED</text>
+  <rect x="320" y="122" width="280" height="200" rx="10" fill="#f8fafc"/>
+  
+  <!-- Shapes in right image (with differences) -->
+  <circle cx="370" cy="165" r="25" fill="#22c55e"/> <!-- Different color -->
+  <rect x="430" y="145" width="40" height="40" fill="#3b82f6"/>
+  <polygon points="530,145 550,185 510,185" fill="#22c55e"/>
+  
+  <polygon points="360,230 380,210 400,230 390,255 370,255" fill="#eab308"/>
+  <circle cx="442" cy="232" r="20" fill="#8b5cf6"/> <!-- Different shape -->
+  <circle cx="520" cy="240" r="28" fill="#ec4899"/> <!-- Different size -->
+  
+  <polygon points="355,290 375,270 395,290 385,315 365,315" fill="#06b6d4"/>
+  <rect x="435" y="275" width="38" height="38" fill="#f97316"/>
+  <polygon points="535,280 555,310 515,310" fill="#6b7280"/>
+
+  <!-- Found markers on right -->
+  <circle cx="370" cy="165" r="28" fill="none" stroke="#fbbf24" stroke-width="3"/>
+  <circle cx="442" cy="232" r="28" fill="none" stroke="#fbbf24" stroke-width="3"/>
+  <circle cx="520" cy="240" r="28" fill="none" stroke="#fbbf24" stroke-width="3"/>
+
+  <!-- Tip text -->
+  <text x="320" y="345" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="sans-serif" font-size="11">💡 違いの種類: 色・形・位置・サイズ・回転</text>
+</svg>

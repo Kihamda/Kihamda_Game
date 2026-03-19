@@ -1,0 +1,303 @@
+/* ================================================
+   Color Flood — CSS
+   ================================================ */
+
+/* コンテナ */
+.colorflood-container {
+  width: 700px;
+  height: 650px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #fff;
+  position: relative;
+}
+
+/* ヘッダー */
+.colorflood-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.colorflood-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(90deg, #e74c3c, #f1c40f, #2ecc71, #3498db, #9b59b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* メニュー */
+.colorflood-menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.colorflood-description {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #ccc;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.colorflood-hint {
+  font-size: 1rem;
+  color: #f1c40f;
+}
+
+.colorflood-best {
+  font-size: 1.3rem;
+  color: #f1c40f;
+  margin: 0;
+}
+
+.colorflood-start-btn {
+  background: linear-gradient(145deg, #3498db, #2980b9);
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 16px 48px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+.colorflood-start-btn:hover {
+  background: linear-gradient(145deg, #5dade2, #3498db);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+}
+
+/* Stats */
+.colorflood-stats {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 8px;
+}
+
+.colorflood-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.colorflood-stat-label {
+  font-size: 0.8rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.colorflood-stat-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Progress Bar */
+.colorflood-progress-bar {
+  width: 100%;
+  max-width: 420px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.colorflood-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2ecc71, #27ae60);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* グリッド */
+.colorflood-grid {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 1px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  box-shadow: 
+    0 0 20px rgba(0, 0, 0, 0.5),
+    inset 0 0 10px rgba(255, 255, 255, 0.02);
+}
+
+.colorflood-cell {
+  width: 28px;
+  height: 28px;
+  border-radius: 3px;
+  transition: background-color 0.15s ease;
+}
+
+/* Color Palette */
+.colorflood-palette {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.colorflood-color-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.colorflood-color-btn:hover:not(:disabled) {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+.colorflood-color-btn--active {
+  border-color: #fff;
+  box-shadow: 
+    0 0 15px rgba(255, 255, 255, 0.5),
+    inset 0 0 10px rgba(255, 255, 255, 0.3);
+  cursor: default;
+  transform: scale(0.95);
+}
+
+.colorflood-color-btn:disabled:not(.colorflood-color-btn--active) {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* オーバーレイ */
+.colorflood-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 結果画面 */
+.colorflood-result {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(145deg, #2a4a6a, #1a3050);
+  border-radius: 16px;
+  border: 2px solid #3498db;
+  box-shadow: 0 0 40px rgba(52, 152, 219, 0.3);
+  animation: scaleIn 0.3s ease;
+}
+
+.colorflood-result--gameover {
+  border-color: #e74c3c;
+  box-shadow: 0 0 40px rgba(231, 76, 60, 0.3);
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.colorflood-result-title {
+  font-size: 2.2rem;
+  margin: 0 0 16px;
+}
+
+.colorflood-result-text {
+  font-size: 1.3rem;
+  color: #ddd;
+  margin: 0 0 12px;
+}
+
+.colorflood-result-best {
+  font-size: 1.1rem;
+  color: #f1c40f;
+  margin: 0 0 20px;
+  animation: pulse 1s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.colorflood-result-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ボタン */
+.colorflood-btn {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+}
+
+.colorflood-btn--primary {
+  background: linear-gradient(145deg, #3498db, #2980b9);
+  color: #fff;
+  border-color: #3498db;
+}
+
+.colorflood-btn--primary:hover {
+  background: linear-gradient(145deg, #5dade2, #3498db);
+  box-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
+  transform: scale(1.02);
+}
+
+.colorflood-btn--secondary {
+  background: transparent;
+  color: #fff;
+  border-color: #666;
+}
+
+.colorflood-btn--secondary:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 戻るボタン */
+.colorflood-back-btn {
+  margin-top: 16px;
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.colorflood-back-btn:hover {
+  color: #fff;
+}

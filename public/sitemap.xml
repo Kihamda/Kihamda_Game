@@ -2,22 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://game.kihamda.net/</loc>
-    <lastmod>2026-03-04</lastmod>
+    <lastmod>2026-03-19</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://game.kihamda.net/about/</loc>
-    <lastmod>2026-03-04</lastmod>
+    <lastmod>2026-03-19</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://game.kihamda.net/privacy-policy/</loc>
-    <lastmod>2026-03-04</lastmod>
+    <lastmod>2026-03-19</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://game.kihamda.net/contact/</loc>
-    <lastmod>2026-03-04</lastmod>
+    <lastmod>2026-03-19</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
@@ -93,6 +93,131 @@
   <url>
     <loc>https://game.kihamda.net/games/minerush/</loc>
     <lastmod>2026-03-04</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/wordchain/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/mathblitz/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/patternlock/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/colorpairs/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/slidemaster/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/hexmatch/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/lightsout/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/balloonpop/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/coinflip/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/mazerun/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/quickdraw/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/reactionchain/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/arrowdash/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/towerstack/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/emojimatch/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/colorflood/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/bubbleshoot/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/wordscramble/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/cardwar/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/spotdiff/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/rockpaper/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/diceroll/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/fallingblocks/</loc>
+    <lastmod>2026-03-19</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/numberguess/</loc>
+    <lastmod>2026-03-19</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/speedclick/</loc>
+    <lastmod>2026-03-19</lastmod>
     <priority>0.7</priority>
   </url>
 </urlset>

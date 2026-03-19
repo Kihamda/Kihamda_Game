@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb"/>
+      <stop offset="100%" style="stop-color:#f5576c"/>
+    </linearGradient>
+    <linearGradient id="letterGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" rx="20" fill="url(#bgGrad)"/>
+  
+  <!-- Letter tiles -->
+  <g transform="translate(25, 45)">
+    <!-- Row 1 -->
+    <rect x="0" y="0" width="45" height="50" rx="8" fill="url(#letterGrad)"/>
+    <text x="22.5" y="35" font-family="Arial Black, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">W</text>
+    
+    <rect x="52" y="0" width="45" height="50" rx="8" fill="url(#letterGrad)"/>
+    <text x="74.5" y="35" font-family="Arial Black, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">O</text>
+    
+    <rect x="104" y="0" width="45" height="50" rx="8" fill="url(#letterGrad)"/>
+    <text x="126.5" y="35" font-family="Arial Black, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">R</text>
+  </g>
+  
+  <g transform="translate(25, 105)">
+    <!-- Row 2 -->
+    <rect x="0" y="0" width="45" height="50" rx="8" fill="url(#letterGrad)"/>
+    <text x="22.5" y="35" font-family="Arial Black, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">D</text>
+    
+    <rect x="52" y="0" width="45" height="50" rx="8" fill="#4caf50"/>
+    <text x="74.5" y="35" font-family="Arial Black, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">?</text>
+    
+    <rect x="104" y="0" width="45" height="50" rx="8" fill="url(#letterGrad)"/>
+    <text x="126.5" y="35" font-family="Arial Black, sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="bold">S</text>
+  </g>
+  
+  <!-- Shuffle arrows -->
+  <g transform="translate(155, 75)" fill="white" opacity="0.9">
+    <path d="M0 15 L12 5 L12 12 L25 12 L25 18 L12 18 L12 25 Z" transform="rotate(45, 12, 15)"/>
+  </g>
+  <g transform="translate(10, 120)" fill="white" opacity="0.9">
+    <path d="M25 15 L13 5 L13 12 L0 12 L0 18 L13 18 L13 25 Z" transform="rotate(45, 12, 15)"/>
+  </g>
+</svg>

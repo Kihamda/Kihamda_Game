@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a5f"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="640" height="360" fill="url(#bg)"/>
+  
+  <!-- Hex Grid -->
+  <g transform="translate(150, 50)" filter="url(#shadow)">
+    <!-- Row 1 -->
+    <polygon points="55,0 85,17 85,52 55,70 25,52 25,17" fill="#ef4444"/>
+    <polygon points="130,0 160,17 160,52 130,70 100,52 100,17" fill="#22c55e"/>
+    <polygon points="205,0 235,17 235,52 205,70 175,52 175,17" fill="#3b82f6"/>
+    <polygon points="280,0 310,17 310,52 280,70 250,52 250,17" fill="#eab308"/>
+    
+    <!-- Row 2 (offset) -->
+    <polygon points="92,55 122,72 122,107 92,125 62,107 62,72" fill="#a855f7"/>
+    <polygon points="167,55 197,72 197,107 167,125 137,107 137,72" fill="#ef4444"/>
+    <polygon points="242,55 272,72 272,107 242,125 212,107 212,72" fill="#22c55e"/>
+    
+    <!-- Row 3 -->
+    <polygon points="55,110 85,127 85,162 55,180 25,162 25,127" fill="#ec4899"/>
+    <polygon points="130,110 160,127 160,162 130,180 100,162 100,127" fill="#3b82f6"/>
+    <polygon points="205,110 235,127 235,162 205,180 175,162 175,127" fill="#ef4444"/>
+    <polygon points="280,110 310,127 310,162 280,180 250,162 250,127" fill="#a855f7"/>
+    
+    <!-- Row 4 (offset) -->
+    <polygon points="92,165 122,182 122,217 92,235 62,217 62,182" fill="#eab308"/>
+    <polygon points="167,165 197,182 197,217 167,235 137,217 137,182" fill="#ec4899"/>
+    <polygon points="242,165 272,182 272,217 242,235 212,217 212,182" fill="#3b82f6"/>
+    
+    <!-- Selected highlight -->
+    <polygon points="167,55 197,72 197,107 167,125 137,107 137,72" fill="none" stroke="#fff" stroke-width="4"/>
+  </g>
+  
+  <!-- Match indicators -->
+  <g fill="#fbbf24" font-size="24" font-weight="bold">
+    <text x="500" y="120">3x</text>
+    <text x="500" y="150">MATCH!</text>
+  </g>
+  
+  <!-- Title -->
+  <text x="320" y="330" font-family="Segoe UI, sans-serif" font-size="28" font-weight="bold" fill="#f8fafc" text-anchor="middle">Hex Match</text>
+</svg>

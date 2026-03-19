@@ -149,6 +149,256 @@
       "tags": ["puzzle", "singleplayer", "strategy"],
       "publishedAt": "2026-03-04",
       "featured": false
+    },
+    {
+      "id": "wordchain",
+      "title": "Word Chain",
+      "description": "英単語しりとり。前の単語の最後の文字で始まる単語を入力しよう！",
+      "path": "/games/wordchain/",
+      "thumbnail": "/thumbnails/wordchain.svg",
+      "tags": ["typing", "puzzle", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "mathblitz",
+      "title": "Math Blitz",
+      "description": "計算バトル！簡単な計算を素早く解いてスコアを稼げ！",
+      "path": "/games/mathblitz/",
+      "thumbnail": "/thumbnails/mathblitz.svg",
+      "tags": ["puzzle", "reflex", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "patternlock",
+      "title": "Pattern Lock",
+      "description": "パターン記憶ゲーム。表示されたパターンを正確に再現しよう！",
+      "path": "/games/patternlock/",
+      "thumbnail": "/thumbnails/patternlock.svg",
+      "tags": ["memory", "puzzle", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "colorpairs",
+      "title": "Color Pairs",
+      "description": "色合わせパズル。同じ色のペアを見つけて消そう！",
+      "path": "/games/colorpairs/",
+      "thumbnail": "/thumbnails/colorpairs.svg",
+      "tags": ["puzzle", "memory", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "slidemaster",
+      "title": "Slide Master",
+      "description": "15パズル。数字を1から順番に並べ替えよう！",
+      "path": "/games/slidemaster/",
+      "thumbnail": "/thumbnails/slidemaster.svg",
+      "tags": ["puzzle", "strategy", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "hexmatch",
+      "title": "Hex Match",
+      "description": "六角マッチ3。六角形のタイルを揃えて消そう！",
+      "path": "/games/hexmatch/",
+      "thumbnail": "/thumbnails/hexmatch.svg",
+      "tags": ["puzzle", "arcade", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "lightsout",
+      "title": "Lights Out",
+      "description": "ライツアウト。全てのライトを消そう！タップすると周囲も反転！",
+      "path": "/games/lightsout/",
+      "thumbnail": "/thumbnails/lightsout.svg",
+      "tags": ["puzzle", "strategy", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "balloonpop",
+      "title": "Balloon Pop",
+      "description": "風船割り！浮かんでくる風船をタップして割ろう！",
+      "path": "/games/balloonpop/",
+      "thumbnail": "/thumbnails/balloonpop.svg",
+      "tags": ["arcade", "reflex", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "coinflip",
+      "title": "Coin Flip",
+      "description": "コイン予測！表か裏か、運を試せ！",
+      "path": "/games/coinflip/",
+      "thumbnail": "/thumbnails/coinflip.svg",
+      "tags": ["arcade", "luck", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "mazerun",
+      "title": "Maze Run",
+      "description": "迷路脱出！ランダム生成の迷路からゴールを目指せ！",
+      "path": "/games/mazerun/",
+      "thumbnail": "/thumbnails/mazerun.svg",
+      "tags": ["puzzle", "arcade", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "quickdraw",
+      "title": "Quick Draw",
+      "description": "早撃ち対決！DRAWの合図で素早くクリック！",
+      "path": "/games/quickdraw/",
+      "thumbnail": "/thumbnails/quickdraw.svg",
+      "tags": ["reflex", "arcade", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "reactionchain",
+      "title": "Reaction Chain",
+      "description": "連鎖反応！1クリックで泡を連鎖させて消そう！",
+      "path": "/games/reactionchain/",
+      "thumbnail": "/thumbnails/reactionchain.svg",
+      "tags": ["arcade", "strategy", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "arrowdash",
+      "title": "Arrow Dash",
+      "description": "矢印ダッシュ！表示された矢印の方向を素早く入力！",
+      "path": "/games/arrowdash/",
+      "thumbnail": "/thumbnails/arrowdash.svg",
+      "tags": ["reflex", "arcade", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "towerstack",
+      "title": "Tower Stack",
+      "description": "タワースタック！ブロックを積み上げてタワーを作ろう！",
+      "path": "/games/towerstack/",
+      "thumbnail": "/thumbnails/towerstack.svg",
+      "tags": ["arcade", "reflex", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "emojimatch",
+      "title": "Emoji Match",
+      "description": "絵文字探し！大量の絵文字から目的の絵文字を見つけよう！",
+      "path": "/games/emojimatch/",
+      "thumbnail": "/thumbnails/emojimatch.svg",
+      "tags": ["puzzle", "reflex", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "colorflood",
+      "title": "Color Flood",
+      "description": "カラーフラッド！色を塗り替えて全マスを同色にしよう！",
+      "path": "/games/colorflood/",
+      "thumbnail": "/thumbnails/colorflood.svg",
+      "tags": ["puzzle", "strategy", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "bubbleshoot",
+      "title": "Bubble Shoot",
+      "description": "バブルシューター！泡を発射して同色を揃えて消そう！",
+      "path": "/games/bubbleshoot/",
+      "thumbnail": "/thumbnails/bubbleshoot.svg",
+      "tags": ["puzzle", "arcade", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "wordscramble",
+      "title": "Word Scramble",
+      "description": "単語スクランブル！バラバラの文字から単語を当てよう！",
+      "path": "/games/wordscramble/",
+      "thumbnail": "/thumbnails/wordscramble.svg",
+      "tags": ["puzzle", "typing", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "cardwar",
+      "title": "Card War",
+      "description": "カード戦争！トランプの数字勝負でCPUに勝て！",
+      "path": "/games/cardwar/",
+      "thumbnail": "/thumbnails/cardwar.svg",
+      "tags": ["arcade", "luck", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "spotdiff",
+      "title": "Spot the Diff",
+      "description": "間違い探し！2つの画像から5つの違いを見つけよう！",
+      "path": "/games/spotdiff/",
+      "thumbnail": "/thumbnails/spotdiff.svg",
+      "tags": ["puzzle", "reflex", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "rockpaper",
+      "title": "Rock Paper Scissors",
+      "description": "じゃんけん！CPUに勝てるか運試し！",
+      "path": "/games/rockpaper/",
+      "thumbnail": "/thumbnails/rockpaper.svg",
+      "tags": ["arcade", "luck", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "diceroll",
+      "title": "Dice Roll",
+      "description": "サイコロ予測！出目を当てて倍々ゲーム！",
+      "path": "/games/diceroll/",
+      "thumbnail": "/thumbnails/diceroll.svg",
+      "tags": ["arcade", "luck", "singleplayer"],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "fallingblocks",
+      "title": "Falling Blocks",
+      "description": "テトリス風の落ちものパズル。7種類のテトリミノを操作してラインを消してスコアを稼ごう！",
+      "path": "/games/fallingblocks/",
+      "thumbnail": "/thumbnails/fallingblocks.svg",
+      "tags": ["puzzle", "arcade", "singleplayer"],
+      "publishedAt": "2026-03-19",
+      "featured": false
+    },
+    {
+      "id": "numberguess",
+      "title": "数当てゲーム",
+      "description": "1〜100の数字を当てるシンプルな数当てゲーム。ヒントを頼りに少ない回数でクリアを目指そう！",
+      "path": "/games/numberguess/",
+      "thumbnail": "/thumbnails/numberguess.svg",
+      "tags": ["puzzle", "singleplayer"],
+      "publishedAt": "2026-03-19",
+      "featured": false
+    },
+    {
+      "id": "speedclick",
+      "title": "Speed Click",
+      "description": "10秒間でボタンを何回クリックできるか挑戦！CPS(クリック毎秒)を計測する連打ゲーム",
+      "path": "/games/speedclick/",
+      "thumbnail": "/thumbnails/speedclick.svg",
+      "tags": ["arcade", "reflex", "singleplayer"],
+      "publishedAt": "2026-03-19",
+      "featured": false
     }
   ]
 }

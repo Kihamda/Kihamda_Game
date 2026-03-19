@@ -121,7 +121,9 @@ npm run build   # = tsc -b && vite build
 
 ## 廃止されたもの
 
-- `portal/` ディレクトリ (Astro)
+- 個別ゲームの `index.html` (廃止) — SPA 化によりルートの `index.html` のみ使用
+- Astro ベースのポータル (廃止)
+- `portal/` ディレクトリ (現在は `src/portal/`)
 - `packages/` ディレクトリ → 不要化
 - `turbo.json` / Turborepo → 不要化
 - `scripts/build-all.sh`

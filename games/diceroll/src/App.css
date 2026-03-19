@@ -1,0 +1,370 @@
+.diceroll-container {
+  width: 650px;
+  height: 550px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #fff;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+/* Overlay screens */
+.diceroll-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 100;
+  padding: 20px;
+  text-align: center;
+}
+
+.diceroll-overlay h2 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(78, 205, 196, 0.5);
+}
+
+.diceroll-subtitle {
+  font-size: 1.1rem;
+  color: #aaa;
+  margin-bottom: 15px;
+}
+
+.diceroll-instructions {
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px 25px;
+  border-radius: 10px;
+}
+
+.diceroll-instructions h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  color: #4ecdc4;
+}
+
+.diceroll-instructions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.diceroll-instructions li {
+  padding: 5px 0;
+  font-size: 0.95rem;
+}
+
+/* HUD */
+.diceroll-hud {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 25px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.diceroll-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.diceroll-stat-label {
+  font-size: 0.8rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.diceroll-stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.diceroll-stat-value--points {
+  color: #4ecdc4;
+}
+
+.diceroll-stat-value--streak {
+  color: #ff6b6b;
+}
+
+/* Stage */
+.diceroll-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* Dice */
+.diceroll-dice {
+  perspective: 1000px;
+  position: relative;
+}
+
+.diceroll-dice--rolling svg {
+  animation: diceRoll 1.2s ease-out;
+}
+
+@keyframes diceRoll {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(360deg) scale(0.9);
+  }
+  75% {
+    transform: rotate(540deg) scale(1.05);
+  }
+  100% {
+    transform: rotate(720deg) scale(1);
+  }
+}
+
+/* Hint */
+.diceroll-hint {
+  display: flex;
+  gap: 30px;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.diceroll-hint-low {
+  color: #5b9bd5;
+}
+
+.diceroll-hint-high {
+  color: #ff6b6b;
+}
+
+/* Result area */
+.diceroll-result-area {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diceroll-message {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 8px 20px;
+  border-radius: 8px;
+  animation: messageAppear 0.3s ease-out;
+}
+
+@keyframes messageAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.diceroll-message--win {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.8), rgba(129, 199, 132, 0.8));
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.diceroll-message--lose {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.8), rgba(239, 154, 154, 0.8));
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.diceroll-message--rolling {
+  color: #888;
+  background: transparent;
+  animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Controls */
+.diceroll-controls {
+  width: 100%;
+  padding: 15px 25px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.diceroll-bet-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.diceroll-bet-label {
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.diceroll-bet-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.diceroll-bet-button {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  background: #3a4a6b;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.diceroll-bet-button:hover:not(:disabled) {
+  background: #4a5a7b;
+  transform: translateY(-1px);
+}
+
+.diceroll-bet-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.diceroll-bet-button--max {
+  background: #805ad5;
+}
+
+.diceroll-bet-button--max:hover:not(:disabled) {
+  background: #9068e0;
+}
+
+.diceroll-bet-value {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #4ecdc4;
+  min-width: 50px;
+  text-align: center;
+}
+
+/* Prediction buttons */
+.diceroll-prediction-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.diceroll-button {
+  flex: 1;
+  padding: 14px 24px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.diceroll-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.diceroll-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.diceroll-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.diceroll-button--low {
+  background: linear-gradient(135deg, #5b9bd5, #4a86c7);
+  color: #fff;
+}
+
+.diceroll-button--high {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+  color: #fff;
+}
+
+.diceroll-button--cashout {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+  color: #fff;
+  font-size: 1rem;
+}
+
+.diceroll-overlay .diceroll-button {
+  background: linear-gradient(135deg, #4ecdc4, #44b8b0);
+  color: #1a1a2e;
+  padding: 15px 40px;
+  font-size: 1.3rem;
+  margin-top: 15px;
+}
+
+/* Final stats */
+.diceroll-final-stats {
+  display: flex;
+  gap: 40px;
+  margin: 20px 0;
+}
+
+.diceroll-final-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.diceroll-final-label {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.diceroll-final-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #4ecdc4;
+}
+
+.diceroll-new-record {
+  font-size: 1.3rem;
+  color: #4ecdc4;
+  animation: recordPulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes recordPulse {
+  from {
+    text-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+  }
+  to {
+    text-shadow: 0 0 20px rgba(78, 205, 196, 1);
+  }
+}

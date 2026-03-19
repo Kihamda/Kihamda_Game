@@ -1,0 +1,233 @@
+import { useState, useEffect, useRef, useCallback } from "react";
+import { GameShell } from "@shared/components/GameShell";
+import { getRandomWord, getDifficultyByScore } from "./lib/words";
+import "./App.css";
+
+interface FallingWord {
+  id: number;
+  text: string;
+  x: number;
+  duration: number;
+  startTime: number;
+}
+
+type GamePhase = "before" | "in_progress" | "after";
+
+const MAX_LIVES = 3;
+const SPAWN_INTERVAL = 2000;
+const BASE_FALL_DURATION = 6000;
+
+export default function App() {
+  const [phase, setPhase] = useState<GamePhase>("before");
+  const [score, setScore] = useState(0);
+  const [combo, setCombo] = useState(0);
+  const [lives, setLives] = useState(MAX_LIVES);
+  const [words, setWords] = useState<FallingWord[]>([]);
+  const [input, setInput] = useState("");
+  const [comboActive, setComboActive] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const nextIdRef = useRef(0);
+  const gameLoopRef = useRef<number>(0);
+  const spawnTimerRef = useRef<number>(0);
+
+  // 単語を生成
+  const spawnWord = useCallback(() => {
+    const difficulty = getDifficultyByScore(score);
+    const text = getRandomWord(difficulty);
+    const x = Math.random() * (900 - 150) + 20;
+    // スコアに応じて速度上昇
+    const speedMultiplier = Math.max(0.5, 1 - score / 500);
+    const duration = BASE_FALL_DURATION * speedMultiplier;
+
+    const newWord: FallingWord = {
+      id: nextIdRef.current++,
+      text,
+      x,
+      duration,
+      startTime: Date.now(),
+    };
+
+    setWords((prev) => [...prev, newWord]);
+  }, [score]);
+
+  // ゲームループ: 落下判定
+  useEffect(() => {
+    if (phase !== "in_progress") return;
+
+    const checkFallen = () => {
+      const now = Date.now();
+      setWords((prev) => {
+        const fallen: number[] = [];
+        const remaining = prev.filter((w) => {
+          const elapsed = now - w.startTime;
+          if (elapsed >= w.duration) {
+            fallen.push(w.id);
+            return false;
+          }
+          return true;
+        });
+
+        if (fallen.length > 0) {
+          setLives((l) => {
+            const newLives = l - fallen.length;
+            if (newLives <= 0) {
+              setPhase("after");
+            }
+            return Math.max(0, newLives);
+          });
+          setCombo(0);
+        }
+
+        return remaining;
+      });
+
+      gameLoopRef.current = requestAnimationFrame(checkFallen);
+    };
+
+    gameLoopRef.current = requestAnimationFrame(checkFallen);
+
+    return () => cancelAnimationFrame(gameLoopRef.current);
+  }, [phase]);
+
+  // 単語生成タイマー
+  useEffect(() => {
+    if (phase !== "in_progress") return;
+
+    spawnWord();
+    const interval = Math.max(800, SPAWN_INTERVAL - score * 5);
+    spawnTimerRef.current = window.setInterval(spawnWord, interval);
+
+    return () => clearInterval(spawnTimerRef.current);
+  }, [phase, spawnWord, score]);
+
+  // 入力処理
+  const handleInput = (value: string) => {
+    setInput(value);
+    const lowerValue = value.toLowerCase().trim();
+    if (!lowerValue) return;
+
+    // 完全一致判定
+    const matchedIndex = words.findIndex(
+      (w) => w.text.toLowerCase() === lowerValue
+    );
+
+    if (matchedIndex !== -1) {
+      const matched = words[matchedIndex];
+      const basePoints = matched.text.length * 10;
+      const comboBonus = combo * 5;
+      const newCombo = combo + 1;
+
+      setScore((s) => s + basePoints + comboBonus);
+      setCombo(newCombo);
+      setComboActive(true);
+      setTimeout(() => setComboActive(false), 300);
+
+      setWords((prev) => prev.filter((w) => w.id !== matched.id));
+      setInput("");
+    }
+  };
+
+  // ゲーム開始
+  const startGame = () => {
+    setPhase("in_progress");
+    setScore(0);
+    setCombo(0);
+    setLives(MAX_LIVES);
+    setWords([]);
+    setInput("");
+    nextIdRef.current = 0;
+    setTimeout(() => inputRef.current?.focus(), 100);
+  };
+
+  // リセット
+  const resetGame = () => {
+    setPhase("before");
+    setWords([]);
+  };
+
+  return (
+    <GameShell gameId="typingblitz" layout="default">
+      <div className="typingblitz-container">
+        {/* HUD */}
+        <div className="typingblitz-hud">
+          <div className="typingblitz-score">Score: {score}</div>
+          <div className={`typingblitz-combo ${comboActive ? "active" : ""}`}>
+            {combo > 1 && `🔥 ${combo} Combo!`}
+          </div>
+          <div className="typingblitz-lives">
+            {Array.from({ length: MAX_LIVES }).map((_, i) => (
+              <span
+                key={i}
+                className={`life-heart ${i >= lives ? "lost" : ""}`}
+              >
+                ❤️
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* ゲームエリア */}
+        <div className="typingblitz-game-area">
+          {words.map((word) => (
+            <div
+              key={word.id}
+              className={alling-word }
+              style={{
+                left: word.x,
+                animationDuration: ${word.duration}ms,
+              }}
+            >
+              {word.text}
+            </div>
+          ))}
+        </div>
+
+        {/* 危険ライン */}
+        <div className="danger-line" />
+
+        {/* 入力エリア */}
+        <div className="typingblitz-input-area">
+          <input
+            ref={inputRef}
+            type="text"
+            className="typingblitz-input"
+            value={input}
+            onChange={(e) => handleInput(e.target.value)}
+            placeholder={phase === "in_progress" ? "Type here..." : ""}
+            disabled={phase !== "in_progress"}
+            autoComplete="off"
+            autoCapitalize="off"
+            spellCheck={false}
+          />
+        </div>
+
+        {/* スタート画面 */}
+        {phase === "before" && (
+          <div className="typingblitz-start-screen">
+            <h1 className="typingblitz-title">⌨️ Typing Blitz</h1>
+            <p className="typingblitz-subtitle">
+              落ちてくる単語をタイプして消せ!
+            </p>
+            <button className="typingblitz-start-btn" onClick={startGame}>
+              START
+            </button>
+          </div>
+        )}
+
+        {/* ゲームオーバー画面 */}
+        {phase === "after" && (
+          <div className="typingblitz-gameover-screen">
+            <h1 className="typingblitz-title">GAME OVER</h1>
+            <div className="typingblitz-final-score">{score}</div>
+            <p className="typingblitz-final-label">Final Score</p>
+            <button className="typingblitz-start-btn" onClick={resetGame}>
+              RETRY
+            </button>
+          </div>
+        )}
+      </div>
+    </GameShell>
+  );
+}
+

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <defs>
+    <linearGradient id="westbg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF8C42"/>
+      <stop offset="50%" style="stop-color:#FFD166"/>
+      <stop offset="100%" style="stop-color:#C9A227"/>
+    </linearGradient>
+    <linearGradient id="sand" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4A76A"/>
+      <stop offset="100%" style="stop-color:#B8956A"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#westbg)"/>
+  <!-- 太陽 -->
+  <circle cx="520" cy="80" r="50" fill="#FFE4B5" opacity="0.9"/>
+  <!-- 砂漠の地面 -->
+  <ellipse cx="320" cy="400" rx="400" ry="120" fill="url(#sand)"/>
+  <!-- サボテン左 -->
+  <g transform="translate(80,180)">
+    <rect x="0" y="0" width="25" height="100" fill="#228B22" rx="12"/>
+    <rect x="-20" y="30" width="20" height="40" fill="#228B22" rx="10"/>
+    <rect x="25" y="20" width="20" height="50" fill="#228B22" rx="10"/>
+  </g>
+  <!-- サボテン右 -->
+  <g transform="translate(520,200)">
+    <rect x="0" y="0" width="20" height="80" fill="#228B22" rx="10"/>
+    <rect x="-15" y="25" width="15" height="35" fill="#228B22" rx="8"/>
+  </g>
+  <!-- 中央のテキスト -->
+  <rect x="200" y="100" width="240" height="100" fill="rgba(139,69,19,0.85)" rx="10"/>
+  <rect x="205" y="105" width="230" height="90" fill="none" stroke="#FFD700" stroke-width="3" rx="8"/>
+  <text x="320" y="145" font-size="36" font-weight="bold" fill="#FFD700" text-anchor="middle" font-family="serif">DRAW!</text>
+  <text x="320" y="180" font-size="18" fill="#FFF8DC" text-anchor="middle">click now!</text>
+  <!-- 銃のシルエット左 -->
+  <g transform="translate(100,250) rotate(-30)">
+    <rect x="0" y="0" width="60" height="15" fill="#4a3728" rx="2"/>
+    <rect x="50" y="-5" width="40" height="25" fill="#5a4738" rx="3"/>
+    <rect x="20" y="15" width="15" height="25" fill="#4a3728" rx="2"/>
+  </g>
+  <!-- 銃のシルエット右 -->
+  <g transform="translate(480,250) rotate(30) scale(-1,1)">
+    <rect x="0" y="0" width="60" height="15" fill="#4a3728" rx="2"/>
+    <rect x="50" y="-5" width="40" height="25" fill="#5a4738" rx="3"/>
+    <rect x="20" y="15" width="15" height="25" fill="#4a3728" rx="2"/>
+  </g>
+  <!-- スターバッジ -->
+  <g transform="translate(320,280)">
+    <polygon points="0,-25 6,-8 24,-8 10,3 15,20 0,10 -15,20 -10,3 -24,-8 -6,-8" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+  </g>
+</svg>

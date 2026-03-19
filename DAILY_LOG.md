@@ -663,3 +663,152 @@ game.kihamda.net (このリポ) が以下の理由でドメイン全体の評価
 
 - Cloudflare Pages 側の Secrets と Variables を設定して本番デプロイ
 - 公開URL確定後に Search Console と AdSense 申請を実施
+
+---
+
+## 2026-03-18 (続き)
+
+### 作業ログ
+
+- 12:55 [開始] ゲーム表示問題の調査・修正 → 担当: consultant
+- 13:00 [完了] 問題調査 → 結果: 
+   - ポータルの `.grid` に `grid-template-columns` 未定義 → カードが縦並び
+   - ntiktaktoe: 300px min-width でモバイルオーバーフロー
+   - molemania: padding がコンテンツを圧迫
+   - dodgeblitz/typingblitz: vw/vh 単位がコンテナスケーリングと非連携
+- 13:05 [完了] ポータルグリッドCSS修正 → 担当: gamedev → 結果: 成功
+   - `src/portal/App.css` に `grid-template-columns` 追加 (1/2/3カラム レスポンシブ)
+- 13:10 [完了] エージェント設定更新 → 担当: agent-editor → 結果: 成功
+   - `copilot-instructions.md` に Portal SSG Plugin / registry.ts ドキュメント追加
+   - `gamedev.agent.md` に SPA コンポーネント説明追加
+- 13:15 [完了] 4ゲームのCSS修正 → 担当: gamedev (並列実行) → 結果: 全て成功
+   - ntiktaktoe: `.start-layout` をモバイルファースト1カラム→640px以上で2カラムに変更
+   - molemania: `.app` padding を `clamp(4px, 1vw, 8px)` に削減
+   - dodgeblitz: vw/vh → **cqw (コンテナクエリ単位)** に変更
+   - typingblitz: vw/vh → **cqw (コンテナクエリ単位)** に変更
+- 13:20 [完了] 最終ビルド検証 → 結果: 成功 (608ms)
+   - TypeScript: エラーなし
+   - ESLint: 警告なし
+   - dist/: 15ゲーム全てバンドル済み
+
+### 確認した事項
+
+- 全15ゲーム: ディレクトリ構造 OK, App.tsx エクスポート OK
+- games.json: 15ゲーム登録済み
+- thumbnails: 15ゲーム分のSVG存在
+- ビルド: 成功 (602ms)
+
+### 今日の成果 (追加)
+
+- ポータルのゲームカードグリッド表示を修正 (レスポンシブ 1/2/3カラム)
+- エージェント設定を現在のSPA構成に合わせて更新
+- 4ゲームの枠内表示問題を修正 (ntiktaktoe, molemania, dodgeblitz, typingblitz)
+- 全体QAチェック完了: lint/build/型チェック 全パス
+- SEO監査完了: sitemap 16URL / OGP完備 / 構造化データ OK
+- ROADMAP.md の MineRush サムネイル項目を完了にマーク
+
+### 人間の宿題 (Phase 1 完了に必要)
+
+1. **GitHub Secrets 設定** (SNS自動投稿有効化に必須)
+   - `BLUESKY_HANDLE`
+   - `BLUESKY_APP_PASSWORD`
+   → リポジトリ Settings → Secrets and Variables → Actions
+
+2. **Search Console** に sitemap.xml を送信
+   - URL: `https://game.kihamda.net/sitemap.xml`
+
+3. **AdSense 審査状況の確認** (以前審査落ちの可能性あり)
+
+### 明日やること
+
+- デプロイ後の実機確認 (ゲーム枠内表示・ポータルグリッド)
+- SNS自動投稿のテスト実行
+- Phase 1 ゲート達成状況の追跡 (10K PV/月目標)
+
+---
+
+## 2026-03-18 13:23 - 全ゲーム再構築開始
+
+### 作業ログ
+
+- 13:23 [開始] 全15ゲーム + ポータルの完全再構築 → 担当: gamedev (16並列)
+  - 原因: CSS修正では不十分。旧Viteプロジェクト構造の残骸が問題
+  - 方針: 全コードをゼロから書き直し、GameShell統合ルールに完全準拠
+  
+【再構築対象】
+1. ntiktaktoe (n目並べ) - width:1000 height:700
+2. flashreflex (反射神経) - width:800 height:600 immersive
+3. gravityfour (重力四目) - width:900 height:700
+4. memoryduel (神経衰弱) - width:900 height:650
+5. snakechaos (スネーク) - width:800 height:600 immersive
+6. merge2048 (2048) - width:500 height:650
+7. brickblast (ブロック崩し) - width:800 height:600 immersive
+8. molemania (もぐらたたき) - width:800 height:600
+9. colorburst (カラーマッチ) - width:700 height:600
+10. taptarget (タップターゲット) - width:800 height:600 immersive
+11. simonecho (サイモン) - width:600 height:650
+12. numhunt (数字探し) - width:800 height:600
+13. dodgeblitz (避けゲー) - width:800 height:600 immersive
+14. typingblitz (タイピング) - width:900 height:600
+15. minerush (マインスイーパー) - width:800 height:650
+16. portal (ランディングページ) - レスポンシブ
+
+【GameShell統合ルール】
+- ルートdivは明示的な width/height (px) を持つ
+- `<GameShell gameId="..." layout="default|immersive">` でラップ
+- vw/vh 禁止、px/rem のみ
+- overflow: hidden 必須
+
+---
+
+## 2026-03-18 17:00〜21:30 作業セッション
+
+### 作業ログ
+
+- 17:14 [開始] 全ゲーム調査・修正・新規作成 → 担当: consultant + gamedev + game-factory
+- 17:20 [完了] ntiktaktoe 型エラー修正 → 結果: 成功
+- 17:25 [完了] 各ゲーム用 index.html 生成システム作成 → 結果: 成功 (platform-architect)
+- 17:30 [完了] 未登録4ゲーム (balloonpop, coinflip, mazerun, quickdraw) を games.json に登録
+- 17:35〜21:00 [完了] 新ゲーム9本作成:
+  - reactionchain (連鎖反応)
+  - towerstack (タワースタック)
+  - emojimatch (絵文字探し)
+  - colorflood (カラーフラッド)
+  - arrowdash (矢印ダッシュ)
+  - bubbleshoot (バブルシューター)
+  - wordscramble (単語スクランブル)
+  - cardwar (カード戦争)
+  - spotdiff (間違い探し)
+- 21:10 [完了] 壊れたゲーム4本を修正:
+  - balloonpop (風船割り) - src/App.tsx 未実装 → 完全実装
+  - coinflip (コイン予測) - src/App.tsx 未実装 → 完全実装
+  - quickdraw (早撃ち対決) - src/App.tsx 未実装 → 完全実装
+  - mazerun (迷路脱出) - Legacy HTML → React化
+
+### 今日の成果
+
+- **ゲーム総数: 35本** (15本 → 35本に増加)
+- 各ゲーム用固有 index.html 生成システム完成 (SEO/OGP対応)
+- 壊れたゲーム4本を完全修復
+- ビルド成功: 35 game pages, 39 URLs in sitemap
+
+### 次のアクション
+
+- デプロイして実機確認
+- さらにゲーム追加 (目標: 50本)
+- GitHub Secrets 設定 (SNS自動投稿有効化)
+
+---
+
+## 2026-03-19 08:21 作業セッション
+
+### 作業ログ
+
+- 08:21 [開始] ビルド状況確認・ゲーム追加再開 → 担当: consultant
+- 08:22 [完了] diceroll 修正 (default export追加 + games.json登録) → 結果: 成功
+- 08:25 [進行中] 新ゲーム3本並列作成:
+  - numberguess (数当て)
+  - fallingblocks (落ちものパズル)
+  - pairsrush (ペア探しラッシュ)
+
+### 現在のゲーム数: 37本

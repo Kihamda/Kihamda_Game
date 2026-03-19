@@ -49,7 +49,7 @@ Step 3: problems で全ファイルの型エラーを確認
 → エラーがあれば修正 or 報告
 Step 4: バンドルサイズ確認
 → dist/ のサイズを報告 (目安: JS < 200KB gzip)
-Step 5: games/[id]/index.html の meta タグ・SEO 要素を確認
+Step 5: src/portal/data/games.json のメタデータを確認
 Step 6: アクセシビリティ基本チェック
 → button に aria-label があるか、color contrast は十分か
 Step 7: チェック結果を一覧で報告
@@ -59,12 +59,19 @@ Step 7: チェック結果を一覧で報告
 ### クイックチェック (機能追加・バグ修正後)
 
 ```
-
 Step 1: ルートで npm run lint && npm run build を実行
 Step 2: problems で変更ファイル周辺の型エラーを確認
 Step 3: OK / NG を報告
-
 ```
+
+## Vite SPA 固有チェック
+
+- [ ] `dist/index.html` が存在
+- [ ] `dist/assets/` に JS/CSS バンドルが存在
+- [ ] `dist/thumbnails/` にSVGがコピーされている
+- [ ] `dist/sitemap.xml` が生成されている
+- [ ] `dist/_redirects` が SPA フォールバック設定を含む
+- [ ] `src/games/registry.ts` の glob が全ゲームを検出
 
 ## チェックリスト
 

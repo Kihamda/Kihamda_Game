@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="100%" stop-color="#22c55e"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#bg)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="50" cy="50" r="80" fill="#3b82f6" opacity="0.1"/>
+  <circle cx="350" cy="250" r="100" fill="#4ade80" opacity="0.1"/>
+  
+  <!-- Main arrow container -->
+  <rect x="125" y="75" width="150" height="150" rx="20" fill="none" stroke="url(#arrowGrad)" stroke-width="4"/>
+  
+  <!-- Center arrow (up) -->
+  <path d="M200 110 L240 170 L215 170 L215 210 L185 210 L185 170 L160 170 Z" fill="url(#arrowGrad)"/>
+  
+  <!-- Small arrows around -->
+  <g fill="url(#accent)" opacity="0.7">
+    <!-- Right arrow -->
+    <path d="M320 130 L340 150 L320 170 L320 155 L300 155 L300 145 L320 145 Z" transform="scale(0.7) translate(110, 50)"/>
+    <!-- Left arrow -->
+    <path d="M80 130 L60 150 L80 170 L80 155 L100 155 L100 145 L80 145 Z" transform="scale(0.7) translate(60, 50)"/>
+    <!-- Down arrow -->
+    <path d="M200 250 L180 230 L195 230 L195 210 L205 210 L205 230 L220 230 Z" transform="scale(0.6) translate(135, 120)"/>
+  </g>
+  
+  <!-- Speed lines -->
+  <g stroke="#fbbf24" stroke-width="2" opacity="0.5">
+    <line x1="280" y1="90" x2="320" y2="70"/>
+    <line x1="290" y1="110" x2="340" y2="95"/>
+    <line x1="285" y1="130" x2="330" y2="120"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="200" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#f8fafc">Arrow Dash</text>
+</svg>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <defs>
+    <linearGradient id="mazebg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2c3e50"/>
+      <stop offset="100%" style="stop-color:#1a252f"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#mazebg)"/>
+  <!-- 迷路グリッド -->
+  <g stroke="#4ECDC4" stroke-width="4" fill="none" transform="translate(145,30)">
+    <!-- 外枠 -->
+    <rect x="0" y="0" width="350" height="300" stroke-width="6"/>
+    <!-- 横壁 -->
+    <line x1="50" y1="0" x2="50" y2="60"/>
+    <line x1="100" y1="40" x2="100" y2="100"/>
+    <line x1="150" y1="0" x2="150" y2="60"/>
+    <line x1="200" y1="60" x2="200" y2="140"/>
+    <line x1="250" y1="0" x2="250" y2="80"/>
+    <line x1="300" y1="40" x2="300" y2="100"/>
+    <line x1="50" y1="100" x2="50" y2="180"/>
+    <line x1="100" y1="140" x2="100" y2="200"/>
+    <line x1="150" y1="100" x2="150" y2="180"/>
+    <line x1="200" y1="180" x2="200" y2="260"/>
+    <line x1="250" y1="120" x2="250" y2="200"/>
+    <line x1="300" y1="140" x2="300" y2="220"/>
+    <line x1="50" y1="220" x2="50" y2="300"/>
+    <line x1="150" y1="220" x2="150" y2="300"/>
+    <line x1="250" y1="240" x2="250" y2="300"/>
+    <!-- 縦壁 -->
+    <line x1="0" y1="60" x2="80" y2="60"/>
+    <line x1="120" y1="60" x2="180" y2="60"/>
+    <line x1="220" y1="60" x2="280" y2="60"/>
+    <line x1="40" y1="100" x2="120" y2="100"/>
+    <line x1="160" y1="100" x2="220" y2="100"/>
+    <line x1="260" y1="100" x2="350" y2="100"/>
+    <line x1="0" y1="140" x2="60" y2="140"/>
+    <line x1="100" y1="140" x2="180" y2="140"/>
+    <line x1="220" y1="140" x2="280" y2="140"/>
+    <line x1="40" y1="180" x2="100" y2="180"/>
+    <line x1="140" y1="180" x2="220" y2="180"/>
+    <line x1="280" y1="180" x2="350" y2="180"/>
+    <line x1="0" y1="220" x2="80" y2="220"/>
+    <line x1="120" y1="220" x2="200" y2="220"/>
+    <line x1="240" y1="220" x2="300" y2="220"/>
+    <line x1="60" y1="260" x2="140" y2="260"/>
+    <line x1="180" y1="260" x2="260" y2="260"/>
+    <line x1="300" y1="260" x2="350" y2="260"/>
+  </g>
+  <!-- プレイヤー (スタート) -->
+  <circle cx="170" cy="55" r="15" fill="#FF6B6B"/>
+  <text x="170" y="62" font-size="16" fill="white" text-anchor="middle" font-weight="bold">S</text>
+  <!-- ゴール -->
+  <rect x="450" y="285" width="35" height="35" fill="#4ECDC4" rx="5"/>
+  <text x="467" y="310" font-size="20" fill="white" text-anchor="middle" font-weight="bold">G</text>
+  <!-- 経路のヒント -->
+  <circle cx="220" cy="55" r="4" fill="#FFD700" opacity="0.6"/>
+  <circle cx="220" cy="115" r="4" fill="#FFD700" opacity="0.6"/>
+  <circle cx="270" cy="115" r="4" fill="#FFD700" opacity="0.6"/>
+</svg>

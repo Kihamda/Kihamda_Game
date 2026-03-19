@@ -1,0 +1,115 @@
+/* ================================================
+   Pattern Lock — CSS
+   ================================================ */
+
+/* コンテナ */
+.patternlock-container {
+  width: 600px;
+  height: 650px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #0f1520 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #fff;
+}
+
+/* ヘッダー */
+.patternlock-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.patternlock-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+}
+
+.patternlock-level {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #00ffff;
+  margin-top: 8px;
+}
+
+/* メッセージ */
+.patternlock-message {
+  font-size: 1.2rem;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aabbcc;
+  margin-bottom: 16px;
+}
+
+/* ゲームボード */
+.patternlock-board {
+  position: relative;
+  background: radial-gradient(circle at center, #1a2a3a 0%, #0a1520 100%);
+  border-radius: 16px;
+  box-shadow:
+    0 0 40px rgba(0, 0, 0, 0.6),
+    inset 0 0 30px rgba(0, 255, 255, 0.05);
+  padding: 20px;
+}
+
+/* キャンバス */
+.patternlock-canvas {
+  display: block;
+  touch-action: none;
+  cursor: pointer;
+}
+
+/* スタートボタン */
+.patternlock-start {
+  margin-top: 24px;
+  background: linear-gradient(145deg, #00cccc, #009999);
+  border: none;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 14px 40px;
+  border-radius: 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(0, 255, 255, 0.3);
+}
+
+.patternlock-start:hover {
+  background: linear-gradient(145deg, #00dddd, #00aaaa);
+  box-shadow: 0 6px 30px rgba(0, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.patternlock-start:active {
+  transform: translateY(0);
+}
+
+/* 成功メッセージ */
+.patternlock-success {
+  margin-top: 24px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #44ff44;
+  text-shadow: 0 0 20px rgba(68, 255, 68, 0.6);
+  animation: patternlock-pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes patternlock-pulse {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}

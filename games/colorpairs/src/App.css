@@ -1,0 +1,225 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Color Pairs - 色合わせパズル
+───────────────────────────────────────────────────────────────────────────── */
+
+.cp-root {
+  width: 800px;
+  height: 600px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* ── スクリーン（開始・結果） ───────────────────────────────────────────── */
+.cp-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.cp-title {
+  margin: 0;
+  font-size: 52px;
+  font-weight: 800;
+  color: #f8fafc;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.cp-desc {
+  margin: 0;
+  font-size: 20px;
+  color: #94a3b8;
+}
+
+/* ── プレビューカラー ─────────────────────────────────────────────────────── */
+.cp-preview {
+  display: flex;
+  gap: 12px;
+  margin: 8px 0;
+}
+
+.cp-preview-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ── ボタン ─────────────────────────────────────────────────────────────── */
+.cp-btn {
+  border: none;
+  border-radius: 16px;
+  padding: 16px 48px;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cp-btn:hover {
+  transform: translateY(-2px);
+}
+
+.cp-btn:active {
+  transform: translateY(1px);
+}
+
+.cp-btn--start {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  box-shadow: 0 8px 24px rgba(34, 197, 94, 0.4);
+}
+
+.cp-btn--restart {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+}
+
+/* ── ゲーム画面 ────────────────────────────────────────────────────────── */
+.cp-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.cp-hud {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+.cp-stat {
+  font-size: 20px;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.cp-timer {
+  color: #fbbf24;
+}
+
+/* ── カードグリッド ─────────────────────────────────────────────────────── */
+.cp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 110px);
+  grid-template-rows: repeat(4, 110px);
+  gap: 12px;
+  perspective: 1000px;
+}
+
+/* ── カード ─────────────────────────────────────────────────────────────── */
+.cp-card {
+  width: 110px;
+  height: 110px;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+.cp-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.cp-card--flipped .cp-card-inner {
+  transform: rotateY(180deg);
+}
+
+.cp-card-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: bold;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.cp-card-front {
+  background: linear-gradient(145deg, #475569 0%, #334155 100%);
+  border: 3px solid #64748b;
+  color: #94a3b8;
+}
+
+.cp-card-back {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  transform: rotateY(180deg);
+}
+
+/* ── マッチしたカード ────────────────────────────────────────────────────── */
+.cp-card--matched {
+  animation: matchScale 0.4s ease-out;
+}
+
+.cp-card--matched .cp-card-face.cp-card-back {
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+@keyframes matchScale {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* ── ホバーエフェクト ────────────────────────────────────────────────────── */
+.cp-card:not(.cp-card--flipped):not(.cp-card--matched):hover .cp-card-inner {
+  transform: rotateY(12deg);
+}
+
+.cp-card:not(.cp-card--flipped):not(.cp-card--matched):hover .cp-card-front {
+  box-shadow: 0 8px 24px rgba(100, 116, 139, 0.5);
+  border-color: #94a3b8;
+}
+
+/* ── 結果画面 ────────────────────────────────────────────────────────────── */
+.cp-result-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cp-result-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+
+.cp-result-label {
+  font-size: 16px;
+  color: #94a3b8;
+}
+
+.cp-result-value {
+  font-size: 36px;
+  font-weight: 800;
+  color: #38bdf8;
+}
+
+.cp-result-time {
+  font-family: "Consolas", monospace;
+  color: #fbbf24;
+}
+
+.cp-rating {
+  margin: 0;
+  font-size: 24px;
+  color: #fbbf24;
+}
