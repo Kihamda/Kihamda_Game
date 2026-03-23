@@ -276,20 +276,6 @@
       "featured": false
     },
     {
-      "id": "colorpairs",
-      "title": "Color Pairs",
-      "description": "色合わせパズル。同じ色のペアを見つけて消そう！",
-      "path": "/games/colorpairs/",
-      "thumbnail": "/thumbnails/colorpairs.svg",
-      "tags": [
-        "puzzle",
-        "memory",
-        "singleplayer"
-      ],
-      "publishedAt": "2026-03-18",
-      "featured": false
-    },
-    {
       "id": "slidemaster",
       "title": "Slide Master",
       "description": "15パズル。数字を1から順番に並べ替えよう！",
@@ -452,20 +438,6 @@
       "tags": [
         "puzzle",
         "strategy",
-        "singleplayer"
-      ],
-      "publishedAt": "2026-03-18",
-      "featured": false
-    },
-    {
-      "id": "bubbleshoot",
-      "title": "Bubble Shoot",
-      "description": "バブルシューター！泡を発射して同色を揃えて消そう！",
-      "path": "/games/bubbleshoot/",
-      "thumbnail": "/thumbnails/bubbleshoot.svg",
-      "tags": [
-        "puzzle",
-        "arcade",
         "singleplayer"
       ],
       "publishedAt": "2026-03-18",
@@ -813,7 +785,6 @@
       "publishedAt": "2026-03-20",
       "featured": false
     },
-
     {
       "id": "bubblepop",
       "title": "Bubble Pop",
@@ -999,7 +970,6 @@
       "publishedAt": "2026-03-21",
       "featured": false
     },
-
     {
       "id": "pinball",
       "title": "ピンボール",
@@ -1219,20 +1189,6 @@
       "featured": false
     },
     {
-      "thumbnail": "/thumbnails/taptap.svg",
-      "tags": [
-        "reflex",
-        "arcade",
-        "singleplayer"
-      ],
-      "title": "タップタップ",
-      "featured": false,
-      "publishedAt": "2026-03-20",
-      "path": "/games/taptap/",
-      "id": "taptap",
-      "description": "画面に現れるターゲットを素早くタップ！30秒で高スコアを目指す反射神経ゲーム"
-    },
-    {
       "description": "スワイプでバスケットボールをシュート！連続成功でボーナス、制限時間内に高スコアを目指せ",
       "id": "hoopshot",
       "publishedAt": "2026-03-20",
@@ -1370,7 +1326,6 @@
       "publishedAt": "2026-03-20",
       "featured": false
     },
-
     {
       "id": "jumpquest",
       "title": "Jump Quest",

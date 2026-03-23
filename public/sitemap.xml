@@ -121,11 +121,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://game.kihamda.net/games/colorpairs/</loc>
-    <lastmod>2026-03-18</lastmod>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://game.kihamda.net/games/slidemaster/</loc>
     <lastmod>2026-03-18</lastmod>
     <priority>0.7</priority>
@@ -182,11 +177,6 @@
   </url>
   <url>
     <loc>https://game.kihamda.net/games/colorflood/</loc>
-    <lastmod>2026-03-18</lastmod>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://game.kihamda.net/games/bubbleshoot/</loc>
     <lastmod>2026-03-18</lastmod>
     <priority>0.7</priority>
   </url>
@@ -462,11 +452,6 @@
   </url>
   <url>
     <loc>https://game.kihamda.net/games/cuberunner/</loc>
-    <lastmod>2026-03-20</lastmod>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://game.kihamda.net/games/taptap/</loc>
     <lastmod>2026-03-20</lastmod>
     <priority>0.7</priority>
   </url>

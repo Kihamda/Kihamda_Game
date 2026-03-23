@@ -78,10 +78,6 @@
 /games/patternlock/index.html  /games/patternlock/  301
 /games/patternlock/  /index.html  200
 /games/patternlock/*  /index.html  200
-/games/colorpairs  /games/colorpairs/  301
-/games/colorpairs/index.html  /games/colorpairs/  301
-/games/colorpairs/  /index.html  200
-/games/colorpairs/*  /index.html  200
 /games/slidemaster  /games/slidemaster/  301
 /games/slidemaster/index.html  /games/slidemaster/  301
 /games/slidemaster/  /index.html  200
@@ -130,10 +126,6 @@
 /games/colorflood/index.html  /games/colorflood/  301
 /games/colorflood/  /index.html  200
 /games/colorflood/*  /index.html  200
-/games/bubbleshoot  /games/bubbleshoot/  301
-/games/bubbleshoot/index.html  /games/bubbleshoot/  301
-/games/bubbleshoot/  /index.html  200
-/games/bubbleshoot/*  /index.html  200
 /games/wordscramble  /games/wordscramble/  301
 /games/wordscramble/index.html  /games/wordscramble/  301
 /games/wordscramble/  /index.html  200
@@ -354,10 +346,6 @@
 /games/cuberunner/index.html  /games/cuberunner/  301
 /games/cuberunner/  /index.html  200
 /games/cuberunner/*  /index.html  200
-/games/taptap  /games/taptap/  301
-/games/taptap/index.html  /games/taptap/  301
-/games/taptap/  /index.html  200
-/games/taptap/*  /index.html  200
 /games/hoopshot  /games/hoopshot/  301
 /games/hoopshot/index.html  /games/hoopshot/  301
 /games/hoopshot/  /index.html  200
