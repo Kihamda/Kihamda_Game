@@ -336,8 +336,8 @@ export default function App() {
           const dy = y - b.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < BUBBLE_RADIUS * 2 - 5) {
-            // 配置位置を決定
-            const row = Math.round((y - BUBBLE_RADIUS) / (BUBBLE_RADIUS * 1.7));
+            // 配置位置を決定 (ensure row >= 0)
+            const row = Math.max(0, Math.round((y - BUBBLE_RADIUS) / (BUBBLE_RADIUS * 1.7)));
             const col = getGridPosition(x, y, row);
             handleBubblePlacement(row, col, prev.color);
             return null;

@@ -341,7 +341,7 @@ export default function App() {
             availableLanes[Math.floor(Math.random() * availableLanes.length)];
           const color =
             ENEMY_COLORS[Math.floor(Math.random() * ENEMY_COLORS.length)];
-          updatedEnemies.push({ lane, y: -ENEMY_HEIGHT, color });
+          updatedEnemies.push({ lane, y: -ENEMY_HEIGHT, color, passedPlayer: false });
         }
 
         lastSpawnRef.current = timestamp;

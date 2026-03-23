@@ -343,12 +343,12 @@ export default function App() {
         setTimeout(() => effectsRef.setScreenFlash(null), 200);
       }
 
-      // Tower firing
+      // Tower firing (use > to prevent firing on first frame when lastFireTime=0)
       const newProjectiles = [...state.projectiles];
       let didShoot = false;
       for (const tower of state.towers) {
         const config = TOWER_CONFIGS[tower.type];
-        if (frameCount - tower.lastFireTime >= config.fireRate) {
+        if (frameCount - tower.lastFireTime > config.fireRate) {
           const target = findTarget(tower, newEnemies);
           if (target) {
             newProjectiles.push(createProjectile(tower, target.id));

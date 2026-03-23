@@ -23,6 +23,7 @@ const GROUND_Y = CANVAS_HEIGHT - 60;
 // Physics
 const GRAVITY = 0.8;
 const JUMP_VELOCITY = -15;
+const MAX_VELOCITY_Y = 20;
 const INITIAL_SPEED = 6;
 const MAX_SPEED = 15;
 const SPEED_INCREMENT = 0.002;
@@ -207,8 +208,8 @@ export default function App() {
       const state = gameStateRef.current;
       if (!state || state.phase !== "playing") return;
 
-      // Apply gravity
-      let newVelocityY = state.velocityY + GRAVITY;
+      // Apply gravity with velocity cap
+      let newVelocityY = Math.min(state.velocityY + GRAVITY, MAX_VELOCITY_Y);
       let newPlayerY = state.playerY + newVelocityY;
       let newIsJumping = state.isJumping;
 

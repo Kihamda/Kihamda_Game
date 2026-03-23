@@ -295,7 +295,9 @@ export default function App() {
 
       setTimeout(() => {
         // タイル削除
-        const remaining = currentTiles.filter((t) => !matches.has(t.id));
+        const remaining = currentTiles
+          .filter((t) => !matches.has(t.id))
+          .map(t => ({ ...t })); // Deep copy to avoid mutation
 
         // 落下処理（各列）
         for (let col = 0; col < COLS; col++) {

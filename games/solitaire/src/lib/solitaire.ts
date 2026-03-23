@@ -122,7 +122,7 @@ export function moveToTableau(
     if (sourcePile.length > 0) {
       sourcePile[sourcePile.length - 1].faceUp = true;
     }
-  } else if (source.type === "waste") {
+  } else if (source.type === "waste" && newState.waste.length > 0) {
     newState.waste.pop();
   } else if (source.type === "foundation") {
     const suit = source.cards[0].suit;
@@ -160,7 +160,7 @@ export function moveToFoundation(
     if (sourcePile.length > 0) {
       sourcePile[sourcePile.length - 1].faceUp = true;
     }
-  } else if (source.type === "waste") {
+  } else if (source.type === "waste" && newState.waste.length > 0) {
     newState.waste.pop();
   }
 
