@@ -2,22 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://game.kihamda.net/</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://game.kihamda.net/about/</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://game.kihamda.net/privacy-policy/</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://game.kihamda.net/contact/</loc>
-    <lastmod>2026-03-21</lastmod>
+    <lastmod>2026-03-24</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
@@ -513,6 +513,16 @@
   <url>
     <loc>https://game.kihamda.net/games/linedraw/</loc>
     <lastmod>2026-03-21</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/orbitdodge/</loc>
+    <lastmod>2026-03-24</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/games/laserdefense/</loc>
+    <lastmod>2026-03-24</lastmod>
     <priority>0.7</priority>
   </url>
 </urlset>

@@ -1,0 +1,137 @@
+.orbitdodge-container {
+  position: relative;
+  width: 400px;
+  height: 500px;
+  background: #0a0a1a;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+}
+
+.orbitdodge-canvas {
+  display: block;
+}
+
+.orbitdodge-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 26, 0.92);
+  padding: 20px;
+  text-align: center;
+}
+
+.orbitdodge-title {
+  font-size: 36px;
+  font-weight: 900;
+  color: #ffdd00;
+  text-shadow:
+    0 0 10px #ffaa00,
+    0 0 20px #ff8800,
+    0 0 40px #ff6600;
+  margin: 0 0 10px;
+  letter-spacing: 4px;
+}
+
+.orbitdodge-sun-icon {
+  font-size: 48px;
+  margin: 10px 0;
+  animation: orbitdodge-pulse 2s ease-in-out infinite;
+}
+
+@keyframes orbitdodge-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.orbitdodge-instruction {
+  color: #aaccff;
+  font-size: 16px;
+  line-height: 1.8;
+  margin: 15px 0 25px;
+}
+
+.orbitdodge-highlight {
+  color: #4488ff;
+  font-weight: bold;
+  background: rgba(68, 136, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.orbitdodge-start-btn {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0a0a1a;
+  background: linear-gradient(135deg, #ffdd00, #ffaa00);
+  border: none;
+  padding: 14px 50px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(255, 170, 0, 0.4);
+}
+
+.orbitdodge-start-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 30px rgba(255, 170, 0, 0.6);
+}
+
+.orbitdodge-start-btn:active {
+  transform: scale(0.98);
+}
+
+.orbitdodge-gameover {
+  font-size: 40px;
+  font-weight: 900;
+  color: #ff4444;
+  text-shadow:
+    0 0 10px #ff0000,
+    0 0 30px #ff000088;
+  margin: 0 0 20px;
+  animation: orbitdodge-shake 0.5s ease-out;
+}
+
+@keyframes orbitdodge-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  40% { transform: translateX(10px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+.orbitdodge-final-score {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0 0 15px;
+}
+
+.orbitdodge-new-record {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffdd00;
+  text-shadow: 0 0 15px #ffaa00;
+  animation: orbitdodge-flash 0.5s ease infinite;
+  margin: 0 0 20px;
+}
+
+@keyframes orbitdodge-flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Combo counter animation */
+@keyframes combo-pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes combo-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}

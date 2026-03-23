@@ -394,3 +394,11 @@
 /games/linedraw/index.html  /games/linedraw/  301
 /games/linedraw/  /index.html  200
 /games/linedraw/*  /index.html  200
+/games/orbitdodge  /games/orbitdodge/  301
+/games/orbitdodge/index.html  /games/orbitdodge/  301
+/games/orbitdodge/  /index.html  200
+/games/orbitdodge/*  /index.html  200
+/games/laserdefense  /games/laserdefense/  301
+/games/laserdefense/index.html  /games/laserdefense/  301
+/games/laserdefense/  /index.html  200
+/games/laserdefense/*  /index.html  200

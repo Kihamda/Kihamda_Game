@@ -1353,6 +1353,34 @@
       ],
       "publishedAt": "2026-03-21",
       "featured": false
+    },
+    {
+      "id": "orbitdodge",
+      "title": "Orbit Dodge",
+      "description": "太陽の周りを回る惑星を操作して小惑星を避けながら星を集める軌道アクションゲーム",
+      "path": "/games/orbitdodge/",
+      "thumbnail": "/thumbnails/orbitdodge.svg",
+      "tags": [
+        "arcade",
+        "action",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-24",
+      "featured": false
+    },
+    {
+      "title": "Laser Defense",
+      "tags": [
+        "puzzle",
+        "strategy",
+        "singleplayer"
+      ],
+      "path": "/games/laserdefense/",
+      "featured": false,
+      "thumbnail": "/thumbnails/laserdefense.svg",
+      "publishedAt": "2026-03-24",
+      "id": "laserdefense",
+      "description": "ミラーを配置してレーザーをターゲットに導くパズルゲーム。制限時間内に全5レベルをクリアせよ！"
     }
   ]
 }
