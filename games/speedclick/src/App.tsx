@@ -173,7 +173,7 @@ export default function App() {
       
       // マイルストーンポップアップ (10, 20, 30, ...)
       const milestone = Math.floor(currentClicks / 10) * 10;
-      if (milestone > 0 && milestone > lastMilestoneRef.current && currentClicks === milestone) {
+      if (milestone > 0 && milestone > lastMilestoneRef.current) {
         lastMilestoneRef.current = milestone;
         playMilestone();
         

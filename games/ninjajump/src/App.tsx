@@ -229,10 +229,9 @@ export default function App() {
 
       const highestObstacle = Math.min(...obstacles.map((o) => o.y), CANVAS_HEIGHT);
       const visibleTop = -cameraY - 200;
-      while (highestObstacle > visibleTop) {
+      if (highestObstacle > visibleTop) {
         const newY = highestObstacle - OBSTACLE_INTERVAL;
         obstacles = [...obstacles, createObstacle(obstacleIdCounter++, newY)];
-        break;
       }
 
       const screenBottom = CANVAS_HEIGHT + cameraY + 100;

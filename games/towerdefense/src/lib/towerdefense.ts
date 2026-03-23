@@ -11,6 +11,7 @@ import {
   GOLD_PER_KILL,
   ENEMY_BASE_HEALTH,
   ENEMY_BASE_SPEED,
+  ENEMY_MAX_SPEED,
   ENEMY_HEALTH_SCALE,
 } from "./constants";
 
@@ -42,7 +43,7 @@ export function createEnemy(wave: number): Enemy {
     y: PATH[0].y,
     health,
     maxHealth: health,
-    speed: ENEMY_BASE_SPEED + wave * 0.1,
+    speed: Math.min(ENEMY_MAX_SPEED, ENEMY_BASE_SPEED + wave * 0.1),
     pathIndex: 0,
     slowUntil: 0,
   };

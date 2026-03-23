@@ -365,6 +365,9 @@ export default function App() {
                 }}
                 onTouchStart={(e) => {
                   e.stopPropagation();
+                  e.preventDefault();
+                  const touch = e.touches[0];
+                  handleTargetTap(target.id, target.size, touch.clientX, touch.clientY, target);
                 }}
                 aria-label={`ターゲット ${target.id}`}
               />

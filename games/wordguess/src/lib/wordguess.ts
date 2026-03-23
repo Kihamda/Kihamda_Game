@@ -93,6 +93,11 @@ export function submitGuess(state: GameState): GameState {
     return { ...state, message: "5文字入力してください" };
   }
 
+  // Validate word is in dictionary
+  if (!WORD_LIST.includes(guess)) {
+    return { ...state, message: "この単語は辞書にありません" };
+  }
+
   const results = evaluateGuess(guess, state.targetWord);
   const newAttempts = [...state.attempts, results];
   const newKeyboardState = updateKeyboardState(state.keyboardState, results);

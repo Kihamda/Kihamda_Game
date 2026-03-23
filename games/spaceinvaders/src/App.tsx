@@ -402,12 +402,13 @@ export default function App() {
         // ボス移動
         if (state.boss && state.boss.alive) {
           state.boss.x += BOSS_SPEED * state.boss.direction;
-          // 画面外に出たら消す
+          // 画面外に出たら消す（タイマーもリセット）
           if (
             state.boss.x > CANVAS_WIDTH ||
             state.boss.x + BOSS_WIDTH < 0
           ) {
             state.boss = null;
+            state.lastBossTime = currentTime; // Reset timer to prevent immediate respawn
           }
         }
 
@@ -444,9 +445,11 @@ export default function App() {
 
         // 弾と敵の衝突判定
         for (const bullet of state.bullets) {
+          let bulletHit = false;
+          
           // 通常敵との衝突
           for (const enemy of state.enemies) {
-            if (!enemy.alive) continue;
+            if (!enemy.alive || bulletHit) continue;
 
             if (
               bullet.x < enemy.x + ENEMY_WIDTH &&
@@ -456,6 +459,7 @@ export default function App() {
             ) {
               enemy.alive = false;
               bullet.y = -999; // 弾を消す
+              bulletHit = true;
 
               const baseScore = ENEMY_SCORES[enemy.row % ENEMY_SCORES.length];
               const newCombo = state.combo + 1;
@@ -509,11 +513,13 @@ export default function App() {
               } else {
                 audio.playSuccess();
               }
+              
+              break; // Exit inner loop - one bullet can only hit one enemy
             }
           }
 
-          // ボスとの衝突
-          if (state.boss && state.boss.alive) {
+          // ボスとの衝突 (skip if bullet already hit something)
+          if (!bulletHit && state.boss && state.boss.alive) {
             const boss = state.boss;
             if (
               bullet.x < boss.x + BOSS_WIDTH &&

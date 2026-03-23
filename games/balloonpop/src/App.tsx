@@ -200,16 +200,22 @@ export default function App() {
 
     setScore((prev) => Math.max(0, prev + points));
     setBalloons((prev) => prev.filter((b) => b.id !== balloon.id));
+    const popupId = Date.now() + Math.random();
     setScorePopups((prev) => [
       ...prev,
       {
-        id: Date.now(),
+        id: popupId,
         x: balloon.x,
         y: balloon.y,
         value: points,
         type: balloon.type,
       },
     ]);
+
+    // Clean up popup after animation
+    setTimeout(() => {
+      setScorePopups((prev) => prev.filter((p) => p.id !== popupId));
+    }, 800);
 
     // Dopamine effects based on balloon type
     if (balloon.type === "bomb") {
@@ -248,10 +254,6 @@ export default function App() {
         setCombo(0);
       }, 1500);
     }
-
-    setTimeout(() => {
-      setScorePopups((prev) => prev.filter((p) => p.id !== Date.now()));
-    }, 800);
   }, [playSuccess, playMiss, playBonus, playCombo, sparkle]);
 
   // Game timer

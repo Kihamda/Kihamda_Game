@@ -125,13 +125,12 @@ function checkCollision(playerY: number, obstacle: Obstacle): boolean {
   const obstacleTop = GROUND_Y - obstacle.height;
   const obstacleBottom = GROUND_Y;
 
-  // Add some margin for fairness
-  const margin = 5;
+  // Precise collision detection - match visual hitbox
   return (
-    playerRight - margin > obstacleLeft &&
-    playerLeft + margin < obstacleRight &&
-    playerBottom - margin > obstacleTop &&
-    playerTop + margin < obstacleBottom
+    playerRight > obstacleLeft &&
+    playerLeft < obstacleRight &&
+    playerBottom > obstacleTop &&
+    playerTop < obstacleBottom
   );
 }
 

@@ -155,12 +155,29 @@ export default function App() {
           const timeSinceLastHit = now - lastHitTimeRef.current;
           lastHitTimeRef.current = now;
           
-          // コンボ判定
-          let newCombo = 1;
-          if (timeSinceLastHit < COMBO_TIMEOUT) {
-            newCombo = combo + 1;
-          }
-          setCombo(newCombo);
+          // コンボ判定 - functional update to avoid stale closure
+          setCombo((prevCombo) => {
+            const newCombo = timeSinceLastHit < COMBO_TIMEOUT ? prevCombo + 1 : 1;
+            
+            // スコア計算（コンボボーナス）
+            const basePoints = 100;
+            const comboMultiplier = Math.min(newCombo, 5); // 最大5倍
+            const points = basePoints * comboMultiplier;
+            setScore((s) => s + points);
+            
+            // ポイントポップアップ
+            addPopup(`+${points}`, popupX, popupY, "default", "md");
+            
+            // コンボポップアップ（2コンボ以上）
+            if (newCombo >= 2) {
+              setTimeout(() => {
+                addPopup(`${newCombo}x COMBO!`, "50%", "15%", "combo", "lg");
+                playCombo();
+              }, 100);
+            }
+            
+            return newCombo;
+          });
           
           // コンボタイムアウトをリセット
           if (comboTimeoutRef.current) {
@@ -169,23 +186,6 @@ export default function App() {
           comboTimeoutRef.current = window.setTimeout(() => {
             setCombo(0);
           }, COMBO_TIMEOUT);
-          
-          // スコア計算（コンボボーナス）
-          const basePoints = 100;
-          const comboMultiplier = Math.min(newCombo, 5); // 最大5倍
-          const points = basePoints * comboMultiplier;
-          setScore((s) => s + points);
-          
-          // ポイントポップアップ
-          addPopup(`+${points}`, popupX, popupY, "default", "md");
-          
-          // コンボポップアップ（2コンボ以上）
-          if (newCombo >= 2) {
-            setTimeout(() => {
-              addPopup(`${newCombo}x COMBO!`, "50%", "15%", "combo", "lg");
-              playCombo();
-            }, 100);
-          }
           
           setHitPosition(position);
           setTimeout(() => setHitPosition(null), 200);

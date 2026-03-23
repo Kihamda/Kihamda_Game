@@ -5,6 +5,40 @@
 
 ---
 
+## 2026-03-19
+
+### 作業ログ
+
+- 00:00 [開始] ドーパミンエフェクト追加 + バグ修正 + 重複ゲーム削除 → 担当: 直接実行
+- 01:00 [完了] 破損ゲーム削除: aimtrainer, colorfill, penaltykick, whackemoji (空srcディレクトリ)
+- 01:30 [完了] 重複ゲーム削除: simonecho→simonsays, slidepuzzle→slidemaster, minesweeper→minerush
+- 02:00 [完了] ScorePopup追加: bottleflip, bounceball, brickout, colorswitch, dotconnect, fallingblocks, iceslide, jumpquest, knifehit, mazerun, numberguess, poolmaster
+- 02:30 [完了] バグ修正: archery(ヒット検出), simplechess(依存配列), coinflip(賭け金ロジック), wordsearch(タイムアウト), wordscramble/wordchain(重複単語)
+- 03:00 [完了] バグ修正: helicopter(初回ハイスコア), hexmatch(六角隣接ロジック)
+- 03:30 [完了] バグ修正バッチ2: taptarget(タッチ入力), slotmachine(リール位置同期), ninjajump(while→if), speedclick(マイルストーン検出)
+- 04:00 [完了] クリティカルバグ修正: balloonpop(メモリリーク), wordguess(単語検証), endlessrun(不公平な衝突マージン), towerdefense(敵速度上限)
+- 04:30 [完了] クリティカルバグ修正: spaceinvaders(弾丸衝突ループ+ボスリスポーンタイマー), molemania(コンボ状態クロージャ)
+- 04:30 [メモ] `npm run lint` 0 errors, `npm run build` 成功, 最終ゲーム数: 100
+
+### 今日の成果
+
+- 7ゲームを削除（4破損 + 3重複）: 107 → 100ゲーム
+- ScorePopup/useAudio/useParticles のカバレッジ向上
+- 17件以上のプレイアビリティバグ修正:
+  - taptarget: タッチ入力でhandleTargetTapが呼ばれない
+  - slotmachine: リール停止位置と勝敗判定の不一致
+  - ninjajump: while-breakパターンをifに修正
+  - speedclick: マイルストーン検出の厳密等価→以上に修正
+  - balloonpop: スコアポップアップのメモリリーク修正
+  - wordguess: 辞書にない単語の入力を拒否するよう修正
+  - endlessrun: 不公平な衝突マージンを削除
+  - towerdefense: 敵の速度上限を追加（後半ウェーブの難易度バランス）
+  - spaceinvaders: 弾丸が複数敵にヒットするバグ修正、ボス退場時タイマーリセット
+  - molemania: コンボ状態のクロージャ問題修正（functional update使用）
+- 全ゲームのビルド検証完了
+
+---
+
 ## 2026-03-18
 
 ### 作業ログ

@@ -13,6 +13,7 @@ export const MAX_WAVES = 10;
 
 export const ENEMY_BASE_HEALTH = 50;
 export const ENEMY_BASE_SPEED = 1.5;
+export const ENEMY_MAX_SPEED = 3.5; // Cap enemy speed to keep game fair
 export const ENEMY_HEALTH_SCALE = 1.3;
 export const ENEMY_SIZE = 16;
 

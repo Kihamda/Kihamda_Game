@@ -84,7 +84,14 @@ export default function App() {
     // スピン音
     playSpin();
 
-    // 各リールを順次停止
+    // 最終停止位置を先に決定しておく
+    const finalPositions = [
+      Math.floor(Math.random() * (SYMBOLS_PER_REEL - 3)),
+      Math.floor(Math.random() * (SYMBOLS_PER_REEL - 3)),
+      Math.floor(Math.random() * (SYMBOLS_PER_REEL - 3)),
+    ];
+
+    // 各リールを順次停止（事前決定した位置を使用）
     const stopReel = (index: number) => {
       playStop();
       setStoppedReels((prev) => {
@@ -94,7 +101,7 @@ export default function App() {
       });
       setReelPositions((prev) => {
         const next = [...prev];
-        next[index] = Math.floor(Math.random() * (SYMBOLS_PER_REEL - 3));
+        next[index] = finalPositions[index];
         return next;
       });
     };
@@ -106,14 +113,8 @@ export default function App() {
       setPhase("stopping");
     }, SPIN_DURATION + REEL_STOP_DELAY * 2);
 
-    // 結果判定
+    // 結果判定（事前決定した位置を使用）
     setTimeout(() => {
-      const finalPositions = [
-        Math.floor(Math.random() * (SYMBOLS_PER_REEL - 3)),
-        Math.floor(Math.random() * (SYMBOLS_PER_REEL - 3)),
-        Math.floor(Math.random() * (SYMBOLS_PER_REEL - 3)),
-      ];
-      
       const resultSymbols: [Symbol, Symbol, Symbol] = [
         newReels[0][finalPositions[0] + 1],
         newReels[1][finalPositions[1] + 1],
@@ -122,7 +123,6 @@ export default function App() {
 
       const result = evaluateSpinResult(resultSymbols);
       setLastResult(result);
-      setReelPositions(finalPositions);
 
       // 演出
       if (result.isJackpot) {
