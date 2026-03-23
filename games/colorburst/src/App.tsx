@@ -1,6 +1,18 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { useAudio, useParticles, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
+import { ParticleLayer, ComboCounter } from "@shared";
 import "./App.css";
+
+// ScorePopup state type
+interface PopupState {
+  text: string | null;
+  key: number;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+  y: string;
+}
 
 // 色の定義
 interface ColorData {
@@ -65,9 +77,44 @@ export default function App() {
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null);
   const [totalAnswers, setTotalAnswers] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
+  
+  // ハイスコアをrefで保持（エフェクト内でsetStateしないため）
+  const highScoreRef = useRef<number | null>(null);
+  if (highScoreRef.current === null) {
+    const saved = localStorage.getItem("colorburst-highscore");
+    highScoreRef.current = saved ? parseInt(saved, 10) : 0;
+  }
+
+  // ScorePopup state
+  const [popup, setPopup] = useState<PopupState>({
+    text: null,
+    key: 0,
+    variant: "default",
+    size: "md",
+    y: "40%",
+  });
+  const popupTimeoutRef = useRef<number | null>(null);
+
+  const showPopup = useCallback(
+    (text: string, variant: PopupVariant = "default", size: "sm" | "md" | "lg" | "xl" = "md", y = "40%") => {
+      if (popupTimeoutRef.current) clearTimeout(popupTimeoutRef.current);
+      setPopup((prev) => ({ text, key: prev.key + 1, variant, size, y }));
+      popupTimeoutRef.current = window.setTimeout(() => {
+        setPopup((prev) => ({ ...prev, text: null }));
+      }, variant === "level" ? 1500 : variant === "critical" ? 1200 : 900);
+    },
+    []
+  );
 
   const timerRef = useRef<number | null>(null);
   const feedbackTimeoutRef = useRef<number | null>(null);
+
+  // Dopamine hooks
+  const { particles, confetti, sparkle } = useParticles();
+  const { playTone } = useAudio();
+  const playCorrect = useCallback(() => playTone(660, 0.1, 'sine'), [playTone]);
+  const playWrong = useCallback(() => playTone(200, 0.15, 'sawtooth'), [playTone]);
+  const playCombo = useCallback((c: number) => playTone(440 + c * 50, 0.1, 'sine'), [playTone]);
 
   // タイマー管理
   useEffect(() => {
@@ -126,12 +173,35 @@ export default function App() {
         setStreak(newStreak);
         setCorrectAnswers((prev) => prev + 1);
 
+        // Dopamine effects
+        playCorrect();
+        sparkle(200, 150);
+        if (newStreak >= 3) {
+          playCombo(newStreak);
+        }
+        if (newStreak >= 10) {
+          confetti();
+        }
+
         // コンボボーナス: 3連続以上で追加点
         const bonus = newStreak >= 3 ? Math.floor(newStreak / 3) : 0;
-        setScore((prev) => prev + 10 + bonus * 5);
+        const points = 10 + bonus * 5;
+        setScore((prev) => prev + points);
         setFeedback("correct");
+
+        // ScorePopup for points and combos
+        if (newStreak >= 10) {
+          showPopup(`🔥 ${newStreak} COMBO! +${points}`, "critical", "lg", "35%");
+        } else if (newStreak >= 5) {
+          showPopup(`🎯 ${newStreak}連続! +${points}`, "combo", "md", "38%");
+        } else if (newStreak >= 3) {
+          showPopup(`+${points} (x${newStreak})`, "combo", "md", "40%");
+        } else {
+          showPopup(`+${points}`, "default", "sm", "42%");
+        }
       } else {
         setStreak(0);
+        playWrong();
         setFeedback("wrong");
       }
 
@@ -143,8 +213,24 @@ export default function App() {
       // 次の問題
       setQuestion(generateQuestion());
     },
-    [phase, question.isMatch, streak]
+    [phase, question.isMatch, streak, playCorrect, playWrong, playCombo, sparkle, confetti, showPopup]
   );
+
+  // ゲーム終了時にハイスコア更新とポップアップ表示
+  useEffect(() => {
+    if (phase === "after") {
+      const currentHighScore = highScoreRef.current ?? 0;
+      const isNewHighScore = score > currentHighScore;
+      if (isNewHighScore) {
+        highScoreRef.current = score;
+        localStorage.setItem("colorburst-highscore", String(score));
+        // Defer popup to avoid setState in effect (use microtask)
+        queueMicrotask(() => showPopup("🏆 NEW HIGH SCORE!", "critical", "xl", "25%"));
+      } else if (score > 0) {
+        queueMicrotask(() => showPopup(`ゲーム終了! ${score}pt`, "level", "lg", "30%"));
+      }
+    }
+  }, [phase, score, showPopup]);
 
   // キーボードショートカット
   useEffect(() => {
@@ -168,6 +254,9 @@ export default function App() {
       if (feedbackTimeoutRef.current) {
         clearTimeout(feedbackTimeoutRef.current);
       }
+      if (popupTimeoutRef.current) {
+        clearTimeout(popupTimeoutRef.current);
+      }
     };
   }, []);
 
@@ -176,7 +265,17 @@ export default function App() {
 
   return (
     <GameShell gameId="colorburst" layout="default">
-      <div className="colorburst-container">
+      <div className="colorburst-container" style={{ position: 'relative' }}>
+        <ParticleLayer particles={particles} />
+        <ScorePopup
+          text={popup.text}
+          popupKey={popup.key}
+          variant={popup.variant}
+          size={popup.size}
+          y={popup.y}
+        />
+        {streak >= 3 && phase === "in_progress" && <ComboCounter combo={streak} />}
+        
         {/* ヘッダー: スコアとタイマー */}
         <header className="colorburst-header">
           <div className="colorburst-score">

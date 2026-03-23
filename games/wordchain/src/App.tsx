@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { GameShell, useHighScore } from "../../../src/shared";
+import { GameShell, useHighScore, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
 import {
   getLastChar,
   getStartingWord,
@@ -24,6 +25,18 @@ interface GameState {
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const TIME_PER_WORD = 15; // seconds
+
+// Milestone chain lengths for bonus popups
+const MILESTONES = [5, 10, 15, 20, 25, 30, 50, 75, 100];
+
+// Popup state type
+interface PopupState {
+  text: string | null;
+  key: number;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+  y: string;
+}
 
 // ─── Components ──────────────────────────────────────────────────────────────
 
@@ -198,7 +211,41 @@ export default function App() {
     errorMessage: "",
   });
 
+  // ScorePopup state
+  const [popup, setPopup] = useState<PopupState>({
+    text: null,
+    key: 0,
+    variant: "default",
+    size: "md",
+    y: "35%",
+  });
+
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  
+  const { playTone } = useAudio();
+  const { particles, sparkle, confetti, burst } = useParticles();
+  
+  const playCorrect = useCallback(() => playTone(660, 0.12, 'sine'), [playTone]);
+  const playWrong = useCallback(() => playTone(220, 0.15, 'sawtooth'), [playTone]);
+  const playTick = useCallback(() => playTone(400, 0.05, 'triangle'), [playTone]);
+  const playMilestone = useCallback(() => playTone(880, 0.2, 'sine'), [playTone]);
+  const playLongWord = useCallback(() => playTone(550, 0.15, 'triangle'), [playTone]);
+
+  // Show popup helper
+  const showPopup = useCallback((
+    text: string,
+    variant: PopupVariant = "default",
+    size: "sm" | "md" | "lg" | "xl" = "md",
+    y: string = "35%"
+  ) => {
+    setPopup(prev => ({
+      text,
+      key: prev.key + 1,
+      variant,
+      size,
+      y,
+    }));
+  }, []);
 
   // Timer effect
   useEffect(() => {
@@ -217,7 +264,23 @@ export default function App() {
           const finalScore = prev.chainCount;
           const newRecord = highScoreHook.update(finalScore);
           setIsNewRecord(newRecord);
+          
+          // Show result popup
+          if (newRecord) {
+            confetti();
+            showPopup("🎉 NEW RECORD!", "critical", "xl", "30%");
+          } else if (finalScore >= 20) {
+            showPopup(`🏆 ${finalScore} Chains!`, "level", "lg", "30%");
+          } else if (finalScore >= 10) {
+            showPopup(`🔥 ${finalScore} Chains!`, "combo", "lg", "30%");
+          } else {
+            showPopup(`${finalScore} Chains`, "default", "lg", "30%");
+          }
+          
           return { ...prev, phase: "result", timeLeft: 0 };
+        }
+        if (prev.timeLeft <= 3) {
+          playTick();
         }
         return { ...prev, timeLeft: prev.timeLeft - 1 };
       });
@@ -229,7 +292,7 @@ export default function App() {
         timerRef.current = null;
       }
     };
-  }, [state.phase, highScoreHook]);
+  }, [state.phase, highScoreHook, confetti, playTick, showPopup]);
 
   const startGame = useCallback(() => {
     const startWord = getStartingWord();
@@ -242,12 +305,14 @@ export default function App() {
       errorMessage: "",
     });
     setIsNewRecord(false);
+    setPopup(prev => ({ ...prev, text: null }));
   }, []);
 
   const handleSubmit = useCallback((word: string) => {
     setState((prev) => {
       // Check if word starts with the correct letter
       if (!isValidChain(prev.currentWord, word)) {
+        playWrong();
         return {
           ...prev,
           errorMessage: `「${prev.currentWord.slice(-1).toUpperCase()}」で始まる単語を入力してください`,
@@ -256,6 +321,7 @@ export default function App() {
 
       // Check if word is in dictionary
       if (!isValidWord(word)) {
+        playWrong();
         return {
           ...prev,
           errorMessage: "辞書に登録されていない単語です",
@@ -264,6 +330,7 @@ export default function App() {
 
       // Check if word was already used
       if (prev.usedWords.includes(word.toLowerCase())) {
+        playWrong();
         return {
           ...prev,
           errorMessage: "その単語は既に使われています",
@@ -271,16 +338,55 @@ export default function App() {
       }
 
       // Success - add word and reset timer
+      const newChainCount = prev.chainCount + 1;
+      const wordLength = word.length;
+      
+      // Determine popup and effects
+      const isMilestone = MILESTONES.includes(newChainCount);
+      const isLongWord = wordLength >= 8;
+      const isVeryLongWord = wordLength >= 10;
+      
+      // Play sounds
+      playCorrect();
+      
+      // Show appropriate popup based on achievement
+      if (isMilestone) {
+        // Milestone achievement - highest priority
+        playMilestone();
+        burst(window.innerWidth / 2, window.innerHeight / 3);
+        if (newChainCount >= 50) {
+          showPopup(`🏆 ${newChainCount} CHAINS!`, "critical", "xl", "30%");
+        } else if (newChainCount >= 20) {
+          showPopup(`🔥 ${newChainCount} Chains!`, "level", "lg", "30%");
+        } else {
+          showPopup(`✨ ${newChainCount} Chains!`, "combo", "lg", "30%");
+        }
+      } else if (isVeryLongWord) {
+        // Very long word (10+ letters)
+        playLongWord();
+        sparkle(window.innerWidth / 2, window.innerHeight / 3);
+        showPopup(`💎 "${word}" +${wordLength}pt!`, "bonus", "lg", "30%");
+      } else if (isLongWord) {
+        // Long word (8-9 letters)
+        playLongWord();
+        sparkle(window.innerWidth / 2, window.innerHeight / 3);
+        showPopup(`⭐ "${word}" +${wordLength}pt!`, "bonus", "md", "30%");
+      } else {
+        // Normal chain continuation
+        sparkle(window.innerWidth / 2, window.innerHeight / 3);
+        showPopup(`+${newChainCount}`, "default", "sm", "32%");
+      }
+      
       return {
         ...prev,
         currentWord: word.toLowerCase(),
         usedWords: [...prev.usedWords, word.toLowerCase()],
-        chainCount: prev.chainCount + 1,
+        chainCount: newChainCount,
         timeLeft: TIME_PER_WORD,
         errorMessage: "",
       };
     });
-  }, []);
+  }, [playCorrect, playWrong, playMilestone, playLongWord, sparkle, burst, showPopup]);
 
   const goToStart = useCallback(() => {
     setState({
@@ -291,10 +397,19 @@ export default function App() {
       timeLeft: TIME_PER_WORD,
       errorMessage: "",
     });
+    setPopup(prev => ({ ...prev, text: null }));
   }, []);
 
   return (
     <GameShell gameId="wordchain" layout="default">
+      <ParticleLayer particles={particles} />
+      <ScorePopup
+        text={popup.text}
+        popupKey={popup.key}
+        variant={popup.variant}
+        size={popup.size}
+        y={popup.y}
+      />
       <div className="wordchain-container">
         {state.phase === "start" && (
           <StartScreen highScore={highScoreHook.best} onStart={startGame} />

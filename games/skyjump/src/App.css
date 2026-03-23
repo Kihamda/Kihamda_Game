@@ -1,0 +1,126 @@
+.skyjump-container {
+  width: 400px;
+  height: 700px;
+  position: relative;
+  background: #1a365d;
+  overflow: hidden;
+}
+
+.skyjump-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.skyjump-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26, 54, 93, 0.95);
+  z-index: 10;
+}
+
+.skyjump-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fbbf24;
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.5), 0 4px 0 #92400e;
+  margin: 0 0 1rem;
+  letter-spacing: 0.15em;
+}
+
+.skyjump-instruction {
+  font-size: 1rem;
+  color: #e2e8f0;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.skyjump-platforms-info {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+.skyjump-platform-type {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.skyjump-platform-type.normal {
+  color: #4ade80;
+}
+
+.skyjump-platform-type.moving {
+  color: #60a5fa;
+}
+
+.skyjump-platform-type.breaking {
+  color: #f87171;
+}
+
+.skyjump-start-btn {
+  padding: 1rem 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1a365d;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: 0 4px 0 #92400e;
+}
+
+.skyjump-start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #92400e, 0 10px 20px rgba(251, 191, 36, 0.3);
+}
+
+.skyjump-start-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #92400e;
+}
+
+.skyjump-gameover {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #f87171;
+  text-shadow: 0 0 20px rgba(248, 113, 113, 0.5), 0 4px 0 #991b1b;
+  margin: 0 0 1rem;
+  letter-spacing: 0.1em;
+}
+
+.skyjump-final-score {
+  font-size: 1.8rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.skyjump-new-record {
+  font-size: 1.3rem;
+  color: #fbbf24;
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.7);
+  margin-bottom: 2rem;
+  animation: skyjump-pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes skyjump-pulse {
+  from {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}

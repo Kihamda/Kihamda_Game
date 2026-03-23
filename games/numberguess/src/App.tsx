@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import "./App.css";
-import { GameShell } from "@shared/components/GameShell";
+import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
 
 /** ゲームフェーズ */
 type Phase = "start" | "playing" | "result";
@@ -54,8 +55,24 @@ export default function App() {
   const [bestScore, setBestScore] = useState<number | null>(() => loadBestScore());
   const [isNewRecord, setIsNewRecord] = useState(false);
   const [showHint, setShowHint] = useState<"high" | "low" | null>(null);
+  
+  // ScorePopup state
+  const [popup, setPopup] = useState<{ text: string; variant: PopupVariant; key: number } | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  
+  const { playTone } = useAudio();
+  const { particles, sparkle, confetti } = useParticles();
+  
+  const playHint = useCallback(() => playTone(330, 0.1, 'triangle'), [playTone]);
+  const playCorrect = useCallback(() => playTone(880, 0.3, 'sine'), [playTone]);
+  const playStart = useCallback(() => playTone(440, 0.1, 'sine'), [playTone]);
+  
+  // Show popup helper
+  const showPopup = useCallback((text: string, variant: PopupVariant) => {
+    setPopup({ text, variant, key: Date.now() });
+    setTimeout(() => setPopup(null), variant === 'level' ? 1500 : variant === 'critical' ? 1200 : 1000);
+  }, []);
 
   // ゲーム開始
   const startGame = useCallback(() => {
@@ -65,8 +82,10 @@ export default function App() {
     setHistory([]);
     setAttempts(0);
     setShowHint(null);
+    setPopup(null);
+    playStart();
     setTimeout(() => inputRef.current?.focus(), 100);
-  }, []);
+  }, [playStart]);
 
   // 回答判定
   const handleGuess = useCallback(() => {
@@ -85,29 +104,42 @@ export default function App() {
       setHistory((prev) => [...prev, { guess, hint }]);
       
       // 正解！
+      playCorrect();
+      sparkle(window.innerWidth / 2, window.innerHeight / 2);
       const currentBest = loadBestScore();
       if (currentBest === null || newAttempts < currentBest) {
         saveBestScore(newAttempts);
         setBestScore(newAttempts);
         setIsNewRecord(true);
+        confetti();
+        // New high score popup
+        showPopup("🏆 新記録!", "level");
       } else {
         setIsNewRecord(false);
+        // Correct guess popup
+        showPopup("正解!", "critical");
       }
       setPhase("result");
     } else if (guess > answer) {
       hint = "high";
+      playHint();
       setShowHint("high");
       setHistory((prev) => [...prev, { guess, hint }]);
+      // Hint popup - too high
+      showPopup("⬆️ 小さい!", "bonus");
       setTimeout(() => setShowHint(null), 500);
     } else {
       hint = "low";
+      playHint();
       setShowHint("low");
       setHistory((prev) => [...prev, { guess, hint }]);
+      // Hint popup - too low
+      showPopup("⬇️ 大きい!", "bonus");
       setTimeout(() => setShowHint(null), 500);
     }
     
     inputRef.current?.focus();
-  }, [input, answer, attempts]);
+  }, [input, answer, attempts, playCorrect, playHint, sparkle, confetti, showPopup]);
 
   // 入力変更
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,6 +172,16 @@ export default function App() {
 
   return (
     <GameShell gameId="numberguess" layout="default">
+      <ParticleLayer particles={particles} />
+      {popup && (
+        <ScorePopup
+          text={popup.text}
+          popupKey={popup.key}
+          variant={popup.variant}
+          size="lg"
+          y="30%"
+        />
+      )}
       <div className={`numberguess-root ${showHint === "high" ? "flash-high" : ""} ${showHint === "low" ? "flash-low" : ""}`}>
         <h1 className="numberguess-title">🔢 数当てゲーム</h1>
 

@@ -1,5 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { ScorePopup } from "@shared/components/ScorePopup";
+import type { PopupVariant } from "@shared/components/ScorePopup";
+import { useAudio, useParticles } from "@shared";
+import { ParticleLayer } from "@shared";
 import "./App.css";
 
 const CANVAS_WIDTH = 800;
@@ -31,6 +35,9 @@ interface GameState {
 
 const OBSTACLE_COLORS = ["#ff4444", "#ff8800", "#ffdd00", "#ff00ff", "#00ffff"];
 
+// Near miss threshold (how close obstacle must pass without collision)
+const NEAR_MISS_THRESHOLD = 5;
+
 function getRandomColor(): string {
   return OBSTACLE_COLORS[Math.floor(Math.random() * OBSTACLE_COLORS.length)];
 }
@@ -54,12 +61,71 @@ function checkCollision(px: number, py: number, obs: Obstacle): boolean {
   return dist < PLAYER_RADIUS + obs.radius - 2;
 }
 
+function checkNearMiss(px: number, py: number, obs: Obstacle): boolean {
+  const dx = px - obs.x;
+  const dy = py - obs.y;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  const collisionDist = PLAYER_RADIUS + obs.radius - 2;
+  // Near miss: very close but not colliding
+  return dist >= collisionDist && dist < collisionDist + NEAR_MISS_THRESHOLD;
+}
+
+interface PopupState {
+  text: string | null;
+  key: number;
+  variant: PopupVariant;
+  x: string;
+  y: string;
+}
+
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
   const lastSpawnRef = useRef<number>(0);
   const targetPosRef = useRef({ x: CANVAS_WIDTH / 2, y: CANVAS_HEIGHT - 80 });
   const gameStateRef = useRef<GameState | null>(null);
+
+  // Dopamine hooks
+  const { particles, explosion, confetti } = useParticles();
+  const { playTone } = useAudio();
+  
+  // Score popup state
+  const [popup, setPopup] = useState<PopupState>({
+    text: null,
+    key: 0,
+    variant: "default",
+    x: "50%",
+    y: "40%",
+  });
+  
+  // Milestone tracking refs
+  const lastTimeSecRef = useRef<number>(0);
+  const lastScoreMilestoneRef = useRef<number>(0);
+  const nearMissCountRef = useRef<number>(0);
+  
+  // Helper to show popup
+  const showPopup = useCallback((text: string, variant: PopupVariant, x = "50%", y = "40%") => {
+    setPopup(prev => ({
+      text,
+      key: prev.key + 1,
+      variant,
+      x,
+      y,
+    }));
+  }, []);
+  
+  // Refs for callbacks used in game loop
+  const explosionRef = useRef<(x: number, y: number) => void>(() => {});
+  const confettiRef = useRef<() => void>(() => {});
+  const playDeathRef = useRef<() => void>(() => {});
+  const showPopupRef = useRef<(text: string, variant: PopupVariant, x?: string, y?: string) => void>(() => {});
+  
+  useEffect(() => {
+    explosionRef.current = explosion;
+    confettiRef.current = confetti;
+    playDeathRef.current = () => playTone(180, 0.3, 'sawtooth');
+    showPopupRef.current = showPopup;
+  }, [explosion, confetti, playTone, showPopup]);
 
   const [gameState, setGameState] = useState<GameState>(() => ({
     phase: "before",
@@ -107,8 +173,9 @@ export default function App() {
       const newPlayerX = state.playerX + dx * 0.15;
       const newPlayerY = state.playerY + dy * 0.15;
 
-      // Update obstacles and check collision
+      // Update obstacles and check collision/near misses
       let collision = false;
+      let nearMissDetected = false;
       const updatedObstacles = state.obstacles
         .map((obs) => ({ ...obs, y: obs.y + obs.speed }))
         .filter((obs) => obs.y < CANVAS_HEIGHT + 50);
@@ -118,14 +185,34 @@ export default function App() {
           collision = true;
           break;
         }
+        // Check for near miss (obstacle passing close by player)
+        if (obs.y > newPlayerY && obs.y < newPlayerY + obs.speed * 2) {
+          if (checkNearMiss(newPlayerX, newPlayerY, obs)) {
+            nearMissDetected = true;
+          }
+        }
+      }
+      
+      // Show near miss popup
+      if (nearMissDetected) {
+        nearMissCountRef.current++;
+        if (nearMissCountRef.current >= 3) {
+          showPopupRef.current("CLOSE CALL!", "combo");
+          nearMissCountRef.current = 0;
+        }
       }
 
       if (collision) {
         const finalScore = Math.floor((timestamp - state.startTime) / 100);
         const newHighScore = Math.max(finalScore, state.highScore);
-        if (newHighScore > state.highScore) {
+        const isNewRecord = newHighScore > state.highScore;
+        if (isNewRecord) {
           localStorage.setItem("dodgeblitz_highscore", newHighScore.toString());
+          confettiRef.current();
+          showPopupRef.current("🎉 NEW RECORD! 🎉", "critical");
         }
+        playDeathRef.current();
+        explosionRef.current(newPlayerX, newPlayerY);
         setGameState((prev) => ({
           ...prev,
           phase: "gameover",
@@ -135,8 +222,23 @@ export default function App() {
         return;
       }
 
-      // Update score and state
+      // Update score and check milestones
       const newScore = Math.floor((timestamp - state.startTime) / 100);
+      const elapsedSec = Math.floor((timestamp - state.startTime) / 1000);
+      
+      // Time survived milestone (every 10 seconds)
+      if (elapsedSec > 0 && elapsedSec % 10 === 0 && elapsedSec !== lastTimeSecRef.current) {
+        lastTimeSecRef.current = elapsedSec;
+        showPopupRef.current(`${elapsedSec}秒!`, "level");
+      }
+      
+      // Score milestone (every 100 points)
+      const scoreMilestone = Math.floor(newScore / 100);
+      if (scoreMilestone > 0 && scoreMilestone !== lastScoreMilestoneRef.current) {
+        lastScoreMilestoneRef.current = scoreMilestone;
+        showPopupRef.current(`${scoreMilestone * 100}pts!`, "bonus");
+      }
+      
       setGameState((prev) => ({
         ...prev,
         playerX: newPlayerX,
@@ -246,6 +348,11 @@ export default function App() {
     const now = performance.now();
     lastSpawnRef.current = now;
     targetPosRef.current = { x: CANVAS_WIDTH / 2, y: CANVAS_HEIGHT - 80 };
+    
+    // Reset milestone tracking
+    lastTimeSecRef.current = 0;
+    lastScoreMilestoneRef.current = 0;
+    nearMissCountRef.current = 0;
 
     setGameState((prev) => ({
       ...prev,
@@ -303,6 +410,15 @@ export default function App() {
             </button>
           </div>
         )}
+        <ScorePopup
+          text={popup.text}
+          popupKey={popup.key}
+          variant={popup.variant}
+          x={popup.x}
+          y={popup.y}
+          size="lg"
+        />
+        <ParticleLayer particles={particles} />
       </div>
     </GameShell>
   );

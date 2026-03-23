@@ -173,6 +173,32 @@
   animation: pulse-correct 0.3s ease;
 }
 
+.arrowdash-arrow-container.perfect {
+  border-color: #a855f7;
+  background: rgba(168, 85, 247, 0.15);
+  animation: pulse-correct 0.3s ease;
+}
+
+.arrowdash-arrow-container.rainbow {
+  border-image: linear-gradient(
+    135deg,
+    #ff6b6b,
+    #feca57,
+    #48dbfb,
+    #ff9ff3,
+    #54a0ff,
+    #5f27cd,
+    #00d2d3,
+    #1dd1a1
+  ) 1;
+  animation: rainbow-border 0.5s linear infinite, pulse-correct 0.3s ease;
+}
+
+@keyframes rainbow-border {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
 .arrowdash-arrow-container.wrong {
   border-color: #ef4444;
   background: rgba(239, 68, 68, 0.1);
@@ -210,6 +236,18 @@
 
 .arrowdash-feedback.correct {
   color: #4ade80;
+}
+
+.arrowdash-feedback.perfect {
+  color: #a855f7;
+  font-size: 28px;
+  text-shadow: 0 0 20px #a855f7, 0 0 40px #a855f7;
+  animation: fade-in 0.2s ease, rainbow-text 0.5s linear infinite;
+}
+
+@keyframes rainbow-text {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
 }
 
 .arrowdash-feedback.wrong {
@@ -286,4 +324,16 @@
 @keyframes glow {
   from { text-shadow: 0 0 8px rgba(251, 191, 36, 0.5); }
   to { text-shadow: 0 0 24px rgba(251, 191, 36, 0.8); }
+}
+
+/* ComboCounter用アニメーション */
+@keyframes combo-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+@keyframes combo-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }

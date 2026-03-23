@@ -1,5 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { ParticleLayer, useAudio, useParticles, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
 import {
   createGame,
   revealCell,
@@ -22,6 +24,41 @@ export default function App() {
   const longPressTimer = useRef<number | null>(null);
   const longPressTriggered = useRef(false);
 
+  // ScorePopup state
+  const [popupText, setPopupText] = useState<string | null>(null);
+  const [popupKey, setPopupKey] = useState(0);
+  const [popupVariant, setPopupVariant] = useState<PopupVariant>("default");
+  const [popupSize, setPopupSize] = useState<"sm" | "md" | "lg" | "xl">("md");
+
+  const showPopup = useCallback(
+    (text: string, variant: PopupVariant = "default", size: "sm" | "md" | "lg" | "xl" = "md") => {
+      setPopupText(text);
+      setPopupVariant(variant);
+      setPopupSize(size);
+      setPopupKey((k) => k + 1);
+    },
+    []
+  );
+
+  const { playTone } = useAudio();
+  const { particles, sparkle, confetti, explosion } = useParticles();
+
+  const playReveal = useCallback(() => {
+    playTone(600, 0.05, "sine");
+  }, [playTone]);
+
+  const playFlag = useCallback(() => {
+    playTone(400, 0.08, "triangle");
+  }, [playTone]);
+
+  const playWin = useCallback(() => {
+    playTone(880, 0.3, "sine");
+  }, [playTone]);
+
+  const playLose = useCallback(() => {
+    playTone(200, 0.3, "sawtooth");
+  }, [playTone]);
+
   const handleReset = useCallback(() => {
     setGame(createGame(ROWS, COLS, MINE_COUNT));
   }, []);
@@ -32,17 +69,52 @@ export default function App() {
         longPressTriggered.current = false;
         return;
       }
-      setGame((prev) => revealCell(prev, row, col));
+      const prevRevealedCount = game.revealedCount;
+      const newGame = revealCell(game, row, col);
+      setGame(newGame);
+      
+      if (newGame.status === "won") {
+        confetti();
+        playWin();
+        showPopup("🎉 YOU WIN!", "level", "xl");
+      } else if (newGame.status === "lost") {
+        explosion(col * 40, row * 40);
+        playLose();
+      } else {
+        const cellsRevealed = newGame.revealedCount - prevRevealedCount;
+        if (cellsRevealed > 0) {
+          playReveal();
+          sparkle(col * 40, row * 40);
+          
+          // Show popup based on cells revealed
+          if (cellsRevealed >= 10) {
+            showPopup(`💥 ${cellsRevealed} CELLS!`, "critical", "lg");
+          } else if (cellsRevealed >= 5) {
+            showPopup(`${cellsRevealed} CELLS!`, "combo", "md");
+          } else if (cellsRevealed > 1) {
+            showPopup(`+${cellsRevealed}`, "bonus", "sm");
+          } else {
+            showPopup("+1", "default", "sm");
+          }
+        }
+      }
     },
-    []
+    [game, playReveal, playWin, playLose, confetti, explosion, sparkle, showPopup]
   );
 
   const handleContextMenu = useCallback(
     (e: React.MouseEvent, row: number, col: number) => {
       e.preventDefault();
-      setGame((prev) => toggleFlag(prev, row, col));
+      const cell = game.grid[row][col];
+      if (!cell.isRevealed) {
+        setGame((prev) => toggleFlag(prev, row, col));
+        playFlag();
+        if (!cell.isFlagged) {
+          showPopup("🚩 Flagged!", "bonus", "sm");
+        }
+      }
     },
-    []
+    [game.grid, playFlag, showPopup]
   );
 
   const handleTouchStart = useCallback(
@@ -50,10 +122,17 @@ export default function App() {
       longPressTriggered.current = false;
       longPressTimer.current = window.setTimeout(() => {
         longPressTriggered.current = true;
-        setGame((prev) => toggleFlag(prev, row, col));
+        const cell = game.grid[row][col];
+        if (!cell.isRevealed) {
+          setGame((prev) => toggleFlag(prev, row, col));
+          playFlag();
+          if (!cell.isFlagged) {
+            showPopup("🚩 Flagged!", "bonus", "sm");
+          }
+        }
       }, LONG_PRESS_DURATION);
     },
-    []
+    [game.grid, playFlag, showPopup]
   );
 
   const handleTouchEnd = useCallback(() => {
@@ -151,6 +230,13 @@ export default function App() {
             {game.status === "won" ? "🎉 クリア！" : "💥 ゲームオーバー"}
           </div>
         )}
+        <ParticleLayer particles={particles} />
+        <ScorePopup
+          text={popupText}
+          popupKey={popupKey}
+          variant={popupVariant}
+          size={popupSize}
+        />
       </div>
     </GameShell>
   );

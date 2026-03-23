@@ -1,6 +1,25 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import {
+  useAudio,
+  useParticles,
+  ParticleLayer,
+  ScreenShake,
+  ComboCounter,
+  ScorePopup,
+} from "@shared";
+import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import "./App.css";
+
+// スコアポップアップ用の型
+interface ScorePopupData {
+  text: string;
+  x: number;
+  y: number;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+  key: number;
+}
 
 // ゲーム定数
 const CANVAS_WIDTH = 800;
@@ -26,6 +45,12 @@ const BRICK_OFFSET_LEFT =
 const BRICK_COLORS = ["#ff6b6b", "#ffa94d", "#ffd43b", "#69db7c", "#4dabf7"];
 
 const INITIAL_LIVES = 3;
+const COMBO_TIMEOUT = 60; // フレーム数
+
+// ポイント設定
+const POINTS_PER_BRICK = 10;
+const COMBO_BONUS_MULTIPLIER = 5; // コンボボーナス: comboCount * COMBO_BONUS_MULTIPLIER
+const CLEAR_BONUS = 500;
 
 type GamePhase = "before" | "in_progress" | "after";
 
@@ -47,6 +72,8 @@ interface GameState {
   lives: number;
   phase: GamePhase;
   isWin: boolean;
+  comboCount: number;
+  comboTimer: number;
 }
 
 function createBricks(): Brick[] {
@@ -76,16 +103,59 @@ function createInitialState(): GameState {
     lives: INITIAL_LIVES,
     phase: "before",
     isWin: false,
+    comboCount: 0,
+    comboTimer: 0,
   };
 }
 
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const shakeRef = useRef<ScreenShakeHandle>(null);
   const gameStateRef = useRef<GameState>(createInitialState());
   const animationFrameRef = useRef<number>(0);
 
   const [, setTick] = useState(0);
+  const [combo, setCombo] = useState(0);
+  const [popups, setPopups] = useState<ScorePopupData[]>([]);
+  const popupKeyRef = useRef(0);
+
+  // ドーパミンエフェクト用hooks
+  const { particles, sparkle, confetti } = useParticles();
+  const { playTone, playGameOver: playGameOverSound, playCombo } = useAudio();
+
+  // サウンドヘルパー
+  const playBrickHit = useCallback(
+    () => playTone(600 + Math.random() * 200, 0.08, "square"),
+    [playTone]
+  );
+
+  // スコアポップアップ追加ヘルパー
+  const addPopup = useCallback(
+    (
+      text: string,
+      x: number,
+      y: number,
+      variant: PopupVariant = "default",
+      size: "sm" | "md" | "lg" | "xl" = "md"
+    ) => {
+      popupKeyRef.current++;
+      const newPopup: ScorePopupData = {
+        text,
+        x,
+        y,
+        variant,
+        size,
+        key: popupKeyRef.current,
+      };
+      setPopups((prev) => [...prev, newPopup]);
+      // ポップアップを1.5秒後に削除
+      setTimeout(() => {
+        setPopups((prev) => prev.filter((p) => p.key !== newPopup.key));
+      }, 1500);
+    },
+    []
+  );
 
   // パドル移動（マウス/タッチ）
   const handlePointerMove = useCallback((clientX: number) => {
@@ -112,6 +182,7 @@ export default function App() {
   // リセット
   const resetGame = useCallback(() => {
     gameStateRef.current = createInitialState();
+    setCombo(0);
     setTick((t) => t + 1);
   }, []);
 
@@ -123,6 +194,9 @@ export default function App() {
     state.ballDX = BALL_SPEED * (Math.random() > 0.5 ? 1 : -1);
     state.ballDY = -BALL_SPEED;
     state.phase = "before";
+    state.comboCount = 0;
+    state.comboTimer = 0;
+    setCombo(0);
     setTick((t) => t + 1);
   }, []);
 
@@ -184,6 +258,15 @@ export default function App() {
 
       // ゲーム中のみ更新
       if (state.phase === "in_progress") {
+        // コンボタイマー更新
+        if (state.comboTimer > 0) {
+          state.comboTimer--;
+          if (state.comboTimer <= 0) {
+            state.comboCount = 0;
+            setCombo(0);
+          }
+        }
+
         // ボール移動
         state.ballX += state.ballDX;
         state.ballY += state.ballDY;
@@ -215,8 +298,7 @@ export default function App() {
           state.ballX <= state.paddleX + PADDLE_WIDTH
         ) {
           // 当たった位置で角度を変える
-          const hitPos =
-            (state.ballX - state.paddleX) / PADDLE_WIDTH - 0.5;
+          const hitPos = (state.ballX - state.paddleX) / PADDLE_WIDTH - 0.5;
           const angle = hitPos * (Math.PI / 3); // -60° ~ +60°
           const speed = Math.sqrt(
             state.ballDX * state.ballDX + state.ballDY * state.ballDY
@@ -251,7 +333,42 @@ export default function App() {
 
           if (distSq <= BALL_RADIUS * BALL_RADIUS) {
             brick.visible = false;
-            state.score += 10;
+
+            // スコア計算（コンボボーナス付き）
+            const basePoints = POINTS_PER_BRICK;
+            const comboBonus =
+              state.comboCount > 0 ? state.comboCount * COMBO_BONUS_MULTIPLIER : 0;
+            const totalPoints = basePoints + comboBonus;
+            state.score += totalPoints;
+
+            // コンボ更新
+            state.comboCount++;
+            state.comboTimer = COMBO_TIMEOUT;
+            setCombo(state.comboCount);
+
+            // ドーパミンエフェクト: ブロック破壊
+            const brickCenterX = brick.x + BRICK_WIDTH / 2;
+            const brickCenterY = brick.y + BRICK_HEIGHT / 2;
+            sparkle(brickCenterX, brickCenterY, 6);
+            playBrickHit();
+
+            // スコアポップアップ: ブロック破壊
+            addPopup(`+${totalPoints}`, brickCenterX, brickCenterY, "default", "sm");
+
+            // コンボエフェクト
+            if (state.comboCount >= 3) {
+              playCombo(state.comboCount);
+              // コンボポップアップ（コンボ3以上で表示）
+              const comboSize: "md" | "lg" | "xl" =
+                state.comboCount >= 10 ? "xl" : state.comboCount >= 5 ? "lg" : "md";
+              addPopup(
+                `${state.comboCount} COMBO!`,
+                CANVAS_WIDTH / 2,
+                CANVAS_HEIGHT / 2 - 50,
+                "combo",
+                comboSize
+              );
+            }
 
             // 衝突方向を判定して反射
             const overlapLeft = state.ballX + BALL_RADIUS - brickLeft;
@@ -275,6 +392,11 @@ export default function App() {
         // ボール落下
         if (state.ballY + BALL_RADIUS >= CANVAS_HEIGHT) {
           state.lives -= 1;
+
+          // ドーパミンエフェクト: ボールロスト
+          shakeRef.current?.shake("medium", 300);
+          playGameOverSound();
+
           if (state.lives <= 0) {
             state.phase = "after";
             state.isWin = false;
@@ -290,6 +412,32 @@ export default function App() {
         if (remainingBricks === 0) {
           state.phase = "after";
           state.isWin = true;
+
+          // クリアボーナス加算
+          state.score += CLEAR_BONUS;
+
+          // ドーパミンエフェクト: ステージクリア
+          confetti(60);
+
+          // レベルクリアポップアップ
+          addPopup(
+            "🎉 STAGE CLEAR! 🎉",
+            CANVAS_WIDTH / 2,
+            CANVAS_HEIGHT / 2 - 100,
+            "level",
+            "xl"
+          );
+          // クリアボーナスポップアップ
+          setTimeout(() => {
+            addPopup(
+              `+${CLEAR_BONUS} BONUS!`,
+              CANVAS_WIDTH / 2,
+              CANVAS_HEIGHT / 2 - 40,
+              "bonus",
+              "lg"
+            );
+          }, 300);
+
           setTick((t) => t + 1);
         }
       }
@@ -338,7 +486,15 @@ export default function App() {
     return () => {
       cancelAnimationFrame(animationFrameRef.current);
     };
-  }, [resetBall]);
+  }, [
+    resetBall,
+    sparkle,
+    playBrickHit,
+    playCombo,
+    confetti,
+    playGameOverSound,
+    addPopup,
+  ]);
 
   // イベントハンドラー
   const handleClick = useCallback(() => {
@@ -367,22 +523,45 @@ export default function App() {
   );
 
   return (
-    <GameShell gameId="brickblast" layout="immersive">
-      <div
-        ref={containerRef}
-        className="brickblast-container"
-        style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}
-        onClick={handleClick}
-        onMouseMove={handleMouseMove}
-        onTouchMove={handleTouchMove}
-      >
-        <canvas
-          ref={canvasRef}
-          width={CANVAS_WIDTH}
-          height={CANVAS_HEIGHT}
-          className="brickblast-canvas"
-        />
-      </div>
+    <GameShell
+      gameId="brickblast"
+      layout="immersive"
+    >
+      <ScreenShake ref={shakeRef}>
+        <div
+          ref={containerRef}
+          className="brickblast-container"
+          style={{
+            width: CANVAS_WIDTH,
+            height: CANVAS_HEIGHT,
+            position: "relative",
+          }}
+          onClick={handleClick}
+          onMouseMove={handleMouseMove}
+          onTouchMove={handleTouchMove}
+        >
+          <canvas
+            ref={canvasRef}
+            width={CANVAS_WIDTH}
+            height={CANVAS_HEIGHT}
+            className="brickblast-canvas"
+          />
+          <ParticleLayer particles={particles} />
+          <ComboCounter combo={combo} position="top-right" threshold={3} />
+          {/* スコアポップアップレイヤー */}
+          {popups.map((popup) => (
+            <ScorePopup
+              key={popup.key}
+              text={popup.text}
+              popupKey={popup.key}
+              x={`${popup.x}px`}
+              y={`${popup.y}px`}
+              variant={popup.variant}
+              size={popup.size}
+            />
+          ))}
+        </div>
+      </ScreenShake>
     </GameShell>
   );
 }

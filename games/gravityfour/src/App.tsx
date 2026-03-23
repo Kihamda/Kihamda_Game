@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { ParticleLayer, useAudio, useParticles, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
 import {
   createInitialState,
   dropPiece,
@@ -10,10 +12,38 @@ import type { GameState, DroppingPiece, Player } from "./lib/types";
 import { COLS, ROWS } from "./lib/types";
 import "./App.css";
 
+interface PopupState {
+  text: string;
+  key: number;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+}
+
 export default function App() {
   const [state, setState] = useState<GameState>(createInitialState);
   const [hoveredCol, setHoveredCol] = useState<number | null>(null);
   const [dropping, setDropping] = useState<DroppingPiece | null>(null);
+  const [popup, setPopup] = useState<PopupState | null>(null);
+  const [popupCounter, setPopupCounter] = useState(0);
+
+  const { playTone } = useAudio();
+  const { particles, sparkle, confetti, explosion } = useParticles();
+
+  const showPopup = useCallback(
+    (text: string, variant: PopupVariant = "default", size: "sm" | "md" | "lg" | "xl" = "md") => {
+      setPopupCounter((c) => c + 1);
+      setPopup({ text, key: popupCounter + 1, variant, size });
+    },
+    [popupCounter]
+  );
+
+  const playDrop = useCallback(() => {
+    playTone(300, 0.1, "triangle");
+  }, [playTone]);
+
+  const playWin = useCallback(() => {
+    playTone(880, 0.3, "sine");
+  }, [playTone]);
 
   const handleColumnClick = useCallback(
     (col: number) => {
@@ -38,17 +68,33 @@ export default function App() {
     if (!dropping) return;
 
     const timer = setTimeout(() => {
-      setState((prev) => dropPiece(prev, dropping.col));
+      const newState = dropPiece(state, dropping.col);
+      setState(newState);
       setDropping(null);
+      playDrop();
+      
+      // 勝利判定
+      if (newState.winner) {
+        confetti();
+        playWin();
+        const winnerText = newState.winner === 1 ? "🔴 赤の勝利！" : "🟡 黄の勝利！";
+        showPopup(winnerText, "critical", "xl");
+      } else if (newState.isDraw) {
+        explosion(200, 200);
+        showPopup("🤝 引き分け！", "bonus", "lg");
+      } else {
+        sparkle(50 + dropping.col * 76, 100 + dropping.targetRow * 76);
+      }
     }, 400); // CSS transitionと同期
 
     return () => clearTimeout(timer);
-  }, [dropping]);
+  }, [dropping, state, playDrop, playWin, confetti, sparkle, explosion, showPopup]);
 
   const handleReset = useCallback(() => {
     setState(createInitialState());
     setDropping(null);
     setHoveredCol(null);
+    setPopup(null);
   }, []);
 
   const handleCellHover = useCallback(
@@ -177,6 +223,14 @@ export default function App() {
             リセット
           </button>
         </footer>
+        <ParticleLayer particles={particles} />
+        <ScorePopup
+          text={popup?.text ?? null}
+          popupKey={popup?.key}
+          variant={popup?.variant}
+          size={popup?.size}
+          y="30%"
+        />
       </div>
     </GameShell>
   );

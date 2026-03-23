@@ -1,3 +1,4 @@
+import { ScorePopup } from "@shared";
 import type { Board, GameSettings, PendingMove } from "../lib/types";
 
 interface CellPosition {
@@ -18,6 +19,8 @@ interface GameViewProps {
   isDraw: boolean;
   streak: number;
   moveCount: number;
+  winningCells: CellPosition[];
+  scorePopup: { text: string; key: number } | null;
   onCellClick: (row: number, col: number) => void;
   onConfirmMove: (row: number, col: number) => void;
   onCancelPendingMove: () => void;
@@ -74,6 +77,8 @@ const GameView = ({
   isDraw,
   streak,
   moveCount,
+  winningCells,
+  scorePopup,
   onCellClick,
   onConfirmMove,
   onCancelPendingMove,
@@ -81,6 +86,11 @@ const GameView = ({
 }: GameViewProps) => {
   const currentPlayer = gameSettings.players[currentPlayerIndex];
   const pendingMark = currentPlayer?.mark;
+
+  // 勝利セルかどうかを判定するヘルパー
+  const isWinningCell = (row: number, col: number): boolean => {
+    return winningCells.some((c) => c.row === row && c.col === col);
+  };
 
   return (
     <div className={`game${isWinAnimation ? " game--shake" : ""}`}>
@@ -209,13 +219,14 @@ const GameView = ({
             const isLastPlaced =
               lastPlacedCell?.row === rowIndex &&
               lastPlacedCell?.col === colIndex;
+            const isWinCell = isWinningCell(rowIndex, colIndex);
 
             return (
               <div
                 key={`${rowIndex}-${colIndex}`}
                 className={`cell ${cell ? "filled" : ""} ${
                   isPending ? "pending" : ""
-                }`}
+                } ${isLastPlaced ? "cell--placed" : ""} ${isWinCell ? "cell--winning" : ""}`}
                 style={{
                   background: cell
                     ? cellColor
@@ -224,10 +235,13 @@ const GameView = ({
                       : undefined,
                   borderColor: isPending ? currentPlayer?.color : undefined,
                   color: isPending ? currentPlayer?.color : undefined,
-                  boxShadow: isPending
-                    ? `0 0 20px ${currentPlayer?.color ?? "#7986cb"}66`
-                    : undefined,
-                }}
+                  boxShadow: isWinCell
+                    ? `0 0 20px ${cellColor}, 0 0 40px ${cellColor}, 0 0 60px ${cellColor}80`
+                    : isPending
+                      ? `0 0 20px ${currentPlayer?.color ?? "#7986cb"}66`
+                      : undefined,
+                  "--glow-color": cellColor,
+                } as React.CSSProperties}
                 onClick={() => onCellClick(rowIndex, colIndex)}
               >
                 {isPending ? pendingMark : cell}
@@ -245,6 +259,15 @@ const GameView = ({
           }),
         )}
       </div>
+
+      {/* スコアポップアップ */}
+      <ScorePopup
+        text={scorePopup?.text ?? null}
+        popupKey={scorePopup?.key}
+        y="30%"
+        variant={isDraw ? "default" : "critical"}
+        size="xl"
+      />
     </div>
   );
 };

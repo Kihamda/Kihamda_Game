@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { useHighScore } from "@shared/hooks/useHighScore";
+import { useAudio } from "@shared/hooks/useAudio";
+import { useParticles } from "@shared/hooks/useParticles";
+import { ParticleLayer } from "@shared/components/ParticleLayer";
+import { ScorePopup } from "@shared/components/ScorePopup";
+import type { PopupVariant } from "@shared/components/ScorePopup";
 import "./App.css";
 
 // ゲーム定数
@@ -49,6 +54,14 @@ export default function App() {
   const [cameraOffset, setCameraOffset] = useState(0);
   const { best: highScore, update: saveHighScore } = useHighScore("towerstack");
 
+  // Dopamine hooks
+  const { playClick, playPerfect, playCombo, playCelebrate, playGameOver } = useAudio();
+  const { particles, burst, sparkle, confetti } = useParticles();
+  
+  // ScorePopup state
+  const [popup, setPopup] = useState<{ text: string; key: number; variant: PopupVariant } | null>(null);
+  const popupKeyRef = useRef(0);
+
   const animationFrameRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
 
@@ -75,6 +88,7 @@ export default function App() {
     if (overlap <= 0) {
       setPhase("gameover");
       saveHighScore(score);
+      playGameOver();
       return;
     }
 
@@ -85,14 +99,32 @@ export default function App() {
     let newWidth = overlap;
     let newX = Math.max(movingBlock.x, topBlock.x);
 
+    // Calculate block center for particle effects (relative to game area)
+    const blockCenterX = newX + newWidth / 2;
+    // Adjust Y position for camera offset and convert to screen coordinates
+    const particleY = newBlockY + cameraOffset + BLOCK_HEIGHT / 2;
+
     if (isPerfect) {
       newWidth = Math.min(topBlock.width + 2, INITIAL_BLOCK_WIDTH);
       newX = topBlock.x - (newWidth - topBlock.width) / 2;
-      setPerfectStreak(prev => prev + 1);
+      const newStreak = perfectStreak + 1;
+      setPerfectStreak(newStreak);
       setShowPerfect(true);
       setTimeout(() => setShowPerfect(false), 500);
+      
+      // Audio effects for perfect
+      playPerfect();
+      if (newStreak > 1) {
+        playCombo(newStreak);
+      }
+      
+      // Sparkle effect at block position
+      sparkle(blockCenterX, particleY, 12);
     } else {
       setPerfectStreak(0);
+      // Normal placement effects
+      playClick();
+      burst(blockCenterX, particleY, 8);
     }
 
     const newBlock: Block = {
@@ -107,7 +139,21 @@ export default function App() {
     const baseScore = 10;
     const perfectBonus = isPerfect ? 25 : 0;
     const streakBonus = isPerfect ? perfectStreak * 5 : 0;
-    setScore(prev => prev + baseScore + perfectBonus + streakBonus);
+    const totalScore = baseScore + perfectBonus + streakBonus;
+    setScore(prev => prev + totalScore);
+
+    // Show score popup
+    popupKeyRef.current += 1;
+    if (isPerfect) {
+      if (perfectStreak + 1 > 1) {
+        setPopup({ text: `PERFECT! ×${perfectStreak + 1}`, key: popupKeyRef.current, variant: "combo" });
+      } else {
+        setPopup({ text: "PERFECT!", key: popupKeyRef.current, variant: "bonus" });
+      }
+    } else {
+      setPopup({ text: `+${totalScore}`, key: popupKeyRef.current, variant: "default" });
+    }
+    setTimeout(() => setPopup(null), 1000);
 
     const visibleBlocks = Math.floor(GAME_HEIGHT / BLOCK_HEIGHT) - 2;
     if (blocks.length >= visibleBlocks) {
@@ -116,7 +162,9 @@ export default function App() {
 
     if (blocks.length + 1 >= BLOCKS_TO_WIN) {
       setPhase("win");
-      saveHighScore(score + baseScore + perfectBonus + streakBonus);
+      saveHighScore(score + totalScore);
+      playCelebrate();
+      confetti(60);
       return;
     }
 
@@ -125,7 +173,7 @@ export default function App() {
       width: newWidth,
       direction: 1,
     });
-  }, [movingBlock, blocks, phase, perfectStreak, score, saveHighScore]);
+  }, [movingBlock, blocks, phase, perfectStreak, score, cameraOffset, saveHighScore, playClick, playPerfect, playCombo, playCelebrate, playGameOver, burst, sparkle, confetti]);
 
   // ゲームループ
   useEffect(() => {
@@ -273,6 +321,18 @@ export default function App() {
               PERFECT! 🎯
               {perfectStreak > 1 && <span className="towerstack-streak">×{perfectStreak}</span>}
             </div>
+          )}
+
+          {/* Dopamine effects */}
+          <ParticleLayer particles={particles} />
+          {popup && (
+            <ScorePopup
+              text={popup.text}
+              popupKey={popup.key}
+              variant={popup.variant}
+              y="30%"
+              size="lg"
+            />
           )}
 
           {phase === "start" && (

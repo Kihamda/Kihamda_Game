@@ -1,0 +1,290 @@
+/* TapTap - ターゲットタップゲーム */
+
+.taptap-root {
+  width: 600px;
+  height: 600px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  user-select: none;
+  position: relative;
+}
+
+/* ヘッダー */
+.taptap-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(15, 23, 42, 0.9);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.taptap-score {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fbbf24;
+}
+
+.taptap-timer {
+  font-size: 24px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.taptap-timer--danger {
+  color: #f87171;
+  animation: pulse-danger 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse-danger {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ゲームエリア */
+.taptap-arena {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ターゲット */
+.taptap-target {
+  position: absolute;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  transition: transform 0.1s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.taptap-target:hover {
+  transform: scale(1.05);
+}
+
+.taptap-target:active {
+  transform: scale(0.95);
+}
+
+.taptap-target--normal {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border: 3px solid #4ade80;
+}
+
+.taptap-target--bonus {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  border: 3px solid #fde047;
+  animation: glow-bonus 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes glow-bonus {
+  from { box-shadow: 0 4px 16px rgba(251, 191, 36, 0.4); }
+  to { box-shadow: 0 4px 32px rgba(251, 191, 36, 0.8); }
+}
+
+.taptap-target--miss {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border: 3px solid #f87171;
+}
+
+/* オーバーレイ */
+.taptap-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.95);
+  z-index: 10;
+}
+
+/* タイトル */
+.taptap-title {
+  margin: 0 0 16px;
+  font-size: 42px;
+  font-weight: 900;
+  color: #f8fafc;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* パネル */
+.taptap-panel {
+  background: rgba(30, 41, 59, 0.9);
+  border-radius: 16px;
+  padding: 32px 48px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+/* 説明 */
+.taptap-description {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+/* ルール */
+.taptap-rules {
+  margin: 16px 0;
+  padding-left: 0;
+  list-style: none;
+  text-align: left;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.taptap-rules li {
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.taptap-rule-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.taptap-rule-icon--green {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
+.taptap-rule-icon--gold {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+.taptap-rule-icon--red {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+/* ハイスコア */
+.taptap-highscore {
+  margin: 16px 0 0;
+  font-size: 16px;
+  color: #fbbf24;
+}
+
+/* ボタン */
+.taptap-button {
+  margin-top: 20px;
+  padding: 14px 40px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.taptap-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.4);
+}
+
+.taptap-button:active {
+  transform: translateY(0);
+}
+
+/* 結果画面 */
+.taptap-result-title {
+  margin: 0 0 16px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.taptap-final-score {
+  margin: 0 0 8px;
+  font-size: 56px;
+  font-weight: 900;
+  color: #fbbf24;
+}
+
+.taptap-stats {
+  margin: 16px 0;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.taptap-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.taptap-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.taptap-stat-label {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.taptap-newrecord {
+  margin: 16px 0 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fbbf24;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 8px rgba(251, 191, 36, 0.5); }
+  to { text-shadow: 0 0 24px rgba(251, 191, 36, 0.8); }
+}
+
+/* スコアポップアップ */
+.taptap-popup {
+  position: absolute;
+  font-size: 24px;
+  font-weight: 700;
+  pointer-events: none;
+  animation: popup-float 0.6s ease-out forwards;
+  z-index: 5;
+}
+
+.taptap-popup--plus {
+  color: #4ade80;
+}
+
+.taptap-popup--bonus {
+  color: #fbbf24;
+}
+
+.taptap-popup--minus {
+  color: #f87171;
+}
+
+@keyframes popup-float {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(1.2);
+  }
+}

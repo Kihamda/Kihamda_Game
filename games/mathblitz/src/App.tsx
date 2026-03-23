@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { GameShell } from "@shared/components/GameShell";
+import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
 
 /** ゲームフェーズ */
 type Phase = "start" | "playing" | "result";
@@ -56,6 +57,16 @@ function saveHighScore(difficulty: Difficulty, score: number): void {
   }
 }
 
+/** ポップアップ状態 */
+interface PopupState {
+  text: string | null;
+  key: number;
+  x: string;
+  y: string;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+}
+
 /** 問題生成 */
 function generateProblem(difficulty: Difficulty): Problem {
   const config = DIFFICULTY_CONFIG[difficulty];
@@ -103,9 +114,49 @@ export default function App() {
   const [showCorrect, setShowCorrect] = useState(false);
   const [showWrong, setShowWrong] = useState(false);
   const [isNewRecord, setIsNewRecord] = useState(false);
+  
+  // ScorePopup state (multiple popups)
+  const [popups, setPopups] = useState<PopupState[]>([]);
+  const popupKeyRef = useRef(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<number>(0);
+  
+  const { playTone } = useAudio();
+  const { particles, sparkle, confetti, burst } = useParticles();
+  
+  const playCorrectSound = useCallback(() => playTone(660, 0.1, 'sine'), [playTone]);
+  const playWrongSound = useCallback(() => playTone(200, 0.1, 'sawtooth'), [playTone]);
+  const playCombo = useCallback((c: number) => playTone(440 + c * 30, 0.08, 'sine'), [playTone]);
+
+  // ポップアップ表示関数
+  const showPopup = useCallback((
+    text: string,
+    options: {
+      x?: string;
+      y?: string;
+      variant?: PopupVariant;
+      size?: "sm" | "md" | "lg" | "xl";
+      duration?: number;
+    } = {}
+  ) => {
+    const key = ++popupKeyRef.current;
+    const popup: PopupState = {
+      text,
+      key,
+      x: options.x ?? "50%",
+      y: options.y ?? "35%",
+      variant: options.variant ?? "default",
+      size: options.size ?? "md",
+    };
+    setPopups(prev => [...prev, popup]);
+    
+    // 自動消去
+    const duration = options.duration ?? (options.variant === "critical" ? 1500 : 1000);
+    setTimeout(() => {
+      setPopups(prev => prev.filter(p => p.key !== key));
+    }, duration);
+  }, []);
 
   // 難易度変更時にハイスコア更新
   useEffect(() => {
@@ -137,16 +188,34 @@ export default function App() {
   // 結果画面でハイスコア判定
   useEffect(() => {
     if (phase === "result") {
+      // タイムアップポップアップ
+      showPopup("⏱️ TIME UP!", {
+        y: "20%",
+        variant: "level",
+        size: "lg",
+        duration: 1500,
+      });
+      
       const currentHighScore = loadHighScore(difficulty);
       if (score > currentHighScore) {
         saveHighScore(difficulty, score);
         setHighScore(score);
         setIsNewRecord(true);
+        confetti();
+        // 新記録ポップアップ（少し遅らせて表示）
+        setTimeout(() => {
+          showPopup("🏆 NEW RECORD!", {
+            y: "35%",
+            variant: "critical",
+            size: "xl",
+            duration: 2000,
+          });
+        }, 500);
       } else {
         setIsNewRecord(false);
       }
     }
-  }, [phase, score, difficulty]);
+  }, [phase, score, difficulty, confetti, showPopup]);
 
   // ゲーム開始
   const startGame = useCallback(() => {
@@ -156,6 +225,7 @@ export default function App() {
     setMaxCombo(0);
     setTimeLeft(GAME_DURATION);
     setInput("");
+    setPopups([]); // ポップアップをクリア
     setProblem(generateProblem(difficulty));
     setTimeout(() => inputRef.current?.focus(), 100);
   }, [difficulty]);
@@ -177,20 +247,57 @@ export default function App() {
       // 正解
       const newCombo = combo + 1;
       const comboBonus = Math.floor(newCombo / 5); // 5コンボごとにボーナス
-      setScore((prev) => prev + 1 + comboBonus);
+      const totalPoints = 1 + comboBonus;
+      setScore((prev) => prev + totalPoints);
       setCombo(newCombo);
       setMaxCombo((prev) => Math.max(prev, newCombo));
       setShowCorrect(true);
+      
+      // ScorePopup: 基本得点
+      if (comboBonus > 0) {
+        showPopup(`+${totalPoints}`, { 
+          y: "30%", 
+          variant: "bonus", 
+          size: "lg" 
+        });
+      } else {
+        showPopup("+1", { 
+          y: "30%", 
+          variant: "default", 
+          size: "md" 
+        });
+      }
+      
+      // ScorePopup: コンボマイルストーン (5, 10, 15...)
+      if (newCombo >= 5 && newCombo % 5 === 0) {
+        setTimeout(() => {
+          showPopup(`🔥 ${newCombo} COMBO!`, {
+            y: "45%",
+            variant: "combo",
+            size: "lg",
+            duration: 1200,
+          });
+        }, 150);
+        playCombo(newCombo);
+        sparkle(window.innerWidth / 2, window.innerHeight / 3);
+      } else if (newCombo >= 5) {
+        playCombo(newCombo);
+        sparkle(window.innerWidth / 2, window.innerHeight / 3);
+      } else {
+        playCorrectSound();
+        burst(window.innerWidth / 2, window.innerHeight / 3, 5);
+      }
       setTimeout(() => setShowCorrect(false), 300);
     } else {
       // 不正解
       setCombo(0);
       setShowWrong(true);
+      playWrongSound();
       setTimeout(() => setShowWrong(false), 300);
     }
     
     nextProblem();
-  }, [problem, input, combo, nextProblem]);
+  }, [problem, input, combo, nextProblem, playCorrectSound, playWrongSound, playCombo, sparkle, burst, showPopup]);
 
   // 入力変更
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -217,6 +324,19 @@ export default function App() {
 
   return (
     <GameShell gameId="mathblitz" layout="default">
+      <ParticleLayer particles={particles} />
+      {/* ScorePopups */}
+      {popups.map((p) => (
+        <ScorePopup
+          key={p.key}
+          text={p.text}
+          popupKey={p.key}
+          x={p.x}
+          y={p.y}
+          variant={p.variant}
+          size={p.size}
+        />
+      ))}
       <div className={`mathblitz-root ${showCorrect ? "flash-correct" : ""} ${showWrong ? "flash-wrong" : ""}`}>
         <h1 className="mathblitz-title">🧮 Math Blitz</h1>
 

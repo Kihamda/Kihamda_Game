@@ -1,0 +1,392 @@
+.connect4-root {
+  position: relative;
+  width: 700px;
+  height: 600px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+
+/* ターン切替時のフラッシュ演出 */
+.connect4-root--flash {
+  background: linear-gradient(180deg, #252542 0%, #1e2850 100%);
+}
+
+/* スタート画面 */
+.connect4-start {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.connect4-start-title {
+  font-size: 48px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.connect4-start-desc {
+  font-size: 18px;
+  color: #b0b0c0;
+  margin: 0;
+}
+
+.connect4-start-modes {
+  display: flex;
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.connect4-start-btn {
+  padding: 16px 40px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.connect4-start-btn--pvp {
+  background: linear-gradient(145deg, #4a90d9, #357abd);
+  box-shadow: 0 4px 16px rgba(74, 144, 217, 0.4);
+}
+
+.connect4-start-btn--cpu {
+  background: linear-gradient(145deg, #e57373, #c62828);
+  box-shadow: 0 4px 16px rgba(229, 115, 115, 0.4);
+}
+
+.connect4-start-btn:hover {
+  transform: translateY(-3px);
+}
+
+.connect4-start-btn:active {
+  transform: translateY(0);
+}
+
+/* ゲーム画面 */
+.connect4-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.connect4-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.connect4-status {
+  font-size: 16px;
+  color: #e0e0e0;
+  margin: 0;
+  min-height: 24px;
+}
+
+.connect4-status--player1 {
+  color: #ff6b6b;
+}
+
+.connect4-status--player2 {
+  color: #ffd93d;
+}
+
+.connect4-status--winner {
+  font-weight: 700;
+  animation: connect4-pulse 0.6s ease-in-out infinite alternate;
+}
+
+.connect4-status--draw {
+  color: #a0a0a0;
+}
+
+@keyframes connect4-pulse {
+  from { opacity: 1; }
+  to { opacity: 0.6; }
+}
+
+.connect4-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.connect4-board-wrapper {
+  position: relative;
+}
+
+.connect4-board {
+  display: grid;
+  grid-template-columns: repeat(7, 60px);
+  grid-template-rows: repeat(6, 60px);
+  gap: 5px;
+  padding: 10px;
+  background: linear-gradient(145deg, #0f3460 0%, #1a237e 100%);
+  border-radius: 12px;
+  box-shadow: 
+    0 6px 24px rgba(0, 0, 0, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+.connect4-cell {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #0a0a1a, #1a1a2e);
+  box-shadow: 
+    inset 0 3px 6px rgba(0, 0, 0, 0.5),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.connect4-cell:hover {
+  transform: scale(1.03);
+  box-shadow: 
+    inset 0 3px 6px rgba(0, 0, 0, 0.5),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.05),
+    0 0 10px rgba(255, 255, 255, 0.15);
+}
+
+.connect4-cell--player1 {
+  background: radial-gradient(circle at 30% 30%, #ff8a8a, #ff6b6b 40%, #cc4444);
+  box-shadow: 
+    0 3px 10px rgba(255, 107, 107, 0.5),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.3),
+    inset 0 3px 6px rgba(255, 255, 255, 0.3);
+  cursor: default;
+}
+
+.connect4-cell--player2 {
+  background: radial-gradient(circle at 30% 30%, #ffe066, #ffd93d 40%, #ccad00);
+  box-shadow: 
+    0 3px 10px rgba(255, 217, 61, 0.5),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.3),
+    inset 0 3px 6px rgba(255, 255, 255, 0.3);
+  cursor: default;
+}
+
+.connect4-cell--win {
+  animation: connect4-win-glow 0.5s ease-in-out infinite alternate;
+}
+
+.connect4-cell--player1.connect4-cell--win {
+  box-shadow: 
+    0 0 20px rgba(255, 107, 107, 1),
+    0 0 40px rgba(255, 107, 107, 0.8),
+    0 0 60px rgba(255, 107, 107, 0.5),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.3),
+    inset 0 3px 6px rgba(255, 255, 255, 0.3);
+}
+
+.connect4-cell--player2.connect4-cell--win {
+  box-shadow: 
+    0 0 20px rgba(255, 217, 61, 1),
+    0 0 40px rgba(255, 217, 61, 0.8),
+    0 0 60px rgba(255, 217, 61, 0.5),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.3),
+    inset 0 3px 6px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes connect4-win-glow {
+  from { 
+    transform: scale(1); 
+    filter: brightness(1);
+  }
+  to { 
+    transform: scale(1.08); 
+    filter: brightness(1.2);
+  }
+}
+
+/* 落下アニメーション（バウンス付き） */
+.connect4-dropping-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  pointer-events: none;
+}
+
+.connect4-dropping-piece {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  animation: connect4-drop-bounce 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes connect4-drop-bounce {
+  0% {
+    transform: translateY(var(--start-y, -60px));
+    opacity: 0.8;
+  }
+  60% {
+    transform: translateY(var(--end-y));
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(calc(var(--end-y) - 8px));
+  }
+  90% {
+    transform: translateY(calc(var(--end-y) + 3px));
+  }
+  100% {
+    transform: translateY(var(--end-y));
+  }
+}
+
+.connect4-dropping-piece--player1 {
+  background: radial-gradient(circle at 30% 30%, #ff8a8a, #ff6b6b 40%, #cc4444);
+  box-shadow: 
+    0 3px 10px rgba(255, 107, 107, 0.5),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.3),
+    inset 0 3px 6px rgba(255, 255, 255, 0.3);
+}
+
+.connect4-dropping-piece--player2 {
+  background: radial-gradient(circle at 30% 30%, #ffe066, #ffd93d 40%, #ccad00);
+  box-shadow: 
+    0 3px 10px rgba(255, 217, 61, 0.5),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.3),
+    inset 0 3px 6px rgba(255, 255, 255, 0.3);
+}
+
+.connect4-column-indicator {
+  position: absolute;
+  top: -44px;
+  left: 10px;
+  display: flex;
+  gap: 5px;
+}
+
+.connect4-indicator {
+  width: 60px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.connect4-indicator--active {
+  opacity: 1;
+}
+
+.connect4-indicator-piece {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.connect4-indicator-piece--player1 {
+  background: radial-gradient(circle at 30% 30%, #ff8a8a, #ff6b6b 40%, #cc4444);
+}
+
+.connect4-indicator-piece--player2 {
+  background: radial-gradient(circle at 30% 30%, #ffe066, #ffd93d 40%, #ccad00);
+}
+
+.connect4-footer {
+  margin-top: 16px;
+}
+
+.connect4-reset-btn {
+  padding: 10px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(145deg, #4a5568, #2d3748);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.connect4-reset-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.connect4-reset-btn:active {
+  transform: translateY(0);
+}
+
+/* 結果画面 */
+.connect4-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.connect4-result-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  animation: connect4-result-pop 0.5s ease-out;
+}
+
+@keyframes connect4-result-pop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.connect4-result-btns {
+  display: flex;
+  gap: 16px;
+}
+
+.connect4-result-btn {
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(145deg, #4a90d9, #357abd);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 4px 12px rgba(74, 144, 217, 0.4);
+}
+
+.connect4-result-btn--back {
+  background: linear-gradient(145deg, #4a5568, #2d3748);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.connect4-result-btn:hover {
+  transform: translateY(-2px);
+}
+
+.connect4-result-btn:active {
+  transform: translateY(0);
+}

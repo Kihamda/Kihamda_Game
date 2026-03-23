@@ -1,0 +1,91 @@
+.dartboard-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.dartboard {
+  cursor: crosshair;
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.5));
+  transition: opacity 0.2s;
+}
+
+.dartboard--disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.dartboard:hover:not(.dartboard--disabled) {
+  filter: drop-shadow(0 4px 25px rgba(255, 215, 0, 0.3));
+}
+
+/* ダーツ着弾時のアニメーション */
+.dart-landed {
+  animation: dart-land 0.3s ease-out;
+}
+
+@keyframes dart-land {
+  0% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ダーツのグロー効果 */
+.dart-glow {
+  animation: dart-glow-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dart-glow-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    r: 10;
+  }
+  50% {
+    opacity: 0.6;
+    r: 14;
+  }
+}
+
+/* 飛行中ダーツのトレイル */
+.dart-flying .dart-trail {
+  animation: trail-fade 0.12s ease-out forwards;
+}
+
+@keyframes trail-fade {
+  0% {
+    opacity: 0;
+    stroke-width: 2;
+  }
+  30% {
+    opacity: 1;
+    stroke-width: 6;
+  }
+  100% {
+    opacity: 0.8;
+    stroke-width: 4;
+  }
+}
+
+.dart-flying .dart-head {
+  animation: dart-fly 0.12s ease-out forwards;
+}
+
+@keyframes dart-fly {
+  0% {
+    r: 3;
+    opacity: 0.5;
+  }
+  100% {
+    r: 5;
+    opacity: 1;
+  }
+}

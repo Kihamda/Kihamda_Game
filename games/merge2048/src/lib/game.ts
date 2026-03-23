@@ -11,6 +11,22 @@ export interface Tile {
   isNew?: boolean;
 }
 
+/** 1回のmoveで発生したマージ情報 */
+export interface MergeInfo {
+  row: number;
+  col: number;
+  value: number;
+}
+
+/** move操作の結果を詳細に返す */
+export interface MoveResult {
+  state: GameState;
+  moved: boolean;
+  merges: MergeInfo[];
+  scoreGained: number;
+  justWon: boolean; // 今回のmoveで初めて2048達成
+}
+
 export interface GameState {
   tiles: Tile[];
   score: number;
@@ -92,13 +108,14 @@ export function initGame(): GameState {
   };
 }
 
-function slideLine(line: (Tile | null)[]): { newLine: (Tile | null)[]; scoreGained: number; merged: boolean } {
+function slideLine(line: (Tile | null)[]): { newLine: (Tile | null)[]; scoreGained: number; merged: boolean; mergedPositions: { idx: number; value: number }[] } {
   // Extract non-null tiles
   const tiles = line.filter((t): t is Tile => t !== null);
   const result: (Tile | null)[] = Array(GRID_SIZE).fill(null);
   let scoreGained = 0;
   let merged = false;
   let writeIdx = 0;
+  const mergedPositions: { idx: number; value: number }[] = [];
   
   for (let i = 0; i < tiles.length; i++) {
     if (i < tiles.length - 1 && tiles[i].value === tiles[i + 1].value) {
@@ -111,6 +128,7 @@ function slideLine(line: (Tile | null)[]): { newLine: (Tile | null)[]; scoreGain
       };
       scoreGained += newValue;
       merged = true;
+      mergedPositions.push({ idx: writeIdx, value: newValue });
       i++; // Skip next tile (merged)
     } else {
       result[writeIdx] = { ...tiles[i] };
@@ -118,17 +136,27 @@ function slideLine(line: (Tile | null)[]): { newLine: (Tile | null)[]; scoreGain
     writeIdx++;
   }
   
-  return { newLine: result, scoreGained, merged };
+  return { newLine: result, scoreGained, merged, mergedPositions };
 }
 
-export function move(state: GameState, direction: Direction): GameState {
-  if (state.gameOver) return state;
+/** 詳細な結果を返す move 関数 */
+export function moveWithResult(state: GameState, direction: Direction): MoveResult {
+  const noChange: MoveResult = {
+    state,
+    moved: false,
+    merges: [],
+    scoreGained: 0,
+    justWon: false,
+  };
+  
+  if (state.gameOver) return noChange;
   
   const grid = tilesToGrid(state.tiles);
   let newTiles: Tile[] = [];
   let totalScore = 0;
   let moved = false;
   let nextId = state.nextId;
+  const merges: MergeInfo[] = [];
   
   const isVertical = direction === "up" || direction === "down";
   const isReverse = direction === "down" || direction === "right";
@@ -144,10 +172,16 @@ export function move(state: GameState, direction: Direction): GameState {
     
     if (isReverse) line.reverse();
     
-    const { newLine, scoreGained, merged } = slideLine(line);
+    const { newLine, scoreGained, merged, mergedPositions } = slideLine(line);
     totalScore += scoreGained;
     
-    if (isReverse) newLine.reverse();
+    if (isReverse) {
+      newLine.reverse();
+      // Reverse merged positions too
+      mergedPositions.forEach((pos) => {
+        pos.idx = GRID_SIZE - 1 - pos.idx;
+      });
+    }
     
     // Place tiles back with new positions
     for (let j = 0; j < GRID_SIZE; j++) {
@@ -169,10 +203,17 @@ export function move(state: GameState, direction: Direction): GameState {
       }
     }
     
+    // Collect merge info
+    for (const mp of mergedPositions) {
+      const row = isVertical ? mp.idx : i;
+      const col = isVertical ? i : mp.idx;
+      merges.push({ row, col, value: mp.value });
+    }
+    
     if (merged) moved = true;
   }
   
-  if (!moved) return state;
+  if (!moved) return noChange;
   
   // Clear merged flags after animation
   newTiles = newTiles.map((t) => ({ ...t, mergedFrom: false, isNew: false }));
@@ -190,16 +231,28 @@ export function move(state: GameState, direction: Direction): GameState {
   }
   
   const won = newTiles.some((t) => t.value >= 2048);
+  const justWon = won && !state.won;
   const gameOver = isGameOver(newTiles);
   
   return {
-    tiles: newTiles,
-    score: newScore,
-    bestScore: newBestScore,
-    gameOver,
-    won: state.won || won,
-    nextId,
+    state: {
+      tiles: newTiles,
+      score: newScore,
+      bestScore: newBestScore,
+      gameOver,
+      won: state.won || won,
+      nextId,
+    },
+    moved: true,
+    merges,
+    scoreGained: totalScore,
+    justWon,
   };
+}
+
+/** 後方互換用: 従来の move 関数 */
+export function move(state: GameState, direction: Direction): GameState {
+  return moveWithResult(state, direction).state;
 }
 
 function isGameOver(tiles: Tile[]): boolean {

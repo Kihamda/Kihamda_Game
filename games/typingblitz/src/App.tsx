@@ -7,7 +7,15 @@ import {
   useState,
 } from "react";
 import "./App.css";
-import { useAudio, GameShell, useHighScore } from "../../../src/shared";
+import {
+  useAudio,
+  GameShell,
+  useHighScore,
+  useParticles,
+  ParticleLayer,
+  ScorePopup,
+} from "../../../src/shared";
+import type { PopupVariant } from "../../../src/shared";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -35,6 +43,15 @@ interface FloatEffect {
   x: number;
   y: number;
   color: string;
+}
+
+interface ScorePopupState {
+  text: string;
+  key: number;
+  x: string;
+  y: string;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
 }
 
 type Phase = "idle" | "playing" | "gameover";
@@ -309,6 +326,13 @@ function getDifficulty(
 const App = () => {
   const { playFanfare, playMiss, playClick } = useAudio();
   const { best: bestScore, update: updateBest } = useHighScore("typingblitz");
+  const {
+    particles: sharedParticles,
+    sparkle,
+    burst,
+    explosion,
+    confetti,
+  } = useParticles();
 
   const [settings, setSettings] = useState<GameSettings>(loadSettings);
   const activeConfigRef = useRef<ActiveConfig>(
@@ -326,6 +350,7 @@ const App = () => {
   const [floatEffects, setFloatEffects] = useState<FloatEffect[]>([]);
   const [shake, setShake] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
+  const [scorePopups, setScorePopups] = useState<ScorePopupState[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const gameAreaRef = useRef<HTMLDivElement>(null);
@@ -341,6 +366,8 @@ const App = () => {
   const rafRef = useRef(0);
   const lastCompleteRef = useRef(0);
   const completionIntervalsRef = useRef<number[]>([]);
+  const popupKeyRef = useRef(0);
+  const maxComboRef = useRef(0);
 
   // Sync refs with latest state after each render (useLayoutEffect → before paint)
   useLayoutEffect(() => {
@@ -372,6 +399,24 @@ const App = () => {
   }, []);
 
   // ── Effect helpers ───────────────────────────────────────────────────────
+
+  const spawnPopup = useCallback(
+    (
+      text: string,
+      x: string,
+      y: string,
+      variant: PopupVariant = "default",
+      size: "sm" | "md" | "lg" | "xl" = "md",
+    ) => {
+      const key = ++popupKeyRef.current;
+      const popup: ScorePopupState = { text, key, x, y, variant, size };
+      setScorePopups((prev) => [...prev, popup]);
+      setTimeout(() => {
+        setScorePopups((prev) => prev.filter((p) => p.key !== key));
+      }, 1500);
+    },
+    [],
+  );
 
   const spawnParticles = useCallback((cx: number, cy: number) => {
     const ps: Particle[] = Array.from({ length: 14 }, () => ({
@@ -433,6 +478,11 @@ const App = () => {
       comboRef.current = newCombo;
       setCombo(newCombo);
 
+      // Track max combo for milestone popups
+      if (newCombo > maxComboRef.current) {
+        maxComboRef.current = newCombo;
+      }
+
       const multiplier = newCombo >= 3 ? 1 + (newCombo - 1) * 0.2 : 1;
       const pts = Math.round(word.text.length * 10 * multiplier);
       scoreRef.current += pts;
@@ -448,6 +498,20 @@ const App = () => {
         const cy = er.top - ar.top + er.height / 2;
         spawnParticles(cx, cy);
 
+        // Shared particle effects: burst for word completion
+        burst(er.left + er.width / 2, er.top + er.height / 2, 10);
+
+        // ScorePopup for word completion points
+        const xPercent = `${(cx / ar.width) * 100}%`;
+        const yPercent = `${(cy / ar.height) * 100}%`;
+        spawnPopup(`+${pts}`, xPercent, yPercent, "default", "md");
+
+        // Explosion effect for combos (3x and above)
+        if (newCombo >= 3) {
+          explosion(er.left + er.width / 2, er.top + er.height / 2, 16);
+        }
+
+        // Speed achievements - ScorePopup
         const ivals = completionIntervalsRef.current;
         if (ivals.length >= 3) {
           const recent = ivals[ivals.length - 1];
@@ -455,12 +519,36 @@ const App = () => {
             ivals.slice(0, -1).reduce((a, b) => a + b, 0) / (ivals.length - 1);
           if (recent < avg * 0.55) {
             spawnFloat("BLAZING!", cx, cy - 30, "#f97316");
+            // Delayed speed achievement popup
+            setTimeout(() => {
+              spawnPopup("🔥 BLAZING!", xPercent, `${((cy - 60) / ar.height) * 100}%`, "critical", "lg");
+            }, 100);
           } else if (recent < avg * 0.78) {
             spawnFloat("FAST!", cx, cy - 30, "#facc15");
+            setTimeout(() => {
+              spawnPopup("⚡ FAST!", xPercent, `${((cy - 60) / ar.height) * 100}%`, "bonus", "md");
+            }, 100);
           }
         }
-        if (newCombo >= 3) {
-          spawnFloat(`${newCombo}\u00d7 COMBO!`, cx, cy - 56, "#e879f9");
+
+        // Combo milestones - ScorePopup
+        if (newCombo === 5) {
+          spawnFloat(`${newCombo}× COMBO!`, cx, cy - 56, "#e879f9");
+          setTimeout(() => {
+            spawnPopup("🎯 5× COMBO!", "50%", "35%", "combo", "lg");
+          }, 150);
+        } else if (newCombo === 10) {
+          spawnFloat(`${newCombo}× COMBO!`, cx, cy - 56, "#e879f9");
+          setTimeout(() => {
+            spawnPopup("💥 10× STREAK!", "50%", "35%", "critical", "xl");
+          }, 150);
+        } else if (newCombo === 20) {
+          spawnFloat(`${newCombo}× COMBO!`, cx, cy - 56, "#e879f9");
+          setTimeout(() => {
+            spawnPopup("🌟 20× UNSTOPPABLE!", "50%", "35%", "level", "xl");
+          }, 150);
+        } else if (newCombo >= 3) {
+          spawnFloat(`${newCombo}× COMBO!`, cx, cy - 56, "#e879f9");
         }
       }
 
@@ -469,7 +557,7 @@ const App = () => {
       setInputVal("");
       if (inputRef.current) inputRef.current.value = "";
     },
-    [spawnParticles, spawnFloat, playFanfare],
+    [spawnParticles, spawnFloat, spawnPopup, playFanfare, burst, explosion],
   );
 
   // ── Miss ─────────────────────────────────────────────────────────────────
@@ -492,12 +580,30 @@ const App = () => {
       if (newLives <= 0) {
         const fs = scoreRef.current;
         setFinalScore(fs);
+        const isNewBest = fs > bestScore;
         updateBest(fs);
         setPhase("gameover");
         phaseRef.current = "gameover";
+        // Confetti effect on game completion
+        confetti(40);
+
+        // High score popup
+        if (isNewBest && fs > 0) {
+          setTimeout(() => {
+            spawnPopup("🏆 NEW HIGH SCORE!", "50%", "25%", "level", "xl");
+          }, 300);
+        }
+
+        // Max combo achievement popup
+        const maxCombo = maxComboRef.current;
+        if (maxCombo >= 10) {
+          setTimeout(() => {
+            spawnPopup(`🔥 Max Combo: ${maxCombo}×`, "50%", "45%", "combo", "lg");
+          }, 600);
+        }
       }
     },
-    [triggerShake, playMiss, updateBest],
+    [triggerShake, playMiss, updateBest, confetti, bestScore, spawnPopup],
   );
 
   // ── Input handler ────────────────────────────────────────────────────────
@@ -512,10 +618,27 @@ const App = () => {
         completeWord(match);
         return;
       }
+
+      // Check if typing matches any word prefix (correct keypress)
+      const prevLen = inputVal.length;
+      if (raw.length > prevLen) {
+        const matchingWord = wordsRef.current.find((w) =>
+          w.text.startsWith(raw),
+        );
+        if (matchingWord) {
+          // Sparkle effect on active word for correct keypress
+          const el = document.getElementById(`w-${matchingWord.id}`);
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            sparkle(rect.left + rect.width / 2, rect.top + rect.height / 2, 5);
+          }
+        }
+      }
+
       setInputVal(raw);
       playClick();
     },
-    [completeWord, playClick],
+    [completeWord, playClick, inputVal, sparkle],
   );
 
   // ── Miss detection (interval) ────────────────────────────────────────────
@@ -580,6 +703,7 @@ const App = () => {
     comboRef.current = 0;
     scoreRef.current = 0;
     livesRef.current = cfg.maxLives;
+    maxComboRef.current = 0;
     setMaxLives(cfg.maxLives);
     setWords([]);
     setInputVal("");
@@ -588,6 +712,7 @@ const App = () => {
     setLives(cfg.maxLives);
     setParticles([]);
     setFloatEffects([]);
+    setScorePopups([]);
     setShake(false);
     setPhase("playing");
     setTimeout(() => inputRef.current?.focus(), 80);
@@ -705,6 +830,19 @@ const App = () => {
               >
                 {e.text}
               </div>
+            ))}
+
+            {/* Score Popups */}
+            {scorePopups.map((popup) => (
+              <ScorePopup
+                key={popup.key}
+                text={popup.text}
+                popupKey={popup.key}
+                x={popup.x}
+                y={popup.y}
+                variant={popup.variant}
+                size={popup.size}
+              />
             ))}
 
             {/* Overlay */}
@@ -832,6 +970,7 @@ const App = () => {
           </div>
         </div>
       </div>
+      <ParticleLayer particles={sharedParticles} />
     </GameShell>
   );
 };

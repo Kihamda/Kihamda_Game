@@ -1,0 +1,492 @@
+/* Trivia Quiz - トリビアクイズ */
+
+.triviaquiz-root {
+  position: relative;
+  width: 700px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+  border-radius: 12px;
+  padding: 24px;
+  box-sizing: border-box;
+  color: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow: hidden;
+  transition: box-shadow 0.15s ease;
+}
+
+/* 正解フラッシュ */
+.triviaquiz-root.flash-correct {
+  animation: flash-green 0.3s ease;
+  box-shadow: inset 0 0 80px rgba(34, 197, 94, 0.4);
+}
+
+@keyframes flash-green {
+  0% {
+    box-shadow: inset 0 0 100px rgba(34, 197, 94, 0.6);
+  }
+  100% {
+    box-shadow: inset 0 0 0px rgba(34, 197, 94, 0);
+  }
+}
+
+/* 不正解フラッシュ */
+.triviaquiz-root.flash-wrong {
+  animation: flash-red 0.3s ease;
+  box-shadow: inset 0 0 80px rgba(239, 68, 68, 0.4);
+}
+
+@keyframes flash-red {
+  0% {
+    box-shadow: inset 0 0 100px rgba(239, 68, 68, 0.6);
+  }
+  100% {
+    box-shadow: inset 0 0 0px rgba(239, 68, 68, 0);
+  }
+}
+
+/* タイトル */
+.triviaquiz-title {
+  margin: 0 0 16px;
+  font-size: 32px;
+  font-weight: 900;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* パネル */
+.triviaquiz-panel {
+  background: rgba(30, 41, 59, 0.9);
+  border-radius: 16px;
+  padding: 32px 40px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  max-width: 500px;
+}
+
+.triviaquiz-panel.result {
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 説明 */
+.triviaquiz-description {
+  margin: 0 0 24px;
+  font-size: 18px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+/* ハイスコア */
+.triviaquiz-highscore {
+  margin: 16px 0;
+  font-size: 16px;
+  color: #fbbf24;
+}
+
+/* ボタン */
+.triviaquiz-button {
+  padding: 14px 36px;
+  font-size: 18px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.triviaquiz-button:hover {
+  transform: translateY(-2px);
+}
+
+.triviaquiz-button:active {
+  transform: translateY(0);
+}
+
+.triviaquiz-button.primary {
+  color: #0f172a;
+  background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.3);
+}
+
+.triviaquiz-button.primary:hover {
+  box-shadow: 0 6px 24px rgba(56, 189, 248, 0.4);
+}
+
+.triviaquiz-button.secondary {
+  color: #e2e8f0;
+  background: rgba(71, 85, 105, 0.6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.triviaquiz-button.next {
+  padding: 12px 28px;
+  font-size: 16px;
+  color: #0f172a;
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+}
+
+/* ゲーム画面 */
+.triviaquiz-game {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 進捗 */
+.triviaquiz-progress {
+  width: 100%;
+  max-width: 500px;
+}
+
+.triviaquiz-progress-text {
+  font-size: 14px;
+  color: #94a3b8;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.triviaquiz-progress-bar {
+  height: 8px;
+  background: rgba(71, 85, 105, 0.5);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.triviaquiz-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #38bdf8 0%, #0ea5e9 100%);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* スコア表示 */
+.triviaquiz-score-display {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4ade80;
+}
+
+/* 問題ボックス */
+.triviaquiz-question-box {
+  width: 100%;
+  max-width: 550px;
+  background: rgba(30, 41, 59, 0.9);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.triviaquiz-question {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #f8fafc;
+}
+
+/* 選択肢 */
+.triviaquiz-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  max-width: 550px;
+}
+
+.triviaquiz-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e2e8f0;
+  background: rgba(51, 65, 85, 0.7);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.triviaquiz-choice:hover:not(:disabled) {
+  background: rgba(71, 85, 105, 0.8);
+  border-color: #64748b;
+}
+
+.triviaquiz-choice:disabled {
+  cursor: default;
+}
+
+.triviaquiz-choice.correct {
+  background: rgba(34, 197, 94, 0.3);
+  border-color: #22c55e;
+  color: #4ade80;
+}
+
+.triviaquiz-choice.wrong {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: #ef4444;
+  color: #f87171;
+}
+
+.triviaquiz-choice.disabled {
+  opacity: 0.5;
+}
+
+.triviaquiz-choice-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  background: #94a3b8;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.triviaquiz-choice.correct .triviaquiz-choice-label {
+  background: #4ade80;
+}
+
+.triviaquiz-choice.wrong .triviaquiz-choice-label {
+  background: #f87171;
+}
+
+.triviaquiz-choice-text {
+  flex: 1;
+}
+
+/* フィードバック */
+.triviaquiz-feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.triviaquiz-feedback-wrong {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f87171;
+  animation: shake-text 0.3s ease;
+}
+
+@keyframes shake-text {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+/* 結果画面 */
+.triviaquiz-result-title {
+  margin: 0 0 20px;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.triviaquiz-result-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.triviaquiz-result-emoji {
+  font-size: 48px;
+}
+
+.triviaquiz-result-value {
+  font-size: 56px;
+  font-weight: 900;
+  color: #38bdf8;
+  text-shadow: 0 0 24px rgba(56, 189, 248, 0.5);
+}
+
+.triviaquiz-result-label {
+  font-size: 20px;
+  color: #94a3b8;
+}
+
+.triviaquiz-result-message {
+  margin: 0 0 20px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+.triviaquiz-result-answers {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.triviaquiz-result-dot {
+  font-size: 18px;
+}
+
+.triviaquiz-result-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* 最大コンボ表示 */
+.triviaquiz-max-combo {
+  margin: 8px 0 16px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fb923c;
+  animation: pulse-glow 1s ease infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(251, 146, 60, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 16px rgba(251, 146, 60, 0.8);
+  }
+}
+
+/* パーフェクト結果画面 */
+.triviaquiz-panel.result.perfect {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(30, 41, 59, 0.9) 50%);
+  border: 2px solid rgba(251, 191, 36, 0.4);
+  animation: slideIn 0.3s ease, perfect-shimmer 2s ease infinite;
+}
+
+@keyframes perfect-shimmer {
+  0%, 100% {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(251, 191, 36, 0.2);
+  }
+  50% {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(251, 191, 36, 0.4);
+  }
+}
+
+/* 正解フィードバックアニメーション強化 */
+.triviaquiz-feedback-correct {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 900;
+  color: #4ade80;
+  animation: bounce-correct 0.4s ease;
+}
+
+@keyframes bounce-correct {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* コンボカウンター用キーフレーム */
+@keyframes combo-pop {
+  0% {
+    transform: scale(1.4);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes combo-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* パーティクルアニメーション */
+@keyframes particle-fade {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(0.5);
+  }
+}
+
+@keyframes particle-sparkle {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(var(--scale, 1));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(0);
+  }
+}
+
+@keyframes particle-confetti {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+  }
+}
+
+@keyframes particle-explosion {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.3);
+  }
+}

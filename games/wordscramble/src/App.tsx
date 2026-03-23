@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { GameShell, useHighScore } from "../../../src/shared";
+import { GameShell, useHighScore, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -13,8 +14,19 @@ interface GameState {
   userInput: string;
   hintUsed: boolean;
   solvedCount: number;
+  streak: number;
   timeLeft: number;
   feedback: "correct" | "wrong" | null;
+}
+
+/** ポップアップ状態 */
+interface PopupState {
+  text: string | null;
+  key: number;
+  x: string;
+  y: string;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
 }
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -28,7 +40,7 @@ const WORD_LIST = [
   "GHOST", "HEART", "JEWEL", "MAGIC", "NORTH", "PIANO", "ROYAL", "SHARK", "TOWER", "WITCH",
   "ALBUM", "BRUSH", "CHAIR", "DELTA", "ENTER", "FRUIT", "GRILL", "HOTEL", "INPUT", "JELLY",
   "KIOSK", "LUNAR", "MAPLE", "NOBLE", "OLIVE", "PEARL", "QUEST", "REALM", "SOLAR", "TRAIN",
-  "MAPLE", "NOVEL", "ORBIT", "PRISM", "QUICK", "RADAR", "SUGAR", "TABLE", "URBAN", "VALID",
+  "NOVEL", "ORBIT", "PRISM", "QUICK", "RADAR", "SUGAR", "TABLE", "URBAN", "VALID", "WALTZ",
   "WEIRD", "YOUTH", "AGENT", "BLANK", "CLIMB", "DRIFT", "EVENT", "FLASH", "GRAIN", "HUMAN",
   "INSECT", "JUMBLE", "KERNEL", "LAPTOP", "MARKET", "NATURE", "ORANGE", "PLANET", "ROCKET", "SUNSET",
   "TEMPLE", "WONDER", "ACTION", "BRIDGE", "CASTLE", "DRAGON", "EMPIRE", "FOREST", "GARDEN", "HARBOR",
@@ -244,11 +256,55 @@ export default function App() {
     userInput: "",
     hintUsed: false,
     solvedCount: 0,
+    streak: 0,
     timeLeft: TIME_LIMIT,
     feedback: null,
   });
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  
+  // ScorePopup state
+  const [popups, setPopups] = useState<PopupState[]>([]);
+  const popupKeyRef = useRef(0);
+  
+  const { playTone } = useAudio();
+  const { particles, sparkle, confetti, burst } = useParticles();
+  
+  const playCorrect = useCallback(() => playTone(660, 0.15, 'sine'), [playTone]);
+  const playWrong = useCallback(() => playTone(220, 0.15, 'sawtooth'), [playTone]);
+  const playTick = useCallback(() => playTone(400, 0.05, 'triangle'), [playTone]);
+  const playSkip = useCallback(() => playTone(330, 0.1, 'triangle'), [playTone]);
+  const playStreak = useCallback((s: number) => playTone(440 + s * 40, 0.1, 'sine'), [playTone]);
+  const playSpeedBonus = useCallback(() => playTone(880, 0.1, 'sine'), [playTone]);
+  
+  // ポップアップ表示関数
+  const showPopup = useCallback((
+    text: string,
+    options: {
+      x?: string;
+      y?: string;
+      variant?: PopupVariant;
+      size?: "sm" | "md" | "lg" | "xl";
+      duration?: number;
+    } = {}
+  ) => {
+    const key = ++popupKeyRef.current;
+    const popup: PopupState = {
+      text,
+      key,
+      x: options.x ?? "50%",
+      y: options.y ?? "35%",
+      variant: options.variant ?? "default",
+      size: options.size ?? "md",
+    };
+    setPopups(prev => [...prev, popup]);
+    
+    // 自動消去
+    const duration = options.duration ?? (options.variant === "critical" ? 1500 : 1000);
+    setTimeout(() => {
+      setPopups(prev => prev.filter(p => p.key !== key));
+    }, duration);
+  }, []);
 
   // Timer effect
   useEffect(() => {
@@ -267,7 +323,13 @@ export default function App() {
           const finalScore = prev.solvedCount;
           const newRecord = highScoreHook.update(finalScore);
           setIsNewRecord(newRecord);
+          if (newRecord) {
+            confetti();
+          }
           return { ...prev, phase: "result", timeLeft: 0 };
+        }
+        if (prev.timeLeft <= 5) {
+          playTick();
         }
         return { ...prev, timeLeft: prev.timeLeft - 1 };
       });
@@ -279,7 +341,7 @@ export default function App() {
         timerRef.current = null;
       }
     };
-  }, [state.phase, highScoreHook]);
+  }, [state.phase, highScoreHook, confetti, playTick]);
 
   const startGame = useCallback(() => {
     usedWordsRef.current.clear();
@@ -292,10 +354,12 @@ export default function App() {
       userInput: "",
       hintUsed: false,
       solvedCount: 0,
+      streak: 0,
       timeLeft: TIME_LIMIT,
       feedback: null,
     });
     setIsNewRecord(false);
+    setPopups([]); // ポップアップをクリア
   }, []);
 
   const handleInput = useCallback((value: string) => {
@@ -311,6 +375,88 @@ export default function App() {
       if (prev.userInput.toUpperCase() === prev.currentWord) {
         // Correct answer
         const newSolvedCount = prev.solvedCount + 1;
+        const newStreak = prev.streak + 1;
+        const timeRemaining = prev.timeLeft;
+        
+        // Calculate points
+        let basePoints = 10;
+        let speedBonus = 0;
+        let streakBonus = 0;
+        
+        // Speed bonus: more time remaining = more bonus
+        if (timeRemaining >= 25) {
+          speedBonus = 5; // 超高速
+        } else if (timeRemaining >= 20) {
+          speedBonus = 3; // 高速
+        } else if (timeRemaining >= 15) {
+          speedBonus = 1; // やや速い
+        }
+        
+        // Streak bonus: consecutive correct answers
+        if (newStreak >= 3) {
+          streakBonus = Math.min(newStreak, 10); // max 10 bonus
+        }
+        
+        // Hint penalty
+        if (prev.hintUsed) {
+          basePoints = 5;
+        }
+        
+        // Play sounds
+        playCorrect();
+        
+        // Popup: base points
+        showPopup(`+${basePoints}`, {
+          y: "25%",
+          variant: "default",
+          size: "lg",
+        });
+        
+        // Popup: speed bonus
+        if (speedBonus > 0) {
+          playSpeedBonus();
+          setTimeout(() => {
+            const speedText = speedBonus >= 5 ? "⚡ SPEED! +5" : speedBonus >= 3 ? "⚡ FAST! +3" : "⚡ +1";
+            showPopup(speedText, {
+              y: "35%",
+              variant: "bonus",
+              size: "md",
+              duration: 1000,
+            });
+          }, 100);
+        }
+        
+        // Popup: streak bonus
+        if (newStreak >= 3 && newStreak % 3 === 0) {
+          playStreak(newStreak);
+          sparkle(window.innerWidth / 2, window.innerHeight / 3);
+          setTimeout(() => {
+            showPopup(`🔥 ${newStreak} STREAK! +${streakBonus}`, {
+              y: "45%",
+              variant: "combo",
+              size: "lg",
+              duration: 1200,
+            });
+          }, 200);
+        } else if (newStreak >= 3) {
+          burst(window.innerWidth / 2, window.innerHeight / 3, 5);
+        } else {
+          burst(window.innerWidth / 2, window.innerHeight / 3, 3);
+        }
+        
+        // Level milestone popups (5, 10, 15...)
+        if (newSolvedCount > 0 && newSolvedCount % 5 === 0) {
+          setTimeout(() => {
+            showPopup(`🎯 ${newSolvedCount}問クリア!`, {
+              y: "55%",
+              variant: "level",
+              size: "xl",
+              duration: 1500,
+            });
+          }, 300);
+          sparkle(window.innerWidth / 2, window.innerHeight / 2);
+        }
+        
         const word = getRandomWord(usedWordsRef.current);
         usedWordsRef.current.add(word);
         return {
@@ -320,18 +466,30 @@ export default function App() {
           userInput: "",
           hintUsed: false,
           solvedCount: newSolvedCount,
+          streak: newStreak,
           timeLeft: TIME_LIMIT,
           feedback: "correct",
         };
       } else {
         // Wrong answer
+        playWrong();
+        
+        // Popup: wrong answer
+        showPopup("✖️ もう一度!", {
+          y: "30%",
+          variant: "critical",
+          size: "md",
+          duration: 800,
+        });
+        
         return {
           ...prev,
+          streak: 0, // Reset streak on wrong answer
           feedback: "wrong",
         };
       }
     });
-  }, []);
+  }, [playCorrect, playWrong, playSpeedBonus, playStreak, sparkle, burst, showPopup]);
 
   const handleHint = useCallback(() => {
     setState((prev) => ({
@@ -341,6 +499,13 @@ export default function App() {
   }, []);
 
   const handleSkip = useCallback(() => {
+    playSkip();
+    showPopup("⏭️ SKIP", {
+      y: "30%",
+      variant: "default",
+      size: "sm",
+      duration: 600,
+    });
     const word = getRandomWord(usedWordsRef.current);
     usedWordsRef.current.add(word);
     setState((prev) => ({
@@ -349,10 +514,11 @@ export default function App() {
       scrambledLetters: scrambleWord(word),
       userInput: "",
       hintUsed: false,
+      streak: 0, // Reset streak on skip
       timeLeft: TIME_LIMIT,
       feedback: null,
     }));
-  }, []);
+  }, [playSkip, showPopup]);
 
   const goToStart = useCallback(() => {
     setState({
@@ -362,13 +528,28 @@ export default function App() {
       userInput: "",
       hintUsed: false,
       solvedCount: 0,
+      streak: 0,
       timeLeft: TIME_LIMIT,
       feedback: null,
     });
+    setPopups([]);
   }, []);
 
   return (
     <GameShell gameId="wordscramble" layout="default">
+      <ParticleLayer particles={particles} />
+      {/* ScorePopups */}
+      {popups.map((p) => (
+        <ScorePopup
+          key={p.key}
+          text={p.text}
+          popupKey={p.key}
+          x={p.x}
+          y={p.y}
+          variant={p.variant}
+          size={p.size}
+        />
+      ))}
       <div className="wordscramble-container">
         {state.phase === "start" && (
           <StartScreen highScore={highScoreHook.best} onStart={startGame} />

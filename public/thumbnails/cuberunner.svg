@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0015"/>
+      <stop offset="100%" style="stop-color:#4d0099"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#222"/>
+      <stop offset="100%" style="stop-color:#333"/>
+    </linearGradient>
+    <linearGradient id="cube" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ffff"/>
+      <stop offset="100%" style="stop-color:#0088aa"/>
+    </linearGradient>
+    <linearGradient id="obstacle" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff0066"/>
+      <stop offset="100%" style="stop-color:#990033"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" fill="url(#bg)"/>
+  
+  <!-- Stars -->
+  <circle cx="30" cy="25" r="1.5" fill="#fff"/>
+  <circle cx="170" cy="35" r="1" fill="#fff"/>
+  <circle cx="80" cy="15" r="1.2" fill="#fff"/>
+  <circle cx="150" cy="50" r="0.8" fill="#fff"/>
+  <circle cx="50" cy="45" r="1" fill="#fff"/>
+  
+  <!-- Road with perspective -->
+  <polygon points="85,60 115,60 160,200 40,200" fill="url(#road)"/>
+  
+  <!-- Road edges (glow) -->
+  <line x1="85" y1="60" x2="40" y2="200" stroke="#ff00ff" stroke-width="2"/>
+  <line x1="115" y1="60" x2="160" y2="200" stroke="#ff00ff" stroke-width="2"/>
+  
+  <!-- Lane lines -->
+  <line x1="95" y1="60" x2="70" y2="200" stroke="#00ffff" stroke-width="1" stroke-dasharray="8,6"/>
+  <line x1="105" y1="60" x2="130" y2="200" stroke="#00ffff" stroke-width="1" stroke-dasharray="8,6"/>
+  
+  <!-- Obstacle cube 1 (far) -->
+  <g transform="translate(97, 85)">
+    <rect x="-8" y="-16" width="16" height="16" fill="url(#obstacle)"/>
+    <polygon points="-8,-16 -4,-20 12,-20 8,-16" fill="#ff3366"/>
+    <polygon points="8,-16 12,-20 12,-4 8,0" fill="#cc0044"/>
+  </g>
+  
+  <!-- Obstacle cube 2 (mid) -->
+  <g transform="translate(70, 130)">
+    <rect x="-12" y="-24" width="24" height="24" fill="url(#obstacle)"/>
+    <polygon points="-12,-24 -6,-30 18,-30 12,-24" fill="#ff3366"/>
+    <polygon points="12,-24 18,-30 18,-6 12,0" fill="#cc0044"/>
+  </g>
+  
+  <!-- Player cube -->
+  <g transform="translate(115, 170)">
+    <rect x="-15" y="-30" width="30" height="30" fill="url(#cube)"/>
+    <polygon points="-15,-30 -9,-36 21,-36 15,-30" fill="#00aaff"/>
+    <polygon points="15,-30 21,-36 21,-6 15,0" fill="#0088aa"/>
+  </g>
+</svg>

@@ -1,0 +1,259 @@
+.darts-container {
+  width: 600px;
+  height: 700px;
+  background: linear-gradient(180deg, #1a3a2e 0%, #0d1f18 100%);
+  position: relative;
+  overflow: hidden;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ヘッダー */
+.darts-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.darts-score-display,
+.darts-round-display,
+.darts-throws-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.darts-score-label,
+.darts-round-label,
+.darts-throws-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 1px;
+}
+
+.darts-score-value {
+  font-size: 32px;
+  font-weight: 800;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.darts-round-value,
+.darts-throws-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* メインエリア */
+.darts-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+}
+
+/* オーバーレイ */
+.darts-overlay,
+.darts-round-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 20;
+}
+
+.darts-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #ffd700;
+  margin: 0 0 16px;
+  text-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+}
+
+.darts-desc {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  line-height: 1.6;
+  margin: 0 0 32px;
+}
+
+.darts-btn {
+  padding: 16px 48px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.darts-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+}
+
+.darts-btn:active {
+  transform: translateY(0);
+}
+
+/* リザルト */
+.darts-result-title {
+  font-size: 40px;
+  font-weight: 800;
+  color: #4ecdc4;
+  margin: 0 0 24px;
+}
+
+.darts-result-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+/* バースト */
+.darts-bust-title {
+  font-size: 40px;
+  font-weight: 800;
+  color: #ff6b6b;
+  margin: 0 0 8px;
+  animation: darts-shake 0.5s ease-in-out;
+}
+
+.darts-bust-desc {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 24px;
+}
+
+.darts-round-end-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #4ecdc4;
+  margin: 0 0 24px;
+}
+
+@keyframes darts-shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* 画面フラッシュ効果 (ブルズアイ時) */
+.darts-flash {
+  animation: darts-screen-flash 0.15s ease-out;
+}
+
+@keyframes darts-screen-flash {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.8);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+/* ボードラッパー (ポップアップ表示用) */
+.darts-board-wrapper {
+  position: relative;
+}
+
+/* スコアポップアップ用アニメーション */
+@keyframes score-popup {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-40px) scale(1.2);
+  }
+}
+
+@keyframes score-popup-bounce {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(0.5);
+  }
+  30% {
+    transform: translateX(-50%) translateY(-10px) scale(1.3);
+  }
+  60% {
+    transform: translateX(-50%) translateY(-20px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50px) scale(1);
+  }
+}
+
+@keyframes score-popup-glow {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-60px) scale(1.3);
+    filter: brightness(1);
+  }
+}
+
+@keyframes score-popup-critical {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(0.3) rotate(-10deg);
+  }
+  20% {
+    transform: translateX(-50%) translateY(-20px) scale(1.5) rotate(5deg);
+  }
+  40% {
+    transform: translateX(-50%) translateY(-30px) scale(1.3) rotate(-3deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-80px) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes score-popup-level {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(0.5);
+  }
+  30% {
+    transform: translateX(-50%) translateY(-40px) scale(1.4);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-100px) scale(1);
+  }
+}

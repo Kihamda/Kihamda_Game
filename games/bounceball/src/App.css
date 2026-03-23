@@ -1,0 +1,36 @@
+.bounceball-container {
+  position: relative;
+  background: linear-gradient(180deg, #1a1a3e 0%, #2d2d5e 100%);
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+.bounceball-canvas {
+  display: block;
+}
+
+/* Combo animations */
+@keyframes combo-pop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes combo-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}

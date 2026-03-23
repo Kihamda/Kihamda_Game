@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <radialGradient id="log" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#8B4513"/>
+      <stop offset="30%" style="stop-color:#A0522D"/>
+      <stop offset="100%" style="stop-color:#654321"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <!-- Log -->
+  <circle cx="200" cy="120" r="70" fill="url(#log)"/>
+  <circle cx="200" cy="120" r="55" fill="none" stroke="#5D3A1A" stroke-width="1"/>
+  <circle cx="200" cy="120" r="40" fill="none" stroke="#5D3A1A" stroke-width="1"/>
+  <circle cx="200" cy="120" r="25" fill="none" stroke="#5D3A1A" stroke-width="1"/>
+  <circle cx="200" cy="120" r="5" fill="#3D2314"/>
+  <!-- Knife 1 (top) -->
+  <g transform="translate(200, 50) rotate(0)">
+    <rect x="-4" y="-40" width="8" height="35" fill="#e0e0e0"/>
+    <rect x="-6" y="-5" width="12" height="20" fill="#5a5a5a"/>
+  </g>
+  <!-- Knife 2 (right) -->
+  <g transform="translate(270, 120) rotate(90)">
+    <rect x="-4" y="-40" width="8" height="35" fill="#c0c0c0"/>
+    <rect x="-6" y="-5" width="12" height="20" fill="#4a4a4a"/>
+  </g>
+  <!-- Knife 3 (bottom-left) -->
+  <g transform="translate(155, 175) rotate(-135)">
+    <rect x="-4" y="-40" width="8" height="35" fill="#c0c0c0"/>
+    <rect x="-6" y="-5" width="12" height="20" fill="#4a4a4a"/>
+  </g>
+  <!-- Flying Knife -->
+  <g transform="translate(200, 250)">
+    <rect x="-4" y="-40" width="8" height="35" fill="#e0e0e0"/>
+    <rect x="-1" y="-35" width="2" height="20" fill="#fff"/>
+    <rect x="-6" y="-5" width="12" height="20" fill="#5a5a5a"/>
+  </g>
+  <!-- Title -->
+  <text x="200" y="290" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fff" font-weight="bold">ナイフヒット</text>
+</svg>

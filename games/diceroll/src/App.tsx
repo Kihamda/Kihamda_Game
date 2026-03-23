@@ -1,6 +1,18 @@
 import { useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { useAudio, useParticles, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
+import { ParticleLayer } from "@shared";
 import "./App.css";
+
+interface PopupItem {
+  id: number;
+  text: string;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+  x: string;
+  y: string;
+}
 
 type GamePhase = "before" | "in_progress" | "after";
 type Prediction = "high" | "low";
@@ -76,6 +88,34 @@ export default function App() {
     return saved ? parseInt(saved, 10) : 0;
   });
 
+  // Popup queue system
+  const [popups, setPopups] = useState<PopupItem[]>([]);
+  const [popupCounter, setPopupCounter] = useState(0);
+
+  const showPopup = useCallback((
+    text: string,
+    variant: PopupVariant = "default",
+    size: "sm" | "md" | "lg" | "xl" = "md",
+    x = "50%",
+    y = "40%"
+  ) => {
+    setPopupCounter((prev) => prev + 1);
+    const id = popupCounter + 1;
+    const popup: PopupItem = { id, text, variant, size, x, y };
+    setPopups((prev) => [...prev, popup]);
+    // Remove popup after animation
+    setTimeout(() => {
+      setPopups((prev) => prev.filter((p) => p.id !== id));
+    }, 1500);
+  }, [popupCounter]);
+
+  // Dopamine hooks
+  const { particles, confetti, sparkle, explosion } = useParticles();
+  const { playTone } = useAudio();
+  const playRoll = useCallback(() => playTone(440, 0.05, 'triangle'), [playTone]);
+  const playWin = useCallback(() => playTone(660, 0.15, 'sine'), [playTone]);
+  const playLose = useCallback(() => playTone(200, 0.15, 'sawtooth'), [playTone]);
+
   const startGame = useCallback(() => {
     setPhase("in_progress");
     setGameState({
@@ -106,6 +146,7 @@ export default function App() {
   const rollDice = useCallback((prediction: Prediction) => {
     if (gameState.isRolling || gameState.points < gameState.bet) return;
 
+    playRoll();
     setGameState((prev) => ({
       ...prev,
       prediction,
@@ -118,6 +159,53 @@ export default function App() {
       const diceValue = Math.floor(Math.random() * 6) + 1;
       const isHigh = diceValue >= 4;
       const won = (prediction === "high" && isHigh) || (prediction === "low" && !isHigh);
+      const currentBet = gameState.bet;
+      const currentStreak = gameState.streak;
+
+      // Special roll detection
+      const isExtremeLow = diceValue === 1;
+      const isExtremeHigh = diceValue === 6;
+
+      if (won) {
+        playWin();
+        sparkle(200, 180);
+        
+        // Win popup with balance change
+        showPopup(`+${currentBet} pt`, "default", "lg", "50%", "30%");
+        
+        // Special rolls
+        if (isExtremeLow) {
+          setTimeout(() => showPopup("🎯 ピンゾロ!", "bonus", "md", "50%", "20%"), 200);
+        } else if (isExtremeHigh) {
+          setTimeout(() => showPopup("🎯 ゾロ目6!", "bonus", "md", "50%", "20%"), 200);
+        }
+        
+        // Streak bonuses
+        const newStreak = currentStreak + 1;
+        if (newStreak === 3) {
+          setTimeout(() => showPopup("🔥 3連続!", "combo", "lg", "50%", "15%"), 300);
+          confetti();
+        } else if (newStreak === 5) {
+          setTimeout(() => showPopup("🔥🔥 5連続!", "critical", "xl", "50%", "15%"), 300);
+          confetti();
+        } else if (newStreak >= 7) {
+          setTimeout(() => showPopup(`🔥🔥🔥 ${newStreak}連続!`, "critical", "xl", "50%", "15%"), 300);
+          confetti();
+        } else if (currentStreak >= 2) {
+          confetti();
+        }
+      } else {
+        playLose();
+        explosion(200, 180);
+        
+        // Lose popup with balance change
+        showPopup(`-${currentBet} pt`, "default", "lg", "50%", "30%");
+        
+        // Streak lost message
+        if (currentStreak >= 3) {
+          setTimeout(() => showPopup(`${currentStreak}連続 終了...`, "default", "md", "50%", "20%"), 200);
+        }
+      }
 
       setGameState((prev) => {
         const newPoints = won ? prev.points + prev.bet : prev.points - prev.bet;
@@ -127,6 +215,7 @@ export default function App() {
         // Check game over
         if (newPoints <= 0) {
           setTimeout(() => {
+            showPopup("💸 GAME OVER", "critical", "xl", "50%", "25%");
             setPhase("after");
             const currentHigh = parseInt(localStorage.getItem("diceroll-highscore") ?? "0", 10);
             if (newMaxStreak > currentHigh) {
@@ -147,16 +236,23 @@ export default function App() {
         };
       });
     }, 1200);
-  }, [gameState.isRolling, gameState.points, gameState.bet]);
+  }, [gameState.isRolling, gameState.points, gameState.bet, gameState.streak, playRoll, playWin, playLose, sparkle, confetti, explosion, showPopup]);
 
   const cashOut = useCallback(() => {
-    setPhase("after");
-    const currentHigh = parseInt(localStorage.getItem("diceroll-highscore") ?? "0", 10);
-    if (gameState.maxStreak > currentHigh) {
-      setHighScore(gameState.maxStreak);
-      localStorage.setItem("diceroll-highscore", gameState.maxStreak.toString());
+    showPopup("💰 Cash Out!", "level", "xl", "50%", "30%");
+    if (gameState.points > INITIAL_POINTS) {
+      const profit = gameState.points - INITIAL_POINTS;
+      setTimeout(() => showPopup(`+${profit} 獲得!`, "bonus", "lg", "50%", "40%"), 300);
     }
-  }, [gameState.maxStreak]);
+    setTimeout(() => {
+      setPhase("after");
+      const currentHigh = parseInt(localStorage.getItem("diceroll-highscore") ?? "0", 10);
+      if (gameState.maxStreak > currentHigh) {
+        setHighScore(gameState.maxStreak);
+        localStorage.setItem("diceroll-highscore", gameState.maxStreak.toString());
+      }
+    }, 800);
+  }, [gameState.maxStreak, gameState.points, showPopup]);
 
   const getResultMessage = () => {
     if (!gameState.diceValue || !gameState.prediction) return null;
@@ -329,6 +425,20 @@ export default function App() {
             </button>
           </div>
         )}
+        <ParticleLayer particles={particles} />
+        
+        {/* Score Popups */}
+        {popups.map((popup) => (
+          <ScorePopup
+            key={popup.id}
+            popupKey={popup.id}
+            text={popup.text}
+            variant={popup.variant}
+            size={popup.size}
+            x={popup.x}
+            y={popup.y}
+          />
+        ))}
       </div>
     </GameShell>
   );

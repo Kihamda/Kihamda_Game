@@ -1,0 +1,204 @@
+.dotconnect-root {
+  width: 500px;
+  height: 600px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  user-select: none;
+}
+
+/* スタート画面 */
+.dotconnect-start {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+}
+
+.dotconnect-start-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.dotconnect-start-desc {
+  font-size: 14px;
+  color: #b0b0c0;
+  margin: 0;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.dotconnect-stages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 280px;
+  margin-top: 10px;
+}
+
+.dotconnect-stage-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: linear-gradient(145deg, #2a2a4a, #1e1e3a);
+  border: 2px solid #3a3a5a;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.dotconnect-stage-btn:hover {
+  transform: translateY(-2px);
+  border-color: #5a5a8a;
+}
+
+.dotconnect-stage-btn--cleared {
+  border-color: #27ae60;
+}
+
+.dotconnect-stage-num {
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+}
+
+.dotconnect-stage-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  flex: 1;
+}
+
+.dotconnect-stage-check {
+  font-size: 18px;
+  color: #27ae60;
+}
+
+/* ゲーム画面 */
+.dotconnect-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.dotconnect-header {
+  text-align: center;
+}
+
+.dotconnect-stage-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.dotconnect-board {
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  touch-action: none;
+}
+
+.dotconnect-footer {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* ボタン */
+.dotconnect-btn {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dotconnect-btn--primary {
+  background: linear-gradient(145deg, #4a90d9, #357abd);
+  box-shadow: 0 4px 12px rgba(74, 144, 217, 0.4);
+}
+
+.dotconnect-btn--secondary {
+  background: linear-gradient(145deg, #4a5568, #2d3748);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dotconnect-btn--reset {
+  background: linear-gradient(145deg, #e57373, #c62828);
+  box-shadow: 0 4px 12px rgba(229, 115, 115, 0.4);
+}
+
+.dotconnect-btn--ghost {
+  background: transparent;
+  border: 2px solid #4a5568;
+  box-shadow: none;
+}
+
+.dotconnect-btn:hover {
+  transform: translateY(-2px);
+}
+
+.dotconnect-btn:active {
+  transform: translateY(0);
+}
+
+/* 結果画面 */
+.dotconnect-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.dotconnect-result-icon {
+  font-size: 64px;
+  animation: dotconnect-bounce 0.6s ease-out;
+}
+
+@keyframes dotconnect-bounce {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.dotconnect-result-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.dotconnect-result-stage {
+  font-size: 16px;
+  color: #b0b0c0;
+  margin: 0;
+}
+
+.dotconnect-result-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}

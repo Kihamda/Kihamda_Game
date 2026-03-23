@@ -1,6 +1,19 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { useAudio, useParticles, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
+import { ParticleLayer, ComboCounter } from "@shared";
 import "./App.css";
+
+/** ScorePopupのエントリ */
+interface PopupEntry {
+  id: number;
+  text: string;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+  x: string;
+  y: string;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types & Constants
@@ -179,9 +192,60 @@ export default function App() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [message, setMessage] = useState("");
   const [gameResult, setGameResult] = useState<"win" | "lose" | null>(null);
+  const [combo, setCombo] = useState(0);
+  const [screenShake, setScreenShake] = useState(false);
+  const [popups, setPopups] = useState<PopupEntry[]>([]);
+  const [highScore, setHighScore] = useState(() => {
+    try {
+      return Number(localStorage.getItem("bubbleshoot_highscore") || 0);
+    } catch {
+      return 0;
+    }
+  });
   const nextIdRef = useRef(100);
+  const popupIdRef = useRef(0);
   const boardRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | null>(null);
+
+  // Dopamine hooks
+  const { particles, confetti, sparkle, explosion } = useParticles();
+  const { playTone } = useAudio();
+
+  const playPop = useCallback((count: number) => playTone(500 + count * 40, 0.08, 'sine'), [playTone]);
+  const playComboSound = useCallback((c: number) => playTone(440 + c * 60, 0.12, 'sine'), [playTone]);
+  const playWin = useCallback(() => playTone(880, 0.3, 'sine'), [playTone]);
+  const playLose = useCallback(() => playTone(180, 0.4, 'sawtooth'), [playTone]);
+
+  // ScorePopup表示ヘルパー
+  const showPopup = useCallback((
+    text: string,
+    variant: PopupVariant = "default",
+    size: "sm" | "md" | "lg" | "xl" = "md",
+    x = "50%",
+    y = "40%"
+  ) => {
+    const id = ++popupIdRef.current;
+    setPopups((prev) => [...prev, { id, text, variant, size, x, y }]);
+    // 自動削除
+    setTimeout(() => {
+      setPopups((prev) => prev.filter((p) => p.id !== id));
+    }, 1500);
+  }, []);
+
+  // ハイスコア保存
+  const saveHighScore = useCallback((newScore: number) => {
+    try {
+      const current = Number(localStorage.getItem("bubbleshoot_highscore") || 0);
+      if (newScore > current) {
+        localStorage.setItem("bubbleshoot_highscore", String(newScore));
+        setHighScore(newScore);
+        return true;
+      }
+    } catch {
+      // ignore
+    }
+    return false;
+  }, []);
 
   const startGame = useCallback(() => {
     setBubbles(initBubbles());
@@ -193,6 +257,8 @@ export default function App() {
     setIsAnimating(false);
     setMessage("");
     setGameResult(null);
+    setCombo(0);
+    setPopups([]);
     nextIdRef.current = 100;
     setPhase("playing");
   }, []);
@@ -319,6 +385,19 @@ export default function App() {
         const connected = findConnectedSameColor(newBubbles, newBubble);
 
         if (connected.size >= 3) {
+          // Dopamine effects!
+          playPop(connected.size);
+          sparkle(BOARD_WIDTH / 2, 200);
+          setCombo(c => {
+            const newCombo = c + 1;
+            if (newCombo >= 3) {
+              playComboSound(newCombo);
+              // コンボ時のポップアップ
+              showPopup(`🔥 ${newCombo}コンボ!`, "combo", "lg", "50%", "25%");
+            }
+            return newCombo;
+          });
+
           // 消去処理
           const toRemove = connected;
           const afterRemove = newBubbles.filter((b) => !toRemove.has(b.id));
@@ -327,8 +406,24 @@ export default function App() {
           const floating = findFloatingBubbles(afterRemove);
           const allRemoved = new Set([...toRemove, ...floating]);
 
+          if (floating.size > 0) {
+            explosion(BOARD_WIDTH / 2, 250);
+            // 連鎖反応ポップアップ
+            showPopup(`💥 連鎖 +${floating.size * 5}`, "bonus", "md", "50%", "35%");
+          }
+
           const points = allRemoved.size * 10 + (floating.size > 0 ? floating.size * 5 : 0);
           setScore((s) => s + points);
+
+          // マッチポップアップ（消去バブル数に応じてサイズ変更）
+          const matchSize: "sm" | "md" | "lg" | "xl" = 
+            connected.size >= 6 ? "xl" : 
+            connected.size >= 5 ? "lg" : 
+            connected.size >= 4 ? "md" : "sm";
+          const matchVariant: PopupVariant = 
+            connected.size >= 6 ? "critical" : 
+            connected.size >= 5 ? "bonus" : "default";
+          showPopup(`+${connected.size * 10}`, matchVariant, matchSize, "50%", "45%");
 
           if (allRemoved.size > 3) {
             setMessage(`💥 ${allRemoved.size}個消去! +${points}`);
@@ -350,12 +445,13 @@ export default function App() {
           return withRemoving;
         }
 
+        setCombo(0);
         setMessage("");
         setIsAnimating(false);
         return newBubbles;
       });
     },
-    []
+    [playPop, playComboSound, sparkle, explosion, showPopup]
   );
 
   // 勝利/敗北判定
@@ -365,7 +461,18 @@ export default function App() {
     // 全消しで勝利
     if (bubbles.length === 0) {
       setGameResult("win");
-      setTimeout(() => setPhase("result"), 500);
+      playWin();
+      confetti();
+      // レベルクリアポップアップ
+      showPopup("🎉 クリア!", "level", "xl", "50%", "30%");
+      // ハイスコアチェック
+      const isNewRecord = saveHighScore(score);
+      if (isNewRecord) {
+        setTimeout(() => {
+          showPopup("🏆 NEW RECORD!", "critical", "lg", "50%", "45%");
+        }, 300);
+      }
+      setTimeout(() => setPhase("result"), 1000);
       return;
     }
 
@@ -373,9 +480,18 @@ export default function App() {
     const maxY = Math.max(...bubbles.map((b) => b.y));
     if (maxY > SHOOTER_Y - BUBBLE_RADIUS * 2) {
       setGameResult("lose");
-      setTimeout(() => setPhase("result"), 500);
+      playLose();
+      explosion(BOARD_WIDTH / 2, BOARD_HEIGHT / 2);
+      setScreenShake(true);
+      setTimeout(() => setScreenShake(false), 300);
+      // ゲームオーバーでもハイスコアチェック
+      const isNewRecord = saveHighScore(score);
+      if (isNewRecord && score > 0) {
+        showPopup("🏆 NEW RECORD!", "bonus", "lg", "50%", "40%");
+      }
+      setTimeout(() => setPhase("result"), 800);
     }
-  }, [phase, bubbles, isAnimating]);
+  }, [phase, bubbles, isAnimating, playWin, playLose, confetti, explosion, showPopup, saveHighScore, score]);
 
   // 照準線の終点
   const aimLength = 300;
@@ -384,7 +500,37 @@ export default function App() {
 
   return (
     <GameShell gameId="bubbleshoot" layout="immersive">
-      <div className="bs-root">
+      <div 
+        className={`bs-root ${screenShake ? 'bs-shake' : ''}`}
+      >
+        <style>{`
+          .bs-root.bs-shake {
+            animation: bs-shake 0.3s ease-in-out;
+          }
+          @keyframes bs-shake {
+            0%, 100% { transform: translate(0, 0); }
+            20% { transform: translate(-3px, 2px); }
+            40% { transform: translate(3px, -2px); }
+            60% { transform: translate(-2px, 3px); }
+            80% { transform: translate(2px, -3px); }
+          }
+        `}</style>
+        <ParticleLayer particles={particles} />
+        {combo >= 3 && phase === "playing" && <ComboCounter combo={combo} />}
+        
+        {/* ScorePopups */}
+        {popups.map((p) => (
+          <ScorePopup
+            key={p.id}
+            text={p.text}
+            popupKey={p.id}
+            variant={p.variant}
+            size={p.size}
+            x={p.x}
+            y={p.y}
+          />
+        ))}
+        
         {phase === "start" && (
           <div className="bs-screen">
             <h1 className="bs-title">🫧 Bubble Shoot</h1>
@@ -496,12 +642,17 @@ export default function App() {
                 <span className="bs-result-label">発射数</span>
                 <span className="bs-result-value">{shots} 発</span>
               </p>
+              <p className="bs-result-item">
+                <span className="bs-result-label">ハイスコア</span>
+                <span className="bs-result-value">{highScore.toLocaleString()}</span>
+              </p>
             </div>
             <p className="bs-rating">
               {gameResult === "win" && score >= 500 && "⭐⭐⭐ パーフェクト！"}
               {gameResult === "win" && score >= 200 && score < 500 && "⭐⭐ すばらしい！"}
               {gameResult === "win" && score < 200 && "⭐ クリア！"}
               {gameResult === "lose" && "次はクリアを目指そう！"}
+              {score === highScore && score > 0 && " 🏆"}
             </p>
             <button className="bs-btn bs-btn--restart" onClick={startGame}>
               もう一度

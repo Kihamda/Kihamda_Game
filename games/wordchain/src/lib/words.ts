@@ -22,7 +22,7 @@ export const WORDS: string[] = [
   "neighbor", "original", "question", "remember", "sandwich", "together",
   "umbrella", "vacation", "wonderful", "yourself", "absolute", "abstract",
   // 特定の文字で始まる/終わる単語を追加
-  "yellow", "window", "winner", "winter", "wonder", "woman", "woman",
+  "yellow", "window", "winner", "winter", "wonder", "woman", "world",
   "energy", "enjoy", "enter", "entire", "entry", "equal", "escape",
   "event", "every", "exact", "exist", "extra", "early", "effort",
   "orange", "option", "order", "other", "outer", "owner", "object",

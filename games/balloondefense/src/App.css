@@ -1,0 +1,384 @@
+/* Balloon Defense - バルーンディフェンス */
+
+.balloon-root {
+  width: 600px;
+  height: 700px;
+  background: linear-gradient(180deg, #87ceeb 0%, #98d8f5 50%, #4a9cd4 100%);
+  overflow: hidden;
+  position: relative;
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+  user-select: none;
+}
+
+/* スタート画面 */
+.balloon-start {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.balloon-title {
+  font-size: 38px;
+  font-weight: 900;
+  margin: 0 0 12px;
+  color: #e74c3c;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.balloon-description {
+  font-size: 16px;
+  color: #555;
+  margin: 0 0 20px;
+  line-height: 1.6;
+}
+
+.balloon-rules {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 16px 24px;
+  margin-bottom: 20px;
+}
+
+.balloon-rules-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 12px;
+}
+
+.balloon-rules-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.balloon-rules-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.balloon-icon {
+  font-size: 20px;
+}
+
+.balloon-icon.normal { filter: hue-rotate(0deg); }
+.balloon-icon.fast { filter: hue-rotate(30deg); }
+.balloon-icon.small { filter: hue-rotate(180deg); }
+.balloon-icon.bonus { filter: hue-rotate(60deg) brightness(1.2); }
+
+.balloon-highscore {
+  font-size: 18px;
+  color: #f39c12;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+.balloon-btn {
+  padding: 14px 40px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+}
+
+.balloon-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
+}
+
+.balloon-btn:active {
+  transform: translateY(0);
+}
+
+.balloon-btn-start {
+  font-size: 20px;
+  padding: 16px 50px;
+}
+
+/* ゲーム画面 */
+.balloon-game {
+  position: relative;
+  background: linear-gradient(180deg, #87ceeb 0%, #98d8f5 50%, #4a9cd4 100%);
+  overflow: hidden;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+/* 赤フラッシュ (風船リーク時) */
+.balloon-red-flash {
+  animation: balloon-leak-flash 0.3s ease-out;
+}
+
+@keyframes balloon-leak-flash {
+  0%, 100% {
+    box-shadow: inset 0 0 0 rgba(239, 68, 68, 0);
+  }
+  50% {
+    box-shadow: inset 0 0 60px rgba(239, 68, 68, 0.6);
+  }
+}
+
+/* HUD */
+.balloon-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 15px;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.balloon-hud-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.balloon-hud-lives {
+  display: flex;
+  gap: 4px;
+}
+
+.balloon-heart {
+  font-size: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.balloon-hud-score {
+  font-size: 28px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.balloon-hud-wave {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.balloon-hud-wave span {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.balloon-progress {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.balloon-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #2ecc71, #27ae60);
+  border-radius: 4px;
+  transition: width 0.2s;
+}
+
+/* 風船 */
+.balloon {
+  position: absolute;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  cursor: pointer;
+  transition: transform 0.05s;
+  box-shadow: inset -10px -10px 30px rgba(0, 0, 0, 0.2),
+              inset 10px 10px 30px rgba(255, 255, 255, 0.3);
+}
+
+.balloon:hover {
+  transform: scale(1.05);
+}
+
+.balloon-shine {
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 25%;
+  height: 25%;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+}
+
+.balloon-string {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 20px;
+  background: #666;
+}
+
+.balloon-bonus {
+  animation: balloonGlow 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes balloonGlow {
+  from {
+    box-shadow: inset -10px -10px 30px rgba(0, 0, 0, 0.2),
+                inset 10px 10px 30px rgba(255, 255, 255, 0.3),
+                0 0 20px rgba(251, 191, 36, 0.5);
+  }
+  to {
+    box-shadow: inset -10px -10px 30px rgba(0, 0, 0, 0.2),
+                inset 10px 10px 30px rgba(255, 255, 255, 0.3),
+                0 0 40px rgba(251, 191, 36, 0.8);
+  }
+}
+
+/* ポップエフェクト */
+.balloon-pop-effect {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  animation: popBurst 0.5s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes popBurst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2);
+  }
+}
+
+/* ウェーブクリア画面 */
+.balloon-wave-clear {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.balloon-wave-clear-title {
+  font-size: 36px;
+  font-weight: 900;
+  margin: 0 0 16px;
+  color: #27ae60;
+}
+
+.balloon-wave-clear-message {
+  font-size: 18px;
+  color: #555;
+  margin: 0 0 24px;
+}
+
+/* 結果画面 */
+.balloon-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.balloon-result-title {
+  font-size: 36px;
+  font-weight: 900;
+  margin: 0 0 24px;
+  color: #e74c3c;
+}
+
+.balloon-result-score {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.balloon-result-score-label {
+  font-size: 14px;
+  color: #888;
+}
+
+.balloon-result-score-value {
+  font-size: 48px;
+  font-weight: 900;
+  color: #e74c3c;
+}
+
+.balloon-new-record {
+  font-size: 24px;
+  font-weight: 700;
+  color: #f39c12;
+  margin: 0 0 16px;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+  }
+  to {
+    text-shadow: 0 0 30px rgba(243, 156, 18, 0.9);
+  }
+}
+
+.balloon-result-stats {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 16px;
+}
+
+.balloon-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.balloon-stat-label {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.balloon-stat-value {
+  font-size: 28px;
+  font-weight: 900;
+  color: #333;
+}
+
+.balloon-result-highscore {
+  font-size: 16px;
+  color: #888;
+  margin: 0 0 24px;
+}

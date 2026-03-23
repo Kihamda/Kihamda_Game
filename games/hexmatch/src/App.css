@@ -260,3 +260,16 @@
   font-size: 24px;
   color: #fbbf24;
 }
+
+/* ── ハイスコア表示 ─────────────────────────────────────────────────────────── */
+.hm-highscore {
+  margin: 0;
+  font-size: 18px;
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+.hm-highscore-value {
+  font-size: 32px;
+  color: #fbbf24;
+}

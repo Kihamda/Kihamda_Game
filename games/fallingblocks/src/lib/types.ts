@@ -13,6 +13,13 @@ export interface Tetromino {
   rotation: number;
 }
 
+/** 演出トリガー用のイベント情報 */
+export interface GameEvent {
+  type: "drop" | "clear" | "tetris" | "levelup" | "gameover" | "none";
+  linesCleared?: number;
+  clearedRows?: number[]; // 消えた行のインデックス
+}
+
 export interface GameState {
   board: (TetrominoType | null)[][];
   currentPiece: Tetromino | null;
@@ -22,6 +29,8 @@ export interface GameState {
   linesCleared: number;
   gameOver: boolean;
   isPaused: boolean;
+  /** 直近のイベント（演出トリガー用） */
+  lastEvent: GameEvent;
 }
 
 export type GamePhase = "start" | "playing" | "paused" | "gameover";

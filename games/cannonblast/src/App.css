@@ -1,0 +1,12 @@
+.cannonblast-container {
+  position: relative;
+  background: linear-gradient(180deg, #87ceeb 0%, #e0f4ff 100%);
+  border-radius: 8px;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+
+.cannonblast-canvas {
+  display: block;
+}

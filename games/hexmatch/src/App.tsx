@@ -1,5 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { useAudio, useParticles, useHighScore, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
+import { ParticleLayer } from "@shared";
 import "./App.css";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -25,6 +28,14 @@ interface Position {
 }
 
 type Phase = "start" | "playing" | "result";
+
+interface PopupState {
+  text: string;
+  key: number;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+  y: string;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Hex Grid Logic
@@ -178,7 +189,50 @@ export default function App() {
   const [combo, setCombo] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [message, setMessage] = useState("");
+  const [popup, setPopup] = useState<PopupState | null>(null);
   const nextIdRef = useRef(ROWS * COLS);
+  const prevScoreRef = useRef(0);
+  
+  // High score tracking
+  const { best: highScore, update: saveHighScore } = useHighScore("hexmatch");
+  
+  // Dopamine hooks
+  const { particles, sparkle, confetti } = useParticles();
+  const { playTone, playFanfare, playCelebrate } = useAudio();
+  const playMatch = useCallback(() => playTone(660, 0.1, 'sine'), [playTone]);
+  const playCombo = useCallback((c: number) => playTone(440 + c * 80, 0.12, 'sine'), [playTone]);
+  const playSwap = useCallback(() => playTone(330, 0.05, 'triangle'), [playTone]);
+  const playInvalid = useCallback(() => playTone(200, 0.1, 'sawtooth'), [playTone]);
+  
+  // Refs for recursive callbacks
+  const playMatchRef = useRef<() => void>(() => {});
+  const playComboRef = useRef<(c: number) => void>(() => {});
+  const sparkleRef = useRef<(x: number, y: number) => void>(() => {});
+  const confettiRef = useRef<() => void>(() => {});
+  
+  // ScorePopup helper
+  const showPopup = useCallback((text: string, variant: PopupVariant = "default", size: "sm" | "md" | "lg" | "xl" = "md", y = "35%") => {
+    setPopup({ text, key: Date.now(), variant, size, y });
+  }, []);
+  
+  // Refs for popup in recursive callbacks
+  const showPopupRef = useRef<(text: string, variant?: PopupVariant, size?: "sm" | "md" | "lg" | "xl", y?: string) => void>(() => {});
+  
+  useEffect(() => {
+    playMatchRef.current = playMatch;
+    playComboRef.current = playCombo;
+    sparkleRef.current = sparkle;
+    confettiRef.current = confetti;
+    showPopupRef.current = showPopup;
+  }, [playMatch, playCombo, sparkle, confetti, showPopup]);
+  
+  // Auto-clear popup
+  useEffect(() => {
+    if (popup) {
+      const timer = setTimeout(() => setPopup(null), 1200);
+      return () => clearTimeout(timer);
+    }
+  }, [popup]);
 
   const startGame = useCallback(() => {
     setTiles(initTiles());
@@ -187,8 +241,10 @@ export default function App() {
     setMoves(INITIAL_MOVES);
     setCombo(0);
     setMessage("");
+    setPopup(null);
     setIsAnimating(false);
     nextIdRef.current = ROWS * COLS;
+    prevScoreRef.current = 0;
     setPhase("playing");
   }, []);
 
@@ -213,6 +269,27 @@ export default function App() {
       const points = matches.size * 10 * comboMultiplier;
       setScore((s) => s + points);
       setCombo(comboMultiplier);
+      
+      // Dopamine effects & ScorePopup
+      if (comboMultiplier > 1) {
+        playComboRef.current(comboMultiplier);
+        if (comboMultiplier >= 3) {
+          confettiRef.current();
+        }
+        // Chain reaction / combo popup
+        if (comboMultiplier >= 4) {
+          // Big chain - critical style
+          showPopupRef.current(`🔥 ${comboMultiplier}x CHAIN! +${points}`, "critical", "xl", "30%");
+        } else if (comboMultiplier >= 2) {
+          // Combo popup
+          showPopupRef.current(`${comboMultiplier}x COMBO! +${points}`, "combo", "lg", "32%");
+        }
+      } else {
+        playMatchRef.current();
+        // Normal match popup
+        showPopupRef.current(`+${points}`, "default", "md", "35%");
+      }
+      sparkleRef.current(240, 235);
 
       if (comboMultiplier > 1) {
         setMessage(`${comboMultiplier}x COMBO! +${points}`);
@@ -286,12 +363,14 @@ export default function App() {
       // スワップ試行
       if (!wouldMatch(tiles, selected, tile)) {
         setMessage("マッチしません");
+        playInvalid();
         setSelected(null);
         setTimeout(() => setMessage(""), 1000);
         return;
       }
 
       // スワップ実行
+      playSwap();
       setIsAnimating(true);
       setMoves((m) => m - 1);
       setSelected(null);
@@ -309,15 +388,33 @@ export default function App() {
         processMatches(swapped, 0);
       }, 200);
     },
-    [phase, isAnimating, selected, tiles, processMatches]
+    [phase, isAnimating, selected, tiles, processMatches, playInvalid, playSwap]
   );
 
-  // ゲーム終了チェック
+  // ゲーム終了チェック & ハイスコア判定
   useEffect(() => {
     if (phase === "playing" && moves <= 0 && !isAnimating) {
-      setTimeout(() => setPhase("result"), 500);
+      // Check for high score before transitioning
+      const isNewHighScore = score > highScore;
+      
+      setTimeout(() => {
+        if (isNewHighScore) {
+          saveHighScore(score);
+          showPopup("🏆 NEW HIGH SCORE!", "level", "xl", "25%");
+          playCelebrate();
+          confetti(80);
+        } else if (score >= 3000) {
+          showPopup("⭐ MASTER! ⭐", "critical", "lg", "25%");
+          playFanfare();
+          confetti(60);
+        } else if (score >= 1500) {
+          showPopup("🎉 Great Score!", "bonus", "lg", "25%");
+          playFanfare();
+        }
+        setPhase("result");
+      }, 500);
     }
-  }, [phase, moves, isAnimating]);
+  }, [phase, moves, isAnimating, score, highScore, saveHighScore, showPopup, playCelebrate, playFanfare, confetti]);
 
   // 六角形の座標計算
   const getHexPosition = (row: number, col: number) => {
@@ -337,6 +434,9 @@ export default function App() {
           <div className="hm-screen">
             <h1 className="hm-title">⬡ Hex Match</h1>
             <p className="hm-desc">六角形のタイルを揃えて消そう！</p>
+            {highScore > 0 && (
+              <p className="hm-highscore">🏆 High Score: {highScore.toLocaleString()}</p>
+            )}
             <div className="hm-preview">
               {COLORS.map((color, i) => (
                 <div
@@ -402,6 +502,14 @@ export default function App() {
                   {score.toLocaleString()}
                 </span>
               </p>
+              {highScore > 0 && (
+                <p className="hm-result-item">
+                  <span className="hm-result-label">🏆 High Score</span>
+                  <span className="hm-result-value hm-highscore-value">
+                    {highScore.toLocaleString()}
+                  </span>
+                </p>
+              )}
             </div>
             <p className="hm-rating">
               {score >= 3000 && "⭐⭐⭐ マスター！"}
@@ -412,6 +520,16 @@ export default function App() {
               もう一度
             </button>
           </div>
+        )}
+        <ParticleLayer particles={particles} />
+        {popup && (
+          <ScorePopup
+            text={popup.text}
+            popupKey={popup.key}
+            variant={popup.variant}
+            size={popup.size}
+            y={popup.y}
+          />
         )}
       </div>
     </GameShell>

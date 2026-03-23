@@ -1,0 +1,36 @@
+.spaceinvaders-container {
+  position: relative;
+  background: #000;
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+}
+
+.spaceinvaders-canvas {
+  display: block;
+}
+
+.spaceinvaders-flash {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 0, 255, 0.4);
+  pointer-events: none;
+  z-index: 10;
+  animation: flash-fade 0.15s ease-out forwards;
+}
+
+@keyframes flash-fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.spaceinvaders-combo {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  z-index: 5;
+}

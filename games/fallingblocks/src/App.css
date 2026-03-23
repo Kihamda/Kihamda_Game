@@ -11,6 +11,7 @@
   border-radius: 12px;
   padding: 20px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .fallingblocks-overlay {
@@ -111,6 +112,27 @@
   border: 3px solid #444;
   border-radius: 4px;
   touch-action: none;
+  transition: transform 0.1s ease-out;
+}
+
+/* バウンスアニメーション（着地時） */
+.fallingblocks-board--bounce {
+  animation: fallingblocks-bounce 0.15s ease-out;
+}
+
+@keyframes fallingblocks-bounce {
+  0% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(4px);
+  }
+  60% {
+    transform: translateY(-2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .fallingblocks-cell {
@@ -180,5 +202,72 @@
 
   .fallingblocks-info-box {
     padding: 8px 12px;
+  }
+}
+
+/* 画面フラッシュ（テトリス時） */
+.fallingblocks-flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 50;
+  animation: fallingblocks-flash-anim 0.2s ease-out;
+}
+
+@keyframes fallingblocks-flash-anim {
+  0% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* レベルアップ表示 */
+.fallingblocks-levelup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 20px #ffd700, 0 0 40px #ff8c00;
+  z-index: 60;
+  animation: fallingblocks-levelup-anim 1.5s ease-out forwards;
+  pointer-events: none;
+}
+
+.fallingblocks-levelup-num {
+  font-size: 3rem;
+  color: #ffd700;
+  text-shadow: 0 0 30px #ffd700, 0 0 60px #ff8c00;
+}
+
+@keyframes fallingblocks-levelup-anim {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  30% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8) translateY(-30px);
   }
 }

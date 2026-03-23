@@ -9,6 +9,7 @@
   font-family: "Arial Rounded MT Bold", "Helvetica Neue", Arial, sans-serif;
   background: linear-gradient(135deg, #faf8ef 0%, #ede4d4 100%);
   user-select: none;
+  position: relative;
 }
 
 /* Header */
@@ -39,6 +40,7 @@
   padding: 8px 16px;
   text-align: center;
   min-width: 70px;
+  position: relative;
 }
 
 .merge2048-score-label {
@@ -52,6 +54,32 @@
   font-size: 22px;
   color: #fff;
   font-weight: bold;
+  position: relative;
+}
+
+/* Score popup animation */
+.merge2048-score-popup {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  margin-left: 8px;
+  color: #776e65;
+  font-size: 18px;
+  font-weight: bold;
+  animation: scorePopup 0.6s ease-out forwards;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+@keyframes scorePopup {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(1.2);
+  }
 }
 
 /* Controls */
@@ -70,11 +98,12 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.15s, transform 0.1s;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
 }
 
 .merge2048-btn:hover {
   background: #9f8b77;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .merge2048-btn:active {
@@ -116,7 +145,7 @@
   bottom: 10px;
 }
 
-/* Individual tile */
+/* Individual tile - improved smooth animation */
 .merge2048-tile {
   position: absolute;
   width: calc((100% - 30px) / 4);
@@ -127,64 +156,43 @@
   font-size: 36px;
   font-weight: bold;
   border-radius: 6px;
-  transition: transform 0.12s ease-out, left 0.12s ease-out, top 0.12s ease-out;
+  /* Smoother slide transition with cubic-bezier */
+  transition: 
+    transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    left 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    top 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform, left, top;
 }
 
-/* Tile colors by value */
-.merge2048-tile[data-value="2"] {
-  background: #eee4da;
-  color: #776e65;
-}
-.merge2048-tile[data-value="4"] {
-  background: #ede0c8;
-  color: #776e65;
-}
-.merge2048-tile[data-value="8"] {
-  background: #f2b179;
-  color: #f9f6f2;
-}
-.merge2048-tile[data-value="16"] {
-  background: #f59563;
-  color: #f9f6f2;
-}
-.merge2048-tile[data-value="32"] {
-  background: #f67c5f;
-  color: #f9f6f2;
-}
-.merge2048-tile[data-value="64"] {
-  background: #f65e3b;
-  color: #f9f6f2;
-}
-.merge2048-tile[data-value="128"] {
-  background: #edcf72;
-  color: #f9f6f2;
-  font-size: 32px;
-}
-.merge2048-tile[data-value="256"] {
-  background: #edcc61;
-  color: #f9f6f2;
-  font-size: 32px;
-}
-.merge2048-tile[data-value="512"] {
-  background: #edc850;
-  color: #f9f6f2;
-  font-size: 32px;
-}
-.merge2048-tile[data-value="1024"] {
-  background: #edc53f;
-  color: #f9f6f2;
-  font-size: 26px;
-}
-.merge2048-tile[data-value="2048"] {
-  background: #edc22e;
-  color: #f9f6f2;
-  font-size: 26px;
-  box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.5);
+/* Glow effect for high-value tiles */
+.merge2048-tile--glow {
+  box-shadow: 0 0 20px 5px var(--glow-color, rgba(237, 207, 114, 0.5));
 }
 
-/* New tile animation */
+/* Super glow for 2048+ */
+.merge2048-tile--super {
+  box-shadow: 
+    0 0 30px 10px var(--glow-color, rgba(249, 212, 35, 0.8)),
+    0 0 60px 20px var(--glow-color, rgba(249, 212, 35, 0.4));
+  animation: superPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes superPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 30px 10px var(--glow-color, rgba(249, 212, 35, 0.8)),
+      0 0 60px 20px var(--glow-color, rgba(249, 212, 35, 0.4));
+  }
+  50% {
+    box-shadow: 
+      0 0 40px 15px var(--glow-color, rgba(249, 212, 35, 1)),
+      0 0 80px 30px var(--glow-color, rgba(249, 212, 35, 0.6));
+  }
+}
+
+/* New tile animation - pop in with bounce */
 .merge2048-tile--new {
-  animation: tileAppear 0.2s ease-out;
+  animation: tileAppear 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes tileAppear {
@@ -192,23 +200,27 @@
     transform: scale(0);
     opacity: 0;
   }
+  60% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
   100% {
     transform: scale(1);
     opacity: 1;
   }
 }
 
-/* Merge animation */
+/* Merge animation - bounce with glow pulse */
 .merge2048-tile--merged {
-  animation: tileMerge 0.15s ease-out;
+  animation: tileMerge 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes tileMerge {
   0% {
     transform: scale(1);
   }
-  50% {
-    transform: scale(1.15);
+  40% {
+    transform: scale(1.25);
   }
   100% {
     transform: scale(1);
@@ -222,21 +234,23 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(238, 228, 218, 0.85);
+  background: rgba(238, 228, 218, 0.9);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 16px;
-  animation: fadeIn 0.3s ease-out;
+  animation: overlayFadeIn 0.4s ease-out;
+  backdrop-filter: blur(4px);
 }
 
 .merge2048-overlay--won {
-  background: rgba(237, 194, 46, 0.7);
+  background: rgba(237, 194, 46, 0.85);
+  animation: winOverlayAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes fadeIn {
+@keyframes overlayFadeIn {
   from {
     opacity: 0;
   }
@@ -245,15 +259,38 @@
   }
 }
 
+@keyframes winOverlayAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .merge2048-overlay-text {
   font-size: 48px;
   font-weight: bold;
   color: #776e65;
   margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .merge2048-overlay--won .merge2048-overlay-text {
   color: #f9f6f2;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  animation: winTextPulse 0.8s ease-in-out infinite;
+}
+
+@keyframes winTextPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 /* Instructions */

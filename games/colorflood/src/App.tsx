@@ -1,6 +1,19 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { useAudio, useParticles, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
+import { ParticleLayer } from "@shared";
 import "./App.css";
+
+/* ---- Popup State Type ---- */
+interface PopupState {
+  text: string;
+  key: number;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+  x: string;
+  y: string;
+}
 
 /* ---- Types ---- */
 type Grid = number[][];
@@ -100,6 +113,33 @@ export default function App() {
   const [moves, setMoves] = useState(0);
   const [bestScore, setBestScore] = useState<number | null>(() => loadBestScore());
 
+  // Popup state
+  const [popups, setPopups] = useState<PopupState[]>([]);
+  const popupKeyRef = useRef(0);
+
+  const showPopup = useCallback((
+    text: string,
+    variant: PopupVariant = "default",
+    size: "sm" | "md" | "lg" | "xl" = "md",
+    x = "50%",
+    y = "40%"
+  ) => {
+    const key = ++popupKeyRef.current;
+    const popup: PopupState = { text, key, variant, size, x, y };
+    setPopups(prev => [...prev, popup]);
+    // Auto-remove popup after animation
+    setTimeout(() => {
+      setPopups(prev => prev.filter(p => p.key !== key));
+    }, 1500);
+  }, []);
+
+  // Dopamine hooks
+  const { particles, confetti, sparkle, explosion } = useParticles();
+  const { playTone } = useAudio();
+  const playClick = useCallback(() => playTone(440 + moves * 20, 0.08, 'sine'), [playTone, moves]);
+  const playWin = useCallback(() => playTone(880, 0.3, 'sine'), [playTone]);
+  const playLose = useCallback(() => playTone(180, 0.3, 'sawtooth'), [playTone]);
+
   const connected = useMemo(() => countConnected(grid), [grid]);
   const totalCells = GRID_SIZE * GRID_SIZE;
   const progress = Math.round((connected / totalCells) * 100);
@@ -108,6 +148,7 @@ export default function App() {
     setGrid(createRandomGrid());
     setMoves(0);
     setPhase("playing");
+    setPopups([]); // Clear popups on new game
   }, []);
 
   const handleColorClick = useCallback(
@@ -115,34 +156,97 @@ export default function App() {
       if (phase !== "playing") return;
       if (grid[0][0] === colorIndex) return;
 
+      // Count cells before the move
+      const beforeConnected = countConnected(grid);
+      
       const newGrid = floodFill(grid, colorIndex);
       const newMoves = moves + 1;
       setGrid(newGrid);
       setMoves(newMoves);
+      
+      // Count cells captured in this move
+      const afterConnected = countConnected(newGrid);
+      const cellsCaptured = afterConnected - beforeConnected;
+      
+      // Dopamine effects
+      playClick();
+      sparkle(200, 250);
+
+      // Show popup for cells captured
+      if (cellsCaptured > 0) {
+        // Determine popup style based on efficiency
+        if (cellsCaptured >= 20) {
+          // Massive capture - critical!
+          showPopup(`+${cellsCaptured} 大量獲得!`, "critical", "xl", "50%", "35%");
+        } else if (cellsCaptured >= 12) {
+          // Very efficient move
+          showPopup(`+${cellsCaptured} すごい!`, "bonus", "lg", "50%", "35%");
+        } else if (cellsCaptured >= 6) {
+          // Good move
+          showPopup(`+${cellsCaptured} いいね!`, "combo", "md", "50%", "35%");
+        } else {
+          // Normal capture
+          showPopup(`+${cellsCaptured}`, "default", "sm", "50%", "38%");
+        }
+      }
 
       if (isCleared(newGrid)) {
         setPhase("cleared");
+        playWin();
+        confetti();
         const currentBest = loadBestScore();
-        if (currentBest === null || newMoves < currentBest) {
+        const isNewBest = currentBest === null || newMoves < currentBest;
+        if (isNewBest) {
           saveBestScore(newMoves);
           setBestScore(newMoves);
+          // Show best score popup
+          setTimeout(() => {
+            showPopup("🏆 新記録!", "level", "xl", "50%", "25%");
+          }, 300);
+        } else {
+          // Show win popup
+          setTimeout(() => {
+            showPopup("🎉 クリア!", "bonus", "lg", "50%", "25%");
+          }, 300);
         }
       } else if (newMoves >= MAX_MOVES) {
         setPhase("gameover");
+        playLose();
+        explosion(200, 250);
+        // Show game over popup
+        setTimeout(() => {
+          showPopup("💔 ゲームオーバー", "default", "lg", "50%", "25%");
+        }, 300);
       }
     },
-    [phase, grid, moves]
+    [phase, grid, moves, playClick, playWin, playLose, sparkle, confetti, explosion, showPopup]
   );
 
   const handleBackToMenu = useCallback(() => {
     setPhase("menu");
     setGrid(createRandomGrid());
     setMoves(0);
+    setPopups([]); // Clear popups on menu return
   }, []);
 
   return (
     <GameShell gameId="colorflood" layout="default">
-      <div className="colorflood-container">
+      <div className="colorflood-container" style={{ position: 'relative' }}>
+        <ParticleLayer particles={particles} />
+        
+        {/* Score Popups */}
+        {popups.map((popup) => (
+          <ScorePopup
+            key={popup.key}
+            text={popup.text}
+            popupKey={popup.key}
+            variant={popup.variant}
+            size={popup.size}
+            x={popup.x}
+            y={popup.y}
+          />
+        ))}
+        
         {/* Header */}
         <header className="colorflood-header">
           <h1 className="colorflood-title">Color Flood</h1>

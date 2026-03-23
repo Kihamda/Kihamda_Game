@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { GameShell } from "@shared/components/GameShell";
+import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
 
 /** ゲームフェーズ */
 type Phase = "idle" | "countdown" | "waiting" | "draw" | "result" | "finished";
@@ -42,9 +43,44 @@ export default function App() {
   const [highScore, setHighScore] = useState<number | null>(loadHighScore);
   const [tooEarly, setTooEarly] = useState(false);
   const [countdown, setCountdown] = useState(3);
+  
+  // ScorePopup 用の状態
+  const [popup, setPopup] = useState<{
+    text: string | null;
+    key: number;
+    variant: PopupVariant;
+    size: "sm" | "md" | "lg" | "xl";
+    y: string;
+  }>({ text: null, key: 0, variant: "default", size: "md", y: "30%" });
 
   const timerRef = useRef<number>(0);
   const startTimeRef = useRef<number>(0);
+  
+  const { playTone } = useAudio();
+  const { particles, sparkle, confetti, explosion } = useParticles();
+  
+  const playDraw = useCallback(() => playTone(880, 0.2, 'square'), [playTone]);
+  const playShot = useCallback(() => playTone(440, 0.08, 'sawtooth'), [playTone]);
+  const playFail = useCallback(() => playTone(150, 0.3, 'sawtooth'), [playTone]);
+
+  // ポップアップ表示ヘルパー
+  const showPopup = useCallback(
+    (
+      text: string,
+      variant: PopupVariant = "default",
+      size: "sm" | "md" | "lg" | "xl" = "md",
+      y = "30%"
+    ) => {
+      setPopup((prev) => ({
+        text,
+        key: prev.key + 1,
+        variant,
+        size,
+        y,
+      }));
+    },
+    []
+  );
 
   // タイマークリア
   const clearTimer = useCallback(() => {
@@ -92,11 +128,12 @@ export default function App() {
     const delay = WAIT_MIN + Math.random() * (WAIT_MAX - WAIT_MIN);
     timerRef.current = window.setTimeout(() => {
       startTimeRef.current = performance.now();
+      playDraw();
       setPhase("draw");
     }, delay);
 
     return () => clearTimer();
-  }, [phase, clearTimer]);
+  }, [phase, clearTimer, playDraw]);
 
   // ゲーム開始
   const startGame = useCallback(() => {
@@ -117,6 +154,9 @@ export default function App() {
       // フライング
       clearTimer();
       setTooEarly(true);
+      playFail();
+      explosion(window.innerWidth / 2, window.innerHeight / 2);
+      showPopup("💀 TOO SOON!", "combo", "lg", "25%");
       setPhase("result");
       setCurrentTime(null);
       return;
@@ -126,9 +166,28 @@ export default function App() {
       const elapsed = Math.round(performance.now() - startTimeRef.current);
       setCurrentTime(elapsed);
       setTimes((prev) => [...prev, elapsed]);
+      playShot();
+      
+      // 反応時間に応じたポップアップ
+      const secs = (elapsed / 1000).toFixed(3);
+      if (elapsed < 200) {
+        showPopup(`🔥 ${secs}s LEGENDARY!`, "critical", "xl", "20%");
+        sparkle(window.innerWidth / 2, window.innerHeight / 2);
+        confetti();
+      } else if (elapsed < 250) {
+        showPopup(`⚡ ${secs}s AMAZING!`, "bonus", "lg", "22%");
+        sparkle(window.innerWidth / 2, window.innerHeight / 2);
+      } else if (elapsed < 300) {
+        showPopup(`🎯 ${secs}s GREAT!`, "level", "lg", "24%");
+      } else if (elapsed < 400) {
+        showPopup(`👍 ${secs}s GOOD`, "default", "md", "26%");
+      } else {
+        showPopup(`🐢 ${secs}s`, "default", "sm", "28%");
+      }
+      
       setPhase("result");
     }
-  }, [phase, clearTimer]);
+  }, [phase, clearTimer, playShot, playFail, sparkle, explosion, confetti, showPopup]);
 
   // 次のラウンドへ
   const nextRound = useCallback(() => {
@@ -142,13 +201,18 @@ export default function App() {
       if (avg > 0 && (highScore === null || avg < highScore)) {
         setHighScore(avg);
         saveHighScore(avg);
+        confetti();
+        showPopup("🏆 NEW RECORD!", "critical", "xl", "18%");
+      } else {
+        // 勝利のお祝い
+        showPopup("🎉 DUEL COMPLETE!", "level", "lg", "20%");
       }
       setPhase("finished");
     } else {
       setRound((r) => r + 1);
       startCountdown();
     }
-  }, [round, times, highScore, startCountdown]);
+  }, [round, times, highScore, startCountdown, confetti, showPopup]);
 
   // 平均計算
   const average =
@@ -175,6 +239,14 @@ export default function App() {
 
   return (
     <GameShell gameId="quickdraw" layout="immersive">
+      <ParticleLayer particles={particles} />
+      <ScorePopup
+        text={popup.text}
+        popupKey={popup.key}
+        variant={popup.variant}
+        size={popup.size}
+        y={popup.y}
+      />
       <div className={`quickdraw-root ${getBgClass()}`} onClick={handleClick}>
         <div className="quickdraw-content">
           <h1 className="quickdraw-title">🤠 Quick Draw</h1>

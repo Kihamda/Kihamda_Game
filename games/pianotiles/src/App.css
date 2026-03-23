@@ -1,0 +1,288 @@
+.pt-container {
+  width: 400px;
+  height: 700px;
+  background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%);
+  position: relative;
+  overflow: hidden;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/* ヘッダー */
+.pt-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
+.pt-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.pt-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 1px;
+}
+
+.pt-stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.pt-combo-fire {
+  color: #ffc107 !important;
+  text-shadow: 0 0 12px #ffc107;
+  animation: pt-pulse 0.3s ease infinite;
+}
+
+@keyframes pt-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.pt-heart {
+  font-size: 16px;
+  margin: 0 1px;
+}
+
+.pt-heart--full {
+  color: #ff6b6b;
+}
+
+.pt-heart--empty {
+  color: #444;
+}
+
+/* レーン */
+.pt-lanes {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+}
+
+.pt-lane {
+  flex: 1;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+}
+
+.pt-lane:last-child {
+  border-right: none;
+}
+
+/* タイル */
+.pt-tile {
+  position: absolute;
+  background: linear-gradient(180deg, #2d2d44 0%, #1a1a2e 100%);
+  border: 2px solid #3d3d5c;
+  box-sizing: border-box;
+  transition: background 0.1s, transform 0.1s;
+  cursor: pointer;
+}
+
+.pt-tile::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  height: 20px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 100%
+  );
+  border-radius: 4px;
+}
+
+.pt-tile--tapped {
+  background: linear-gradient(180deg, #4ecdc4 0%, #26a69a 100%);
+  border-color: #4ecdc4;
+  animation: pt-tap 0.2s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes pt-tap {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.05);
+    opacity: 0;
+  }
+}
+
+.pt-tile--missed {
+  background: linear-gradient(180deg, #ff6b6b 0%, #c44569 100%);
+  border-color: #ff6b6b;
+  animation: pt-miss 0.3s ease-out;
+  pointer-events: none;
+}
+
+@keyframes pt-miss {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+/* オーバーレイ */
+.pt-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 20;
+}
+
+.pt-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 16px;
+  text-shadow: 0 4px 20px rgba(78, 205, 196, 0.5);
+}
+
+.pt-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  line-height: 1.8;
+  margin: 0 0 32px;
+}
+
+.pt-start-btn {
+  padding: 14px 48px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #4ecdc4, #26a69a);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pt-start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(78, 205, 196, 0.5);
+}
+
+.pt-start-btn:active {
+  transform: translateY(0);
+}
+
+/* リザルト */
+.pt-result-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #ff6b6b;
+  margin: 0 0 16px;
+}
+
+.pt-result-score {
+  font-size: 56px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 16px;
+  text-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+}
+
+.pt-result-stats {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 32px;
+}
+
+/* ミスフラッシュ */
+.pt-miss-flash {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 0, 0, 0.4);
+  z-index: 50;
+  animation: pt-flash 0.2s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes pt-flash {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* パーフェクトゾーン */
+.pt-perfect-zone {
+  position: absolute;
+  top: 60%;
+  left: 0;
+  right: 0;
+  height: 25%;
+  background: linear-gradient(
+    180deg,
+    rgba(78, 205, 196, 0) 0%,
+    rgba(78, 205, 196, 0.1) 20%,
+    rgba(78, 205, 196, 0.15) 50%,
+    rgba(78, 205, 196, 0.1) 80%,
+    rgba(78, 205, 196, 0) 100%
+  );
+  border-top: 1px dashed rgba(78, 205, 196, 0.3);
+  border-bottom: 1px dashed rgba(78, 205, 196, 0.3);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ニューレコード */
+.pt-new-record {
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffd700;
+  text-shadow: 
+    0 0 10px #ffd700,
+    0 0 20px #ffd700,
+    0 0 30px #ffd700;
+  margin-bottom: 16px;
+  animation: pt-new-record 0.5s ease infinite;
+}
+
+@keyframes pt-new-record {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* コンボアニメーション (ComboCounter用) */
+@keyframes combo-pop {
+  0% { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes combo-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}

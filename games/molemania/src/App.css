@@ -30,6 +30,13 @@
   min-width: 160px;
 }
 
+.molemania-combo {
+  font-size: 20px;
+  color: #ff6b6b;
+  min-width: 80px;
+  text-align: center;
+}
+
 .molemania-timer {
   text-align: right;
 }
@@ -84,6 +91,28 @@
 .molemania-final-score strong {
   color: #ffd700;
   font-size: 48px;
+}
+
+.molemania-highscore-notice {
+  font-size: 28px;
+  color: #ff9ff3;
+  margin: 0;
+  animation: pulse-glow 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  from {
+    text-shadow: 0 0 10px rgba(255, 159, 243, 0.5);
+  }
+  to {
+    text-shadow: 0 0 20px rgba(255, 159, 243, 0.9), 0 0 30px rgba(255, 159, 243, 0.5);
+  }
+}
+
+.molemania-highscore {
+  font-size: 18px;
+  color: #ccc;
+  margin: 0;
 }
 
 .molemania-button {

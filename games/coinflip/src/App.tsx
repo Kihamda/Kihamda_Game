@@ -1,6 +1,17 @@
 import { useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { useAudio, useParticles, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
+import { ParticleLayer, ComboCounter } from "@shared";
 import "./App.css";
+
+interface PopupState {
+  text: string | null;
+  key: number;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+  y: string;
+}
 
 type GamePhase = "before" | "in_progress" | "after";
 type CoinSide = "heads" | "tails";
@@ -82,6 +93,35 @@ export default function App() {
     return saved ? parseInt(saved, 10) : 0;
   });
 
+  // ScorePopup state
+  const [popup, setPopup] = useState<PopupState>({
+    text: null,
+    key: 0,
+    variant: "default",
+    size: "md",
+    y: "40%",
+  });
+
+  const showPopup = useCallback(
+    (text: string, variant: PopupVariant = "default", size: "sm" | "md" | "lg" | "xl" = "md", y = "40%") => {
+      setPopup((prev) => ({
+        text,
+        key: prev.key + 1,
+        variant,
+        size,
+        y,
+      }));
+    },
+    []
+  );
+
+  // Dopamine hooks
+  const { particles, confetti, sparkle, explosion } = useParticles();
+  const { playTone } = useAudio();
+  const playCorrect = useCallback(() => playTone(660, 0.12, 'sine'), [playTone]);
+  const playWrong = useCallback(() => playTone(200, 0.2, 'sawtooth'), [playTone]);
+  const playFlip = useCallback(() => playTone(440, 0.05, 'triangle'), [playTone]);
+
   const startGame = useCallback(() => {
     setPhase("in_progress");
     setGameState({
@@ -112,6 +152,7 @@ export default function App() {
   const flipCoin = useCallback((prediction: CoinSide) => {
     if (gameState.isFlipping || gameState.coins < gameState.bet) return;
 
+    playFlip();
     setGameState((prev) => ({
       ...prev,
       prediction,
@@ -123,17 +164,51 @@ export default function App() {
       const result: CoinSide = Math.random() < 0.5 ? "heads" : "tails";
       const won = result === prediction;
 
+      if (won) {
+        playCorrect();
+        sparkle(200, 200);
+      } else {
+        playWrong();
+      }
+
       setGameState((prev) => {
         const newCoins = won ? prev.coins + prev.bet : prev.coins - prev.bet;
         const newStreak = won ? prev.streak + 1 : 0;
         const newMaxStreak = Math.max(prev.maxStreak, newStreak);
+        const currentHigh = parseInt(localStorage.getItem("coinflip-highscore") ?? "0", 10);
+
+        // Show win/lose popup with balance change
+        if (won) {
+          showPopup(`+${prev.bet} 💰`, "default", "lg", "35%");
+        } else {
+          showPopup(`-${prev.bet} 💸`, "critical", "md", "35%");
+        }
+
+        // Streak bonus popups (shown after a delay)
+        if (newStreak === 3) {
+          setTimeout(() => showPopup("🔥 3連勝！", "combo", "lg", "25%"), 300);
+        } else if (newStreak === 5) {
+          setTimeout(() => showPopup("🔥🔥 5連勝！", "bonus", "xl", "25%"), 300);
+          confetti();
+        } else if (newStreak === 7) {
+          setTimeout(() => showPopup("🔥🔥🔥 7連勝！激アツ！", "critical", "xl", "25%"), 300);
+          confetti();
+        } else if (newStreak >= 10 && newStreak % 5 === 0) {
+          setTimeout(() => showPopup(`🏆 ${newStreak}連勝！神！`, "level", "xl", "25%"), 300);
+          confetti();
+        }
+
+        // High score achievement popup
+        if (newMaxStreak > currentHigh && newMaxStreak > prev.maxStreak) {
+          setTimeout(() => showPopup("🏆 新記録！", "level", "xl", "15%"), 500);
+        }
 
         // Check game over
         if (newCoins <= 0) {
+          explosion(200, 200);
           setTimeout(() => {
             setPhase("after");
             // Save high score
-            const currentHigh = parseInt(localStorage.getItem("coinflip-highscore") ?? "0", 10);
             if (newMaxStreak > currentHigh) {
               setHighScore(newMaxStreak);
               localStorage.setItem("coinflip-highscore", newMaxStreak.toString());
@@ -148,11 +223,11 @@ export default function App() {
           streak: newStreak,
           maxStreak: newMaxStreak,
           isFlipping: false,
-          bet: Math.min(prev.bet, newCoins > 0 ? newCoins : prev.bet),
+          bet: newCoins > 0 ? Math.min(prev.bet, newCoins) : MIN_BET,
         };
       });
     }, 1500);
-  }, [gameState.isFlipping, gameState.coins, gameState.bet]);
+  }, [gameState.isFlipping, gameState.coins, gameState.bet, playFlip, playCorrect, playWrong, sparkle, confetti, explosion, showPopup]);
 
   const cashOut = useCallback(() => {
     setPhase("after");
@@ -179,7 +254,17 @@ export default function App() {
 
   return (
     <GameShell gameId="coinflip" layout="default">
-      <div className="coinflip-container">
+      <div className="coinflip-container" style={{ position: 'relative' }}>
+        <ParticleLayer particles={particles} />
+        <ScorePopup
+          text={popup.text}
+          popupKey={popup.key}
+          variant={popup.variant}
+          size={popup.size}
+          y={popup.y}
+        />
+        {gameState.streak >= 3 && phase === "in_progress" && <ComboCounter combo={gameState.streak} />}
+        
         {/* Before game */}
         {phase === "before" && (
           <div className="coinflip-overlay">

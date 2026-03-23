@@ -113,3 +113,23 @@
     opacity: 0.8;
   }
 }
+
+/* ストリークインジケーター */
+.patternlock-streak {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ff6b6b;
+  margin-top: 4px;
+  animation: patternlock-streak-pulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes patternlock-streak-pulse {
+  from {
+    text-shadow: 0 0 8px rgba(255, 107, 107, 0.6);
+    transform: scale(1);
+  }
+  to {
+    text-shadow: 0 0 16px rgba(255, 107, 107, 0.9);
+    transform: scale(1.05);
+  }
+}

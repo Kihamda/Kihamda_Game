@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
 import { GameShell } from "@shared/components/GameShell";
+import {
+  useAudio,
+  useParticles,
+  ParticleLayer,
+  ScorePopup,
+} from "@shared";
+import type { PopupVariant } from "@shared";
 
 /** ゲームフェーズ */
 type Phase = "start" | "playing" | "levelComplete" | "gameOver" | "gameClear";
@@ -128,8 +135,21 @@ export default function App() {
   const [maxChain, setMaxChain] = useState(0);
   const [bestLevel, setBestLevel] = useState(() => loadBestLevel());
   
+  // Popup state
+  const [popup, setPopup] = useState<{
+    text: string;
+    key: number;
+    x: string;
+    y: string;
+    variant: PopupVariant;
+  } | null>(null);
+  
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>(0);
+  
+  // Dopamine effects
+  const { playClick, playCombo, playCelebrate, playGameOver, playExplosion } = useAudio();
+  const { particles, burst, explosion, confetti } = useParticles();
 
   const currentConfig = LEVELS[Math.min(level, LEVELS.length - 1)];
 
@@ -176,6 +196,19 @@ export default function App() {
     setPhase("start");
   }, []);
 
+  /** ポップアップ表示 */
+  const showPopup = useCallback((
+    text: string,
+    x: number,
+    y: number,
+    variant: PopupVariant = "default"
+  ) => {
+    // Canvas座標をパーセント座標に変換
+    const percentX = `${(x / GAME_WIDTH) * 100}%`;
+    const percentY = `${(y / GAME_HEIGHT) * 100}%`;
+    setPopup({ text, key: Date.now(), x: percentX, y: percentY, variant });
+  }, []);
+
   /** 泡クリック処理 */
   const handleCanvasClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     if (phase !== "playing" || clicksRemaining <= 0) return;
@@ -213,11 +246,15 @@ export default function App() {
       ));
       setClicksRemaining(prev => prev - 1);
       setChainCount(1);
+      
+      // Dopamine effects for initial click
+      playClick();
+      burst(e.clientX, e.clientY, 8);
     } else {
       // 空クリック
       setClicksRemaining(prev => prev - 1);
     }
-  }, [phase, clicksRemaining, bubbles]);
+  }, [phase, clicksRemaining, bubbles, playClick, burst]);
 
   /** ゲームループ */
   useEffect(() => {
@@ -399,13 +436,49 @@ export default function App() {
           saveBestLevel(level + 1);
           setBestLevel(level + 1);
         }
+        playCelebrate();
+        confetti(40);
         setPhase("levelComplete");
       } else if (clicksRemaining <= 0 && floating > 0) {
         // ゲームオーバー
+        playGameOver();
         setPhase("gameOver");
       }
     }
-  }, [phase, bubbles, clicksRemaining, poppedCount, currentConfig.targetCount, chainCount, level, bestLevel]);
+  }, [phase, bubbles, clicksRemaining, poppedCount, currentConfig.targetCount, chainCount, level, bestLevel, playCelebrate, confetti, playGameOver]);
+
+  /** 連鎖時のエフェクト */
+  const prevChainRef = useRef(0);
+  useEffect(() => {
+    if (phase !== "playing") return;
+    if (chainCount <= 1 || chainCount === prevChainRef.current) return;
+    
+    prevChainRef.current = chainCount;
+    
+    // Find an exploding bubble to center the effect
+    const explodingBubble = bubbles.find(b => b.state === "exploding");
+    if (explodingBubble) {
+      // Convert canvas coords to screen coords
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const rect = canvas.getBoundingClientRect();
+        const screenX = rect.left + (explodingBubble.x / GAME_WIDTH) * rect.width;
+        const screenY = rect.top + (explodingBubble.y / GAME_HEIGHT) * rect.height;
+        
+        playCombo(chainCount);
+        playExplosion();
+        explosion(screenX, screenY, 16);
+        
+        // Show chain popup
+        showPopup(
+          `🔥 ${chainCount}連鎖!`,
+          explodingBubble.x,
+          explodingBubble.y,
+          chainCount >= 5 ? "critical" : chainCount >= 3 ? "combo" : "default"
+        );
+      }
+    }
+  }, [phase, chainCount, bubbles, playCombo, playExplosion, explosion, showPopup]);
 
   return (
     <GameShell gameId="reactionchain" layout="immersive">
@@ -465,15 +538,30 @@ export default function App() {
                 </span>
               </div>
             </div>
-            <canvas
-              ref={canvasRef}
-              width={GAME_WIDTH}
-              height={GAME_HEIGHT}
-              className="reactionchain-canvas"
-              onClick={handleCanvasClick}
-            />
+            <div className="reactionchain-canvas-container">
+              <canvas
+                ref={canvasRef}
+                width={GAME_WIDTH}
+                height={GAME_HEIGHT}
+                className="reactionchain-canvas"
+                onClick={handleCanvasClick}
+              />
+              {popup && (
+                <ScorePopup
+                  text={popup.text}
+                  popupKey={popup.key}
+                  x={popup.x}
+                  y={popup.y}
+                  variant={popup.variant}
+                  size="lg"
+                />
+              )}
+            </div>
           </>
         )}
+
+        {/* Particle layer for all phases */}
+        <ParticleLayer particles={particles} />
 
         {phase === "levelComplete" && (
           <div className="reactionchain-overlay">

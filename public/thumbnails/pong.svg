@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <linearGradient id="paddle1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#f87171"/>
+    </linearGradient>
+    <linearGradient id="paddle2" x1="100%" y1="0%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#60a5fa"/>
+    </linearGradient>
+    <radialGradient id="ball" cx="30%" cy="30%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="50%" style="stop-color:#e2e8f0"/>
+      <stop offset="100%" style="stop-color:#94a3b8"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" fill="url(#bg)" rx="16"/>
+  
+  <!-- Center line -->
+  <line x1="100" y1="30" x2="100" y2="170" stroke="#475569" stroke-width="3" stroke-dasharray="10,8"/>
+  
+  <!-- Left paddle (Player 1) -->
+  <rect x="25" y="70" width="10" height="60" rx="3" fill="url(#paddle1)"/>
+  
+  <!-- Right paddle (Player 2) -->
+  <rect x="165" y="70" width="10" height="60" rx="3" fill="url(#paddle2)"/>
+  
+  <!-- Ball -->
+  <circle cx="100" cy="100" r="12" fill="url(#ball)"/>
+  
+  <!-- Ball trail effect -->
+  <circle cx="85" cy="105" r="8" fill="white" opacity="0.3"/>
+  <circle cx="72" cy="108" r="5" fill="white" opacity="0.15"/>
+  
+  <!-- Score display -->
+  <text x="70" y="45" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#ef4444">3</text>
+  <text x="95" y="45" font-family="Arial, sans-serif" font-size="20" fill="#64748b">-</text>
+  <text x="120" y="45" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#3b82f6">2</text>
+</svg>

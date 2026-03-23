@@ -1,9 +1,20 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { GameShell } from "@shared/components/GameShell";
+import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
 
 /** ゲームフェーズ */
 type Phase = "idle" | "playing" | "finished";
+
+/** ポップアップ状態 */
+interface PopupState {
+  text: string | null;
+  key: number;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+  x: string;
+  y: string;
+}
 
 /** ゲーム時間 (秒) */
 const GAME_DURATION = 10;
@@ -36,10 +47,44 @@ export default function App() {
   const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
   const [highScore, setHighScore] = useState<number>(loadHighScore);
   const [isNewRecord, setIsNewRecord] = useState(false);
+  const [popup, setPopup] = useState<PopupState>({
+    text: null, key: 0, variant: "default", size: "md", x: "50%", y: "40%"
+  });
 
   const timerRef = useRef<number>(0);
   const startTimeRef = useRef<number>(0);
   const clicksRef = useRef(0);
+  const lastCpsPopupRef = useRef(0); // 最後にCPSポップアップを出したCPS値
+  const lastMilestoneRef = useRef(0); // 最後にマイルストーンポップアップを出したクリック数
+  
+  const { playTone } = useAudio();
+  const { particles, confetti, burst } = useParticles();
+  
+  const playClick = useCallback(() => playTone(440 + Math.random() * 100, 0.03, 'triangle'), [playTone]);
+  const playStart = useCallback(() => playTone(660, 0.15, 'sine'), [playTone]);
+  const playEnd = useCallback(() => playTone(880, 0.3, 'sine'), [playTone]);
+  const playMilestone = useCallback(() => playTone(784, 0.15, 'sine'), [playTone]);
+  const playCpsAchievement = useCallback(() => playTone(988, 0.2, 'sine'), [playTone]);
+
+  // ポップアップ表示ヘルパー
+  const showPopup = useCallback((
+    text: string,
+    variant: PopupVariant = "default",
+    size: "sm" | "md" | "lg" | "xl" = "md",
+    x = "50%",
+    y = "40%"
+  ) => {
+    setPopup(prev => ({ text, key: prev.key + 1, variant, size, x, y }));
+  }, []);
+
+  // CPSに基づく評価テキスト
+  const getCpsRating = (cps: number): { text: string; variant: PopupVariant; size: "sm" | "md" | "lg" | "xl" } => {
+    if (cps >= 10) return { text: "⚡ GOD CPS!", variant: "critical", size: "xl" };
+    if (cps >= 8) return { text: "🔥 BLAZING!", variant: "critical", size: "lg" };
+    if (cps >= 6) return { text: "⚡ FAST!", variant: "bonus", size: "md" };
+    if (cps >= 4) return { text: "👍 GOOD!", variant: "combo", size: "md" };
+    return { text: "", variant: "default", size: "sm" };
+  };
 
   // タイマークリア
   const clearTimer = useCallback(() => {
@@ -58,37 +103,90 @@ export default function App() {
   const startGame = useCallback(() => {
     setClicks(0);
     clicksRef.current = 0;
+    lastCpsPopupRef.current = 0;
+    lastMilestoneRef.current = 0;
     setTimeLeft(GAME_DURATION);
     setPhase("playing");
     setIsNewRecord(false);
     startTimeRef.current = Date.now();
+    playStart();
+    showPopup("START!", "level", "lg");
 
     timerRef.current = window.setInterval(() => {
       const elapsed = (Date.now() - startTimeRef.current) / 1000;
       const remaining = Math.max(0, GAME_DURATION - elapsed);
       setTimeLeft(remaining);
 
+      // CPS達成ポップアップ (1秒ごとにチェック)
+      if (elapsed > 0 && Math.floor(elapsed) > Math.floor(elapsed - 0.05)) {
+        const currentCps = clicksRef.current / elapsed;
+        const cpsFloor = Math.floor(currentCps);
+        if (cpsFloor > lastCpsPopupRef.current && cpsFloor >= 4) {
+          const rating = getCpsRating(currentCps);
+          if (rating.text) {
+            showPopup(rating.text, rating.variant, rating.size);
+            playCpsAchievement();
+            lastCpsPopupRef.current = cpsFloor;
+          }
+        }
+      }
+
       if (remaining <= 0) {
         clearTimer();
         const finalClicks = clicksRef.current;
         const currentHighScore = loadHighScore();
+        playEnd();
         if (finalClicks > currentHighScore) {
           saveHighScore(finalClicks);
           setHighScore(finalClicks);
           setIsNewRecord(true);
+          confetti();
+          // 新記録ポップアップ (少し遅延して表示)
+          setTimeout(() => {
+            showPopup("🏆 NEW RECORD!", "critical", "xl");
+          }, 300);
+        } else {
+          // 最終スコアポップアップ
+          if (finalClicks >= 100) {
+            showPopup(`🏆 ${finalClicks} CLICKS!`, "critical", "xl");
+          } else if (finalClicks >= 60) {
+            showPopup(`🔥 ${finalClicks} CLICKS!`, "bonus", "lg");
+          } else if (finalClicks >= 30) {
+            showPopup(`⚡ ${finalClicks} clicks`, "combo", "md");
+          } else {
+            showPopup(`${finalClicks} clicks`, "default", "md");
+          }
         }
         setPhase("finished");
       }
     }, 50);
-  }, [clearTimer]);
+  }, [clearTimer, playStart, playEnd, confetti, showPopup, playCpsAchievement]);
 
   // クリック処理
-  const handleClick = useCallback(() => {
+  const handleClick = useCallback((e: React.MouseEvent) => {
     if (phase === "playing") {
       clicksRef.current += 1;
-      setClicks(clicksRef.current);
+      const currentClicks = clicksRef.current;
+      setClicks(currentClicks);
+      playClick();
+      burst(e.clientX, e.clientY, 5);
+      
+      // マイルストーンポップアップ (10, 20, 30, ...)
+      const milestone = Math.floor(currentClicks / 10) * 10;
+      if (milestone > 0 && milestone > lastMilestoneRef.current && currentClicks === milestone) {
+        lastMilestoneRef.current = milestone;
+        playMilestone();
+        
+        if (milestone >= 100) {
+          showPopup(`🏆 ${milestone}!`, "critical", "xl");
+        } else if (milestone >= 50) {
+          showPopup(`🔥 ${milestone}!`, "bonus", "lg");
+        } else {
+          showPopup(`⭐ ${milestone}!`, "combo", "md");
+        }
+      }
     }
-  }, [phase]);
+  }, [phase, playClick, burst, playMilestone, showPopup]);
 
   // CPS計算 (ゲーム終了時)
   const cps = phase === "finished" ? (clicks / GAME_DURATION).toFixed(2) : "0.00";
@@ -112,6 +210,15 @@ export default function App() {
 
   return (
     <GameShell gameId="speedclick" layout="default">
+      <ParticleLayer particles={particles} />
+      <ScorePopup
+        text={popup.text}
+        popupKey={popup.key}
+        variant={popup.variant}
+        size={popup.size}
+        x={popup.x}
+        y={popup.y}
+      />
       <div className="speedclick-root">
         <h1 className="speedclick-title">🖱️ Speed Click</h1>
 

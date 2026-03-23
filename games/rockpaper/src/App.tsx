@@ -1,6 +1,15 @@
-import { useState, useCallback, useEffect } from "react";
-import { GameShell } from "@shared/components/GameShell";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
 import "./App.css";
+
+interface PopupState {
+  text: string | null;
+  key: number;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+  y: string;
+}
 
 type GamePhase = "before" | "in_progress" | "after";
 type Hand = "rock" | "paper" | "scissors";
@@ -80,6 +89,41 @@ export default function App() {
     const saved = localStorage.getItem("rockpaper-highstreak");
     return saved ? parseInt(saved, 10) : 0;
   });
+  
+  const { playTone } = useAudio();
+  const { particles, sparkle, confetti, explosion } = useParticles();
+  
+  // Popup state management
+  const [popups, setPopups] = useState<PopupState[]>([]);
+  const popupKeyRef = useRef(0);
+  const prevHighScoreRef = useRef(highScore);
+  
+  const showPopup = useCallback((
+    text: string,
+    variant: PopupVariant = "default",
+    size: "sm" | "md" | "lg" | "xl" = "md",
+    y: string = "35%"
+  ) => {
+    popupKeyRef.current += 1;
+    const newPopup: PopupState = {
+      text,
+      key: popupKeyRef.current,
+      variant,
+      size,
+      y,
+    };
+    setPopups(prev => [...prev, newPopup]);
+    
+    // Auto-remove popup after animation
+    setTimeout(() => {
+      setPopups(prev => prev.filter(p => p.key !== newPopup.key));
+    }, 1500);
+  }, []);
+  
+  const playWin = useCallback(() => playTone(660, 0.15, 'sine'), [playTone]);
+  const playLose = useCallback(() => playTone(200, 0.2, 'sawtooth'), [playTone]);
+  const playDraw = useCallback(() => playTone(440, 0.1, 'triangle'), [playTone]);
+  const playShake = useCallback(() => playTone(300, 0.05, 'square'), [playTone]);
 
   const startGame = useCallback(() => {
     setPhase("in_progress");
@@ -99,6 +143,8 @@ export default function App() {
 
   const playHand = useCallback((playerChoice: Hand) => {
     if (gameState.isAnimating) return;
+    
+    playShake();
 
     setGameState((prev) => ({
       ...prev,
@@ -119,11 +165,68 @@ export default function App() {
         const newDraws = result === "draw" ? prev.draws + 1 : prev.draws;
         const newStreak = result === "win" ? prev.streak + 1 : result === "lose" ? 0 : prev.streak;
         const newMaxStreak = Math.max(prev.maxStreak, newStreak);
+        const totalRounds = prev.rounds + 1;
 
-        // Save high score
-        if (newMaxStreak > highScore) {
+        // Sound effects and popups
+        if (result === "win") {
+          playWin();
+          sparkle(window.innerWidth / 2, window.innerHeight / 2);
+          showPopup("🎉 WIN!", "default", "lg", "30%");
+          
+          // Streak bonus popups
+          if (newStreak === 3) {
+            setTimeout(() => showPopup("🔥 3連勝!", "combo", "lg", "40%"), 300);
+            confetti();
+          } else if (newStreak === 5) {
+            setTimeout(() => showPopup("⚡ 5連勝!", "bonus", "xl", "40%"), 300);
+            confetti();
+          } else if (newStreak === 10) {
+            setTimeout(() => showPopup("👑 10連勝!", "critical", "xl", "40%"), 300);
+            confetti();
+          } else if (newStreak >= 15 && newStreak % 5 === 0) {
+            setTimeout(() => showPopup(`🏆 ${newStreak}連勝!`, "critical", "xl", "40%"), 300);
+            confetti();
+          } else if (newStreak >= 3 && newStreak > prev.streak) {
+            confetti();
+          }
+        } else if (result === "lose") {
+          playLose();
+          explosion(window.innerWidth / 2, window.innerHeight / 2);
+          showPopup("😢 LOSE", "default", "lg", "30%");
+          
+          // Lost streak notification
+          if (prev.streak >= 3) {
+            setTimeout(() => showPopup(`${prev.streak}連勝で終了...`, "default", "md", "45%"), 400);
+          }
+        } else {
+          playDraw();
+          showPopup("🤝 DRAW", "default", "md", "30%");
+        }
+
+        // Milestone popups (total wins)
+        if (newWins === 10) {
+          setTimeout(() => showPopup("🎯 10勝達成!", "level", "lg", "50%"), 500);
+        } else if (newWins === 25) {
+          setTimeout(() => showPopup("🌟 25勝達成!", "level", "xl", "50%"), 500);
+        } else if (newWins === 50) {
+          setTimeout(() => showPopup("💎 50勝達成!", "critical", "xl", "50%"), 500);
+        } else if (newWins >= 100 && newWins % 50 === 0) {
+          setTimeout(() => showPopup(`✨ ${newWins}勝達成!`, "critical", "xl", "50%"), 500);
+        }
+
+        // Round milestones
+        if (totalRounds === 50) {
+          setTimeout(() => showPopup("📊 50戦突破!", "bonus", "md", "55%"), 600);
+        } else if (totalRounds === 100) {
+          setTimeout(() => showPopup("📊 100戦突破!", "level", "lg", "55%"), 600);
+        }
+
+        // Save high score and show popup
+        if (newMaxStreak > prevHighScoreRef.current) {
+          prevHighScoreRef.current = newMaxStreak;
           setHighScore(newMaxStreak);
           localStorage.setItem("rockpaper-highstreak", newMaxStreak.toString());
+          setTimeout(() => showPopup("🏆 新記録!", "critical", "xl", "25%"), 600);
         }
 
         return {
@@ -140,7 +243,7 @@ export default function App() {
         };
       });
     }, 1000);
-  }, [gameState.isAnimating, highScore]);
+  }, [gameState.isAnimating, playShake, playWin, playLose, playDraw, sparkle, confetti, explosion, showPopup]);
 
   const endGame = useCallback(() => {
     setPhase("after");
@@ -185,6 +288,18 @@ export default function App() {
 
   return (
     <GameShell gameId="rockpaper" layout="default">
+      <ParticleLayer particles={particles} />
+      {/* ScorePopup layer */}
+      {popups.map(popup => (
+        <ScorePopup
+          key={popup.key}
+          text={popup.text}
+          popupKey={popup.key}
+          variant={popup.variant}
+          size={popup.size}
+          y={popup.y}
+        />
+      ))}
       <div className="rockpaper-container">
         {/* Before game */}
         {phase === "before" && (

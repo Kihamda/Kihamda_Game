@@ -1,0 +1,11 @@
+.stacktower-container {
+  position: relative;
+  user-select: none;
+  touch-action: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.stacktower-canvas {
+  display: block;
+}

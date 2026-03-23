@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#87ceeb"/>
+      <stop offset="50%" stop-color="#e0f7fa"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="snow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e8f5e9"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background sky -->
+  <rect width="400" height="300" fill="url(#sky)"/>
+  
+  <!-- Mountains -->
+  <polygon points="0,180 80,100 160,180" fill="#90a4ae"/>
+  <polygon points="100,180 200,80 300,180" fill="#78909c"/>
+  <polygon points="240,180 340,110 400,180" fill="#90a4ae"/>
+  
+  <!-- Snow peaks -->
+  <polygon points="80,100 60,130 100,130" fill="#ffffff"/>
+  <polygon points="200,80 175,115 225,115" fill="#ffffff"/>
+  <polygon points="340,110 320,140 360,140" fill="#ffffff"/>
+  
+  <!-- Slope -->
+  <polygon points="0,180 400,180 400,300 0,300" fill="url(#snow)"/>
+  
+  <!-- Trees -->
+  <g fill="#2e7d32">
+    <polygon points="60,200 50,240 70,240"/>
+    <polygon points="350,190 335,240 365,240"/>
+    <polygon points="320,210 305,250 335,250"/>
+  </g>
+  
+  <!-- Gate flags -->
+  <g>
+    <rect x="130" y="200" width="3" height="40" fill="#795548"/>
+    <polygon points="133,200 133,220 155,210" fill="#ff9800"/>
+    <rect x="180" y="210" width="3" height="35" fill="#795548"/>
+    <polygon points="183,210 183,228 205,219" fill="#ff9800"/>
+  </g>
+  
+  <!-- Skier -->
+  <g transform="translate(200, 180)">
+    <!-- Body -->
+    <ellipse cx="0" cy="0" rx="8" ry="15" fill="#1565c0"/>
+    <!-- Head -->
+    <circle cx="0" cy="-20" r="8" fill="#ffccbc"/>
+    <!-- Helmet -->
+    <ellipse cx="0" cy="-24" rx="9" ry="6" fill="#d32f2f"/>
+    <!-- Skis -->
+    <rect x="-20" y="12" width="40" height="4" rx="2" fill="#1976d2" transform="rotate(-15)"/>
+    <!-- Poles -->
+    <line x1="-15" y1="-5" x2="-30" y2="20" stroke="#757575" stroke-width="2"/>
+    <line x1="15" y1="-5" x2="30" y2="20" stroke="#757575" stroke-width="2"/>
+  </g>
+  
+  <!-- Snow particles -->
+  <g fill="#ffffff" opacity="0.8">
+    <circle cx="50" cy="120" r="2"/>
+    <circle cx="150" cy="100" r="1.5"/>
+    <circle cx="280" cy="130" r="2"/>
+    <circle cx="370" cy="90" r="1.5"/>
+    <circle cx="100" cy="160" r="1"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="200" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#1565c0">スキーラン</text>
+</svg>

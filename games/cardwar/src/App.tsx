@@ -1,6 +1,17 @@
 import { useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { useAudio, useParticles, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
+import { ParticleLayer } from "@shared";
 import "./App.css";
+
+// ScorePopup用の状態型
+interface PopupState {
+  text: string | null;
+  key: number;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+}
 
 // カードの定義
 type Suit = "♠" | "♥" | "♦" | "♣";
@@ -65,6 +76,26 @@ export default function App() {
   const [draws, setDraws] = useState(0);
   const [round, setRound] = useState(0);
   const [lastResult, setLastResult] = useState<"win" | "lose" | "draw" | null>(null);
+  const [wasLeading, setWasLeading] = useState(false); // コンバック検出用
+
+  // ScorePopup状態
+  const [popup, setPopup] = useState<PopupState>({ text: null, key: 0, variant: "default", size: "md" });
+
+  // Dopamine hooks
+  const { particles, confetti, sparkle, explosion } = useParticles();
+  const { playTone } = useAudio();
+  const playWin = useCallback(() => playTone(660, 0.15, 'sine'), [playTone]);
+  const playLose = useCallback(() => playTone(220, 0.2, 'sawtooth'), [playTone]);
+  const playComeback = useCallback(() => playTone(880, 0.2, 'sine'), [playTone]);
+  const playWar = useCallback(() => {
+    playTone(330, 0.1, 'square');
+    setTimeout(() => playTone(440, 0.1, 'square'), 100);
+  }, [playTone]);
+
+  // ポップアップ表示ヘルパー
+  const showPopup = useCallback((text: string, variant: PopupVariant = "default", size: "sm" | "md" | "lg" | "xl" = "md") => {
+    setPopup(prev => ({ text, key: prev.key + 1, variant, size }));
+  }, []);
 
   const start = useCallback(() => {
     const deck = shuffle(createDeck());
@@ -78,6 +109,8 @@ export default function App() {
     setDraws(0);
     setRound(0);
     setLastResult(null);
+    setWasLeading(false);
+    setPopup({ text: null, key: 0, variant: "default", size: "md" });
     setPhase("playing");
   }, []);
 
@@ -93,17 +126,67 @@ export default function App() {
     setCpuDeck(prev => prev.slice(1));
     setRound(prev => prev + 1);
 
+    // 現在のスコア状態を保存（コンバック検出用）
+    const wasBehind = cpuWins > playerWins;
+
     // 勝敗判定
     let result: "win" | "lose" | "draw";
     if (pCard.value > cCard.value) {
       result = "win";
-      setPlayerWins(prev => prev + 1);
+      const newPlayerWins = playerWins + 1;
+      setPlayerWins(newPlayerWins);
+      playWin();
+      sparkle(200, 300);
+      
+      // コンバック検出: 負けていた状態からリードを奪い返した
+      if (wasBehind && newPlayerWins > cpuWins) {
+        playComeback();
+        showPopup("🔥 COMEBACK!", "critical", "lg");
+      } else {
+        // 高いカードでの勝利はより派手に
+        const valueDiff = pCard.value - cCard.value;
+        if (valueDiff >= 10) {
+          showPopup(`💥 CRUSHING +1`, "combo", "lg");
+        } else if (valueDiff >= 5) {
+          showPopup(`✨ NICE +1`, "bonus", "md");
+        } else {
+          showPopup(`+1 WIN`, "default", "sm");
+        }
+      }
+      
+      // プレイヤーがリードしていたことを記録
+      if (newPlayerWins > cpuWins) {
+        setWasLeading(true);
+      }
     } else if (pCard.value < cCard.value) {
       result = "lose";
       setCpuWins(prev => prev + 1);
+      playLose();
+      
+      // 差が大きいほど残念感を表示
+      const valueDiff = cCard.value - pCard.value;
+      if (valueDiff >= 10) {
+        showPopup(`😱 CRUSHED...`, "default", "md");
+      } else {
+        showPopup(`-1`, "default", "sm");
+      }
+      
+      // リードを失った場合の記録
+      if (wasLeading && cpuWins + 1 > playerWins) {
+        setWasLeading(false);
+      }
     } else {
+      // 引き分け = WAR! (同じ数字)
       result = "draw";
       setDraws(prev => prev + 1);
+      playWar();
+      
+      // WAR表示 - 同ランク対決は興奮！
+      const rankName = pCard.rank === "A" ? "ACE" : 
+                       pCard.rank === "K" ? "KING" :
+                       pCard.rank === "Q" ? "QUEEN" :
+                       pCard.rank === "J" ? "JACK" : pCard.rank;
+      showPopup(`⚔️ WAR! ${rankName} vs ${rankName}`, "bonus", "lg");
     }
     setLastResult(result);
     setPhase("reveal");
@@ -111,13 +194,27 @@ export default function App() {
     // 次のラウンドまたは終了
     setTimeout(() => {
       if (playerDeck.length <= 1) {
-        // これが最後のカードだった
+        // これが最後のカードだった - ゲーム終了ポップアップ
+        if (playerWins > cpuWins || (result === "win" && playerWins + 1 > cpuWins)) {
+          confetti();
+          const winMargin = (result === "win" ? playerWins + 1 : playerWins) - cpuWins;
+          if (winMargin >= 5) {
+            showPopup("🏆 完全勝利！", "level", "xl");
+          } else {
+            showPopup("🎉 VICTORY!", "critical", "xl");
+          }
+        } else if (playerWins < cpuWins || (result === "lose" && playerWins < cpuWins + 1)) {
+          explosion(200, 300);
+          showPopup("💔 敗北...", "default", "lg");
+        } else {
+          showPopup("🤝 DRAW GAME", "bonus", "lg");
+        }
         setPhase("after");
       } else {
         setPhase("playing");
       }
     }, 1500);
-  }, [phase, playerDeck, cpuDeck]);
+  }, [phase, playerDeck, cpuDeck, playerWins, cpuWins, wasLeading, playWin, playLose, playWar, playComeback, sparkle, confetti, explosion, showPopup]);
 
   const renderCard = (card: Card | null, isHidden: boolean = false) => {
     if (!card) {
@@ -156,7 +253,15 @@ export default function App() {
 
   return (
     <GameShell gameId="cardwar" layout="default">
-      <div className="cw-root">
+      <div className="cw-root" style={{ position: 'relative' }}>
+        <ParticleLayer particles={particles} />
+        <ScorePopup 
+          text={popup.text}
+          popupKey={popup.key}
+          variant={popup.variant}
+          size={popup.size}
+          y="35%"
+        />
         {phase === "before" && (
           <div className="cw-screen">
             <h1 className="cw-title">🃏 Card War</h1>

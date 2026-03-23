@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
 import "./App.css";
 
 // --- Types ---
@@ -285,6 +287,13 @@ export default function App() {
   const startTimeRef = useRef<number>(0);
   const rafRef = useRef<number>(0);
 
+  // Dopamine effects
+  const { playSuccess, playMiss, playLevelUp, playGameOver } = useAudio();
+  const { particles, burst, confetti } = useParticles();
+  const [popup, setPopup] = useState<{ text: string; x: string; y: string; key: number; variant: PopupVariant } | null>(null);
+  const popupKeyRef = useRef(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const stopTimer = useCallback(() => {
     if (rafRef.current) {
       cancelAnimationFrame(rafRef.current);
@@ -301,12 +310,13 @@ export default function App() {
       if (remaining <= 0) {
         stopTimer();
         setPhase("timeout");
+        playGameOver();
       } else {
         rafRef.current = requestAnimationFrame(tick);
       }
     };
     rafRef.current = requestAnimationFrame(tick);
-  }, [stopTimer]);
+  }, [stopTimer, playGameOver]);
 
   useEffect(() => () => stopTimer(), [stopTimer]);
 
@@ -327,10 +337,29 @@ export default function App() {
     setLevel(1);
     setScore(0);
     setIsNewRecord(false);
+    setPopup(null);
     initLevel(1);
     setPhase("playing");
     startTimer();
   }, [initLevel, startTimer]);
+
+  // Helper to show popup at position relative to container
+  const showPopup = useCallback((text: string, clientX: number, clientY: number, variant: PopupVariant = "default") => {
+    if (!containerRef.current) return;
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const relX = clientX - containerRect.left;
+    const relY = clientY - containerRect.top;
+    popupKeyRef.current += 1;
+    setPopup({
+      text,
+      x: relX + "px",
+      y: relY + "px",
+      key: popupKeyRef.current,
+      variant,
+    });
+    setTimeout(() => setPopup(null), variant === "level" ? 1500 : 800);
+  }, []);
+
   const handleImageClick = useCallback((e: React.MouseEvent<SVGSVGElement>, isRight: boolean) => {
     if (phase !== "playing") return;
     
@@ -369,20 +398,33 @@ export default function App() {
       
       const timeBonus = Math.floor(remainingMs / 1000) * 10;
       const levelBonus = level * 50;
-      setScore(prev => prev + timeBonus + levelBonus);
+      const pointsGained = timeBonus + levelBonus;
+      setScore(prev => prev + pointsGained);
       
       setClickFeedback({ x, y, correct: true });
       setTimeout(() => setClickFeedback(null), 500);
       
+      // Dopamine effects: sound + particles + popup
+      playSuccess();
+      burst(e.clientX, e.clientY);
+      showPopup("+" + pointsGained, e.clientX, e.clientY, "default");
+      
       if (newFoundCount === DIFFERENCES_COUNT) {
         stopTimer();
-        const newScore = score + timeBonus + levelBonus;
+        const newScore = score + pointsGained;
         
         if (newScore > bestScore) {
           setBestScore(newScore);
           saveBestScore(newScore);
           setIsNewRecord(true);
         }
+        
+        // Level complete effects
+        playLevelUp();
+        confetti(60);
+        setTimeout(() => {
+          showPopup("LEVEL UP!", window.innerWidth / 2, window.innerHeight / 3, "level");
+        }, 300);
         
         setTimeout(() => {
           const nextLevel = level + 1;
@@ -393,6 +435,7 @@ export default function App() {
       }
     } else {
       setClickFeedback({ x, y, correct: false });
+      playMiss();
       const penalty = 3000;
       const newRemaining = Math.max(0, remainingMs - penalty);
       startTimeRef.current = performance.now() - (TIME_LIMIT_MS - newRemaining);
@@ -402,15 +445,27 @@ export default function App() {
       if (newRemaining <= 0) {
         stopTimer();
         setPhase("timeout");
+        playGameOver();
       }
     }
-  }, [phase, differences, modifiedShapes, originalShapes, foundCount, level, remainingMs, score, bestScore, stopTimer, initLevel, startTimer]);
+  }, [phase, differences, modifiedShapes, originalShapes, foundCount, level, remainingMs, score, bestScore, stopTimer, initLevel, startTimer, playSuccess, playMiss, playLevelUp, playGameOver, burst, confetti, showPopup]);
 
   const timerPercent = (remainingMs / TIME_LIMIT_MS) * 100;
   const timerColor = remainingMs > 20000 ? "#22c55e" : remainingMs > 10000 ? "#eab308" : "#ef4444";
   return (
     <GameShell gameId="spotdiff" layout="default">
-      <div className="spotdiff" style={{ width: 900, height: 600 }}>
+      <div ref={containerRef} className="spotdiff" style={{ width: 900, height: 600, position: "relative" }}>
+        <ParticleLayer particles={particles} />
+        {popup && (
+          <ScorePopup
+            text={popup.text}
+            popupKey={popup.key}
+            x={popup.x}
+            y={popup.y}
+            variant={popup.variant}
+            size={popup.variant === "level" ? "xl" : "lg"}
+          />
+        )}
         <header className="spotdiff__header">
           <h1 className="spotdiff__title">🔍 Spot the Diff</h1>
           <div className="spotdiff__stats">

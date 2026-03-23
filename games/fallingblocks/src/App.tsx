@@ -1,5 +1,9 @@
 ﻿import { useCallback, useEffect, useRef, useState } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { ParticleLayer } from "@shared/components/ParticleLayer";
+import { ScorePopup, type PopupVariant } from "@shared/components/ScorePopup";
+import { useParticles } from "@shared/hooks/useParticles";
+import { useAudio } from "@shared/hooks/useAudio";
 import {
   initGame,
   movePiece,
@@ -9,7 +13,7 @@ import {
   getGhostPositions,
   getDropInterval,
 } from "./lib/game";
-import type { GameState, GamePhase } from "./lib/types";
+import type { GameState, GamePhase, GameEvent } from "./lib/types";
 import {
   BOARD_ROWS,
   BOARD_COLS,
@@ -26,6 +30,152 @@ export default function App() {
   const [game, setGame] = useState<GameState>(initGame);
   const [phase, setPhase] = useState<GamePhase>("start");
   const dropIntervalRef = useRef<number | null>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
+
+  // ドーパミン演出用フック
+  const { particles, burst, confetti, explosion } = useParticles();
+  const { playTone, playArpeggio, playLevelUp, playGameOver } = useAudio();
+
+  // 画面フラッシュ用
+  const [flashActive, setFlashActive] = useState(false);
+  // バウンスアニメーション用
+  const [bounceActive, setBounceActive] = useState(false);
+  // レベルアップ表示用
+  const [showLevelUp, setShowLevelUp] = useState(false);
+  // 前回のレベル（レベルアップ検出用）
+  const prevLevelRef = useRef(1);
+  // スコアポップアップ用
+  const [scorePopup, setScorePopup] = useState<{ text: string; variant: PopupVariant; key: number } | null>(null);
+  const popupKeyRef = useRef(0);
+
+  // 効果音再生関数
+  const playDropSound = useCallback(() => {
+    playTone(150, 0.08, "square", 0.2);
+  }, [playTone]);
+
+  const playClearSound = useCallback((lines: number) => {
+    if (lines === 1) {
+      playTone(523, 0.1, "sine", 0.25);
+      playTone(659, 0.15, "sine", 0.2, 0.08);
+    } else if (lines === 2) {
+      playArpeggio([523, 659], 0.12, "sine", 0.25, 0.08);
+    } else if (lines === 3) {
+      playArpeggio([523, 659, 784], 0.12, "sine", 0.28, 0.08);
+    }
+  }, [playTone, playArpeggio]);
+
+  const playTetrisSound = useCallback(() => {
+    playArpeggio([523, 659, 784, 1047], 0.15, "sine", 0.3, 0.06);
+    playArpeggio([784, 988, 1175, 1568], 0.2, "triangle", 0.25, 0.1);
+  }, [playArpeggio]);
+
+  // スコアポップアップを表示
+  const showScorePopup = useCallback((text: string, variant: PopupVariant) => {
+    popupKeyRef.current += 1;
+    setScorePopup({ text, variant, key: popupKeyRef.current });
+    setTimeout(() => setScorePopup(null), variant === "critical" ? 1200 : 800);
+  }, []);
+
+  // ライン消去時のスコア計算（レベル倍率込み）
+  const getLineScore = useCallback((lines: number, level: number): number => {
+    const baseScores: Record<number, number> = { 1: 100, 2: 300, 3: 500, 4: 800 };
+    return (baseScores[lines] || 0) * level;
+  }, []);
+
+  // イベントに応じた演出処理
+  const triggerEffects = useCallback((event: GameEvent) => {
+    if (!boardRef.current) return;
+    const rect = boardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+
+    switch (event.type) {
+      case "drop":
+        playDropSound();
+        setBounceActive(true);
+        setTimeout(() => setBounceActive(false), 150);
+        break;
+
+      case "clear": {
+        const lines = event.linesCleared || 1;
+        playClearSound(lines);
+        // スコアポップアップ
+        const score = getLineScore(lines, game.level);
+        const variant: PopupVariant = lines === 1 ? "default" : lines === 2 ? "combo" : "bonus";
+        showScorePopup(`+${score}`, variant);
+        // 消えた行の位置でパーティクル
+        if (event.clearedRows) {
+          event.clearedRows.forEach((row) => {
+            const y = rect.top + row * CELL_SIZE + CELL_SIZE / 2;
+            burst(centerX, y, 15);
+          });
+        }
+        break;
+      }
+
+      case "tetris": {
+        playTetrisSound();
+        // スコアポップアップ (Tetris!)
+        const score = getLineScore(4, game.level);
+        showScorePopup(`TETRIS! +${score}`, "critical");
+        // 画面フラッシュ
+        setFlashActive(true);
+        setTimeout(() => setFlashActive(false), 200);
+        // confetti
+        confetti(60);
+        // 爆発パーティクル
+        if (event.clearedRows) {
+          event.clearedRows.forEach((row) => {
+            const y = rect.top + row * CELL_SIZE + CELL_SIZE / 2;
+            explosion(centerX, y, 20);
+          });
+        }
+        break;
+      }
+
+      case "levelup":
+        playLevelUp();
+        // 消えた行があれば通常のパーティクルも
+        if (event.clearedRows && event.linesCleared && event.linesCleared > 0) {
+          event.clearedRows.forEach((row) => {
+            const y = rect.top + row * CELL_SIZE + CELL_SIZE / 2;
+            burst(centerX, y, 12);
+          });
+        }
+        // レベルアップ表示
+        setShowLevelUp(true);
+        setTimeout(() => setShowLevelUp(false), 1500);
+        // confetti
+        confetti(40);
+        break;
+    }
+  }, [playDropSound, playClearSound, playTetrisSound, playLevelUp, burst, confetti, explosion, showScorePopup, getLineScore, game.level]);
+
+  // イベント監視（レベルアップも検出）
+  // 最後のイベントIDを追跡してイベント重複処理を防ぐ
+  const lastProcessedEventRef = useRef<string>("");
+  
+  useEffect(() => {
+    if (game.lastEvent.type === "none") return;
+    
+    // イベントの一意キーを生成（同じイベントの重複処理を防ぐ）
+    const eventKey = `${game.lastEvent.type}-${game.score}-${game.level}-${game.linesCleared}`;
+    if (lastProcessedEventRef.current === eventKey) return;
+    lastProcessedEventRef.current = eventKey;
+
+    // レベルアップを検出（clearでレベルアップした場合はlevelupとして扱う）
+    const effectEvent = game.level > prevLevelRef.current && game.lastEvent.type !== "levelup"
+      ? { ...game.lastEvent, type: "levelup" as const }
+      : game.lastEvent;
+    
+    // 次フレームで呼び出してカスケードレンダリングを回避
+    const raf = requestAnimationFrame(() => {
+      triggerEffects(effectEvent);
+    });
+    
+    prevLevelRef.current = game.level;
+    
+    return () => cancelAnimationFrame(raf);
+  }, [game.lastEvent, game.score, game.level, game.linesCleared, triggerEffects]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -98,6 +248,18 @@ export default function App() {
       }
     };
   }, [phase, game.level, game.gameOver]);
+
+  // ゲームオーバー検出して演出をトリガー
+  const gameOverPlayedRef = useRef(false);
+  useEffect(() => {
+    if (game.gameOver && phase === "gameover" && !gameOverPlayedRef.current) {
+      gameOverPlayedRef.current = true;
+      playGameOver();
+    }
+    if (!game.gameOver) {
+      gameOverPlayedRef.current = false;
+    }
+  }, [game.gameOver, phase, playGameOver]);
 
   const startGame = useCallback(() => {
     setGame(initGame());
@@ -237,7 +399,8 @@ export default function App() {
           </div>
 
           <div
-            className="fallingblocks-board"
+            ref={boardRef}
+            className={`fallingblocks-board ${bounceActive ? "fallingblocks-board--bounce" : ""}`}
             style={{ width: BOARD_WIDTH, height: BOARD_HEIGHT }}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
@@ -348,6 +511,30 @@ export default function App() {
             </button>
           </div>
         )}
+
+        {/* 画面フラッシュ（テトリス時） */}
+        {flashActive && <div className="fallingblocks-flash" />}
+
+        {/* レベルアップ表示 */}
+        {showLevelUp && (
+          <div className="fallingblocks-levelup">
+            <span>LEVEL UP!</span>
+            <span className="fallingblocks-levelup-num">{game.level}</span>
+          </div>
+        )}
+
+        {/* スコアポップアップ */}
+        <ScorePopup
+          text={scorePopup?.text ?? null}
+          popupKey={scorePopup?.key ?? 0}
+          x="50%"
+          y="35%"
+          variant={scorePopup?.variant ?? "default"}
+          size={scorePopup?.variant === "critical" ? "lg" : "md"}
+        />
+
+        {/* パーティクル */}
+        <ParticleLayer particles={particles} />
       </div>
     </GameShell>
   );

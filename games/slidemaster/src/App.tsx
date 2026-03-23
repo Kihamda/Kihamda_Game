@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useState, useRef } from "react";
-import { GameShell } from "@shared/components/GameShell";
+import {
+  GameShell,
+  useAudio,
+  useParticles,
+  ParticleLayer,
+  ScorePopup,
+} from "@shared";
+import type { PopupVariant } from "@shared";
 import type { GameState } from "./lib/types";
-import { EMPTY_TILE } from "./lib/constants";
+import { EMPTY_TILE, GRID_SIZE } from "./lib/constants";
 import {
   createInitialState,
   startGame,
@@ -20,6 +27,41 @@ export default function App() {
   });
 
   const timerRef = useRef<number | null>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
+
+  // ドーパミンエフェクト用フック
+  const audio = useAudio();
+  const { particles, sparkle, confetti } = useParticles();
+  
+  // スコアポップアップ用state
+  const [popup, setPopup] = useState<{
+    text: string;
+    key: number;
+    variant: PopupVariant;
+    x: string;
+    y: string;
+  } | null>(null);
+
+  /** スコアポップアップ表示 */
+  const showPopup = useCallback(
+    (text: string, variant: PopupVariant = "default", x = "50%", y = "40%") => {
+      setPopup({ text, key: Date.now(), variant, x, y });
+      setTimeout(() => setPopup(null), 1500);
+    },
+    []
+  );
+
+  /** タイル位置からエフェクト座標を計算 */
+  const getTilePosition = useCallback((index: number) => {
+    if (!boardRef.current) return { x: 0, y: 0 };
+    const boardRect = boardRef.current.getBoundingClientRect();
+    const { row, col } = indexToRowCol(index);
+    const tileSize = boardRect.width / GRID_SIZE;
+    return {
+      x: boardRect.left + (col + 0.5) * tileSize,
+      y: boardRect.top + (row + 0.5) * tileSize,
+    };
+  }, []);
 
   // タイマー更新
   useEffect(() => {
@@ -48,11 +90,44 @@ export default function App() {
 
   const handleStart = useCallback(() => {
     setGame((prev) => startGame(prev));
-  }, []);
+    audio.playClick();
+  }, [audio]);
 
   const handleClick = useCallback((index: number) => {
-    setGame((prev) => handleTileClick(prev, index));
-  }, []);
+    setGame((prev) => {
+      const next = handleTileClick(prev, index);
+      
+      // 移動が成功したか判定
+      if (next.moves > prev.moves) {
+        // タイル移動成功時
+        audio.playClick();
+        const pos = getTilePosition(index);
+        sparkle(pos.x, pos.y, 6);
+
+        // クリア判定
+        if (next.phase === "completed") {
+          // クリア時のエフェクト
+          setTimeout(() => {
+            confetti(60);
+            
+            // ベストスコア更新判定
+            const isNewBestMoves = prev.bestMoves === null || next.moves < prev.bestMoves;
+            const isNewBestTime = prev.bestTime === null || next.elapsedTime < prev.bestTime;
+            
+            if (isNewBestMoves || isNewBestTime) {
+              audio.playPerfect();
+              showPopup("🏆 NEW RECORD!", "critical");
+            } else {
+              audio.playCelebrate();
+              showPopup("🎉 CLEAR!", "bonus");
+            }
+          }, 200);
+        }
+      }
+      
+      return next;
+    });
+  }, [audio, getTilePosition, sparkle, confetti, showPopup]);
 
   const handleReset = useCallback(() => {
     const { moves, time } = loadBestScores();
@@ -87,7 +162,7 @@ export default function App() {
         </div>
 
         {/* ゲームボード */}
-        <div className="slidemaster-board">
+        <div className="slidemaster-board" ref={boardRef}>
           {game.board.map((tile, index) => {
             const { row, col } = indexToRowCol(index);
             const movable = game.phase === "playing" && canMove(game.board, index);
@@ -144,6 +219,21 @@ export default function App() {
             ? "1〜15の数字を順番に並べよう"
             : "空きマスの隣のタイルをクリックして移動"}
         </p>
+
+        {/* パーティクルエフェクト */}
+        <ParticleLayer particles={particles} />
+        
+        {/* スコアポップアップ */}
+        {popup && (
+          <ScorePopup
+            text={popup.text}
+            popupKey={popup.key}
+            variant={popup.variant}
+            x={popup.x}
+            y={popup.y}
+            size="lg"
+          />
+        )}
       </div>
     </GameShell>
   );

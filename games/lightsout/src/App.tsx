@@ -1,6 +1,18 @@
 import { useState, useCallback, useMemo } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { useAudio, useParticles, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
+import { ParticleLayer } from "@shared";
 import "./App.css";
+
+/* ---- Popup State ---- */
+interface PopupState {
+  text: string | null;
+  key: number;
+  variant: PopupVariant;
+  size: "sm" | "md" | "lg" | "xl";
+  y: string;
+}
 
 /* ---- Types ---- */
 type Grid = boolean[][];
@@ -61,12 +73,37 @@ function isCleared(grid: Grid): boolean {
   return grid.every((row) => row.every((cell) => !cell));
 }
 
+/* ---- Efficiency Rating ---- */
+function getEfficiencyRating(moves: number, optimal: number): { rating: string; emoji: string; variant: PopupVariant } {
+  const ratio = moves / optimal;
+  if (ratio === 1) return { rating: "PERFECT!", emoji: "👑", variant: "critical" };
+  if (ratio <= 1.2) return { rating: "EXCELLENT!", emoji: "⭐", variant: "bonus" };
+  if (ratio <= 1.5) return { rating: "GREAT!", emoji: "🎯", variant: "combo" };
+  if (ratio <= 2.0) return { rating: "GOOD!", emoji: "✨", variant: "default" };
+  return { rating: "CLEARED!", emoji: "🎉", variant: "default" };
+}
+
 /* ---- Component ---- */
 export default function App() {
   const [phase, setPhase] = useState<Phase>("menu");
   const [grid, setGrid] = useState<Grid>(createEmptyGrid);
   const [moves, setMoves] = useState(0);
   const [difficultyIndex, setDifficultyIndex] = useState(1);
+  
+  // Popup state
+  const [popup, setPopup] = useState<PopupState>({ text: null, key: 0, variant: "default", size: "md", y: "40%" });
+  
+  // Dopamine hooks
+  const { particles, sparkle, confetti } = useParticles();
+  const { playTone } = useAudio();
+  const playClick = useCallback(() => playTone(440, 0.05, 'triangle'), [playTone]);
+  const playClear = useCallback(() => playTone(880, 0.2, 'sine'), [playTone]);
+  const playMilestone = useCallback(() => playTone(660, 0.1, 'sine'), [playTone]);
+  
+  // Show popup helper
+  const showPopup = useCallback((text: string, variant: PopupVariant = "default", size: "sm" | "md" | "lg" | "xl" = "md", y = "40%") => {
+    setPopup(prev => ({ text, key: prev.key + 1, variant, size, y }));
+  }, []);
 
   const lightCount = useMemo(() => {
     return grid.flat().filter(Boolean).length;
@@ -78,22 +115,51 @@ export default function App() {
     setGrid(generatePuzzle(difficulty.clicks));
     setMoves(0);
     setPhase("playing");
-  }, []);
+    // Level start popup
+    showPopup(`${difficulty.name} 開始!`, "level", "lg", "35%");
+  }, [showPopup]);
 
   const handleCellClick = useCallback(
     (row: number, col: number) => {
       if (phase !== "playing") return;
 
+      playClick();
       const newGrid = toggleCell(grid, row, col);
       const newMoves = moves + 1;
       setGrid(newGrid);
       setMoves(newMoves);
 
+      const optimal = DIFFICULTY_LEVELS[difficultyIndex].clicks;
+
       if (isCleared(newGrid)) {
+        // Puzzle solved! Show efficiency rating
+        playClear();
+        confetti();
+        const { rating, emoji, variant } = getEfficiencyRating(newMoves, optimal);
+        setTimeout(() => {
+          showPopup(`${emoji} ${rating}`, variant, "xl", "25%");
+        }, 300);
         setPhase("cleared");
+      } else {
+        sparkle(200 + col * 50, 200 + row * 50);
+        
+        // Move count milestones
+        if (newMoves === 5) {
+          playMilestone();
+          showPopup("5手達成! 🔥", "combo", "md", "30%");
+        } else if (newMoves === 10) {
+          playMilestone();
+          showPopup("10手突破! 💪", "combo", "md", "30%");
+        } else if (newMoves === optimal) {
+          // Reached optimal without solving - encourage to keep going
+          playMilestone();
+          showPopup(`最適手数 ${optimal}手に到達!`, "bonus", "md", "30%");
+        } else if (newMoves === 20) {
+          showPopup("20手... 🤔", "default", "sm", "30%");
+        }
       }
     },
-    [phase, grid, moves],
+    [phase, grid, moves, difficultyIndex, playClick, playClear, playMilestone, confetti, sparkle, showPopup],
   );
 
   const handleRestart = useCallback(() => {
@@ -203,6 +269,14 @@ export default function App() {
             )}
           </>
         )}
+        <ParticleLayer particles={particles} />
+        <ScorePopup
+          text={popup.text}
+          popupKey={popup.key}
+          variant={popup.variant}
+          size={popup.size}
+          y={popup.y}
+        />
       </div>
     </GameShell>
   );

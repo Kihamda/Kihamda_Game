@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect, useRef, useCallback } from "react";
-import { GameShell } from "@shared/components/GameShell";
+import { GameShell, useParticles, ParticleLayer, useAudio, ScorePopup } from "@shared";
 import "./App.css";
 
 /* ---- Types ---- */
@@ -16,66 +16,6 @@ const CANVAS_SIZE = GRID_OFFSET * 2 + DOT_GAP * (GRID_SIZE - 1);
 const SHOW_DURATION = 500;
 const SUCCESS_DELAY = 1200;
 const START_POINTS = 3;
-
-/* ---- Audio ---- */
-let audioCtx: AudioContext | null = null;
-
-function getAudioContext(): AudioContext {
-  if (!audioCtx) {
-    audioCtx = new AudioContext();
-  }
-  return audioCtx;
-}
-
-function playTone(frequency: number, duration = 0.15): void {
-  const ctx = getAudioContext();
-  const oscillator = ctx.createOscillator();
-  const gainNode = ctx.createGain();
-
-  oscillator.type = "sine";
-  oscillator.frequency.value = frequency;
-  oscillator.connect(gainNode);
-  gainNode.connect(ctx.destination);
-
-  gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-  gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
-
-  oscillator.start(ctx.currentTime);
-  oscillator.stop(ctx.currentTime + duration);
-}
-
-function playSuccessSound(): void {
-  const ctx = getAudioContext();
-  [523.25, 659.25, 783.99].forEach((freq, i) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = "sine";
-    osc.frequency.value = freq;
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    gain.gain.setValueAtTime(0.2, ctx.currentTime + i * 0.1);
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.1 + 0.2);
-    osc.start(ctx.currentTime + i * 0.1);
-    osc.stop(ctx.currentTime + i * 0.1 + 0.2);
-  });
-}
-
-function playErrorSound(): void {
-  const ctx = getAudioContext();
-  const oscillator = ctx.createOscillator();
-  const gainNode = ctx.createGain();
-
-  oscillator.type = "sawtooth";
-  oscillator.frequency.value = 100;
-  oscillator.connect(gainNode);
-  gainNode.connect(ctx.destination);
-
-  gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-  gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-
-  oscillator.start(ctx.currentTime);
-  oscillator.stop(ctx.currentTime + 0.4);
-}
 
 /* ---- Helpers ---- */
 function getDotPosition(row: number, col: number): Point {
@@ -115,9 +55,21 @@ export default function App() {
   const [playerPattern, setPlayerPattern] = useState<number[]>([]);
   const [currentDrag, setCurrentDrag] = useState<Point | null>(null);
   const [message, setMessage] = useState("START de hajimeyou!");
+  const [popupText, setPopupText] = useState<string | null>(null);
+  const [popupKey, setPopupKey] = useState(0);
+  const [streak, setStreak] = useState(0);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const timeoutRef = useRef<number[]>([]);
+  
+  const { particles, sparkle, burst, confetti } = useParticles();
+  const { playClick, playSuccess, playMiss, playLevelUp, playCelebrate, playTone } = useAudio();
+
+  const showPopup = useCallback((text: string) => {
+    setPopupText(text);
+    setPopupKey((k) => k + 1);
+    setTimeout(() => setPopupText(null), 1000);
+  }, []);
 
   const clearTimeouts = useCallback(() => {
     timeoutRef.current.forEach(clearTimeout);
@@ -127,13 +79,15 @@ export default function App() {
   const startGame = useCallback(() => {
     clearTimeouts();
     setLevel(1);
+    setStreak(0);
     const newPattern = generatePattern(START_POINTS);
     setPattern(newPattern);
     setPlayerPattern([]);
     setShownIndex(0);
     setPhase("showing");
     setMessage("Pattern wo oboete...");
-  }, [clearTimeouts]);
+    playClick();
+  }, [clearTimeouts, playClick]);
 
   const nextLevel = useCallback(() => {
     clearTimeouts();
@@ -145,14 +99,17 @@ export default function App() {
     setShownIndex(0);
     setPhase("showing");
     setMessage("Pattern wo oboete...");
-  }, [level, clearTimeouts]);
+    playLevelUp();
+    showPopup(`Level ${newLevel}!`);
+  }, [level, clearTimeouts, playLevelUp, showPopup]);
 
   useEffect(() => {
     if (phase !== "showing") return;
 
     if (shownIndex < pattern.length) {
       const { row, col } = getRowCol(pattern[shownIndex]);
-      playTone(220 + row * 110 + col * 55);
+      // Use shared playTone for showing pattern
+      playTone(220 + row * 110 + col * 55, 0.15, "sine", 0.3);
 
       const tid = window.setTimeout(() => {
         setShownIndex((i) => i + 1);
@@ -167,7 +124,7 @@ export default function App() {
     }
 
     return () => clearTimeouts();
-  }, [phase, shownIndex, pattern, clearTimeouts]);
+  }, [phase, shownIndex, pattern, clearTimeouts, playTone]);
 
   useEffect(() => {
     if (phase !== "success") return;
@@ -194,26 +151,52 @@ export default function App() {
   const checkPattern = useCallback(
     (playerPat: number[]) => {
       if (playerPat.length !== pattern.length) {
-        playErrorSound();
+        playMiss();
+        setStreak(0);
         setPhase("gameover");
         setMessage("Game Over! Level " + level);
+        showPopup("MISS!");
         return;
       }
 
       for (let i = 0; i < pattern.length; i++) {
         if (playerPat[i] !== pattern[i]) {
-          playErrorSound();
+          playMiss();
+          setStreak(0);
           setPhase("gameover");
           setMessage("Game Over! Level " + level);
+          showPopup("MISS!");
           return;
         }
       }
 
-      playSuccessSound();
+      // Pattern correct!
+      const newStreak = streak + 1;
+      setStreak(newStreak);
+      
+      playSuccess();
+      burst(window.innerWidth / 2, window.innerHeight / 2);
+      sparkle(window.innerWidth / 2 - 50, window.innerHeight / 2 - 30);
+      sparkle(window.innerWidth / 2 + 50, window.innerHeight / 2 - 30);
+      
+      // Celebrate every 3 levels or 5 streak
+      if (level % 3 === 0 || newStreak >= 5) {
+        confetti();
+        playCelebrate();
+        if (newStreak >= 5) {
+          setStreak(0); // Reset streak after celebration
+          showPopup(`🔥 ${newStreak} STREAK!`);
+        } else {
+          showPopup(`+${pattern.length * 10} pts!`);
+        }
+      } else {
+        showPopup(`+${pattern.length * 10} pts!`);
+      }
+      
       setPhase("success");
       setMessage("Level " + level + " Clear!");
     },
-    [pattern, level],
+    [pattern, level, streak, sparkle, burst, confetti, playSuccess, playMiss, playCelebrate, showPopup],
   );
 
   const getPointerPos = useCallback(
@@ -238,13 +221,27 @@ export default function App() {
       const dotIdx = findDotAt(pos.x, pos.y);
 
       if (dotIdx !== null) {
-        playTone(220 + Math.floor(dotIdx / GRID_SIZE) * 110 + (dotIdx % GRID_SIZE) * 55);
+        // Play click with varying pitch based on dot position
+        playTone(220 + Math.floor(dotIdx / GRID_SIZE) * 110 + (dotIdx % GRID_SIZE) * 55, 0.1, "sine", 0.25);
+        playClick();
+        
+        // Sparkle effect at dot position (convert canvas coords to screen coords)
+        const canvas = canvasRef.current;
+        if (canvas) {
+          const rect = canvas.getBoundingClientRect();
+          const { row, col } = getRowCol(dotIdx);
+          const dotPos = getDotPosition(row, col);
+          const screenX = rect.left + (dotPos.x / CANVAS_SIZE) * rect.width;
+          const screenY = rect.top + (dotPos.y / CANVAS_SIZE) * rect.height;
+          sparkle(screenX, screenY, 6);
+        }
+        
         setPlayerPattern([dotIdx]);
         setCurrentDrag(pos);
         canvasRef.current?.setPointerCapture(e.pointerId);
       }
     },
-    [phase, getPointerPos, findDotAt],
+    [phase, getPointerPos, findDotAt, playTone, playClick, sparkle],
   );
 
   const handlePointerMove = useCallback(
@@ -256,11 +253,25 @@ export default function App() {
 
       const dotIdx = findDotAt(pos.x, pos.y);
       if (dotIdx !== null && !playerPattern.includes(dotIdx)) {
-        playTone(220 + Math.floor(dotIdx / GRID_SIZE) * 110 + (dotIdx % GRID_SIZE) * 55);
+        // Play click with varying pitch based on dot position
+        playTone(220 + Math.floor(dotIdx / GRID_SIZE) * 110 + (dotIdx % GRID_SIZE) * 55, 0.1, "sine", 0.25);
+        playClick();
+        
+        // Sparkle effect at dot position
+        const canvas = canvasRef.current;
+        if (canvas) {
+          const rect = canvas.getBoundingClientRect();
+          const { row, col } = getRowCol(dotIdx);
+          const dotPos = getDotPosition(row, col);
+          const screenX = rect.left + (dotPos.x / CANVAS_SIZE) * rect.width;
+          const screenY = rect.top + (dotPos.y / CANVAS_SIZE) * rect.height;
+          sparkle(screenX, screenY, 6);
+        }
+        
         setPlayerPattern((prev) => [...prev, dotIdx]);
       }
     },
-    [phase, playerPattern, getPointerPos, findDotAt],
+    [phase, playerPattern, getPointerPos, findDotAt, playTone, playClick, sparkle],
   );
 
   const handlePointerUp = useCallback(
@@ -385,10 +396,18 @@ export default function App() {
 
   return (
     <GameShell gameId="patternlock" layout="default">
+      <ParticleLayer particles={particles} />
+      <ScorePopup 
+        text={popupText} 
+        popupKey={popupKey}
+        variant={popupText?.includes("STREAK") ? "combo" : popupText?.includes("Level") ? "level" : popupText?.includes("MISS") ? "critical" : "bonus"}
+        size="lg"
+      />
       <div className="patternlock-container">
         <header className="patternlock-header">
           <h1 className="patternlock-title">Pattern Lock</h1>
           <div className="patternlock-level">Level: {level}</div>
+          {streak > 0 && <div className="patternlock-streak">🔥 {streak}</div>}
         </header>
 
         <div className="patternlock-message">{message}</div>

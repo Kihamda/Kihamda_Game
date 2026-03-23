@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { ParticleLayer, useAudio, useParticles, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
 import "./App.css";
 
 // ---------- 型定義 ----------
@@ -127,6 +129,34 @@ function createInitialState(mazeSize: MazeSize) {
   return { maze, goal };
 }
 
+// ---------- チェックポイント生成 ----------
+function generateCheckpoints(
+  maze: Cell[][],
+  start: Position,
+  goal: Position,
+  count: number
+): Position[] {
+  const height = maze.length;
+  const width = maze[0].length;
+  const candidates: Position[] = [];
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      if (
+        maze[y][x] === 0 &&
+        !(x === start.x && y === start.y) &&
+        !(x === goal.x && y === goal.y)
+      ) {
+        candidates.push({ x, y });
+      }
+    }
+  }
+
+  // ランダムに選択
+  const shuffled = candidates.sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
+
 // ---------- メインコンポーネント ----------
 export default function App() {
   const [size, setSize] = useState<MazeSize>("medium");
@@ -137,13 +167,44 @@ export default function App() {
   const [elapsedTime, setElapsedTime] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // チェックポイント
+  const [checkpoints, setCheckpoints] = useState<Position[]>([]);
+  const [collectedCheckpoints, setCollectedCheckpoints] = useState<Set<string>>(new Set());
+
+  // ScorePopup state
+  const [popup, setPopup] = useState<{
+    text: string;
+    variant: PopupVariant;
+    key: number;
+  } | null>(null);
+
+  const { playTone } = useAudio();
+  const { particles, sparkle, confetti } = useParticles();
+
+  const playMove = useCallback(() => {
+    playTone(400, 0.03, "sine");
+  }, [playTone]);
+
+  const playGoal = useCallback(() => {
+    playTone(880, 0.3, "sine");
+  }, [playTone]);
+
   // 迷路初期化
   const initMaze = useCallback((mazeSize: MazeSize) => {
-    setMazeState(createInitialState(mazeSize));
+    const newState = createInitialState(mazeSize);
+    setMazeState(newState);
     setPlayer({ x: 1, y: 1 });
     setMoves(0);
     setElapsedTime(0);
     setPhase("before");
+    setPopup(null);
+
+    // チェックポイント生成 (サイズに応じて数を変える)
+    const checkpointCount = mazeSize === "small" ? 2 : mazeSize === "medium" ? 3 : 5;
+    setCheckpoints(
+      generateCheckpoints(newState.maze, { x: 1, y: 1 }, newState.goal, checkpointCount)
+    );
+    setCollectedCheckpoints(new Set());
 
     if (timerRef.current) {
       clearInterval(timerRef.current);
@@ -187,10 +248,49 @@ export default function App() {
             setPhase("in_progress");
           }
           setMoves((m) => m + 1);
+          playMove();
+          sparkle(nx * CELL_SIZE + CELL_SIZE / 2, ny * CELL_SIZE + CELL_SIZE / 2);
+
+          // チェックポイント判定
+          const checkpointKey = `${nx},${ny}`;
+          const isCheckpoint = checkpoints.some((cp) => cp.x === nx && cp.y === ny);
+          if (isCheckpoint && !collectedCheckpoints.has(checkpointKey)) {
+            setCollectedCheckpoints((prev) => new Set(prev).add(checkpointKey));
+            setPopup({
+              text: "⭐ チェックポイント!",
+              variant: "bonus",
+              key: Date.now(),
+            });
+            playTone(660, 0.15, "sine");
+          }
 
           // ゴール判定
           if (nx === goal.x && ny === goal.y) {
             setPhase("after");
+            confetti();
+            playGoal();
+
+            // 快速クリア判定 (サイズに応じたタイム)
+            const fastTimes: Record<MazeSize, number> = {
+              small: 15,
+              medium: 30,
+              large: 60,
+            };
+            const isFast = elapsedTime < fastTimes[size];
+
+            if (isFast) {
+              setPopup({
+                text: "⚡ 超高速クリア!",
+                variant: "critical",
+                key: Date.now(),
+              });
+            } else {
+              setPopup({
+                text: "🎉 ゴール!",
+                variant: "level",
+                key: Date.now(),
+              });
+            }
           }
 
           return { x: nx, y: ny };
@@ -198,7 +298,7 @@ export default function App() {
         return prev;
       });
     },
-    [maze, goal, phase]
+    [maze, goal, phase, size, elapsedTime, checkpoints, collectedCheckpoints, playMove, playGoal, playTone, sparkle, confetti]
   );
 
   // キーボード操作
@@ -285,11 +385,14 @@ export default function App() {
               const isPlayer = player.x === x && player.y === y;
               const isGoal = goal.x === x && goal.y === y;
               const isStart = x === 1 && y === 1;
+              const isCheckpoint = checkpoints.some((cp) => cp.x === x && cp.y === y);
+              const isCollected = collectedCheckpoints.has(`${x},${y}`);
 
               let cellClass = "mazerun-cell";
               if (cell === 1) cellClass += " mazerun-cell--wall";
               if (isStart && !isPlayer) cellClass += " mazerun-cell--start";
               if (isGoal && !isPlayer) cellClass += " mazerun-cell--goal";
+              if (isCheckpoint && !isCollected && !isPlayer) cellClass += " mazerun-cell--checkpoint";
               if (isPlayer) cellClass += " mazerun-cell--player";
 
               return (
@@ -354,6 +457,13 @@ export default function App() {
             ▼
           </button>
         </div>
+        <ScorePopup
+          text={popup?.text ?? null}
+          popupKey={popup?.key}
+          variant={popup?.variant}
+          size="lg"
+        />
+        <ParticleLayer particles={particles} />
       </div>
     </GameShell>
   );

@@ -1,0 +1,162 @@
+.jetpack-game {
+  position: relative;
+  background: #1a1a3e;
+  border-radius: 8px;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+
+.jetpack-canvas {
+  display: block;
+}
+
+.jetpack-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.jetpack-score {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.jetpack-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 18px;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.jetpack-highscore {
+  font-size: 16px;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.jetpack-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26, 26, 62, 0.95);
+  padding: 20px;
+  text-align: center;
+}
+
+.jetpack-title {
+  font-size: 48px;
+  color: #4ecdc4;
+  margin: 0 0 16px 0;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.jetpack-instruction {
+  font-size: 18px;
+  color: #ccc;
+  margin: 0 0 24px 0;
+  line-height: 1.6;
+}
+
+.jetpack-start-btn {
+  padding: 16px 48px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #4ecdc4, #44a3a0);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+}
+
+.jetpack-start-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(78, 205, 196, 0.6);
+}
+
+.jetpack-start-btn:active {
+  transform: scale(0.98);
+}
+
+.jetpack-hint {
+  font-size: 14px;
+  color: #888;
+  margin-top: 16px;
+}
+
+.jetpack-gameover {
+  background: rgba(26, 26, 62, 0.98);
+}
+
+.jetpack-gameover-title {
+  font-size: 42px;
+  color: #ff6b6b;
+  margin: 0 0 20px 0;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.jetpack-final-stats {
+  margin-bottom: 20px;
+}
+
+.jetpack-final-stats p {
+  font-size: 18px;
+  color: #ccc;
+  margin: 8px 0;
+}
+
+.jetpack-final-score {
+  font-size: 28px !important;
+  color: #fff !important;
+  font-weight: bold;
+  margin-top: 12px !important;
+}
+
+.jetpack-new-record {
+  font-size: 24px;
+  color: #ffd700;
+  margin: 0 0 16px 0;
+  animation: pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* 画面フラッシュ */
+.jetpack-flash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #4ecdc4, #1dd1a1);
+  pointer-events: none;
+  transition: opacity 0.15s ease-out;
+  z-index: 50;
+}

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- Left Wall -->
+  <rect x="0" y="0" width="30" height="200" fill="#374151"/>
+  <!-- Right Wall -->
+  <rect x="170" y="0" width="30" height="200" fill="#374151"/>
+  <!-- Obstacle 1 -->
+  <rect x="30" y="40" width="70" height="15" fill="#ef4444"/>
+  <!-- Obstacle 2 -->
+  <rect x="100" y="120" width="70" height="15" fill="#ef4444"/>
+  <!-- Ninja Body -->
+  <circle cx="140" cy="85" r="15" fill="#1f2937"/>
+  <!-- Ninja Headband -->
+  <rect x="125" y="78" width="30" height="5" fill="#e94560"/>
+  <!-- Headband Tail -->
+  <path d="M155 80 Q165 78 168 88" stroke="#e94560" stroke-width="3" fill="none"/>
+  <!-- Ninja Eyes -->
+  <ellipse cx="135" cy="83" rx="3" ry="2" fill="white"/>
+  <ellipse cx="145" cy="83" rx="3" ry="2" fill="white"/>
+  <!-- Jump Trail -->
+  <path d="M50 160 Q80 130 140 90" stroke="rgba(233,69,96,0.4)" stroke-width="3" fill="none" stroke-dasharray="5,5"/>
+</svg>

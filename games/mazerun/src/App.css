@@ -102,6 +102,20 @@
   animation: pulse 1s ease-in-out infinite;
 }
 
+.mazerun-cell--checkpoint {
+  background: #9b59b6 !important;
+  animation: checkpoint-pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes checkpoint-pulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(155, 89, 182, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(155, 89, 182, 1);
+  }
+}
+
 .mazerun-cell--player {
   background: #f1c40f !important;
   border-radius: 50%;

@@ -1,6 +1,6 @@
 // Falling Blocks - Game logic (pure functions)
 
-import type { GameState, Tetromino, TetrominoType, Position } from "./types";
+import type { GameState, Tetromino, TetrominoType, Position, GameEvent } from "./types";
 import {
   BOARD_ROWS,
   BOARD_COLS,
@@ -9,6 +9,9 @@ import {
   SCORE_PER_LINE,
   LINES_PER_LEVEL,
 } from "./constants";
+
+/** イベントなし */
+const NO_EVENT: GameEvent = { type: "none" };
 
 // Create empty board
 export function createEmptyBoard(): (TetrominoType | null)[][] {
@@ -52,6 +55,7 @@ export function initGame(): GameState {
     linesCleared: 0,
     gameOver: false,
     isPaused: false,
+    lastEvent: NO_EVENT,
   };
 }
 
@@ -155,6 +159,14 @@ export function lockPiece(state: GameState): GameState {
 
 // Clear completed lines and return new state
 export function clearLines(state: GameState): GameState {
+  // どの行が完全に埋まっているか記録
+  const clearedRows: number[] = [];
+  state.board.forEach((row, index) => {
+    if (row.every((cell) => cell !== null)) {
+      clearedRows.push(index);
+    }
+  });
+
   const newBoard = state.board.filter(
     (row) => !row.every((cell) => cell !== null)
   );
@@ -169,6 +181,19 @@ export function clearLines(state: GameState): GameState {
   const newLinesCleared = state.linesCleared + clearedCount;
   const newLevel = Math.floor(newLinesCleared / LINES_PER_LEVEL) + 1;
   const scoreGain = SCORE_PER_LINE[clearedCount] || 0;
+  const levelUp = newLevel > state.level;
+
+  // イベントを決定
+  let event: GameEvent;
+  if (clearedCount === 4) {
+    event = { type: "tetris", linesCleared: 4, clearedRows };
+  } else if (levelUp) {
+    event = { type: "levelup", linesCleared: clearedCount, clearedRows };
+  } else if (clearedCount > 0) {
+    event = { type: "clear", linesCleared: clearedCount, clearedRows };
+  } else {
+    event = { type: "drop" };
+  }
 
   return {
     ...state,
@@ -176,6 +201,7 @@ export function clearLines(state: GameState): GameState {
     score: state.score + scoreGain * state.level,
     linesCleared: newLinesCleared,
     level: newLevel,
+    lastEvent: event,
   };
 }
 

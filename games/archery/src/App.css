@@ -1,0 +1,225 @@
+.archery-container {
+  width: 700px;
+  height: 500px;
+  position: relative;
+  background: linear-gradient(to bottom, #87ceeb 0%, #b0e0e6 50%, #90ee90 50%, #228b22 100%);
+  font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
+  user-select: none;
+}
+
+.archery-canvas {
+  display: block;
+  cursor: crosshair;
+}
+
+/* ブルズアイ時のフラッシュ */
+.archery-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 50%, rgba(255, 215, 0, 0.8), rgba(255, 255, 255, 0.4));
+  pointer-events: none;
+  animation: flash-pulse 0.15s ease-out;
+  z-index: 50;
+}
+
+@keyframes flash-pulse {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ヘッダーUI */
+.archery-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.archery-shot-info {
+  display: flex;
+  gap: 20px;
+}
+
+.archery-wind-display {
+  text-align: center;
+  min-width: 120px;
+}
+
+.archery-wind-label {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.archery-wind-indicator {
+  position: relative;
+}
+
+/* 風パーティクル */
+.archery-wind-particles {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.8) 20%, 
+    rgba(255, 255, 255, 0.8) 40%,
+    transparent 60%,
+    rgba(255, 255, 255, 0.6) 80%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: wind-flow 1s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes wind-flow {
+  0% { background-position: 200% 0; }
+  100% { background-position: 0% 0; }
+}
+
+.archery-score-display {
+  text-align: right;
+}
+
+/* オーバーレイ共通 */
+.archery-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  z-index: 10;
+}
+
+.archery-title {
+  font-size: 48px;
+  margin: 0 0 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.archery-desc {
+  font-size: 18px;
+  margin: 0 0 30px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.archery-btn {
+  padding: 15px 50px;
+  font-size: 20px;
+  font-weight: bold;
+  background: linear-gradient(180deg, #4ade80, #22c55e);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.archery-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+.archery-btn:active {
+  transform: translateY(0);
+}
+
+/* 結果画面 */
+.archery-result-title {
+  font-size: 36px;
+  margin: 0 0 10px;
+}
+
+.archery-result-score {
+  font-size: 64px;
+  font-weight: bold;
+  color: #ffd700;
+  margin: 10px 0;
+}
+
+.archery-result-rating {
+  font-size: 24px;
+  margin: 10px 0 20px;
+}
+
+.archery-result-breakdown {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.archery-result-shot {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.archery-result-shot.good {
+  background: rgba(74, 222, 128, 0.5);
+}
+
+.archery-result-shot.great {
+  background: rgba(255, 215, 0, 0.5);
+}
+
+/* 射撃後のフィードバック */
+.archery-shot-feedback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  animation: pop-in 0.3s ease-out;
+  pointer-events: none;
+}
+
+@keyframes pop-in {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* 操作説明 */
+.archery-instructions {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}

@@ -1,0 +1,178 @@
+.bottleflip-container {
+  width: 500px;
+  height: 600px;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  touch-action: none;
+}
+
+.bottleflip-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.bottleflip-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.95);
+  z-index: 10;
+}
+
+.bottleflip-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #3b82f6;
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.7), 0 4px 0 #1e40af;
+  margin: 0 0 1rem;
+  letter-spacing: 0.05em;
+}
+
+.bottleflip-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: bottleflip-bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes bottleflip-bounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(15deg); }
+}
+
+.bottleflip-instruction {
+  font-size: 1rem;
+  color: #e2e8f0;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.bottleflip-start-btn {
+  padding: 1rem 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: 0 4px 0 #1e40af;
+}
+
+.bottleflip-start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #1e40af, 0 10px 20px rgba(59, 130, 246, 0.3);
+}
+
+.bottleflip-start-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #1e40af;
+}
+
+.bottleflip-gameover {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #f87171;
+  text-shadow: 0 0 20px rgba(248, 113, 113, 0.5), 0 4px 0 #991b1b;
+  margin: 0 0 1rem;
+  letter-spacing: 0.05em;
+}
+
+.bottleflip-success {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #22c55e;
+  text-shadow: 0 0 20px rgba(34, 197, 94, 0.5), 0 4px 0 #166534;
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.bottleflip-combo {
+  font-size: 1.5rem;
+  color: #fbbf24;
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.7);
+  margin-bottom: 0.5rem;
+  animation: bottleflip-pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes bottleflip-pulse {
+  from { opacity: 0.8; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.1); }
+}
+
+.bottleflip-score {
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.bottleflip-best {
+  font-size: 1.1rem;
+  color: #94a3b8;
+  margin-bottom: 1.5rem;
+}
+
+.bottleflip-new-record {
+  font-size: 1.2rem;
+  color: #fbbf24;
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.7);
+  margin-bottom: 1rem;
+  animation: bottleflip-pulse 0.5s ease-in-out infinite alternate;
+}
+
+.bottleflip-power-bar {
+  position: absolute;
+  left: 20px;
+  bottom: 100px;
+  width: 30px;
+  height: 150px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #64748b;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.bottleflip-power-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, #ef4444, #fbbf24, #22c55e);
+  transition: height 0.05s linear;
+  border-radius: 0 0 12px 12px;
+}
+
+.bottleflip-power-label {
+  position: absolute;
+  left: 20px;
+  bottom: 60px;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  text-align: center;
+  width: 30px;
+}
+
+.bottleflip-result-overlay {
+  background: rgba(15, 23, 42, 0.85);
+}
+
+/* Animation keyframes for combo popup */
+@keyframes combo-pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes combo-pulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}

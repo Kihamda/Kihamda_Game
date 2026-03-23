@@ -1,0 +1,6 @@
+.bowling-container {
+  width: 600px;
+  height: 700px;
+  overflow: hidden;
+  background: #1a1a2e;
+}

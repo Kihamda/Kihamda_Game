@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#000"/>
+  <!-- 星 -->
+  <circle cx="20" cy="30" r="1" fill="#444"/>
+  <circle cx="80" cy="15" r="1" fill="#444"/>
+  <circle cx="150" cy="40" r="1" fill="#444"/>
+  <circle cx="170" cy="80" r="1" fill="#444"/>
+  <circle cx="30" cy="120" r="1" fill="#444"/>
+  <circle cx="180" cy="160" r="1" fill="#444"/>
+  <!-- インベーダー (row 1) -->
+  <rect x="50" y="40" width="20" height="15" fill="#ff6b6b"/>
+  <rect x="90" y="40" width="20" height="15" fill="#ff6b6b"/>
+  <rect x="130" y="40" width="20" height="15" fill="#ff6b6b"/>
+  <!-- インベーダー (row 2) -->
+  <rect x="30" y="65" width="20" height="15" fill="#ffa94d"/>
+  <rect x="70" y="65" width="20" height="15" fill="#ffa94d"/>
+  <rect x="110" y="65" width="20" height="15" fill="#ffa94d"/>
+  <rect x="150" y="65" width="20" height="15" fill="#ffa94d"/>
+  <!-- インベーダー (row 3) -->
+  <rect x="50" y="90" width="20" height="15" fill="#69db7c"/>
+  <rect x="90" y="90" width="20" height="15" fill="#69db7c"/>
+  <rect x="130" y="90" width="20" height="15" fill="#69db7c"/>
+  <!-- プレイヤー -->
+  <polygon points="100,155 80,175 120,175" fill="#4cc9f0"/>
+  <!-- 弾 -->
+  <rect x="98" y="135" width="4" height="12" fill="#fff"/>
+</svg>

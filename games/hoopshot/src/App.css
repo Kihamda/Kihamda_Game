@@ -1,0 +1,13 @@
+.hoopshot-container {
+  position: relative;
+  background: #1a0f0a;
+  border-radius: 8px;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+
+.hoopshot-canvas {
+  display: block;
+  cursor: pointer;
+}

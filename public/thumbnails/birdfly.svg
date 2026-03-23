@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB"/>
+      <stop offset="100%" style="stop-color:#B0E0E6"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#sky)"/>
+  <!-- Clouds -->
+  <g fill="rgba(255,255,255,0.7)">
+    <circle cx="30" cy="40" r="15"/>
+    <circle cx="45" cy="35" r="12"/>
+    <circle cx="55" cy="40" r="10"/>
+    <circle cx="150" cy="60" r="12"/>
+    <circle cx="165" cy="55" r="10"/>
+  </g>
+  <!-- Pipe -->
+  <rect x="140" y="0" width="30" height="70" fill="#4CAF50"/>
+  <rect x="135" y="60" width="40" height="15" fill="#388E3C"/>
+  <rect x="140" y="130" width="30" height="70" fill="#4CAF50"/>
+  <rect x="135" y="130" width="40" height="15" fill="#388E3C"/>
+  <!-- Bird body -->
+  <ellipse cx="70" cy="100" rx="25" ry="18" fill="#FFD93D"/>
+  <!-- Wing -->
+  <ellipse cx="60" cy="105" rx="12" ry="7" fill="#E8B830" transform="rotate(-15 60 105)"/>
+  <!-- Eye white -->
+  <circle cx="82" cy="94" r="8" fill="white"/>
+  <!-- Eye pupil -->
+  <circle cx="84" cy="94" r="4" fill="#333"/>
+  <!-- Beak -->
+  <polygon points="95,100 108,105 95,110" fill="#FF6B35"/>
+  <!-- Coin -->
+  <circle cx="120" cy="100" r="10" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+  <circle cx="118" cy="98" r="3" fill="#FFEC8B"/>
+  <!-- Ground -->
+  <rect x="0" y="175" width="200" height="25" fill="#8FBC8F"/>
+  <rect x="0" y="175" width="200" height="3" fill="#6B8E6B"/>
+</svg>

@@ -1,0 +1,317 @@
+.pool-container {
+  width: 800px;
+  height: 500px;
+  overflow: hidden;
+  background: #1a1a2e;
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
+  transition: background-color 0.1s ease;
+}
+
+/* ファウル時の赤フラッシュ */
+.pool-container.foul-flash {
+  background: rgba(231, 76, 60, 0.4);
+}
+
+/* スタート画面 */
+.pool-start {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #fff;
+}
+
+.pool-start h1 {
+  font-size: 48px;
+  margin: 0 0 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.pool-start .subtitle {
+  font-size: 18px;
+  color: #aaa;
+  margin-bottom: 30px;
+}
+
+.pool-start-btn {
+  padding: 16px 48px;
+  font-size: 24px;
+  background: linear-gradient(135deg, #0d5b33 0%, #27ae60 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pool-start-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+}
+
+.pool-stats {
+  margin-top: 30px;
+  font-size: 14px;
+  color: #888;
+}
+
+/* ゲーム画面 */
+.pool-game {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.pool-svg {
+  display: block;
+  touch-action: none;
+}
+
+/* ボール番号 */
+.ball-number {
+  font-size: 9px;
+  font-weight: bold;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* UI オーバーレイ */
+.pool-ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.pool-player-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 12px;
+  border-radius: 6px;
+  pointer-events: auto;
+}
+
+.pool-player-info.active {
+  background: rgba(39, 174, 96, 0.8);
+}
+
+.pool-player-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.pool-player-type {
+  font-size: 11px;
+  color: #ddd;
+}
+
+.pool-player-remaining {
+  font-size: 12px;
+  color: #ffd700;
+}
+
+/* メッセージ */
+.pool-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 20px 40px;
+  border-radius: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  pointer-events: none;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* パワーバー */
+.pool-power-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 24px;
+  background: #333;
+  border-radius: 12px;
+  overflow: hidden;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.pool-power-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #27ae60 0%, #f1c40f 50%, #e74c3c 100%);
+  transition: width 0.05s ease-out;
+  border-radius: 12px;
+}
+
+.pool-power-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  opacity: 0.3;
+  filter: blur(4px);
+  border-radius: 12px;
+  animation: power-pulse 0.5s ease-in-out infinite alternate;
+}
+
+.pool-power-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes power-pulse {
+  from { opacity: 0.2; }
+  to { opacity: 0.5; }
+}
+
+/* パワーインジケーター円 */
+.power-indicator {
+  animation: indicator-pulse 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes indicator-pulse {
+  from { opacity: 0.3; }
+  to { opacity: 0.7; }
+}
+
+/* 続けるボタン */
+.pool-continue-btn {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 30px;
+  font-size: 18px;
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.pool-continue-btn:hover {
+  background: #2ecc71;
+}
+
+/* 結果画面 */
+.pool-result {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+}
+
+.pool-result h2 {
+  font-size: 36px;
+  margin: 0 0 10px;
+  color: #ffd700;
+}
+
+.pool-result .winner-name {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.pool-result-btn {
+  padding: 16px 40px;
+  font-size: 20px;
+  background: linear-gradient(135deg, #0d5b33 0%, #27ae60 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.pool-result-btn:hover {
+  transform: scale(1.05);
+}
+
+/* コンボ表示 */
+.pool-combo-display {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 150;
+  animation: combo-appear 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pool-combo-display .combo-count {
+  font-size: 72px;
+  font-weight: 900;
+  color: #ffd700;
+  text-shadow:
+    0 0 20px #ffd700,
+    0 0 40px #ff6600,
+    0 0 60px #ff0000;
+  animation: combo-pulse 0.5s ease-in-out infinite alternate;
+}
+
+.pool-combo-display .combo-label {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px #ffd700;
+  letter-spacing: 4px;
+}
+
+@keyframes combo-appear {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes combo-pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+/* プレイヤーターン強調 */
+.pool-player-info.active .pool-player-name {
+  color: #ffd700;
+  text-shadow: 0 0 8px #ffd700;
+}

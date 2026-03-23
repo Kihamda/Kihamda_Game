@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
+import { useAudio, useParticles, ScorePopup } from "@shared";
+import type { PopupVariant } from "@shared";
+import { ParticleLayer } from "@shared";
 import "./App.css";
 
 // --- Types ---
@@ -94,6 +97,50 @@ export default function App() {
 
   const [bestScore, setBestScore] = useState<number>(loadBestScore);
   const [isNewRecord, setIsNewRecord] = useState(false);
+  const [combo, setCombo] = useState(0);
+  
+  // ScorePopup state
+  const [popup, setPopup] = useState<{
+    text: string;
+    key: number;
+    variant: PopupVariant;
+    size: "sm" | "md" | "lg" | "xl";
+    x: string;
+    y: string;
+  } | null>(null);
+  const popupKeyRef = useRef(0);
+  
+  const showPopup = useCallback((
+    text: string,
+    variant: PopupVariant = "default",
+    size: "sm" | "md" | "lg" | "xl" = "md",
+    x = "50%",
+    y = "40%"
+  ) => {
+    popupKeyRef.current += 1;
+    setPopup({ text, key: popupKeyRef.current, variant, size, x, y });
+  }, []);
+  
+  // Dopamine hooks
+  const { particles, sparkle, confetti, explosion } = useParticles();
+  const { playTone } = useAudio();
+  const playFind = useCallback(() => playTone(660, 0.1, 'sine'), [playTone]);
+  const playWrong = useCallback(() => playTone(200, 0.15, 'sawtooth'), [playTone]);
+  const playTimeout = useCallback(() => playTone(180, 0.3, 'sawtooth'), [playTone]);
+  const playLevelUp = useCallback(() => playTone(880, 0.2, 'sine'), [playTone]);
+  
+  // Refs for effects used in timer callback
+  const playTimeoutRef = useRef<() => void>(() => {});
+  const explosionRef = useRef<(x: number, y: number) => void>(() => {});
+  const confettiRef = useRef<() => void>(() => {});
+  const showPopupRef = useRef<typeof showPopup>(showPopup);
+  
+  useEffect(() => {
+    playTimeoutRef.current = playTimeout;
+    explosionRef.current = explosion;
+    confettiRef.current = confetti;
+    showPopupRef.current = showPopup;
+  }, [playTimeout, explosion, confetti, showPopup]);
 
   const stopTimer = useCallback(() => {
     if (rafRef.current) {
@@ -118,6 +165,8 @@ export default function App() {
       setRemainingMs(remaining);
       if (remaining <= 0) {
         stopTimer();
+        playTimeoutRef.current();
+        explosionRef.current(400, 300);
         setPhase("timeout");
         // Check for new record on timeout
         if (scoreRef.current > bestScoreRef.current) {
@@ -140,10 +189,12 @@ export default function App() {
     setGrid(generateGrid(newTarget));
     setLevel(1);
     setScore(0);
+    setCombo(0);
     setWrongCell(null);
     setFoundCell(null);
     setRemainingMs(TIME_LIMIT_MS);
     setIsNewRecord(false);
+    setPopup(null);
     setPhase("playing");
     startTimer();
   }, [startTimer]);
@@ -169,34 +220,70 @@ export default function App() {
       if (clickedEmoji === targetEmoji) {
         stopTimer();
         setFoundCell(index);
+        playFind();
+        sparkle(400, 300);
         const timeBonus = Math.floor(remainingMs / 100);
         const levelBonus = level * 10;
-        const newScore = score + timeBonus + levelBonus;
+        const newCombo = combo + 1;
+        const comboBonus = newCombo > 1 ? (newCombo - 1) * 5 : 0;
+        const pointsEarned = timeBonus + levelBonus + comboBonus;
+        const newScore = score + pointsEarned;
         setScore(newScore);
+        setCombo(newCombo);
+        
+        // Show match found popup
+        showPopup(`+${pointsEarned}`, "default", "md", "50%", "35%");
+        
+        // Show combo popup if streak
+        if (newCombo >= 3) {
+          setTimeout(() => {
+            const comboText = newCombo >= 10 ? "🔥 MAX COMBO!" :
+                             newCombo >= 7 ? `🔥 ${newCombo}x COMBO!` :
+                             newCombo >= 5 ? `⚡ ${newCombo}x Combo!` :
+                             `${newCombo}x Combo!`;
+            const comboVariant = newCombo >= 7 ? "critical" : newCombo >= 5 ? "combo" : "bonus";
+            const comboSize = newCombo >= 7 ? "lg" : "md";
+            showPopup(comboText, comboVariant, comboSize, "50%", "25%");
+          }, 300);
+        }
 
         setTimeout(() => {
+          // Show level completion popup
+          showPopup(`Level ${level} Clear!`, "level", "lg", "50%", "30%");
+          
           if (newScore > bestScore) {
             setBestScore(newScore);
             saveBestScore(newScore);
             setIsNewRecord(true);
+            confetti();
+            // Show high score popup after level clear
+            setTimeout(() => {
+              showPopup("🏆 NEW HIGH SCORE!", "critical", "xl", "50%", "25%");
+            }, 400);
           }
+          playLevelUp();
           nextLevel();
           startTimer();
         }, 800);
       } else {
         setWrongCell(index);
+        playWrong();
+        setCombo(0); // Reset combo on wrong answer
+        showPopup("-3s", "combo", "sm", "50%", "40%");
         const penalty = 3000;
         const newRemaining = Math.max(0, remainingMs - penalty);
         startTimeRef.current = performance.now() - (TIME_LIMIT_MS - newRemaining);
         setRemainingMs(newRemaining);
         if (newRemaining <= 0) {
           stopTimer();
+          playTimeoutRef.current();
+          explosionRef.current(400, 300);
           setPhase("timeout");
         }
         setTimeout(() => setWrongCell(null), 300);
       }
     },
-    [phase, foundCell, grid, targetEmoji, stopTimer, remainingMs, level, score, bestScore, nextLevel, startTimer]
+    [phase, foundCell, grid, targetEmoji, stopTimer, remainingMs, level, score, combo, bestScore, nextLevel, startTimer, playFind, playWrong, sparkle, confetti, playLevelUp, showPopup]
   );
 
   const timerPercent = (remainingMs / TIME_LIMIT_MS) * 100;
@@ -272,6 +359,17 @@ export default function App() {
             </button>
           )}
         </div>
+        <ParticleLayer particles={particles} />
+        {popup && (
+          <ScorePopup
+            text={popup.text}
+            popupKey={popup.key}
+            variant={popup.variant}
+            size={popup.size}
+            x={popup.x}
+            y={popup.y}
+          />
+        )}
       </div>
     </GameShell>
   );
