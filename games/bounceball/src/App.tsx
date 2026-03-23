@@ -529,7 +529,7 @@ export default function App() {
         ctx.font = "28px sans-serif";
         ctx.fillText(`Score: ${state.score}`, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 + 20);
 
-        if (state.score >= state.highScore && state.score > 0) {
+        if (state.score > state.highScore && state.score > 0) {
           ctx.fillStyle = "#ffd700";
           ctx.font = "20px sans-serif";
           ctx.fillText("🏆 NEW HIGH SCORE! 🏆", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 + 55);

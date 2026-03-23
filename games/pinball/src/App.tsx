@@ -510,10 +510,18 @@ export default function App() {
               const isActive = isLeft ? state.leftFlipperActive : state.rightFlipperActive;
               const kickPower = isActive ? FLIPPER_KICK_POWER : 8;
               
-              // ボールを上に弾く（フリッパーの角度を考慮）
+              // 既存速度を反射
+              const reflected = reflect(state.ballVel, normal);
+              
+              // フリッパーの角度を考慮した打ち出し方向
               const launchAngle = isLeft ? -0.8 - angle * 0.5 : -0.8 + angle * 0.5;
-              state.ballVel.x = Math.sin(launchAngle * (isLeft ? -1 : 1)) * kickPower;
-              state.ballVel.y = Math.cos(launchAngle) * -kickPower;
+              const kickX = Math.sin(launchAngle * (isLeft ? -1 : 1)) * kickPower;
+              const kickY = Math.cos(launchAngle) * -kickPower;
+              
+              // 反射速度 + フリッパーの打ち出し力（アクティブ時のみ強く加算）
+              const reflectFactor = isActive ? 0.3 : 0.7; // アクティブ時は打ち出し力が支配的
+              state.ballVel.x = reflected.x * reflectFactor + kickX * (1 - reflectFactor * 0.5);
+              state.ballVel.y = reflected.y * reflectFactor + kickY * (1 - reflectFactor * 0.5);
 
               // 位置補正
               state.ball.x = closestX + normal.x * (BALL_RADIUS + FLIPPER_HEIGHT / 2 + 2);

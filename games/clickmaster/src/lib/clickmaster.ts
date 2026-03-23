@@ -84,9 +84,8 @@ export function purchaseUpgrade(
   const upgrade = state.upgrades[upgradeIndex];
 
   const newLevel = upgrade.level + 1;
-  const newCost = Math.floor(
-    definition.baseCost * Math.pow(definition.costMultiplier, newLevel)
-  );
+  const rawCost = definition.baseCost * Math.pow(definition.costMultiplier, newLevel);
+  const newCost = !isFinite(rawCost) ? Number.MAX_SAFE_INTEGER : Math.floor(rawCost);
 
   const newUpgrades = [...state.upgrades];
   newUpgrades[upgradeIndex] = {
@@ -118,7 +117,7 @@ export function purchaseUpgrade(
     case "multiplier":
       newState = {
         ...newState,
-        multiplier: newState.multiplier * definition.effect,
+        multiplier: Math.min(newState.multiplier * definition.effect, 1e12), // Cap at 1 trillion
       };
       break;
   }

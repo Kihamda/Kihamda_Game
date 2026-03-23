@@ -542,7 +542,7 @@ export default function App() {
         const ghostCY = ghost.y + CELL_SIZE / 2;
         const dist = Math.hypot(playerCX - ghostCX, playerCY - ghostCY);
 
-        if (dist < CELL_SIZE * 0.8) {
+        if (dist < CELL_SIZE * 0.9) { // More accurate collision (90% of cell size)
           if (ghost.isScared) {
             ghost.isEaten = true;
             ghost.isScared = false;

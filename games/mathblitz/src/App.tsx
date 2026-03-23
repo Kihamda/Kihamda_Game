@@ -246,8 +246,8 @@ export default function App() {
     if (userAnswer === problem.answer) {
       // 正解
       const newCombo = combo + 1;
-      const comboBonus = Math.floor(newCombo / 5); // 5コンボごとにボーナス
-      const totalPoints = 1 + comboBonus;
+      const comboBonus = Math.floor(newCombo / 3) * 5; // 3コンボごとに+5
+      const totalPoints = 10 + comboBonus; // Base 10 points + combo bonus
       setScore((prev) => prev + totalPoints);
       setCombo(newCombo);
       setMaxCombo((prev) => Math.max(prev, newCombo));

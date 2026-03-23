@@ -337,7 +337,7 @@ export default function App() {
                   <p className="colorflood-result-text">
                     {moves}手でクリア！
                   </p>
-                  {bestScore === moves && (
+                  {bestScore !== null && bestScore <= moves && (
                     <p className="colorflood-result-best">🏆 ベスト記録更新！</p>
                   )}
                   <div className="colorflood-result-buttons">

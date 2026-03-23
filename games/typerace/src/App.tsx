@@ -245,7 +245,8 @@ function App() {
           setCurrentPosition((prev) => prev + 1);
 
           // Sparkle effect for correct typing (every few correct chars)
-          if (stats.correctChars % 5 === 0) {
+          const newCorrectChars = stats.correctChars + 1;
+          if (newCorrectChars % 5 === 0) {
             const pos = getInputPosition();
             sparkle(pos.x + (Math.random() - 0.5) * 100, pos.y, 4);
           }

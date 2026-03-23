@@ -223,7 +223,7 @@ export function moveWithResult(state: GameState, direction: Direction): MoveResu
   newTiles = result.tiles;
   nextId = result.nextId;
   
-  const newScore = state.score + totalScore;
+  const newScore = Math.min(state.score + totalScore, Number.MAX_SAFE_INTEGER);
   const newBestScore = Math.max(state.bestScore, newScore);
   
   if (newBestScore > state.bestScore) {

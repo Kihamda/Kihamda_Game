@@ -548,11 +548,11 @@ export default function App() {
           }
         }
 
-        // ゴール判定
+        // ゴール判定 (circles overlap when distance < sum of radii)
         const dx = state.ballPos.x - stage.goal.x;
         const dy = state.ballPos.y - stage.goal.y;
         const distToGoal = Math.sqrt(dx * dx + dy * dy);
-        if (distToGoal < GOAL_RADIUS - BALL_RADIUS / 2) {
+        if (distToGoal < GOAL_RADIUS + BALL_RADIUS) {
           // Calculate clear time and score
           const clearTimeSeconds = (Date.now() - state.stageStartTime) / 1000;
           calculateStageScore(state.stageIndex, clearTimeSeconds);

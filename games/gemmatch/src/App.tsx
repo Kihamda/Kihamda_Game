@@ -407,6 +407,9 @@ export default function App() {
     
     // Check for valid moves, regenerate if none
     if (!hasValidMoves(workingGrid)) {
+      // Show notification before regenerating (use center position)
+      addPopup("💫 新しいボード!", 3, 3, "bonus");
+      await new Promise((r) => setTimeout(r, 500));
       setGrid(createInitialGrid());
     }
 
