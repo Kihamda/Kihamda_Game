@@ -32,7 +32,7 @@ export const UPGRADES: Record<UpgradeType, UpgradeDefinition> = {
     name: "マルチプライヤー",
     description: "全ての獲得ポイントを倍増 (x1.5)",
     baseCost: 100,
-    costMultiplier: 2.0,
+    costMultiplier: 1.5, // Balanced: matches multiplier effect rate
     effect: 1.5,
   },
 };
@@ -53,7 +53,12 @@ export const MILESTONES: Milestone[] = [
   { id: "m10000", target: 10000, label: "10,000ポイント達成！" },
   { id: "m50000", target: 50000, label: "50,000ポイント達成！" },
   { id: "m100000", target: 100000, label: "100,000ポイント達成！" },
-  { id: "m1000000", target: 1000000, label: "1,000,000ポイント達成！" },
+  { id: "m500000", target: 500000, label: "500,000ポイント達成！" },
+  { id: "m1000000", target: 1000000, label: "🎉 1,000,000ポイント達成！" },
+  { id: "m5000000", target: 5000000, label: "⭐ 5,000,000ポイント達成！" },
+  { id: "m10000000", target: 10000000, label: "🏆 10,000,000ポイント達成！" },
+  { id: "m100000000", target: 100000000, label: "👑 100,000,000ポイント達成！" },
+  { id: "m1000000000", target: 1000000000, label: "🌟 1,000,000,000ポイント達成！" },
 ];
 
 /** ストレージキー */

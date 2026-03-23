@@ -44,22 +44,28 @@ export function achieveMilestone(state: GameState, milestoneId: string): GameSta
 
 /** クリック処理 */
 export function processClick(state: GameState): GameState {
-  const earned = Math.floor(state.clickPower * state.multiplier);
+  const rawEarned = Math.floor(state.clickPower * state.multiplier);
+  const earned = isFinite(rawEarned)
+    ? Math.min(rawEarned, Number.MAX_SAFE_INTEGER - state.points)
+    : 0;
   return {
     ...state,
-    points: state.points + earned,
-    totalPoints: state.totalPoints + earned,
+    points: Math.min(state.points + earned, Number.MAX_SAFE_INTEGER),
+    totalPoints: Math.min(state.totalPoints + earned, Number.MAX_SAFE_INTEGER),
   };
 }
 
 /** 自動クリック処理 (1秒分) */
 export function processAutoClick(state: GameState): GameState {
   if (state.autoClicksPerSecond <= 0) return state;
-  const earned = Math.floor(state.autoClicksPerSecond * state.multiplier);
+  const rawEarned = Math.floor(state.autoClicksPerSecond * state.multiplier);
+  const earned = isFinite(rawEarned)
+    ? Math.min(rawEarned, Number.MAX_SAFE_INTEGER - state.points)
+    : 0;
   return {
     ...state,
-    points: state.points + earned,
-    totalPoints: state.totalPoints + earned,
+    points: Math.min(state.points + earned, Number.MAX_SAFE_INTEGER),
+    totalPoints: Math.min(state.totalPoints + earned, Number.MAX_SAFE_INTEGER),
   };
 }
 

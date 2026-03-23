@@ -4,11 +4,11 @@ export const INITIAL_CHIPS = 100;
 /** ベット可能額 */
 export const BET_OPTIONS = [5, 10, 25, 50] as const;
 
-/** ブラックジャック配当倍率 */
-export const BLACKJACK_PAYOUT = 2.5;
+/** ブラックジャック配当倍率 (3:2 = ベット+1.5倍) */
+export const BLACKJACK_PAYOUT = 1.5;
 
-/** 通常勝利配当倍率 */
-export const WIN_PAYOUT = 2;
+/** 通常勝利配当倍率 (1:1 = ベット+等倍) */
+export const WIN_PAYOUT = 1;
 
 /** ディーラーがスタンドする値 */
 export const DEALER_STAND_VALUE = 17;

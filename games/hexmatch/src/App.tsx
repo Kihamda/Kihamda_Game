@@ -173,6 +173,20 @@ function wouldMatch(tiles: Tile[], t1: Tile, t2: Tile): boolean {
   return findMatches(swapped).size > 0;
 }
 
+// 有効な手があるかチェック
+function hasValidMoves(tiles: Tile[]): boolean {
+  for (const tile of tiles) {
+    const neighbors = getNeighbors(tile.row, tile.col);
+    for (const n of neighbors) {
+      const neighbor = tiles.find((t) => t.row === n.row && t.col === n.col);
+      if (neighbor && wouldMatch(tiles, tile, neighbor)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Main Component
 // ─────────────────────────────────────────────────────────────────────────────
@@ -413,6 +427,17 @@ export default function App() {
       }, 500);
     }
   }, [phase, moves, isAnimating, score, highScore, saveHighScore, showPopup, playCelebrate, playFanfare, confetti]);
+
+  // ボード再生成（有効な手がない場合）
+  useEffect(() => {
+    if (phase === "playing" && !isAnimating && moves > 0 && !hasValidMoves(tiles)) {
+      showPopup("🔄 No Moves! Reshuffling...", "bonus", "lg", "30%");
+      setTimeout(() => {
+        setTiles(initTiles());
+        nextIdRef.current = ROWS * COLS;
+      }, 800);
+    }
+  }, [phase, isAnimating, moves, tiles, showPopup]);
 
   // 六角形の座標計算
   const getHexPosition = (row: number, col: number) => {

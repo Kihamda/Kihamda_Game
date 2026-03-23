@@ -13,7 +13,7 @@ import type { GameState, Suit, DragSource, Card, Phase } from "./lib/types";
 import { useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
 
 const App = () => {
-  const [gameState, setGameState] = useState<GameState>(createInitialGameState);
+  const [gameState, setGameState] = useState<GameState>(() => createInitialGameState());
   const [phase, setPhase] = useState<Phase>("start");
   
   // Dopamine effects
