@@ -429,14 +429,14 @@ export default function App() {
             const minDist = BALL_RADIUS + bumper.radius;
 
             if (dist < minDist && dist > 0) {
-              // 反射
+              // 反射方向を計算
               const normal = normalize({ x: dx, y: dy });
-              state.ballVel = reflect(state.ballVel, normal);
-
-              // バンパーの反発力
-              const kickSpeed = 12;
-              state.ballVel.x = normal.x * kickSpeed;
-              state.ballVel.y = normal.y * kickSpeed;
+              
+              // 既存速度を反射 + バンパーの反発力を加算
+              const reflected = reflect(state.ballVel, normal);
+              const kickSpeed = 8;
+              state.ballVel.x = reflected.x + normal.x * kickSpeed;
+              state.ballVel.y = reflected.y + normal.y * kickSpeed;
 
               // 位置補正
               state.ball.x = bumper.x + normal.x * (minDist + 1);
