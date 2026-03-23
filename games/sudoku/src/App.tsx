@@ -87,6 +87,41 @@ function solveSudoku(grid: Grid): boolean {
   return true;
 }
 
+// Count solutions (returns 0, 1, or 2 to indicate none, unique, or multiple)
+function countSolutions(grid: Grid, limit: number = 2): number {
+  let count = 0;
+  
+  function solve(): boolean {
+    for (let row = 0; row < SIZE; row++) {
+      for (let col = 0; col < SIZE; col++) {
+        if (grid[row][col] === null) {
+          for (let num = 1; num <= 9; num++) {
+            if (isValidPlacement(grid, row, col, num)) {
+              grid[row][col] = num;
+              if (solve()) {
+                grid[row][col] = null;
+                return true;
+              }
+              grid[row][col] = null;
+            }
+          }
+          return false;
+        }
+      }
+    }
+    count++;
+    return count >= limit;
+  }
+  
+  solve();
+  return count;
+}
+
+function hasUniqueSolution(grid: Grid): boolean {
+  const copy = grid.map(row => [...row]);
+  return countSolutions(copy) === 1;
+}
+
 function shuffleArray<T>(array: T[]): T[] {
   const result = [...array];
   for (let i = result.length - 1; i > 0; i--) {
@@ -101,15 +136,26 @@ function generateSudoku(blanks: number): { puzzle: Grid; solution: Grid } {
   const solution = createEmptyGrid();
   solveSudoku(solution);
   
-  // Create puzzle by removing numbers
+  // Create puzzle by removing numbers while ensuring unique solution
   const puzzle = solution.map(row => [...row]);
   const positions = shuffleArray(
     Array.from({ length: SIZE * SIZE }, (_, i) => [Math.floor(i / SIZE), i % SIZE])
   );
   
-  for (let i = 0; i < blanks && i < positions.length; i++) {
-    const [row, col] = positions[i];
+  let removed = 0;
+  for (const [row, col] of positions) {
+    if (removed >= blanks) break;
+    
+    const backup = puzzle[row][col];
     puzzle[row][col] = null;
+    
+    // Check if puzzle still has unique solution
+    if (hasUniqueSolution(puzzle)) {
+      removed++;
+    } else {
+      // Restore if removing this cell creates multiple solutions
+      puzzle[row][col] = backup;
+    }
   }
   
   return { puzzle, solution };

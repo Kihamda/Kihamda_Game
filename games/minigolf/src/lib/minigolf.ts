@@ -167,8 +167,10 @@ export function checkHoleIn(ball: BallState, cup: { x: number; y: number }): boo
   const dist = Math.sqrt(dx * dx + dy * dy);
   const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
   
-  // カップの中心に近く、速度が十分遅い場合にホールイン
-  return dist < CUP_RADIUS - BALL_RADIUS && speed < 8;
+  // Ball is in hole if center is within cup and speed is low enough
+  // Speed threshold scales with how centered the ball is (more centered = higher speed allowed)
+  const maxSpeed = dist < CUP_RADIUS * 0.5 ? 12 : 6;
+  return dist < CUP_RADIUS && speed < maxSpeed;
 }
 
 /** ボールの物理更新 */

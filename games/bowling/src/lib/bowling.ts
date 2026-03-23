@@ -139,6 +139,7 @@ export function updateBallAndPins(
 /** ピンの連鎖倒れ処理 */
 function applyPinChainReaction(pins: Pin[]): Pin[] {
   // 倒れたピンの近くにある立っているピンを連鎖的に倒す
+  // 確定的なルール: 近くに2本以上倒れたピンがあれば倒れる
   let changed = true;
   let result = [...pins];
   
@@ -147,15 +148,16 @@ function applyPinChainReaction(pins: Pin[]): Pin[] {
     result = result.map((pin) => {
       if (!pin.standing) return pin;
       
-      // 倒れたピンの近くにある立っているピンをランダムで倒す
+      // 倒れたピンの近くにある立っているピンを倒す
       const nearbyFallen = result.filter(
         (p) =>
           !p.standing &&
           p.id !== pin.id &&
-          Math.sqrt((p.x - pin.x) ** 2 + (p.y - pin.y) ** 2) < PIN_RADIUS * 3
+          Math.sqrt((p.x - pin.x) ** 2 + (p.y - pin.y) ** 2) < PIN_RADIUS * 2.5
       );
       
-      if (nearbyFallen.length > 0 && Math.random() < 0.4) {
+      // 2本以上の倒れたピンが近くにあれば確実に倒れる、1本なら倒れない
+      if (nearbyFallen.length >= 2) {
         changed = true;
         return { ...pin, standing: false };
       }
