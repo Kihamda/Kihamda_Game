@@ -199,7 +199,7 @@ export default function App() {
       if (checkCollision(newHeliY, updatedObstacles, newCeilingOffset, newFloorOffset)) {
         const finalScore = Math.floor(state.distance);
         const newHighScore = Math.max(finalScore, state.highScore);
-        const isNewRecord = finalScore > state.highScore && state.highScore > 0;
+        const isNewRecord = finalScore > state.highScore;
         
         if (newHighScore > state.highScore) {
           localStorage.setItem("helicopter_highscore", newHighScore.toString());

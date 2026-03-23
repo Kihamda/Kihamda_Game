@@ -47,34 +47,30 @@ function getNeighbors(row: number, col: number): Position[] {
   const neighbors: Position[] = [
     { row, col: col - 1 }, // 左
     { row, col: col + 1 }, // 右
-    { row: row - 1, col }, // 上
-    { row: row + 1, col }, // 下
   ];
 
   if (isOddCol) {
+    // 奇数列: 下にずれる
     neighbors.push(
-      { row, col: col - 1 },
-      { row: row + 1, col: col - 1 },
-      { row, col: col + 1 },
-      { row: row + 1, col: col + 1 }
+      { row: row - 1, col }, // 上
+      { row: row + 1, col }, // 下
+      { row: row + 1, col: col - 1 }, // 左下
+      { row: row + 1, col: col + 1 }  // 右下
     );
   } else {
+    // 偶数列: 上にずれる
     neighbors.push(
-      { row: row - 1, col: col - 1 },
-      { row, col: col - 1 },
-      { row: row - 1, col: col + 1 },
-      { row, col: col + 1 }
+      { row: row - 1, col }, // 上
+      { row: row + 1, col }, // 下
+      { row: row - 1, col: col - 1 }, // 左上
+      { row: row - 1, col: col + 1 }  // 右上
     );
   }
 
-  // 重複を削除し、範囲内のみ
-  const unique = new Map<string, Position>();
-  for (const n of neighbors) {
-    if (n.row >= 0 && n.row < ROWS && n.col >= 0 && n.col < COLS) {
-      unique.set(`${n.row},${n.col}`, n);
-    }
-  }
-  return Array.from(unique.values());
+  // 範囲内のみ
+  return neighbors.filter(n => 
+    n.row >= 0 && n.row < ROWS && n.col >= 0 && n.col < COLS
+  );
 }
 
 // マッチを検索（BFS）
