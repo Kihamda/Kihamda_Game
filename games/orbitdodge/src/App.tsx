@@ -6,9 +6,10 @@ import {
   ParticleLayer,
   ScreenShake,
   ComboCounter,
+  ScorePopup,
   useHighScore,
 } from "@shared";
-import type { ScreenShakeHandle } from "@shared";
+import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import "./App.css";
 
 // Game constants
@@ -145,6 +146,7 @@ export default function App() {
   const [score, setScore] = useState(0);
   const [combo, setCombo] = useState(0);
   const [difficulty, setDifficulty] = useState(1);
+  const [popup, setPopup] = useState<{ text: string; key: number; variant: PopupVariant; x: string; y: string } | null>(null);
   
   const planetRef = useRef<Planet>(createPlanet());
   const asteroidsRef = useRef<Asteroid[]>([]);
@@ -152,6 +154,7 @@ export default function App() {
   const frameCountRef = useRef(0);
   const comboTimerRef = useRef(0);
   const nearMissActiveRef = useRef(false);
+  const popupKeyRef = useRef(0);
   
   const { best, update: updateHighScore } = useHighScore("orbitdodge");
   const audio = useAudio();
@@ -159,6 +162,12 @@ export default function App() {
   
   const centerX = CANVAS_WIDTH / 2;
   const centerY = CANVAS_HEIGHT / 2;
+  
+  const showPopup = useCallback((text: string, variant: PopupVariant = "default", x = "50%", y = "40%") => {
+    popupKeyRef.current++;
+    setPopup({ text, key: popupKeyRef.current, variant, x, y });
+    setTimeout(() => setPopup(null), 1200);
+  }, []);
   
   // Click/tap to change direction
   const handleClick = useCallback(() => {
@@ -261,6 +270,17 @@ export default function App() {
           burst(starPos.x, starPos.y, 8);
           audio.playTone(880, 0.08, "sine", 0.2);
           audio.playTone(1100, 0.08, "sine", 0.15);
+          
+          // Score popup
+          const pxX = `${(starPos.x / CANVAS_WIDTH) * 100}%`;
+          const pxY = `${(starPos.y / CANVAS_HEIGHT) * 100}%`;
+          if (combo >= 5) {
+            showPopup(`+${points} x${combo + 1}`, "combo", pxX, pxY);
+          } else if (combo >= 2) {
+            showPopup(`+${points}`, "bonus", pxX, pxY);
+          } else {
+            showPopup(`+${points}`, "default", pxX, pxY);
+          }
           
           // Spawn new star
           starsRef.current = [...starsRef.current.filter(s => s.id !== star.id), createStar()];
@@ -503,6 +523,16 @@ export default function App() {
           />
           
           <ParticleLayer particles={particles} />
+          
+          {popup && (
+            <ScorePopup
+              text={popup.text}
+              popupKey={popup.key}
+              variant={popup.variant}
+              x={popup.x}
+              y={popup.y}
+            />
+          )}
           
           {phase === "playing" && (
             <ComboCounter combo={combo} position="top-right" threshold={2} />

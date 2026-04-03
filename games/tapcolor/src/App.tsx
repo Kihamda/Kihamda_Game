@@ -202,7 +202,8 @@ export default function App() {
 
       if (color.id === targetColor.id) {
         // 正解
-        const timeBonus = Math.max(0, Math.floor(TIME_BONUS_MAX * (1 - responseTime / 2000)));
+        // Smooth exponential decay: 500ms = ~60% bonus, 1000ms = ~37%, 2000ms = ~14%
+        const timeBonus = Math.max(0, Math.floor(TIME_BONUS_MAX * Math.exp(-responseTime / 1000)));
         const addScore = CORRECT_SCORE + timeBonus;
         setScore((s) => s + addScore);
         setCorrectCount((c) => c + 1);

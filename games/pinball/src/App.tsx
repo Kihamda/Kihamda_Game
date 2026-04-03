@@ -17,17 +17,17 @@ const CANVAS_HEIGHT = 800;
 
 const BALL_RADIUS = 10;
 const BALL_INITIAL_SPEED = 8;
-const GRAVITY = 0.15;
-const MAX_BALL_SPEED = 15;
+const GRAVITY = 0.35; // Increased for more realistic physics
+const MAX_BALL_SPEED = 18;
 
 const FLIPPER_WIDTH = 80;
 const FLIPPER_HEIGHT = 15;
 const FLIPPER_Y = CANVAS_HEIGHT - 100;
 const FLIPPER_LEFT_X = 100;
 const FLIPPER_RIGHT_X = CANVAS_WIDTH - 100 - FLIPPER_WIDTH;
-const FLIPPER_ROTATION_SPEED = 0.3;
+const FLIPPER_ROTATION_SPEED = 0.5; // Faster flipper response
 const FLIPPER_MAX_ANGLE = Math.PI / 4;
-const FLIPPER_KICK_POWER = 18;
+const FLIPPER_KICK_POWER = 20;
 
 const BUMPER_RADIUS = 25;
 const BUMPER_SCORE = 100;

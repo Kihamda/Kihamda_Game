@@ -92,7 +92,7 @@ function createBubble(id: number, existingBubbles: Bubble[]): Bubble {
     y = radius + Math.random() * (GAME_HEIGHT - radius * 2);
     attempts++;
   } while (
-    attempts < 50 &&
+    attempts < 100 &&
     existingBubbles.some(b => {
       const dx = b.x - x;
       const dy = b.y - y;
