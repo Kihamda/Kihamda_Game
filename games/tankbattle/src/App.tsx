@@ -7,6 +7,8 @@ import {
   ScorePopup,
   ScreenShake,
 } from "@shared";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import "./App.css";
 
@@ -230,6 +232,7 @@ export default function App() {
   const [, setTick] = useState(0);
   const [redFlash, setRedFlash] = useState(false);
   const [scorePopups, setScorePopups] = useState<ScorePopupData[]>([]);
+  const [gameOverData, setGameOverData] = useState<{ score: number; isWin: boolean; wave: number } | null>(null);
   const popupIdRef = useRef(0);
 
   // 共通フック
@@ -263,6 +266,7 @@ export default function App() {
     gameStateRef.current = createInitialState();
     clearParticles();
     setScorePopups([]);
+    setGameOverData(null);
     setTick((t) => t + 1);
   }, [clearParticles]);
 
@@ -346,12 +350,14 @@ export default function App() {
     confetti(80);
     setTimeout(() => confetti(60), 500);
     setTimeout(() => confetti(60), 1000);
+    setGameOverData({ score: gameStateRef.current.score, isWin: true, wave: gameStateRef.current.wave });
   }, [audio, confetti]);
 
   // ゲームオーバー処理
   const onGameOver = useCallback(() => {
     audio.playGameOver();
     shakeRef.current?.shake("extreme", 500);
+    setGameOverData({ score: gameStateRef.current.score, isWin: false, wave: gameStateRef.current.wave });
   }, [audio]);
 
   // キーボードイベント
@@ -732,6 +738,33 @@ export default function App() {
           ))}
           {/* 赤フラッシュ */}
           {redFlash && <div className="tankbattle-red-flash" />}
+
+          {/* ゲームオーバーオーバーレイ */}
+          {gameOverData && (
+            <div className="tankbattle-result-overlay">
+              <div className="tankbattle-result-content">
+                <h2>{gameOverData.isWin ? "VICTORY!" : "GAME OVER"}</h2>
+                <div className="tankbattle-result-score">
+                  {String(gameOverData.score).padStart(6, "0")}
+                </div>
+                <div className="tankbattle-result-wave">
+                  Wave: {gameOverData.wave}
+                </div>
+                <ShareButton 
+                  score={gameOverData.score} 
+                  gameTitle="Tank Battle" 
+                  gameId="tankbattle" 
+                />
+                <button 
+                  className="tankbattle-result-retry"
+                  onClick={resetGame}
+                >
+                  もう一度遊ぶ
+                </button>
+                <GameRecommendations currentGameId="tankbattle" />
+              </div>
+            </div>
+          )}
         </div>
       </ScreenShake>
     </GameShell>

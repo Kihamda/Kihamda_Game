@@ -8,6 +8,8 @@ import {
   ScreenShake,
   ComboCounter,
 } from "@shared";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import "./App.css";
 
@@ -147,6 +149,7 @@ export default function App() {
     variant: PopupVariant;
   } | null>(null);
   const [flash, setFlash] = useState(false);
+  const [gameOverData, setGameOverData] = useState<{ score: number; isWin: boolean } | null>(null);
 
   // 共通フック
   const audio = useAudio();
@@ -184,6 +187,7 @@ export default function App() {
   const resetGame = useCallback(() => {
     gameStateRef.current = createInitialState();
     setCombo(0);
+    setGameOverData(null);
     setTick((t) => t + 1);
   }, []);
 
@@ -593,6 +597,7 @@ export default function App() {
             shakeRef.current?.shake("extreme", 500);
             audio.playGameOver();
 
+            setGameOverData({ score: state.score, isWin: state.isWin });
             setTick((t) => t + 1);
             break;
           }
@@ -611,6 +616,7 @@ export default function App() {
             triggerExplosion(rect.width / 2, rect.height / 2, 40);
           }
 
+          setGameOverData({ score: state.score, isWin: state.isWin });
           setTick((t) => t + 1);
         }
       }
@@ -770,6 +776,30 @@ export default function App() {
           {/* コンボカウンター */}
           {combo > 0 && (
             <ComboCounter combo={combo} className="spaceinvaders-combo" />
+          )}
+
+          {/* ゲームオーバーオーバーレイ */}
+          {gameOverData && (
+            <div className="spaceinvaders-result-overlay">
+              <div className="spaceinvaders-result-content">
+                <h2>{gameOverData.isWin ? "VICTORY!" : "GAME OVER"}</h2>
+                <div className="spaceinvaders-result-score">
+                  {String(gameOverData.score).padStart(6, "0")}
+                </div>
+                <ShareButton 
+                  score={gameOverData.score} 
+                  gameTitle="Space Invaders" 
+                  gameId="spaceinvaders" 
+                />
+                <button 
+                  className="spaceinvaders-result-retry"
+                  onClick={resetGame}
+                >
+                  もう一度遊ぶ
+                </button>
+                <GameRecommendations currentGameId="spaceinvaders" />
+              </div>
+            </div>
           )}
         </div>
       </ScreenShake>

@@ -8,6 +8,8 @@ import {
   ScreenShake,
   ComboCounter,
 } from "@shared";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import type { ScreenShakeHandle } from "@shared";
 import "./App.css";
 
@@ -170,6 +172,8 @@ export default function App() {
   const [popupText, setPopupText] = useState<string | null>(null);
   const [popupKey, setPopupKey] = useState(0);
   const [displayCombo, setDisplayCombo] = useState(0);
+  const [gameOverScore, setGameOverScore] = useState(0);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   const [, setTick] = useState(0);
 
@@ -217,6 +221,8 @@ export default function App() {
         state.highScore = state.score;
         saveHighScore(state.score);
       }
+      setGameOverScore(state.score);
+      setIsGameOver(true);
       setTick((t) => t + 1);
       return;
     }
@@ -335,6 +341,8 @@ export default function App() {
   // リセット
   const resetGame = useCallback(() => {
     gameStateRef.current = createInitialState();
+    setIsGameOver(false);
+    setGameOverScore(0);
     setTick((t) => t + 1);
   }, []);
 
@@ -586,6 +594,28 @@ export default function App() {
             threshold={2}
             style={{ top: 70, right: 10 }}
           />
+          
+          {/* ゲームオーバーオーバーレイ */}
+          {isGameOver && (
+            <div className="stacktower-result-overlay">
+              <div className="stacktower-result-content">
+                <h2>Game Over</h2>
+                <div className="stacktower-result-score">{gameOverScore}</div>
+                <ShareButton 
+                  score={gameOverScore} 
+                  gameTitle="Stack Tower" 
+                  gameId="stacktower" 
+                />
+                <button 
+                  className="stacktower-result-retry"
+                  onClick={resetGame}
+                >
+                  もう一度遊ぶ
+                </button>
+                <GameRecommendations currentGameId="stacktower" />
+              </div>
+            </div>
+          )}
         </div>
       </ScreenShake>
     </GameShell>

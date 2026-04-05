@@ -31,3 +31,78 @@
     opacity: 0;
   }
 }
+
+/* ゲームオーバーオーバーレイ */
+.tankbattle-result-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.tankbattle-result-content {
+  background: linear-gradient(135deg, #2d3436 0%, #1e272c 100%);
+  border: 3px solid #00d4ff;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  color: #00d4ff;
+  font-family: "Courier New", monospace;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.tankbattle-result-content h2 {
+  margin: 0 0 12px;
+  font-size: 32px;
+  color: #00d4ff;
+  text-shadow: 0 0 10px #00d4ff;
+}
+
+.tankbattle-result-score {
+  font-size: 48px;
+  font-weight: bold;
+  color: #00d4ff;
+  margin: 12px 0;
+  text-shadow: 0 0 10px #00d4ff;
+  letter-spacing: 2px;
+}
+
+.tankbattle-result-wave {
+  font-size: 20px;
+  color: #00d4ff;
+  margin-bottom: 20px;
+}
+
+.tankbattle-result-retry {
+  background: transparent;
+  color: #00d4ff;
+  border: 2px solid #00d4ff;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 16px 0;
+  font-family: "Courier New", monospace;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.tankbattle-result-retry:hover {
+  background: #00d4ff;
+  color: #000;
+  box-shadow: 0 0 10px #00d4ff;
+}
+
+.tankbattle-result-retry:active {
+  transform: scale(0.98);
+}
+

@@ -5,6 +5,8 @@ import { useAudio } from "@shared/hooks/useAudio";
 import { useParticles } from "@shared/hooks/useParticles";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import type { PopupVariant } from "@shared/components/ScorePopup";
 import "./App.css";
 
@@ -363,9 +365,15 @@ export default function App() {
                   <span className="towerstack-stat-label">ハイスコア</span>
                 </div>
               </div>
+              <ShareButton 
+                score={score} 
+                gameTitle="Tower Stack" 
+                gameId="towerstack" 
+              />
               <button className="towerstack-btn" onClick={startGame}>
-                もう一度
+                もう一度遊ぶ
               </button>
+              <GameRecommendations currentGameId="towerstack" />
             </div>
           )}
 
@@ -377,9 +385,15 @@ export default function App() {
               <p className="towerstack-congrats">
                 {BLOCKS_TO_WIN}段のタワー完成！
               </p>
+              <ShareButton 
+                score={score} 
+                gameTitle="Tower Stack" 
+                gameId="towerstack" 
+              />
               <button className="towerstack-btn" onClick={startGame}>
-                もう一度
+                もう一度遊ぶ
               </button>
+              <GameRecommendations currentGameId="towerstack" />
             </div>
           )}
         </div>

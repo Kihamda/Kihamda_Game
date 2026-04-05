@@ -9,3 +9,65 @@
 .stacktower-canvas {
   display: block;
 }
+
+/* ゲームオーバーオーバーレイ */
+.stacktower-result-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.stacktower-result-content {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 2px solid #4ade80;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  color: #fff;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.stacktower-result-content h2 {
+  margin: 0 0 12px;
+  font-size: 28px;
+  color: #ff4757;
+}
+
+.stacktower-result-score {
+  font-size: 48px;
+  font-weight: bold;
+  color: #4ade80;
+  margin: 12px 0 20px;
+}
+
+.stacktower-result-retry {
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 16px 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stacktower-result-retry:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.5);
+}
+
+.stacktower-result-retry:active {
+  transform: scale(0.98);
+}
+
