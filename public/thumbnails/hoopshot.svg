@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="court" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2c1810"/>
+      <stop offset="100%" style="stop-color:#1a0f0a"/>
+    </linearGradient>
+    <radialGradient id="ball" cx="35%" cy="35%" r="60%">
+      <stop offset="0%" style="stop-color:#ff8c00"/>
+      <stop offset="80%" style="stop-color:#e65c00"/>
+      <stop offset="100%" style="stop-color:#cc4400"/>
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" fill="url(#court)"/>
+  
+  <!-- Court line -->
+  <ellipse cx="100" cy="200" rx="80" ry="40" stroke="rgba(255,255,255,0.15)" stroke-width="2" fill="none"/>
+  
+  <!-- Backboard -->
+  <rect x="155" y="50" width="6" height="60" fill="rgba(255,255,255,0.9)" stroke="#333" stroke-width="1"/>
+  
+  <!-- Hoop -->
+  <line x1="120" y1="80" x2="155" y2="80" stroke="#ff4400" stroke-width="5" stroke-linecap="round"/>
+  
+  <!-- Net -->
+  <path d="M 122 80 Q 125 100 137 110" stroke="rgba(255,255,255,0.5)" stroke-width="1" fill="none"/>
+  <path d="M 130 80 Q 132 100 137 110" stroke="rgba(255,255,255,0.5)" stroke-width="1" fill="none"/>
+  <path d="M 138 80 Q 140 100 137 110" stroke="rgba(255,255,255,0.5)" stroke-width="1" fill="none"/>
+  <path d="M 146 80 Q 145 100 137 110" stroke="rgba(255,255,255,0.5)" stroke-width="1" fill="none"/>
+  <path d="M 153 80 Q 148 100 137 110" stroke="rgba(255,255,255,0.5)" stroke-width="1" fill="none"/>
+  
+  <!-- Trajectory -->
+  <path d="M 50 160 Q 80 40 137 85" stroke="rgba(255,200,100,0.6)" stroke-width="3" fill="none" stroke-dasharray="8,4"/>
+  
+  <!-- Basketball -->
+  <circle cx="80" cy="90" r="20" fill="url(#ball)"/>
+  <circle cx="80" cy="90" r="20" stroke="#222" stroke-width="2" fill="none"/>
+  <line x1="80" y1="70" x2="80" y2="110" stroke="#222" stroke-width="1.5"/>
+  <ellipse cx="80" cy="90" rx="20" ry="6" stroke="#222" stroke-width="1.5" fill="none"/>
+  
+  <!-- Ball animation glow -->
+  <circle cx="80" cy="90" r="22" fill="none" stroke="rgba(255,140,0,0.5)" stroke-width="2">
+    <animate attributeName="r" values="22;26;22" dur="1s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0;0.5" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Title -->
+  <text x="100" y="30" font-family="sans-serif" font-size="18" font-weight="bold" fill="#ff8c00" text-anchor="middle">HOOP</text>
+  <text x="100" y="48" font-family="sans-serif" font-size="16" font-weight="bold" fill="#fff" text-anchor="middle">SHOT</text>
+  
+  <!-- Score indicator -->
+  <text x="100" y="180" font-family="sans-serif" font-size="12" fill="#ffd700" text-anchor="middle">🔥 STREAK!</text>
+</svg>

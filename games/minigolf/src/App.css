@@ -1,0 +1,357 @@
+/* ミニゴルフ固有スタイル */
+.minigolf-container {
+  width: 700px;
+  height: 600px;
+  background: #1a1a2e;
+  position: relative;
+  overflow: hidden;
+}
+
+/* スタート画面 */
+.minigolf-start {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2e8b57 0%, #228b22 100%);
+  position: relative;
+}
+
+.minigolf-start::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.minigolf-start-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: white;
+  padding: 40px;
+}
+
+.minigolf-start-content h1 {
+  font-size: 48px;
+  margin: 0 0 16px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.minigolf-start-desc {
+  font-size: 16px;
+  margin: 0 0 24px 0;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.minigolf-start-info {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.minigolf-start-info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 12px 24px;
+  border-radius: 8px;
+}
+
+.minigolf-start-info-item span {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.minigolf-start-info-item strong {
+  font-size: 24px;
+}
+
+.minigolf-best-score {
+  font-size: 18px;
+  margin: 0 0 24px 0;
+  color: #ffd93d;
+}
+
+.minigolf-start-button {
+  padding: 16px 48px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.minigolf-start-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* ゲーム画面 */
+.minigolf-game {
+  position: relative;
+}
+
+.minigolf-scoreboard {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.minigolf-hole-info {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  gap: 16px;
+}
+
+.minigolf-par {
+  color: #ffd93d;
+}
+
+.minigolf-strokes {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.minigolf-strokes strong {
+  font-size: 20px;
+  color: #4ecdc4;
+}
+
+/* メッセージオーバーレイ */
+.minigolf-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 32px 48px;
+  border-radius: 12px;
+  text-align: center;
+  z-index: 20;
+}
+
+.minigolf-message p {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0 0 16px 0;
+}
+
+.minigolf-continue-btn {
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #4ecdc4;
+  color: #1a1a2e;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.minigolf-continue-btn:hover {
+  background: #3dbdb4;
+}
+
+/* 結果画面 */
+.minigolf-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.minigolf-result-content {
+  text-align: center;
+  color: white;
+  padding: 32px;
+}
+
+.minigolf-result-content h1 {
+  font-size: 36px;
+  margin: 0 0 8px 0;
+}
+
+.minigolf-new-best {
+  font-size: 20px;
+  color: #ffd93d;
+  margin: 0 0 16px 0;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.minigolf-result-total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 16px 32px;
+  border-radius: 12px;
+}
+
+.minigolf-result-label {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.minigolf-result-score {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.minigolf-result-diff {
+  font-size: 20px;
+  margin-left: 8px;
+  color: #4ecdc4;
+}
+
+.minigolf-result-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.minigolf-result-table th,
+.minigolf-result-table td {
+  padding: 12px 16px;
+  text-align: center;
+}
+
+.minigolf-result-table th {
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.minigolf-result-table td {
+  font-size: 16px;
+}
+
+.minigolf-score-label {
+  font-weight: bold;
+}
+
+.minigolf-score-good {
+  color: #4ecdc4;
+}
+
+.minigolf-score-bad {
+  color: #ff6b6b;
+}
+
+.minigolf-best-record {
+  font-size: 16px;
+  margin: 0 0 24px 0;
+  opacity: 0.8;
+}
+
+.minigolf-restart-button {
+  padding: 16px 48px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.minigolf-restart-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* パワーゲージ */
+.minigolf-power-gauge {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 10px 20px;
+  border-radius: 8px;
+  z-index: 15;
+}
+
+.minigolf-power-label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #aaa;
+  letter-spacing: 1px;
+}
+
+.minigolf-power-bar-container {
+  width: 120px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.minigolf-power-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.05s ease-out, background-color 0.15s ease;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.minigolf-power-value {
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* 画面フラッシュ（ホールインワン演出） */
+.minigolf-flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  z-index: 200;
+  animation: flash-fade 150ms ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes flash-fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

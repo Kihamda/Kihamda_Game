@@ -19,7 +19,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://game.kihamda.net/" />
     <meta property="og:site_name" content="game.kihamda.net" />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
       content="ブラウザゲームポータル | game.kihamda.net"
@@ -28,7 +28,59 @@
       name="twitter:description"
       content="今日の気分で遊べるブラウザゲームポータル。新着・おすすめ・ランダムからすぐプレイ"
     />
+    <meta
+      name="twitter:image"
+      content="https://game.kihamda.net/thumbnails/ogp-default.svg"
+    />
+    <meta
+      property="og:image"
+      content="https://game.kihamda.net/thumbnails/ogp-default.svg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <link rel="canonical" href="https://game.kihamda.net/" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "ブラウザゲームポータル",
+        "url": "https://game.kihamda.net/",
+        "description": "今日の気分で遊べるブラウザゲームポータル。新着・おすすめ・ランダムからすぐプレイ",
+        "publisher": {
+          "@type": "Organization",
+          "name": "game.kihamda.net"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://game.kihamda.net/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "無料ブラウザゲーム一覧",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "url": "https://game.kihamda.net/games/ntiktaktoe/"},
+          {"@type": "ListItem", "position": 2, "url": "https://game.kihamda.net/games/flashreflex/"},
+          {"@type": "ListItem", "position": 3, "url": "https://game.kihamda.net/games/gravityfour/"},
+          {"@type": "ListItem", "position": 4, "url": "https://game.kihamda.net/games/memoryduel/"},
+          {"@type": "ListItem", "position": 5, "url": "https://game.kihamda.net/games/snakechaos/"},
+          {"@type": "ListItem", "position": 6, "url": "https://game.kihamda.net/games/merge2048/"},
+          {"@type": "ListItem", "position": 7, "url": "https://game.kihamda.net/games/brickblast/"},
+          {"@type": "ListItem", "position": 8, "url": "https://game.kihamda.net/games/molemania/"},
+          {"@type": "ListItem", "position": 9, "url": "https://game.kihamda.net/games/colorburst/"},
+          {"@type": "ListItem", "position": 10, "url": "https://game.kihamda.net/games/taptarget/"},
+          {"@type": "ListItem", "position": 11, "url": "https://game.kihamda.net/games/simonecho/"},
+          {"@type": "ListItem", "position": 12, "url": "https://game.kihamda.net/games/numhunt/"},
+          {"@type": "ListItem", "position": 13, "url": "https://game.kihamda.net/games/dodgeblitz/"},
+          {"@type": "ListItem", "position": 14, "url": "https://game.kihamda.net/games/typingblitz/"},
+          {"@type": "ListItem", "position": 15, "url": "https://game.kihamda.net/games/minerush/"}
+        ]
+      }
+    </script>
     <link rel="manifest" href="/manifest.webmanifest" />
     <!-- Google tag (gtag.js) -->
     <script
@@ -46,7 +98,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="./src/portal/main.tsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {

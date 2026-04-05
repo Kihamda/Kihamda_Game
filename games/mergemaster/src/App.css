@@ -1,0 +1,300 @@
+.mergemaster-container {
+  width: 500px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+/* Grid warning flash */
+.mergemaster-container.mergemaster-warning {
+  animation: warningFlash 0.6s ease-out;
+}
+
+@keyframes warningFlash {
+  0%, 100% {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  }
+  25%, 75% {
+    background: linear-gradient(135deg, #ffcdd2 0%, #ef9a9a 100%);
+  }
+  50% {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  }
+}
+
+/* Header */
+.mergemaster-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 432px;
+  margin-bottom: 8px;
+}
+
+.mergemaster-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #2e7d32;
+  margin: 0;
+}
+
+.mergemaster-scores {
+  display: flex;
+  gap: 8px;
+}
+
+.mergemaster-score-box {
+  background: #43a047;
+  border-radius: 6px;
+  padding: 6px 12px;
+  text-align: center;
+  min-width: 60px;
+}
+
+.mergemaster-score-label {
+  font-size: 11px;
+  color: #c8e6c9;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.mergemaster-score-value {
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Info bar */
+.mergemaster-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 432px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #388e3c;
+  font-weight: 500;
+}
+
+/* Controls */
+.mergemaster-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.mergemaster-btn {
+  background: #66bb6a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.mergemaster-btn:hover {
+  background: #81c784;
+}
+
+.mergemaster-btn:active {
+  transform: scale(0.96);
+}
+
+/* Game Board */
+.mergemaster-board {
+  position: relative;
+  background: #a5d6a7;
+  border-radius: 12px;
+  padding: 10px;
+  box-sizing: content-box;
+}
+
+/* Grid cells (background) */
+.mergemaster-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 80px);
+  grid-template-rows: repeat(5, 80px);
+  gap: 8px;
+}
+
+.mergemaster-cell {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+}
+
+/* Empty cell (droppable) */
+.mergemaster-empty-cell {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.mergemaster-empty-cell--valid {
+  background: rgba(102, 187, 106, 0.5);
+  box-shadow: inset 0 0 0 3px #4caf50;
+}
+
+/* Item */
+.mergemaster-item {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  cursor: grab;
+  transition: transform 0.15s ease-out, left 0.15s ease-out, top 0.15s ease-out, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.mergemaster-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.mergemaster-item--dragging {
+  opacity: 0.6;
+  cursor: grabbing;
+  transform: scale(1.1);
+}
+
+.mergemaster-item--valid-target {
+  box-shadow: 0 0 0 3px #4caf50, 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.mergemaster-item-emoji {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.mergemaster-item-level {
+  font-size: 12px;
+  font-weight: bold;
+  color: #5d4037;
+  margin-top: 2px;
+}
+
+/* New item animation */
+.mergemaster-item--new {
+  animation: itemAppear 0.25s ease-out;
+}
+
+@keyframes itemAppear {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Merge animation */
+.mergemaster-item--merged {
+  animation: itemMerge 0.35s ease-out;
+}
+
+@keyframes itemMerge {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.35);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* High level item glow */
+.mergemaster-item--high-level {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 0 20px rgba(255, 193, 7, 0.5);
+  animation: highLevelPulse 2s ease-in-out infinite;
+}
+
+@keyframes highLevelPulse {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 0 20px rgba(255, 193, 7, 0.5);
+  }
+  50% {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2), 0 0 30px rgba(255, 193, 7, 0.7);
+  }
+}
+
+/* Overlay */
+.mergemaster-overlay {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: rgba(46, 125, 50, 0.9);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.mergemaster-overlay--won {
+  background: rgba(255, 193, 7, 0.95);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mergemaster-overlay-text {
+  font-size: 36px;
+  font-weight: bold;
+  color: #fff;
+  margin: 0;
+}
+
+.mergemaster-overlay--won .mergemaster-overlay-text {
+  color: #5d4037;
+}
+
+.mergemaster-overlay-subtext {
+  font-size: 18px;
+  color: #c8e6c9;
+  margin: 0;
+}
+
+.mergemaster-overlay--won .mergemaster-overlay-subtext {
+  color: #795548;
+}
+
+/* Instructions */
+.mergemaster-instructions {
+  color: #388e3c;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 12px;
+}

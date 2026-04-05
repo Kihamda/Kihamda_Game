@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00d9ff"/>
+      <stop offset="100%" style="stop-color:#00ff88"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#bg)"/>
+  
+  <!-- Keyboard base -->
+  <rect x="50" y="160" width="300" height="100" rx="10" fill="#233554"/>
+  
+  <!-- Keyboard keys -->
+  <g fill="#3a4a6b">
+    <rect x="60" y="170" width="30" height="25" rx="4"/>
+    <rect x="95" y="170" width="30" height="25" rx="4"/>
+    <rect x="130" y="170" width="30" height="25" rx="4"/>
+    <rect x="165" y="170" width="30" height="25" rx="4"/>
+    <rect x="200" y="170" width="30" height="25" rx="4"/>
+    <rect x="235" y="170" width="30" height="25" rx="4"/>
+    <rect x="270" y="170" width="30" height="25" rx="4"/>
+    <rect x="305" y="170" width="30" height="25" rx="4"/>
+    
+    <rect x="75" y="200" width="30" height="25" rx="4"/>
+    <rect x="110" y="200" width="30" height="25" rx="4"/>
+    <rect x="145" y="200" width="30" height="25" rx="4"/>
+    <rect x="180" y="200" width="30" height="25" rx="4"/>
+    <rect x="215" y="200" width="30" height="25" rx="4"/>
+    <rect x="250" y="200" width="30" height="25" rx="4"/>
+    <rect x="285" y="200" width="30" height="25" rx="4"/>
+    
+    <rect x="100" y="230" width="200" height="25" rx="4"/>
+  </g>
+  
+  <!-- Highlighted key (typing indicator) -->
+  <rect x="180" y="200" width="30" height="25" rx="4" fill="url(#accent)"/>
+  
+  <!-- Text display -->
+  <rect x="80" y="60" width="240" height="70" rx="8" fill="rgba(255,255,255,0.05)" stroke="url(#accent)" stroke-width="2"/>
+  
+  <!-- Typed text -->
+  <text x="95" y="95" font-family="Courier, monospace" font-size="18" fill="#00ff88">The quick</text>
+  <text x="205" y="95" font-family="Courier, monospace" font-size="18" fill="#6272a4"> brown</text>
+  
+  <!-- Cursor -->
+  <rect x="264" y="82" width="2" height="20" fill="#00d9ff">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+  
+  <!-- Timer -->
+  <text x="320" y="45" font-family="sans-serif" font-size="24" font-weight="bold" fill="#00d9ff">30s</text>
+  
+  <!-- WPM indicator -->
+  <text x="80" y="45" font-family="sans-serif" font-size="14" fill="#8892b0">WPM:</text>
+  <text x="125" y="45" font-family="sans-serif" font-size="18" font-weight="bold" fill="url(#accent)">65</text>
+  
+  <!-- Speed lines -->
+  <g stroke="#00d9ff" stroke-width="2" opacity="0.5">
+    <line x1="30" y1="90" x2="60" y2="90"/>
+    <line x1="20" y1="100" x2="55" y2="100"/>
+    <line x1="25" y1="110" x2="50" y2="110"/>
+  </g>
+</svg>

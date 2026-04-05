@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB"/>
+      <stop offset="100%" style="stop-color:#E0F4FF"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B6B"/>
+      <stop offset="100%" style="stop-color:#EE5A5A"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ECDC4"/>
+      <stop offset="100%" style="stop-color:#3DBDB5"/>
+    </linearGradient>
+    <linearGradient id="yellow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFE66D"/>
+      <stop offset="100%" style="stop-color:#FFD93D"/>
+    </linearGradient>
+    <linearGradient id="purple" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#A66CFF"/>
+      <stop offset="100%" style="stop-color:#9055FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <!-- 赤い風船 -->
+  <ellipse cx="180" cy="140" rx="55" ry="70" fill="url(#red)"/>
+  <ellipse cx="165" cy="115" rx="12" ry="8" fill="rgba(255,255,255,0.4)"/>
+  <polygon points="180,210 175,225 185,225" fill="#CC4444"/>
+  <path d="M180 225 Q200 260 170 300" stroke="#888" stroke-width="2" fill="none"/>
+  <!-- 青い風船 -->
+  <ellipse cx="320" cy="100" rx="60" ry="75" fill="url(#blue)"/>
+  <ellipse cx="302" cy="72" rx="14" ry="9" fill="rgba(255,255,255,0.4)"/>
+  <polygon points="320,175 314,192 326,192" fill="#2AA099"/>
+  <path d="M320 192 Q340 230 310 280" stroke="#888" stroke-width="2" fill="none"/>
+  <!-- 黄色い風船 -->
+  <ellipse cx="460" cy="160" rx="50" ry="65" fill="url(#yellow)"/>
+  <ellipse cx="447" cy="138" rx="11" ry="7" fill="rgba(255,255,255,0.4)"/>
+  <polygon points="460,225 455,240 465,240" fill="#CCAA00"/>
+  <path d="M460 240 Q480 275 450 320" stroke="#888" stroke-width="2" fill="none"/>
+  <!-- 紫の風船(小) -->
+  <ellipse cx="100" cy="220" rx="40" ry="52" fill="url(#purple)"/>
+  <ellipse cx="90" cy="200" rx="9" ry="6" fill="rgba(255,255,255,0.4)"/>
+  <polygon points="100,272 96,285 104,285" fill="#7744CC"/>
+  <path d="M100 285 Q115 310 95 340" stroke="#888" stroke-width="2" fill="none"/>
+  <!-- 破裂エフェクト -->
+  <g transform="translate(540,100)">
+    <path d="M0,-25 L8,-8 L25,-8 L12,4 L18,22 L0,12 L-18,22 L-12,4 L-25,-8 L-8,-8 Z" fill="#FFD700"/>
+    <text x="0" y="5" font-size="20" font-weight="bold" fill="#FF4444" text-anchor="middle">POP!</text>
+  </g>
+</svg>

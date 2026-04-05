@@ -16,6 +16,26 @@
   --radius-sm: 6px;
   --shadow: 0 20px 60px rgba(2, 6, 23, 0.45);
   --transition: 0.2s ease;
+
+  /* 追加: グラデーション・グロー用 */
+  --gradient-gold: linear-gradient(135deg, #ffd700 0%, #ffaa00 50%, #ff8800 100%);
+  --gradient-rainbow: linear-gradient(
+    135deg,
+    #ff6b6b 0%,
+    #feca57 20%,
+    #48dbfb 40%,
+    #ff9ff3 60%,
+    #54a0ff 80%,
+    #5f27cd 100%
+  );
+  --gradient-fire: linear-gradient(135deg, #ff4444 0%, #ff8800 50%, #ffcc00 100%);
+  --gradient-ice: linear-gradient(135deg, #00d2d3 0%, #48dbfb 50%, #a0e7ff 100%);
+  --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  --glow-gold: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 170, 0, 0.4);
+  --glow-blue: 0 0 20px rgba(72, 219, 251, 0.6), 0 0 40px rgba(72, 219, 251, 0.3);
+  --glow-pink: 0 0 20px rgba(255, 159, 243, 0.6), 0 0 40px rgba(255, 159, 243, 0.3);
+  --glow-green: 0 0 20px rgba(29, 209, 161, 0.6), 0 0 40px rgba(29, 209, 161, 0.3);
 }
 
 /* ── CSS Reset ── */
@@ -113,18 +133,7 @@ body {
   animation: celebrate 0.6s ease;
 }
 
-/* ── Animations ── */
-
-@keyframes particle-fade {
-  0% {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(0, -20px) scale(0.3);
-  }
-}
+/* ── Animations (基本) ── */
 
 @keyframes shake {
   0%,
@@ -208,5 +217,339 @@ body {
   }
   to {
     opacity: 1;
+  }
+}
+
+/* ── 追加: パーティクルアニメーション ── */
+
+@keyframes particle-fade {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx, 0), var(--ty, -20px)) scale(0.3);
+  }
+}
+
+@keyframes particle-confetti {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx, 0), var(--ty, 100px)) rotate(var(--rot, 360deg)) scale(0.5);
+  }
+}
+
+@keyframes particle-sparkle {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(calc(var(--tx, 0) * 0.5), calc(var(--ty, 0) * 0.5)) scale(var(--scale, 1));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(0);
+  }
+}
+
+@keyframes particle-explosion {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx, 0), var(--ty, 0)) rotate(var(--rot, 180deg)) scale(0);
+  }
+}
+
+/* ── 追加: スコアポップアップアニメーション ── */
+
+@keyframes score-popup-bounce {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(0.5);
+  }
+  30% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-20px) scale(1.3);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-15px) scale(1);
+  }
+  70% {
+    transform: translateX(-50%) translateY(-25px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50px) scale(1.2);
+  }
+}
+
+@keyframes score-popup-glow {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-20px) scale(1.4);
+    filter: brightness(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50px) scale(1.6);
+    filter: brightness(2);
+  }
+}
+
+@keyframes score-popup-critical {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(0.3) rotate(-10deg);
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px) scale(1.5) rotate(5deg);
+  }
+  40% {
+    transform: translateX(-50%) translateY(-20px) scale(1.2) rotate(-3deg);
+  }
+  60% {
+    transform: translateX(-50%) translateY(-30px) scale(1.4) rotate(2deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-60px) scale(1.8) rotate(0deg);
+  }
+}
+
+@keyframes score-popup-level {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(30px) scale(0);
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1.2);
+  }
+  40% {
+    transform: translateX(-50%) translateY(-5px) scale(1);
+  }
+  60% {
+    transform: translateX(-50%) translateY(0) scale(1.1);
+  }
+  80% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-40px) scale(0.8);
+  }
+}
+
+/* ── 追加: コンボカウンター用 ── */
+
+@keyframes combo-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.1);
+    filter: brightness(1.3);
+  }
+}
+
+@keyframes combo-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes combo-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+/* ── 追加: グロー効果ユーティリティ ── */
+
+.glow-gold {
+  box-shadow: var(--glow-gold);
+}
+
+.glow-blue {
+  box-shadow: var(--glow-blue);
+}
+
+.glow-pink {
+  box-shadow: var(--glow-pink);
+}
+
+.glow-green {
+  box-shadow: var(--glow-green);
+}
+
+.text-glow-gold {
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 170, 0, 0.6);
+}
+
+.text-glow-rainbow {
+  background: var(--gradient-rainbow);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.5));
+}
+
+/* ── 追加: 強化されたシャドウ ── */
+
+.shadow-intense {
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.3),
+    0 10px 20px rgba(0, 0, 0, 0.25),
+    0 30px 60px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-neon {
+  box-shadow:
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 40px currentColor;
+}
+
+/* ── SNSシェアボタン ── */
+
+.share-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    background-color var(--transition);
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+}
+
+.share-btn:active {
+  transform: scale(0.96);
+}
+
+.share-btn-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.share-btn-label {
+  line-height: 1;
+}
+
+/* ネイティブシェアボタン (モバイル) */
+.share-btn--native {
+  background: var(--accent);
+  color: #fff;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.share-btn--native:hover {
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+/* Twitter/X ボタン */
+.share-btn--twitter {
+  background: #000;
+  color: #fff;
+}
+
+.share-btn--twitter:hover {
+  background: #1a1a1a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* LINE ボタン */
+.share-btn--line {
+  background: #06c755;
+  color: #fff;
+}
+
+.share-btn--line:hover {
+  background: #05b54c;
+  box-shadow: 0 4px 12px rgba(6, 199, 85, 0.4);
+}
+
+/* コピーボタン */
+.share-btn--copy {
+  background: var(--bg-panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.share-btn--copy:hover {
+  background: rgba(30, 41, 59, 0.9);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* コピー完了状態 */
+.share-btn--copy[aria-label="クリップボードにコピー"]:has(.share-btn-icon:first-child) {
+  /* デフォルト状態 */
+}
+
+/* モバイル最適化 */
+@media (max-width: 480px) {
+  .share-buttons {
+    gap: 6px;
+  }
+
+  .share-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .share-btn-icon {
+    font-size: 14px;
   }
 }

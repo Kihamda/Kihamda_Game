@@ -1,0 +1,9 @@
+.jumpquest-container {
+  position: relative;
+  background: #2c3e50;
+  overflow: hidden;
+}
+
+.jumpquest-canvas {
+  display: block;
+}

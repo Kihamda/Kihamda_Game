@@ -1,828 +1,460 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
+import { GameShell } from "@shared/components/GameShell";
+import { ParticleLayer } from "@shared/components/ParticleLayer";
+import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
+import { ScreenShake } from "@shared/components/ScreenShake";
+import type { ScreenShakeHandle } from "@shared/components/ScreenShake";
+import { useParticles } from "@shared/hooks/useParticles";
+import { useAudio } from "@shared/hooks/useAudio";
 import "./App.css";
-import { useAudio, useHighScore, GameShell } from "../../../src/shared";
 
-// ── Settings types ──────────────────────────────────────────────────────────
-type GridSize = "SMALL" | "MEDIUM" | "LARGE";
-type SpeedLevel = "EASY" | "NORMAL" | "FAST";
-type WallMode = "SOLID" | "WRAP";
-type PowerUpFreq = "LOW" | "NORMAL" | "HIGH";
+const CANVAS_WIDTH = 800;
+const CANVAS_HEIGHT = 600;
+const CELL_SIZE = 20;
+const COLS = CANVAS_WIDTH / CELL_SIZE;
+const ROWS = CANVAS_HEIGHT / CELL_SIZE;
+const INITIAL_SPEED = 120;
+const SPEED_INCREMENT = 2;
+const SPEED_UP_THRESHOLD = 50; // スピードアップの閾値
 
-interface Settings {
-  gridSize: GridSize;
-  speed: SpeedLevel;
-  wallMode: WallMode;
-  powerUpFreq: PowerUpFreq;
-}
+type Direction = "UP" | "DOWN" | "LEFT" | "RIGHT";
+type GamePhase = "ready" | "playing" | "gameover";
 
-interface GameConfig {
-  grid: number;
-  cell: number;
-  board: number;
-  initMs: number;
-  minMs: number;
-  wallMode: WallMode;
-  puBase: number;
-  puRange: number;
-}
-
-const STORAGE_KEY = "snakechaos_settings";
-const TARGET_BOARD = 480;
-const GRID_MAP: Record<GridSize, number> = { SMALL: 15, MEDIUM: 20, LARGE: 25 };
-const SPEED_MAP: Record<SpeedLevel, [number, number]> = {
-  EASY: [250, 120],
-  NORMAL: [200, 80],
-  FAST: [130, 50],
-};
-const PU_MAP: Record<PowerUpFreq, [number, number]> = {
-  LOW: [6, 6],
-  NORMAL: [3, 5],
-  HIGH: [1, 3],
-};
-
-const DEFAULT_SETTINGS: Settings = {
-  gridSize: "MEDIUM",
-  speed: "NORMAL",
-  wallMode: "SOLID",
-  powerUpFreq: "NORMAL",
-};
-
-function resolveConfig(s: Settings): GameConfig {
-  const grid = GRID_MAP[s.gridSize];
-  const cell = Math.floor(TARGET_BOARD / grid);
-  const [initMs, minMs] = SPEED_MAP[s.speed];
-  const [puBase, puRange] = PU_MAP[s.powerUpFreq];
-  return { grid, cell, board: grid * cell, initMs, minMs, wallMode: s.wallMode, puBase, puRange };
-}
-
-function loadSettings(): Settings {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { ...DEFAULT_SETTINGS };
-    return { ...DEFAULT_SETTINGS, ...(JSON.parse(raw) as Partial<Settings>) };
-  } catch {
-    return { ...DEFAULT_SETTINGS };
-  }
-}
-
-function saveSettings(s: Settings): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
-}
-
-// ── Types ───────────────────────────────────────────────────────────────────
-type Dir = "U" | "D" | "L" | "R";
-type PUType = "speedDown" | "doubleScore" | "star";
-type Phase = "idle" | "playing" | "gameover";
-
-interface Pos {
+interface Point {
   x: number;
   y: number;
 }
-interface Particle {
-  id: number;
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  life: number;
-  color: string;
-  size: number;
-}
-interface PUItem {
-  pos: Pos;
-  type: PUType;
-}
-interface ActiveEffects {
-  speedDown: number | null;
-  doubleScore: number | null;
-  star: number | null;
-}
-interface GS {
-  phase: Phase;
-  snake: Pos[];
-  dir: Dir;
-  nextDir: Dir;
-  food: Pos;
-  pu: PUItem | null;
-  puCountdown: number;
-  score: number;
-  highScore: number;
-  combo: number;
-  comboEnd: number;
-  effects: ActiveEffects;
-  particles: Particle[];
-  shakeEnd: number;
-  lastTick: number;
-  tickMs: number;
-  rafId: number | null;
-  pid: number;
-  config: GameConfig;
-}
-interface ScorePopup {
-  id: number;
-  x: number;
-  y: number;
-  text: string;
-  frame: number;
-}
 
-// ── Pure helpers ─────────────────────────────────────────────────────────────
-function puColor(t: PUType): string {
-  return t === "speedDown" ? "#4af" : t === "doubleScore" ? "#ff4" : "#fff";
-}
-function puEmoji(t: PUType): string {
-  return t === "speedDown" ? "⚡" : t === "doubleScore" ? "💥" : "🛡️";
-}
-
-function randomFree(exclude: Pos[], grid: number): Pos {
-  let p: Pos;
+function randomPosition(exclude: Point[]): Point {
+  let pos: Point;
   do {
-    p = {
-      x: Math.floor(Math.random() * grid),
-      y: Math.floor(Math.random() * grid),
+    pos = {
+      x: Math.floor(Math.random() * COLS),
+      y: Math.floor(Math.random() * ROWS),
     };
-  } while (exclude.some((q) => q.x === p.x && q.y === p.y));
-  return p;
+  } while (exclude.some((p) => p.x === pos.x && p.y === pos.y));
+  return pos;
 }
 
-function calcMs(score: number, initMs: number, minMs: number): number {
-  return Math.max(minMs, initMs - Math.floor(score / 50) * 10);
-}
-
-function spawnParticles(gs: GS, x: number, y: number, color: string): void {
-  const { cell } = gs.config;
-  const cx = x * cell + cell / 2;
-  const cy = y * cell + cell / 2;
-  for (let i = 0; i < 10; i++) {
-    const a = (i / 10) * Math.PI * 2;
-    const s = 1.5 + Math.random() * 2;
-    gs.particles.push({
-      id: ++gs.pid,
-      x: cx,
-      y: cy,
-      vx: Math.cos(a) * s,
-      vy: Math.sin(a) * s,
-      life: 1,
-      color,
-      size: 3 + Math.random() * 3,
-    });
-  }
-}
-
-function makeInitialGS(config: GameConfig): GS {
-  const mid = Math.floor(config.grid / 2);
-  return {
-    phase: "idle",
-    snake: [
-      { x: mid, y: mid },
-      { x: mid - 1, y: mid },
-      { x: mid - 2, y: mid },
-    ],
-    dir: "R",
-    nextDir: "R",
-    food: { x: Math.min(mid + 5, config.grid - 1), y: mid },
-    pu: null,
-    puCountdown: config.puBase + Math.floor(config.puRange / 2),
-    score: 0,
-    highScore: 0,
-    combo: 0,
-    comboEnd: 0,
-    effects: { speedDown: null, doubleScore: null, star: null },
-    particles: [],
-    shakeEnd: 0,
-    lastTick: 0,
-    tickMs: config.initMs,
-    rafId: null,
-    pid: 0,
-    config,
+function getOppositeDirection(dir: Direction): Direction {
+  const opposites: Record<Direction, Direction> = {
+    UP: "DOWN",
+    DOWN: "UP",
+    LEFT: "RIGHT",
+    RIGHT: "LEFT",
   };
+  return opposites[dir];
 }
 
-// ── Canvas draw ───────────────────────────────────────────────────────────────
-function drawGame(canvas: HTMLCanvasElement, gs: GS): void {
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-  const { grid, cell, board } = gs.config;
-
-  // Background
-  ctx.fillStyle = "#0a0a0a";
-  ctx.fillRect(0, 0, board, board);
-
-  // Subtle grid
-  ctx.strokeStyle = "rgba(255,255,255,0.04)";
-  ctx.lineWidth = 0.5;
-  for (let i = 0; i <= grid; i++) {
-    ctx.beginPath();
-    ctx.moveTo(i * cell, 0);
-    ctx.lineTo(i * cell, board);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(0, i * cell);
-    ctx.lineTo(board, i * cell);
-    ctx.stroke();
-  }
-
-  const now = Date.now();
-  const starActive = gs.effects.star !== null && gs.effects.star > now;
-
-  // Food
-  ctx.font = `${cell - 4}px serif`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText("🍎", gs.food.x * cell + cell / 2, gs.food.y * cell + cell / 2);
-
-  // Power-up
-  if (gs.pu !== null) {
-    ctx.fillText(
-      puEmoji(gs.pu.type),
-      gs.pu.pos.x * cell + cell / 2,
-      gs.pu.pos.y * cell + cell / 2,
-    );
-  }
-
-  // Snake
-  gs.snake.forEach((seg, i) => {
-    const alpha = 1 - (i / gs.snake.length) * 0.5;
-    if (i === 0) {
-      ctx.fillStyle = starActive ? "#e0e0ff" : "#39ff14";
-      ctx.shadowColor = starActive ? "#aaf" : "#39ff14";
-      ctx.shadowBlur = 18;
-    } else {
-      ctx.fillStyle = starActive
-        ? `rgba(180,180,255,${alpha})`
-        : `rgba(57,255,20,${alpha})`;
-      ctx.shadowBlur = 0;
-    }
-    ctx.beginPath();
-    ctx.roundRect(
-      seg.x * cell + 1,
-      seg.y * cell + 1,
-      cell - 2,
-      cell - 2,
-      i === 0 ? 6 : 3,
-    );
-    ctx.fill();
-  });
-  ctx.shadowBlur = 0;
-
-  // Particles
-  gs.particles.forEach((p) => {
-    ctx.globalAlpha = p.life;
-    ctx.fillStyle = p.color;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
-    ctx.fill();
-  });
-  ctx.globalAlpha = 1;
-}
-
-// ── Opposite direction guard ──────────────────────────────────────────────────
-const OPPOSITE: Record<Dir, Dir> = { U: "D", D: "U", L: "R", R: "L" };
-
-// ── Setting option definitions ────────────────────────────────────────────
-const GRID_OPTIONS: { value: GridSize; label: string; sub: string }[] = [
-  { value: "SMALL", label: "15×15", sub: "狭い" },
-  { value: "MEDIUM", label: "20×20", sub: "標準" },
-  { value: "LARGE", label: "25×25", sub: "広い" },
-];
-const SPEED_OPTIONS: { value: SpeedLevel; label: string; sub: string }[] = [
-  { value: "EASY", label: "EASY", sub: "ゆっくり" },
-  { value: "NORMAL", label: "NORMAL", sub: "標準" },
-  { value: "FAST", label: "FAST", sub: "高速" },
-];
-const WALL_OPTIONS: { value: WallMode; label: string; sub: string }[] = [
-  { value: "SOLID", label: "SOLID", sub: "壁で死亡" },
-  { value: "WRAP", label: "WRAP", sub: "すり抜け" },
-];
-const PU_OPTIONS: { value: PowerUpFreq; label: string; sub: string }[] = [
-  { value: "LOW", label: "LOW", sub: "少ない" },
-  { value: "NORMAL", label: "NORMAL", sub: "標準" },
-  { value: "HIGH", label: "HIGH", sub: "多い" },
-];
-
-// ── Component ─────────────────────────────────────────────────────────────────
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [settings, setSettings] = useState(loadSettings);
-  const currentConfig = resolveConfig(settings);
-  const gsRef = useRef<GS>(makeInitialGS(resolveConfig(loadSettings())));
-  const popupIdRef = useRef(0);
-  // Store tick fn in ref to avoid stale closure in RAF
-  const tickFnRef = useRef<() => void>(() => {});
-
-  const { playSweep, playArpeggio } = useAudio();
-  const sfxRef = useRef({ playSweep, playArpeggio });
-  useEffect(() => {
-    sfxRef.current = { playSweep, playArpeggio };
-  }, [playSweep, playArpeggio]);
-  const { best: highScore, update: updateHiScore } = useHighScore("snakechaos");
-
-  const [phase, setPhase] = useState<Phase>("idle");
-  const [score, setScore] = useState(0);
-  const [combo, setCombo] = useState(0);
-  const [effects, setEffects] = useState<ActiveEffects>({
-    speedDown: null,
-    doubleScore: null,
-    star: null,
+  const shakeRef = useRef<ScreenShakeHandle>(null);
+  const gameStateRef = useRef({
+    snake: [{ x: 10, y: 15 }] as Point[],
+    direction: "RIGHT" as Direction,
+    nextDirection: "RIGHT" as Direction,
+    apple: { x: 20, y: 15 } as Point,
+    score: 0,
+    speed: INITIAL_SPEED,
+    lastMoveTime: 0,
+    growAnim: 0, // 成長アニメーション用
+    speedGlow: 0, // スピードアップグロー用
   });
-  const [isShaking, setIsShaking] = useState(false);
-  const [popups, setPopups] = useState<ScorePopup[]>([]);
 
-  // ── Sync config into idle GS when settings change ────────────────────────
-  useEffect(() => {
-    const gs = gsRef.current;
-    if (gs.phase !== "playing") gs.config = resolveConfig(settings);
-  }, [settings]);
+  const [phase, setPhase] = useState<GamePhase>("ready");
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(() => {
+    const saved = localStorage.getItem("snakechaos_highscore");
+    return saved ? parseInt(saved, 10) : 0;
+  });
+  
+  // ドーパミン演出用の状態
+  const [popupText, setPopupText] = useState<string | null>(null);
+  const [popupKey, setPopupKey] = useState(0);
+  const [popupPos, setPopupPos] = useState({ x: "50%", y: "40%" });
+  const [isSpeedUp, setIsSpeedUp] = useState(false);
+  
+  // パーティクルとオーディオのhooks
+  const { particles, sparkle, explosion, confetti } = useParticles();
+  const { playSuccess, playLevelUp, playGameOver } = useAudio();
 
-  const updateSetting = useCallback(
-    <K extends keyof Settings>(key: K, value: Settings[K]) => {
-      setSettings((prev) => {
-        const next = { ...prev, [key]: value };
-        saveSettings(next);
-        return next;
-      });
-    },
-    [],
-  );
-
-  // ── Add a score popup ──────────────────────────────────────────────────────
-  const addPopup = useCallback((x: number, y: number, text: string) => {
-    setPopups((prev) => [
-      ...prev.slice(-12),
-      { id: ++popupIdRef.current, x, y, text, frame: 0 },
-    ]);
+  const initGame = useCallback(() => {
+    const state = gameStateRef.current;
+    state.snake = [{ x: 10, y: 15 }];
+    state.direction = "RIGHT";
+    state.nextDirection = "RIGHT";
+    state.apple = randomPosition(state.snake);
+    state.score = 0;
+    state.speed = INITIAL_SPEED;
+    state.lastMoveTime = 0;
+    state.growAnim = 0;
+    state.speedGlow = 0;
+    setScore(0);
+    setPopupText(null);
+    setIsSpeedUp(false);
   }, []);
 
-  // ── Single game tick ───────────────────────────────────────────────────────
-  const tick = useCallback(() => {
-    const gs = gsRef.current;
-    if (gs.phase !== "playing") return;
+  const startGame = useCallback(() => {
+    initGame();
+    setPhase("playing");
+  }, [initGame]);
 
-    const now = Date.now();
-    const { grid, cell, initMs, minMs } = gs.config;
-    const wrapMode = gs.config.wallMode === "WRAP";
-    gs.dir = gs.nextDir;
-
-    // New head position
-    const head = gs.snake[0];
-    if (!head) return;
-    let nx = head.x + (gs.dir === "R" ? 1 : gs.dir === "L" ? -1 : 0);
-    let ny = head.y + (gs.dir === "D" ? 1 : gs.dir === "U" ? -1 : 0);
-
-    const starActive = gs.effects.star !== null && gs.effects.star > now;
-
-    if (starActive || wrapMode) {
-      nx = ((nx % grid) + grid) % grid;
-      ny = ((ny % grid) + grid) % grid;
+  const endGame = useCallback(() => {
+    const finalScore = gameStateRef.current.score;
+    setPhase("gameover");
+    
+    // ゲームオーバー演出
+    playGameOver();
+    shakeRef.current?.shake("heavy", 400);
+    explosion(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 30);
+    
+    if (finalScore > highScore) {
+      setHighScore(finalScore);
+      localStorage.setItem("snakechaos_highscore", String(finalScore));
+      confetti(60);
     }
+  }, [highScore, playGameOver, explosion, confetti]);
 
-    // Collision
-    const wallHit = nx < 0 || nx >= grid || ny < 0 || ny >= grid;
-    const selfHit = gs.snake.some((p) => p.x === nx && p.y === ny);
-
-    if (!starActive && (wallHit || selfHit)) {
-      gs.phase = "gameover";
-      gs.shakeEnd = now + 600;
-      updateHiScore(gs.score);
-      setPhase("gameover");
-      setIsShaking(true);
-      setTimeout(() => setIsShaking(false), 1000);
-      sfxRef.current.playArpeggio(
-        [440, 330, 220, 110],
-        0.15,
-        "sine",
-        0.25,
-        0.15,
-      );
-      return;
-    }
-
-    const newHead: Pos = { x: nx, y: ny };
-    const newSnake = [newHead, ...gs.snake];
-
-    let scoreGain = 0;
-    let comboLabel = "";
-
-    // Food
-    if (nx === gs.food.x && ny === gs.food.y) {
-      const comboOk = now < gs.comboEnd;
-      gs.combo = comboOk ? gs.combo + 1 : 1;
-      gs.comboEnd = now + 2000;
-
-      const dbl =
-        gs.effects.doubleScore !== null && gs.effects.doubleScore > now;
-      const base = 10 * (dbl ? 2 : 1);
-      const bonus = gs.combo >= 3 ? 2 : 1;
-      scoreGain += base * bonus;
-      gs.score += base * bonus;
-      gs.food = randomFree(newSnake, grid);
-      spawnParticles(gs, nx, ny, "#39ff14");
-      sfxRef.current.playSweep(660, 1320, 0.12, "sine", 0.25);
-
-      if (gs.combo >= 3) comboLabel = ` COMBO×${gs.combo}!`;
-
-      // Maybe spawn power-up
-      gs.puCountdown--;
-      if (gs.puCountdown <= 0 && gs.pu === null) {
-        const types: PUType[] = ["speedDown", "doubleScore", "star"];
-        const t = types[Math.floor(Math.random() * types.length)];
-        if (t !== undefined) {
-          gs.pu = { pos: randomFree([...newSnake, gs.food], grid), type: t };
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (phase === "ready" || phase === "gameover") {
+        if (e.key === " " || e.key === "Enter") {
+          e.preventDefault();
+          startGame();
         }
-        gs.puCountdown = gs.config.puBase + Math.floor(Math.random() * gs.config.puRange);
+        return;
       }
 
-      gs.tickMs = calcMs(gs.score, initMs, minMs);
-    } else {
-      newSnake.pop();
-    }
-
-    // Power-up pickup
-    if (gs.pu !== null && nx === gs.pu.pos.x && ny === gs.pu.pos.y) {
-      const t = gs.pu.type;
-      let gain = 0;
-      if (t === "speedDown") {
-        gs.effects.speedDown = now + 3000;
-        gain = 30;
-      } else if (t === "doubleScore") {
-        gs.effects.doubleScore = now + 5000;
-        gain = 20;
-      } else {
-        gs.effects.star = now + 3000;
-        gain = 50;
-      }
-      spawnParticles(gs, nx, ny, puColor(t));
-      sfxRef.current.playArpeggio(
-        [440, 554, 659, 880],
-        0.09,
-        "sine",
-        0.18,
-        0.09,
-      );
-      gs.score += gain;
-      scoreGain += gain;
-      gs.pu = null;
-    }
-
-    gs.snake = newSnake;
-
-    if (scoreGain > 0) {
-      addPopup(
-        nx * cell + cell / 2,
-        ny * cell - 4,
-        `+${scoreGain}${comboLabel}`,
-      );
-    }
-
-    setScore(gs.score);
-    setCombo(gs.combo);
-    setEffects({ ...gs.effects });
-  }, [addPopup, updateHiScore]);
-
-  // Keep tickFnRef current
-  useEffect(() => {
-    tickFnRef.current = tick;
-  }, [tick]);
-
-  // ── RAF (render + particle update + timed tick) ────────────────────────────
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const loop = () => {
-      const gs = gsRef.current;
-      const now = Date.now();
-
-      // Expire effects
-      gs.effects = {
-        speedDown:
-          gs.effects.speedDown !== null && gs.effects.speedDown > now
-            ? gs.effects.speedDown
-            : null,
-        doubleScore:
-          gs.effects.doubleScore !== null && gs.effects.doubleScore > now
-            ? gs.effects.doubleScore
-            : null,
-        star:
-          gs.effects.star !== null && gs.effects.star > now
-            ? gs.effects.star
-            : null,
+      const state = gameStateRef.current;
+      const keyMap: Record<string, Direction> = {
+        ArrowUp: "UP",
+        ArrowDown: "DOWN",
+        ArrowLeft: "LEFT",
+        ArrowRight: "RIGHT",
+        w: "UP",
+        s: "DOWN",
+        a: "LEFT",
+        d: "RIGHT",
       };
 
-      // Game tick
-      if (gs.phase === "playing" && now - gs.lastTick >= gs.tickMs) {
-        gs.lastTick = now;
-        tickFnRef.current();
-      }
-
-      // Particle physics
-      gs.particles = gs.particles
-        .map((p) => ({
-          ...p,
-          x: p.x + p.vx,
-          y: p.y + p.vy,
-          vx: p.vx * 0.95,
-          vy: p.vy * 0.95,
-          life: p.life - 0.035,
-        }))
-        .filter((p) => p.life > 0);
-
-      // Age popups
-      setPopups((prev) =>
-        prev
-          .map((p) => ({ ...p, frame: p.frame + 1 }))
-          .filter((p) => p.frame < 60),
-      );
-
-      drawGame(canvas, gs);
-      gs.rafId = requestAnimationFrame(loop);
-    };
-
-    gsRef.current.rafId = requestAnimationFrame(loop);
-    // eslint cleanup
-    const gs = gsRef.current;
-    return () => {
-      if (gs.rafId !== null) cancelAnimationFrame(gs.rafId);
-    };
-  }, []);
-
-  // ── Keyboard input ─────────────────────────────────────────────────────────
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      const gs = gsRef.current;
-      let d: Dir | null = null;
-      switch (e.key) {
-        case "ArrowUp":
-        case "w":
-        case "W":
-          d = "U";
-          break;
-        case "ArrowDown":
-        case "s":
-        case "S":
-          d = "D";
-          break;
-        case "ArrowLeft":
-        case "a":
-        case "A":
-          d = "L";
-          break;
-        case "ArrowRight":
-        case "d":
-        case "D":
-          d = "R";
-          break;
-      }
-      if (d !== null && d !== OPPOSITE[gs.dir]) {
-        if (gs.phase === "idle" || gs.phase === "gameover") return;
+      const newDir = keyMap[e.key];
+      if (newDir && newDir !== getOppositeDirection(state.direction)) {
         e.preventDefault();
-        gs.nextDir = d;
+        state.nextDirection = newDir;
       }
     };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, []);
 
-  // ── Swipe support ──────────────────────────────────────────────────────────
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [phase, startGame]);
+
   useEffect(() => {
-    const el = canvasRef.current;
-    if (!el) return;
+    if (phase !== "playing") return;
 
-    let touchStartX = 0;
-    let touchStartY = 0;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-    const onStart = (e: TouchEvent) => {
-      const t = e.touches[0];
-      if (!t) return;
-      touchStartX = t.clientX;
-      touchStartY = t.clientY;
-    };
-    const onEnd = (e: TouchEvent) => {
-      const t = e.changedTouches[0];
-      if (!t) return;
-      const dx = t.clientX - touchStartX;
-      const dy = t.clientY - touchStartY;
-      if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
-      const gs = gsRef.current;
-      if (gs.phase !== "playing") return;
-      let d: Dir;
-      if (Math.abs(dx) > Math.abs(dy)) {
-        d = dx > 0 ? "R" : "L";
-      } else {
-        d = dy > 0 ? "D" : "U";
+    let animationId: number;
+
+    const gameLoop = (timestamp: number) => {
+      const state = gameStateRef.current;
+
+      if (timestamp - state.lastMoveTime >= state.speed) {
+        state.lastMoveTime = timestamp;
+        state.direction = state.nextDirection;
+
+        const head = state.snake[0];
+        const delta: Record<Direction, Point> = {
+          UP: { x: 0, y: -1 },
+          DOWN: { x: 0, y: 1 },
+          LEFT: { x: -1, y: 0 },
+          RIGHT: { x: 1, y: 0 },
+        };
+        const d = delta[state.direction];
+        const newHead: Point = { x: head.x + d.x, y: head.y + d.y };
+
+        if (
+          newHead.x < 0 ||
+          newHead.x >= COLS ||
+          newHead.y < 0 ||
+          newHead.y >= ROWS
+        ) {
+          endGame();
+          return;
+        }
+
+        if (state.snake.some((p) => p.x === newHead.x && p.y === newHead.y)) {
+          endGame();
+          return;
+        }
+
+        state.snake.unshift(newHead);
+
+        if (newHead.x === state.apple.x && newHead.y === state.apple.y) {
+          const prevScore = state.score;
+          state.score += 10;
+          setScore(state.score);
+          state.speed = Math.max(40, state.speed - SPEED_INCREMENT);
+          state.apple = randomPosition(state.snake);
+          
+          // 成長アニメーション開始
+          state.growAnim = 10;
+          
+          // 餌を食べた位置でパーティクル＆ポップアップ
+          const appleX = newHead.x * CELL_SIZE + CELL_SIZE / 2;
+          const appleY = newHead.y * CELL_SIZE + CELL_SIZE / 2;
+          sparkle(appleX, appleY, 12);
+          playSuccess();
+          
+          // スコアポップアップ
+          const popX = `${(appleX / CANVAS_WIDTH) * 100}%`;
+          const popY = `${(appleY / CANVAS_HEIGHT) * 100}%`;
+          setPopupPos({ x: popX, y: popY });
+          setPopupText(`+10`);
+          setPopupKey(k => k + 1);
+          
+          // スピードアップ時の演出（50点ごと）
+          if (Math.floor(state.score / SPEED_UP_THRESHOLD) > Math.floor(prevScore / SPEED_UP_THRESHOLD)) {
+            playLevelUp();
+            state.speedGlow = 30;
+            setIsSpeedUp(true);
+            setTimeout(() => setIsSpeedUp(false), 1000);
+          }
+        } else {
+          state.snake.pop();
+        }
       }
-      if (d !== OPPOSITE[gs.dir]) gs.nextDir = d;
+
+      render(ctx, state);
+      animationId = requestAnimationFrame(gameLoop);
     };
 
-    el.addEventListener("touchstart", onStart, { passive: true });
-    el.addEventListener("touchend", onEnd, { passive: true });
-    return () => {
-      el.removeEventListener("touchstart", onStart);
-      el.removeEventListener("touchend", onEnd);
+    const render = (
+      ctx: CanvasRenderingContext2D,
+      state: typeof gameStateRef.current
+    ) => {
+      ctx.fillStyle = "#1a1a2e";
+      ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+      ctx.strokeStyle = "#252540";
+      ctx.lineWidth = 1;
+      for (let x = 0; x <= COLS; x++) {
+        ctx.beginPath();
+        ctx.moveTo(x * CELL_SIZE, 0);
+        ctx.lineTo(x * CELL_SIZE, CANVAS_HEIGHT);
+        ctx.stroke();
+      }
+      for (let y = 0; y <= ROWS; y++) {
+        ctx.beginPath();
+        ctx.moveTo(0, y * CELL_SIZE);
+        ctx.lineTo(CANVAS_WIDTH, y * CELL_SIZE);
+        ctx.stroke();
+      }
+
+      // リンゴ描画（パルスアニメーション追加）
+      const appleX = state.apple.x * CELL_SIZE + CELL_SIZE / 2;
+      const appleY = state.apple.y * CELL_SIZE + CELL_SIZE / 2;
+      const applePulse = 1 + Math.sin(Date.now() / 200) * 0.1;
+      
+      ctx.save();
+      ctx.shadowColor = "#ff6b6b";
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = "#ff6b6b";
+      ctx.beginPath();
+      ctx.arc(appleX, appleY, (CELL_SIZE / 2 - 2) * applePulse, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // 成長アニメーションの減衰
+      if (state.growAnim > 0) {
+        state.growAnim--;
+      }
+      
+      // スピードアップグローの減衰
+      if (state.speedGlow > 0) {
+        state.speedGlow--;
+      }
+
+      state.snake.forEach((segment, i) => {
+        const isHead = i === 0;
+        const isTail = i === state.snake.length - 1;
+        const alpha = isHead ? 1 : 1 - (i / state.snake.length) * 0.5;
+        
+        // 成長アニメーション（尻尾が膨らむ）
+        let scale = 1;
+        if (isTail && state.growAnim > 0) {
+          scale = 1 + (state.growAnim / 10) * 0.3;
+        }
+        
+        // スピードアップ時のグロー
+        const hasGlow = state.speedGlow > 0;
+
+        if (isHead) {
+          ctx.fillStyle = "#4ecdc4";
+        } else {
+          ctx.fillStyle = "rgba(78, 205, 196, " + alpha + ")";
+        }
+        
+        // グロー効果
+        if (hasGlow) {
+          ctx.save();
+          ctx.shadowColor = "#4ecdc4";
+          ctx.shadowBlur = 15;
+        }
+
+        const cellX = segment.x * CELL_SIZE + CELL_SIZE / 2;
+        const cellY = segment.y * CELL_SIZE + CELL_SIZE / 2;
+        const size = (CELL_SIZE - 2) * scale;
+        
+        ctx.beginPath();
+        ctx.roundRect(
+          cellX - size / 2,
+          cellY - size / 2,
+          size,
+          size,
+          isHead ? 6 : 4
+        );
+        ctx.fill();
+        
+        if (hasGlow) {
+          ctx.restore();
+        }
+
+        if (isHead) {
+          ctx.fillStyle = "#1a1a2e";
+          const eyeOffset = CELL_SIZE / 4;
+          const eyeSize = 3;
+          const cx = segment.x * CELL_SIZE + CELL_SIZE / 2;
+          const cy = segment.y * CELL_SIZE + CELL_SIZE / 2;
+
+          let eye1x: number, eye1y: number, eye2x: number, eye2y: number;
+          switch (state.direction) {
+            case "UP":
+              eye1x = cx - eyeOffset;
+              eye1y = cy - eyeOffset;
+              eye2x = cx + eyeOffset;
+              eye2y = cy - eyeOffset;
+              break;
+            case "DOWN":
+              eye1x = cx - eyeOffset;
+              eye1y = cy + eyeOffset;
+              eye2x = cx + eyeOffset;
+              eye2y = cy + eyeOffset;
+              break;
+            case "LEFT":
+              eye1x = cx - eyeOffset;
+              eye1y = cy - eyeOffset;
+              eye2x = cx - eyeOffset;
+              eye2y = cy + eyeOffset;
+              break;
+            default:
+              eye1x = cx + eyeOffset;
+              eye1y = cy - eyeOffset;
+              eye2x = cx + eyeOffset;
+              eye2y = cy + eyeOffset;
+          }
+
+          ctx.beginPath();
+          ctx.arc(eye1x, eye1y, eyeSize, 0, Math.PI * 2);
+          ctx.arc(eye2x, eye2y, eyeSize, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
     };
-  }, []);
 
-  // ── Soft key direction change ──────────────────────────────────────────────
-  const changeDir = useCallback((d: Dir) => {
-    const gs = gsRef.current;
-    if (gs.phase !== "playing") return;
-    if (d !== OPPOSITE[gs.dir]) gs.nextDir = d;
-  }, []);
+    animationId = requestAnimationFrame(gameLoop);
+    return () => cancelAnimationFrame(animationId);
+  }, [phase, endGame, sparkle, playSuccess, playLevelUp]);
 
-  // ── Start / Restart ────────────────────────────────────────────────────────
-  const startGame = useCallback(() => {
-    const cfg = resolveConfig(settings);
-    const fresh = makeInitialGS(cfg);
-    fresh.phase = "playing";
-    fresh.lastTick = Date.now();
-    gsRef.current = fresh;
-    setPhase("playing");
-    setScore(0);
-    setCombo(0);
-    setEffects({ speedDown: null, doubleScore: null, star: null });
-    setIsShaking(false);
-    setPopups([]);
-  }, [settings]);
+  useEffect(() => {
+    if (phase !== "playing") {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
-  // ── Back to menu ───────────────────────────────────────────────────────
-  const backToMenu = useCallback(() => {
-    const cfg = resolveConfig(settings);
-    gsRef.current = makeInitialGS(cfg);
-    setPhase("idle");
-    setScore(0);
-    setCombo(0);
-    setEffects({ speedDown: null, doubleScore: null, star: null });
-    setIsShaking(false);
-    setPopups([]);
-  }, [settings]);
+      ctx.fillStyle = "#1a1a2e";
+      ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-  // ── Effect bar helper ──────────────────────────────────────────────────────
-  // deadline は RAF ループが null にするので、null チェックだけで十分
-  const effectItems: { label: string; active: boolean; cls: string }[] = [
-    { label: "⚡ SLOW", active: effects.speedDown !== null, cls: "eff-speed" },
-    { label: "💥 ×2", active: effects.doubleScore !== null, cls: "eff-double" },
-    { label: "🛡️ STAR", active: effects.star !== null, cls: "eff-star" },
-  ];
+      ctx.strokeStyle = "#252540";
+      for (let x = 0; x <= COLS; x++) {
+        ctx.beginPath();
+        ctx.moveTo(x * CELL_SIZE, 0);
+        ctx.lineTo(x * CELL_SIZE, CANVAS_HEIGHT);
+        ctx.stroke();
+      }
+      for (let y = 0; y <= ROWS; y++) {
+        ctx.beginPath();
+        ctx.moveTo(0, y * CELL_SIZE);
+        ctx.lineTo(CANVAS_WIDTH, y * CELL_SIZE);
+        ctx.stroke();
+      }
+    }
+  }, [phase]);
 
   return (
-    <GameShell title="Snake Chaos" gameId="snakechaos">
-      <div className="app">
-        <div className="header">
-          <div className="score-group">
-            <span className="label">SCORE</span>
-            <span className="value">{score}</span>
+    <GameShell gameId="snakechaos" layout="immersive">
+      <ScreenShake ref={shakeRef}>
+        <div
+          className={`snake-game ${isSpeedUp ? "snake-speed-up" : ""}`}
+          style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}
+        >
+          <canvas
+            ref={canvasRef}
+            width={CANVAS_WIDTH}
+            height={CANVAS_HEIGHT}
+            className="snake-canvas"
+          />
+
+          <div className="snake-hud">
+            <div className="snake-score">Score: {score}</div>
+            <div className="snake-highscore">Best: {highScore}</div>
           </div>
-          <div className="score-group">
-            <span className="label">BEST</span>
-            <span className="value">{highScore}</span>
-          </div>
-          {combo >= 3 && <div className="combo-badge">COMBO ×{combo}!</div>}
-        </div>
 
-        {/* Active effects bar */}
-        <div className="effects-bar">
-          {effectItems.map(
-            (item) =>
-              item.active && (
-                <span key={item.cls} className={`eff-badge ${item.cls}`}>
-                  {item.label}
-                </span>
-              ),
-          )}
-        </div>
+          {/* パーティクルレイヤー */}
+          <ParticleLayer particles={particles} />
+          
+          {/* スコアポップアップ */}
+          <ScorePopup
+            text={popupText}
+            popupKey={popupKey}
+            x={popupPos.x}
+            y={popupPos.y}
+            variant="default"
+            size="md"
+          />
 
-        {/* Game area */}
-        <div className={`game-wrap${isShaking ? " shake" : ""}`}>
-          <canvas ref={canvasRef} width={currentConfig.board} height={currentConfig.board} />
-
-          {/* Score popups */}
-          {popups.map((p) => (
-            <div
-              key={p.id}
-              className="score-popup"
-              style={{
-                left: p.x,
-                top: p.y - p.frame * 1.2,
-                opacity: 1 - p.frame / 60,
-              }}
-            >
-              {p.text}
-            </div>
-          ))}
-
-          {/* Start overlay */}
-          {phase === "idle" && (
-            <div className="overlay">
-              <div className="overlay-inner settings-panel">
-                <h1 className="game-title">🐍 SNAKE CHAOS</h1>
-                <div className="settings-card">
-                  <div className="setting-row">
-                    <span className="setting-label">GRID</span>
-                    <div className="setting-options">
-                      {GRID_OPTIONS.map((o) => (
-                        <button
-                          key={o.value}
-                          className={`setting-btn${settings.gridSize === o.value ? " active" : ""}`}
-                          onClick={() => updateSetting("gridSize", o.value)}
-                        >
-                          <span className="sb-main">{o.label}</span>
-                          <span className="sb-sub">{o.sub}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="setting-row">
-                    <span className="setting-label">SPEED</span>
-                    <div className="setting-options">
-                      {SPEED_OPTIONS.map((o) => (
-                        <button
-                          key={o.value}
-                          className={`setting-btn${settings.speed === o.value ? " active" : ""}`}
-                          onClick={() => updateSetting("speed", o.value)}
-                        >
-                          <span className="sb-main">{o.label}</span>
-                          <span className="sb-sub">{o.sub}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="setting-row">
-                    <span className="setting-label">WALL</span>
-                    <div className="setting-options">
-                      {WALL_OPTIONS.map((o) => (
-                        <button
-                          key={o.value}
-                          className={`setting-btn${settings.wallMode === o.value ? " active" : ""}`}
-                          onClick={() => updateSetting("wallMode", o.value)}
-                        >
-                          <span className="sb-main">{o.label}</span>
-                          <span className="sb-sub">{o.sub}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="setting-row">
-                    <span className="setting-label">POWER UP</span>
-                    <div className="setting-options">
-                      {PU_OPTIONS.map((o) => (
-                        <button
-                          key={o.value}
-                          className={`setting-btn${settings.powerUpFreq === o.value ? " active" : ""}`}
-                          onClick={() => updateSetting("powerUpFreq", o.value)}
-                        >
-                          <span className="sb-main">{o.label}</span>
-                          <span className="sb-sub">{o.sub}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <p className="overlay-hint">Arrow keys / WASD / スワイプで操作</p>
-                <button className="btn-start" onClick={startGame}>
-                  GAME START
-                </button>
-              </div>
+          {phase === "ready" && (
+            <div className="snake-overlay">
+              <h1 className="snake-title">Snake Chaos</h1>
+              <p className="snake-instruction">Arrow Keys / WASD to move</p>
+              <button className="snake-start-btn" onClick={startGame}>
+                START
+              </button>
+              <p className="snake-hint">Space / Enter to start</p>
             </div>
           )}
 
-          {/* Game over overlay */}
           {phase === "gameover" && (
-            <div className="overlay">
-              <div className="overlay-inner">
-                <h2 className="over-title">GAME OVER</h2>
-                <p className="over-score">SCORE &nbsp; {score}</p>
-                <p className="over-hi">BEST &nbsp; {highScore}</p>
-                <button className="btn-start" onClick={startGame}>
-                  RESTART
-                </button>
-                <button className="btn-menu" onClick={backToMenu}>
-                  MENU
-                </button>
-              </div>
+            <div className="snake-overlay snake-gameover">
+              <h1 className="snake-gameover-title">Game Over</h1>
+              <p className="snake-final-score">Score: {score}</p>
+              {score === highScore && score > 0 && (
+                <p className="snake-new-record">New Record!</p>
+              )}
+              <button className="snake-start-btn" onClick={startGame}>
+                RETRY
+              </button>
+              <ShareButton score={score} gameTitle="Snake Chaos" gameId="snakechaos" />
+              <GameRecommendations currentGameId="snakechaos" />
             </div>
           )}
         </div>
-
-        {/* Soft keys for mobile */}
-        <div className="softkeys">
-          <div className="sk-row">
-            <button className="sk-btn" onPointerDown={() => changeDir("U")}>
-              ▲
-            </button>
-          </div>
-          <div className="sk-row">
-            <button className="sk-btn" onPointerDown={() => changeDir("L")}>
-              ◀
-            </button>
-            <button className="sk-btn" onPointerDown={() => changeDir("D")}>
-              ▼
-            </button>
-            <button className="sk-btn" onPointerDown={() => changeDir("R")}>
-              ▶
-            </button>
-          </div>
-        </div>
-      </div>
+      </ScreenShake>
     </GameShell>
   );
 }

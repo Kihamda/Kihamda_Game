@@ -5,6 +5,174 @@
 
 ---
 
+## 2026-04-05
+
+### 作業ログ
+
+- 23:13 [開始] エージェント設定更新 → 担当: consultant
+- 23:20 [完了] github-repo.agent.md に gh コマンド追加 → 結果: 成功
+- 23:25 [完了] consultant.agent.md に sync モード強制ルール追加 → 結果: 成功
+- 00:00 [開始] 100ゲームバグ分析 → 担当: gamedev
+- 02:00 [完了] Batch 1-4 バグ分析 → 結果: 成功
+  - archery: モバイルタッチ対応追加
+  - hangman: 重複 export 削除
+  - orbitdodge: メモリリーク修正
+  - rockpaper: 文字化け修正
+  - minigolf, molemania: lint 警告修正
+- 02:15 [開始] プレイヤー少ない原因分析 → 担当: growth
+- 02:30 [完了] 原因分析 → 結果: 成功 (回遊導線なし、シェア機能なしが致命的)
+- 03:00 [開始] ShareButton 作成・全ゲーム適用 → 担当: gamedev
+- 08:00 [完了] ShareButton 全100ゲームに追加 → 結果: 成功
+- 08:30 [開始] GameRecommendations 全ゲーム追加 → 担当: gamedev
+- 09:30 [完了] GameRecommendations 全ゲームに追加 → 結果: 成功
+- 10:00 [完了] featured ゲーム数 5→15 に増加 → 結果: 成功
+
+### 今日の成果
+
+- github-repo エージェントに gh コマンド追加（GitHub CLI で操作可能に）
+- consultant エージェントに sync モード強制ルール追加（レートリミット回避）
+- 100ゲーム全てのバグ分析完了（5件修正）
+- ShareButton 共通コンポーネント作成・全ゲーム適用（バイラル強化）
+- GameRecommendations 全ゲーム適用（回遊率向上）
+- featured ゲーム数 5→15 に増加（第一印象改善）
+
+- 15:00 [完了] PWA icons 追加 → 結果: 成功 (ゲームコントローラーSVG)
+- 15:05 [完了] Canvas ゲーム結果画面追加 → 結果: 成功 (spaceinvaders, stacktower, tankbattle, towerstack)
+- 15:10 [完了] git push + PR作成 → 結果: 成功 (PR #5)
+
+### 明日やること
+
+- PR #5 マージ
+- Search Console に sitemap 送信（人間タスク）
+- GA4 で効果測定開始
+
+---
+
+## 2026-03-19
+
+### 作業ログ
+
+- 00:00 [開始] ドーパミンエフェクト追加 + バグ修正 + 重複ゲーム削除 → 担当: 直接実行
+- 01:00 [完了] 破損ゲーム削除: aimtrainer, colorfill, penaltykick, whackemoji (空srcディレクトリ)
+- 01:30 [完了] 重複ゲーム削除: simonecho→simonsays, slidepuzzle→slidemaster, minesweeper→minerush
+- 02:00 [完了] ScorePopup追加: bottleflip, bounceball, brickout, colorswitch, dotconnect, fallingblocks, iceslide, jumpquest, knifehit, mazerun, numberguess, poolmaster
+- 02:30 [完了] バグ修正: archery(ヒット検出), simplechess(依存配列), coinflip(賭け金ロジック), wordsearch(タイムアウト), wordscramble/wordchain(重複単語)
+- 03:00 [完了] バグ修正: helicopter(初回ハイスコア), hexmatch(六角隣接ロジック)
+- 03:30 [完了] バグ修正バッチ2: taptarget(タッチ入力), slotmachine(リール位置同期), ninjajump(while→if), speedclick(マイルストーン検出)
+- 04:00 [完了] クリティカルバグ修正: balloonpop(メモリリーク), wordguess(単語検証), endlessrun(不公平な衝突マージン), towerdefense(敵速度上限)
+- 04:30 [完了] クリティカルバグ修正: spaceinvaders(弾丸衝突ループ+ボスリスポーンタイマー), molemania(コンボ状態クロージャ)
+- 04:30 [メモ] `npm run lint` 0 errors, `npm run build` 成功, 最終ゲーム数: 100
+
+### 今日の成果
+
+- 7ゲームを削除（4破損 + 3重複）: 107 → 100ゲーム
+- ScorePopup/useAudio/useParticles のカバレッジ向上
+- 17件以上のプレイアビリティバグ修正:
+  - taptarget: タッチ入力でhandleTargetTapが呼ばれない
+  - slotmachine: リール停止位置と勝敗判定の不一致
+  - ninjajump: while-breakパターンをifに修正
+  - speedclick: マイルストーン検出の厳密等価→以上に修正
+  - balloonpop: スコアポップアップのメモリリーク修正
+  - wordguess: 辞書にない単語の入力を拒否するよう修正
+  - endlessrun: 不公平な衝突マージンを削除
+  - towerdefense: 敵の速度上限を追加（後半ウェーブの難易度バランス）
+  - spaceinvaders: 弾丸が複数敵にヒットするバグ修正、ボス退場時タイマーリセット
+  - molemania: コンボ状態のクロージャ問題修正（functional update使用）
+- 全ゲームのビルド検証完了
+
+---
+
+## 2026-03-18
+
+### 作業ログ
+
+- 00:00 [開始] index.html大量残存の解消 + サイドバー統合 + 無スクロール化 → 担当: consultant（platform-architect / gamedev / qa-tester に順次委譲）
+- 01:00 [完了] index.html大量残存の解消 + サイドバー統合 + 無スクロール化 → 結果: 成功（games配下の個別index削除 + 無スクロール共通UI化）
+- 01:00 [メモ] `npm run lint` `npm run build` 成功、`/games/:id` と `/games/:id/index.html` 互換を維持
+- 01:20 [開始] フルスクリーン系ゲームの枠内全画面化 + NumHunt戻り時UI崩れ修正 → 担当: consultant（gamedev / qa-tester に順次委譲）
+- 02:00 [完了] フルスクリーン系ゲームの枠内全画面化 + NumHunt戻り時UI崩れ修正 → 結果: 成功（DodgeBlitz/TypingBlitzの枠内最大化 + NumHunt副作用除去）
+- 02:00 [メモ] `npm run lint` `npm run build` 成功、再発観点の最終検証を通過
+- 02:20 [開始] consultant運用ルールの強制明文化 + 全ゲーム同型不具合の横断修正 → 担当: consultant（agent-editor / gamedev / qa-tester に順次委譲）
+- 03:10 [完了] consultant運用ルールの強制明文化 + 全ゲーム同型不具合の横断修正 → 結果: 成功（提案停止禁止ルール強化 + 15ゲーム横断修正）
+- 03:10 [メモ] `npm run lint` `npm run build` 成功、全体エラー0を確認
+- 03:20 [開始] 同型崩れの継続運用を自動化（横断監視の仕組み化 + 追加修正） → 担当: consultant（gamedev / qa-tester に順次委譲）
+- 03:20 [開始] 同型崩れの継続運用を自動化（横断監視の仕組み化 + 追加修正） → 担当: consultant（gamedev / qa-tester に順次委譲）
+- 04:00 [開始] css-guard撤去 + 指定4ゲームの枠内全体表示修正（dodge/typing/mole/ntiktaktoe） → 担当: consultant（gamedev / qa-tester に順次委譲）
+- 04:25 [完了] css-guard撤去 + 指定4ゲームの枠内全体表示修正（dodge/typing/mole/ntiktaktoe） → 結果: 成功（guard削除 + 4ゲーム immersive 最適化）
+- 04:25 [メモ] `npm run lint` `npm run build` 成功、エラー0
+
+### 今日の成果
+
+- `games/*/index.html` を全削除し単一SPA運用へ完全移行
+- フッター情報をサイドバーへ統合し、独立フッターを廃止
+- ゲーム画面を自動縮尺対応にして縦横スクロールを抑制
+- フルスクリーン系ゲームの枠内全画面表示を復元し、NumHuntのホーム遷移崩れを解消
+- consultantのagent定義に「提案型で止まるな、情報不足は質問ツールで回収」を強制追記
+- 全ゲーム横断でCSS副作用/枠内表示崩れを再点検して同型パターンを一括修正
+- `check:css-guard` を撤去し、指定4ゲームの枠内表示を最優先で再調整
+
+## 2026-03-17
+
+### 作業ログ
+
+- 00:00 [開始] AdSense審査落ちの現状構成調査と報告書作成 → 担当: consultant（seo-specialist に委譲）
+- 00:10 [完了] AdSense審査落ちの現状構成調査と報告書作成 → 結果: 成功（`GPT-5.3-Codex.md` を作成）
+- 00:10 [メモ] 問題パネルエラー0を確認し `npm run build` 成功（sitemap生成 + tsc + eslint + vite build）
+- 00:30 [開始] ゲーム構造の抜本改修（単一SPA化・統一UX化・Agent整理） → 担当: consultant（platform-architect / gamedev / agent-editor / qa-tester に順次委譲）
+- 01:20 [完了] ゲーム構造の抜本改修（単一SPA化・統一UX化・Agent整理） → 結果: 成功（単一エントリ + /games/:id + 共通操作盤UIへ移行）
+- 01:20 [メモ] `/` `/games/:id` `/games/:id/index.html` 互換を確認し `npm run lint` `npm run build` ともに成功
+
+### 今日の成果
+
+- AdSense審査落ちの要因を現状構成ベースで分類し根拠付きレポート化
+- ルートに `GPT-5.3-Codex.md` を作成
+- 各ゲーム個別index依存を外し 単一SPAルーティングへ移行
+- PC左/モバイル上の統一操作盤と戻る導線を全ゲーム共通化
+- エージェント設定を新構成向けに軽量更新
+
+## 2026-03-12
+
+### 作業ログ
+
+- [完了] AdSense不合格原因の調査 → 担当: consultant → kihamda.net + game.kihamda.net を網羅的に巡回
+- [完了] public/robots.txt 作成 → 担当: platform-architect → 結果: 成功
+- [完了] ポータルにフッター追加 → 担当: gamedev → 結果: 成功
+- [完了] 全15ゲームにフッター追加 (GameShell.tsx) → 担当: gamedev → 結果: 成功
+- [完了] 全15ゲームのindex.htmlにnoscriptテキスト追加 → 担当: gamedev → 結果: 成功
+
+### AdSense不合格の分析結果
+
+kihamda.net (WordPress) はプライバシーポリシー/About/Contact/robots.txt/sitemapが揃っており最低条件はクリア。
+game.kihamda.net (このリポ) が以下の理由でドメイン全体の評価を下げていた:
+
+- robots.txt が 404
+- プライバシーポリシー/連絡先/運営者情報への導線がゼロ
+- ゲームページがSPAで静的テキストコンテンツが皆無
+- フッターが存在しない
+
+### 修正内容
+
+- **public/robots.txt**: 全クローラー許可 + sitemap指定
+- **src/portal/App.tsx + App.css**: フッター追加 (プライバシーポリシー/お問い合わせ/運営者情報リンク→kihamda.net)
+- **src/shared/components/GameShell.tsx**: 全ゲーム共通フッター追加 (同上リンク)
+- **全15ゲームindex.html**: `<noscript>` タグでゲーム説明+ポータルリンク追加
+
+### 検証結果
+
+- TSC: エラー0 / ESLint: エラー0 / Vite build: 成功 (Portal SSG含む)
+- dist/index.html にフッターHTML確認
+- dist/robots.txt 出力確認
+- dist/games/\*/index.html にnoscript確認
+
+### 人間の宿題 (AdSense再申請前にやること)
+
+- kihamda.net の記事を最低あと8-10本追加 (現在12本、20本以上が目安)
+- kihamda.net の「成果物」ページの記述を更新 (Astro→Vite)
+- 記事の更新頻度を上げる (週1本ペース推奨)
+- main にマージ → デプロイ → 2-3日待ってから再申請
+
+---
+
 ## 2026-03-06
 
 ### 作業ログ
@@ -572,3 +740,152 @@
 
 - Cloudflare Pages 側の Secrets と Variables を設定して本番デプロイ
 - 公開URL確定後に Search Console と AdSense 申請を実施
+
+---
+
+## 2026-03-18 (続き)
+
+### 作業ログ
+
+- 12:55 [開始] ゲーム表示問題の調査・修正 → 担当: consultant
+- 13:00 [完了] 問題調査 → 結果: 
+   - ポータルの `.grid` に `grid-template-columns` 未定義 → カードが縦並び
+   - ntiktaktoe: 300px min-width でモバイルオーバーフロー
+   - molemania: padding がコンテンツを圧迫
+   - dodgeblitz/typingblitz: vw/vh 単位がコンテナスケーリングと非連携
+- 13:05 [完了] ポータルグリッドCSS修正 → 担当: gamedev → 結果: 成功
+   - `src/portal/App.css` に `grid-template-columns` 追加 (1/2/3カラム レスポンシブ)
+- 13:10 [完了] エージェント設定更新 → 担当: agent-editor → 結果: 成功
+   - `copilot-instructions.md` に Portal SSG Plugin / registry.ts ドキュメント追加
+   - `gamedev.agent.md` に SPA コンポーネント説明追加
+- 13:15 [完了] 4ゲームのCSS修正 → 担当: gamedev (並列実行) → 結果: 全て成功
+   - ntiktaktoe: `.start-layout` をモバイルファースト1カラム→640px以上で2カラムに変更
+   - molemania: `.app` padding を `clamp(4px, 1vw, 8px)` に削減
+   - dodgeblitz: vw/vh → **cqw (コンテナクエリ単位)** に変更
+   - typingblitz: vw/vh → **cqw (コンテナクエリ単位)** に変更
+- 13:20 [完了] 最終ビルド検証 → 結果: 成功 (608ms)
+   - TypeScript: エラーなし
+   - ESLint: 警告なし
+   - dist/: 15ゲーム全てバンドル済み
+
+### 確認した事項
+
+- 全15ゲーム: ディレクトリ構造 OK, App.tsx エクスポート OK
+- games.json: 15ゲーム登録済み
+- thumbnails: 15ゲーム分のSVG存在
+- ビルド: 成功 (602ms)
+
+### 今日の成果 (追加)
+
+- ポータルのゲームカードグリッド表示を修正 (レスポンシブ 1/2/3カラム)
+- エージェント設定を現在のSPA構成に合わせて更新
+- 4ゲームの枠内表示問題を修正 (ntiktaktoe, molemania, dodgeblitz, typingblitz)
+- 全体QAチェック完了: lint/build/型チェック 全パス
+- SEO監査完了: sitemap 16URL / OGP完備 / 構造化データ OK
+- ROADMAP.md の MineRush サムネイル項目を完了にマーク
+
+### 人間の宿題 (Phase 1 完了に必要)
+
+1. **GitHub Secrets 設定** (SNS自動投稿有効化に必須)
+   - `BLUESKY_HANDLE`
+   - `BLUESKY_APP_PASSWORD`
+   → リポジトリ Settings → Secrets and Variables → Actions
+
+2. **Search Console** に sitemap.xml を送信
+   - URL: `https://game.kihamda.net/sitemap.xml`
+
+3. **AdSense 審査状況の確認** (以前審査落ちの可能性あり)
+
+### 明日やること
+
+- デプロイ後の実機確認 (ゲーム枠内表示・ポータルグリッド)
+- SNS自動投稿のテスト実行
+- Phase 1 ゲート達成状況の追跡 (10K PV/月目標)
+
+---
+
+## 2026-03-18 13:23 - 全ゲーム再構築開始
+
+### 作業ログ
+
+- 13:23 [開始] 全15ゲーム + ポータルの完全再構築 → 担当: gamedev (16並列)
+  - 原因: CSS修正では不十分。旧Viteプロジェクト構造の残骸が問題
+  - 方針: 全コードをゼロから書き直し、GameShell統合ルールに完全準拠
+  
+【再構築対象】
+1. ntiktaktoe (n目並べ) - width:1000 height:700
+2. flashreflex (反射神経) - width:800 height:600 immersive
+3. gravityfour (重力四目) - width:900 height:700
+4. memoryduel (神経衰弱) - width:900 height:650
+5. snakechaos (スネーク) - width:800 height:600 immersive
+6. merge2048 (2048) - width:500 height:650
+7. brickblast (ブロック崩し) - width:800 height:600 immersive
+8. molemania (もぐらたたき) - width:800 height:600
+9. colorburst (カラーマッチ) - width:700 height:600
+10. taptarget (タップターゲット) - width:800 height:600 immersive
+11. simonecho (サイモン) - width:600 height:650
+12. numhunt (数字探し) - width:800 height:600
+13. dodgeblitz (避けゲー) - width:800 height:600 immersive
+14. typingblitz (タイピング) - width:900 height:600
+15. minerush (マインスイーパー) - width:800 height:650
+16. portal (ランディングページ) - レスポンシブ
+
+【GameShell統合ルール】
+- ルートdivは明示的な width/height (px) を持つ
+- `<GameShell gameId="..." layout="default|immersive">` でラップ
+- vw/vh 禁止、px/rem のみ
+- overflow: hidden 必須
+
+---
+
+## 2026-03-18 17:00〜21:30 作業セッション
+
+### 作業ログ
+
+- 17:14 [開始] 全ゲーム調査・修正・新規作成 → 担当: consultant + gamedev + game-factory
+- 17:20 [完了] ntiktaktoe 型エラー修正 → 結果: 成功
+- 17:25 [完了] 各ゲーム用 index.html 生成システム作成 → 結果: 成功 (platform-architect)
+- 17:30 [完了] 未登録4ゲーム (balloonpop, coinflip, mazerun, quickdraw) を games.json に登録
+- 17:35〜21:00 [完了] 新ゲーム9本作成:
+  - reactionchain (連鎖反応)
+  - towerstack (タワースタック)
+  - emojimatch (絵文字探し)
+  - colorflood (カラーフラッド)
+  - arrowdash (矢印ダッシュ)
+  - bubbleshoot (バブルシューター)
+  - wordscramble (単語スクランブル)
+  - cardwar (カード戦争)
+  - spotdiff (間違い探し)
+- 21:10 [完了] 壊れたゲーム4本を修正:
+  - balloonpop (風船割り) - src/App.tsx 未実装 → 完全実装
+  - coinflip (コイン予測) - src/App.tsx 未実装 → 完全実装
+  - quickdraw (早撃ち対決) - src/App.tsx 未実装 → 完全実装
+  - mazerun (迷路脱出) - Legacy HTML → React化
+
+### 今日の成果
+
+- **ゲーム総数: 35本** (15本 → 35本に増加)
+- 各ゲーム用固有 index.html 生成システム完成 (SEO/OGP対応)
+- 壊れたゲーム4本を完全修復
+- ビルド成功: 35 game pages, 39 URLs in sitemap
+
+### 次のアクション
+
+- デプロイして実機確認
+- さらにゲーム追加 (目標: 50本)
+- GitHub Secrets 設定 (SNS自動投稿有効化)
+
+---
+
+## 2026-03-19 08:21 作業セッション
+
+### 作業ログ
+
+- 08:21 [開始] ビルド状況確認・ゲーム追加再開 → 担当: consultant
+- 08:22 [完了] diceroll 修正 (default export追加 + games.json登録) → 結果: 成功
+- 08:25 [進行中] 新ゲーム3本並列作成:
+  - numberguess (数当て)
+  - fallingblocks (落ちものパズル)
+  - pairsrush (ペア探しラッシュ)
+
+### 現在のゲーム数: 37本

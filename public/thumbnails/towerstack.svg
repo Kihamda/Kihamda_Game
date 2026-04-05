@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="50%" stop-color="#16213e"/>
+      <stop offset="100%" stop-color="#0f3460"/>
+    </linearGradient>
+    <linearGradient id="title" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B6B"/>
+      <stop offset="50%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#4CAF50"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="640" height="360" fill="url(#bg)"/>
+  
+  <!-- Tower blocks -->
+  <rect x="220" y="280" width="200" height="30" rx="4" fill="#FF6B6B"/>
+  <rect x="230" y="250" width="180" height="30" rx="4" fill="#FF8E53"/>
+  <rect x="240" y="220" width="160" height="30" rx="4" fill="#FFC107"/>
+  <rect x="250" y="190" width="140" height="30" rx="4" fill="#4CAF50"/>
+  <rect x="260" y="160" width="120" height="30" rx="4" fill="#2196F3"/>
+  <rect x="270" y="130" width="100" height="30" rx="4" fill="#9C27B0"/>
+  
+  <!-- Moving block with glow -->
+  <rect x="340" y="100" width="100" height="30" rx="4" fill="#E91E63" filter="url(#glow)"/>
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Arrow showing movement -->
+  <path d="M360 85 L380 75 L380 80 L420 80 L420 75 L440 85 L420 95 L420 90 L380 90 L380 95 Z" fill="rgba(255,255,255,0.6)"/>
+  
+  <!-- Title -->
+  <text x="320" y="340" text-anchor="middle" fill="url(#title)" font-family="sans-serif" font-size="28" font-weight="800">Tower Stack</text>
+  
+  <!-- Perfect text -->
+  <text x="520" y="180" text-anchor="middle" fill="#FFD700" font-family="sans-serif" font-size="20" font-weight="700">PERFECT!</text>
+  <text x="520" y="205" text-anchor="middle" fill="#FFD700" font-family="sans-serif" font-size="16">🎯 ×3</text>
+</svg>

@@ -1,0 +1,119 @@
+.dotmuncher-game {
+  position: relative;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dotmuncher-canvas {
+  display: block;
+}
+
+.dotmuncher-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.92);
+  gap: 16px;
+}
+
+.dotmuncher-title {
+  font-size: 52px;
+  color: #ffff00;
+  margin: 0;
+  text-shadow: 0 0 20px rgba(255, 255, 0, 0.6);
+  font-family: 'Arial Black', sans-serif;
+}
+
+.dotmuncher-instruction {
+  font-size: 18px;
+  color: #a0a0ff;
+  margin: 0;
+}
+
+.dotmuncher-start-btn {
+  padding: 16px 48px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  background: linear-gradient(135deg, #ffff00, #ffcc00);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 12px;
+}
+
+.dotmuncher-start-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 24px rgba(255, 255, 0, 0.6);
+}
+
+.dotmuncher-start-btn:active {
+  transform: scale(0.98);
+}
+
+.dotmuncher-hint {
+  font-size: 14px;
+  color: #606080;
+  margin: 0;
+}
+
+.dotmuncher-gameover-title {
+  font-size: 56px;
+  color: #ff4444;
+  margin: 0;
+  text-shadow: 0 0 20px rgba(255, 68, 68, 0.5);
+  font-family: 'Arial Black', sans-serif;
+}
+
+.dotmuncher-cleared-title {
+  font-size: 56px;
+  color: #44ff44;
+  margin: 0;
+  text-shadow: 0 0 20px rgba(68, 255, 68, 0.5);
+  font-family: 'Arial Black', sans-serif;
+}
+
+.dotmuncher-final-score {
+  font-size: 32px;
+  color: #fff;
+  margin: 0;
+}
+
+.dotmuncher-new-record {
+  font-size: 24px;
+  color: #ffd700;
+  margin: 0;
+  animation: dotmuncher-pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes dotmuncher-pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+/* 画面フラッシュ */
+.dotmuncher-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: dotmuncher-flash-anim 200ms ease-out forwards;
+  z-index: 50;
+}
+
+@keyframes dotmuncher-flash-anim {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

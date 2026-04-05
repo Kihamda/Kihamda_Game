@@ -1,8 +1,14 @@
 export { useAudio } from "./hooks/useAudio";
 export { useParticles } from "./hooks/useParticles";
 export { useHighScore } from "./hooks/useHighScore";
-export type { Particle } from "./hooks/useParticles";
+export type { Particle, ParticleType } from "./hooks/useParticles";
 export { ParticleLayer } from "./components/ParticleLayer";
 export { ScorePopup } from "./components/ScorePopup";
+export type { PopupVariant } from "./components/ScorePopup";
 export { GameShell } from "./components/GameShell";
 export { GameRecommendations } from "./components/GameRecommendations";
+export { ScreenShake } from "./components/ScreenShake";
+export type { ScreenShakeHandle, ShakeIntensity } from "./components/ScreenShake";
+export { ComboCounter } from "./components/ComboCounter";
+export { ShareButton } from "./components/ShareButton";
+export type { ShareButtonProps } from "./components/ShareButton";

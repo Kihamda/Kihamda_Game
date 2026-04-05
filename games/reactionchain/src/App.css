@@ -1,0 +1,325 @@
+/* Reaction Chain - 連鎖反応ゲーム */
+
+.reactionchain-root {
+  width: 800px;
+  height: 600px;
+  position: relative;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #f8fafc;
+}
+
+/* キャンバス */
+.reactionchain-canvas-container {
+  position: relative;
+  width: 800px;
+  height: 600px;
+}
+
+.reactionchain-canvas {
+  display: block;
+  cursor: crosshair;
+  border-radius: 12px;
+}
+
+/* オーバーレイ */
+.reactionchain-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
+/* パネル */
+.reactionchain-panel {
+  background: rgba(30, 27, 75, 0.95);
+  border-radius: 20px;
+  padding: 40px 50px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  max-width: 450px;
+  animation: panel-appear 0.3s ease;
+}
+
+@keyframes panel-appear {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.reactionchain-panel.result.clear {
+  background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(79, 70, 229, 0.3) 100%);
+  border: 2px solid rgba(167, 139, 250, 0.3);
+}
+
+/* タイトル */
+.reactionchain-title {
+  margin: 0 0 16px;
+  font-size: 42px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
+
+/* 説明 */
+.reactionchain-description {
+  margin: 0 0 24px;
+  font-size: 18px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+/* ルール */
+.reactionchain-rules {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: rgba(51, 65, 85, 0.4);
+  border-radius: 12px;
+  text-align: left;
+}
+
+.reactionchain-rules p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+/* ベストスコア */
+.reactionchain-best {
+  margin: 16px 0;
+  font-size: 18px;
+  color: #fbbf24;
+}
+
+/* ボタン */
+.reactionchain-button {
+  padding: 14px 40px;
+  font-size: 18px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.reactionchain-button:hover {
+  transform: translateY(-2px);
+}
+
+.reactionchain-button:active {
+  transform: translateY(0);
+}
+
+.reactionchain-button.primary {
+  color: #1a1a2e;
+  background: linear-gradient(135deg, #feca57 0%, #ff6b6b 100%);
+  box-shadow: 0 4px 20px rgba(254, 202, 87, 0.4);
+}
+
+.reactionchain-button.primary:hover {
+  box-shadow: 0 6px 28px rgba(254, 202, 87, 0.5);
+}
+
+.reactionchain-button.secondary {
+  color: #e2e8f0;
+  background: rgba(71, 85, 105, 0.6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* HUD */
+.reactionchain-hud {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.reactionchain-hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
+}
+
+.reactionchain-hud-label {
+  font-size: 11px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.reactionchain-hud-value {
+  font-size: 24px;
+  font-weight: 900;
+  color: #f8fafc;
+}
+
+.reactionchain-hud-value.clicks {
+  font-size: 20px;
+}
+
+.reactionchain-hud-value.chain-bonus {
+  color: #fbbf24;
+  text-shadow: 0 0 12px rgba(251, 191, 36, 0.8);
+  animation: pulse 0.4s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* 結果画面 */
+.reactionchain-result-title {
+  margin: 0 0 20px;
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.reactionchain-result-message {
+  margin: 0 0 20px;
+  font-size: 16px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.reactionchain-result-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 24px;
+}
+
+.reactionchain-result-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reactionchain-result-stat span:first-child {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.reactionchain-result-stat span:last-child {
+  font-size: 28px;
+  font-weight: 900;
+  color: #60a5fa;
+}
+
+.reactionchain-result-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Score Popup animations */
+@keyframes score-popup {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-60px) scale(1.2);
+  }
+}
+
+@keyframes score-popup-bounce {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(0.5);
+  }
+  40% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-20px) scale(1.3);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-40px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-80px) scale(0.8);
+  }
+}
+
+@keyframes score-popup-glow {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-30px) scale(1.2);
+    filter: brightness(1.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-80px) scale(0.9);
+    filter: brightness(1);
+  }
+}
+
+@keyframes score-popup-critical {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(0.3) rotate(-10deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-20px) scale(1.4) rotate(5deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50px) scale(1.1) rotate(-3deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-100px) scale(0.8) rotate(0);
+  }
+}
+
+@keyframes score-popup-level {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(0.5);
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-20px) scale(1.5);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-40px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-120px) scale(1);
+  }
+}

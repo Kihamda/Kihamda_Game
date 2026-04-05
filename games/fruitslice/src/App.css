@@ -1,0 +1,96 @@
+.fruitslice-container {
+  position: relative;
+  background: #1a1a2e;
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+.fruitslice-canvas {
+  display: block;
+}
+
+/* 画面シェイク */
+.fruitslice-shake {
+  animation: fruitslice-shake 0.4s ease;
+}
+
+@keyframes fruitslice-shake {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  10% {
+    transform: translate(-8px, 4px) rotate(-2deg);
+  }
+  20% {
+    transform: translate(8px, -4px) rotate(2deg);
+  }
+  30% {
+    transform: translate(-6px, 2px) rotate(-1deg);
+  }
+  40% {
+    transform: translate(6px, -2px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-4px, 3px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(4px, -3px) rotate(1deg);
+  }
+  70% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  80% {
+    transform: translate(3px, -1px) rotate(0deg);
+  }
+  90% {
+    transform: translate(-1px, 0px) rotate(0deg);
+  }
+}
+
+/* 爆弾フラッシュ */
+.fruitslice-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 50, 50, 0.8) 0%, rgba(255, 0, 0, 0.4) 50%, transparent 100%);
+  animation: fruitslice-flash-anim 0.2s ease-out forwards;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes fruitslice-flash-anim {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 爆弾フラッシュエフェクト */
+.fruitslice-bomb-flash {
+  animation: fruitslice-flash 0.2s ease-out;
+}
+
+@keyframes fruitslice-flash {
+  0% { filter: brightness(3) saturate(0.5); }
+  100% { filter: brightness(1) saturate(1); }
+}
+
+/* 画面揺れエフェクト */
+.fruitslice-shake {
+  animation: fruitslice-shake 0.4s ease-out;
+}
+
+@keyframes fruitslice-shake {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-8px, 4px); }
+  20% { transform: translate(8px, -4px); }
+  30% { transform: translate(-6px, -2px); }
+  40% { transform: translate(6px, 2px); }
+  50% { transform: translate(-4px, 4px); }
+  60% { transform: translate(4px, -4px); }
+  70% { transform: translate(-2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}

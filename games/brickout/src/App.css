@@ -1,0 +1,12 @@
+.brickout-container {
+  position: relative;
+  background: #1a1a2e;
+  border-radius: 8px;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+
+.brickout-canvas {
+  display: block;
+}

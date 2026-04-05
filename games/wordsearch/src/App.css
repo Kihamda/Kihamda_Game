@@ -1,0 +1,370 @@
+/* ワードサーチ - パズルゲーム */
+
+.wordsearch-root {
+  position: relative;
+  width: 600px;
+  height: 700px;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  color: #f8fafc;
+  user-select: none;
+  overflow: hidden;
+}
+
+/* ヘッダー */
+.wordsearch-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.wordsearch-title {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 900;
+  color: #60a5fa;
+}
+
+.wordsearch-stats {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  font-size: 16px;
+  color: #94a3b8;
+}
+
+/* メインコンテンツ */
+.wordsearch-main {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  align-items: flex-start;
+}
+
+/* グリッド */
+.wordsearch-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(10, 36px);
+  grid-template-rows: repeat(10, 36px);
+  gap: 2px;
+  background: rgba(30, 41, 59, 0.8);
+  padding: 8px;
+  border-radius: 8px;
+  border: 2px solid #334155;
+  touch-action: none;
+}
+
+.wordsearch-cell {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  background: #1e293b;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.wordsearch-cell:hover {
+  background: #334155;
+  transform: scale(1.05);
+}
+
+.wordsearch-cell.selected {
+  background: #3b82f6;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.wordsearch-cell.found {
+  background: #22c55e;
+  color: #ffffff;
+}
+
+.wordsearch-cell.found.selected {
+  background: #16a34a;
+}
+
+/* 最近見つけた単語のセル - sparkle効果 */
+.wordsearch-cell.recent-found {
+  background: #fbbf24 !important;
+  color: #0f172a !important;
+  animation: cell-sparkle 0.8s ease-out;
+  box-shadow: 0 0 20px #fbbf24, 0 0 40px #f59e0b;
+}
+
+@keyframes cell-sparkle {
+  0% {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px #fbbf24, 0 0 60px #f59e0b;
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 40px #fbbf24, 0 0 80px #f59e0b;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px #22c55e;
+  }
+}
+
+/* トレイルエフェクト SVG */
+.wordsearch-trail {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+}
+
+.trail-line {
+  fill: none;
+  stroke: rgba(59, 130, 246, 0.6);
+  stroke-width: 28;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8));
+}
+
+/* 単語リスト */
+.wordsearch-wordlist {
+  background: rgba(30, 41, 59, 0.8);
+  padding: 16px;
+  border-radius: 8px;
+  border: 2px solid #334155;
+  min-width: 140px;
+}
+
+.wordsearch-wordlist h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #94a3b8;
+}
+
+.wordsearch-wordlist ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wordsearch-word {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  background: #1e293b;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.wordsearch-word.found {
+  background: #166534;
+  color: #86efac;
+  text-decoration: line-through;
+  animation: word-found 0.5s ease-out;
+}
+
+@keyframes word-found {
+  0% {
+    transform: scale(1);
+    background: #fbbf24;
+    color: #0f172a;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    background: #166534;
+    color: #86efac;
+  }
+}
+
+/* スタート画面 */
+.wordsearch-start {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+}
+
+.wordsearch-start h1 {
+  margin: 0 0 16px;
+  font-size: 42px;
+  font-weight: 900;
+  color: #60a5fa;
+}
+
+.wordsearch-start p {
+  margin: 0 0 24px;
+  font-size: 18px;
+  color: #94a3b8;
+}
+
+.wordsearch-categories {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.wordsearch-category-btn {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: 2px solid #3b82f6;
+  background: transparent;
+  color: #60a5fa;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.wordsearch-category-btn:hover {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.wordsearch-category-btn.active {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.wordsearch-btn {
+  padding: 14px 40px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.wordsearch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.4);
+}
+
+.wordsearch-btn:active {
+  transform: translateY(0);
+}
+
+/* 完了画面 */
+.wordsearch-complete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+}
+
+.wordsearch-complete h2 {
+  margin: 0 0 16px;
+  font-size: 36px;
+  font-weight: 900;
+  color: #fbbf24;
+}
+
+.wordsearch-complete p {
+  margin: 0 0 12px;
+  font-size: 20px;
+  color: #94a3b8;
+}
+
+.wordsearch-complete .score {
+  font-size: 28px;
+  font-weight: 700;
+  color: #60a5fa;
+  margin-bottom: 8px;
+}
+
+.wordsearch-complete .time {
+  font-size: 48px;
+  font-weight: 900;
+  color: #4ade80;
+  margin-bottom: 16px;
+}
+
+.wordsearch-complete .best {
+  color: #fbbf24;
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+.wordsearch-complete .newrecord {
+  color: #f472b6;
+  font-size: 24px;
+  font-weight: 700;
+  animation: pulse 1s ease-in-out infinite;
+  margin-bottom: 24px;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* 選択中の単語表示 */
+.wordsearch-selected-word {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #60a5fa;
+  margin-top: 12px;
+}
+
+/* タイマー警告パルス */
+.timer-warning {
+  color: #f87171 !important;
+  animation: timer-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes timer-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+/* ComboCounter用アニメーション（共有CSSで定義されていない場合） */
+@keyframes combo-pop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes combo-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}

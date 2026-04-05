@@ -1,0 +1,299 @@
+.numberguess-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-width: 340px;
+  max-width: 500px;
+  margin: 0 auto;
+  font-family: system-ui, -apple-system, sans-serif;
+  transition: background-color 0.2s;
+}
+
+.numberguess-root.flash-high {
+  background-color: rgba(255, 100, 100, 0.15);
+}
+
+.numberguess-root.flash-low {
+  background-color: rgba(100, 100, 255, 0.15);
+}
+
+.numberguess-title {
+  font-size: 2rem;
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+/* パネル共通 */
+.numberguess-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.numberguess-description {
+  font-size: 1.1rem;
+  text-align: center;
+  line-height: 1.6;
+  margin: 0;
+  color: #555;
+}
+
+.numberguess-rules {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.numberguess-rules p {
+  margin: 0 0 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.numberguess-rules ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #555;
+}
+
+.numberguess-rules li {
+  margin: 4px 0;
+}
+
+.numberguess-best {
+  font-size: 1.1rem;
+  color: #f59e0b;
+  margin: 8px 0;
+}
+
+/* ボタン */
+.numberguess-button {
+  padding: 14px 32px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.numberguess-button.primary {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.numberguess-button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.numberguess-button.secondary {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.numberguess-button.secondary:hover {
+  background: #d1d5db;
+}
+
+.numberguess-button.submit {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 12px 24px;
+}
+
+.numberguess-button.submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.numberguess-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ゲーム画面 */
+.numberguess-game {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.numberguess-status {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.numberguess-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.numberguess-stat-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.numberguess-stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.numberguess-input-area {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.numberguess-input {
+  width: 140px;
+  padding: 16px;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 3px solid #e5e7eb;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.numberguess-input:focus {
+  border-color: #3b82f6;
+}
+
+/* 履歴 */
+.numberguess-history {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.numberguess-history-title {
+  margin: 0 0 12px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+.numberguess-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.numberguess-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: white;
+  border: 2px solid transparent;
+}
+
+.numberguess-history-item.high {
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+.numberguess-history-item.low {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+
+.numberguess-history-num {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.numberguess-history-hint {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* 結果画面 */
+.numberguess-panel.result {
+  gap: 20px;
+}
+
+.numberguess-result-title {
+  font-size: 1.8rem;
+  margin: 0;
+  text-align: center;
+}
+
+.numberguess-result-answer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  padding: 20px 40px;
+  border-radius: 16px;
+}
+
+.numberguess-result-label {
+  font-size: 1rem;
+  color: #92400e;
+}
+
+.numberguess-result-value {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #b45309;
+}
+
+.numberguess-result-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.numberguess-result-stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #f3f4f6;
+  border-radius: 8px;
+}
+
+.numberguess-result-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* レスポンシブ */
+@media (max-width: 400px) {
+  .numberguess-root {
+    padding: 16px;
+  }
+
+  .numberguess-title {
+    font-size: 1.6rem;
+  }
+
+  .numberguess-input {
+    width: 100px;
+    padding: 12px;
+    font-size: 1.3rem;
+  }
+
+  .numberguess-button {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+}

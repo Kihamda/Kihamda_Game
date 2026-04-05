@@ -15,7 +15,7 @@ import {
 import {
   createEmptyBoard,
   cloneBoard,
-  checkWin,
+  getWinningCells,
   resolveMovePosition,
   isBoardFull,
 } from "./lib/board";
@@ -26,7 +26,7 @@ import {
   updatePlayerMark,
   updatePlayerColor,
 } from "./lib/players";
-import { useAudio, GameShell } from "../../../src/shared";
+import { useAudio, useParticles, ParticleLayer, GameShell } from "@shared";
 import { STREAK_KEY } from "./lib/constants";
 import type {
   Board,
@@ -71,6 +71,7 @@ function App() {
   const initialDevicePrefs = useMemo(() => loadDevicePreferences(), []);
 
   const { playClick, playFanfare, playArpeggio } = useAudio();
+  const { particles, confetti, burst, sparkle, clear: clearParticles } = useParticles();
 
   const [appState, setAppState] = useState<"before" | "in_progress" | "after">(
     initialSavedState?.appState || "before",
@@ -107,6 +108,8 @@ function App() {
   const [isDraw, setIsDraw] = useState(false);
   const [moveCount, setMoveCount] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [winningCells, setWinningCells] = useState<Array<{ row: number; col: number }>>([]);
+  const [scorePopup, setScorePopup] = useState<{ text: string; key: number } | null>(null);
   // --------------------------------------------------------------------------
 
   const savedSnapshot = useMemo<Partial<PersistedState> | null>(() => {
@@ -163,6 +166,9 @@ function App() {
     setIsDraw(false);
     setMoveCount(0);
     setStreak(loadStreak(configHash));
+    setWinningCells([]);
+    setScorePopup(null);
+    clearParticles();
     setAppState("in_progress");
   };
 
@@ -196,20 +202,31 @@ function App() {
     setLastPlacedCell({ row, col });
     setMoveCount((c) => c + 1);
     playClick();
+    
+    // 配置時のパーティクル（小規模スパークル）
+    sparkle(window.innerWidth / 2, window.innerHeight / 2, 6);
 
-    if (checkWin(newBoard, row, col, currentPlayer.mark, currentGameSettings)) {
+    const winCells = getWinningCells(newBoard, row, col, currentPlayer.mark, currentGameSettings);
+    if (winCells) {
       const configHash = computeConfigHash(currentGameSettings);
       const newStreak = streak + 1;
       setStreak(newStreak);
       saveStreak(newStreak, configHash);
       setIsWinAnimation(true);
+      setWinningCells(winCells);
       setVictoryMessage(`🎉 ${currentPlayer.name} の勝利！`);
+      setScorePopup({ text: newStreak >= 2 ? `🔥 ${newStreak}連勝！` : "WIN!", key: Date.now() });
       playFanfare();
+      // 派手な confetti パーティクル
+      confetti(60);
+      setTimeout(() => confetti(40), 300);
       setTimeout(() => {
         setWinner(currentPlayer.name);
         setAppState("after");
         setIsWinAnimation(false);
         setVictoryMessage(null);
+        setWinningCells([]);
+        setScorePopup(null);
       }, 2500);
     } else if (isBoardFull(newBoard)) {
       const configHash = computeConfigHash(currentGameSettings);
@@ -217,12 +234,15 @@ function App() {
       setStreak(0);
       setIsDraw(true);
       setVictoryMessage("引き分け！");
+      setScorePopup({ text: "DRAW", key: Date.now() });
       playArpeggio([330, 294], 0.22, "square", 0.15, 0.28);
+      burst(window.innerWidth / 2, window.innerHeight / 2, 20);
       setTimeout(() => {
         setWinner(null);
         setAppState("after");
         setIsDraw(false);
         setVictoryMessage(null);
+        setScorePopup(null);
       }, 2500);
     } else {
       const nextIndex =
@@ -270,6 +290,9 @@ function App() {
     setIsWinAnimation(false);
     setVictoryMessage(null);
     setIsDraw(false);
+    setWinningCells([]);
+    setScorePopup(null);
+    clearParticles();
   };
 
   const handleResumeGame = () => {
@@ -284,7 +307,12 @@ function App() {
   };
 
   return (
-    <GameShell title="N人 TikTakToe" gameId="ntiktaktoe">
+    <GameShell
+      title="N人 TikTakToe"
+      gameId="ntiktaktoe"
+      layout="immersive"
+      minScale={0.34}
+    >
       <div className="app">
         {appState === "before" && (
           <StartScreen
@@ -318,6 +346,8 @@ function App() {
             isDraw={isDraw}
             streak={streak}
             moveCount={moveCount}
+            winningCells={winningCells}
+            scorePopup={scorePopup}
             onCellClick={handleCellClick}
             onConfirmMove={confirmMove}
             onCancelPendingMove={cancelMove}
@@ -328,6 +358,9 @@ function App() {
         {appState === "after" && (
           <ResultScreen winner={winner} onReset={resetGame} />
         )}
+
+        {/* 共通パーティクルレイヤー */}
+        <ParticleLayer particles={particles} />
       </div>
     </GameShell>
   );

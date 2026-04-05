@@ -1,0 +1,145 @@
+.score-panel {
+  width: 140px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.score-panel-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 1px;
+  margin: 0;
+  text-align: center;
+}
+
+.score-panel-throws {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.score-panel-throw {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  min-height: 36px;
+}
+
+.score-panel-throw--hit {
+  background: rgba(255, 215, 0, 0.2);
+}
+
+.score-panel-throw-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.score-panel-throw-score {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4ecdc4;
+}
+
+.score-panel-throw-empty {
+  width: 100%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 16px;
+}
+
+.score-panel-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: rgba(255, 215, 0, 0.2);
+  border-radius: 8px;
+  border: 2px solid rgba(255, 215, 0, 0.4);
+}
+
+.score-panel-total--bust {
+  background: rgba(255, 107, 107, 0.2);
+  border-color: rgba(255, 107, 107, 0.4);
+}
+
+.score-panel-total-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.score-panel-total-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffd700;
+}
+
+.score-panel-total--bust .score-panel-total-value {
+  color: #ff6b6b;
+}
+
+/* 最後の投擲ハイライト */
+.score-panel-last {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px;
+  background: rgba(78, 205, 196, 0.2);
+  border-radius: 8px;
+  animation: score-panel-pop 0.3s ease-out;
+}
+
+.score-panel-last--miss {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.score-panel-last--bullseye {
+  background: rgba(255, 107, 107, 0.3);
+  border: 2px solid rgba(255, 107, 107, 0.5);
+}
+
+.score-panel-last--triple {
+  background: rgba(231, 76, 60, 0.3);
+  border: 2px solid rgba(231, 76, 60, 0.5);
+}
+
+.score-panel-last--double {
+  background: rgba(39, 174, 96, 0.3);
+  border: 2px solid rgba(39, 174, 96, 0.5);
+}
+
+.score-panel-last-label {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.score-panel-last-score {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4ecdc4;
+}
+
+@keyframes score-panel-pop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

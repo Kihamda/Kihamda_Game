@@ -1,0 +1,256 @@
+/* ================================================
+   Lights Out — CSS
+   ================================================ */
+
+/* コンテナ */
+.lightsout-container {
+  width: 600px;
+  height: 650px;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #fff;
+  position: relative;
+}
+
+/* ヘッダー */
+.lightsout-header {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.lightsout-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+/* メニュー */
+.lightsout-menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.lightsout-description {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #ccc;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.lightsout-levels {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 200px;
+}
+
+.lightsout-level-btn {
+  background: linear-gradient(145deg, #2a2a5a, #1a1a3a);
+  border: 2px solid #4a4a8a;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 14px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lightsout-level-btn:hover {
+  background: linear-gradient(145deg, #3a3a7a, #2a2a5a);
+  border-color: #ffd700;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  transform: scale(1.02);
+}
+
+/* Stats */
+.lightsout-stats {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 20px;
+}
+
+.lightsout-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.lightsout-stat-label {
+  font-size: 0.9rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.lightsout-stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffd700;
+}
+
+/* グリッド */
+.lightsout-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  box-shadow: 
+    0 0 30px rgba(0, 0, 0, 0.5),
+    inset 0 0 20px rgba(255, 255, 255, 0.02);
+}
+
+.lightsout-cell {
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  border: 2px solid #333;
+  background: #1a1a2a;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.lightsout-cell:hover:not(:disabled) {
+  border-color: #666;
+  transform: scale(1.02);
+}
+
+.lightsout-cell--on {
+  background: linear-gradient(145deg, #ffe066, #ffc800);
+  border-color: #ffd700;
+  box-shadow: 
+    0 0 20px rgba(255, 215, 0, 0.6),
+    0 0 40px rgba(255, 215, 0, 0.3),
+    inset 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.lightsout-cell--on:hover:not(:disabled) {
+  border-color: #fff;
+  box-shadow: 
+    0 0 25px rgba(255, 215, 0, 0.8),
+    0 0 50px rgba(255, 215, 0, 0.4),
+    inset 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.lightsout-cell:disabled {
+  cursor: default;
+}
+
+/* オーバーレイ */
+.lightsout-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* クリア画面 */
+.lightsout-cleared {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(145deg, #2a2a5a, #1a1a3a);
+  border-radius: 16px;
+  border: 2px solid #ffd700;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+  animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.lightsout-cleared-title {
+  font-size: 2.5rem;
+  margin: 0 0 16px;
+  color: #ffd700;
+}
+
+.lightsout-cleared-moves {
+  font-size: 1.4rem;
+  color: #ddd;
+  margin: 0 0 24px;
+}
+
+.lightsout-cleared-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ボタン */
+.lightsout-btn {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+}
+
+.lightsout-btn--primary {
+  background: linear-gradient(145deg, #ffd700, #ffb700);
+  color: #1a1a2a;
+  border-color: #ffd700;
+}
+
+.lightsout-btn--primary:hover {
+  background: linear-gradient(145deg, #ffe033, #ffc800);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  transform: scale(1.02);
+}
+
+.lightsout-btn--secondary {
+  background: transparent;
+  color: #fff;
+  border-color: #666;
+}
+
+.lightsout-btn--secondary:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 戻るボタン */
+.lightsout-back-btn {
+  margin-top: 20px;
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.lightsout-back-btn:hover {
+  color: #fff;
+}

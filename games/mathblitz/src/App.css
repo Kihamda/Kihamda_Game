@@ -1,0 +1,355 @@
+/* Math Blitz - 計算バトル */
+
+.mathblitz-root {
+  width: 700px;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+  border-radius: 12px;
+  padding: 24px;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease;
+  color: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* フラッシュエフェクト */
+.mathblitz-root.flash-correct {
+  animation: flash-green 0.3s ease;
+}
+
+.mathblitz-root.flash-wrong {
+  animation: flash-red 0.3s ease;
+}
+
+@keyframes flash-green {
+  0%, 100% { background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); }
+  50% { background: linear-gradient(135deg, #166534 0%, #0f172a 100%); }
+}
+
+@keyframes flash-red {
+  0%, 100% { background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); }
+  50% { background: linear-gradient(135deg, #991b1b 0%, #0f172a 100%); }
+}
+
+/* タイトル */
+.mathblitz-title {
+  margin: 0 0 20px;
+  font-size: 36px;
+  font-weight: 900;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* パネル */
+.mathblitz-panel {
+  background: rgba(30, 27, 75, 0.8);
+  border-radius: 16px;
+  padding: 32px 40px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  max-width: 500px;
+}
+
+.mathblitz-panel.result {
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* 説明 */
+.mathblitz-description {
+  margin: 0 0 24px;
+  font-size: 18px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+/* 難易度選択 */
+.mathblitz-difficulty {
+  margin-bottom: 24px;
+}
+
+.mathblitz-difficulty-label {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.mathblitz-difficulty-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.mathblitz-difficulty-btn {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #94a3b8;
+  background: rgba(51, 65, 85, 0.5);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mathblitz-difficulty-btn:hover {
+  background: rgba(71, 85, 105, 0.6);
+  color: #f8fafc;
+}
+
+.mathblitz-difficulty-btn.active {
+  background: rgba(99, 102, 241, 0.3);
+  border-color: #818cf8;
+  color: #c7d2fe;
+}
+
+.mathblitz-difficulty-info {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* ハイスコア */
+.mathblitz-highscore {
+  margin: 16px 0;
+  font-size: 16px;
+  color: #fbbf24;
+}
+
+/* ボタン */
+.mathblitz-button {
+  padding: 14px 36px;
+  font-size: 18px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.mathblitz-button:hover {
+  transform: translateY(-2px);
+}
+
+.mathblitz-button:active {
+  transform: translateY(0);
+}
+
+.mathblitz-button.primary {
+  color: #0f172a;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3);
+}
+
+.mathblitz-button.primary:hover {
+  box-shadow: 0 6px 24px rgba(251, 191, 36, 0.4);
+}
+
+.mathblitz-button.secondary {
+  color: #e2e8f0;
+  background: rgba(71, 85, 105, 0.6);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.mathblitz-button.submit {
+  padding: 14px 24px;
+  color: #0f172a;
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+}
+
+/* ゲーム画面 */
+.mathblitz-game {
+  width: 100%;
+  text-align: center;
+}
+
+/* ステータス */
+.mathblitz-status {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.mathblitz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mathblitz-stat-label {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.mathblitz-stat-value {
+  font-size: 28px;
+  font-weight: 900;
+  color: #f8fafc;
+}
+
+.mathblitz-stat-value.danger {
+  color: #f87171;
+  animation: pulse 0.5s ease infinite;
+}
+
+.mathblitz-stat-value.combo-bonus {
+  color: #fb923c;
+  text-shadow: 0 0 12px rgba(251, 146, 60, 0.6);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* 問題表示 */
+.mathblitz-problem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 16px;
+}
+
+.mathblitz-num {
+  font-size: 56px;
+  font-weight: 900;
+  color: #e2e8f0;
+  min-width: 80px;
+}
+
+.mathblitz-operator {
+  font-size: 48px;
+  font-weight: 700;
+  color: #818cf8;
+}
+
+.mathblitz-equals {
+  font-size: 48px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.mathblitz-answer-box {
+  font-size: 56px;
+  font-weight: 900;
+  color: #fbbf24;
+  min-width: 80px;
+}
+
+/* 入力エリア */
+.mathblitz-input-area {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.mathblitz-input {
+  width: 180px;
+  padding: 14px 20px;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  color: #f8fafc;
+  background: rgba(30, 41, 59, 0.9);
+  border: 3px solid #475569;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.mathblitz-input:focus {
+  border-color: #818cf8;
+}
+
+.mathblitz-input::placeholder {
+  color: #64748b;
+  font-weight: 400;
+}
+
+/* コンボアラート */
+.mathblitz-combo-alert {
+  margin-top: 20px;
+  padding: 8px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 20px;
+  display: inline-block;
+  animation: bounce-in 0.3s ease;
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 結果画面 */
+.mathblitz-result-title {
+  margin: 0 0 24px;
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.mathblitz-result-score {
+  margin-bottom: 24px;
+}
+
+.mathblitz-result-label {
+  display: block;
+  font-size: 14px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.mathblitz-result-value {
+  font-size: 56px;
+  font-weight: 900;
+  color: #60a5fa;
+  text-shadow: 0 0 24px rgba(96, 165, 250, 0.5);
+}
+
+.mathblitz-result-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 20px;
+}
+
+.mathblitz-result-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.mathblitz-result-stat span:first-child {
+  color: #94a3b8;
+}
+
+.mathblitz-result-stat span:last-child {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.mathblitz-result-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}

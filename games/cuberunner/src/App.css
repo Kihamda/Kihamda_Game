@@ -1,0 +1,145 @@
+.cuberunner-container {
+  width: 500px;
+  height: 700px;
+  position: relative;
+  background: linear-gradient(to bottom, #1a0033 0%, #2d0066 50%, #4d0099 100%);
+  overflow: hidden;
+}
+
+.cuberunner-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  transition: filter 0.3s ease-out;
+}
+
+/* Screen flash effect */
+.cuberunner-flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  pointer-events: none;
+  z-index: 50;
+  transition: opacity 0.1s ease-out;
+}
+
+/* Speed lines overlay for motion blur effect */
+.cuberunner-speed-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 8px,
+    rgba(0, 255, 255, 0.05) 8px,
+    rgba(0, 255, 255, 0.05) 10px
+  );
+  animation: cuberunner-speedlines 0.1s linear infinite;
+}
+
+@keyframes cuberunner-speedlines {
+  from { transform: translateY(0); }
+  to { transform: translateY(10px); }
+}
+
+.cuberunner-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 10;
+}
+
+.cuberunner-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #00ffff;
+  text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.15em;
+}
+
+.cuberunner-subtitle {
+  font-size: 1rem;
+  color: #888;
+  margin-bottom: 2rem;
+  letter-spacing: 0.1em;
+}
+
+.cuberunner-instruction {
+  font-size: 1.1rem;
+  color: #ccc;
+  text-align: center;
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+
+.cuberunner-start-btn {
+  padding: 1rem 3rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #1a1a2e;
+  background: linear-gradient(135deg, #00ffff, #ff00ff);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.cuberunner-start-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+}
+
+.cuberunner-start-btn:active {
+  transform: scale(0.98);
+}
+
+.cuberunner-gameover {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ff4444;
+  text-shadow: 0 0 20px #ff4444;
+  margin: 0 0 1rem;
+  letter-spacing: 0.1em;
+}
+
+.cuberunner-final-score {
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.cuberunner-new-record {
+  font-size: 1.4rem;
+  color: #ffdd00;
+  text-shadow: 0 0 20px #ffdd00;
+  margin-bottom: 2rem;
+  animation: cuberunner-pulse 0.5s ease-in-out infinite alternate;
+}
+
+.cuberunner-bonus-score {
+  font-size: 1rem;
+  color: #48dbfb;
+  text-shadow: 0 0 10px #48dbfb;
+  margin-bottom: 0.5rem;
+}
+
+.cuberunner-highscore {
+  font-size: 1rem;
+  color: #888;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes cuberunner-pulse {
+  from { opacity: 0.7; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.1); }
+}

@@ -36,73 +36,38 @@ tools:
 ## 実行フロー
 
 ```
-
-Step 1: codebase で対象ファイル (games/[id]/index.html, plugins/portal-ssg.ts) を把握
+Step 1: codebase で対象ファイル (src/portal/data/games.json, plugins/portal-ssg.ts) を把握
 Step 2: 現在の SEO 状態を監査する
 Step 3: 以下を実装する:
+  - games.json のメタデータ (title, description) を最適化
+  - plugins/portal-ssg.ts で OGP/JSON-LD を生成
+  - canonical URL 設定
+Step 4: sitemap.xml は plugins/portal-ssg.ts が自動生成する (手動不要)
+Step 5: 変更内容を報告
+```
 
-- <title> と <meta description> の最適化
-- OGP (og:title, og:description, og:image, og:url)
+**注意**: 個別ゲームの `index.html` は廃止済み。SPA 化により、SEO メタデータは `games.json` + SSG プラグインで管理する。
+
+## games.json メタデータ構造
+
+各ゲームの SEO 情報は `src/portal/data/games.json` で一元管理:
+
+```json
+{
+  "id": "game-id",
+  "title": "[ゲーム名] - 無料ブラウザゲーム",
+  "description": "[ゲームの説明 120文字以内]",
+  "path": "/games/[game-id]/",
+  "thumbnail": "/thumbnails/[game-id].svg",
+  "tags": ["tag1", "tag2"]
+}
+```
+
+`plugins/portal-ssg.ts` がビルド時に以下を自動生成:
+- OGP タグ (og:title, og:description, og:image, og:url)
 - Twitter Card (twitter:card, twitter:title, twitter:description)
-- JSON-LD 構造化データ
+- JSON-LD 構造化データ (WebApplication schema)
 - canonical URL
-- lang 属性
-  Step 4: sitemap.xml は plugins/portal-ssg.ts が自動生成する (手動不要)
-  Step 5: 変更内容を報告
-
-```
-
-## 各ゲームの index.html テンプレート
-
-```html
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>[ゲーム名] - 無料ブラウザゲーム | [プラットフォーム名]</title>
-    <meta name="description" content="[ゲームの説明 120文字以内]" />
-    <link rel="canonical" href="https://[domain]/games/[id]/" />
-
-    <!-- OGP -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="[ゲーム名] - 無料ブラウザゲーム" />
-    <meta property="og:description" content="[ゲームの説明]" />
-    <meta property="og:url" content="https://[domain]/games/[id]/" />
-    <meta property="og:image" content="https://[domain]/thumbnails/[id].png" />
-    <meta property="og:site_name" content="[プラットフォーム名]" />
-    <meta property="og:locale" content="ja_JP" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="[ゲーム名]" />
-    <meta name="twitter:description" content="[ゲームの説明]" />
-    <meta name="twitter:image" content="https://[domain]/thumbnails/[id].png" />
-
-    <!-- 構造化データ -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "[ゲーム名]",
-        "description": "[ゲームの説明]",
-        "url": "https://[domain]/games/[id]/",
-        "applicationCategory": "Game",
-        "operatingSystem": "Any",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "JPY"
-        },
-        "author": {
-          "@type": "Organization",
-          "name": "[プラットフォーム名]"
-        }
-      }
-    </script>
-  </head>
-</html>
-```
 
 ## SEO チェックリスト (毎回確認)
 

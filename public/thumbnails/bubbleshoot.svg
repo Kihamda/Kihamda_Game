@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="red" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#dc2626" stop-opacity="0.8"/>
+    </radialGradient>
+    <radialGradient id="green" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#16a34a" stop-opacity="0.8"/>
+    </radialGradient>
+    <radialGradient id="blue" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#2563eb" stop-opacity="0.8"/>
+    </radialGradient>
+    <radialGradient id="yellow" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#ca8a04" stop-opacity="0.8"/>
+    </radialGradient>
+    <radialGradient id="purple" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#9333ea" stop-opacity="0.8"/>
+    </radialGradient>
+    <radialGradient id="pink" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#db2777" stop-opacity="0.8"/>
+    </radialGradient>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="50%" stop-color="#16213e"/>
+      <stop offset="100%" stop-color="#0f3460"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" fill="url(#bg)" rx="20"/>
+  
+  <!-- Bubbles - Row 1 -->
+  <circle cx="50" cy="35" r="18" fill="url(#red)"/>
+  <circle cx="86" cy="35" r="18" fill="url(#green)"/>
+  <circle cx="122" cy="35" r="18" fill="url(#blue)"/>
+  <circle cx="158" cy="35" r="18" fill="url(#red)"/>
+  
+  <!-- Bubbles - Row 2 (offset) -->
+  <circle cx="68" cy="66" r="18" fill="url(#yellow)"/>
+  <circle cx="104" cy="66" r="18" fill="url(#purple)"/>
+  <circle cx="140" cy="66" r="18" fill="url(#pink)"/>
+  
+  <!-- Bubbles - Row 3 -->
+  <circle cx="50" cy="97" r="18" fill="url(#blue)"/>
+  <circle cx="86" cy="97" r="18" fill="url(#green)"/>
+  <circle cx="122" cy="97" r="18" fill="url(#yellow)"/>
+  <circle cx="158" cy="97" r="18" fill="url(#purple)"/>
+  
+  <!-- Highlight dots -->
+  <circle cx="43" cy="28" r="5" fill="#fff" opacity="0.7"/>
+  <circle cx="79" cy="28" r="5" fill="#fff" opacity="0.7"/>
+  <circle cx="115" cy="28" r="5" fill="#fff" opacity="0.7"/>
+  <circle cx="61" cy="59" r="5" fill="#fff" opacity="0.7"/>
+  <circle cx="97" cy="59" r="5" fill="#fff" opacity="0.7"/>
+  <circle cx="43" cy="90" r="5" fill="#fff" opacity="0.7"/>
+  <circle cx="79" cy="90" r="5" fill="#fff" opacity="0.7"/>
+  
+  <!-- Aim line -->
+  <line x1="100" y1="175" x2="100" y2="125" stroke="#fff" stroke-width="2" stroke-dasharray="6,3" opacity="0.6"/>
+  <line x1="100" y1="125" x2="86" y2="105" stroke="#fff" stroke-width="2" stroke-dasharray="6,3" opacity="0.6"/>
+  
+  <!-- Shooter bubble -->
+  <circle cx="100" cy="175" r="16" fill="url(#green)" stroke="#fff" stroke-width="3"/>
+  <circle cx="93" cy="168" r="4" fill="#fff" opacity="0.7"/>
+  
+  <!-- Arrow indicator -->
+  <polygon points="100,145 94,155 106,155" fill="#fff" opacity="0.8"/>
+</svg>

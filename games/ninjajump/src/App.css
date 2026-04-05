@@ -1,0 +1,118 @@
+.ninjajump-container {
+  width: 400px;
+  height: 700px;
+  position: relative;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  overflow: hidden;
+}
+
+.ninjajump-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.ninjajump-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.95);
+  z-index: 10;
+}
+
+.ninjajump-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #e94560;
+  text-shadow: 0 0 20px rgba(233, 69, 96, 0.7), 0 4px 0 #7f1d1d;
+  margin: 0 0 1rem;
+  letter-spacing: 0.1em;
+}
+
+.ninjajump-ninja-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: ninjajump-float 2s ease-in-out infinite;
+}
+
+@keyframes ninjajump-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.ninjajump-instruction {
+  font-size: 1rem;
+  color: #e2e8f0;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.ninjajump-start-btn {
+  padding: 1rem 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #e94560, #c53678);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: 0 4px 0 #7f1d1d;
+}
+
+.ninjajump-start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #7f1d1d, 0 10px 20px rgba(233, 69, 96, 0.3);
+}
+
+.ninjajump-start-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #7f1d1d;
+}
+
+.ninjajump-gameover {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #f87171;
+  text-shadow: 0 0 20px rgba(248, 113, 113, 0.5), 0 4px 0 #991b1b;
+  margin: 0 0 1rem;
+  letter-spacing: 0.1em;
+}
+
+.ninjajump-final-score {
+  font-size: 1.8rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.ninjajump-best-score {
+  font-size: 1.2rem;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+}
+
+.ninjajump-new-record {
+  font-size: 1.3rem;
+  color: #fbbf24;
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.7);
+  margin-bottom: 2rem;
+  animation: ninjajump-pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes ninjajump-pulse {
+  from {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}

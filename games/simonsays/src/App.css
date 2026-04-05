@@ -1,0 +1,256 @@
+/* ================================================
+   Simon Says — ドーパミン演出強化版CSS
+   ================================================ */
+
+/* コンテナ */
+.simonsays-container {
+  position: relative;
+  width: 600px;
+  height: 650px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #fff;
+  transition: background 0.15s ease;
+}
+
+/* 画面フラッシュ - レベルアップ */
+.simonsays-flash-levelup {
+  animation: flash-levelup 0.3s ease-out;
+}
+
+@keyframes flash-levelup {
+  0% {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  }
+  100% {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  }
+}
+
+/* 画面フラッシュ - 失敗 */
+.simonsays-flash-fail {
+  animation: flash-fail 0.5s ease-out;
+}
+
+@keyframes flash-fail {
+  0%,
+  20%,
+  40% {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  }
+  10%,
+  30%,
+  100% {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  }
+}
+
+/* ヘッダー */
+.simonsays-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.simonsays-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.simonsays-level {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffd700;
+  margin-top: 8px;
+}
+
+/* スコア表示エリア */
+.simonsays-scores {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.simonsays-scores .simonsays-level {
+  margin-top: 0;
+}
+
+.simonsays-best {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ff9ff3;
+  text-shadow: 0 0 8px rgba(255, 159, 243, 0.5);
+}
+
+/* メッセージ */
+.simonsays-message {
+  font-size: 1.2rem;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ddd;
+  margin-bottom: 16px;
+}
+
+/* ゲームボード */
+.simonsays-board {
+  position: relative;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: #111;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+/* 4色ボタン共通 */
+.simonsays-btn {
+  position: absolute;
+  width: calc(50% - 8px);
+  height: calc(50% - 8px);
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  transform-origin: center;
+}
+
+.simonsays-btn:disabled {
+  cursor: default;
+}
+
+/* ボタン押下時のパルス効果 */
+.simonsays-btn--pressed {
+  animation: btn-pulse 0.2s ease-out;
+}
+
+@keyframes btn-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 赤 - 右上 */
+.simonsays-btn--red {
+  top: 4px;
+  right: 4px;
+  background: radial-gradient(circle at 30% 30%, #a52a2a 0%, #8b0000 100%);
+  border-radius: 0 100% 0 0;
+}
+
+.simonsays-btn--red:not(:disabled):hover {
+  background: radial-gradient(circle at 30% 30%, #b83c3c 0%, #a52a2a 100%);
+}
+
+.simonsays-btn--red.simonsays-btn--active {
+  background: radial-gradient(circle at 30% 30%, #ff6666 0%, #ff3333 100%);
+  box-shadow: 0 0 40px #ff3333, 0 0 80px #ff3333, inset 0 0 20px #ff9999;
+  filter: brightness(1.5);
+}
+
+/* 青 - 右下 */
+.simonsays-btn--blue {
+  bottom: 4px;
+  right: 4px;
+  background: radial-gradient(circle at 30% 70%, #191970 0%, #00008b 100%);
+  border-radius: 0 0 100% 0;
+}
+
+.simonsays-btn--blue:not(:disabled):hover {
+  background: radial-gradient(circle at 30% 70%, #2a2a8a 0%, #191970 100%);
+}
+
+.simonsays-btn--blue.simonsays-btn--active {
+  background: radial-gradient(circle at 30% 70%, #6666ff 0%, #4444ff 100%);
+  box-shadow: 0 0 40px #4444ff, 0 0 80px #4444ff, inset 0 0 20px #9999ff;
+  filter: brightness(1.5);
+}
+
+/* 緑 - 左上 */
+.simonsays-btn--green {
+  top: 4px;
+  left: 4px;
+  background: radial-gradient(circle at 70% 30%, #228b22 0%, #006400 100%);
+  border-radius: 100% 0 0 0;
+}
+
+.simonsays-btn--green:not(:disabled):hover {
+  background: radial-gradient(circle at 70% 30%, #32a532 0%, #228b22 100%);
+}
+
+.simonsays-btn--green.simonsays-btn--active {
+  background: radial-gradient(circle at 70% 30%, #66ff66 0%, #33ff33 100%);
+  box-shadow: 0 0 40px #33ff33, 0 0 80px #33ff33, inset 0 0 20px #99ff99;
+  filter: brightness(1.5);
+}
+
+/* 黄 - 左下 */
+.simonsays-btn--yellow {
+  bottom: 4px;
+  left: 4px;
+  background: radial-gradient(circle at 70% 70%, #b8b800 0%, #8b8b00 100%);
+  border-radius: 0 0 0 100%;
+}
+
+.simonsays-btn--yellow:not(:disabled):hover {
+  background: radial-gradient(circle at 70% 70%, #d0d000 0%, #b8b800 100%);
+}
+
+.simonsays-btn--yellow.simonsays-btn--active {
+  background: radial-gradient(circle at 70% 70%, #ffff66 0%, #ffff33 100%);
+  box-shadow: 0 0 40px #ffff33, 0 0 80px #ffff33, inset 0 0 20px #ffffaa;
+  filter: brightness(1.5);
+}
+
+/* 中央エリア */
+.simonsays-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  border: 4px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* スタートボタン */
+.simonsays-start {
+  background: linear-gradient(145deg, #2a2a4a, #1a1a2e);
+  border: 2px solid #ffd700;
+  color: #ffd700;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+}
+
+.simonsays-start:hover {
+  background: linear-gradient(145deg, #3a3a6a, #2a2a4e);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  transform: scale(1.05);
+}

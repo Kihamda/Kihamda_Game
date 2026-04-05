@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e293b"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="400" height="300" fill="url(#bg)"/>
+  
+  <!-- 色のブロック（選択肢） -->
+  <rect x="40" y="120" width="75" height="60" rx="8" fill="#ef4444"/>
+  <rect x="125" y="120" width="75" height="60" rx="8" fill="#3b82f6"/>
+  <rect x="210" y="120" width="75" height="60" rx="8" fill="#22c55e"/>
+  <rect x="295" y="120" width="75" height="60" rx="8" fill="#eab308"/>
+  
+  <!-- ストループ効果を表現: 「あお」を赤で表示 -->
+  <text x="200" y="70" text-anchor="middle" font-family="sans-serif" font-size="42" font-weight="bold" fill="#ef4444">あお</text>
+  
+  <!-- 矢印（ヒント） -->
+  <polygon points="162,95 200,110 238,95 220,95 220,85 180,85 180,95" fill="#fbbf24" opacity="0.8"/>
+  
+  <!-- 青のブロックに正解マーク -->
+  <circle cx="162.5" cy="150" r="12" fill="#fbbf24" opacity="0.9"/>
+  <path d="M156 150 L160 154 L169 145" stroke="#0f172a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- タイマーバー -->
+  <rect x="40" y="200" width="320" height="8" rx="4" fill="rgba(255,255,255,0.1)"/>
+  <rect x="40" y="200" width="200" height="8" rx="4" fill="#4ade80"/>
+  
+  <!-- タイトル -->
+  <text x="200" y="260" text-anchor="middle" font-family="sans-serif" font-size="28" font-weight="bold" fill="#f8fafc">🎨 タップカラー</text>
+</svg>

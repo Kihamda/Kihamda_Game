@@ -1,0 +1,150 @@
+.birdfly-game {
+  position: relative;
+  background: #87ceeb;
+  border-radius: 8px;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+
+.birdfly-canvas {
+  display: block;
+}
+
+.birdfly-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.birdfly-score {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.birdfly-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 18px;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.birdfly-highscore {
+  font-size: 16px;
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.birdfly-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(135, 206, 235, 0.95);
+  padding: 20px;
+  text-align: center;
+}
+
+.birdfly-title {
+  font-size: 42px;
+  color: #ff6b6b;
+  margin: 0 0 16px 0;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.birdfly-instruction {
+  font-size: 18px;
+  color: #444;
+  margin: 0 0 24px 0;
+  line-height: 1.6;
+}
+
+.birdfly-start-btn {
+  padding: 16px 48px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+}
+
+.birdfly-start-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+}
+
+.birdfly-start-btn:active {
+  transform: scale(0.98);
+}
+
+.birdfly-hint {
+  font-size: 14px;
+  color: #666;
+  margin-top: 16px;
+}
+
+.birdfly-gameover {
+  background: rgba(135, 206, 235, 0.98);
+}
+
+.birdfly-gameover-title {
+  font-size: 38px;
+  color: #d9534f;
+  margin: 0 0 20px 0;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.birdfly-final-stats {
+  margin-bottom: 20px;
+}
+
+.birdfly-final-stats p {
+  font-size: 18px;
+  color: #444;
+  margin: 8px 0;
+}
+
+.birdfly-final-score {
+  font-size: 28px !important;
+  color: #333 !important;
+  font-weight: bold;
+  margin-top: 12px !important;
+}
+
+.birdfly-new-record {
+  font-size: 24px;
+  color: #ffd700;
+  margin: 0 0 16px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: birdfly-pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes birdfly-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}

@@ -1,0 +1,252 @@
+/* Solitaire Styles */
+.sol-root {
+  width: 900px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #1a472a 0%, #0d2818 100%);
+  color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Start Screen */
+.sol-start {
+  text-align: center;
+  padding: 2rem;
+}
+
+.sol-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.sol-desc {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  color: #a7d3b5;
+}
+
+/* Buttons */
+.sol-btn {
+  padding: 1rem 2.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+.sol-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.5);
+}
+
+/* Game Board */
+.sol-board {
+  position: relative;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sol-top-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.sol-stock-waste {
+  display: flex;
+  gap: 15px;
+}
+
+.sol-stock {
+  position: relative;
+  cursor: pointer;
+}
+
+.sol-stock-count {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #a7d3b5;
+}
+
+.sol-waste {
+  position: relative;
+}
+
+.sol-foundation-row {
+  display: flex;
+  gap: 15px;
+}
+
+.sol-foundation-pile {
+  width: 70px;
+  height: 100px;
+  position: relative;
+}
+
+.sol-foundation-placeholder {
+  width: 70px;
+  height: 100px;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.sol-foundation-suit {
+  font-size: 32px;
+  opacity: 0.4;
+}
+
+.sol-tableau-row {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.sol-tableau-pile {
+  position: relative;
+  width: 70px;
+  min-height: 120px;
+}
+
+.sol-moves {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  font-size: 14px;
+  color: #a7d3b5;
+}
+
+/* Cards */
+.sol-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  user-select: none;
+}
+
+.sol-card--empty {
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  background: transparent;
+}
+
+.sol-card--placeholder {
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sol-card-refresh {
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.sol-card--back {
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+  border: 2px solid #fff;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 5px,
+    rgba(255, 255, 255, 0.1) 5px,
+    rgba(255, 255, 255, 0.1) 10px
+  );
+}
+
+.sol-card--face {
+  background: #fff;
+  position: relative;
+  cursor: grab;
+  transition: box-shadow 0.15s;
+}
+
+.sol-card--face:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.sol-card--face[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+.sol-card--red {
+  color: #dc2626;
+}
+
+.sol-card--black {
+  color: #1e293b;
+}
+
+.sol-card-corner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.sol-card-corner--top {
+  top: 4px;
+  left: 6px;
+}
+
+.sol-card-corner--bottom {
+  bottom: 4px;
+  right: 6px;
+  transform: rotate(180deg);
+}
+
+.sol-card-rank {
+  font-size: 14px;
+}
+
+.sol-card-suit {
+  font-size: 12px;
+}
+
+.sol-card-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+}
+
+/* Win Screen */
+.sol-win {
+  text-align: center;
+  padding: 2rem;
+}
+
+.sol-win-title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #fbbf24;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.sol-win-stats {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+  font-size: 1.2rem;
+}

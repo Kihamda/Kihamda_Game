@@ -1,0 +1,372 @@
+.slot-root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+  overflow: hidden;
+  padding: 16px;
+}
+
+/* フラッシュ効果 */
+.slot-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, transparent 70%);
+  pointer-events: none;
+  animation: flash-anim 0.5s ease-out forwards;
+  z-index: 200;
+}
+
+@keyframes flash-anim {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ヘッダー */
+.slot-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.slot-title {
+  font-size: 24px;
+  font-weight: 900;
+  background: linear-gradient(180deg, #ffd700 0%, #ff8c00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5);
+  margin: 0;
+}
+
+.slot-coins {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 2px solid #ffd700;
+}
+
+.slot-coin-icon {
+  font-size: 20px;
+}
+
+.slot-coin-count {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+/* スロットマシン */
+.slot-machine {
+  position: relative;
+  margin: 16px 0;
+}
+
+.slot-frame {
+  position: relative;
+  background: linear-gradient(145deg, #2d2d2d 0%, #1a1a1a 100%);
+  border: 6px solid #8b4513;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow:
+    inset 0 4px 8px rgba(0, 0, 0, 0.6),
+    0 8px 32px rgba(0, 0, 0, 0.8),
+    0 0 60px rgba(255, 215, 0, 0.15);
+}
+
+.slot-reels-container {
+  display: flex;
+  gap: 8px;
+  background: #000;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+.slot-reel {
+  width: 80px;
+  height: 180px;
+  background: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* リール回転時のブラー効果 */
+.slot-reel--spinning {
+  animation: reel-spin 0.1s linear infinite;
+}
+
+.slot-reel--spinning .slot-symbol {
+  filter: blur(8px);
+  opacity: 0.6;
+}
+
+@keyframes reel-spin {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-60px); }
+}
+
+.slot-reel--stopped {
+  animation: reel-stop 0.15s ease-out;
+}
+
+@keyframes reel-stop {
+  0% { transform: translateY(-10px); }
+  50% { transform: translateY(5px); }
+  100% { transform: translateY(0); }
+}
+
+.slot-symbol {
+  font-size: 48px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.2s, transform 0.2s;
+}
+
+.slot-symbol--win {
+  animation: symbol-win 0.5s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 10px gold);
+}
+
+@keyframes symbol-win {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+
+/* ペイライン */
+.slot-payline {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 50%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent 0%, #ff0 20%, #ff0 80%, transparent 100%);
+  transform: translateY(-50%);
+  pointer-events: none;
+  box-shadow: 0 0 10px #ff0;
+  opacity: 0.8;
+}
+
+/* 結果表示 */
+.slot-result {
+  font-size: 28px;
+  font-weight: 900;
+  text-align: center;
+  padding: 12px 24px;
+  border-radius: 12px;
+  animation: result-pop 0.4s ease-out;
+  margin: 8px 0;
+}
+
+@keyframes result-pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.slot-result--jackpot {
+  background: linear-gradient(45deg, #ff0, #ff8c00, #ff0);
+  color: #000;
+  text-shadow: 0 0 10px #fff;
+  animation: result-pop 0.4s ease-out, jackpot-glow 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes jackpot-glow {
+  0% { box-shadow: 0 0 20px #ff0, 0 0 40px #ff8c00; }
+  100% { box-shadow: 0 0 40px #ff0, 0 0 80px #ff8c00; }
+}
+
+.slot-result--triple {
+  background: linear-gradient(45deg, #48dbfb, #0abde3);
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.slot-result--pair {
+  background: linear-gradient(45deg, #1dd1a1, #10ac84);
+  color: #fff;
+}
+
+.slot-result--none {
+  background: rgba(255, 255, 255, 0.1);
+  color: #888;
+}
+
+/* コントロール */
+.slot-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.slot-bet-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.slot-bet-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #3d3d3d, #2a2a2a);
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.slot-bet-btn:hover:not(:disabled) {
+  background: linear-gradient(145deg, #4d4d4d, #3a3a3a);
+  transform: scale(1.1);
+}
+
+.slot-bet-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.slot-bet-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 8px 24px;
+  border-radius: 12px;
+  border: 2px solid #666;
+}
+
+.slot-bet-label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.slot-bet-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.slot-spin-btn {
+  width: 120px;
+  height: 60px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(145deg, #e74c3c, #c0392b);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow:
+    0 6px 0 #8b0000,
+    0 8px 16px rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.slot-spin-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 0 #8b0000,
+    0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+.slot-spin-btn:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow:
+    0 2px 0 #8b0000,
+    0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.slot-spin-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.slot-spin-btn--spinning {
+  animation: spin-btn-pulse 0.3s ease-in-out infinite;
+}
+
+@keyframes spin-btn-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+}
+
+/* ゲームオーバー */
+.slot-gameover {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 300;
+}
+
+.slot-gameover p {
+  font-size: 24px;
+  color: #ff6b6b;
+}
+
+.slot-reset-btn {
+  padding: 16px 32px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #1dd1a1, #10ac84);
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.slot-reset-btn:hover {
+  transform: scale(1.05);
+}
+
+/* 配当表 */
+.slot-paytable {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.slot-paytable-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 2px 0;
+}
+
+.slot-paytable-row span:last-child {
+  color: #ffd700;
+  font-weight: bold;
+}

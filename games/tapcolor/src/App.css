@@ -1,0 +1,303 @@
+/* TapColor - ストループ効果色タップゲーム */
+
+.tapcolor-root {
+  position: relative;
+  width: 500px;
+  height: 600px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  user-select: none;
+  padding: 24px;
+  box-sizing: border-box;
+  transition: background-color 0.1s ease;
+}
+
+/* 間違い時の赤フラッシュ */
+.tapcolor-root.wrong-flash {
+  background: linear-gradient(135deg, #3b1e1e 0%, #2a0f0f 100%);
+}
+
+/* ヘッダー */
+.tapcolor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.tapcolor-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 900;
+  color: #f8fafc;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tapcolor-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.tapcolor-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tapcolor-stat-label {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.tapcolor-stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.tapcolor-stat-value.score {
+  color: #fbbf24;
+}
+
+.tapcolor-stat-value.lives {
+  color: #f87171;
+}
+
+/* 問題表示エリア */
+.tapcolor-question {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.tapcolor-instruction {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #94a3b8;
+}
+
+.tapcolor-color-word {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 900;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: color 0.15s ease;
+}
+
+/* 選択肢グリッド */
+.tapcolor-choices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+  flex: 1;
+}
+
+.tapcolor-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  min-height: 100px;
+}
+
+.tapcolor-choice:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.tapcolor-choice:active {
+  transform: translateY(0);
+}
+
+.tapcolor-choice.correct {
+  animation: pulse-correct 0.3s ease;
+}
+
+.tapcolor-choice.wrong {
+  animation: shake 0.3s ease;
+}
+
+@keyframes pulse-correct {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+/* タイマーバー */
+.tapcolor-timer-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+.tapcolor-timer-container.pulse {
+  animation: timer-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes timer-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 0 rgba(248, 113, 113, 0); 
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 12px rgba(248, 113, 113, 0.8); 
+    transform: scale(1.02);
+  }
+}
+
+.tapcolor-timer-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4ade80 0%, #fbbf24 50%, #f87171 100%);
+  border-radius: 4px;
+  transition: width 0.1s linear;
+}
+
+.tapcolor-timer-bar.low {
+  background: linear-gradient(90deg, #f87171 0%, #ef4444 100%);
+  animation: bar-pulse 0.3s ease-in-out infinite;
+}
+
+@keyframes bar-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* パネル（スタート・結果画面） */
+.tapcolor-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  color: #f8fafc;
+}
+
+.tapcolor-panel-title {
+  margin: 0 0 16px;
+  font-size: 36px;
+  font-weight: 900;
+}
+
+.tapcolor-panel-description {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #cbd5e1;
+  max-width: 350px;
+}
+
+.tapcolor-panel-description .highlight {
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+.tapcolor-highscore {
+  margin: 16px 0;
+  font-size: 18px;
+  color: #fbbf24;
+}
+
+/* ボタン */
+.tapcolor-button {
+  margin-top: 20px;
+  padding: 14px 40px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.tapcolor-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.4);
+}
+
+.tapcolor-button:active {
+  transform: translateY(0);
+}
+
+/* 結果画面 */
+.tapcolor-result-score {
+  margin: 0;
+  font-size: 64px;
+  font-weight: 900;
+  color: #fbbf24;
+}
+
+.tapcolor-result-label {
+  margin: 8px 0 0;
+  font-size: 16px;
+  color: #94a3b8;
+}
+
+.tapcolor-result-stats {
+  display: flex;
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.tapcolor-result-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tapcolor-result-stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #60a5fa;
+}
+
+.tapcolor-result-stat-label {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.tapcolor-newrecord {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fbbf24;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 8px rgba(251, 191, 36, 0.5); }
+  to { text-shadow: 0 0 24px rgba(251, 191, 36, 0.8); }
+}
+
+/* 色定義 */
+.color-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+.color-blue { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+.color-green { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); }
+.color-yellow { background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); }
+.color-purple { background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); }
+.color-orange { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); }

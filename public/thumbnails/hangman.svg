@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <!-- 絞首台 -->
+  <line x1="40" y1="170" x2="100" y2="170" stroke="#4a5568" stroke-width="4"/>
+  <line x1="70" y1="170" x2="70" y2="40" stroke="#4a5568" stroke-width="4"/>
+  <line x1="70" y1="40" x2="130" y2="40" stroke="#4a5568" stroke-width="4"/>
+  <line x1="130" y1="40" x2="130" y2="55" stroke="#4a5568" stroke-width="4"/>
+  <!-- ハングマン -->
+  <circle cx="130" cy="70" r="15" stroke="#e94560" stroke-width="3" fill="none"/>
+  <line x1="130" y1="85" x2="130" y2="115" stroke="#e94560" stroke-width="3"/>
+  <line x1="130" y1="95" x2="110" y2="105" stroke="#e94560" stroke-width="3"/>
+  <line x1="130" y1="95" x2="150" y2="105" stroke="#e94560" stroke-width="3"/>
+  <line x1="130" y1="115" x2="110" y2="140" stroke="#e94560" stroke-width="3"/>
+  <line x1="130" y1="115" x2="150" y2="140" stroke="#e94560" stroke-width="3"/>
+  <!-- 単語スロット -->
+  <rect x="30" y="150" width="20" height="3" fill="#22d3ee"/>
+  <rect x="55" y="150" width="20" height="3" fill="#22d3ee"/>
+  <rect x="80" y="150" width="20" height="3" fill="#22d3ee"/>
+  <text x="35" y="148" font-family="Arial" font-size="16" fill="#22d3ee">A</text>
+  <text x="85" y="148" font-family="Arial" font-size="16" fill="#22d3ee">B</text>
+</svg>

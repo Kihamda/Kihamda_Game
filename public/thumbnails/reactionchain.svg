@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="bubble1" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#ff6b6b"/>
+      <stop offset="100%" stop-color="#ff6b6b" stop-opacity="0.6"/>
+    </radialGradient>
+    <radialGradient id="bubble2" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#4ecdc4"/>
+      <stop offset="100%" stop-color="#4ecdc4" stop-opacity="0.6"/>
+    </radialGradient>
+    <radialGradient id="bubble3" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#feca57"/>
+      <stop offset="100%" stop-color="#feca57" stop-opacity="0.6"/>
+    </radialGradient>
+    <radialGradient id="explosion" cx="50%" cy="50%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.9"/>
+      <stop offset="30%" stop-color="#ff6b6b"/>
+      <stop offset="70%" stop-color="#feca57" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ff6b6b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" fill="url(#bg)" rx="20"/>
+  
+  <!-- Explosion effect -->
+  <circle cx="100" cy="100" r="50" fill="url(#explosion)" opacity="0.8"/>
+  <circle cx="100" cy="100" r="55" fill="none" stroke="#fff" stroke-width="3" opacity="0.4"/>
+  
+  <!-- Bubbles -->
+  <circle cx="50" cy="55" r="25" fill="url(#bubble1)"/>
+  <circle cx="40" cy="45" r="6" fill="#fff" opacity="0.6"/>
+  
+  <circle cx="155" cy="70" r="20" fill="url(#bubble2)"/>
+  <circle cx="147" cy="62" r="5" fill="#fff" opacity="0.6"/>
+  
+  <circle cx="65" cy="145" r="22" fill="url(#bubble3)"/>
+  <circle cx="56" cy="136" r="5" fill="#fff" opacity="0.6"/>
+  
+  <circle cx="150" cy="150" r="18" fill="url(#bubble1)"/>
+  <circle cx="143" cy="143" r="4" fill="#fff" opacity="0.6"/>
+  
+  <!-- Chain lines -->
+  <line x1="70" y1="60" x2="90" y2="85" stroke="#fff" stroke-width="2" opacity="0.5" stroke-dasharray="4,4"/>
+  <line x1="110" y1="90" x2="140" y2="75" stroke="#fff" stroke-width="2" opacity="0.5" stroke-dasharray="4,4"/>
+  <line x1="95" y1="115" x2="75" y2="135" stroke="#fff" stroke-width="2" opacity="0.5" stroke-dasharray="4,4"/>
+</svg>

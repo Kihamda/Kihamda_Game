@@ -50,6 +50,17 @@ export const checkWin = (
   mark: string,
   settings: GameSettings,
 ): boolean => {
+  return getWinningCells(board, row, col, mark, settings) !== null;
+};
+
+/** 勝利セルの座標一覧を返す。勝利してない場合は null */
+export const getWinningCells = (
+  board: Board,
+  row: number,
+  col: number,
+  mark: string,
+  settings: GameSettings,
+): Array<{ row: number; col: number }> | null => {
   const {
     board: { width, height },
     winLength,
@@ -63,7 +74,7 @@ export const checkWin = (
   ];
 
   for (const [dr, dc] of directions) {
-    let count = 1;
+    const cells: Array<{ row: number; col: number }> = [{ row, col }];
 
     for (let i = 1; i < winLength; i++) {
       const newRow = row + dr * i;
@@ -75,7 +86,7 @@ export const checkWin = (
         newCol < width &&
         board[newRow][newCol] === mark
       ) {
-        count++;
+        cells.push({ row: newRow, col: newCol });
       } else {
         break;
       }
@@ -91,16 +102,16 @@ export const checkWin = (
         newCol < width &&
         board[newRow][newCol] === mark
       ) {
-        count++;
+        cells.push({ row: newRow, col: newCol });
       } else {
         break;
       }
     }
 
-    if (count >= winLength) {
-      return true;
+    if (cells.length >= winLength) {
+      return cells;
     }
   }
 
-  return false;
+  return null;
 };

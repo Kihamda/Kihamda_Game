@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1b4b"/>
+      <stop offset="50%" style="stop-color:#312e81"/>
+      <stop offset="100%" style="stop-color:#1e1b4b"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)" rx="20"/>
+  
+  <!-- 4x4 sample of gem grid -->
+  <g transform="translate(35, 35)">
+    <!-- Row 1 -->
+    <rect x="0" y="0" width="28" height="28" rx="6" fill="#ef4444"/>
+    <text x="14" y="22" text-anchor="middle" font-size="18">💎</text>
+    
+    <rect x="34" y="0" width="28" height="28" rx="6" fill="#22c55e"/>
+    <text x="48" y="22" text-anchor="middle" font-size="18">💚</text>
+    
+    <rect x="68" y="0" width="28" height="28" rx="6" fill="#3b82f6"/>
+    <text x="82" y="22" text-anchor="middle" font-size="18">💙</text>
+    
+    <rect x="102" y="0" width="28" height="28" rx="6" fill="#eab308"/>
+    <text x="116" y="22" text-anchor="middle" font-size="18">💛</text>
+    
+    <!-- Row 2 -->
+    <rect x="0" y="34" width="28" height="28" rx="6" fill="#22c55e"/>
+    <text x="14" y="56" text-anchor="middle" font-size="18">��</text>
+    
+    <rect x="34" y="34" width="28" height="28" rx="6" fill="#ef4444"/>
+    <text x="48" y="56" text-anchor="middle" font-size="18">💎</text>
+    
+    <rect x="68" y="34" width="28" height="28" rx="6" fill="#ef4444"/>
+    <text x="82" y="56" text-anchor="middle" font-size="18">💎</text>
+    
+    <rect x="102" y="34" width="28" height="28" rx="6" fill="#a855f7"/>
+    <text x="116" y="56" text-anchor="middle" font-size="18">💜</text>
+    
+    <!-- Row 3 -->
+    <rect x="0" y="68" width="28" height="28" rx="6" fill="#3b82f6"/>
+    <text x="14" y="90" text-anchor="middle" font-size="18">💙</text>
+    
+    <rect x="34" y="68" width="28" height="28" rx="6" fill="#ef4444"/>
+    <text x="48" y="90" text-anchor="middle" font-size="18">💎</text>
+    
+    <rect x="68" y="68" width="28" height="28" rx="6" fill="#f97316"/>
+    <text x="82" y="90" text-anchor="middle" font-size="18">��</text>
+    
+    <rect x="102" y="68" width="28" height="28" rx="6" fill="#22c55e"/>
+    <text x="116" y="90" text-anchor="middle" font-size="18">💚</text>
+    
+    <!-- Row 4 -->
+    <rect x="0" y="102" width="28" height="28" rx="6" fill="#eab308"/>
+    <text x="14" y="124" text-anchor="middle" font-size="18">💛</text>
+    
+    <rect x="34" y="102" width="28" height="28" rx="6" fill="#a855f7"/>
+    <text x="48" y="124" text-anchor="middle" font-size="18">💜</text>
+    
+    <rect x="68" y="102" width="28" height="28" rx="6" fill="#3b82f6"/>
+    <text x="82" y="124" text-anchor="middle" font-size="18">💙</text>
+    
+    <rect x="102" y="102" width="28" height="28" rx="6" fill="#f97316"/>
+    <text x="116" y="124" text-anchor="middle" font-size="18">🧡</text>
+  </g>
+  
+  <!-- Match highlight -->
+  <rect x="69" y="35" width="62" height="30" rx="4" fill="none" stroke="#fbbf24" stroke-width="3" opacity="0.8"/>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87ceeb"/>
+      <stop offset="100%" style="stop-color:#4a9cd4"/>
+    </linearGradient>
+    <linearGradient id="balloon1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b6b"/>
+      <stop offset="100%" style="stop-color:#ee5a5a"/>
+    </linearGradient>
+    <linearGradient id="balloon2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ecdc4"/>
+      <stop offset="100%" style="stop-color:#3dbdb5"/>
+    </linearGradient>
+    <linearGradient id="balloon3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd93d"/>
+      <stop offset="100%" style="stop-color:#f5c518"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="200" height="200" fill="url(#sky)"/>
+  
+  <!-- 赤い風船 -->
+  <ellipse cx="60" cy="70" rx="28" ry="35" fill="url(#balloon1)"/>
+  <ellipse cx="50" cy="55" rx="8" ry="8" fill="rgba(255,255,255,0.4)"/>
+  <line x1="60" y1="105" x2="60" y2="140" stroke="#666" stroke-width="2"/>
+  
+  <!-- 緑の風船 -->
+  <ellipse cx="140" cy="50" rx="25" ry="32" fill="url(#balloon2)"/>
+  <ellipse cx="132" cy="38" rx="7" ry="7" fill="rgba(255,255,255,0.4)"/>
+  <line x1="140" y1="82" x2="140" y2="115" stroke="#666" stroke-width="2"/>
+  
+  <!-- 黄色い風船 -->
+  <ellipse cx="100" cy="100" rx="30" ry="38" fill="url(#balloon3)"/>
+  <ellipse cx="90" cy="85" rx="9" ry="9" fill="rgba(255,255,255,0.4)"/>
+  <line x1="100" y1="138" x2="100" y2="175" stroke="#666" stroke-width="2"/>
+  
+  <!-- 破裂エフェクト -->
+  <text x="155" y="130" font-size="24" fill="#e74c3c">💥</text>
+  
+  <!-- タイトル -->
+  <text x="100" y="190" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">BALLOON DEFENSE</text>
+</svg>

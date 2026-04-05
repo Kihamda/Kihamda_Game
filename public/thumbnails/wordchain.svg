@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea"/>
+      <stop offset="100%" style="stop-color:#764ba2"/>
+    </linearGradient>
+    <linearGradient id="chain" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffd700"/>
+      <stop offset="100%" style="stop-color:#ffaa00"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="640" height="360" fill="url(#bg)"/>
+  
+  <!-- Chain links -->
+  <g fill="none" stroke="url(#chain)" stroke-width="8">
+    <!-- Link 1 -->
+    <ellipse cx="140" cy="180" rx="40" ry="25" transform="rotate(-20 140 180)"/>
+    <!-- Link 2 -->
+    <ellipse cx="210" cy="180" rx="40" ry="25" transform="rotate(20 210 180)"/>
+    <!-- Link 3 -->
+    <ellipse cx="280" cy="180" rx="40" ry="25" transform="rotate(-20 280 180)"/>
+    <!-- Link 4 -->
+    <ellipse cx="350" cy="180" rx="40" ry="25" transform="rotate(20 350 180)"/>
+    <!-- Link 5 -->
+    <ellipse cx="420" cy="180" rx="40" ry="25" transform="rotate(-20 420 180)"/>
+    <!-- Link 6 -->
+    <ellipse cx="490" cy="180" rx="40" ry="25" transform="rotate(20 490 180)"/>
+  </g>
+  
+  <!-- Letters on chain -->
+  <g font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">
+    <text x="140" y="188">W</text>
+    <text x="210" y="188">O</text>
+    <text x="280" y="188">R</text>
+    <text x="350" y="188">D</text>
+    <text x="420" y="188">S</text>
+    <text x="490" y="188">!</text>
+  </g>
+  
+  <!-- Title -->
+  <text x="320" y="80" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="white" text-anchor="middle">Word Chain</text>
+  
+  <!-- Subtitle -->
+  <text x="320" y="300" font-family="Arial, sans-serif" font-size="18" fill="rgba(255,255,255,0.8)" text-anchor="middle">英単語しりとり</text>
+  
+  <!-- Decorative arrows -->
+  <g fill="rgba(255,255,255,0.3)">
+    <path d="M100 180 L115 170 L115 175 L130 175 L130 185 L115 185 L115 190 Z"/>
+    <path d="M540 180 L525 170 L525 175 L510 175 L510 185 L525 185 L525 190 Z" transform="rotate(180 525 180)"/>
+  </g>
+</svg>

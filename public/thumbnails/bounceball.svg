@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a3e"/>
+      <stop offset="100%" stop-color="#2d2d5e"/>
+    </linearGradient>
+    <radialGradient id="ball" cx="40%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#7dd3fc"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
+    </radialGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)"/>
+  <rect x="0" y="170" width="200" height="30" fill="#4a4a8a"/>
+  <circle cx="100" cy="100" r="25" fill="url(#ball)"/>
+  <ellipse cx="100" cy="165" rx="20" ry="5" fill="rgba(0,0,0,0.2)"/>
+  <circle cx="50" cy="60" r="12" fill="#ffd700" stroke="#ffaa00" stroke-width="2"/>
+  <circle cx="47" cy="56" r="3" fill="white"/>
+  <circle cx="150" cy="80" r="12" fill="#ffd700" stroke="#ffaa00" stroke-width="2"/>
+  <circle cx="147" cy="76" r="3" fill="white"/>
+  <rect x="20" y="130" width="50" height="15" fill="#ff4757" stroke="#ff6b7a" stroke-width="2"/>
+  <polygon points="20,130 32.5,122 45,130 57.5,122 70,130" fill="#ff6b7a"/>
+</svg>

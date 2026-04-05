@@ -1,7 +1,8 @@
 import "./App.css";
+import { useMemo } from "react";
 import gamesData from "./data/games.json";
 
-interface Game {
+interface GameData {
   id: string;
   title: string;
   description: string;
@@ -12,151 +13,124 @@ interface Game {
   featured: boolean;
 }
 
-const games = gamesData.games as Game[];
+interface GameCardProps {
+  game: GameData;
+}
 
-const byDateDesc = [...games].sort(
-  (a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt),
-);
-
-const featuredGames = games.filter((g) => g.featured);
-const newestGames = byDateDesc.slice(0, 2);
-
-const recommendedGames = [...games]
-  .sort((a, b) => {
-    const score = (g: Game) => {
-      let t = 0;
-      if (g.featured) t += 3;
-      if (g.tags.includes("multiplayer")) t += 2;
-      if (g.tags.includes("arcade") || g.tags.includes("reflex")) t += 1;
-      return t;
-    };
-    const d = score(b) - score(a);
-    return d !== 0 ? d : Date.parse(b.publishedAt) - Date.parse(a.publishedAt);
-  })
-  .slice(0, 3);
-
-const allGames = [...games].sort((a, b) => {
-  const d = Number(b.featured) - Number(a.featured);
-  return d !== 0 ? d : Date.parse(b.publishedAt) - Date.parse(a.publishedAt);
-});
-
-const gamePaths = allGames.map((g) => g.path);
-const randomGamePath =
-  gamePaths[Math.floor(Math.random() * gamePaths.length)] ?? "/";
-
-function GameCard({ game, badge }: { game: Game; badge?: string }) {
+function GameCard({ game }: GameCardProps) {
   return (
-    <article className="card">
-      <a
-        href={game.path}
-        className="card-cover-link"
-        aria-hidden="true"
-        tabIndex={-1}
-      />
-      <a
-        href={game.path}
-        className="thumb-link"
-        aria-label={`${game.title} をプレイする`}
-      >
+    <a href={game.path} className="game-card">
+      <div className="card-thumbnail">
         <img
           src={game.thumbnail}
-          alt={`${game.title} thumbnail`}
+          alt={game.title}
           loading="lazy"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src =
+              "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Crect fill='%231a1a1a' width='120' height='80'/%3E%3Ctext x='60' y='45' fill='%2300ff88' font-size='12' text-anchor='middle'%3E🎮%3C/text%3E%3C/svg%3E";
+          }}
         />
-      </a>
-      <div className="content">
-        <div className="topline">
-          <h2>{game.title}</h2>
-          {badge && <span className="badge">{badge}</span>}
-        </div>
-        <p>{game.description}</p>
-        <div className="tags">
-          {game.tags.map((tag) => (
-            <span key={tag}>{tag}</span>
-          ))}
-        </div>
-        <div className="actions">
-          <a href={game.path} className="play">
-            今すぐプレイ
-          </a>
-        </div>
+        {game.featured && <span className="featured-badge">⭐ おすすめ</span>}
       </div>
-    </article>
+      <div className="card-content">
+        <h3 className="card-title">{game.title}</h3>
+        <p className="card-description">{game.description}</p>
+      </div>
+    </a>
   );
 }
 
-export default function App() {
+interface GameSectionProps {
+  title: string;
+  games: GameData[];
+  id?: string;
+}
+
+function GameSection({ title, games, id }: GameSectionProps) {
+  if (games.length === 0) return null;
   return (
-    <main>
-      <section className="hero" aria-labelledby="top-title">
-        <p className="eyebrow">今日の1本が見つかるゲームポータル</p>
-        <h1 id="top-title">遊ぶまで3秒 新着も定番もここで完結</h1>
-        <p className="lead">
-          反射神経で燃える日も じっくり頭を使いたい日もある
-          その気分に合わせてすぐ遊べるようにまとめた
-        </p>
-        <div className="hero-cta">
-          <a href="#new">新着から選ぶ</a>
-          <a href="#recommended">おすすめを見る</a>
-          <a
-            href={randomGamePath}
-            data-random-paths={JSON.stringify(gamePaths)}
-          >
-            ランダムで1本
+    <section className="game-section" id={id}>
+      <h2 className="section-title">{title}</h2>
+      <div className="game-grid">
+        {games.map((game) => (
+          <GameCard key={game.id} game={game} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export default function PortalApp() {
+  const games: GameData[] = gamesData.games;
+
+  const newGames = useMemo(() => {
+    return [...games]
+      .sort(
+        (a, b) =>
+          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+      )
+      .slice(0, 5);
+  }, [games]);
+
+  const featuredGames = useMemo(() => {
+    return games.filter((g) => g.featured);
+  }, [games]);
+
+  const stats = {
+    totalGames: games.length,
+    totalPlays: "12,450+",
+  };
+
+  return (
+    <div className="portal">
+      <header className="portal-header">
+        <div className="header-inner">
+          <a href="/" className="logo">
+            <span className="logo-icon">🎮</span>
+            <span className="logo-text">Kihamda Games</span>
           </a>
+          <nav className="header-nav">
+            <a href="#all-games">すべてのゲーム</a>
+          </nav>
         </div>
-        <div className="hero-stats" aria-label="ゲーム数サマリー">
-          <p>
-            <strong>{games.length}</strong> タイトル公開中
+      </header>
+
+      <section className="hero">
+        <div className="hero-inner">
+          <h1 className="hero-title">今日の気分で遊べるブラウザゲーム</h1>
+          <p className="hero-subtitle">
+            登録不要・インストール不要。すぐに遊べるミニゲームコレクション
           </p>
-          <p>
-            <strong>{newestGames.length}</strong> 件の新着
-          </p>
-          <p>
-            <strong>{featuredGames.length}</strong> 件の注目作
-          </p>
+          <div className="hero-stats">
+            <div className="stat-item">
+              <span className="stat-number">{stats.totalGames}</span>
+              <span className="stat-label">ゲーム</span>
+            </div>
+            <div className="stat-divider"></div>
+            <div className="stat-item">
+              <span className="stat-number">{stats.totalPlays}</span>
+              <span className="stat-label">累計プレイ</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section id="new" className="section">
-        <div className="section-head">
-          <h2>新着ゲーム</h2>
-          <p>追加されたばかりのゲーム まずはここから触るのが最短ルート</p>
-        </div>
-        <div className="grid">
-          {newestGames.map((g) => (
-            <GameCard key={g.id} game={g} badge="NEW" />
-          ))}
-        </div>
-      </section>
+      <main className="portal-main">
+        <GameSection title="🆕 新着" games={newGames} />
+        <GameSection title="⭐ おすすめ" games={featuredGames} />
+        <GameSection title="🎮 すべてのゲーム" games={games} id="all-games" />
+      </main>
 
-      <section id="recommended" className="section">
-        <div className="section-head">
-          <h2>おすすめピック</h2>
-          <p>初見でも遊びやすいものを中心に 厳選して並べた</p>
+      <footer className="portal-footer">
+        <div className="footer-inner">
+          <div className="footer-links">
+            <a href="/privacy">プライバシーポリシー</a>
+          </div>
+          <p className="footer-copyright">
+            © 2025 Kihamda Games. All rights reserved.
+          </p>
         </div>
-        <div className="grid">
-          {recommendedGames.map((g) => (
-            <GameCard
-              key={g.id}
-              game={g}
-              badge={g.featured ? "注目" : "PICK"}
-            />
-          ))}
-        </div>
-      </section>
-
-      <section id="all" className="section">
-        <div className="section-head">
-          <h2>全タイトル</h2>
-          <p>迷ったら詳細を開いてルール確認 そのままワンタップでプレイへ</p>
-        </div>
-        <div className="grid">
-          {allGames.map((g) => (
-            <GameCard key={g.id} game={g} />
-          ))}
-        </div>
-      </section>
-    </main>
+      </footer>
+    </div>
   );
 }

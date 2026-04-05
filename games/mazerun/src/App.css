@@ -1,0 +1,261 @@
+.mazerun {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-width: 400px;
+}
+
+.mazerun-header {
+  text-align: center;
+}
+
+.mazerun-header h1 {
+  margin: 0 0 8px;
+  font-size: 1.8rem;
+  color: #2c3e50;
+}
+
+.mazerun-stats {
+  display: flex;
+  gap: 24px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #34495e;
+}
+
+.mazerun-controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.mazerun-controls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.mazerun-controls select {
+  padding: 6px 12px;
+  font-size: 1rem;
+  border: 2px solid #3498db;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+}
+
+.mazerun-controls select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mazerun-controls button,
+.mazerun-result button {
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.mazerun-controls button:hover,
+.mazerun-result button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+}
+
+.mazerun-board {
+  position: relative;
+  background: #1a1a2e;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.mazerun-cell {
+  position: absolute;
+  box-sizing: border-box;
+  transition: background-color 0.1s;
+}
+
+.mazerun-cell--wall {
+  background: #1a1a2e;
+}
+
+.mazerun-cell:not(.mazerun-cell--wall) {
+  background: #ecf0f1;
+}
+
+.mazerun-cell--start {
+  background: #2ecc71 !important;
+}
+
+.mazerun-cell--goal {
+  background: #e74c3c !important;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.mazerun-cell--checkpoint {
+  background: #9b59b6 !important;
+  animation: checkpoint-pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes checkpoint-pulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(155, 89, 182, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(155, 89, 182, 1);
+  }
+}
+
+.mazerun-cell--player {
+  background: #f1c40f !important;
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(241, 196, 15, 0.8);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.mazerun-hint {
+  color: #7f8c8d;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.mazerun-result {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  z-index: 100;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mazerun-result h2 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.mazerun-result p {
+  margin: 4px 0;
+  font-size: 1.3rem;
+}
+
+.mazerun-result button {
+  margin-top: 16px;
+  padding: 12px 32px;
+  font-size: 1.1rem;
+}
+
+/* モバイル用D-Pad */
+.mazerun-dpad {
+  display: none;
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin-top: 16px;
+}
+
+.mazerun-dpad-btn {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  font-size: 1.2rem;
+  color: white;
+  background: #3498db;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mazerun-dpad-btn:active {
+  background: #2980b9;
+  transform: scale(0.95);
+}
+
+.mazerun-dpad-up {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mazerun-dpad-down {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mazerun-dpad-left {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mazerun-dpad-right {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* タッチデバイスでD-Padを表示 */
+@media (pointer: coarse) {
+  .mazerun-dpad {
+    display: block;
+  }
+}
+
+/* 小画面調整 */
+@media (max-width: 600px) {
+  .mazerun {
+    padding: 12px;
+    min-width: auto;
+  }
+
+  .mazerun-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .mazerun-stats {
+    font-size: 1rem;
+    gap: 16px;
+  }
+
+  .mazerun-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

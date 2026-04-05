@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a5f"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#bg)" rx="20"/>
+  
+  <!-- 4x4 Grid of tiles -->
+  <g transform="translate(25, 25)">
+    <!-- Row 1 -->
+    <rect x="0" y="0" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="16" y="22" text-anchor="middle" fill="white" font-size="18" font-weight="bold">1</text>
+    
+    <rect x="38" y="0" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="54" y="22" text-anchor="middle" fill="white" font-size="18" font-weight="bold">2</text>
+    
+    <rect x="76" y="0" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="92" y="22" text-anchor="middle" fill="white" font-size="18" font-weight="bold">3</text>
+    
+    <rect x="114" y="0" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="130" y="22" text-anchor="middle" fill="white" font-size="18" font-weight="bold">4</text>
+    
+    <!-- Row 2 -->
+    <rect x="0" y="38" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="16" y="60" text-anchor="middle" fill="white" font-size="18" font-weight="bold">5</text>
+    
+    <rect x="38" y="38" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="54" y="60" text-anchor="middle" fill="white" font-size="18" font-weight="bold">6</text>
+    
+    <rect x="76" y="38" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="92" y="60" text-anchor="middle" fill="white" font-size="18" font-weight="bold">7</text>
+    
+    <rect x="114" y="38" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="130" y="60" text-anchor="middle" fill="white" font-size="18" font-weight="bold">8</text>
+    
+    <!-- Row 3 -->
+    <rect x="0" y="76" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="16" y="98" text-anchor="middle" fill="white" font-size="18" font-weight="bold">9</text>
+    
+    <rect x="38" y="76" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="54" y="98" text-anchor="middle" fill="white" font-size="16" font-weight="bold">10</text>
+    
+    <rect x="76" y="76" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="92" y="98" text-anchor="middle" fill="white" font-size="16" font-weight="bold">11</text>
+    
+    <rect x="114" y="76" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="130" y="98" text-anchor="middle" fill="white" font-size="16" font-weight="bold">12</text>
+    
+    <!-- Row 4 -->
+    <rect x="0" y="114" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="16" y="136" text-anchor="middle" fill="white" font-size="16" font-weight="bold">13</text>
+    
+    <rect x="38" y="114" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="54" y="136" text-anchor="middle" fill="white" font-size="16" font-weight="bold">14</text>
+    
+    <rect x="76" y="114" width="32" height="32" rx="4" fill="url(#tile)"/>
+    <text x="92" y="136" text-anchor="middle" fill="white" font-size="16" font-weight="bold">15</text>
+    
+    <!-- Empty space -->
+    <rect x="114" y="114" width="32" height="32" rx="4" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,2"/>
+  </g>
+</svg>

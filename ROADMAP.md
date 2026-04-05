@@ -63,7 +63,7 @@ extreme_tik_tok_toe/  (← このリポジトリのみ使用)
 - [ ] AdSense 審査の申請・設置状態の確認（人間の作業）
 - [ ] PR作成 → main マージ → デプロイ（人間の作業）
 - [ ] GitHub Secrets 設定: BLUESKY_HANDLE / BLUESKY_APP_PASSWORD（人間の作業 → SNS自動投稿有効化）
-- [ ] MineRush サムネイル (thumbnails/minerush.svg) 作成
+- [x] MineRush サムネイル (thumbnails/minerush.svg) 作成 ← 完了済み
 
 ### ボトルネック
 

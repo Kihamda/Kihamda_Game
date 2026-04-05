@@ -1,0 +1,389 @@
+/* ---- Container ---- */
+.laserdefense-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100%;
+  padding: 16px;
+  gap: 16px;
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+  color: #fff;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* ---- Header ---- */
+.laserdefense-header {
+  text-align: center;
+}
+
+.laserdefense-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #00ff88, #00ccff, #ff00ff);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: laserdefense-title-glow 3s ease infinite;
+}
+
+@keyframes laserdefense-title-glow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ---- Menu ---- */
+.laserdefense-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 400px;
+  text-align: center;
+}
+
+.laserdefense-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #aaa;
+  margin: 0;
+}
+
+.laserdefense-final-score {
+  font-size: 18px;
+  color: #ffd700;
+}
+
+.laserdefense-final-score span {
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.laserdefense-rules {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: left;
+}
+
+.laserdefense-rules h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+}
+
+.laserdefense-rules ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  color: #ccc;
+  line-height: 1.8;
+}
+
+/* ---- Buttons ---- */
+.laserdefense-btn {
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.laserdefense-btn--primary {
+  background: linear-gradient(135deg, #00ff88, #00ccff);
+  color: #000;
+}
+
+.laserdefense-btn--primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+}
+
+.laserdefense-btn--secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.laserdefense-btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.laserdefense-btn--ghost {
+  background: transparent;
+  color: #888;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.laserdefense-btn--ghost:hover {
+  color: #fff;
+}
+
+/* ---- Stats ---- */
+.laserdefense-stats {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.laserdefense-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 16px;
+  border-radius: 8px;
+  min-width: 70px;
+}
+
+.laserdefense-stat-label {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.laserdefense-stat-value {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.laserdefense-stat--danger .laserdefense-stat-value {
+  color: #ff4444;
+  animation: laserdefense-pulse 0.5s ease infinite;
+}
+
+.laserdefense-stat--combo {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 159, 243, 0.2));
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.laserdefense-stat--combo .laserdefense-stat-value {
+  color: #ff6b6b;
+}
+
+@keyframes laserdefense-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ---- Grid ---- */
+.laserdefense-grid {
+  display: grid;
+  gap: 2px;
+  background: rgba(0, 255, 136, 0.1);
+  padding: 2px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.laserdefense-cell {
+  width: 50px;
+  height: 50px;
+  background: rgba(30, 30, 50, 0.9);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.laserdefense-cell:hover:not(:disabled) {
+  background: rgba(0, 255, 136, 0.15);
+  border-color: rgba(0, 255, 136, 0.5);
+}
+
+.laserdefense-cell:disabled {
+  cursor: default;
+}
+
+.laserdefense-cell--source {
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.3), rgba(255, 100, 0, 0.3));
+  border-color: rgba(255, 0, 0, 0.5);
+}
+
+.laserdefense-cell--target {
+  background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(0, 200, 100, 0.2));
+  border-color: rgba(0, 255, 0, 0.5);
+}
+
+.laserdefense-cell--target.laserdefense-cell--hit {
+  background: linear-gradient(135deg, rgba(0, 255, 0, 0.5), rgba(0, 255, 136, 0.5));
+  animation: laserdefense-hit 0.5s ease;
+}
+
+@keyframes laserdefense-hit {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.laserdefense-cell--obstacle {
+  background: rgba(100, 100, 100, 0.8);
+  border-color: rgba(150, 150, 150, 0.5);
+  cursor: not-allowed !important;
+}
+
+.laserdefense-cell--mirror {
+  background: rgba(0, 200, 255, 0.2);
+  border-color: rgba(0, 200, 255, 0.6);
+}
+
+/* ---- Source Indicator ---- */
+.laserdefense-source {
+  color: #ff4444;
+  font-size: 20px;
+  animation: laserdefense-source-pulse 1s ease infinite;
+}
+
+.laserdefense-source--up { transform: rotate(-90deg); }
+.laserdefense-source--down { transform: rotate(90deg); }
+.laserdefense-source--left { transform: rotate(180deg); }
+.laserdefense-source--right { transform: rotate(0deg); }
+
+@keyframes laserdefense-source-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; }
+}
+
+/* ---- Target Indicator ---- */
+.laserdefense-target {
+  color: #00ff88;
+  font-size: 28px;
+  animation: laserdefense-target-pulse 2s ease infinite;
+}
+
+@keyframes laserdefense-target-pulse {
+  0%, 100% { text-shadow: 0 0 10px rgba(0, 255, 136, 0.5); }
+  50% { text-shadow: 0 0 20px rgba(0, 255, 136, 0.8); }
+}
+
+/* ---- Obstacle ---- */
+.laserdefense-obstacle {
+  color: #666;
+  font-size: 32px;
+}
+
+/* ---- Mirror ---- */
+.laserdefense-mirror {
+  font-size: 36px;
+  color: #00ccff;
+  font-weight: 100;
+  text-shadow: 0 0 10px rgba(0, 200, 255, 0.8);
+  transition: transform 0.2s ease;
+}
+
+.laserdefense-mirror--slash {
+  transform: scaleX(1.2);
+}
+
+.laserdefense-mirror--backslash {
+  transform: scaleX(1.2);
+}
+
+/* ---- Laser SVG ---- */
+.laserdefense-laser-svg {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.laserdefense-laser-beam {
+  stroke: #ff0000;
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.8;
+  animation: laserdefense-beam-flicker 0.1s linear infinite;
+}
+
+.laserdefense-laser-beam--hit {
+  stroke: #00ff88;
+  stroke-width: 4;
+  animation: laserdefense-beam-success 0.5s ease;
+}
+
+@keyframes laserdefense-beam-flicker {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes laserdefense-beam-success {
+  0% { stroke-width: 4; }
+  50% { stroke-width: 8; opacity: 1; }
+  100% { stroke-width: 4; }
+}
+
+/* ---- Controls ---- */
+.laserdefense-controls {
+  display: flex;
+  gap: 12px;
+}
+
+/* ---- Overlay ---- */
+.laserdefense-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  animation: laserdefense-fade-in 0.3s ease;
+}
+
+@keyframes laserdefense-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---- Result ---- */
+.laserdefense-result {
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 200, 255, 0.1));
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  border-radius: 16px;
+  padding: 32px 48px;
+  text-align: center;
+  animation: laserdefense-result-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.laserdefense-result--lose {
+  background: linear-gradient(135deg, rgba(255, 68, 68, 0.1), rgba(255, 100, 100, 0.1));
+  border-color: rgba(255, 68, 68, 0.3);
+}
+
+@keyframes laserdefense-result-pop {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.laserdefense-result-title {
+  margin: 0 0 16px 0;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.laserdefense-result-score {
+  margin: 0 0 24px 0;
+  font-size: 20px;
+  color: #ffd700;
+}
+
+.laserdefense-result-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,236 @@
+/* --- Spotdiff Styles --- */
+
+.spotdiff {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+  gap: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Header */
+.spotdiff__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.spotdiff__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.spotdiff__stats {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.spotdiff__level,
+.spotdiff__found,
+.spotdiff__score {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.spotdiff__best {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Timer Bar */
+.spotdiff__timer-bar {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.spotdiff__timer-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 12px;
+  transition: width 0.1s linear, background-color 0.3s;
+}
+
+.spotdiff__timer-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: "Courier New", monospace;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Images Container */
+.spotdiff__images {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.spotdiff__image-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.spotdiff__label {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.spotdiff__canvas {
+  width: 380px;
+  height: 320px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  cursor: crosshair;
+  background: #f8fafc;
+  transition: transform 0.15s;
+}
+
+.spotdiff__canvas:hover {
+  transform: scale(1.01);
+}
+
+.spotdiff__click-feedback {
+  animation: spotdiff-pulse 0.5s ease-out forwards;
+}
+
+/* Overlay */
+.spotdiff__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+  border-radius: 8px;
+}
+
+.spotdiff__message {
+  text-align: center;
+  padding: 32px 48px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+}
+
+.spotdiff__message h2 {
+  margin: 0 0 12px;
+  font-size: 28px;
+  font-weight: 900;
+  color: #333;
+}
+
+.spotdiff__message p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #666;
+}
+
+.spotdiff__hint {
+  font-size: 14px !important;
+  color: #888 !important;
+}
+
+.spotdiff__record {
+  font-size: 20px !important;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ffd700, #ff6b6b, #ffd700);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: spotdiff-rainbow 1.5s linear infinite;
+}
+
+.spotdiff__final {
+  font-size: 18px !important;
+}
+
+.spotdiff__final strong {
+  font-size: 28px;
+  color: #333;
+}
+
+.spotdiff__btn {
+  margin-top: 16px;
+  padding: 14px 48px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+
+.spotdiff__btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(102, 126, 234, 0.5);
+}
+
+.spotdiff__btn:active {
+  transform: scale(0.98);
+}
+
+/* Footer */
+.spotdiff__footer {
+  min-height: 24px;
+}
+
+.spotdiff__tip {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animations */
+@keyframes spotdiff-pulse {
+  0% {
+    r: 15;
+    opacity: 1;
+  }
+  100% {
+    r: 35;
+    opacity: 0;
+  }
+}
+
+@keyframes spotdiff-rainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}

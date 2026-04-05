@@ -1,0 +1,370 @@
+/* Word Chain Styles */
+
+.wordchain-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Start Screen */
+.start-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+}
+
+.start-screen h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.start-screen .subtitle {
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.start-screen .rules {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: left;
+  width: 100%;
+  max-width: 400px;
+}
+
+.start-screen .rules h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.start-screen .rules ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #555;
+}
+
+.start-screen .rules li {
+  margin-bottom: 0.5rem;
+}
+
+.high-score-display {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  border-radius: 20px;
+  font-weight: bold;
+  color: #8b4513;
+}
+
+.start-btn {
+  padding: 1rem 3rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.start-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Game Screen */
+.game-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 450px;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.chain-count {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #667eea;
+}
+
+.timer {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  background: #f0f0f0;
+  transition: background 0.3s, color 0.3s;
+}
+
+.timer.warning {
+  background: #ffeb3b;
+  color: #333;
+}
+
+.timer.danger {
+  background: #f44336;
+  color: white;
+  animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.current-word-section {
+  text-align: center;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.current-word-label {
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.current-word {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #333;
+  letter-spacing: 0.1em;
+  padding: 1rem;
+  background: linear-gradient(135deg, #e0e5ec 0%, #f5f7fa 100%);
+  border-radius: 12px;
+  display: inline-block;
+  min-width: 200px;
+}
+
+.current-word .last-char {
+  color: #667eea;
+  text-decoration: underline;
+  text-underline-offset: 8px;
+}
+
+.input-section {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.input-hint {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.input-hint .highlight {
+  color: #667eea;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.word-input {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 3px solid #ddd;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.word-input:focus {
+  border-color: #667eea;
+}
+
+.word-input.error {
+  border-color: #f44336;
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.error-message {
+  color: #f44336;
+  text-align: center;
+  margin-top: 0.5rem;
+  min-height: 1.5rem;
+}
+
+.used-words {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.used-words-label {
+  color: #999;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.used-words-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+.used-word {
+  background: #f0f0f0;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Result Screen */
+.result-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+}
+
+.result-screen h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.final-score {
+  font-size: 4rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 1rem 0;
+}
+
+.new-record {
+  background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+  color: #333;
+  padding: 0.5rem 1.5rem;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  animation: bounce 0.5s infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+.word-chain-display {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem 0;
+  width: 100%;
+  max-width: 400px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.word-chain-display h4 {
+  margin-top: 0;
+  color: #666;
+}
+
+.chain-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  justify-content: center;
+}
+
+.chain-word {
+  color: #667eea;
+}
+
+.chain-word::after {
+  content: " → ";
+  color: #999;
+}
+
+.chain-word:last-child::after {
+  content: "";
+}
+
+.result-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.retry-btn, .home-btn {
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.retry-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.home-btn {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.retry-btn:hover, .home-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .wordchain-container {
+    padding: 10px;
+  }
+
+  .start-screen h1 {
+    font-size: 2rem;
+  }
+
+  .current-word {
+    font-size: 2rem;
+    min-width: 150px;
+  }
+
+  .word-input {
+    font-size: 1.2rem;
+  }
+
+  .final-score {
+    font-size: 3rem;
+  }
+}

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AdSense審査準備チェック | Kihamda.NET ゲーム</title>
+    <meta
+      name="description"
+      content="Kihamda.NET ゲームポータルの AdSense 審査準備状況をまとめたチェックページです。"
+    />
+    <link
+      rel="canonical"
+      href="https://game.kihamda.net/adsense-readiness.html"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #020617;
+        color: #e2e8f0;
+        line-height: 1.8;
+      }
+      main {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 28px 20px 56px;
+      }
+      h1,
+      h2 {
+        color: #f8fafc;
+      }
+      .ok {
+        color: #22c55e;
+      }
+      .todo {
+        color: #f59e0b;
+      }
+      .warn {
+        color: #f97316;
+      }
+      code {
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 6px;
+        padding: 2px 6px;
+      }
+      a {
+        color: #7dd3fc;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>AdSense審査準備チェック</h1>
+      <p>このページは審査準備の進捗を人間向けに明文化した内部チェック用です</p>
+
+      <h2>実装済み</h2>
+      <ul>
+        <li class="ok">
+          全ゲームに <code>og:image</code> と <code>twitter:image</code> を設定
+        </li>
+        <li class="ok">全ゲームに WebApplication JSON-LD を追加</li>
+        <li class="ok">テンプレートにSEO完全セットを実装</li>
+        <li class="ok">
+          /privacy-policy/ /contact/ /about/ を同一ドメインで公開
+        </li>
+        <li class="ok">
+          portal とゲームフッターの信頼導線を同一ドメインへ統一
+        </li>
+        <li class="ok">sitemap.xml に固定ページを追加</li>
+      </ul>
+
+      <h2>運用で対応が必要</h2>
+      <ul>
+        <li class="todo">
+          AdSense コードは発行後にのみ追加する 現時点では未挿入で正解
+        </li>
+        <li class="todo">
+          運営情報の実在性を強化するため 住所や事業者情報を必要に応じて追記
+        </li>
+        <li class="todo">
+          問い合わせ返信の実績を作るため contact メール運用を開始
+        </li>
+      </ul>
+
+      <h2>審査前の最終セルフチェック</h2>
+      <ul>
+        <li class="warn">
+          著作権侵害の可能性がある画像 音源 テキストがないか再点検
+        </li>
+        <li class="warn">無効な外部リンク 404 がないか確認</li>
+        <li class="warn">モバイル閲覧時に主要導線が崩れないか確認</li>
+      </ul>
+
+      <p>
+        参考導線
+        <a href="/">ポータル</a>
+        <a href="/about/">運営者情報</a>
+        <a href="/privacy-policy/">プライバシーポリシー</a>
+        <a href="/contact/">お問い合わせ</a>
+      </p>
+    </main>
+  </body>
+</html>

@@ -1,433 +1,453 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
 import {
+  GameShell,
   useAudio,
   useParticles,
   ParticleLayer,
   ScorePopup,
-  GameShell,
-} from "../../../src/shared";
+  ComboCounter,
+  ShareButton,
+  GameRecommendations,
+} from "@shared";
+import type { PopupVariant } from "@shared";
 
-type Phase = "ready" | "waiting" | "go" | "roundResult" | "finished";
+/** ゲームフェーズ */
+type Phase = "idle" | "waiting" | "ready" | "result" | "finished";
 
-// ---- Settings ----
-type RoundCount = 3 | 5 | 10 | 20;
-type WaitMode = "predictable" | "normal" | "tricky";
-type PenaltyMode = "mild" | "normal" | "severe";
+/** 判定ランク（実際の判定結果） */
+type RankResult = "perfect" | "good" | "ok" | "slow";
 
-interface Settings {
-  rounds: RoundCount;
-  waitMode: WaitMode;
-  penaltyMode: PenaltyMode;
-}
+/** 判定ランク（状態用、nullは未判定） */
+type Rank = RankResult | null;
 
-const DEFAULT_SETTINGS: Settings = {
-  rounds: 5,
-  waitMode: "normal",
-  penaltyMode: "normal",
-};
+/** 総ラウンド数 */
+const TOTAL_ROUNDS = 5;
 
-const ROUND_OPTIONS: { value: RoundCount; label: string; desc: string }[] = [
-  { value: 3, label: "3", desc: "サクッと" },
-  { value: 5, label: "5", desc: "ふつう" },
-  { value: 10, label: "10", desc: "じっくり" },
-  { value: 20, label: "20", desc: "持久力" },
-];
+/** 待機時間の範囲 (ms) */
+const WAIT_MIN = 1500;
+const WAIT_MAX = 4000;
 
-const WAIT_OPTIONS: { value: WaitMode; label: string; desc: string }[] = [
-  { value: "predictable", label: "PREDICTABLE", desc: "読みやすい" },
-  { value: "normal", label: "NORMAL", desc: "ふつう" },
-  { value: "tricky", label: "TRICKY", desc: "読めない" },
-];
+/** 判定閾値 (ms) */
+const THRESHOLD_PERFECT = 180;
+const THRESHOLD_GOOD = 250;
+const THRESHOLD_OK = 350;
 
-const PENALTY_OPTIONS: { value: PenaltyMode; label: string; desc: string }[] = [
-  { value: "mild", label: "MILD", desc: "300ms" },
-  { value: "normal", label: "NORMAL", desc: "700ms" },
-  { value: "severe", label: "SEVERE", desc: "1500ms" },
-];
+/** localStorage のキー */
+const STORAGE_KEY = "flashreflex_highscore";
 
-const WAIT_RANGES: Record<WaitMode, { min: number; range: number }> = {
-  predictable: { min: 1000, range: 1000 },
-  normal: { min: 1200, range: 2000 },
-  tricky: { min: 800, range: 4200 },
-};
-
-const PENALTY_VALUES: Record<PenaltyMode, number> = {
-  mild: 300,
-  normal: 700,
-  severe: 1500,
-};
-
-const STREAK_THRESHOLD_MS = 350;
-const STORAGE_KEY = "flashreflex_settings";
-
-function loadSettings(): Settings {
+/** ハイスコア読み込み */
+function loadHighScore(): number | null {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_SETTINGS;
-    const parsed = JSON.parse(raw) as Partial<Settings>;
-    return { ...DEFAULT_SETTINGS, ...parsed };
+    const val = localStorage.getItem(STORAGE_KEY);
+    return val ? Number(val) : null;
   } catch {
-    return DEFAULT_SETTINGS;
+    return null;
   }
 }
 
-function saveSettings(s: Settings): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
-}
-
-// Particle origin: approximate center of the .panel element
-const PARTICLE_ORIGIN_X = 300;
-const PARTICLE_ORIGIN_Y = 160;
-
-function getRank(avg: number, falseStartCount: number): string {
-  if (falseStartCount >= 2) return "";
-  if (avg <= 200) return "💎 PERFECT!";
-  if (avg <= 280) return "⚡ EXCELLENT!";
-  if (avg <= 350) return "🔥 GREAT!";
-  if (avg <= 450) return "👍 GOOD";
-  return "";
-}
-
-function App() {
-  const timerRef = useRef<number | null>(null);
-  const goTimeRef = useRef<number | null>(null);
-  const prevBestRef = useRef<number | null>(null);
-
-  const { playTone, playFanfare } = useAudio();
-  const { particles, burst } = useParticles();
-
-  const [phase, setPhase] = useState<Phase>("ready");
-  const [round, setRound] = useState(1);
-  const [scores, setScores] = useState<number[]>([]);
-  const [statusText, setStatusText] = useState("スタートを押して準備しよう");
-
-  const [scorePopup, setScorePopup] = useState<string | null>(null);
-  const [scorePopupKey, setScorePopupKey] = useState(0);
-  const [streak, setStreak] = useState(0);
-  const [shakeClass, setShakeClass] = useState<"" | "shake" | "celebrate">("");
-  const [rankLabel, setRankLabel] = useState("");
-
-  const [settings, setSettings] = useState<Settings>(loadSettings);
-  const totalRounds = settings.rounds;
-  const penaltyMs = PENALTY_VALUES[settings.penaltyMode];
-  const waitRange = WAIT_RANGES[settings.waitMode];
-
-  function updateSetting<K extends keyof Settings>(key: K, value: Settings[K]) {
-    setSettings((prev) => {
-      const next = { ...prev, [key]: value };
-      saveSettings(next);
-      return next;
-    });
+/** ハイスコア保存 */
+function saveHighScore(ms: number): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, String(ms));
+  } catch {
+    // ignore
   }
+}
 
-  useEffect(() => {
-    return () => {
-      if (timerRef.current !== null) {
-        window.clearTimeout(timerRef.current);
-      }
-    };
+/** タイムから判定ランクを取得 */
+function getRank(ms: number): RankResult {
+  if (ms <= THRESHOLD_PERFECT) return "perfect";
+  if (ms <= THRESHOLD_GOOD) return "good";
+  if (ms <= THRESHOLD_OK) return "ok";
+  return "slow";
+}
+
+/** ランク情報 */
+const RANK_INFO: Record<
+  RankResult,
+  { label: string; color: string; variant: PopupVariant }
+> = {
+  perfect: { label: "⚡ PERFECT!", color: "#ff9ff3", variant: "critical" },
+  good: { label: "✨ GOOD!", color: "#48dbfb", variant: "bonus" },
+  ok: { label: "👍 OK!", color: "#feca57", variant: "combo" },
+  slow: { label: "😅 SLOW", color: "#94a3b8", variant: "default" },
+};
+
+export default function App() {
+  const [phase, setPhase] = useState<Phase>("idle");
+  const [round, setRound] = useState(0);
+  const [times, setTimes] = useState<number[]>([]);
+  const [currentTime, setCurrentTime] = useState<number | null>(null);
+  const [highScore, setHighScore] = useState<number | null>(loadHighScore);
+  const [tooEarly, setTooEarly] = useState(false);
+  const [currentRank, setCurrentRank] = useState<Rank>(null);
+  const [combo, setCombo] = useState(0);
+  const [flashEffect, setFlashEffect] = useState<string | null>(null);
+  const [popupKey, setPopupKey] = useState(0);
+
+  const timerRef = useRef<number>(0);
+  const startTimeRef = useRef<number>(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // 共有フック
+  const audio = useAudio();
+  const { particles, sparkle, confetti, explosion } = useParticles();
+
+  // タイマークリア
+  const clearTimer = useCallback(() => {
+    if (timerRef.current) {
+      window.clearTimeout(timerRef.current);
+      timerRef.current = 0;
+    }
   }, []);
 
-  // ---- Particle helpers ----
-  const spawnParticles = (count: number, mega = false) => {
-    burst(PARTICLE_ORIGIN_X, PARTICLE_ORIGIN_Y, mega ? count * 2 : count);
-  };
+  // アンマウント時にタイマークリア
+  useEffect(() => {
+    return () => clearTimer();
+  }, [clearTimer]);
 
-  const triggerShake = (type: "shake" | "celebrate") => {
-    setShakeClass(type);
-    window.setTimeout(() => setShakeClass(""), 650);
-  };
+  // 画面フラッシュ
+  const triggerFlash = useCallback((color: string) => {
+    setFlashEffect(color);
+    setTimeout(() => setFlashEffect(null), 150);
+  }, []);
 
-  const showPopup = (text: string) => {
-    setScorePopup(text);
-    setScorePopupKey((k) => k + 1);
-    window.setTimeout(() => setScorePopup(null), 1400);
-  };
-
-  const average = useMemo(() => {
-    if (scores.length === 0) return 0;
-    const total = scores.reduce((sum, value) => sum + value, 0);
-    return Math.round(total / scores.length);
-  }, [scores]);
-
-  const best = useMemo(() => {
-    if (scores.length === 0) return 0;
-    return Math.min(...scores);
-  }, [scores]);
-
-  const falseStarts = useMemo(
-    () => scores.filter((score) => score === penaltyMs).length,
-    [scores, penaltyMs],
-  );
-
-  const clearRoundTimer = () => {
-    if (timerRef.current !== null) {
-      window.clearTimeout(timerRef.current);
-      timerRef.current = null;
+  // パーティクル発生位置（画面中央）
+  const getCenterPosition = useCallback(() => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      return { x: rect.width / 2, y: rect.height / 2 };
     }
-  };
+    return { x: 400, y: 300 };
+  }, []);
 
-  const beginWaiting = () => {
-    clearRoundTimer();
-    goTimeRef.current = null;
+  // ラウンド開始
+  const startRound = useCallback(() => {
+    setTooEarly(false);
+    setCurrentTime(null);
+    setCurrentRank(null);
     setPhase("waiting");
-    setStatusText("赤の間は待機 緑に変わった瞬間にタップ");
 
-    const delay = Math.floor(Math.random() * waitRange.range) + waitRange.min;
+    // Ready音
+    audio.playTone(440, 0.1, "sine", 0.15);
+
+    const delay = WAIT_MIN + Math.random() * (WAIT_MAX - WAIT_MIN);
     timerRef.current = window.setTimeout(() => {
-      goTimeRef.current = performance.now();
-      setPhase("go");
-      setStatusText("今だ タップ");
-      // Go signal: short warning beep
-      playTone(880, 0.08, "square", 0.2);
+      startTimeRef.current = performance.now();
+      setPhase("ready");
+      // Go!音
+      audio.playArpeggio([523, 659, 784], 0.12, "sine", 0.25, 0.04);
+      triggerFlash("#16a34a");
     }, delay);
-  };
+  }, [audio, triggerFlash]);
 
-  const finishRound = (reactionMs: number) => {
-    const nextScores = [...scores, reactionMs];
-    setScores(nextScores);
+  // ゲーム開始
+  const startGame = useCallback(() => {
+    setRound(1);
+    setTimes([]);
+    setCurrentTime(null);
+    setTooEarly(false);
+    setCurrentRank(null);
+    setCombo(0);
+    startRound();
+  }, [startRound]);
 
-    const isFalseStart = reactionMs === penaltyMs;
-    const isSlow = !isFalseStart && reactionMs > 500;
-    const isGood = !isFalseStart && reactionMs <= STREAK_THRESHOLD_MS;
-
-    // Streak tracking
-    const newStreak = isGood ? streak + 1 : 0;
-    setStreak(newStreak);
-
-    // Best score tracking
-    const currentBest = prevBestRef.current;
-    const isBestUpdate =
-      !isFalseStart && (currentBest === null || reactionMs < currentBest);
-    if (isBestUpdate) prevBestRef.current = reactionMs;
-
-    // Shake / particle / sound
-    if (isFalseStart || isSlow) {
-      triggerShake("shake");
-      playTone(110, 0.4, "sawtooth", 0.2);
-    } else if (isBestUpdate) {
-      spawnParticles(24, true);
-      triggerShake("celebrate");
-      playFanfare();
-    } else {
-      spawnParticles(12, false);
-      playTone(660, 0.1, "triangle", 0.22);
-      window.setTimeout(() => playTone(880, 0.08, "triangle", 0.18), 60);
-    }
-
-    // Score popup
-    if (!isFalseStart) {
-      let label = "";
-      if (reactionMs <= 200) label = "⚡ INSANE!";
-      else if (reactionMs <= 280) label = "🔥 FAST!";
-      else if (reactionMs <= 350) label = "✨ GOOD!";
-      else if (reactionMs <= 500) label = "👍 OK";
-      showPopup(`+${reactionMs}ms ${label}`);
-    }
-
-    if (round >= totalRounds) {
-      setPhase("finished");
-      setStatusText("計測完了");
-
-      // Perfect run?
-      const allGood = nextScores.every(
-        (s) => s !== penaltyMs && s <= STREAK_THRESHOLD_MS,
-      );
-      if (allGood) {
-        window.setTimeout(() => spawnParticles(40, true), 200);
-        window.setTimeout(() => spawnParticles(30, true), 550);
-      }
-
-      // Rank
-      const finalAvg = Math.round(
-        nextScores.reduce((a, b) => a + b, 0) / nextScores.length,
-      );
-      const finalFs = nextScores.filter(
-        (s) => s === penaltyMs,
-      ).length;
-      const rank = getRank(finalAvg, finalFs);
-      if (rank) window.setTimeout(() => setRankLabel(rank), 800);
+  // クリック処理
+  const handleClick = useCallback(() => {
+    if (phase === "idle" || phase === "finished") {
       return;
     }
 
-    setPhase("roundResult");
-    setStatusText(`ラウンド ${round} 完了`);
-  };
-
-  const startGame = () => {
-    setRound(1);
-    setScores([]);
-    setStreak(0);
-    setRankLabel("");
-    prevBestRef.current = null;
-    setStatusText("集中していこう");
-    beginWaiting();
-  };
-
-  const nextRound = () => {
-    setRound((prev) => prev + 1);
-    beginWaiting();
-  };
-
-  const retryGame = () => {
-    setRound(1);
-    setScores([]);
-    setStreak(0);
-    setRankLabel("");
-    prevBestRef.current = null;
-    setStatusText("リトライ開始");
-    beginWaiting();
-  };
-
-  const handleTap = () => {
     if (phase === "waiting") {
-      clearRoundTimer();
-      setStatusText(`フライング ${penaltyMs}ms ペナルティ`);
-      finishRound(penaltyMs);
+      // フライング
+      clearTimer();
+      setTooEarly(true);
+      setCombo(0);
+      setPhase("result");
+      setCurrentTime(null);
+      setCurrentRank(null);
+      // Fail音
+      audio.playMiss();
+      triggerFlash("#dc2626");
       return;
     }
 
-    if (phase !== "go") {
-      return;
+    if (phase === "ready") {
+      const elapsed = Math.round(performance.now() - startTimeRef.current);
+      const rank = getRank(elapsed);
+      const pos = getCenterPosition();
+
+      setCurrentTime(elapsed);
+      setCurrentRank(rank);
+      setTimes((prev) => [...prev, elapsed]);
+      setPhase("result");
+      setPopupKey((k) => k + 1);
+
+      // ランクに応じた演出
+      if (rank === "perfect") {
+        // Perfect: 大きめスパークル + 爆発 + パーフェクト音
+        audio.playPerfect();
+        sparkle(pos.x, pos.y, 16);
+        explosion(pos.x, pos.y, 20);
+        triggerFlash("#ff9ff3");
+        setCombo((c) => c + 1);
+      } else if (rank === "good") {
+        // Good: スパークル + 成功音
+        audio.playSuccess();
+        sparkle(pos.x, pos.y, 12);
+        triggerFlash("#48dbfb");
+        setCombo((c) => c + 1);
+      } else if (rank === "ok") {
+        // OK: 小さめスパークル + クリック音
+        audio.playClick();
+        sparkle(pos.x, pos.y, 6);
+        setCombo((c) => c + 1);
+      } else {
+        // Slow: コンボリセット
+        audio.playTone(220, 0.15, "sine", 0.15);
+        setCombo(0);
+      }
     }
+  }, [
+    phase,
+    clearTimer,
+    audio,
+    sparkle,
+    explosion,
+    triggerFlash,
+    getCenterPosition,
+  ]);
 
-    const now = performance.now();
-    const start = goTimeRef.current;
-    if (start === null) return;
+  // 次のラウンドへ
+  const nextRound = useCallback(() => {
+    if (round >= TOTAL_ROUNDS) {
+      // 終了
+      const avg =
+        times.length > 0
+          ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
+          : 0;
 
-    const reaction = Math.max(1, Math.round(now - start));
-    setStatusText(`${reaction} ms`);
-    finishRound(reaction);
+      const isNewRecord = avg > 0 && (highScore === null || avg < highScore);
+      if (isNewRecord) {
+        setHighScore(avg);
+        saveHighScore(avg);
+      }
+      setPhase("finished");
+
+      // 終了演出
+      const pos = getCenterPosition();
+      if (isNewRecord) {
+        audio.playCelebrate();
+        confetti(60);
+        explosion(pos.x, pos.y, 30);
+      } else {
+        audio.playFanfare();
+        confetti(30);
+      }
+    } else {
+      setRound((r) => r + 1);
+      startRound();
+    }
+  }, [
+    round,
+    times,
+    highScore,
+    startRound,
+    audio,
+    confetti,
+    explosion,
+    getCenterPosition,
+  ]);
+
+  // 平均計算
+  const average =
+    times.length > 0
+      ? Math.round(times.reduce((a, b) => a + b, 0) / times.length)
+      : 0;
+
+  // 背景色決定
+  const getBgClass = () => {
+    if (phase === "ready") return "bg-green";
+    if (phase === "waiting") return "bg-red";
+    return "bg-default";
   };
-
-  const latestScore = scores[scores.length - 1] ?? 0;
 
   return (
-    <GameShell title="Flash Reflex" gameId="flashreflex">
-      <main className={`app${shakeClass ? ` ${shakeClass}` : ""}`}>
-        <section className="panel">
-          <ParticleLayer particles={particles} />
+    <GameShell gameId="flashreflex" layout="immersive">
+      <div
+        ref={containerRef}
+        className={`flashreflex-root ${getBgClass()}`}
+        onClick={handleClick}
+      >
+        {/* 画面フラッシュ効果 */}
+        {flashEffect && (
+          <div
+            className="flashreflex-flash"
+            style={{ backgroundColor: flashEffect }}
+          />
+        )}
 
-          <h1>Flash Reflex</h1>
-          <p className="subtitle">{totalRounds}ラウンド反応速度チャレンジ</p>
+        {/* パーティクル */}
+        <ParticleLayer particles={particles} />
 
-          <div className="ruleBox">
-            <h2>ルール</h2>
-            <ul>
-              <li>赤の間は待機 緑になったらすぐタップ</li>
-              <li>早押しはフライングで {penaltyMs}ms 扱い</li>
-              <li>{totalRounds}ラウンドの平均が小さいほど強い</li>
-            </ul>
-          </div>
+        {/* コンボカウンター */}
+        <ComboCounter combo={combo} position="top-right" threshold={2} />
 
-          <p className="statusText">{statusText}</p>
+        {/* スコアポップアップ */}
+        {phase === "result" && currentRank && (
+          <ScorePopup
+            text={RANK_INFO[currentRank].label}
+            popupKey={popupKey}
+            variant={RANK_INFO[currentRank].variant}
+            size="lg"
+            y="25%"
+          />
+        )}
 
-          <div className="tapWrapper">
-            <button
-              className={`tapArea ${phase === "go" ? "go" : "wait"}`}
-              onClick={handleTap}
-              type="button"
-            >
-              {phase === "go" ? "TAP" : "WAIT"}
-            </button>
-            <ScorePopup text={scorePopup} popupKey={scorePopupKey} y="40%" />
-          </div>
+        <div className="flashreflex-content">
+          <h1 className="flashreflex-title">⚡ Flash Reflex</h1>
 
-          {streak >= 2 && phase !== "finished" && (
-            <div className="streakWrap">
-              <div className="streakBadge">STREAK ×{streak}</div>
-            </div>
-          )}
-
-          <div className="hud">
-            <span>
-              Round {Math.min(round, totalRounds)} / {totalRounds}
-            </span>
-            <span>Best {best > 0 ? `${best} ms` : "-"}</span>
-            <span>Avg {average > 0 ? `${average} ms` : "-"}</span>
-          </div>
-
-          {phase === "ready" && (
-            <div className="settingsBlock">
-              <div className="settingGroup">
-                <h3>ラウンド数</h3>
-                <div className="settingButtons">
-                  {ROUND_OPTIONS.map((opt) => (
-                    <button
-                      key={opt.value}
-                      className={`settingBtn${settings.rounds === opt.value ? " active" : ""}`}
-                      onClick={() => updateSetting("rounds", opt.value)}
-                      type="button"
-                    >
-                      <span>{opt.label}</span>
-                      <small>{opt.desc}</small>
-                    </button>
-                  ))}
-                </div>
+          {phase === "idle" && (
+            <div className="flashreflex-panel">
+              <p className="flashreflex-description">
+                画面が<span className="text-green">緑</span>
+                に変わったらすぐクリック！
+              </p>
+              <p className="flashreflex-description">
+                5回計測して平均を算出します
+              </p>
+              <div className="flashreflex-rank-guide">
+                <span className="rank-perfect">
+                  ⚡ Perfect ≤{THRESHOLD_PERFECT}ms
+                </span>
+                <span className="rank-good">✨ Good ≤{THRESHOLD_GOOD}ms</span>
+                <span className="rank-ok">👍 OK ≤{THRESHOLD_OK}ms</span>
               </div>
-              <div className="settingGroup">
-                <h3>待機時間の幅</h3>
-                <div className="settingButtons">
-                  {WAIT_OPTIONS.map((opt) => (
-                    <button
-                      key={opt.value}
-                      className={`settingBtn${settings.waitMode === opt.value ? " active" : ""}`}
-                      onClick={() => updateSetting("waitMode", opt.value)}
-                      type="button"
-                    >
-                      <span>{opt.label}</span>
-                      <small>{opt.desc}</small>
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="settingGroup">
-                <h3>フライングペナルティ</h3>
-                <div className="settingButtons">
-                  {PENALTY_OPTIONS.map((opt) => (
-                    <button
-                      key={opt.value}
-                      className={`settingBtn${settings.penaltyMode === opt.value ? " active" : ""}`}
-                      onClick={() => updateSetting("penaltyMode", opt.value)}
-                      type="button"
-                    >
-                      <span>{opt.label}</span>
-                      <small>{opt.desc}</small>
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <button className="action" onClick={startGame} type="button">
+              {highScore !== null && (
+                <p className="flashreflex-highscore">
+                  🏆 ハイスコア: {highScore} ms
+                </p>
+              )}
+              <button
+                type="button"
+                className="flashreflex-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  startGame();
+                }}
+              >
                 スタート
               </button>
             </div>
           )}
 
-          {phase === "roundResult" && (
-            <div className="resultBlock">
-              <p>今回の記録 {latestScore} ms</p>
-              <button className="action" onClick={nextRound} type="button">
-                次のラウンド
+          {phase === "waiting" && (
+            <div className="flashreflex-panel">
+              <p className="flashreflex-instruction">待って...</p>
+              <p className="flashreflex-round">
+                Round {round} / {TOTAL_ROUNDS}
+              </p>
+            </div>
+          )}
+
+          {phase === "ready" && (
+            <div className="flashreflex-panel">
+              <p className="flashreflex-go">クリック！</p>
+            </div>
+          )}
+
+          {phase === "result" && (
+            <div className="flashreflex-panel">
+              {tooEarly ? (
+                <>
+                  <p className="flashreflex-early">🚫 フライング！</p>
+                  <p className="flashreflex-sublabel">早すぎました</p>
+                </>
+              ) : (
+                <>
+                  <p
+                    className="flashreflex-time"
+                    style={{
+                      color: currentRank
+                        ? RANK_INFO[currentRank].color
+                        : undefined,
+                    }}
+                  >
+                    {currentTime} ms
+                  </p>
+                  <p className="flashreflex-sublabel">
+                    Round {round} / {TOTAL_ROUNDS}
+                  </p>
+                </>
+              )}
+              <button
+                type="button"
+                className="flashreflex-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (tooEarly) {
+                    // フライング時はリトライ
+                    startRound();
+                  } else {
+                    nextRound();
+                  }
+                }}
+              >
+                {tooEarly
+                  ? "リトライ"
+                  : round >= TOTAL_ROUNDS
+                    ? "結果を見る"
+                    : "次へ"}
               </button>
             </div>
           )}
 
           {phase === "finished" && (
-            <div className="resultBlock">
-              {rankLabel && <p className="rankLabel">{rankLabel}</p>}
-              <p>ベスト {best} ms</p>
-              <p>平均 {average} ms</p>
-              <p>フライング {falseStarts} 回</p>
-              <button className="action" onClick={retryGame} type="button">
-                もう一回
+            <div className="flashreflex-panel">
+              <p className="flashreflex-finished-title">🎉 結果</p>
+              <p className="flashreflex-average">平均: {average} ms</p>
+              <div className="flashreflex-times">
+                {times.map((t, i) => {
+                  const rank = getRank(t);
+                  return (
+                    <span
+                      key={i}
+                      className="flashreflex-time-chip"
+                      style={{
+                        borderColor: RANK_INFO[rank].color,
+                        color: RANK_INFO[rank].color,
+                      }}
+                    >
+                      {t} ms
+                    </span>
+                  );
+                })}
+              </div>
+              {highScore !== null && average === highScore && (
+                <p className="flashreflex-newrecord">🏆 新記録！</p>
+              )}
+              {highScore !== null && average !== highScore && (
+                <p className="flashreflex-highscore">
+                  ハイスコア: {highScore} ms
+                </p>
+              )}
+              <ShareButton score={average ?? 0} gameTitle="Flash Reflex" gameId="flashreflex" />
+              <GameRecommendations currentGameId="flashreflex" />
+              <button
+                type="button"
+                className="flashreflex-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  startGame();
+                }}
+              >
+                もう一度
               </button>
             </div>
           )}
-        </section>
-      </main>
+        </div>
+      </div>
     </GameShell>
   );
 }
-
-export default App;

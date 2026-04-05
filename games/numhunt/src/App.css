@@ -1,444 +1,236 @@
-/* ── Variables ───────────────────────────────────────────────────────────── */
-:root {
-  --accent: #5c6ef8;
-  --accent-dark: #3d4fcf;
-  --text: #1a1a2e;
-  --muted: #6b7280;
-  --surface: #ffffff;
-  --bg: #f4f6ff;
-  --border: #e0e7ff;
-  --shadow: 0 2px 12px rgba(92, 110, 248, 0.15);
-  --shadow-hover: 0 4px 20px rgba(92, 110, 248, 0.25);
-}
+/* ─── Numhunt Styles ─────────────────────────────────────────────────────── */
 
-/* ── Base ─────────────────────────────────────────────────────────────────── */
-html,
-body {
-  height: 100%;
-  background: var(--bg);
-  font-family:
-    "Segoe UI",
-    system-ui,
-    -apple-system,
-    sans-serif;
-  color: var(--text);
-}
-
-#root {
-  height: 100%;
-}
-
-/* ── App Layout ──────────────────────────────────────────────────────────── */
-.app {
-  min-height: 100dvh;
+.numhunt {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px 12px 24px;
-  gap: 10px;
-  position: relative;
-  overflow-x: hidden;
+  padding: 20px;
+  gap: 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
 }
 
-/* ── Title ───────────────────────────────────────────────────────────────── */
-.title {
-  font-size: clamp(1.6rem, 5vw, 2.2rem);
+/* Header */
+.numhunt__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.numhunt__title {
+  margin: 0;
+  font-size: 32px;
   font-weight: 900;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-  text-transform: uppercase;
-}
-
-/* ── Difficulty ──────────────────────────────────────────────────────────── */
-.difficulty-row {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.diff-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 6px 14px;
-  border-radius: 12px;
-  border: 2px solid var(--border);
-  background: var(--surface);
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.15s;
-  line-height: 1.3;
-}
-
-.diff-btn:hover:not(:disabled) {
-  border-color: var(--accent);
-  color: var(--accent);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow);
-}
-
-.diff-btn.active {
-  border-color: var(--accent);
-  background: var(--accent);
   color: #fff;
-  box-shadow: var(--shadow);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.diff-btn:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.diff-label {
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-}
-
-.diff-desc {
-  font-size: 0.65rem;
-  opacity: 0.8;
-}
-
-/* ── Timer ───────────────────────────────────────────────────────────────── */
-.timer-area {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.timer {
-  font-size: clamp(2.2rem, 8vw, 3.2rem);
+.numhunt__timer {
+  font-size: 48px;
   font-weight: 900;
-  font-family: "Courier New", "Consolas", monospace;
+  font-family: "Courier New", monospace;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.04em;
-  color: var(--text);
-  transition: color 0.4s;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
-.timer--cleared {
-  color: var(--success);
-}
-
-.timer-sub {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-  font-size: 0.82rem;
+.numhunt__best {
+  font-size: 14px;
   font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
 }
 
-.penalty {
-  color: var(--danger);
-}
-
-.time-diff {
-  font-weight: 700;
-}
-
-.time-diff.ahead {
-  color: var(--success);
-}
-
-.time-diff.behind {
-  color: var(--danger);
-}
-
-.best-label {
-  color: var(--muted);
-}
-
-/* ── Clear Banner ────────────────────────────────────────────────────────── */
-.clear-banner {
-  text-align: center;
+/* Status */
+.numhunt__status {
+  min-height: 40px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
 }
 
-.clear-text {
-  font-size: clamp(2rem, 7vw, 2.8rem);
-  font-weight: 900;
-  color: var(--success);
-  animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+.numhunt__instruction {
+  margin: 0;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.new-record {
-  font-size: clamp(1rem, 4vw, 1.4rem);
+.numhunt__target {
+  margin: 0;
+  font-size: 18px;
+  color: #fff;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.numhunt__target-num {
+  font-size: 32px;
   font-weight: 900;
-  background: linear-gradient(
-    90deg,
-    #ff6b6b,
-    #ffd93d,
-    #6bcb77,
-    #4d96ff,
-    #c77dff,
-    #ff6b6b
-  );
-  background-size: 300% 100%;
+  color: #ffd700;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
+}
+
+.numhunt__progress {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.numhunt__result {
+  text-align: center;
+}
+
+.numhunt__clear {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 900;
+  color: #fff;
+  animation: numhunt-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.numhunt__record {
+  margin: 4px 0 0;
+  font-size: 20px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ffd700, #ff6b6b, #ffd700);
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation:
-    popIn 0.4s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both,
-    rainbowScroll 2s linear infinite;
+  animation: numhunt-rainbow 1.5s linear infinite;
 }
 
-/* ── Controls ────────────────────────────────────────────────────────────── */
-.controls {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.start-btn {
-  padding: 10px 40px;
-  border-radius: 999px;
-  border: none;
-  background: var(--accent);
-  color: #fff;
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  transition:
-    transform 0.12s,
-    box-shadow 0.12s;
-}
-
-.start-btn:hover {
-  transform: scale(1.06);
-  box-shadow: var(--shadow-hover);
-}
-
-.start-btn:active {
-  transform: scale(0.96);
-}
-
-.stop-btn {
-  padding: 7px 20px;
-  border-radius: 999px;
-  border: 2px solid var(--danger);
-  background: transparent;
-  color: var(--danger);
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.12s;
-}
-
-.stop-btn:hover {
-  background: var(--danger);
-  color: #fff;
-}
-
-.hint-toggle {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.83rem;
-  color: var(--muted);
-  cursor: pointer;
-  user-select: none;
-}
-
-/* ── Next Hint ───────────────────────────────────────────────────────────── */
-.next-hint {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  font-size: 0.9rem;
-  color: var(--muted);
-}
-
-.next-num {
-  font-size: 1.6rem;
-  font-weight: 900;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-
-.next-progress {
-  font-size: 0.75rem;
-  color: var(--muted);
-  opacity: 0.7;
-}
-
-/* ── Grid ────────────────────────────────────────────────────────────────── */
-.grid {
+/* Grid */
+.numhunt__grid {
   display: grid;
-  grid-template-columns: repeat(var(--cols), 1fr);
-  gap: 6px;
-  width: min(92vw, 480px);
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  width: 400px;
+  height: 400px;
 }
 
-.cell {
-  aspect-ratio: 1;
+.numhunt__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
   border-radius: 12px;
-  border: 2px solid var(--border);
-  background: var(--surface);
-  font-size: clamp(0.75rem, 3.5vw, 1.3rem);
+  background: #fff;
+  font-size: 28px;
   font-weight: 800;
-  color: var(--text);
+  color: #333;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition:
-    background 0.12s,
-    border-color 0.12s,
-    transform 0.1s,
-    opacity 0.1s;
+  transition: transform 0.1s, background 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-.cell:hover:not(:disabled) {
-  background: #eef2ff;
-  border-color: var(--accent);
-  transform: scale(1.06);
-  box-shadow: var(--shadow-hover);
+.numhunt__cell:hover:not(:disabled) {
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
-.cell:active:not(:disabled) {
-  transform: scale(0.93);
+.numhunt__cell:active:not(:disabled) {
+  transform: scale(0.95);
 }
 
-/* ── Cell States ─────────────────────────────────────────────────────────── */
-
-/* Correct tap: fade out */
-.cell--faded {
-  animation: tapFade 0.28s ease-out both;
-  pointer-events: none;
-  border-color: transparent;
-  box-shadow: none;
-}
-
-/* Clear wave: flash gold then settle green */
-.cell--wave {
-  animation: waveLight 0.5s ease-out both;
+.numhunt__cell--found {
+  background: #4ade80;
+  color: #fff;
+  animation: numhunt-found 0.3s ease-out;
   pointer-events: none;
 }
 
-/* Wrong tap: shake + red tint */
-.cell--shake {
-  animation: game-shake 0.4s ease-out;
-  background: #fff0f0 !important;
-  border-color: var(--danger) !important;
-  color: var(--danger) !important;
+.numhunt__cell--wrong {
+  background: #ef4444;
+  color: #fff;
+  animation: numhunt-shake 0.3s ease-out;
 }
 
-/* ── Particles ───────────────────────────────────────────────────────────── */
-.particles-layer {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 200;
+.numhunt__cell:disabled:not(.numhunt__cell--found) {
+  opacity: 0.6;
+  cursor: default;
 }
 
-.particle {
-  position: absolute;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  animation: particleBurst 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+/* Controls */
+.numhunt__controls {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ── Animations ──────────────────────────────────────────────────────────── */
+.numhunt__btn {
+  padding: 14px 48px;
+  border: none;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  color: #667eea;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
 
-@keyframes tapFade {
+.numhunt__btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+
+.numhunt__btn:active {
+  transform: scale(0.98);
+}
+
+/* Animations */
+@keyframes numhunt-pop {
   0% {
-    opacity: 1;
-    transform: scale(1.15);
-  }
-  60% {
-    opacity: 0.3;
+    transform: scale(0.5);
+    opacity: 0;
   }
   100% {
-    opacity: 0;
-    transform: scale(0.4);
+    transform: scale(1);
+    opacity: 1;
   }
 }
 
-@keyframes waveLight {
+@keyframes numhunt-rainbow {
   0% {
-    opacity: 0;
-    background: var(--surface);
-    transform: scale(0.8);
-  }
-  35% {
-    opacity: 1;
-    background: #ffd93d;
-    border-color: #f59e0b;
-    transform: scale(1.12);
-    color: #1a1a2e;
-  }
-  100% {
-    opacity: 1;
-    background: #dcfce7;
-    border-color: var(--success);
-    transform: scale(1);
-    color: #166534;
-  }
-}
-
-@keyframes game-shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  18% {
-    transform: translateX(-7px) rotate(-2deg);
-  }
-  36% {
-    transform: translateX(7px) rotate(2deg);
-  }
-  54% {
-    transform: translateX(-5px);
-  }
-  72% {
-    transform: translateX(5px);
-  }
-  90% {
-    transform: translateX(-2px);
-  }
-}
-
-@keyframes popIn {
-  from {
-    opacity: 0;
-    transform: scale(0.4);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes rainbowScroll {
-  from {
     background-position: 0% 50%;
   }
-  to {
-    background-position: 300% 50%;
+  100% {
+    background-position: 200% 50%;
   }
 }
 
-@keyframes particleBurst {
-  from {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.2);
+@keyframes numhunt-found {
+  0% {
+    transform: scale(1.2);
   }
-  to {
-    opacity: 0;
-    transform: translate(-50%, calc(-50% - 35px)) scale(0);
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes numhunt-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
   }
 }

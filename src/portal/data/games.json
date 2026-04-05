@@ -1,12 +1,42 @@
 {
   "games": [
     {
+      "id": "hangman",
+      "title": "Hangman",
+      "description": "隠された単語を1文字ずつ推測するクラシックな単語当てゲーム。6回間違える前に正解を当てよう！",
+      "path": "/games/hangman/",
+      "thumbnail": "/thumbnails/hangman.svg",
+      "tags": [
+        "word",
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "pong",
+      "title": "Pong",
+      "description": "クラシックな卓球対戦ゲーム。2人対戦でパドルを操作し、先に7点取った方が勝ち！",
+      "path": "/games/pong/",
+      "thumbnail": "/thumbnails/pong.svg",
+      "tags": [
+        "arcade",
+        "multiplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
       "id": "ntiktaktoe",
       "title": "n目並べ",
       "description": "盤面サイズやプレイヤー人数を自由に調整できるエクストリームな n目並べ",
       "path": "/games/ntiktaktoe/",
       "thumbnail": "/thumbnails/ntiktaktoe.svg",
-      "tags": ["strategy", "multiplayer"],
+      "tags": [
+        "strategy",
+        "multiplayer"
+      ],
       "publishedAt": "2026-02-21",
       "featured": true
     },
@@ -16,9 +46,13 @@
       "description": "色の切り替わりに反応して最速タップを狙う5ラウンド反射神経ゲーム",
       "path": "/games/flashreflex/",
       "thumbnail": "/thumbnails/flashreflex.svg",
-      "tags": ["reflex", "arcade", "singleplayer"],
+      "tags": [
+        "reflex",
+        "arcade",
+        "singleplayer"
+      ],
       "publishedAt": "2026-02-23",
-      "featured": false
+      "featured": true
     },
     {
       "id": "gravityfour",
@@ -26,7 +60,11 @@
       "description": "コインを列に落として4連結を狙うローカル2人対戦の重力四目並べ",
       "path": "/games/gravityfour/",
       "thumbnail": "/thumbnails/gravityfour.svg",
-      "tags": ["strategy", "board", "multiplayer"],
+      "tags": [
+        "strategy",
+        "board",
+        "multiplayer"
+      ],
       "publishedAt": "2026-02-24",
       "featured": false
     },
@@ -36,7 +74,11 @@
       "description": "神経衰弱を交互ターンで競うローカル2人対戦の記憶バトル",
       "path": "/games/memoryduel/",
       "thumbnail": "/thumbnails/memoryduel.svg",
-      "tags": ["memory", "card", "multiplayer"],
+      "tags": [
+        "memory",
+        "card",
+        "multiplayer"
+      ],
       "publishedAt": "2026-02-24",
       "featured": false
     },
@@ -46,7 +88,11 @@
       "description": "パワーアップアイテムが飛び交うスピードアップ型スネーク。コンボとエフェクトで脳が溶ける",
       "path": "/games/snakechaos/",
       "thumbnail": "/thumbnails/snakechaos.svg",
-      "tags": ["arcade", "singleplayer", "reflex"],
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "reflex"
+      ],
       "publishedAt": "2026-02-25",
       "featured": true
     },
@@ -56,7 +102,10 @@
       "description": "タイルを滑らせて合体させ2048を目指す中毒パズル。爆発エフェクトとコンボが病みつきに",
       "path": "/games/merge2048/",
       "thumbnail": "/thumbnails/merge2048.svg",
-      "tags": ["puzzle", "singleplayer"],
+      "tags": [
+        "puzzle",
+        "singleplayer"
+      ],
       "publishedAt": "2026-02-25",
       "featured": true
     },
@@ -66,7 +115,10 @@
       "description": "パワーアップアイテムとコンボが爆発するブロック崩し。爆弾・マルチボールで画面が大炎上",
       "path": "/games/brickblast/",
       "thumbnail": "/thumbnails/brickblast.svg",
-      "tags": ["arcade", "singleplayer"],
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
       "publishedAt": "2026-02-25",
       "featured": false
     },
@@ -76,9 +128,13 @@
       "description": "増速する穴からモグラを叩き続けるフィーバー系もぐら叩き。5コンボでFEVER発動",
       "path": "/games/molemania/",
       "thumbnail": "/thumbnails/molemania.svg",
-      "tags": ["arcade", "singleplayer", "reflex"],
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "reflex"
+      ],
       "publishedAt": "2026-02-25",
-      "featured": false
+      "featured": true
     },
     {
       "id": "colorburst",
@@ -86,7 +142,11 @@
       "description": "文字の色と文字名が違う！ストループ効果で脳が混乱するカラーマッチングゲーム",
       "path": "/games/colorburst/",
       "thumbnail": "/thumbnails/colorburst.svg",
-      "tags": ["puzzle", "singleplayer", "reflex"],
+      "tags": [
+        "puzzle",
+        "singleplayer",
+        "reflex"
+      ],
       "publishedAt": "2026-02-25",
       "featured": true
     },
@@ -96,7 +156,11 @@
       "description": "縮んでいくターゲットを精確に叩け。小さいほど高得点、PERFECT賞を狙え",
       "path": "/games/taptarget/",
       "thumbnail": "/thumbnails/taptarget.svg",
-      "tags": ["arcade", "singleplayer", "reflex"],
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "reflex"
+      ],
       "publishedAt": "2026-02-25",
       "featured": false
     },
@@ -106,7 +170,10 @@
       "description": "光と音のシーケンスを記憶して再現するサイモンゲーム。レベルが上がるほど速くなる",
       "path": "/games/simonecho/",
       "thumbnail": "/thumbnails/simonecho.svg",
-      "tags": ["memory", "singleplayer"],
+      "tags": [
+        "memory",
+        "singleplayer"
+      ],
       "publishedAt": "2026-02-25",
       "featured": false
     },
@@ -116,7 +183,11 @@
       "description": "バラバラに並ぶ数字を1→25の順に最速タップ。ミリ秒単位でベストを更新せよ",
       "path": "/games/numhunt/",
       "thumbnail": "/thumbnails/numhunt.svg",
-      "tags": ["puzzle", "singleplayer", "reflex"],
+      "tags": [
+        "puzzle",
+        "singleplayer",
+        "reflex"
+      ],
       "publishedAt": "2026-02-25",
       "featured": false
     },
@@ -126,7 +197,11 @@
       "description": "増え続ける弾幕をひたすら回避。追尾弾・レーザーをすり抜けて生き残れ",
       "path": "/games/dodgeblitz/",
       "thumbnail": "/thumbnails/dodgeblitz.svg",
-      "tags": ["arcade", "singleplayer", "reflex"],
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "reflex"
+      ],
       "publishedAt": "2026-02-25",
       "featured": true
     },
@@ -136,7 +211,11 @@
       "description": "落下する英単語を素早くタイピングして消せ。コンボとBLAZING演出で指が止まらない",
       "path": "/games/typingblitz/",
       "thumbnail": "/thumbnails/typingblitz.svg",
-      "tags": ["typing", "singleplayer", "arcade"],
+      "tags": [
+        "typing",
+        "singleplayer",
+        "arcade"
+      ],
       "publishedAt": "2026-02-25",
       "featured": false
     },
@@ -146,9 +225,1162 @@
       "description": "マインスイーパーをタイムアタック形式にリメイク。ステージが進むほど盤面が広がり地雷が増える",
       "path": "/games/minerush/",
       "thumbnail": "/thumbnails/minerush.svg",
-      "tags": ["puzzle", "singleplayer", "strategy"],
+      "tags": [
+        "puzzle",
+        "singleplayer",
+        "strategy"
+      ],
       "publishedAt": "2026-03-04",
       "featured": false
+    },
+    {
+      "id": "wordchain",
+      "title": "Word Chain",
+      "description": "英単語しりとり。前の単語の最後の文字で始まる単語を入力しよう！",
+      "path": "/games/wordchain/",
+      "thumbnail": "/thumbnails/wordchain.svg",
+      "tags": [
+        "typing",
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "mathblitz",
+      "title": "Math Blitz",
+      "description": "計算バトル！簡単な計算を素早く解いてスコアを稼げ！",
+      "path": "/games/mathblitz/",
+      "thumbnail": "/thumbnails/mathblitz.svg",
+      "tags": [
+        "puzzle",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "patternlock",
+      "title": "Pattern Lock",
+      "description": "パターン記憶ゲーム。表示されたパターンを正確に再現しよう！",
+      "path": "/games/patternlock/",
+      "thumbnail": "/thumbnails/patternlock.svg",
+      "tags": [
+        "memory",
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "slidemaster",
+      "title": "Slide Master",
+      "description": "15パズル。数字を1から順番に並べ替えよう！",
+      "path": "/games/slidemaster/",
+      "thumbnail": "/thumbnails/slidemaster.svg",
+      "tags": [
+        "puzzle",
+        "strategy",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": true
+    },
+    {
+      "id": "hexmatch",
+      "title": "Hex Match",
+      "description": "六角マッチ3。六角形のタイルを揃えて消そう！",
+      "path": "/games/hexmatch/",
+      "thumbnail": "/thumbnails/hexmatch.svg",
+      "tags": [
+        "puzzle",
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "lightsout",
+      "title": "Lights Out",
+      "description": "ライツアウト。全てのライトを消そう！タップすると周囲も反転！",
+      "path": "/games/lightsout/",
+      "thumbnail": "/thumbnails/lightsout.svg",
+      "tags": [
+        "puzzle",
+        "strategy",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": true
+    },
+    {
+      "id": "balloonpop",
+      "title": "Balloon Pop",
+      "description": "風船割り！浮かんでくる風船をタップして割ろう！",
+      "path": "/games/balloonpop/",
+      "thumbnail": "/thumbnails/balloonpop.svg",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "coinflip",
+      "title": "Coin Flip",
+      "description": "コイン予測！表か裏か、運を試せ！",
+      "path": "/games/coinflip/",
+      "thumbnail": "/thumbnails/coinflip.svg",
+      "tags": [
+        "arcade",
+        "luck",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "mazerun",
+      "title": "Maze Run",
+      "description": "迷路脱出！ランダム生成の迷路からゴールを目指せ！",
+      "path": "/games/mazerun/",
+      "thumbnail": "/thumbnails/mazerun.svg",
+      "tags": [
+        "puzzle",
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "quickdraw",
+      "title": "Quick Draw",
+      "description": "早撃ち対決！DRAWの合図で素早くクリック！",
+      "path": "/games/quickdraw/",
+      "thumbnail": "/thumbnails/quickdraw.svg",
+      "tags": [
+        "reflex",
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "reactionchain",
+      "title": "Reaction Chain",
+      "description": "連鎖反応！1クリックで泡を連鎖させて消そう！",
+      "path": "/games/reactionchain/",
+      "thumbnail": "/thumbnails/reactionchain.svg",
+      "tags": [
+        "arcade",
+        "strategy",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "arrowdash",
+      "title": "Arrow Dash",
+      "description": "矢印ダッシュ！表示された矢印の方向を素早く入力！",
+      "path": "/games/arrowdash/",
+      "thumbnail": "/thumbnails/arrowdash.svg",
+      "tags": [
+        "reflex",
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "towerstack",
+      "title": "Tower Stack",
+      "description": "タワースタック！ブロックを積み上げてタワーを作ろう！",
+      "path": "/games/towerstack/",
+      "thumbnail": "/thumbnails/towerstack.svg",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "emojimatch",
+      "title": "Emoji Match",
+      "description": "絵文字探し！大量の絵文字から目的の絵文字を見つけよう！",
+      "path": "/games/emojimatch/",
+      "thumbnail": "/thumbnails/emojimatch.svg",
+      "tags": [
+        "puzzle",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "colorflood",
+      "title": "Color Flood",
+      "description": "カラーフラッド！色を塗り替えて全マスを同色にしよう！",
+      "path": "/games/colorflood/",
+      "thumbnail": "/thumbnails/colorflood.svg",
+      "tags": [
+        "puzzle",
+        "strategy",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "wordscramble",
+      "title": "Word Scramble",
+      "description": "単語スクランブル！バラバラの文字から単語を当てよう！",
+      "path": "/games/wordscramble/",
+      "thumbnail": "/thumbnails/wordscramble.svg",
+      "tags": [
+        "puzzle",
+        "typing",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "cardwar",
+      "title": "Card War",
+      "description": "カード戦争！トランプの数字勝負でCPUに勝て！",
+      "path": "/games/cardwar/",
+      "thumbnail": "/thumbnails/cardwar.svg",
+      "tags": [
+        "arcade",
+        "luck",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "spotdiff",
+      "title": "Spot the Diff",
+      "description": "間違い探し！2つの画像から5つの違いを見つけよう！",
+      "path": "/games/spotdiff/",
+      "thumbnail": "/thumbnails/spotdiff.svg",
+      "tags": [
+        "puzzle",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "rockpaper",
+      "title": "Rock Paper Scissors",
+      "description": "じゃんけん！CPUに勝てるか運試し！",
+      "path": "/games/rockpaper/",
+      "thumbnail": "/thumbnails/rockpaper.svg",
+      "tags": [
+        "arcade",
+        "luck",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "diceroll",
+      "title": "Dice Roll",
+      "description": "サイコロ予測！出目を当てて倍々ゲーム！",
+      "path": "/games/diceroll/",
+      "thumbnail": "/thumbnails/diceroll.svg",
+      "tags": [
+        "arcade",
+        "luck",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-18",
+      "featured": false
+    },
+    {
+      "id": "fallingblocks",
+      "title": "Falling Blocks",
+      "description": "テトリス風の落ちものパズル。7種類のテトリミノを操作してラインを消してスコアを稼ごう！",
+      "path": "/games/fallingblocks/",
+      "thumbnail": "/thumbnails/fallingblocks.svg",
+      "tags": [
+        "puzzle",
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-19",
+      "featured": false
+    },
+    {
+      "id": "numberguess",
+      "title": "数当てゲーム",
+      "description": "1〜100の数字を当てるシンプルな数当てゲーム。ヒントを頼りに少ない回数でクリアを目指そう！",
+      "path": "/games/numberguess/",
+      "thumbnail": "/thumbnails/numberguess.svg",
+      "tags": [
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-19",
+      "featured": false
+    },
+    {
+      "id": "speedclick",
+      "title": "Speed Click",
+      "description": "10秒間でボタンを何回クリックできるか挑戦！CPS(クリック毎秒)を計測する連打ゲーム",
+      "path": "/games/speedclick/",
+      "thumbnail": "/thumbnails/speedclick.svg",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-19",
+      "featured": false
+    },
+    {
+      "id": "asteroids",
+      "title": "Asteroids",
+      "description": "宇宙船を操作して小惑星を撃破せよ！矢印キーで回転・加速、スペースで発射",
+      "path": "/games/asteroids/",
+      "thumbnail": "/thumbnails/asteroids.svg",
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "reflex"
+      ],
+      "publishedAt": "2026-03-19",
+      "featured": true
+    },
+    {
+      "id": "typerace",
+      "title": "Type Race",
+      "description": "30秒で文章をタイピング！正確さと速度でWPMスコアを競うタイピングレースゲーム",
+      "path": "/games/typerace/",
+      "thumbnail": "/thumbnails/typerace.svg",
+      "tags": [
+        "typing",
+        "singleplayer",
+        "arcade"
+      ],
+      "publishedAt": "2026-03-19",
+      "featured": false
+    },
+    {
+      "id": "simplechess",
+      "title": "Simple Chess",
+      "description": "シンプルなチェスゲーム。同じデバイスで2人対戦！基本的な駒の動きでチェックメイトを狙え！",
+      "path": "/games/simplechess/",
+      "thumbnail": "/thumbnails/simplechess.svg",
+      "tags": [
+        "strategy",
+        "board",
+        "multiplayer"
+      ],
+      "publishedAt": "2026-03-19",
+      "featured": false
+    },
+    {
+      "id": "endlessrun",
+      "title": "Endless Run",
+      "description": "横スクロールエンドレスランナー。タップやスペースでジャンプして障害物を避け、どこまでも走り続けろ！",
+      "path": "/games/endlessrun/",
+      "thumbnail": "/thumbnails/endlessrun.svg",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "pianotiles",
+      "title": "Piano Tiles",
+      "description": "上から落ちてくる黒タイルをタップ！白タイルに触れるとミス。3ミスでゲームオーバー",
+      "path": "/games/pianotiles/",
+      "thumbnail": "/thumbnails/pianotiles.svg",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "fruitslice",
+      "title": "Fruit Slice",
+      "description": "飛んでくる果物をスワイプでスライス！爆弾を切らないように高スコアを狙え",
+      "path": "/games/fruitslice/",
+      "thumbnail": "/thumbnails/fruitslice.svg",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": true
+    },
+    {
+      "id": "sudoku",
+      "title": "数独",
+      "description": "クラシックな9x9数独パズル。簡単な問題を自動生成、数字をタップで入力して完成を目指そう！",
+      "path": "/games/sudoku/",
+      "thumbnail": "/thumbnails/sudoku.svg",
+      "tags": [
+        "puzzle",
+        "strategy",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": true
+    },
+    {
+      "id": "clickmaster",
+      "title": "Click Master",
+      "description": "クリックでポイント獲得！自動生成やクリックパワーのアップグレードを購入して累計スコアを伸ばすインクリメンタルゲーム",
+      "path": "/games/clickmaster/",
+      "thumbnail": "/thumbnails/clickmaster.svg",
+      "tags": [
+        "arcade",
+        "idle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "towerdefense",
+      "title": "Tower Defense",
+      "description": "タワーディフェンス！敵の進軍を阻止せよ。3種類のタワーを配置して10ウェーブを生き残れ！",
+      "path": "/games/towerdefense/",
+      "thumbnail": "/thumbnails/towerdefense.svg",
+      "tags": [
+        "strategy",
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "brickmania",
+      "title": "Brick Mania",
+      "description": "パワーアップアイテムが飛び交うブロック崩し！大パドル、マルチボール、レーザーでステージクリアを目指せ",
+      "path": "/games/brickmania/",
+      "thumbnail": "/thumbnails/brickmania.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "bowling",
+      "title": "Bowling",
+      "description": "10フレームのボウリングゲーム。マウスやタッチで方向と強さを決めてストライクを狙おう！",
+      "path": "/games/bowling/",
+      "thumbnail": "/thumbnails/bowling.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "blackjack",
+      "title": "Blackjack",
+      "description": "ディーラーに勝て！ヒット・スタンドで21を目指すブラックジャック",
+      "path": "/games/blackjack/",
+      "thumbnail": "/thumbnails/blackjack.svg",
+      "tags": [
+        "card",
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "minigolf",
+      "title": "Mini Golf",
+      "description": "2Dトップダウンのミニゴルフ。マウスで方向と強さを決めて、少ない打数でホールインを目指そう！",
+      "path": "/games/minigolf/",
+      "thumbnail": "/thumbnails/minigolf.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "spaceinvaders",
+      "title": "Space Invaders",
+      "description": "クラシックなスペースインベーダー風シューティング。迫りくるエイリアンを撃墜せよ！",
+      "path": "/games/spaceinvaders/",
+      "thumbnail": "/thumbnails/spaceinvaders.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": true
+    },
+    {
+      "id": "dotmuncher",
+      "title": "ドットマンチャー",
+      "description": "迷路内のドットを全て食べてクリア！パワーペレットでゴーストを逆襲しよう",
+      "path": "/games/dotmuncher/",
+      "thumbnail": "/thumbnails/dotmuncher.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "tankbattle",
+      "title": "タンクバトル",
+      "description": "2Dトップダウンのタンクゲーム。敵タンクを撃破して生き残れ！",
+      "path": "/games/tankbattle/",
+      "thumbnail": "/thumbnails/tankbattle.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "wordsearch",
+      "title": "ワードサーチ",
+      "description": "文字グリッドから隠された単語を探すパズルゲーム。ドラッグで文字を選択して全ての単語を見つけよう！",
+      "path": "/games/wordsearch/",
+      "thumbnail": "/thumbnails/wordsearch.svg",
+      "tags": [
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "bubblepop",
+      "title": "Bubble Pop",
+      "description": "同じ色のバブルをつなげて消すパズルゲーム。連鎖コンボで高得点を狙え！",
+      "path": "/games/bubblepop/",
+      "thumbnail": "/thumbnails/bubblepop.svg",
+      "tags": [
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "colorswitch",
+      "title": "Color Switch",
+      "description": "色合わせジャンプアクション。自分と同じ色のゲートだけ通過できる！",
+      "path": "/games/colorswitch/",
+      "thumbnail": "/thumbnails/colorswitch.svg",
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "reflex"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "connect4",
+      "title": "Connect 4",
+      "description": "四目並べ対戦ゲーム。縦・横・斜めに4つ並べて勝利を掴め！",
+      "path": "/games/connect4/",
+      "thumbnail": "/thumbnails/connect4.svg",
+      "tags": [
+        "strategy",
+        "board",
+        "multiplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "crossword",
+      "title": "Crossword",
+      "description": "クロスワードパズル。ヒントを頼りにマスを埋めて言葉を完成させよう！",
+      "path": "/games/crossword/",
+      "thumbnail": "/thumbnails/crossword.svg",
+      "tags": [
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "darts",
+      "title": "Darts",
+      "description": "ダーツゲーム。狙いを定めてブルズアイを射抜け！",
+      "path": "/games/darts/",
+      "thumbnail": "/thumbnails/darts.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "fishing",
+      "title": "Fishing",
+      "description": "釣りゲーム。タイミングよく釣り上げて大物をゲットしよう！",
+      "path": "/games/fishing/",
+      "thumbnail": "/thumbnails/fishing.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "minesweeper",
+      "title": "Minesweeper",
+      "description": "マインスイーパー。地雷を避けながら全てのマスを開けよう！",
+      "path": "/games/minesweeper/",
+      "thumbnail": "/thumbnails/minesweeper.svg",
+      "tags": [
+        "puzzle",
+        "singleplayer",
+        "strategy"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "oddoneout",
+      "title": "Odd One Out",
+      "description": "仲間はずれ探しゲーム。制限時間内に違うものを見つけ出せ！",
+      "path": "/games/oddoneout/",
+      "thumbnail": "/thumbnails/oddoneout.svg",
+      "tags": [
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "poolmaster",
+      "title": "Pool Master",
+      "description": "ビリヤードゲーム。キューで狙いを定めてポケットインを決めろ！",
+      "path": "/games/poolmaster/",
+      "thumbnail": "/thumbnails/poolmaster.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "simonsays",
+      "title": "Simon Says",
+      "description": "記憶ゲーム。光るパターンを覚えて正確に再現しよう！",
+      "path": "/games/simonsays/",
+      "thumbnail": "/thumbnails/simonsays.svg",
+      "tags": [
+        "memory",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "skyjump",
+      "title": "Sky Jump",
+      "description": "ジャンプアクション。足場を飛び移りながらどこまでも高く登れ！",
+      "path": "/games/skyjump/",
+      "thumbnail": "/thumbnails/skyjump.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "slotmachine",
+      "title": "Slot Machine",
+      "description": "スロットマシン。リールを回して絵柄を揃えよう！",
+      "path": "/games/slotmachine/",
+      "thumbnail": "/thumbnails/slotmachine.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "solitaire",
+      "title": "Solitaire",
+      "description": "ソリティア。カードを並べ替えて全てを組札に移動させよう！",
+      "path": "/games/solitaire/",
+      "thumbnail": "/thumbnails/solitaire.svg",
+      "tags": [
+        "card",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "triviaquiz",
+      "title": "Trivia Quiz",
+      "description": "クイズゲーム。様々なジャンルの問題に挑戦して知識を試そう！",
+      "path": "/games/triviaquiz/",
+      "thumbnail": "/thumbnails/triviaquiz.svg",
+      "tags": [
+        "quiz",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": true
+    },
+    {
+      "id": "pinball",
+      "title": "ピンボール",
+      "description": "フリッパーでボールを打ち返し、バンパーに当ててハイスコアを目指せ！",
+      "path": "/games/pinball/",
+      "thumbnail": "/thumbnails/pinball.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": true
+    },
+    {
+      "id": "mergemaster",
+      "title": "Merge Master",
+      "description": "同じアイテムをドラッグしてマージ！最高レベルを目指すパズルゲーム",
+      "path": "/games/mergemaster/",
+      "thumbnail": "/thumbnails/mergemaster.svg",
+      "tags": [
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "rhythmbeat",
+      "title": "Rhythm Beat",
+      "description": "上から降ってくるノートをタイミングよくタップ！Perfect/Good/Miss判定とコンボでハイスコアを目指すリズムゲーム",
+      "path": "/games/rhythmbeat/",
+      "thumbnail": "/thumbnails/rhythmbeat.svg",
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "reflex"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "slidepuzzle",
+      "title": "スライドパズル",
+      "description": "4×4の15パズル。数字タイルをスライドして1～15の順に並べ替えよう",
+      "path": "/games/slidepuzzle/",
+      "thumbnail": "/thumbnails/slidepuzzle.svg",
+      "tags": [
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "balloondefense",
+      "title": "バルーンディフェンス",
+      "description": "上から降ってくる風船をタップで割れ！画面下に到達させるとライフ減少。ウェーブごとに難易度上昇",
+      "path": "/games/balloondefense/",
+      "thumbnail": "/thumbnails/balloondefense.svg",
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "reflex"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "brickout",
+      "title": "ブリックアウト",
+      "description": "クラシックなブロック崩しゲーム。パドルでボールを打ち返してブロックを全て破壊しよう！パワーアップでマルチボールや大パドル",
+      "path": "/games/brickout/",
+      "thumbnail": "/thumbnails/brickout.svg",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "helicopter",
+      "title": "ヘリコプター",
+      "description": "クリック/タップで高度を調整し、障害物を避けて飛び続けるシンプルなアーケードゲーム",
+      "path": "/games/helicopter/",
+      "thumbnail": "/thumbnails/helicopter.svg",
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "reflex"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "gemmatch",
+      "title": "ジェムマッチ",
+      "description": "8×8のジェムグリッドで3つ以上揃えて消すパズルゲーム。制限時間内にハイスコアを目指そう！",
+      "path": "/games/gemmatch/",
+      "thumbnail": "/thumbnails/gemmatch.svg",
+      "tags": [
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "cannonblast",
+      "title": "キャノンブラスト",
+      "description": "大砲で的を狙え！角度と力を調整して発射、障害物を越えてターゲットを破壊するステージクリア型シューティング",
+      "path": "/games/cannonblast/",
+      "thumbnail": "/thumbnails/cannonblast.svg",
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "strategy"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "bounceball",
+      "title": "バウンシングボール",
+      "description": "ボールが自動でバウンス！タップで方向転換してコインを集めよう。障害物を避けてハイスコアを目指せ",
+      "path": "/games/bounceball/",
+      "thumbnail": "/thumbnails/bounceball.svg",
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "reflex"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "stacktower",
+      "title": "スタックタワー",
+      "description": "ブロックを積み上げてタワーを作ろう！タイミングよくタップしてブロックを落とし、はみ出さないように高く積み上げるアーケードゲーム",
+      "path": "/games/stacktower/",
+      "thumbnail": "/thumbnails/stacktower.svg",
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "reflex"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "jetpack",
+      "title": "ジェットパック",
+      "description": "タップでジェットパックを噴射して上昇！コインを集めて障害物を避けながら距離を稼ぐ横スクロールアクション",
+      "path": "/games/jetpack/",
+      "thumbnail": "/thumbnails/jetpack.svg",
+      "tags": [
+        "arcade",
+        "singleplayer",
+        "reflex"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "path": "/games/gravityball/",
+      "publishedAt": "2026-03-20",
+      "id": "gravityball",
+      "featured": false,
+      "title": "重力ボール",
+      "tags": [
+        "puzzle",
+        "arcade",
+        "singleplayer"
+      ],
+      "description": "デバイスの傾きやマウスで重力方向を変えてボールをゴールに導く物理パズルアクション",
+      "thumbnail": "/thumbnails/gravityball.svg"
+    },
+    {
+      "id": "iceslide",
+      "title": "アイススライドパズル",
+      "description": "氷の上でキャラを動かし、壁にぶつかるまで滑りながらゴールを目指すステージパズル",
+      "path": "/games/iceslide/",
+      "thumbnail": "/thumbnails/iceslide.svg",
+      "tags": [
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "wordbomb",
+      "title": "ワードボム",
+      "description": "指定された文字列を含む英単語を制限時間内に入力！語彙力と反応速度が試される爆弾解除タイピングゲーム",
+      "path": "/games/wordbomb/",
+      "thumbnail": "/thumbnails/wordbomb.svg",
+      "tags": [
+        "typing",
+        "singleplayer",
+        "reflex"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "cuberunner",
+      "title": "Cube Runner",
+      "description": "3D風の奥行きある道を疾走！左右スワイプで障害物を回避し、どこまで走れるか挑戦しよう",
+      "path": "/games/cuberunner/",
+      "thumbnail": "/thumbnails/cuberunner.svg",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "description": "スワイプでバスケットボールをシュート！連続成功でボーナス、制限時間内に高スコアを目指せ",
+      "id": "hoopshot",
+      "publishedAt": "2026-03-20",
+      "featured": false,
+      "path": "/games/hoopshot/",
+      "thumbnail": "/thumbnails/hoopshot.svg",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "title": "フープショット"
+    },
+    {
+      "featured": false,
+      "thumbnail": "/thumbnails/archery.svg",
+      "description": "弓矢で的を狙うアーチェリーゲーム。風の影響を考慮しながら的の中心を狙おう！5射で高得点を目指せ",
+      "tags": [
+        "arcade",
+        "singleplayer"
+      ],
+      "path": "/games/archery/",
+      "publishedAt": "2026-03-20",
+      "id": "archery",
+      "title": "アーチェリー"
+    },
+    {
+      "path": "/games/skirun/",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "featured": false,
+      "id": "skirun",
+      "thumbnail": "/thumbnails/skirun.svg",
+      "description": "下り坂を滑り降りるスキーゲーム。旗門を通過し木を避けながらゴールを目指せ",
+      "publishedAt": "2026-03-20",
+      "title": "スキーラン"
+    },
+    {
+      "id": "carrace",
+      "title": "カーレース",
+      "description": "縦スクロールのレースゲーム！左右に車線変更して他の車を避けながら、どこまで走れるか挑戦",
+      "path": "/games/carrace/",
+      "thumbnail": "/thumbnails/carrace.svg",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "ninjajump",
+      "title": "忍者ジャンプ",
+      "description": "壁から壁へジャンプして障害物を避けながら上昇する忍者アクションゲーム",
+      "path": "/games/ninjajump/",
+      "thumbnail": "/thumbnails/ninjajump.svg",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "title": "ボトルフリップ",
+      "id": "bottleflip",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "description": "ボトルを回転させてテーブルに立たせるチャレンジゲーム！連続成功でコンボ",
+      "featured": false,
+      "path": "/games/bottleflip/",
+      "thumbnail": "/thumbnails/bottleflip.svg",
+      "publishedAt": "2026-03-20"
+    },
+    {
+      "path": "/games/knifehit/",
+      "description": "回転する丸太にナイフを投げて刺すタイミングゲーム。他のナイフに当たらないよう全て刺してステージクリア",
+      "featured": false,
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "id": "knifehit",
+      "thumbnail": "/thumbnails/knifehit.svg",
+      "title": "ナイフヒット"
+    },
+    {
+      "publishedAt": "2026-03-20",
+      "thumbnail": "/thumbnails/tapcolor.svg",
+      "title": "タップカラー",
+      "featured": false,
+      "path": "/games/tapcolor/",
+      "id": "tapcolor",
+      "tags": [
+        "reflex",
+        "arcade",
+        "singleplayer"
+      ],
+      "description": "色の名前と表示色が異なるストループ効果に挑戦！指示された色を素早くタップして高スコアを目指そう"
+    },
+    {
+      "id": "dotconnect",
+      "title": "ドットコネクト",
+      "description": "同じ色のドットを線でつなぐパズル。線が交差しないように全てのドットをつないでクリア！",
+      "path": "/games/dotconnect/",
+      "thumbnail": "/thumbnails/dotconnect.svg",
+      "tags": [
+        "puzzle",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "birdfly",
+      "title": "バードフライ",
+      "description": "タップで鳥を羽ばたかせて障害物を避けながらコインを集める横スクロールアクション",
+      "path": "/games/birdfly/",
+      "thumbnail": "/thumbnails/birdfly.svg",
+      "tags": [
+        "arcade",
+        "reflex",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-20",
+      "featured": false
+    },
+    {
+      "id": "jumpquest",
+      "title": "Jump Quest",
+      "description": "横スクロールプラットフォーマー",
+      "path": "/games/jumpquest/",
+      "thumbnail": "/thumbnails/jumpquest.svg",
+      "tags": [
+        "arcade",
+        "action",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "linedraw",
+      "title": "Line Draw",
+      "description": "線を描いてボールを導く物理パズル",
+      "path": "/games/linedraw/",
+      "thumbnail": "/thumbnails/linedraw.svg",
+      "tags": [
+        "puzzle",
+        "physics",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-21",
+      "featured": false
+    },
+    {
+      "id": "orbitdodge",
+      "title": "Orbit Dodge",
+      "description": "太陽の周りを回る惑星を操作して小惑星を避けながら星を集める軌道アクションゲーム",
+      "path": "/games/orbitdodge/",
+      "thumbnail": "/thumbnails/orbitdodge.svg",
+      "tags": [
+        "arcade",
+        "action",
+        "singleplayer"
+      ],
+      "publishedAt": "2026-03-24",
+      "featured": false
+    },
+    {
+      "title": "Laser Defense",
+      "tags": [
+        "puzzle",
+        "strategy",
+        "singleplayer"
+      ],
+      "path": "/games/laserdefense/",
+      "featured": false,
+      "thumbnail": "/thumbnails/laserdefense.svg",
+      "publishedAt": "2026-03-24",
+      "id": "laserdefense",
+      "description": "ミラーを配置してレーザーをターゲットに導くパズルゲーム。制限時間内に全5レベルをクリアせよ！"
     }
   ]
 }

@@ -1,0 +1,350 @@
+/* Ski Run - スキー滑降ゲーム */
+
+.skirun-root {
+  width: 500px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #87ceeb 0%, #e0f7fa 30%, #ffffff 100%);
+  border-radius: 12px;
+  user-select: none;
+  color: #1e3a5f;
+  position: relative;
+  overflow: hidden;
+}
+
+/* タイトル画面・結果画面パネル */
+.skirun-panel {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 32px 48px;
+  min-width: 320px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.skirun-title {
+  margin: 0 0 20px;
+  font-size: 36px;
+  font-weight: 900;
+  color: #1565c0;
+  text-shadow: 2px 2px 0 #fff;
+}
+
+.skirun-description {
+  margin: 0 0 12px;
+  font-size: 18px;
+  color: #37474f;
+}
+
+.skirun-description.small {
+  font-size: 14px;
+  color: #607d8b;
+}
+
+.skirun-controls {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.skirun-key {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  background: #e3f2fd;
+  border: 2px solid #1976d2;
+  border-radius: 8px;
+  color: #1565c0;
+}
+
+.skirun-besttime {
+  margin: 16px 0;
+  font-size: 16px;
+  color: #ff8f00;
+  font-weight: 700;
+}
+
+.skirun-button {
+  margin-top: 20px;
+  padding: 14px 48px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.skirun-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.4);
+}
+
+.skirun-button:active {
+  transform: translateY(0);
+}
+
+/* ゲーム画面 */
+.skirun-game {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* HUD */
+.skirun-hud {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 5;
+}
+
+.skirun-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #607d8b;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 900;
+  color: #1565c0;
+}
+
+.stat-value.gate {
+  color: #e65100;
+}
+
+/* 進捗バー */
+.skirun-progress {
+  width: 100%;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.skirun-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+  transition: width 0.1s linear;
+}
+
+.skirun-progress-text {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  line-height: 16px;
+}
+
+/* ゲームエリア */
+.skirun-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #e8f5e9 0%, #fff 100%);
+}
+
+/* 雪のライン */
+.skirun-snowline {
+  position: absolute;
+  width: 80px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 2px;
+  transform: rotate(-15deg);
+}
+
+/* 障害物 */
+.skirun-obstacle {
+  position: absolute;
+  font-size: 32px;
+  line-height: 1;
+  transition: opacity 0.2s;
+}
+
+.skirun-tree {
+  font-size: 36px;
+}
+
+.skirun-gate-left,
+.skirun-gate-right {
+  width: 60px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 152, 0, 0.3);
+  border: 2px dashed #ff9800;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.skirun-obstacle.passed {
+  opacity: 0.4;
+}
+
+/* プレイヤー */
+.skirun-player {
+  position: absolute;
+  width: 30px;
+  height: 40px;
+  font-size: 36px;
+  line-height: 1;
+  transition: left 0.05s linear;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  z-index: 3;
+}
+
+/* ゴールライン */
+.skirun-goal {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 900;
+  color: #d32f2f;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.9) 20%, 
+    rgba(255, 255, 255, 0.9) 80%, 
+    transparent 100%
+  );
+  padding: 8px 0;
+  border-top: 4px dashed #d32f2f;
+  border-bottom: 4px dashed #d32f2f;
+}
+
+/* タッチコントロール */
+.skirun-touch-controls {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.skirun-touch-btn {
+  width: 100px;
+  height: 60px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1565c0;
+  background: #e3f2fd;
+  border: 3px solid #1976d2;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.1s, transform 0.1s;
+  touch-action: manipulation;
+}
+
+.skirun-touch-btn:active {
+  background: #bbdefb;
+  transform: scale(0.95);
+}
+
+/* 結果画面 */
+.skirun-result-title {
+  margin: 0 0 16px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.skirun-final {
+  margin: 0 0 8px;
+  font-size: 20px;
+  color: #37474f;
+}
+
+.skirun-bonus {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #4caf50;
+}
+
+.skirun-final-time {
+  margin: 0 0 16px;
+  font-size: 28px;
+  font-weight: 900;
+  color: #1565c0;
+}
+
+.skirun-newrecord {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ff8f00;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 8px rgba(255, 143, 0, 0.5); }
+  to { text-shadow: 0 0 24px rgba(255, 143, 0, 0.8); }
+}
+
+/* 雪パーティクル */
+.skirun-snow-particle {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+  z-index: 2;
+}
+
+/* タイムボーナス表示 */
+.skirun-time-bonus {
+  margin: 8px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #4caf50;
+  animation: bonus-pulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes bonus-pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+/* プレイヤー速度時のエフェクト */
+.skirun-player.fast {
+  animation: player-glow 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes player-glow {
+  from { filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)); }
+  to { filter: drop-shadow(0 0 12px rgba(72, 219, 251, 0.8)); }
+}
+
+/* クラッシュ時のプレイヤー */
+.skirun-player.crashed {
+  animation: crash-spin 0.5s ease-out forwards;
+}
+
+@keyframes crash-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg) scale(1.5); opacity: 0; }
+}
