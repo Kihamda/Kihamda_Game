@@ -5,6 +5,8 @@ import type { ScreenShakeHandle } from "@shared/components/ScreenShake";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
 import type { PopupVariant } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
 import type { Card, Phase, RoundResult } from "./lib/types";
@@ -525,6 +527,8 @@ export default function App() {
                   <button className="bj-action-btn bj-action-btn--next" onClick={nextRound}>
                     次のラウンド
                   </button>
+                  <ShareButton score={chips} gameTitle="ブラックジャック" gameId="blackjack" />
+                  <GameRecommendations currentGameId="blackjack" />
                 </div>
               )}
             </div>

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
 import { GameShell } from "@shared/components/GameShell";
-import { useParticles, ParticleLayer, useAudio, ScreenShake, ComboCounter, ScorePopup } from "@shared";
+import { useParticles, ParticleLayer, useAudio, ScreenShake, ComboCounter, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
 
 /** ゲームフェーズ */
@@ -406,6 +406,8 @@ export default function App() {
               <button type="button" className="tapcolor-button" onClick={startGame}>
                 もう一度
               </button>
+              <ShareButton score={score} gameTitle="Tap Color" gameId="tapcolor" />
+              <GameRecommendations currentGameId="tapcolor" />
             </div>
           )}
         </div>

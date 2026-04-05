@@ -6,7 +6,9 @@ import {
   ParticleLayer,
   ScorePopup,
 } from "@shared";
+
 import type { PopupVariant } from "@shared";
+
 import "./App.css";
 
 // ======== Types ========

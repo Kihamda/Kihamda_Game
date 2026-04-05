@@ -7,6 +7,8 @@ import {
   ScreenShake,
   ComboCounter,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import "./App.css";
@@ -115,7 +117,7 @@ export default function App() {
   const gameStateRef = useRef<GameState>(createInitialState());
   const animationFrameRef = useRef<number>(0);
 
-  const [, setTick] = useState(0);
+  const [gameState, setGameState] = useState<GameState>(createInitialState());
   const [combo, setCombo] = useState(0);
   const [popups, setPopups] = useState<ScorePopupData[]>([]);
   const popupKeyRef = useRef(0);
@@ -176,14 +178,14 @@ export default function App() {
   // ゲーム開始
   const startGame = useCallback(() => {
     gameStateRef.current.phase = "in_progress";
-    setTick((t) => t + 1);
+    setGameState({ ...gameStateRef.current });
   }, []);
 
   // リセット
   const resetGame = useCallback(() => {
     gameStateRef.current = createInitialState();
     setCombo(0);
-    setTick((t) => t + 1);
+    setGameState({ ...gameStateRef.current });
   }, []);
 
   // ボールリセット（ライフ減少時）
@@ -197,7 +199,7 @@ export default function App() {
     state.comboCount = 0;
     state.comboTimer = 0;
     setCombo(0);
-    setTick((t) => t + 1);
+    setGameState({ ...state });
   }, []);
 
   // ゲームループ
@@ -400,7 +402,7 @@ export default function App() {
           if (state.lives <= 0) {
             state.phase = "after";
             state.isWin = false;
-            setTick((t) => t + 1);
+            setGameState({ ...state });
           } else {
             resetBall();
             return;
@@ -438,7 +440,7 @@ export default function App() {
             );
           }, 300);
 
-          setTick((t) => t + 1);
+          setGameState({ ...state });
         }
       }
 
@@ -560,6 +562,13 @@ export default function App() {
               size={popup.size}
             />
           ))}
+          {/* Game Over ShareButton */}
+          {gameState.phase === "after" && (
+            <div style={{ position: "absolute", bottom: 100, left: "50%", transform: "translateX(-50%)" }}>
+              <ShareButton score={gameState.score} gameTitle="Brick Blast" gameId="brickblast" />
+              <GameRecommendations currentGameId="brickblast" />
+            </div>
+          )}
         </div>
       </ScreenShake>
     </GameShell>

@@ -14,6 +14,8 @@ import {
   useParticles,
   ParticleLayer,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "../../../src/shared";
 import type { PopupVariant } from "../../../src/shared";
 
@@ -946,6 +948,10 @@ const App = () => {
                     >
                       Settings
                     </button>
+                    <div style={{ marginTop: 12 }}>
+                      <ShareButton score={finalScore} gameTitle="Typing Blitz" gameId="typingblitz" />
+                      <GameRecommendations currentGameId="typingblitz" />
+                    </div>
                   </>
                 )}
               </div>

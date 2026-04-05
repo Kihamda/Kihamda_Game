@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { ParticleLayer, useAudio, useParticles, ScorePopup } from "@shared";
+import { ParticleLayer, useAudio, useParticles, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import {
   createGame,
@@ -228,6 +228,25 @@ export default function App() {
             className={`minerush-status minerush-status--${game.status}`}
           >
             {game.status === "won" ? "🎉 クリア！" : "💥 ゲームオーバー"}
+            {game.status === "lost" && (
+              <div style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                backgroundColor: "rgba(0, 0, 0, 0.9)",
+                padding: "15px",
+                borderRadius: "8px",
+                textAlign: "center",
+                zIndex: 10,
+                color: "#fff",
+                minWidth: "150px"
+              }}>
+                <p style={{ marginBottom: "10px" }}>Revealed: {game.revealedCount}</p>
+                <ShareButton score={game.revealedCount} gameTitle="Mine Rush" gameId="minerush" />
+                <GameRecommendations currentGameId="minerush" />
+              </div>
+            )}
           </div>
         )}
         <ParticleLayer particles={particles} />

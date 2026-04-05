@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { GameShell, useHighScore, useAudio, useParticles, ParticleLayer, ScorePopup } from "../../../src/shared";
+import { GameShell, useHighScore, useAudio, useParticles, ParticleLayer, ScorePopup, ShareButton, GameRecommendations } from "../../../src/shared";
 import type { PopupVariant } from "../../../src/shared";
 import type { Phase, Difficulty, GameSettings, GameStats, GameResult } from "./lib/types";
 import {
@@ -524,6 +524,10 @@ function App() {
               <button className="menu-button" onClick={goToMenu}>
                 メニュー
               </button>
+              <div style={{ marginTop: 12 }}>
+                <ShareButton score={result.wpm} gameTitle="Type Race" gameId="typerace" />
+                <GameRecommendations currentGameId="typerace" />
+              </div>
             </div>
           </div>
         )}

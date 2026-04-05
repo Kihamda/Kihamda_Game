@@ -8,6 +8,8 @@ import {
   ComboCounter,
   ScorePopup,
   useHighScore,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import "./App.css";
@@ -328,7 +330,7 @@ export default function App() {
     
     animationRef.current = requestAnimationFrame(update);
     return () => cancelAnimationFrame(animationRef.current);
-  }, [phase, centerX, centerY, combo, difficulty, audio, burst, sparkle, explosion, confetti, updateHighScore]);
+  }, [phase, centerX, centerY, combo, difficulty, audio, burst, sparkle, explosion, confetti, updateHighScore, showPopup]);
   
   // Drawing
   useEffect(() => {
@@ -336,6 +338,8 @@ export default function App() {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    
+    let drawFrameId = 0;
     
     const draw = () => {
       // Clear
@@ -499,7 +503,7 @@ export default function App() {
       ctx.fillText(`LV ${difficulty}`, CANVAS_WIDTH - 15, 30);
       
       if (phase === "playing") {
-        requestAnimationFrame(draw);
+        drawFrameId = requestAnimationFrame(draw);
       }
     };
     
@@ -509,6 +513,12 @@ export default function App() {
       // Draw static frame
       draw();
     }
+    
+    return () => {
+      if (drawFrameId) {
+        cancelAnimationFrame(drawFrameId);
+      }
+    };
   }, [phase, score, best, difficulty, centerX, centerY]);
   
   return (
@@ -566,6 +576,8 @@ export default function App() {
               <button className="orbitdodge-start-btn" onClick={startGame}>
                 RETRY
               </button>
+              <ShareButton score={score} gameTitle="Orbit Dodge" gameId="orbitdodge" />
+              <GameRecommendations currentGameId="orbitdodge" />
             </div>
           )}
         </div>

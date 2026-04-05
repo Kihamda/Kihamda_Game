@@ -5,6 +5,7 @@ import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
 import { useAudio } from "@shared/hooks/useAudio";
 import { useParticles } from "@shared/hooks/useParticles";
+import { ShareButton, GameRecommendations } from "@shared";
 import type { ScreenShakeHandle } from "@shared/components/ScreenShake";
 import "./App.css";
 
@@ -605,6 +606,8 @@ export default function App() {
               <button className="ninjajump-start-btn" onClick={startGame}>
                 RETRY
               </button>
+              <ShareButton score={gameState.score} gameTitle="Ninja Jump" gameId="ninjajump" />
+              <GameRecommendations currentGameId="ninjajump" />
             </div>
           )}
         </div>

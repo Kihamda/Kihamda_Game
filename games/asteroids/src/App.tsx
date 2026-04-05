@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { useAudio, useParticles, ParticleLayer, ScreenShake } from "@shared";
+import { useAudio, useParticles, ParticleLayer, ScreenShake, ShareButton, GameRecommendations } from "@shared";
 import type { ScreenShakeHandle } from "@shared";
 import type { GameState, KeyState, Asteroid } from "./lib/types";
 import {
@@ -563,6 +563,8 @@ export default function App() {
               <button className="asteroids-start-btn" onClick={startGame}>
                 RETRY
               </button>
+              <ShareButton score={gameState.score} gameTitle="Asteroids" gameId="asteroids" />
+              <GameRecommendations currentGameId="asteroids" />
             </div>
           )}
         </div>

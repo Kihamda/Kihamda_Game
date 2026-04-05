@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { ScorePopup } from "@shared/components/ScorePopup";
 import type { PopupVariant } from "@shared/components/ScorePopup";
-import { ParticleLayer, useAudio, useParticles } from "@shared";
+import { ParticleLayer, useAudio, useParticles, ShareButton, GameRecommendations } from "@shared";
 import "./App.css";
 
 type GamePhase = "before" | "in_progress" | "after";
@@ -199,7 +199,7 @@ export default function App() {
         return prev;
       });
     },
-    [phase, playWhack, playMiss, playCombo, burst, combo, addPopup]
+    [phase, playWhack, playMiss, playCombo, burst, addPopup]
   );
 
   // ゲーム開始
@@ -348,6 +348,8 @@ export default function App() {
               <button className="molemania-button" onClick={resetGame}>
                 もう一度遊ぶ
               </button>
+              <ShareButton score={score} gameTitle="モグたたき" gameId="molemania" />
+              <GameRecommendations currentGameId="molemania" />
             </div>
           )}
 

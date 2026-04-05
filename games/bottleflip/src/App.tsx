@@ -3,6 +3,8 @@ import { GameShell } from "@shared/components/GameShell";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScreenShake } from "@shared/components/ScreenShake";
 import { ComboCounter } from "@shared/components/ComboCounter";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import { ScorePopup } from "@shared";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
@@ -772,6 +774,8 @@ export default function App() {
               <button className="bottleflip-start-btn" onClick={continueGame}>
                 {gameState.bottle.landedUpright ? "CONTINUE" : "RETRY"}
               </button>
+              <ShareButton score={gameState.score} gameTitle="Bottle Flip" gameId="bottleflip" />
+              <GameRecommendations currentGameId="bottleflip" />
             </div>
           )}
 

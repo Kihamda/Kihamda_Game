@@ -2,6 +2,8 @@ import { useCallback, useState, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import type { PopupVariant } from "@shared/components/ScorePopup";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
@@ -249,6 +251,8 @@ export default function App() {
               <div>ラウンド数: {gameState.round.roundNumber}</div>
               <div>総投擲数: {gameState.history.length}</div>
             </div>
+            <ShareButton score={gameState.score} gameTitle="Darts" gameId="darts" />
+            <GameRecommendations currentGameId="darts" />
             <button className="darts-btn" onClick={handleStart}>
               PLAY AGAIN
             </button>

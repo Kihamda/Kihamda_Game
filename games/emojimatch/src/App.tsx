@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { useAudio, useParticles, ScorePopup } from "@shared";
+import { useAudio, useParticles, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import { ParticleLayer } from "@shared";
 import "./App.css";
@@ -324,11 +324,14 @@ export default function App() {
               <p className="emojimatch__gameover">⏱️ TIME UP!</p>
               {isNewRecord && <p className="emojimatch__record">✨ 新記録！ ✨</p>}
               <p className="emojimatch__final-score">最終スコア: <strong>{score}</strong></p>
+              <ShareButton score={score} gameTitle="Emoji Match" gameId="emojimatch" />
             </div>
           )}
           {phase === "cleared" && (
             <div className="emojimatch__result">
               <p className="emojimatch__clear">🎉 クリア！</p>
+              <ShareButton score={score} gameTitle="Emoji Match" gameId="emojimatch" />
+              <GameRecommendations currentGameId="emojimatch" />
             </div>
           )}
         </div>

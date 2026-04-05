@@ -10,3 +10,5 @@ export { GameRecommendations } from "./components/GameRecommendations";
 export { ScreenShake } from "./components/ScreenShake";
 export type { ScreenShakeHandle, ShakeIntensity } from "./components/ScreenShake";
 export { ComboCounter } from "./components/ComboCounter";
+export { ShareButton } from "./components/ShareButton";
+export type { ShareButtonProps } from "./components/ShareButton";

@@ -5,6 +5,8 @@ import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScreenShake } from "@shared/components/ScreenShake";
 import { ComboCounter } from "@shared/components/ComboCounter";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import type { PopupVariant } from "@shared/components/ScorePopup";
 import { useAudio } from "@shared/hooks/useAudio";
 import { useParticles } from "@shared/hooks/useParticles";
@@ -391,6 +393,10 @@ export default function App() {
                 >
                   タイトルへ
                 </button>
+                <div style={{ marginTop: 12 }}>
+                  <ShareButton score={gameState.score} gameTitle="Trivia Quiz" gameId="triviaquiz" />
+                  <GameRecommendations currentGameId="triviaquiz" />
+                </div>
               </div>
             </div>
           )}

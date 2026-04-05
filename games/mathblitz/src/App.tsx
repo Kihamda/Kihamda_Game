@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 
 /** ゲームフェーズ */
@@ -483,6 +483,8 @@ export default function App() {
               >
                 タイトルへ
               </button>
+              <ShareButton score={score} gameTitle="Math Blitz" gameId="mathblitz" />
+              <GameRecommendations currentGameId="mathblitz" />
             </div>
           </div>
         )}

@@ -8,7 +8,9 @@ import {
   ComboCounter,
   ScorePopup,
 } from "@shared";
+
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
+
 import "./App.css";
 
 // ゲーム定数

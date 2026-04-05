@@ -7,6 +7,8 @@ import {
   ParticleLayer,
   ScreenShake,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import "./App.css";
@@ -335,6 +337,24 @@ export default function App() {
                 <button className="simonsays-start" onClick={startGame}>
                   {phase === "idle" ? "START" : "RETRY"}
                 </button>
+              )}
+              {phase === "gameover" && (
+                <div style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  backgroundColor: "rgba(0, 0, 0, 0.9)",
+                  padding: "15px",
+                  borderRadius: "8px",
+                  textAlign: "center",
+                  zIndex: 10,
+                  color: "#fff"
+                }}>
+                  <p style={{ fontSize: "18px", marginBottom: "10px" }}>Level: {level}</p>
+                  <ShareButton score={level} gameTitle="Simon Says" gameId="simonsays" />
+                  <GameRecommendations currentGameId="simonsays" />
+                </div>
               )}
             </div>
           </div>

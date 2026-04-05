@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { useAudio, useParticles, ScorePopup } from "@shared";
+import { useAudio, useParticles, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import { ParticleLayer, ComboCounter } from "@shared";
 import "./App.css";
@@ -410,6 +410,8 @@ export default function App() {
             <button className="coinflip-button" onClick={startGame}>
               もう一度
             </button>
+            <ShareButton score={gameState.maxStreak} gameTitle="Coin Flip" gameId="coinflip" />
+            <GameRecommendations currentGameId="coinflip" />
           </div>
         )}
       </div>

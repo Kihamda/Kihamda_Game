@@ -2,6 +2,7 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { useAudio } from "@shared/hooks/useAudio";
 import { useParticles, ParticleLayer } from "@shared";
+
 import "./App.css";
 
 // ゲーム定数

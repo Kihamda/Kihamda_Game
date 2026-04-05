@@ -5,6 +5,7 @@ import { ScorePopup } from "@shared/components/ScorePopup";
 import { ComboCounter } from "@shared/components/ComboCounter";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
+import { ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import "./App.css";
 
@@ -387,6 +388,8 @@ export default function App() {
             <button className="ooo-btn ooo-btn--restart" onClick={start}>
               もう一度
             </button>
+            <ShareButton score={score} gameTitle="Odd One Out" gameId="oddoneout" />
+            <GameRecommendations currentGameId="oddoneout" />
           </div>
         )}
       </div>

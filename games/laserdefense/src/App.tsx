@@ -2,7 +2,9 @@ import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { ScreenShake } from "@shared/components/ScreenShake";
 import { useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+
 import type { PopupVariant, ScreenShakeHandle } from "@shared";
+
 import "./App.css";
 
 type Phase = "menu" | "playing" | "win" | "lose";

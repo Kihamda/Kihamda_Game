@@ -3,6 +3,7 @@ import { GameShell } from "@shared/components/GameShell";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
+import { ShareButton, GameRecommendations } from "@shared";
 import { initGame, moveWithResult } from "./lib/game";
 import type { Direction, GameState, Tile, MergeInfo } from "./lib/game";
 import "./App.css";
@@ -300,6 +301,8 @@ export default function App() {
               <button className="merge2048-btn" onClick={handleNewGame}>
                 Try Again
               </button>
+              <ShareButton score={game.score} gameTitle="2048" gameId="merge2048" />
+              <GameRecommendations currentGameId="merge2048" />
             </div>
           )}
 

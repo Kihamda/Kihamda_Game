@@ -1,3 +1,5 @@
+import { ShareButton, GameRecommendations } from "@shared";
+
 interface Props {
   winnerName: string;
   reason: string;
@@ -13,6 +15,8 @@ export function ResultScreen({ winnerName, reason, onRestart }: Props) {
       <button type="button" className="pool-result-btn" onClick={onRestart}>
         もう一度プレイ
       </button>
+      <ShareButton score={1} gameTitle="Pool Master" gameId="poolmaster" />
+      <GameRecommendations currentGameId="poolmaster" />
     </div>
   );
 }

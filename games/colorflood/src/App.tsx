@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { useAudio, useParticles, ScorePopup } from "@shared";
+import { useAudio, useParticles, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import { ParticleLayer } from "@shared";
 import "./App.css";
@@ -354,6 +354,7 @@ export default function App() {
                       メニューへ
                     </button>
                   </div>
+                  <ShareButton score={MAX_MOVES - moves} gameTitle="Color Flood" gameId="colorflood" />
                 </div>
               </div>
             )}
@@ -380,6 +381,8 @@ export default function App() {
                       メニューへ
                     </button>
                   </div>
+                  <ShareButton score={progress} gameTitle="Color Flood" gameId="colorflood" />
+                  <GameRecommendations currentGameId="colorflood" />
                 </div>
               </div>
             )}

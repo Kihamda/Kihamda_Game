@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { ParticleLayer, useAudio, useParticles, ScorePopup } from "@shared";
+import { ParticleLayer, useAudio, useParticles, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import "./App.css";
 
@@ -423,6 +423,8 @@ export default function App() {
             <p>タイム: {formatTime(elapsedTime)}</p>
             <p>手数: {moves}歩</p>
             <button onClick={() => initMaze(size)}>もう一度</button>
+            <ShareButton score={moves} gameTitle="迷路脱出" gameId="mazerun" />
+            <GameRecommendations currentGameId="mazerun" />
           </div>
         )}
 

@@ -4,6 +4,8 @@ import { ScreenShake } from "@shared/components/ScreenShake";
 import type { ScreenShakeHandle } from "@shared/components/ScreenShake";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
 import "./App.css";
@@ -643,6 +645,8 @@ export default function App() {
               <button className="birdfly-start-btn" onClick={startGame}>
                 RETRY
               </button>
+              <ShareButton score={score} gameTitle="Bird Fly" gameId="birdfly" />
+              <GameRecommendations currentGameId="birdfly" />
             </div>
           )}
         </div>

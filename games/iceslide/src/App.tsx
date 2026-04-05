@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { ParticleLayer, ScorePopup, useAudio, useParticles } from "@shared";
+
 import { StartScreen } from "./components/StartScreen";
 import { StageSelect } from "./components/StageSelect";
 import { GameView } from "./components/GameView";

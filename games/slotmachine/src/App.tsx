@@ -2,6 +2,8 @@ import { useState, useCallback, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import { ScreenShake } from "@shared/components/ScreenShake";
 import type { ScreenShakeHandle } from "@shared/components/ScreenShake";
 import { useParticles } from "@shared/hooks/useParticles";
@@ -303,6 +305,8 @@ export default function App() {
               <button className="slot-reset-btn" onClick={reset}>
                 リスタート
               </button>
+              <ShareButton score={coins} gameTitle="スロットマシン" gameId="slotmachine" />
+              <GameRecommendations currentGameId="slotmachine" />
             </div>
           )}
 

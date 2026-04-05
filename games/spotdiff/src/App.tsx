@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import { useAudio, useParticles, ParticleLayer, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import "./App.css";
 
@@ -507,6 +507,8 @@ export default function App() {
               <button type="button" className="spotdiff__btn" onClick={handleStart}>
                 もう一度
               </button>
+              <ShareButton score={score} gameTitle="Spot Diff" gameId="spotdiff" />
+              <GameRecommendations currentGameId="spotdiff" />
             </div>
           </div>
         )}

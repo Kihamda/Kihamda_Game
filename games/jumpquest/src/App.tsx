@@ -1,7 +1,9 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+
 import type { PopupVariant } from "@shared";
+
 import "./App.css";
 
 // ゲーム定数

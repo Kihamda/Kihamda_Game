@@ -5,6 +5,8 @@ import {
   useParticles,
   ParticleLayer,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { PopupVariant } from "@shared";
 import type { GameState } from "./lib/types";
@@ -210,6 +212,8 @@ export default function App() {
               <button className="slidemaster-btn" onClick={handleReset}>
                 タイトルへ
               </button>
+              <ShareButton score={game.moves} gameTitle="Slide Master" gameId="slidemaster" />
+              <GameRecommendations currentGameId="slidemaster" />
             </>
           )}
         </div>

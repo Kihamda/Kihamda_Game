@@ -4,6 +4,8 @@ import { GameShell } from "@shared/components/GameShell";
 import { ScreenShake, type ScreenShakeHandle } from "@shared/components/ScreenShake";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
 
@@ -623,6 +625,8 @@ export default function App() {
             >
               もう一度
             </button>
+            <ShareButton score={Math.floor(finalTime * 10)} gameTitle="スキーラン" gameId="skirun" />
+            <GameRecommendations currentGameId="skirun" />
           </div>
         )}
         </div>

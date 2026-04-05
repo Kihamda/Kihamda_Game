@@ -4,6 +4,8 @@ import { useAudio } from "@shared/hooks/useAudio";
 import { useParticles } from "@shared/hooks/useParticles";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import type { PopupVariant } from "@shared/components/ScorePopup";
 import "./App.css";
 
@@ -601,6 +603,8 @@ export default function App() {
             <button className="skyjump-start-btn" onClick={startGame}>
               RETRY
             </button>
+            <ShareButton score={gameState.score} gameTitle="Sky Jump" gameId="skyjump" />
+            <GameRecommendations currentGameId="skyjump" />
           </div>
         )}
       </div>

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import type { GameState } from "../lib/types";
 import { calculateAccuracy } from "../lib/rhythmbeat";
-import { useParticles, useAudio, ParticleLayer } from "@shared";
+import { useParticles, useAudio, ParticleLayer, ShareButton, GameRecommendations } from "@shared";
 
 interface Props {
   state: GameState;
@@ -103,6 +103,8 @@ export function ResultScreen({ state, highScore, isNewRecord, onRestart }: Props
       >
         もう一度
       </button>
+      <ShareButton score={state.score} gameTitle="Rhythm Beat" gameId="rhythmbeat" />
+      <GameRecommendations currentGameId="rhythmbeat" />
     </div>
   );
 }

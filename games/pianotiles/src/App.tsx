@@ -4,6 +4,7 @@ import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScreenShake } from "@shared/components/ScreenShake";
 import { ComboCounter } from "@shared/components/ComboCounter";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared/components/ScorePopup";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
@@ -493,6 +494,8 @@ export default function App() {
               <button className="pt-start-btn" onClick={startGame}>
                 RETRY
               </button>
+              <ShareButton score={score} gameTitle="Piano Tiles" gameId="pianotiles" />
+              <GameRecommendations currentGameId="pianotiles" />
             </div>
           )}
         </div>

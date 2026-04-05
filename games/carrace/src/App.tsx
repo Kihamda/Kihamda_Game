@@ -2,6 +2,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
 import "./App.css";
@@ -690,6 +692,8 @@ export default function App() {
             >
               RETRY
             </button>
+            <ShareButton score={Math.floor(gameState.distance)} gameTitle="Car Race" gameId="carrace" />
+            <GameRecommendations currentGameId="carrace" />
           </div>
         )}
       </div>

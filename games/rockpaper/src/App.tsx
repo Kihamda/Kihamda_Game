@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
-import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import "./App.css";
 
@@ -340,7 +340,7 @@ export default function App() {
               </div>
               <div className="rockpaper-stat">
                 <span className="rockpaper-stat-label">連勝</span>
-                <span className="rockpaper-stat-value rockpaper-stat-value--streak">�� {gameState.streak}</span>
+                <span className="rockpaper-stat-value rockpaper-stat-value--streak">🔥 {gameState.streak}</span>
               </div>
             </div>
 
@@ -433,6 +433,8 @@ export default function App() {
             <button className="rockpaper-button" onClick={startGame}>
               もう一度
             </button>
+            <ShareButton score={gameState.maxStreak} gameTitle="Rock Paper Scissors" gameId="rockpaper" />
+            <GameRecommendations currentGameId="rockpaper" />
           </div>
         )}
       </div>

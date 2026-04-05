@@ -6,6 +6,8 @@ import {
   useAudio,
   ComboCounter,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import "./App.css";
 
@@ -254,6 +256,8 @@ export default function App() {
             <button className="md-btn md-btn--restart" onClick={start}>
               もう一度
             </button>
+            <ShareButton score={turns} gameTitle="神経衰弱" gameId="memoryduel" />
+            <GameRecommendations currentGameId="memoryduel" />
           </div>
         )}
       </div>

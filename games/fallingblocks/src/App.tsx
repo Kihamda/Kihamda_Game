@@ -2,6 +2,8 @@
 import { GameShell } from "@shared/components/GameShell";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup, type PopupVariant } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
 import {
@@ -372,6 +374,8 @@ export default function App() {
           <div className="fallingblocks-overlay">
             <h2>GAME OVER</h2>
             <p className="fallingblocks-final-score">Score: {game.score}</p>
+            <ShareButton score={game.score} gameTitle="Falling Blocks" gameId="fallingblocks" />
+            <GameRecommendations currentGameId="fallingblocks" />
             <button className="fallingblocks-btn" onClick={startGame}>
               もう一度
             </button>

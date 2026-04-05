@@ -7,6 +7,8 @@ import {
   ScreenShake,
   ComboCounter,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import "./App.css";
@@ -157,6 +159,9 @@ export default function App() {
   const [displayCombo, setDisplayCombo] = useState(0);
   const [popups, setPopups] = useState<Popup[]>([]);
   const popupIdRef = useRef(0);
+  
+  // ShareButton用の状態（refアクセスを避けるため）
+  const [gameOverInfo, setGameOverInfo] = useState<{ phase: GamePhase; score: number }>({ phase: "before", score: 0 });
 
   // Dopamine hooks
   const { particles, confetti, sparkle, explosion } = useParticles();
@@ -184,6 +189,7 @@ export default function App() {
     setDisplayCombo,
     addPopup,
     shake: () => shakeRef.current?.shake("medium", 200),
+    setGameOverInfo,
   });
 
   useEffect(() => {
@@ -199,6 +205,7 @@ export default function App() {
       setDisplayCombo,
       addPopup,
       shake: () => shakeRef.current?.shake("medium", 200),
+      setGameOverInfo,
     };
   }, [sparkle, explosion, confetti, playSuccess, playCombo, playBonus, playGameOver, playCelebrate, addPopup]);
 
@@ -448,6 +455,9 @@ export default function App() {
               saveHighScore(state.score);
             }
 
+            // ShareButton用の状態を更新
+            effectsRef.current.setGameOverInfo({ phase: "after", score: state.score });
+
             // Game over effects
             const effects = effectsRef.current;
             const canvasRect = canvasRef.current?.getBoundingClientRect();
@@ -599,6 +609,14 @@ export default function App() {
 
           {/* Particle effects layer */}
           <ParticleLayer particles={particles} />
+
+          {/* Game Over overlay with ShareButton */}
+          {gameOverInfo.phase === "after" && (
+            <div style={{ position: "absolute", bottom: 80, left: "50%", transform: "translateX(-50%)" }}>
+              <ShareButton score={gameOverInfo.score} gameTitle="バウンシングボール" gameId="bounceball" />
+              <GameRecommendations currentGameId="bounceball" />
+            </div>
+          )}
         </div>
       </ScreenShake>
     </GameShell>

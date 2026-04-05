@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import "./App.css";
-import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 
 /** ゲームフェーズ */
@@ -311,6 +311,8 @@ export default function App() {
               >
                 タイトルへ
               </button>
+              <ShareButton score={attempts} gameTitle="Number Guess" gameId="numberguess" />
+              <GameRecommendations currentGameId="numberguess" />
             </div>
           </div>
         )}

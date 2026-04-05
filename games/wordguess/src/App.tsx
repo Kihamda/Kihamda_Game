@@ -7,6 +7,8 @@ import {
   ParticleLayer,
   ScreenShake,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "../../../src/shared";
 import type { ScreenShakeHandle, PopupVariant } from "../../../src/shared";
 import type { GameState, LetterResult, LetterState } from "./lib/types";
@@ -262,6 +264,10 @@ function ResultScreen({
         <button className="home-btn" onClick={onHome}>
           タイトルへ
         </button>
+        <div style={{ marginTop: 12 }}>
+          <ShareButton score={won ? attempts : 0} gameTitle="Word Guess" gameId="wordguess" />
+          <GameRecommendations currentGameId="wordguess" />
+        </div>
       </div>
     </div>
   );

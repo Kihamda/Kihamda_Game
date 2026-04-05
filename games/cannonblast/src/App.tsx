@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { useAudio, useParticles, useHighScore } from "@shared";
+import { useAudio, useParticles, useHighScore, ShareButton, GameRecommendations } from "@shared";
 import { ParticleLayer, ComboCounter, ScorePopup } from "@shared";
 import type { PopupVariant } from "@shared";
 import "./App.css";
@@ -142,7 +142,7 @@ export default function App() {
   const gameStateRef = useRef<GameState>(createInitialState());
   const animationFrameRef = useRef<number>(0);
 
-  const [, setTick] = useState(0);
+  const [gameState, setGameState] = useState<GameState>(createInitialState());
   const [combo, setCombo] = useState(0);
 
   // ScorePopup state
@@ -204,7 +204,7 @@ export default function App() {
     };
     state.shotsRemaining--;
     state.phase = "firing";
-    setTick((t) => t + 1);
+    setGameState({ ...state });
   }, []);
 
   const nextStage = useCallback(() => {
@@ -222,7 +222,7 @@ export default function App() {
         score: state.score,
       };
     }
-    setTick((t) => t + 1);
+    setGameState({ ...gameStateRef.current });
   }, []);
 
   const retry = useCallback(() => {
@@ -232,14 +232,14 @@ export default function App() {
       ...newStageState,
       score: state.score,
     };
-    setTick((t) => t + 1);
+    setGameState({ ...gameStateRef.current });
   }, []);
 
   const resetGame = useCallback(() => {
     gameStateRef.current = createInitialState();
     hasShownHighScoreRef.current = false;
     setCombo(0);
-    setTick((t) => t + 1);
+    setGameState({ ...gameStateRef.current });
   }, []);
 
   // キーボード入力
@@ -565,12 +565,12 @@ export default function App() {
               }, 500);
             }
             
-            setTick((t) => t + 1);
+            setGameState({ ...state });
           } else if (state.shotsRemaining <= 0) {
             state.phase = "failed";
             explosion(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
             setCombo(0); // Reset combo on failure
-            setTick((t) => t + 1);
+            setGameState({ ...state });
           } else {
             state.phase = "aiming";
           }
@@ -705,6 +705,13 @@ export default function App() {
           variant={popup?.variant}
           size={popup?.size}
         />
+        {/* Game Over/Clear ShareButton */}
+        {(gameState.phase === "cleared" || gameState.phase === "failed") && (
+          <div style={{ position: "absolute", bottom: 80, left: "50%", transform: "translateX(-50%)" }}>
+            <ShareButton score={gameState.score} gameTitle="Cannon Blast" gameId="cannonblast" />
+            <GameRecommendations currentGameId="cannonblast" />
+          </div>
+        )}
       </div>
     </GameShell>
   );

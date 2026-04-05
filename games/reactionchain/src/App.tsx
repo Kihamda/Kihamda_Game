@@ -6,6 +6,8 @@ import {
   useParticles,
   ParticleLayer,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { PopupVariant } from "@shared";
 
@@ -630,6 +632,7 @@ export default function App() {
                 >
                   タイトルへ
                 </button>
+                <ShareButton score={totalPopped} gameTitle="Reaction Chain" gameId="reactionchain" />
               </div>
             </div>
           </div>
@@ -667,6 +670,8 @@ export default function App() {
                 >
                   タイトルへ
                 </button>
+                <ShareButton score={totalPopped} gameTitle="Reaction Chain" gameId="reactionchain" />
+                <GameRecommendations currentGameId="reactionchain" />
               </div>
             </div>
           </div>

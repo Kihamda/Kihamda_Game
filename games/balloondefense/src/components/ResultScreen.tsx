@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useAudio } from "@shared/hooks/useAudio";
 import { useParticles } from "@shared/hooks/useParticles";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
+import { ShareButton } from "@shared/components/ShareButton";
 import type { GameState } from "../lib/types";
 
 interface Props {
@@ -61,6 +62,7 @@ export function ResultScreen({ state, highScore, isNewRecord, onRestart }: Props
       >
         もう一度プレイ
       </button>
+      <ShareButton score={state.score} gameTitle="バルーンディフェンス" gameId="balloondefense" />
     </div>
   );
 }

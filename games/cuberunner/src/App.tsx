@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { GameShell, ScreenShake, ParticleLayer, ScorePopup, useAudio, useParticles } from "@shared";
+import { GameShell, ScreenShake, ParticleLayer, ScorePopup, ShareButton, GameRecommendations, useAudio, useParticles } from "@shared";
 import type { ScreenShakeHandle } from "@shared";
 import "./App.css";
 
@@ -655,6 +655,8 @@ export default function App() {
               <button className="cuberunner-start-btn" onClick={startGame}>
                 RETRY
               </button>
+              <ShareButton score={Math.floor(gameState.distance)} gameTitle="Cube Runner" gameId="cuberunner" />
+              <GameRecommendations currentGameId="cuberunner" />
             </div>
           )}
         </div>

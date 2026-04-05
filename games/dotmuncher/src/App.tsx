@@ -6,6 +6,8 @@ import {
   ParticleLayer,
   ScorePopup,
   ScreenShake,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import "./App.css";
@@ -794,6 +796,7 @@ export default function App() {
               {score >= highScore && score > 0 && (
                 <p className="dotmuncher-new-record">🏆 New Record!</p>
               )}
+              <ShareButton score={score} gameTitle="Dot Muncher" gameId="dotmuncher" />
               <button className="dotmuncher-start-btn" onClick={startGame}>
                 RETRY
               </button>
@@ -807,6 +810,8 @@ export default function App() {
               {score >= highScore && score > 0 && (
                 <p className="dotmuncher-new-record">🏆 New Record!</p>
               )}
+              <ShareButton score={score} gameTitle="Dot Muncher" gameId="dotmuncher" />
+              <GameRecommendations currentGameId="dotmuncher" />
               <button className="dotmuncher-start-btn" onClick={startGame}>
                 PLAY AGAIN
               </button>

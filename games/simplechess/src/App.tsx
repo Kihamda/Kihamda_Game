@@ -5,6 +5,8 @@ import {
   useParticles,
   ParticleLayer,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { PopupVariant } from "@shared";
 import {
@@ -275,6 +277,25 @@ export default function App() {
           >
             リセット
           </button>
+          {state.isCheckmate && (
+            <div style={{
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "rgba(0, 0, 0, 0.9)",
+              padding: "20px",
+              borderRadius: "8px",
+              textAlign: "center",
+              zIndex: 10,
+              color: "#fff",
+              minWidth: "200px"
+            }}>
+              <h2 style={{ marginBottom: "10px" }}>{state.currentPlayer === 'white' ? '黒' : '白'}の勝利！</h2>
+              <ShareButton score={1} gameTitle="Simple Chess" gameId="simplechess" />
+              <GameRecommendations currentGameId="simplechess" />
+            </div>
+          )}
         </footer>
       </div>
       <ParticleLayer particles={particles} />

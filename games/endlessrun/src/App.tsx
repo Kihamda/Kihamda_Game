@@ -6,6 +6,8 @@ import {
   ParticleLayer,
   ScorePopup,
   ScreenShake,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import "./App.css";
@@ -612,6 +614,8 @@ export default function App() {
               {gameState.score === gameState.highScore && gameState.score > 0 && (
                 <p className="endlessrun-new-record">🎉 NEW RECORD! 🎉</p>
               )}
+              <ShareButton score={gameState.score} gameTitle="Endless Run" gameId="endlessrun" />
+              <GameRecommendations currentGameId="endlessrun" />
               <button className="endlessrun-start-btn" onClick={startGame}>
                 RETRY
               </button>

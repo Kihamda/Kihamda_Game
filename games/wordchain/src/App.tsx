@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { GameShell, useHighScore, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import { GameShell, useHighScore, useAudio, useParticles, ParticleLayer, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import {
   getLastChar,
@@ -191,6 +191,10 @@ function ResultScreen({
         <button className="home-btn" onClick={onHome}>
           タイトルへ
         </button>
+        <div style={{ marginTop: 12 }}>
+          <ShareButton score={chainCount} gameTitle="Word Chain" gameId="wordchain" />
+          <GameRecommendations currentGameId="wordchain" />
+        </div>
       </div>
     </div>
   );

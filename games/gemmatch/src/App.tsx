@@ -3,6 +3,8 @@ import { GameShell } from "@shared/components/GameShell";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
 import { ComboCounter } from "@shared/components/ComboCounter";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
 import "./App.css";
@@ -573,6 +575,8 @@ export default function App() {
                 ? "⭐ よくできました！"
                 : "💪 がんばろう！"}
             </p>
+            <ShareButton score={score} gameTitle="Gem Match" gameId="gemmatch" />
+            <GameRecommendations currentGameId="gemmatch" />
             <button className="gm-btn gm-btn--restart" onClick={start}>
               もう一度
             </button>

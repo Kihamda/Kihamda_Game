@@ -440,3 +440,116 @@ body {
     0 0 20px currentColor,
     0 0 40px currentColor;
 }
+
+/* ── SNSシェアボタン ── */
+
+.share-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    background-color var(--transition);
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+}
+
+.share-btn:active {
+  transform: scale(0.96);
+}
+
+.share-btn-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.share-btn-label {
+  line-height: 1;
+}
+
+/* ネイティブシェアボタン (モバイル) */
+.share-btn--native {
+  background: var(--accent);
+  color: #fff;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.share-btn--native:hover {
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+/* Twitter/X ボタン */
+.share-btn--twitter {
+  background: #000;
+  color: #fff;
+}
+
+.share-btn--twitter:hover {
+  background: #1a1a1a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* LINE ボタン */
+.share-btn--line {
+  background: #06c755;
+  color: #fff;
+}
+
+.share-btn--line:hover {
+  background: #05b54c;
+  box-shadow: 0 4px 12px rgba(6, 199, 85, 0.4);
+}
+
+/* コピーボタン */
+.share-btn--copy {
+  background: var(--bg-panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.share-btn--copy:hover {
+  background: rgba(30, 41, 59, 0.9);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* コピー完了状態 */
+.share-btn--copy[aria-label="クリップボードにコピー"]:has(.share-btn-icon:first-child) {
+  /* デフォルト状態 */
+}
+
+/* モバイル最適化 */
+@media (max-width: 480px) {
+  .share-buttons {
+    gap: 6px;
+  }
+
+  .share-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .share-btn-icon {
+    font-size: 14px;
+  }
+}

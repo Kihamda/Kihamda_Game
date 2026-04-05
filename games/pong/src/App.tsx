@@ -6,6 +6,8 @@ import {
   useParticles,
   ParticleLayer,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 
 /** ゲームフェーズ */
@@ -534,6 +536,8 @@ export default function App() {
               <button type="button" className="pong-btn" onClick={resetGame}>
                 もう一度プレイ
               </button>
+              <ShareButton score={Math.max(score1, score2)} gameTitle="Pong" gameId="pong" />
+              <GameRecommendations currentGameId="pong" />
             </div>
           </div>
         )}

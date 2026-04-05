@@ -6,6 +6,8 @@ import {
   ParticleLayer,
   ScorePopup,
   ScreenShake,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import "./App.css";
@@ -624,6 +626,8 @@ export default function App() {
                     <span className="stat-label">逃</span>
                   </div>
                 </div>
+                <ShareButton score={resultData.score} gameTitle="Fishing" gameId="fishing" />
+                <GameRecommendations currentGameId="fishing" />
                 <p className="fishing-result-retry">クリックでリトライ</p>
               </div>
             </div>

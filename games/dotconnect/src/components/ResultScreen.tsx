@@ -1,3 +1,4 @@
+import { ShareButton } from "@shared/components/ShareButton";
 import type { PuzzleStage } from "../lib/types";
 import { STAGES } from "../lib/dotconnect";
 
@@ -23,6 +24,7 @@ export function ResultScreen({
       <p className="dotconnect-result-stage">
         Stage {stage.id}: {stage.name}
       </p>
+      <ShareButton score={stage.id} gameTitle="Dot Connect" gameId="dotconnect" />
       <div className="dotconnect-result-btns">
         {hasNextStage && (
           <button

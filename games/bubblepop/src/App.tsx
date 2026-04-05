@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { useAudio, useParticles, ScorePopup } from "@shared";
+import { useAudio, useParticles, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import { ParticleLayer, ComboCounter } from "@shared";
 import type { Phase, Bubble, ShootingBubble, GameResult } from "./lib/types";
@@ -484,6 +484,10 @@ export default function App() {
             <button onClick={startGame} style={{ padding: "16px 48px", fontSize: 24, fontWeight: "bold", color: "#1a1a2e", background: "linear-gradient(135deg, #4ecdc4, #2ab7a9)", border: "none", borderRadius: 12, cursor: "pointer" }}>
               RETRY
             </button>
+            <div style={{ marginTop: 16 }}>
+              <ShareButton score={score} gameTitle="Bubble Pop" gameId="bubblepop" />
+              <GameRecommendations currentGameId="bubblepop" />
+            </div>
           </div>
         )}
       </div>

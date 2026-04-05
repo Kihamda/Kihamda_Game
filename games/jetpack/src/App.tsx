@@ -1,3 +1,5 @@
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import { useRef, useEffect, useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import {
@@ -7,7 +9,9 @@ import {
   ScorePopup,
   ScreenShake,
 } from "@shared";
+
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
+
 import "./App.css";
 
 // Constants
@@ -650,6 +654,8 @@ export default function App() {
               {isNewHighScore && (
                 <p className="jetpack-new-record">🏆 New Record!</p>
               )}
+              <ShareButton score={score} gameTitle="Jetpack" gameId="jetpack" />
+              <GameRecommendations currentGameId="jetpack" />
               <button className="jetpack-start-btn" onClick={startGame}>
                 RETRY
               </button>

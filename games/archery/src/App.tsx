@@ -6,6 +6,8 @@ import {
   ParticleLayer,
   ScorePopup,
   ScreenShake,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { ScreenShakeHandle } from "@shared";
 import type { GameState, HitInfo } from "./lib/types";
@@ -110,45 +112,70 @@ export default function App() {
     audio.playClick();
   }, [audio]);
 
+  // ポインター座標からキャンバス座標を計算
+  const getCanvasCoords = useCallback((clientX: number, clientY: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = CANVAS_WIDTH / rect.width;
+    const scaleY = CANVAS_HEIGHT / rect.height;
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY,
+    };
+  }, []);
+
   const handleCanvasClick = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     setGameState((prev) => {
       if (prev.phase !== "aiming") return prev;
-
-      const canvas = canvasRef.current;
-      if (!canvas) return prev;
-
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = CANVAS_WIDTH / rect.width;
-      const scaleY = CANVAS_HEIGHT / rect.height;
-      const x = (e.clientX - rect.left) * scaleX;
-      const y = (e.clientY - rect.top) * scaleY;
+      const coords = getCanvasCoords(e.clientX, e.clientY);
+      if (!coords) return prev;
 
       // クリック位置に狙いを合わせて即座に発射
-      const aimed = updateAim(prev, x, y);
+      const aimed = updateAim(prev, coords.x, coords.y);
       playRelease();
       return shootArrow(aimed);
     });
-  }, [playRelease]);
+  }, [getCanvasCoords, playRelease]);
 
   const handleCanvasMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
     setGameState((prev) => {
       if (prev.phase !== "aiming") return prev;
-
-      const canvas = canvasRef.current;
-      if (!canvas) return prev;
-
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = CANVAS_WIDTH / rect.width;
-      const scaleY = CANVAS_HEIGHT / rect.height;
-      const x = (e.clientX - rect.left) * scaleX;
-      const y = (e.clientY - rect.top) * scaleY;
-
-      return updateAim(prev, x, y);
+      const coords = getCanvasCoords(e.clientX, e.clientY);
+      if (!coords) return prev;
+      return updateAim(prev, coords.x, coords.y);
     });
-  }, []);
+  }, [getCanvasCoords]);
 
-  // マウス押下で弓引き音
-  const handleMouseDown = useCallback(() => {
+  // タッチ対応：タップで発射
+  const handleTouchEnd = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+    if (e.changedTouches.length === 0) return;
+    const touch = e.changedTouches[0];
+    setGameState((prev) => {
+      if (prev.phase !== "aiming") return prev;
+      const coords = getCanvasCoords(touch.clientX, touch.clientY);
+      if (!coords) return prev;
+      const aimed = updateAim(prev, coords.x, coords.y);
+      playRelease();
+      return shootArrow(aimed);
+    });
+  }, [getCanvasCoords, playRelease]);
+
+  // タッチ対応：ドラッグで照準移動
+  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLCanvasElement>) => {
+    if (e.touches.length === 0) return;
+    e.preventDefault(); // スクロール防止
+    const touch = e.touches[0];
+    setGameState((prev) => {
+      if (prev.phase !== "aiming") return prev;
+      const coords = getCanvasCoords(touch.clientX, touch.clientY);
+      if (!coords) return prev;
+      return updateAim(prev, coords.x, coords.y);
+    });
+  }, [getCanvasCoords]);
+
+  // マウス/タッチ押下で弓引き音
+  const handlePointerDown = useCallback(() => {
     if (gameState.phase === "aiming") {
       playDraw();
     }
@@ -263,7 +290,10 @@ export default function App() {
             className="archery-canvas"
             onClick={handleCanvasClick}
             onMouseMove={handleCanvasMove}
-            onMouseDown={handleMouseDown}
+            onMouseDown={handlePointerDown}
+            onTouchStart={handlePointerDown}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           />
 
           {/* パーティクル */}
@@ -351,6 +381,8 @@ export default function App() {
               <button className="archery-btn" onClick={handleStart}>
                 もう一度
               </button>
+              <ShareButton score={gameState.totalScore} gameTitle="アーチェリー" gameId="archery" />
+              <GameRecommendations currentGameId="archery" />
             </div>
           )}
         </div>

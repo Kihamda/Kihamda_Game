@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup, useHighScore } from "@shared";
+import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup, useHighScore, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import "./App.css";
 
@@ -345,6 +345,8 @@ export default function App() {
               <button className="tt-start-btn" onClick={startGame}>
                 RETRY
               </button>
+              <ShareButton score={score} gameTitle="Tap Target" gameId="taptarget" />
+              <GameRecommendations currentGameId="taptarget" />
             </div>
           )}
 

@@ -3,6 +3,8 @@ import { GameShell } from "@shared/components/GameShell";
 import { ScreenShake } from "@shared/components/ScreenShake";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
 import type { ScreenShakeHandle } from "@shared/components/ScreenShake";
@@ -832,6 +834,8 @@ export default function App() {
               <button className="td-start-btn" onClick={startGame}>
                 RETRY
               </button>
+              <ShareButton score={gameState.wave} gameTitle="Tower Defense" gameId="towerdefense" />
+              <GameRecommendations currentGameId="towerdefense" />
             </div>
           )}
 
@@ -845,6 +849,8 @@ export default function App() {
               <button className="td-start-btn" onClick={startGame}>
                 RETRY
               </button>
+              <ShareButton score={gameState.wave} gameTitle="Tower Defense" gameId="towerdefense" />
+              <GameRecommendations currentGameId="towerdefense" />
             </div>
           )}
         </div>

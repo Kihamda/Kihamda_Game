@@ -5,6 +5,8 @@ import {
   useParticles,
   ParticleLayer,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { PopupVariant } from "@shared";
 import {
@@ -428,6 +430,8 @@ export default function App() {
               <button className="mergemaster-btn" onClick={handleReset}>
                 🔄 Retry
               </button>
+              <ShareButton score={gameState.score} gameTitle="Merge Master" gameId="mergemaster" />
+              <GameRecommendations currentGameId="mergemaster" />
             </div>
           )}
         </div>

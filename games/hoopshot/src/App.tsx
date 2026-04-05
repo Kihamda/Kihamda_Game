@@ -3,6 +3,7 @@ import { GameShell } from "@shared/components/GameShell";
 import { useAudio } from "@shared/hooks/useAudio";
 import { useParticles, ParticleLayer, ScorePopup, useHighScore } from "@shared";
 import type { PopupVariant } from "@shared";
+
 import "./App.css";
 
 // ゲーム定数

@@ -7,6 +7,8 @@ import {
   ScreenShake,
   ComboCounter,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import type { GameState, Brick } from "./lib/types";
@@ -40,7 +42,7 @@ export default function App() {
   const prevPhaseRef = useRef<string>("");
   const prevPowerUpCountRef = useRef<number>(0);
 
-  const [, setTick] = useState(0);
+  const [gameState, setGameState] = useState<GameState>(() => createInitialState(loadHighScore()));
   const [combo, setCombo] = useState(0);
 
   // ScorePopup用state
@@ -116,7 +118,7 @@ export default function App() {
       prevLivesRef.current = state.lives;
       prevPhaseRef.current = "playing";
       prevPowerUpCountRef.current = state.powerUps.length;
-      setTick((t) => t + 1);
+      setGameState({ ...gameStateRef.current });
     } else if (state.phase === "cleared") {
       gameStateRef.current = advanceStage(state);
       const newState = gameStateRef.current;
@@ -125,7 +127,7 @@ export default function App() {
       prevPhaseRef.current = "playing";
       prevPowerUpCountRef.current = 0;
       setCombo(0);
-      setTick((t) => t + 1);
+      setGameState({ ...newState });
     } else if (state.phase === "gameover") {
       saveHighScore(state.highScore);
       gameStateRef.current = createInitialState(state.highScore);
@@ -135,7 +137,7 @@ export default function App() {
       prevPhaseRef.current = "start";
       prevPowerUpCountRef.current = 0;
       setCombo(0);
-      setTick((t) => t + 1);
+      setGameState({ ...newState });
     } else if (state.phase === "playing" && state.laserActive) {
       if (laserCooldownRef.current <= 0) {
         gameStateRef.current = fireLaser(state);
@@ -504,6 +506,13 @@ export default function App() {
               size={popup.size}
             />
           ))}
+          {/* Game Over ShareButton */}
+          {gameState.phase === "gameover" && (
+            <div style={{ position: "absolute", bottom: 120, left: "50%", transform: "translateX(-50%)" }}>
+              <ShareButton score={gameState.score} gameTitle="Brick Mania" gameId="brickmania" />
+              <GameRecommendations currentGameId="brickmania" />
+            </div>
+          )}
         </div>
       </ScreenShake>
     </GameShell>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { ParticleLayer, useAudio, useParticles, ScorePopup } from "@shared";
+import { ParticleLayer, useAudio, useParticles, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import "./App.css";
 
@@ -300,6 +300,8 @@ export default function App() {
               {isNewRecord && (
                 <p className="numhunt__record">✨ 新記録！ ✨</p>
               )}
+              <ShareButton score={elapsedMs} gameTitle="Number Hunt" gameId="numhunt" />
+              <GameRecommendations currentGameId="numhunt" />
             </div>
           )}
         </div>

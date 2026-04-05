@@ -205,7 +205,7 @@ function App() {
       );
     }, 50);
     return () => clearInterval(timer);
-  }, [trail.length > 0]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [trail.length]);
 
   // ゲームオーバー時にベストスコア更新
   const prevPhaseRef = useRef(state.phase);

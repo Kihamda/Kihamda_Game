@@ -1,11 +1,14 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import type { MouseEvent as ReactMouseEvent, TouchEvent as ReactTouchEvent } from "react";
 import {
+  GameShell,
   useAudio,
   useParticles,
   ParticleLayer,
   ComboCounter,
   ScorePopup,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { PopupVariant } from "@shared";
 import {
@@ -447,6 +450,7 @@ const App = () => {
     .join(" ");
 
   return (
+    <GameShell gameId="wordsearch" layout="default">
     <div className="wordsearch-root">
       <ParticleLayer particles={particles} />
 
@@ -598,9 +602,12 @@ const App = () => {
           <button className="wordsearch-btn" onClick={restartGame}>
             もう一度
           </button>
+          <ShareButton score={totalScore} gameTitle="Word Search" gameId="wordsearch" />
+          <GameRecommendations currentGameId="wordsearch" />
         </div>
       )}
     </div>
+    </GameShell>
   );
 };
 

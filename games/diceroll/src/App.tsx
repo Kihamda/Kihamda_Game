@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { useAudio, useParticles, ScorePopup } from "@shared";
+import { useAudio, useParticles, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import { ParticleLayer } from "@shared";
 import "./App.css";
@@ -420,6 +420,8 @@ export default function App() {
               <p className="diceroll-new-record">🏆 新記録！ 🏆</p>
             )}
             <p>ハイスコア: {highScore}</p>
+            <ShareButton score={gameState.maxStreak} gameTitle="Dice Roll" gameId="diceroll" />
+            <GameRecommendations currentGameId="diceroll" />
             <button className="diceroll-button" onClick={startGame}>
               もう一度
             </button>

@@ -1,8 +1,11 @@
 import { useState, useCallback, useMemo } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { useAudio, useParticles, ScorePopup } from "@shared";
+
 import type { PopupVariant } from "@shared";
+
 import { ParticleLayer } from "@shared";
+
 import "./App.css";
 
 /* ---- Popup State ---- */

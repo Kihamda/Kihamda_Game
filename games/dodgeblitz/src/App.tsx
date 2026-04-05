@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import type { PopupVariant } from "@shared/components/ScorePopup";
 import { useAudio, useParticles } from "@shared";
 import { ParticleLayer } from "@shared";
@@ -405,6 +407,8 @@ export default function App() {
             {gameState.score === gameState.highScore && gameState.score > 0 && (
               <p className="dodgeblitz-new-record">🎉 NEW RECORD! 🎉</p>
             )}
+            <ShareButton score={gameState.score} gameTitle="Dodge Blitz" gameId="dodgeblitz" />
+            <GameRecommendations currentGameId="dodgeblitz" />
             <button className="dodgeblitz-start-btn" onClick={startGame}>
               RETRY
             </button>

@@ -1,6 +1,7 @@
 import type { HoleScore } from "../lib/types";
 import { GAME_WIDTH, GAME_HEIGHT, COLORS, COURSES } from "../lib/constants";
 import { getScoreLabel, getTotalScore, getTotalPar } from "../lib/minigolf";
+import { ShareButton } from "@shared";
 
 interface Props {
   scores: HoleScore[];
@@ -69,6 +70,7 @@ export function ResultScreen({ scores, bestScore, isNewBest, onRestart }: Props)
         >
           もう一度プレイ
         </button>
+        <ShareButton score={totalScore} gameTitle="Mini Golf" gameId="minigolf" />
       </div>
     </div>
   );

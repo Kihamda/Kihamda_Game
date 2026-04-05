@@ -2,6 +2,7 @@ import type { GameState, UpgradeType } from "../lib/types";
 import { UPGRADES } from "../lib/constants";
 import { formatNumber, canPurchaseUpgrade } from "../lib/clickmaster";
 import { AnimatedNumber } from "./AnimatedNumber";
+import { ShareButton } from "@shared/components/ShareButton";
 
 interface Props {
   gameState: GameState;
@@ -79,6 +80,7 @@ export function GameView({ gameState, onClick, onPurchase, onReset }: Props) {
 
       {/* Reset */}
       <div className="clickmaster-footer">
+        <ShareButton score={Math.floor(totalPoints)} gameTitle="Click Master" gameId="clickmaster" />
         <button
           type="button"
           className="clickmaster-reset-btn"

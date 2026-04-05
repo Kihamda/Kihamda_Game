@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { GameShell } from '@shared/components/GameShell';
 import { useHighScore } from '@shared/hooks/useHighScore';
-import { useAudio, useParticles, ParticleLayer, ScorePopup } from '@shared';
+import { useAudio, useParticles, ParticleLayer, ScorePopup, ShareButton, GameRecommendations } from '@shared';
 import type { PopupVariant } from '@shared';
 import './App.css';
 
@@ -339,6 +339,10 @@ export default function App() {
               <p className="colorswitch-newbest">NEW BEST!</p>
             )}
             <div className="colorswitch-tap">タップでリトライ</div>
+            <div style={{ marginTop: 16 }}>
+              <ShareButton score={score} gameTitle="Color Switch" gameId="colorswitch" />
+              <GameRecommendations currentGameId="colorswitch" />
+            </div>
           </div>
         )}
         <ParticleLayer particles={particles} />

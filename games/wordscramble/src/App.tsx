@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { GameShell, useHighScore, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import { GameShell, useHighScore, useAudio, useParticles, ParticleLayer, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -237,6 +237,10 @@ function ResultScreen({
         <button className="home-btn" onClick={onHome}>
           タイトルへ
         </button>
+        <div style={{ marginTop: 12 }}>
+          <ShareButton score={solvedCount} gameTitle="Word Scramble" gameId="wordscramble" />
+          <GameRecommendations currentGameId="wordscramble" />
+        </div>
       </div>
     </div>
   );

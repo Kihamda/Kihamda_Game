@@ -5,6 +5,8 @@ import { useParticles } from "@shared/hooks/useParticles";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScreenShake } from "@shared/components/ScreenShake";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import type { ScreenShakeHandle } from "@shared/components/ScreenShake";
 import type { PopupVariant } from "@shared/components/ScorePopup";
 import "./App.css";
@@ -676,6 +678,10 @@ export default function App() {
                     >
                       メニューへ
                     </button>
+                    <div style={{ marginTop: 12 }}>
+                      <ShareButton score={Math.floor(elapsedTime / 1000)} gameTitle="Sudoku" gameId="sudoku" />
+                      <GameRecommendations currentGameId="sudoku" />
+                    </div>
                   </div>
                 </div>
               </div>

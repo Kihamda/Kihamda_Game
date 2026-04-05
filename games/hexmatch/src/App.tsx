@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { useAudio, useParticles, useHighScore, ScorePopup } from "@shared";
+import { useAudio, useParticles, useHighScore, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import { ParticleLayer } from "@shared";
 import "./App.css";
@@ -539,6 +539,8 @@ export default function App() {
               {score >= 1500 && score < 3000 && "⭐⭐ すばらしい！"}
               {score < 1500 && "⭐ がんばりました！"}
             </p>
+            <ShareButton score={score} gameTitle="Hex Match" gameId="hexmatch" />
+            <GameRecommendations currentGameId="hexmatch" />
             <button className="hm-btn hm-btn--restart" onClick={startGame}>
               もう一度
             </button>

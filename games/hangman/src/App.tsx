@@ -2,6 +2,8 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import type { PopupVariant } from "@shared/components/ScorePopup";
 import { useParticles } from "@shared/hooks/useParticles";
 import { useAudio } from "@shared/hooks/useAudio";
@@ -383,6 +385,8 @@ function App() {
               {gameState.phase === "won" ? "🎉 勝利！" : "💀 ゲームオーバー"}
             </h2>
             <p className="result-word">正解: {gameState.word}</p>
+            <ShareButton score={gameState.streak} gameTitle="Hangman" gameId="hangman" />
+            <GameRecommendations currentGameId="hangman" />
             <button className="play-again-btn" onClick={resetGame}>
               もう一度プレイ
             </button>

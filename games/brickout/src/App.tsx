@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { useAudio } from "@shared/hooks/useAudio";
-import { useParticles, ParticleLayer, ScorePopup } from "@shared";
+import { useParticles, ParticleLayer, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import "./App.css";
 
@@ -189,7 +189,7 @@ export default function App() {
   // パーティクルエフェクト（共有システム）
   const { particles: sharedParticles, burst, sparkle, explosion, confetti } = useParticles();
 
-  const [, setTick] = useState(0);
+  const [gameState, setGameState] = useState<GameState>(createInitialState());
 
   // ScorePopup用のステート
   const [popup, setPopup] = useState<{
@@ -241,13 +241,13 @@ export default function App() {
     const state = gameStateRef.current;
     if (state.phase === "before") {
       state.phase = "in_progress";
-      setTick((t) => t + 1);
+      setGameState({ ...state });
     }
   }, []);
 
   const resetGame = useCallback(() => {
     gameStateRef.current = createInitialState();
-    setTick((t) => t + 1);
+    setGameState({ ...gameStateRef.current });
   }, []);
 
   // キーボード入力
@@ -782,7 +782,7 @@ export default function App() {
           playMiss();
           if (state.lives <= 0) {
             state.phase = "gameover";
-            setTick((t) => t + 1);
+            setGameState({ ...state });
           } else {
             state.balls = [createInitialBall()];
             state.currentSpeed = BALL_SPEED;
@@ -801,7 +801,7 @@ export default function App() {
           confetti(60); // クリア時のconfettiエフェクト
           // クリアポップアップ
           showPopup("CLEAR! +1000", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, "level", "xl");
-          setTick((t) => t + 1);
+          setGameState({ ...state });
         }
       }
 
@@ -896,6 +896,13 @@ export default function App() {
           variant={popup?.variant}
           size={popup?.size}
         />
+        {/* Game Over ShareButton */}
+        {(gameState.phase === "gameover" || gameState.phase === "cleared") && (
+          <div style={{ position: "absolute", bottom: 120, left: "50%", transform: "translateX(-50%)" }}>
+            <ShareButton score={gameState.score} gameTitle="Brick Out" gameId="brickout" />
+            <GameRecommendations currentGameId="brickout" />
+          </div>
+        )}
       </div>
     </GameShell>
   );

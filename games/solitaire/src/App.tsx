@@ -10,7 +10,7 @@ import {
   autoMoveToFoundation,
 } from "./lib/solitaire";
 import type { GameState, Suit, DragSource, Card, Phase } from "./lib/types";
-import { useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 
 const App = () => {
   const [gameState, setGameState] = useState<GameState>(() => createInitialGameState());
@@ -104,51 +104,55 @@ const App = () => {
   }, [playSuccess, playCelebrate, sparkle, confetti, showPopup]);
 
   return (
-    <div className="sol-container">
-      <ParticleLayer particles={particles} />
-      <ScorePopup
-        text={popup?.text ?? null}
-        popupKey={popup?.key}
-        variant="bonus"
-        y="30%"
-      />
-      <h1 className="sol-title">ソリティア</h1>
+    <GameShell gameId="solitaire" layout="default">
+      <div className="sol-container">
+        <ParticleLayer particles={particles} />
+        <ScorePopup
+          text={popup?.text ?? null}
+          popupKey={popup?.key}
+          variant="bonus"
+          y="30%"
+        />
+        <h1 className="sol-title">ソリティア</h1>
 
-      {phase === "start" && (
-        <div className="sol-start-screen">
-          <p>クロンダイク・ソリティア</p>
-          <button className="sol-btn" onClick={handleNewGame}>
-            ゲームを始める
-          </button>
-        </div>
-      )}
-
-      {phase === "playing" && (
-        <>
-          <div className="sol-controls">
+        {phase === "start" && (
+          <div className="sol-start-screen">
+            <p>クロンダイク・ソリティア</p>
             <button className="sol-btn" onClick={handleNewGame}>
-              新しいゲーム
+              ゲームを始める
             </button>
           </div>
-          <GameBoard
-            state={gameState}
-            onDraw={handleDraw}
-            onDrop={handleDrop}
-            onAutoMove={handleAutoMove}
-          />
-        </>
-      )}
+        )}
 
-      {phase === "won" && (
-        <div className="sol-win-screen">
-          <h2>おめでとうございます！</h2>
-          <p>{gameState.moves}手でクリアしました！</p>
-          <button className="sol-btn" onClick={handleNewGame}>
-            もう一度遊ぶ
-          </button>
-        </div>
-      )}
-    </div>
+        {phase === "playing" && (
+          <>
+            <div className="sol-controls">
+              <button className="sol-btn" onClick={handleNewGame}>
+                新しいゲーム
+              </button>
+            </div>
+            <GameBoard
+              state={gameState}
+              onDraw={handleDraw}
+              onDrop={handleDrop}
+              onAutoMove={handleAutoMove}
+            />
+          </>
+        )}
+
+        {phase === "won" && (
+          <div className="sol-win-screen">
+            <h2>おめでとうございます！</h2>
+            <p>{gameState.moves}手でクリアしました！</p>
+            <button className="sol-btn" onClick={handleNewGame}>
+              もう一度遊ぶ
+            </button>
+            <ShareButton score={gameState.moves} gameTitle="ソリティア" gameId="solitaire" />
+            <GameRecommendations currentGameId="solitaire" />
+          </div>
+        )}
+      </div>
+    </GameShell>
   );
 };
 

@@ -7,6 +7,8 @@ import {
   ParticleLayer,
   ScorePopup,
   ScreenShake,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
 import "./App.css";
@@ -133,6 +135,8 @@ export default function App() {
 
   const [, setTick] = useState(0);
   const [scorePopup, setScorePopup] = useState<ScorePopupData | null>(null);
+  const [finalScore, setFinalScore] = useState(0);
+  const [gamePhase, setGamePhase] = useState<"before" | "in_progress" | "after">("before");
 
   // ドーパミン演出用フック
   const { playTone, playMiss, playBonus, playCelebrate, playClick } = useAudio();
@@ -185,11 +189,14 @@ export default function App() {
   }, [playClick]);
 
   const startGame = useCallback(() => {
+    setGamePhase("before");
     gameStateRef.current.phase = "in_progress";
     setTick((t) => t + 1);
   }, []);
 
   const resetGame = useCallback(() => {
+    setFinalScore(gameStateRef.current.score);
+    setGamePhase("after");
     gameStateRef.current = createInitialState();
     setTick((t) => t + 1);
   }, []);
@@ -203,6 +210,7 @@ export default function App() {
     state.comboCount = 0;
     state.comboTimer = 0;
     state.bumpers = state.bumpers.map((b) => ({ ...b, flashTimer: 0 }));
+    setGamePhase("in_progress");
     setTick((t) => t + 1);
   }, []);
 
@@ -684,6 +692,44 @@ export default function App() {
               variant={scorePopup.variant}
               size="md"
             />
+          )}
+          {gamePhase === "after" && (
+            <div style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              zIndex: 10,
+              borderRadius: "8px",
+            }}>
+              <h2 style={{ color: "#fff", marginBottom: "20px", fontSize: "32px" }}>GAME OVER</h2>
+              <p style={{ color: "#fff", fontSize: "24px", marginBottom: "20px" }}>スコア: {finalScore}</p>
+              <button
+                onClick={() => {
+                  resetGame();
+                }}
+                style={{
+                  padding: "10px 30px",
+                  fontSize: "16px",
+                  marginBottom: "15px",
+                  backgroundColor: "#ff6b6b",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                もう一度
+              </button>
+              <ShareButton score={finalScore} gameTitle="Pinball" gameId="pinball" />
+              <GameRecommendations currentGameId="pinball" />
+            </div>
           )}
         </div>
       </ScreenShake>

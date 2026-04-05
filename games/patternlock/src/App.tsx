@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect, useRef, useCallback } from "react";
-import { GameShell, useParticles, ParticleLayer, useAudio, ScorePopup } from "@shared";
+import { GameShell, useParticles, ParticleLayer, useAudio, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import "./App.css";
 
 /* ---- Types ---- */
@@ -429,6 +429,26 @@ export default function App() {
           <button className="patternlock-start" onClick={startGame}>
             {phase === "idle" ? "START" : "RETRY"}
           </button>
+        )}
+
+        {phase === "gameover" && (
+          <div style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "rgba(0, 0, 0, 0.9)",
+            padding: "20px",
+            borderRadius: "8px",
+            textAlign: "center",
+            zIndex: 10,
+            color: "#fff"
+          }}>
+            <h2 style={{ marginBottom: "10px", fontSize: "24px" }}>GAME OVER</h2>
+            <p style={{ marginBottom: "20px", fontSize: "18px" }}>Level: {level - 1}</p>
+            <ShareButton score={level - 1} gameTitle="Pattern Lock" gameId="patternlock" />
+            <GameRecommendations currentGameId="patternlock" />
+          </div>
         )}
 
         {phase === "success" && (

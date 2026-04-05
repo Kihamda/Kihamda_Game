@@ -1,6 +1,6 @@
 import { useCallback, useState, useRef, useEffect } from "react";
 import "./App.css";
-import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup } from "@shared";
+import { GameShell, useAudio, useParticles, ParticleLayer, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -453,6 +453,8 @@ function ResultScreen({
           タイトルへ
         </button>
       </div>
+      <ShareButton score={score} gameTitle="クロスワード" gameId="crossword" />
+      <GameRecommendations currentGameId="crossword" />
     </div>
   );
 }

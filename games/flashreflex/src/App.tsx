@@ -7,6 +7,8 @@ import {
   ParticleLayer,
   ScorePopup,
   ComboCounter,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { PopupVariant } from "@shared";
 
@@ -430,6 +432,8 @@ export default function App() {
                   ハイスコア: {highScore} ms
                 </p>
               )}
+              <ShareButton score={average ?? 0} gameTitle="Flash Reflex" gameId="flashreflex" />
+              <GameRecommendations currentGameId="flashreflex" />
               <button
                 type="button"
                 className="flashreflex-button"

@@ -1,3 +1,5 @@
+import { ShareButton } from "@shared/components/ShareButton";
+
 interface Props {
   score: number;
   highScore: number;
@@ -65,6 +67,9 @@ export function ResultScreen({ score, highScore, isNewHighScore, onRestart }: Pr
       >
         もう一度プレイ
       </button>
+      <div style={{ marginTop: "16px" }}>
+        <ShareButton score={score} gameTitle="ボウリング" gameId="bowling" />
+      </div>
     </div>
   );
 }

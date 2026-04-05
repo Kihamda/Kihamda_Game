@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { useAudio, useParticles, ScorePopup } from "@shared";
+import { useAudio, useParticles, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import { ParticleLayer } from "@shared";
 import "./App.css";
@@ -333,6 +333,8 @@ export default function App() {
             <button className="cw-btn cw-btn--restart" onClick={start}>
               もう一度
             </button>
+            <ShareButton score={playerWins} gameTitle="Card War" gameId="cardwar" />
+            <GameRecommendations currentGameId="cardwar" />
           </div>
         )}
       </div>

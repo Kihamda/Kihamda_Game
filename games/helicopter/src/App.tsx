@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { useParticles, ParticleLayer, ScorePopup, ScreenShake, useAudio } from "@shared";
+import { useParticles, ParticleLayer, ScorePopup, ScreenShake, useAudio, ShareButton, GameRecommendations } from "@shared";
 import type { ScreenShakeHandle, PopupVariant } from "@shared";
+
 import "./App.css";
 
 // Canvas dimensions
@@ -573,6 +574,8 @@ export default function App() {
               {gameState.isNewHighScore && (
                 <p className="helicopter-new-record">🎉 NEW RECORD! 🎉</p>
               )}
+              <ShareButton score={Math.floor(gameState.distance)} gameTitle="Helicopter" gameId="helicopter" />
+              <GameRecommendations currentGameId="helicopter" />
               <button className="helicopter-start-btn" onClick={startGame}>
                 RETRY
               </button>

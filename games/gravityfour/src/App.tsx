@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { ParticleLayer, useAudio, useParticles, ScorePopup } from "@shared";
+import { ParticleLayer, useAudio, useParticles, ScorePopup, ShareButton, GameRecommendations } from "@shared";
 import type { PopupVariant } from "@shared";
 import {
   createInitialState,
@@ -215,6 +215,8 @@ export default function App() {
         </div>
 
         <footer className="gravityfour-footer">
+          {state.winner && <ShareButton score={1} gameTitle="Gravity Four" gameId="gravityfour" />}
+          {state.winner && <GameRecommendations currentGameId="gravityfour" />}
           <button
             type="button"
             className="gravityfour-reset-btn"

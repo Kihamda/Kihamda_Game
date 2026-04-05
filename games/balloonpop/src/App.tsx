@@ -6,6 +6,8 @@ import {
   ParticleLayer,
   ScreenShake,
   ComboCounter,
+  ShareButton,
+  GameRecommendations,
 } from "@shared";
 import type { ScreenShakeHandle } from "@shared";
 import "./App.css";
@@ -420,6 +422,8 @@ export default function App() {
               <button className="balloonpop-button" onClick={startGame}>
                 Play Again
               </button>
+              <ShareButton score={score} gameTitle="Balloon Pop" gameId="balloonpop" />
+              <GameRecommendations currentGameId="balloonpop" />
             </div>
           )}
         </div>

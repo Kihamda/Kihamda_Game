@@ -2,6 +2,8 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { ParticleLayer } from "@shared/components/ParticleLayer";
 import { ScorePopup } from "@shared/components/ScorePopup";
+import { ShareButton } from "@shared/components/ShareButton";
+import { GameRecommendations } from "@shared/components/GameRecommendations";
 import { ScreenShake } from "@shared/components/ScreenShake";
 import type { ScreenShakeHandle } from "@shared/components/ScreenShake";
 import { useParticles } from "@shared/hooks/useParticles";
@@ -447,6 +449,8 @@ export default function App() {
               <button className="snake-start-btn" onClick={startGame}>
                 RETRY
               </button>
+              <ShareButton score={score} gameTitle="Snake Chaos" gameId="snakechaos" />
+              <GameRecommendations currentGameId="snakechaos" />
             </div>
           )}
         </div>
