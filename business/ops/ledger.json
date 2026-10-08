@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": 48,
+  "revision": 49,
   "business_id": "game-site",
   "fence": 3,
   "lease": null,
@@ -605,6 +605,22 @@
       "selected_game": "merge2048",
       "experiment_id": "EXP-merge2048",
       "evidence": "business/evidence/catalog-first-plan.json"
+    },
+    "D-2048-storage-ci-20261009": {
+      "id": "D-2048-storage-ci-20261009",
+      "source": "https://github.com/Kihamda/Kihamda_Game/actions/runs/37851793681",
+      "hypothesis": "保存品質の改善が開始/再訪へ寄与する可能性。CI成功は技術品質だけで事業効果は未観測。",
+      "next_step": "T-measurement-audit then T-2048-mobile-shell; no public action",
+      "experiment_id": "EXP-merge2048",
+      "evidence": {
+        "code_commit": "1f92675bbf6b0484eb42f0c53b53b8c8a5feafa6",
+        "workflow": "CI — Lint & Build",
+        "run_id": 37851793681,
+        "status": "completed",
+        "conclusion": "success",
+        "checked_at": "2026-10-08T22:12:21Z"
+      },
+      "note": "Post-completion read-only CI confirmation; preserve prior report and hashes without rewriting."
     }
   },
   "runs": {
@@ -1906,7 +1922,33 @@
       },
       "previous": "9a0488e2f66094f5a8da94f2ae4ee6eaf8902da291ed15482768d31fb248fb15",
       "sha256": "c1f8b4cad3ff8598fc74c5406bc8e664f7d7a43386febed3a6b614839ae94604"
+    },
+    {
+      "revision": 49,
+      "at": 1791497564.6947236,
+      "action": "decision",
+      "data": {
+        "id": "D-2048-storage-ci-20261009",
+        "source": "https://github.com/Kihamda/Kihamda_Game/actions/runs/37851793681",
+        "hypothesis": "保存品質の改善が開始/再訪へ寄与する可能性。CI成功は技術品質だけで事業効果は未観測。",
+        "next_step": "T-measurement-audit then T-2048-mobile-shell; no public action",
+        "experiment_id": "EXP-merge2048",
+        "evidence": {
+          "code_commit": "1f92675bbf6b0484eb42f0c53b53b8c8a5feafa6",
+          "workflow": "CI — Lint & Build",
+          "run_id": 37851793681,
+          "status": "completed",
+          "conclusion": "success",
+          "checked_at": "2026-10-08T22:12:21Z"
+        },
+        "note": "Post-completion read-only CI confirmation; preserve prior report and hashes without rewriting."
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "c1f8b4cad3ff8598fc74c5406bc8e664f7d7a43386febed3a6b614839ae94604",
+      "sha256": "9afcf89b79d935566902b8e6999dc39cba3ebe22f417468b393d000835da971b"
     }
   ],
-  "projection_sha256": "3f2da7791b77af3e4cc081f4d371a63a1ec602ead7de91b3414ffba1b3a51dfd"
+  "projection_sha256": "8180d8afc551a5a8f2a02b72fda924e6d87dee14309ea53a03f4090fb9d24c9d"
 }
