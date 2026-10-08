@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 24,
+  "revision": 26,
   "business_id": "game-site",
-  "fence": 1,
-  "lease": null,
+  "fence": 2,
+  "lease": {
+    "run_id": "scheduled-game-20261009-0100",
+    "task_id": "T-catalog-first-plan",
+    "fence": 2,
+    "expires_at": 1791476710.0564196
+  },
   "tasks": {
     "T-system-bootstrap": {
       "id": "T-system-bootstrap",
@@ -106,9 +111,16 @@
       "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
       "decision_id": "D-game-pdca-20261008",
       "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
-      "status": "ready",
+      "status": "running",
       "checkpoints": [],
-      "claims": []
+      "claims": [
+        {
+          "run_id": "scheduled-game-20261009-0100",
+          "task_id": "T-catalog-first-plan",
+          "fence": 2,
+          "expires_at": 1791476710.0564196
+        }
+      ]
     },
     "T-measurement-audit": {
       "id": "T-measurement-audit",
@@ -259,6 +271,13 @@
       "note": "Bootstrap work before ledger existed is retrospective preparation, not a fabricated prior claim.",
       "status": "completed",
       "started_at": 1791456805.253445
+    },
+    "scheduled-game-20261009-0100": {
+      "scheduled_at": "2026-10-09T01:00:00+09:00",
+      "run_id": "scheduled-game-20261009-0100",
+      "source": "scheduled:game-site:2026-10-09T01:00:00+09:00",
+      "status": "open",
+      "started_at": 1791475210.0343318
     }
   },
   "experiments": {
@@ -341,7 +360,9 @@
       "release": null
     }
   },
-  "slots": {},
+  "slots": {
+    "2026-10-09T01:00:00+09:00": "scheduled-game-20261009-0100"
+  },
   "feedback": [
     {
       "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
@@ -941,7 +962,39 @@
       },
       "previous": "129c90144f1ca61f31e8a1b8936b2a40632916ebb3f9c4d0e4885eb719d567f3",
       "sha256": "cc72fb8eb40bce48f4a76864704dbb9b836405533b4830e1697219e97dce88ad"
+    },
+    {
+      "revision": 25,
+      "at": 1791475210.0343318,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-09T01:00:00+09:00",
+        "run_id": "scheduled-game-20261009-0100"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "cc72fb8eb40bce48f4a76864704dbb9b836405533b4830e1697219e97dce88ad",
+      "sha256": "39c5f0da613500fa5e659bcca52ef71effa44dda11a9ad68c9a81986807bb90c"
+    },
+    {
+      "revision": 26,
+      "at": 1791475210.0564196,
+      "action": "claim",
+      "data": {
+        "run_id": "scheduled-game-20261009-0100",
+        "task_id": "T-catalog-first-plan",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "scheduled-game-20261009-0100",
+        "task_id": "T-catalog-first-plan",
+        "fence": 2,
+        "expires_at": 1791476710.0564196
+      },
+      "previous": "39c5f0da613500fa5e659bcca52ef71effa44dda11a9ad68c9a81986807bb90c",
+      "sha256": "9fbec1813f903e97753dc52464d4070dfa7ec99c9b41c57aea860d0c871dc078"
     }
   ],
-  "projection_sha256": "e6d656ed03e9362c9dad2606b0ed00d514ff23fa5535127e236f4270f8b34665"
+  "projection_sha256": "ede9f51cb174e29a856213db9f9a4de2db6b436a1f011367a05b3f6b853925a9"
 }
