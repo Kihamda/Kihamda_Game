@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 24,
+  "revision": 35,
   "business_id": "game-site",
-  "fence": 1,
+  "fence": 2,
   "lease": null,
   "tasks": {
     "T-system-bootstrap": {
@@ -106,9 +106,89 @@
       "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
       "decision_id": "D-game-pdca-20261008",
       "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
-      "status": "ready",
-      "checkpoints": [],
-      "claims": []
+      "status": "done",
+      "checkpoints": [
+        {
+          "kind": "artifact",
+          "at": 1791475667.2033086,
+          "run_id": "scheduled-game-20261009-0100",
+          "fence": 2,
+          "artifact": {
+            "path": "artifacts/3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8",
+            "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8",
+            "name": "catalog-first-plan.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791475667.2119353,
+          "run_id": "scheduled-game-20261009-0100",
+          "fence": 2,
+          "artifact": {
+            "path": "artifacts/9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7",
+            "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7",
+            "name": "catalog-qa-20261009-0100.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791475667.2203188,
+          "run_id": "scheduled-game-20261009-0100",
+          "fence": 2,
+          "artifact": {
+            "path": "artifacts/5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e",
+            "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e",
+            "name": "catalog-qa-20261009-0100.mjs"
+          }
+        },
+        {
+          "run_id": "scheduled-game-20261009-0100",
+          "fence": 2,
+          "artifacts": [
+            {
+              "path": "business/evidence/catalog-first-plan.json",
+              "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8"
+            },
+            {
+              "path": "business/ops/artifacts/3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8",
+              "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8"
+            },
+            {
+              "path": "business/evidence/catalog-qa-20261009-0100.json",
+              "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7"
+            },
+            {
+              "path": "business/ops/artifacts/9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7",
+              "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7"
+            },
+            {
+              "path": "business/evidence/catalog-qa-20261009-0100.mjs",
+              "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e"
+            },
+            {
+              "path": "business/ops/artifacts/5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e",
+              "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e"
+            }
+          ],
+          "checks": [
+            "catalog-policy/3 core experiences and browser defects evidenced",
+            "unknown demand/KPI/revenue/profit null; QA separate",
+            "one focused game + acceptance + decision and granular successor tasks",
+            "build pass; no game source edits/no deploy"
+          ],
+          "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
+          "passed": true,
+          "at": 1791475667.228835
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "scheduled-game-20261009-0100",
+          "task_id": "T-catalog-first-plan",
+          "fence": 2,
+          "expires_at": 1791476710.0564196
+        }
+      ]
     },
     "T-measurement-audit": {
       "id": "T-measurement-audit",
@@ -172,8 +252,16 @@
         "mobile game shell QA",
         "anonymous measured data"
       ],
-      "status": "ready",
-      "checkpoints": [],
+      "status": "cancelled",
+      "checkpoints": [
+        {
+          "task_id": "T-migrated-2048-review",
+          "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+          "reason": "広い旧工程を保存→mobileの独立工程へ分割。元ID/出典/未完了/historyを残し、新taskへ継承。実行済み扱いではない。",
+          "next_step": "T-2048-storage-first then T-2048-mobile-shell",
+          "at": 1791475667.189242
+        }
+      ],
       "claims": []
     },
     "T-monetization-eligibility": {
@@ -235,6 +323,75 @@
         }
       ],
       "claims": []
+    },
+    "T-2048-storage-first": {
+      "decision_id": "D-catalog-2048-20261009",
+      "hypothesis": "保存/表示障害の除去が開始/再訪に寄与する可能性、効果未観測",
+      "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+      "experiment_id": "EXP-merge2048",
+      "pdca": "do",
+      "origin_id": "T-20261008-game-storage-fix",
+      "origin_decision_id": "DB-20261008-merge2048-storage",
+      "origin_source": "https://github.com/Kihamda/Sell-Something-Well/blob/main/projects/income/events/00094.json",
+      "id": "T-2048-storage-first",
+      "objective": "2048の保存拒否による起動障害を一工程で修正する",
+      "acceptance": [
+        "指定commitと最新mainの差分を照合、保存のみの候補へ範囲限定",
+        "通常/アクセス拒否/read例外/write例外/不正値でも起動・得点・New Gameが動く",
+        "ゲームsource変更版のbuild/browser QAと同一版差分/リスクを揃え別branch PR、main操作なし"
+      ],
+      "outputs": [
+        "storage-only patch/commit/PR",
+        "browser regression evidence"
+      ],
+      "checks": [
+        "source baseline diff",
+        "storage regressions and real browser",
+        "full build",
+        "remote head/blob readback"
+      ],
+      "next_step": "T-2048-mobile-shell; quality gate前の公開提案は不可",
+      "depends_on": [
+        "T-catalog-first-plan"
+      ],
+      "priority": 15,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-2048-mobile-shell": {
+      "decision_id": "D-catalog-2048-20261009",
+      "hypothesis": "保存/表示障害の除去が開始/再訪に寄与する可能性、効果未観測",
+      "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+      "experiment_id": "EXP-merge2048",
+      "pdca": "do",
+      "origin_id": "T-20261008-game-storage-fix",
+      "origin_decision_id": "DB-20261008-merge2048-storage",
+      "origin_source": "https://github.com/Kihamda/Sell-Something-Well/blob/main/projects/income/events/00094.json",
+      "id": "T-2048-mobile-shell",
+      "objective": "2048のスマホ表示欠損と実タッチ操作を検査・修正する",
+      "acceptance": [
+        "320/390/横画面/desktopで盤面と必須操作のframe clippingを解消",
+        "実touch/key/New Game/reloadの検査とSafari/低性能の未確認を明記",
+        "共有shell変更時はn目並べ/Snakeの表示回帰、別branch PR"
+      ],
+      "outputs": [
+        "mobile patch/PR",
+        "viewport/touch/browser evidence"
+      ],
+      "checks": [
+        "geometry assertions and screenshots",
+        "CDP touch interactions",
+        "full build/shared shell regression"
+      ],
+      "next_step": "同一版の全quality gate検査→本人公開判断→14/28日観測",
+      "depends_on": [
+        "T-2048-storage-first"
+      ],
+      "priority": 30,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -250,6 +407,15 @@
         "no BOOTH changes",
         "0 JPY upfront"
       ]
+    },
+    "D-catalog-2048-20261009": {
+      "id": "D-catalog-2048-20261009",
+      "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+      "hypothesis": "保存拒否での起動とモバイル表示を成立させれば意図的な開始/再訪の改善につながる可能性。事業効果未観測。",
+      "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
+      "selected_game": "merge2048",
+      "experiment_id": "EXP-merge2048",
+      "evidence": "business/evidence/catalog-first-plan.json"
     }
   },
   "runs": {
@@ -259,6 +425,13 @@
       "note": "Bootstrap work before ledger existed is retrospective preparation, not a fabricated prior claim.",
       "status": "completed",
       "started_at": 1791456805.253445
+    },
+    "scheduled-game-20261009-0100": {
+      "scheduled_at": "2026-10-09T01:00:00+09:00",
+      "run_id": "scheduled-game-20261009-0100",
+      "source": "scheduled:game-site:2026-10-09T01:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791475210.0343318
     }
   },
   "experiments": {
@@ -317,10 +490,20 @@
       ],
       "measurement_plan": "匿名集計があれば期間・定義・sourceで人気/離脱/再訪を比較。なければ品質根拠だけ",
       "decision_id": "D-game-pdca-20261008",
-      "next_step": "既存成果と未完了を確認",
+      "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
       "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
-      "stage": "plan",
-      "history": [],
+      "stage": "do",
+      "history": [
+        {
+          "id": "EXP-catalog",
+          "stage": "do",
+          "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+          "evidence": "business/evidence/catalog-first-plan.json",
+          "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
+          "at": 1791475667.1956582,
+          "previous_stage": "plan"
+        }
+      ],
       "release": null
     },
     "EXP-merge2048": {
@@ -341,7 +524,9 @@
       "release": null
     }
   },
-  "slots": {},
+  "slots": {
+    "2026-10-09T01:00:00+09:00": "scheduled-game-20261009-0100"
+  },
   "feedback": [
     {
       "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
@@ -941,7 +1126,276 @@
       },
       "previous": "129c90144f1ca61f31e8a1b8936b2a40632916ebb3f9c4d0e4885eb719d567f3",
       "sha256": "cc72fb8eb40bce48f4a76864704dbb9b836405533b4830e1697219e97dce88ad"
+    },
+    {
+      "revision": 25,
+      "at": 1791475210.0343318,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-09T01:00:00+09:00",
+        "run_id": "scheduled-game-20261009-0100"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "cc72fb8eb40bce48f4a76864704dbb9b836405533b4830e1697219e97dce88ad",
+      "sha256": "39c5f0da613500fa5e659bcca52ef71effa44dda11a9ad68c9a81986807bb90c"
+    },
+    {
+      "revision": 26,
+      "at": 1791475210.0564196,
+      "action": "claim",
+      "data": {
+        "run_id": "scheduled-game-20261009-0100",
+        "task_id": "T-catalog-first-plan",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "scheduled-game-20261009-0100",
+        "task_id": "T-catalog-first-plan",
+        "fence": 2,
+        "expires_at": 1791476710.0564196
+      },
+      "previous": "39c5f0da613500fa5e659bcca52ef71effa44dda11a9ad68c9a81986807bb90c",
+      "sha256": "9fbec1813f903e97753dc52464d4070dfa7ec99c9b41c57aea860d0c871dc078"
+    },
+    {
+      "revision": 27,
+      "at": 1791475667.169461,
+      "action": "decision",
+      "data": {
+        "id": "D-catalog-2048-20261009",
+        "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+        "hypothesis": "保存拒否での起動とモバイル表示を成立させれば意図的な開始/再訪の改善につながる可能性。事業効果未観測。",
+        "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
+        "selected_game": "merge2048",
+        "experiment_id": "EXP-merge2048",
+        "evidence": "business/evidence/catalog-first-plan.json"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "9fbec1813f903e97753dc52464d4070dfa7ec99c9b41c57aea860d0c871dc078",
+      "sha256": "2de0b88ebbac9f970453f84913bc909bbe4307414af80f1544c4910367cb239b"
+    },
+    {
+      "revision": 28,
+      "at": 1791475667.177449,
+      "action": "task",
+      "data": {
+        "decision_id": "D-catalog-2048-20261009",
+        "hypothesis": "保存/表示障害の除去が開始/再訪に寄与する可能性、効果未観測",
+        "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+        "experiment_id": "EXP-merge2048",
+        "pdca": "do",
+        "origin_id": "T-20261008-game-storage-fix",
+        "origin_decision_id": "DB-20261008-merge2048-storage",
+        "origin_source": "https://github.com/Kihamda/Sell-Something-Well/blob/main/projects/income/events/00094.json",
+        "id": "T-2048-storage-first",
+        "objective": "2048の保存拒否による起動障害を一工程で修正する",
+        "acceptance": [
+          "指定commitと最新mainの差分を照合、保存のみの候補へ範囲限定",
+          "通常/アクセス拒否/read例外/write例外/不正値でも起動・得点・New Gameが動く",
+          "ゲームsource変更版のbuild/browser QAと同一版差分/リスクを揃え別branch PR、main操作なし"
+        ],
+        "outputs": [
+          "storage-only patch/commit/PR",
+          "browser regression evidence"
+        ],
+        "checks": [
+          "source baseline diff",
+          "storage regressions and real browser",
+          "full build",
+          "remote head/blob readback"
+        ],
+        "next_step": "T-2048-mobile-shell; quality gate前の公開提案は不可",
+        "depends_on": [
+          "T-catalog-first-plan"
+        ],
+        "priority": 15
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "2de0b88ebbac9f970453f84913bc909bbe4307414af80f1544c4910367cb239b",
+      "sha256": "8c230f871f15e974e84b930f705994d4de117e51cfe65154e7745e877102cce0"
+    },
+    {
+      "revision": 29,
+      "at": 1791475667.18352,
+      "action": "task",
+      "data": {
+        "decision_id": "D-catalog-2048-20261009",
+        "hypothesis": "保存/表示障害の除去が開始/再訪に寄与する可能性、効果未観測",
+        "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+        "experiment_id": "EXP-merge2048",
+        "pdca": "do",
+        "origin_id": "T-20261008-game-storage-fix",
+        "origin_decision_id": "DB-20261008-merge2048-storage",
+        "origin_source": "https://github.com/Kihamda/Sell-Something-Well/blob/main/projects/income/events/00094.json",
+        "id": "T-2048-mobile-shell",
+        "objective": "2048のスマホ表示欠損と実タッチ操作を検査・修正する",
+        "acceptance": [
+          "320/390/横画面/desktopで盤面と必須操作のframe clippingを解消",
+          "実touch/key/New Game/reloadの検査とSafari/低性能の未確認を明記",
+          "共有shell変更時はn目並べ/Snakeの表示回帰、別branch PR"
+        ],
+        "outputs": [
+          "mobile patch/PR",
+          "viewport/touch/browser evidence"
+        ],
+        "checks": [
+          "geometry assertions and screenshots",
+          "CDP touch interactions",
+          "full build/shared shell regression"
+        ],
+        "next_step": "同一版の全quality gate検査→本人公開判断→14/28日観測",
+        "depends_on": [
+          "T-2048-storage-first"
+        ],
+        "priority": 30
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "8c230f871f15e974e84b930f705994d4de117e51cfe65154e7745e877102cce0",
+      "sha256": "4e749067ba2458e8dc186e3e5c1fc9eaae49130df828372fa680ced8829d83d3"
+    },
+    {
+      "revision": 30,
+      "at": 1791475667.189242,
+      "action": "cancel",
+      "data": {
+        "task_id": "T-migrated-2048-review",
+        "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+        "reason": "広い旧工程を保存→mobileの独立工程へ分割。元ID/出典/未完了/historyを残し、新taskへ継承。実行済み扱いではない。",
+        "next_step": "T-2048-storage-first then T-2048-mobile-shell"
+      },
+      "result": {
+        "recorded": "cancel"
+      },
+      "previous": "4e749067ba2458e8dc186e3e5c1fc9eaae49130df828372fa680ced8829d83d3",
+      "sha256": "e7373e7b6b60865c8c4992812b7100c37b9430ce0103bfb7326bea8e546b0844"
+    },
+    {
+      "revision": 31,
+      "at": 1791475667.1956582,
+      "action": "experiment-stage",
+      "data": {
+        "id": "EXP-catalog",
+        "stage": "do",
+        "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+        "evidence": "business/evidence/catalog-first-plan.json",
+        "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "e7373e7b6b60865c8c4992812b7100c37b9430ce0103bfb7326bea8e546b0844",
+      "sha256": "5d6180d054b85e1b5d104d2b9eadbe17b58cf31575dac7cd153f62df0d9f73d9"
+    },
+    {
+      "revision": 32,
+      "at": 1791475667.2033086,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0100",
+        "fence": 2,
+        "name": "catalog-first-plan.json",
+        "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8"
+      },
+      "result": {
+        "path": "artifacts/3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8",
+        "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8",
+        "name": "catalog-first-plan.json"
+      },
+      "previous": "5d6180d054b85e1b5d104d2b9eadbe17b58cf31575dac7cd153f62df0d9f73d9",
+      "sha256": "7fa1b9a3294bba04a9d600ae3a607e2bfa4742ced4e8da03225cb014de6e107a"
+    },
+    {
+      "revision": 33,
+      "at": 1791475667.2119353,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0100",
+        "fence": 2,
+        "name": "catalog-qa-20261009-0100.json",
+        "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7"
+      },
+      "result": {
+        "path": "artifacts/9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7",
+        "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7",
+        "name": "catalog-qa-20261009-0100.json"
+      },
+      "previous": "7fa1b9a3294bba04a9d600ae3a607e2bfa4742ced4e8da03225cb014de6e107a",
+      "sha256": "1bcd1c82fb9d5169ea1e89214e8e96acd6ae51b46c2a31d89649f961f65a847a"
+    },
+    {
+      "revision": 34,
+      "at": 1791475667.2203188,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0100",
+        "fence": 2,
+        "name": "catalog-qa-20261009-0100.mjs",
+        "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e"
+      },
+      "result": {
+        "path": "artifacts/5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e",
+        "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e",
+        "name": "catalog-qa-20261009-0100.mjs"
+      },
+      "previous": "1bcd1c82fb9d5169ea1e89214e8e96acd6ae51b46c2a31d89649f961f65a847a",
+      "sha256": "cbe885ef2487ca58bfbab2c1861eabd889bb7da54f0232d775c6afd0a09f8f98"
+    },
+    {
+      "revision": 35,
+      "at": 1791475667.228835,
+      "action": "complete",
+      "data": {
+        "run_id": "scheduled-game-20261009-0100",
+        "fence": 2,
+        "artifacts": [
+          {
+            "path": "business/evidence/catalog-first-plan.json",
+            "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8"
+          },
+          {
+            "path": "business/ops/artifacts/3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8",
+            "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8"
+          },
+          {
+            "path": "business/evidence/catalog-qa-20261009-0100.json",
+            "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7"
+          },
+          {
+            "path": "business/ops/artifacts/9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7",
+            "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7"
+          },
+          {
+            "path": "business/evidence/catalog-qa-20261009-0100.mjs",
+            "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e"
+          },
+          {
+            "path": "business/ops/artifacts/5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e",
+            "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e"
+          }
+        ],
+        "checks": [
+          "catalog-policy/3 core experiences and browser defects evidenced",
+          "unknown demand/KPI/revenue/profit null; QA separate",
+          "one focused game + acceptance + decision and granular successor tasks",
+          "build pass; no game source edits/no deploy"
+        ],
+        "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "cbe885ef2487ca58bfbab2c1861eabd889bb7da54f0232d775c6afd0a09f8f98",
+      "sha256": "72237aa63dc3d19136777289c4551cc31ee4ef1c81081e14de3ddf8e4f330499"
     }
   ],
-  "projection_sha256": "e6d656ed03e9362c9dad2606b0ed00d514ff23fa5535127e236f4270f8b34665"
+  "projection_sha256": "08d2004a00b6767ad2ce5ebfbe1a6482786bd48259ace3565029ed6719e27483"
 }
