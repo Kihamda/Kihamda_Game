@@ -1,0 +1,16 @@
+{
+  "baseline": "dcae2496c4e872a0127ab2f61bd79cdc5dd74a9d",
+  "main": "8b0d8f51332261874947b115f549d8ddb986cad0",
+  "lock_sha256": "fa1c2657a83b9a2496908d19333d70d9d71bad3a4f569938c5ba6faa55ed6802",
+  "game_baseline_equals_main": true,
+  "files": {
+    "games/merge2048/src/App.tsx": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+    "games/merge2048/src/lib/game.ts": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+    "games/merge2048/src/lib/storage.ts": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe"
+  },
+  "diff": "diff --git a/games/merge2048/src/App.tsx b/games/merge2048/src/App.tsx\nindex 16f5eb8..f5ff068 100644\n--- a/games/merge2048/src/App.tsx\n+++ b/games/merge2048/src/App.tsx\n@@ -181,7 +181,10 @@ export default function App() {\n   }, [playSlideSfx, playMergeSfx, playBigMergeSfx, playWinSfx, getMergeScreenPosition, burst, sparkle, confetti]);\n \n   const handleNewGame = useCallback(() => {\n-    setGame(initGame());\n+    setGame((prev) => {\n+      const next = initGame();\n+      return { ...next, bestScore: Math.max(prev.bestScore, next.bestScore) };\n+    });\n     setShowWinOverlay(false);\n     playClick();\n   }, [playClick]);\ndiff --git a/games/merge2048/src/lib/game.ts b/games/merge2048/src/lib/game.ts\nindex ff74122..0858168 100644\n--- a/games/merge2048/src/lib/game.ts\n+++ b/games/merge2048/src/lib/game.ts\n@@ -1,4 +1,5 @@\n-// 2048 game logic - pure functions\n+// 2048 game logic\n+import { readBestScore, writeBestScore } from \"./storage\";\n \n export type Direction = \"up\" | \"down\" | \"left\" | \"right\";\n \n@@ -95,8 +96,7 @@ export function initGame(): GameState {\n   tiles = result2.tiles;\n   nextId = result2.nextId;\n   \n-  const saved = localStorage.getItem(\"merge2048-best\");\n-  const bestScore = saved ? parseInt(saved, 10) : 0;\n+  const bestScore = readBestScore();\n   \n   return {\n     tiles,\n@@ -227,7 +227,7 @@ export function moveWithResult(state: GameState, direction: Direction): MoveResu\n   const newBestScore = Math.max(state.bestScore, newScore);\n   \n   if (newBestScore > state.bestScore) {\n-    localStorage.setItem(\"merge2048-best\", String(newBestScore));\n+    writeBestScore(newBestScore);\n   }\n   \n   const won = newTiles.some((t) => t.value >= 2048);\n",
+  "new_storage_source": "// Best-score persistence is optional; playing must survive denied storage.\nconst KEY = \"merge2048-best\";\n\nexport function readBestScore(): number {\n  try {\n    const raw = globalThis.localStorage.getItem(KEY);\n    if (raw === null || !/^\\d+$/.test(raw)) return 0;\n    const score = Number(raw);\n    return Number.isSafeInteger(score) && score >= 0 ? score : 0;\n  } catch {\n    return 0;\n  }\n}\n\nexport function writeBestScore(score: number): void {\n  if (!Number.isSafeInteger(score) || score < 0) return;\n  try {\n    globalThis.localStorage.setItem(KEY, String(score));\n  } catch {\n    // Current-session bestScore stays in game state; persistence may be denied.\n  }\n}\n",
+  "source_manifest": "business/source-manifest.json",
+  "candidate": "business/review/merge2048-candidate.patch",
+  "restart_delta": "Keep same-page best score even if storage read/write fails; reload cannot persist denied writes."
+}

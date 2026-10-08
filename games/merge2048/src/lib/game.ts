@@ -1,4 +1,5 @@
-// 2048 game logic - pure functions
+// 2048 game logic
+import { readBestScore, writeBestScore } from "./storage";
 
 export type Direction = "up" | "down" | "left" | "right";
 
@@ -95,8 +96,7 @@ export function initGame(): GameState {
   tiles = result2.tiles;
   nextId = result2.nextId;
   
-  const saved = localStorage.getItem("merge2048-best");
-  const bestScore = saved ? parseInt(saved, 10) : 0;
+  const bestScore = readBestScore();
   
   return {
     tiles,
@@ -227,7 +227,7 @@ export function moveWithResult(state: GameState, direction: Direction): MoveResu
   const newBestScore = Math.max(state.bestScore, newScore);
   
   if (newBestScore > state.bestScore) {
-    localStorage.setItem("merge2048-best", String(newBestScore));
+    writeBestScore(newBestScore);
   }
   
   const won = newTiles.some((t) => t.value >= 2048);

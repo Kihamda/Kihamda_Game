@@ -1,0 +1,143 @@
+{
+  "run_id": "scheduled-game-20261009-0700",
+  "experiment_id": "EXP-merge2048",
+  "baseline": "dcae2496c4e872a0127ab2f61bd79cdc5dd74a9d",
+  "public_main": "8b0d8f51332261874947b115f549d8ddb986cad0",
+  "scope": "storage-only candidate; Chromium localhost synthetic QA, not business metrics",
+  "analytics_blocked": true,
+  "cases": [
+    {
+      "mode": "normal",
+      "raw": null,
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "reloaded_best": 4,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "valid",
+      "raw": "128",
+      "expected_initial_best": 128,
+      "score": 4,
+      "best": 128,
+      "reloaded_best": 128,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "getter-denied",
+      "raw": null,
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "result": "fail",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n",
+      "page_errors": []
+    },
+    {
+      "mode": "read-throws",
+      "raw": null,
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "result": "fail",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n",
+      "page_errors": []
+    },
+    {
+      "mode": "write-throws",
+      "raw": null,
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "result": "fail",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n",
+      "page_errors": []
+    },
+    {
+      "mode": "negative",
+      "raw": "-5",
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "result": "fail",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n",
+      "page_errors": []
+    },
+    {
+      "mode": "nan",
+      "raw": "NaN",
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "result": "fail",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n",
+      "page_errors": []
+    },
+    {
+      "mode": "partial",
+      "raw": "12oops",
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "result": "fail",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n",
+      "page_errors": []
+    },
+    {
+      "mode": "unsafe",
+      "raw": "9007199254740992",
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "result": "fail",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n",
+      "page_errors": []
+    },
+    {
+      "mode": "decimal",
+      "raw": "3.5",
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "result": "fail",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n",
+      "page_errors": []
+    },
+    {
+      "mode": "empty",
+      "raw": "",
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "result": "fail",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n",
+      "page_errors": []
+    },
+    {
+      "mode": "missing-storage",
+      "raw": null,
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "result": "fail",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 4\n",
+      "page_errors": []
+    }
+  ],
+  "performance": {
+    "dom_content_loaded_ms": 61.70000000298023,
+    "fcp_ms": 80,
+    "note": "localhost, no CPU/network throttle; not field CWV"
+  },
+  "safari_real_device_verified": false,
+  "seo": {
+    "title": "Merge 2048 | game.kihamda.net",
+    "canonical": "https://game.kihamda.net/games/merge2048/",
+    "description": "タイルを滑らせて合体させ2048を目指す中毒パズル。爆発エフェクトとコンボが病みつきに"
+  },
+  "passed": false,
+  "resume": "Best score only; reload starts new board. Board resume remains unsupported."
+}
