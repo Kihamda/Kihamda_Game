@@ -1,0 +1,479 @@
+{
+  "source_main": "00edb342f94095ee4e92f9793e1caa956671d86b",
+  "built_from": "2c5ba6bd6f40f28a0f049b31ba3b4821a8e0abd5",
+  "source_equivalence": "games/src/lockfile equal to current main; main only merged infrastructure",
+  "context": "Chromium synthetic local QA, no field traffic or revenue",
+  "analytics_blocked": true,
+  "safari_real_device_verified": false,
+  "low_end_device_verified": false,
+  "cases": [
+    {
+      "game": "merge2048",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "page_errors": [],
+      "http_status": 200,
+      "geometry": {
+        "box": {
+          "x": 606,
+          "y": 225,
+          "width": 400,
+          "height": 400
+        },
+        "visible_area_fraction": 1,
+        "fully_inside_frame": true
+      },
+      "seo": {
+        "title": "Merge 2048 | game.kihamda.net",
+        "description": "タイルを滑らせて合体させ2048を目指す中毒パズル。爆発エフェクトとコンボが病みつきに",
+        "canonical": "https://game.kihamda.net/games/merge2048/",
+        "schema": "VideoGame"
+      },
+      "synthetic_load": {
+        "dom_content_loaded_ms": 217.19999999925494,
+        "first_contentful_paint_ms": 432,
+        "resource_transfer_bytes": 289109,
+        "note": "localhost without network/CPU throttling; not field Core Web Vitals"
+      },
+      "keyboard": {
+        "result": "pass"
+      },
+      "restart": {
+        "result": "observed",
+        "value": true
+      },
+      "reload": {
+        "result": "observed",
+        "value": true
+      },
+      "resume": {
+        "result": "not_supported",
+        "scope": "only best score persisted; board reload starts new game"
+      }
+    },
+    {
+      "game": "merge2048",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "page_errors": [],
+      "http_status": 200,
+      "geometry": {
+        "box": {
+          "x": -24.900001525878906,
+          "y": 404.98748779296875,
+          "width": 240.79998779296875,
+          "height": 240.79998779296875
+        },
+        "visible_area_fraction": 0.7257362494815753,
+        "fully_inside_frame": false
+      },
+      "seo": {
+        "title": "Merge 2048 | game.kihamda.net",
+        "description": "タイルを滑らせて合体させ2048を目指す中毒パズル。爆発エフェクトとコンボが病みつきに",
+        "canonical": "https://game.kihamda.net/games/merge2048/",
+        "schema": "VideoGame"
+      },
+      "synthetic_load": {
+        "dom_content_loaded_ms": 175.40000000223517,
+        "first_contentful_paint_ms": 268,
+        "resource_transfer_bytes": 289109,
+        "note": "localhost without network/CPU throttling; not field Core Web Vitals"
+      },
+      "real_touch": {
+        "result": "observed",
+        "value": {
+          "board_changed": true,
+          "point": {
+            "x": 65.0999984741211,
+            "y": 480
+          },
+          "touch": "CDP real touch; no synthetic DOM event"
+        }
+      }
+    },
+    {
+      "game": "merge2048",
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "page_errors": [],
+      "http_status": 200,
+      "geometry": {
+        "box": {
+          "x": -75,
+          "y": 221.6875,
+          "width": 120,
+          "height": 120
+        },
+        "visible_area_fraction": 0,
+        "fully_inside_frame": false
+      },
+      "seo": {
+        "title": "Merge 2048 | game.kihamda.net",
+        "description": "タイルを滑らせて合体させ2048を目指す中毒パズル。爆発エフェクトとコンボが病みつきに",
+        "canonical": "https://game.kihamda.net/games/merge2048/",
+        "schema": "VideoGame"
+      },
+      "synthetic_load": {
+        "dom_content_loaded_ms": 196.89999999850988,
+        "first_contentful_paint_ms": 284,
+        "resource_transfer_bytes": 289109,
+        "note": "localhost without network/CPU throttling; not field Core Web Vitals"
+      }
+    },
+    {
+      "game": "merge2048",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "page_errors": [],
+      "http_status": 200,
+      "geometry": {
+        "box": {
+          "x": 187,
+          "y": 151.1875,
+          "width": 120,
+          "height": 120
+        },
+        "visible_area_fraction": 0,
+        "fully_inside_frame": false
+      },
+      "seo": {
+        "title": "Merge 2048 | game.kihamda.net",
+        "description": "タイルを滑らせて合体させ2048を目指す中毒パズル。爆発エフェクトとコンボが病みつきに",
+        "canonical": "https://game.kihamda.net/games/merge2048/",
+        "schema": "VideoGame"
+      },
+      "synthetic_load": {
+        "dom_content_loaded_ms": 234.80000000074506,
+        "first_contentful_paint_ms": 328,
+        "resource_transfer_bytes": 289109,
+        "note": "localhost without network/CPU throttling; not field Core Web Vitals"
+      }
+    },
+    {
+      "game": "merge2048",
+      "storage_denied": true,
+      "page_errors": [
+        "QA denied storage"
+      ],
+      "game_rendered": false
+    },
+    {
+      "game": "ntiktaktoe",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "page_errors": [],
+      "http_status": 200,
+      "geometry": {
+        "box": {
+          "x": 579,
+          "y": 176.5,
+          "width": 412,
+          "height": 447
+        },
+        "visible_area_fraction": 1,
+        "fully_inside_frame": true
+      },
+      "seo": {
+        "title": "n目並べ | game.kihamda.net",
+        "description": "盤面サイズやプレイヤー人数を自由に調整できるエクストリームな n目並べ",
+        "canonical": "https://game.kihamda.net/games/ntiktaktoe/",
+        "schema": "VideoGame"
+      },
+      "synthetic_load": {
+        "dom_content_loaded_ms": 210.29999999701977,
+        "first_contentful_paint_ms": 248,
+        "resource_transfer_bytes": 295995,
+        "note": "localhost without network/CPU throttling; not field Core Web Vitals"
+      },
+      "play_and_resume": {
+        "result": "failed",
+        "error": "locator.click: Timeout 1800ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.cell').first()\u001b[22m\n\u001b[2m    - locator resolved to <div class=\"cell    \"></div>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b"
+      },
+      "board_diagnostic": {
+        "box": {
+          "x": 702.7578125,
+          "y": 457.5,
+          "width": 164.484375,
+          "height": 0,
+          "top": 457.5,
+          "right": 867.2421875,
+          "bottom": 457.5,
+          "left": 702.7578125
+        },
+        "display": "block",
+        "grid_display": "block",
+        "total_cells": 9
+      },
+      "keyboard": {
+        "result": "not_applicable",
+        "scope": "pointer board; no advertised key movement"
+      }
+    },
+    {
+      "game": "ntiktaktoe",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "page_errors": [],
+      "http_status": 200,
+      "geometry": {
+        "box": {
+          "x": 104.5,
+          "y": 290.6875,
+          "width": 101.72198486328125,
+          "height": 391.7139892578125
+        },
+        "visible_area_fraction": 0.6127595537565431,
+        "fully_inside_frame": false
+      },
+      "seo": {
+        "title": "n目並べ | game.kihamda.net",
+        "description": "盤面サイズやプレイヤー人数を自由に調整できるエクストリームな n目並べ",
+        "canonical": "https://game.kihamda.net/games/ntiktaktoe/",
+        "schema": "VideoGame"
+      },
+      "synthetic_load": {
+        "dom_content_loaded_ms": 197.39999999850988,
+        "first_contentful_paint_ms": 240,
+        "resource_transfer_bytes": 295995,
+        "note": "localhost without network/CPU throttling; not field Core Web Vitals"
+      },
+      "real_touch": {
+        "result": "observed",
+        "value": {
+          "start_tapped": true,
+          "mobile_direction_control": "pointer board"
+        }
+      }
+    },
+    {
+      "game": "ntiktaktoe",
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "page_errors": [],
+      "http_status": 200,
+      "geometry": {
+        "box": {
+          "x": 69.5,
+          "y": 152.6875,
+          "width": 61.540008544921875,
+          "height": 236.97998046875
+        },
+        "visible_area_fraction": 0,
+        "fully_inside_frame": false
+      },
+      "seo": {
+        "title": "n目並べ | game.kihamda.net",
+        "description": "盤面サイズやプレイヤー人数を自由に調整できるエクストリームな n目並べ",
+        "canonical": "https://game.kihamda.net/games/ntiktaktoe/",
+        "schema": "VideoGame"
+      },
+      "synthetic_load": {
+        "dom_content_loaded_ms": 462.70000000298023,
+        "first_contentful_paint_ms": 520,
+        "resource_transfer_bytes": 295995,
+        "note": "localhost without network/CPU throttling; not field Core Web Vitals"
+      }
+    },
+    {
+      "game": "ntiktaktoe",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "page_errors": [],
+      "http_status": 200,
+      "geometry": {
+        "box": {
+          "x": 218.5,
+          "y": 184.6875,
+          "width": 138.3800048828125,
+          "height": 166.94000244140625
+        },
+        "visible_area_fraction": 0,
+        "fully_inside_frame": false
+      },
+      "seo": {
+        "title": "n目並べ | game.kihamda.net",
+        "description": "盤面サイズやプレイヤー人数を自由に調整できるエクストリームな n目並べ",
+        "canonical": "https://game.kihamda.net/games/ntiktaktoe/",
+        "schema": "VideoGame"
+      },
+      "synthetic_load": {
+        "dom_content_loaded_ms": 159.69999999925494,
+        "first_contentful_paint_ms": 200,
+        "resource_transfer_bytes": 295995,
+        "note": "localhost without network/CPU throttling; not field Core Web Vitals"
+      }
+    },
+    {
+      "game": "ntiktaktoe",
+      "storage_denied": true,
+      "page_errors": [],
+      "game_rendered": true,
+      "start_without_storage": {
+        "result": "observed",
+        "value": true
+      }
+    },
+    {
+      "game": "snakechaos",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "page_errors": [],
+      "http_status": 200,
+      "geometry": {
+        "box": {
+          "x": 385,
+          "y": 100,
+          "width": 800,
+          "height": 600
+        },
+        "visible_area_fraction": 1,
+        "fully_inside_frame": true
+      },
+      "seo": {
+        "title": "Snake Chaos | game.kihamda.net",
+        "description": "パワーアップアイテムが飛び交うスピードアップ型スネーク。コンボとエフェクトで脳が溶ける",
+        "canonical": "https://game.kihamda.net/games/snakechaos/",
+        "schema": "VideoGame"
+      },
+      "synthetic_load": {
+        "dom_content_loaded_ms": 172.89999999850988,
+        "first_contentful_paint_ms": 220,
+        "resource_transfer_bytes": 286020,
+        "note": "localhost without network/CPU throttling; not field Core Web Vitals"
+      },
+      "keyboard_start": {
+        "result": "observed",
+        "value": true
+      },
+      "keyboard_direction": {
+        "result": "input_sent",
+        "motion_correctness": "not verified"
+      },
+      "resume": {
+        "result": "not_supported",
+        "scope": "high score only"
+      }
+    },
+    {
+      "game": "snakechaos",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "page_errors": [],
+      "http_status": 200,
+      "geometry": {
+        "box": {
+          "x": -205,
+          "y": 338.6875,
+          "width": 372,
+          "height": 279
+        },
+        "visible_area_fraction": 0.27010528673835127,
+        "fully_inside_frame": false
+      },
+      "seo": {
+        "title": "Snake Chaos | game.kihamda.net",
+        "description": "パワーアップアイテムが飛び交うスピードアップ型スネーク。コンボとエフェクトで脳が溶ける",
+        "canonical": "https://game.kihamda.net/games/snakechaos/",
+        "schema": "VideoGame"
+      },
+      "synthetic_load": {
+        "dom_content_loaded_ms": 138.80000000074506,
+        "first_contentful_paint_ms": 220,
+        "resource_transfer_bytes": 286020,
+        "note": "localhost without network/CPU throttling; not field Core Web Vitals"
+      },
+      "real_touch": {
+        "result": "failed",
+        "error": "locator.tap: Timeout 1800ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'START', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"snake-start-btn\">START</button>\u001b[22m\n\u001b[2m  - attempting tap action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabl"
+      }
+    },
+    {
+      "game": "snakechaos",
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "page_errors": [],
+      "http_status": 200,
+      "geometry": {
+        "box": {
+          "x": -240,
+          "y": 200.6875,
+          "width": 240.00001525878906,
+          "height": 180
+        },
+        "visible_area_fraction": 0,
+        "fully_inside_frame": false
+      },
+      "seo": {
+        "title": "Snake Chaos | game.kihamda.net",
+        "description": "パワーアップアイテムが飛び交うスピードアップ型スネーク。コンボとエフェクトで脳が溶ける",
+        "canonical": "https://game.kihamda.net/games/snakechaos/",
+        "schema": "VideoGame"
+      },
+      "synthetic_load": {
+        "dom_content_loaded_ms": 173.90000000223517,
+        "first_contentful_paint_ms": 264,
+        "resource_transfer_bytes": 286020,
+        "note": "localhost without network/CPU throttling; not field Core Web Vitals"
+      }
+    },
+    {
+      "game": "snakechaos",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "page_errors": [],
+      "http_status": 200,
+      "geometry": {
+        "box": {
+          "x": 22,
+          "y": 129.1875,
+          "width": 240,
+          "height": 180
+        },
+        "visible_area_fraction": 0,
+        "fully_inside_frame": false
+      },
+      "seo": {
+        "title": "Snake Chaos | game.kihamda.net",
+        "description": "パワーアップアイテムが飛び交うスピードアップ型スネーク。コンボとエフェクトで脳が溶ける",
+        "canonical": "https://game.kihamda.net/games/snakechaos/",
+        "schema": "VideoGame"
+      },
+      "synthetic_load": {
+        "dom_content_loaded_ms": 243.40000000223517,
+        "first_contentful_paint_ms": 288,
+        "resource_transfer_bytes": 286020,
+        "note": "localhost without network/CPU throttling; not field Core Web Vitals"
+      }
+    },
+    {
+      "game": "snakechaos",
+      "storage_denied": true,
+      "page_errors": [],
+      "game_rendered": false
+    }
+  ]
+}

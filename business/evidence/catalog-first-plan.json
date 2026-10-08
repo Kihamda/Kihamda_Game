@@ -1,0 +1,589 @@
+{
+  "run_id": "scheduled-game-20261009-0100",
+  "slot": "2026-10-09T01:00:00+09:00",
+  "experiment_id": "EXP-catalog",
+  "decision_id": "D-catalog-2048-20261009",
+  "source_main": "00edb342f94095ee4e92f9793e1caa956671d86b",
+  "claim_commit": "a56fa6168e31236835b4179528c3b9e3b82a24b2",
+  "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+  "policy": "business/catalog-policy.md",
+  "selected_game": "merge2048",
+  "selection_basis": "再現できる起動障害と表示欠損。キー/実タッチのコア体験は動作。既存保存候補を差分照合でき、1工程の範囲が明確。需要優位の判断ではない。",
+  "candidates": [
+    {
+      "id": "merge2048",
+      "core": "滑らせて合体し、得点/高タイル/再挑戦へ進む一人用パズル",
+      "observed": "desktop起動、矢印、New Game、reload、CDP実touch動作。保存拒否起動失敗。390盤面x=-24.9px、320/横画面frame内可視0。盤面再開なし。",
+      "depth_opportunity": "まず成立する操作/保存。以後、学習・挑戦・再開が同じコアループ内で成立する体験を検証。機能の一括追加はしない。",
+      "maintenance": "既存小規模コード・保存候補あり。共有shell修正は他作品回帰が必要。金額/工数の実測なし。",
+      "disposition": "重点改善、品質gate完了までは代表作品の公開提案を保留"
+    },
+    {
+      "id": "ntiktaktoe",
+      "core": "可変盤面・勝利条件・人数によるローカル対戦",
+      "observed": "設定画面起動、保存拒否で設定起動可、実tap開始可。desktop開始後cell高さ0、grid display block、9cell存在するがクリック不可。再開は未検証。設定CSS classとcomponent不一致をsourceで確認。",
+      "depth_opportunity": "対戦ルールの差別化余地はあるが、基本盤面と説明の品質が先。",
+      "maintenance": "設定/複数player/重力/再開の組合せが多く、検査範囲が広い。",
+      "disposition": "維持・別工程で再評価候補。今回同時制作しない"
+    },
+    {
+      "id": "snakechaos",
+      "core": "方向入力で伸びる蛇、速度・アイテム・得点の再挑戦",
+      "observed": "desktop Enter開始、方向キー送信（方向の正しさ未検証）。390START実tap失敗、表示欠損。保存拒否でgame未描画。タッチ方向操作の実装をsourceで確認できない。",
+      "depth_opportunity": "速度/難易度/失敗後再挑戦の調整余地。モバイル入力と保存障害が先。",
+      "maintenance": "リアルタイム入力/速度調整/端末性能検証が必要。",
+      "disposition": "維持・モバイル必須gate未達。今回同時制作しない"
+    }
+  ],
+  "catalog_inventory": [
+    {
+      "id": "hangman",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "pong",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "ntiktaktoe",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "flashreflex",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "gravityfour",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "memoryduel",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "snakechaos",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "merge2048",
+      "disposition": "重点改善",
+      "demand_rank": null
+    },
+    {
+      "id": "brickblast",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "molemania",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "colorburst",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "taptarget",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "simonecho",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "numhunt",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "dodgeblitz",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "typingblitz",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "minerush",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "wordchain",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "mathblitz",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "patternlock",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "slidemaster",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "hexmatch",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "lightsout",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "balloonpop",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "coinflip",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "mazerun",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "quickdraw",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "reactionchain",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "arrowdash",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "towerstack",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "emojimatch",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "colorflood",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "wordscramble",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "cardwar",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "spotdiff",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "rockpaper",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "diceroll",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "fallingblocks",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "numberguess",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "speedclick",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "asteroids",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "typerace",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "simplechess",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "endlessrun",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "pianotiles",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "fruitslice",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "sudoku",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "clickmaster",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "towerdefense",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "brickmania",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "bowling",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "blackjack",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "minigolf",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "spaceinvaders",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "dotmuncher",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "tankbattle",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "wordsearch",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "bubblepop",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "colorswitch",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "connect4",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "crossword",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "darts",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "fishing",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "minesweeper",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "oddoneout",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "poolmaster",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "simonsays",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "skyjump",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "slotmachine",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "solitaire",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "triviaquiz",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "pinball",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "mergemaster",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "rhythmbeat",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "slidepuzzle",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "balloondefense",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "brickout",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "helicopter",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "gemmatch",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "cannonblast",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "bounceball",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "stacktower",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "jetpack",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "gravityball",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "iceslide",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "wordbomb",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "cuberunner",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "hoopshot",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "archery",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "skirun",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "carrace",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "ninjajump",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "bottleflip",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "knifehit",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "tapcolor",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "dotconnect",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "birdfly",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "jumpquest",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "linedraw",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "orbitdodge",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    },
+    {
+      "id": "laserdefense",
+      "disposition": "保全・掲載適格性未判定",
+      "demand_rank": null
+    }
+  ],
+  "catalog_composition": "今回一覧の追加/削除/featured変更なし。品質gateを満たす一作へ集中。未検査作品は品質保証/人気認定しない。統合/終了は個別証拠とtaskで提案。新作量産禁止。",
+  "quality_acceptance": [
+    "保存アクセス拒否/read/write失敗でも起動/得点/再試行が継続し、bestが有限非負",
+    "320x568/390x844/844x390/desktopで盤面・必須操作がframeから欠けず実touch/キーで操作できる",
+    "通常/不正保存/再読込/再開の仕様が明示され検査される。今回盤面resumeは未実装",
+    "起動/readload/SEO/canonical/構造化data、build、shared shell回帰を証拠化",
+    "Safari実機・低性能端末は未検証と明記。localhost timingをfield CWVとしない"
+  ],
+  "sequence": [
+    "T-2048-storage-first: 保存起動障害のみ修正",
+    "T-measurement-audit: 開始定義と計測不足の内部検査",
+    "T-2048-mobile-shell: 表示/実touch品質、一作主体・共有shell回帰",
+    "本人が同一版PR/検査/リスクを確認して公開判断",
+    "公開証拠と定義の揃った14/28日匿名集計でcontinue/improve/stop/unobserved"
+  ],
+  "business_metrics": {
+    "real_visitors": null,
+    "start_rate": null,
+    "abandonment": null,
+    "return_rate_7d": null,
+    "search_clicks": null,
+    "revenue_jpy": null,
+    "all_costs_jpy": null,
+    "monthly_net_profit_jpy": null
+  },
+  "measurement_status": "GA4/SC/広告台帳の期間・timezone・定義・人口・出典つき匿名集計へのアクセスなし。固定12,450+/featured/tagは計測ではない。予測効果も未推定。",
+  "qa": {
+    "report": "business/evidence/catalog-qa-20261009-0100.json",
+    "runner": "business/evidence/catalog-qa-20261009-0100.mjs",
+    "case_count": 15,
+    "pass_claim": "catalog選定taskの受入条件を満たす検査記録。15caseすべて合格という意味ではない。",
+    "build": "npm run build pass (16:01 UTC local build; log /tmp/catalog-plan-build.log)",
+    "limits": "Chromium/headless/CDP touch、localhost/通信CPU制限なし。Safari実機/低性能端末/公開bundle exact commit一致未確認。外部requestを遮断。"
+  },
+  "handoff": {
+    "origin_id": "T-20261008-game-storage-fix",
+    "origin_decision_id": "DB-20261008-merge2048-storage",
+    "source": "business/source-manifest.json",
+    "baseline": "dcae2496c4e872a0127ab2f61bd79cdc5dd74a9d",
+    "patch_status": "not applied / not deployed",
+    "old_ten_checks": "historical technical QA only"
+  },
+  "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
+  "publication": "no main push/merge/deploy/contract/payment/external communication"
+}
