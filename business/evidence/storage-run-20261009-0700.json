@@ -1,0 +1,59 @@
+{
+  "run_id": "scheduled-game-20261009-0700",
+  "slot": "2026-10-09T07:00:00+09:00",
+  "task_id": "T-2048-storage-first",
+  "experiment_id": "EXP-merge2048",
+  "fence": 3,
+  "source": "business/source-manifest.json; business/evidence/storage-review-20261009-0700.json",
+  "origin_id": "T-20261008-game-storage-fix",
+  "origin_decision_id": "DB-20261008-merge2048-storage",
+  "main_checked": "8b0d8f51332261874947b115f549d8ddb986cad0",
+  "claim_commit": "e4dcc66cd256ccebebec866573ca5797804bdd40",
+  "code_commit": "1f92675bbf6b0484eb42f0c53b53b8c8a5feafa6",
+  "code_branch": "fix/2048-storage-fence-3",
+  "pr": {
+    "number": 8,
+    "url": "https://github.com/Kihamda/Kihamda_Game/pull/8",
+    "head_sha": "1f92675bbf6b0484eb42f0c53b53b8c8a5feafa6",
+    "draft": true,
+    "merged": false
+  },
+  "change": "Optional best-score storage tolerates access/read/write failures and rejects malformed values; New Game retains current-page best. No mobile/source-shell/catalog/measurement changes.",
+  "checks": {
+    "storage_browser_cases": 12,
+    "storage_passed": true,
+    "build": "pass (typecheck/lint/build)",
+    "diff_check": "pass",
+    "runner_syntax": "pass",
+    "remote_code_head_and_seven_blobs": "match",
+    "touch": "CDP touch changes board",
+    "viewport": "desktop pass; 320/390/landscape clipping still present",
+    "seo": "title/description/canonical observed",
+    "ci": "not yet observed",
+    "first_attempt": "New Game lost best on denied storage; evidence preserved in storage-qa-20261009-0700-before-restart-fix.json; fixed and retested"
+  },
+  "limits": [
+    "Safari real device and low-end device unverified",
+    "localhost performance is not field CWV",
+    "Production bundle/release exact SHA unverified",
+    "Board resume unsupported; only best persisted when writes succeed"
+  ],
+  "publication": {
+    "operations_performed": false,
+    "full_quality_gate_passed": false,
+    "approval": "not requested for unfinished full-quality version; draft review only",
+    "release": null,
+    "observation_window_start": null
+  },
+  "metrics": {
+    "real_visitors": null,
+    "start_rate": null,
+    "return_rate_7d": null,
+    "search_clicks": null,
+    "revenue_jpy": null,
+    "all_costs_jpy": null,
+    "monthly_net_profit_jpy": null
+  },
+  "measurement": "No source/period/timezone/definition/population-qualified GA4/SC aggregate or complete revenue/all-cost ledger; tag/static counters/QA are not observations.",
+  "next_step": "T-measurement-audit remains highest independent ready task; T-2048-mobile-shell follows. Preserve EXP-merge2048; quality gate then owner publication then 14/28-day observation, unobserved until evidence exists."
+}

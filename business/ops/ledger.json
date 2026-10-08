@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 37,
+  "revision": 48,
   "business_id": "game-site",
   "fence": 3,
-  "lease": {
-    "run_id": "scheduled-game-20261009-0700",
-    "task_id": "T-2048-storage-first",
-    "fence": 3,
-    "expires_at": 1791498584.0724099
-  },
+  "lease": null,
   "tasks": {
     "T-system-bootstrap": {
       "id": "T-system-bootstrap",
@@ -360,8 +355,190 @@
         "T-catalog-first-plan"
       ],
       "priority": 15,
-      "status": "running",
-      "checkpoints": [],
+      "status": "done",
+      "checkpoints": [
+        {
+          "kind": "artifact",
+          "at": 1791497359.4817011,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+            "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+            "name": "storage-review-20261009-0700.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497359.4917336,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+            "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+            "name": "storage-qa-20261009-0700.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497359.5004501,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+            "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+            "name": "storage-qa-20261009-0700.mjs"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497359.5096498,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+            "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+            "name": "storage-qa-20261009-0700-before-restart-fix.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497359.5217357,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+            "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+            "name": "App.tsx"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497359.5311275,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+            "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+            "name": "game.ts"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497359.5423567,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+            "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+            "name": "storage.ts"
+          }
+        },
+        {
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifacts": [
+            {
+              "path": "business/ops/artifacts/1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+              "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875"
+            },
+            {
+              "path": "business/ops/artifacts/bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+              "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b"
+            },
+            {
+              "path": "business/ops/artifacts/8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+              "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f"
+            },
+            {
+              "path": "business/ops/artifacts/731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+              "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559"
+            },
+            {
+              "path": "business/ops/artifacts/522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+              "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56"
+            },
+            {
+              "path": "business/ops/artifacts/4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+              "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4"
+            },
+            {
+              "path": "business/ops/artifacts/4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+              "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe"
+            }
+          ],
+          "checks": [
+            "12 browser storage cases pass; New Game retains in-page best",
+            "full build/lint/typecheck pass; diff and runner syntax checks pass",
+            "CDP touch changes board; desktop geometry pass; mobile clipping remains documented",
+            "baseline/main merge2048 and lockfile identical"
+          ],
+          "next_step": "Save same-source game branch and draft PR; then complete only storage task",
+          "at": 1791497359.5524895
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497468.4817102,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796",
+            "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796",
+            "name": "storage-run-20261009-0700.json"
+          }
+        },
+        {
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifacts": [
+            {
+              "path": "business/ops/artifacts/1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+              "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875"
+            },
+            {
+              "path": "business/ops/artifacts/bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+              "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b"
+            },
+            {
+              "path": "business/ops/artifacts/8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+              "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f"
+            },
+            {
+              "path": "business/ops/artifacts/731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+              "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559"
+            },
+            {
+              "path": "business/ops/artifacts/522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+              "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56"
+            },
+            {
+              "path": "business/ops/artifacts/4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+              "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4"
+            },
+            {
+              "path": "business/ops/artifacts/4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+              "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe"
+            },
+            {
+              "path": "business/evidence/storage-run-20261009-0700.json",
+              "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796"
+            },
+            {
+              "path": "business/ops/artifacts/45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796",
+              "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796"
+            }
+          ],
+          "checks": [
+            "baseline/main difference checked; storage-only plus restart best preservation",
+            "12 browser storage cases pass; build/type/lint/diff/runner checks pass",
+            "exact tested source saved in code commit 1f92675bbf6b0484eb42f0c53b53b8c8a5feafa6 / draft PR8; head/7 blobs readback match",
+            "mobile defects/real-device limitations/metrics null preserved; no public action"
+          ],
+          "next_step": "T-measurement-audit; then T-2048-mobile-shell, keep EXP-merge2048 do until quality gates complete",
+          "passed": true,
+          "at": 1791497468.4908266
+        }
+      ],
       "claims": [
         {
           "run_id": "scheduled-game-20261009-0700",
@@ -449,7 +626,7 @@
       "run_id": "scheduled-game-20261009-0700",
       "scheduled_at": "2026-10-09T07:00:00+09:00",
       "source": "scheduled:game-site:2026-10-09T07:00:00+09:00",
-      "status": "open",
+      "status": "completed",
       "started_at": 1791497084.0574381
     }
   },
@@ -536,10 +713,20 @@
       ],
       "measurement_plan": "同一版公開後14/28日。game_start欠落を点検し測定定義変更を前後比較で混ぜない",
       "decision_id": "D-game-pdca-20261008",
-      "next_step": "既存成果と未完了を確認",
+      "next_step": "Save storage-only review PR, then T-measurement-audit / T-2048-mobile-shell; no deployment",
       "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
-      "stage": "plan",
-      "history": [],
+      "stage": "do",
+      "history": [
+        {
+          "id": "EXP-merge2048",
+          "stage": "do",
+          "source": "run:scheduled-game-20261009-0700",
+          "evidence": "business/evidence/storage-review-20261009-0700.json; storage-qa-20261009-0700.json",
+          "next_step": "Save storage-only review PR, then T-measurement-audit / T-2048-mobile-shell; no deployment",
+          "at": 1791497359.472251,
+          "previous_stage": "plan"
+        }
+      ],
       "release": null
     }
   },
@@ -1447,7 +1634,279 @@
       },
       "previous": "86c5552e27a4d6252b6607288b8d4a427011817a3ef9089cf5cda80c22e0f960",
       "sha256": "14eef43274525207332de67be4224a7a0b18651c4b915794d620b70b845dbfd0"
+    },
+    {
+      "revision": 38,
+      "at": 1791497359.472251,
+      "action": "experiment-stage",
+      "data": {
+        "id": "EXP-merge2048",
+        "stage": "do",
+        "source": "run:scheduled-game-20261009-0700",
+        "evidence": "business/evidence/storage-review-20261009-0700.json; storage-qa-20261009-0700.json",
+        "next_step": "Save storage-only review PR, then T-measurement-audit / T-2048-mobile-shell; no deployment"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "14eef43274525207332de67be4224a7a0b18651c4b915794d620b70b845dbfd0",
+      "sha256": "6e062e4f587a7d5cb3a79a80d46df682d80f44b891556e71dc9ccd1dd0d78c2c"
+    },
+    {
+      "revision": 39,
+      "at": 1791497359.4817011,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "storage-review-20261009-0700.json",
+        "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875"
+      },
+      "result": {
+        "path": "artifacts/1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+        "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+        "name": "storage-review-20261009-0700.json"
+      },
+      "previous": "6e062e4f587a7d5cb3a79a80d46df682d80f44b891556e71dc9ccd1dd0d78c2c",
+      "sha256": "38e7ee66ad16daf8da3dda74b5153fb79d5597511819bc17ce63270115fedec5"
+    },
+    {
+      "revision": 40,
+      "at": 1791497359.4917336,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "storage-qa-20261009-0700.json",
+        "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b"
+      },
+      "result": {
+        "path": "artifacts/bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+        "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+        "name": "storage-qa-20261009-0700.json"
+      },
+      "previous": "38e7ee66ad16daf8da3dda74b5153fb79d5597511819bc17ce63270115fedec5",
+      "sha256": "f7aec28264d169e4c897f82b48a056a116eb69c0d05efc26f1fa7f8df602696d"
+    },
+    {
+      "revision": 41,
+      "at": 1791497359.5004501,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "storage-qa-20261009-0700.mjs",
+        "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f"
+      },
+      "result": {
+        "path": "artifacts/8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+        "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+        "name": "storage-qa-20261009-0700.mjs"
+      },
+      "previous": "f7aec28264d169e4c897f82b48a056a116eb69c0d05efc26f1fa7f8df602696d",
+      "sha256": "228b71801c7ab016a662fcae4b682e42235d9b82e0e40c0996ec0313816b1b1c"
+    },
+    {
+      "revision": 42,
+      "at": 1791497359.5096498,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "storage-qa-20261009-0700-before-restart-fix.json",
+        "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559"
+      },
+      "result": {
+        "path": "artifacts/731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+        "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+        "name": "storage-qa-20261009-0700-before-restart-fix.json"
+      },
+      "previous": "228b71801c7ab016a662fcae4b682e42235d9b82e0e40c0996ec0313816b1b1c",
+      "sha256": "58bc431b98b565f5e8b523fca1f8d24279d45e59a5abefb9a6a9ed9e3feca8fd"
+    },
+    {
+      "revision": 43,
+      "at": 1791497359.5217357,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "App.tsx",
+        "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56"
+      },
+      "result": {
+        "path": "artifacts/522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+        "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+        "name": "App.tsx"
+      },
+      "previous": "58bc431b98b565f5e8b523fca1f8d24279d45e59a5abefb9a6a9ed9e3feca8fd",
+      "sha256": "a0401dadc4c37fe30d7473dd09a46ae42ea24924ad2b02fecd6c33a45ed1d78e"
+    },
+    {
+      "revision": 44,
+      "at": 1791497359.5311275,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "game.ts",
+        "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4"
+      },
+      "result": {
+        "path": "artifacts/4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+        "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+        "name": "game.ts"
+      },
+      "previous": "a0401dadc4c37fe30d7473dd09a46ae42ea24924ad2b02fecd6c33a45ed1d78e",
+      "sha256": "be8cf192cd8e27bc8acb9ed1864aaa25c2f97b413c463ce4ec5d4396ca24198e"
+    },
+    {
+      "revision": 45,
+      "at": 1791497359.5423567,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "storage.ts",
+        "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe"
+      },
+      "result": {
+        "path": "artifacts/4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+        "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+        "name": "storage.ts"
+      },
+      "previous": "be8cf192cd8e27bc8acb9ed1864aaa25c2f97b413c463ce4ec5d4396ca24198e",
+      "sha256": "23970bef16f4e3f58e0613719ae9b968607a1593dc6b0d2e39f727864b0cc34b"
+    },
+    {
+      "revision": 46,
+      "at": 1791497359.5524895,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "artifacts": [
+          {
+            "path": "business/ops/artifacts/1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+            "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875"
+          },
+          {
+            "path": "business/ops/artifacts/bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+            "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b"
+          },
+          {
+            "path": "business/ops/artifacts/8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+            "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f"
+          },
+          {
+            "path": "business/ops/artifacts/731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+            "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559"
+          },
+          {
+            "path": "business/ops/artifacts/522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+            "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56"
+          },
+          {
+            "path": "business/ops/artifacts/4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+            "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4"
+          },
+          {
+            "path": "business/ops/artifacts/4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+            "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe"
+          }
+        ],
+        "checks": [
+          "12 browser storage cases pass; New Game retains in-page best",
+          "full build/lint/typecheck pass; diff and runner syntax checks pass",
+          "CDP touch changes board; desktop geometry pass; mobile clipping remains documented",
+          "baseline/main merge2048 and lockfile identical"
+        ],
+        "next_step": "Save same-source game branch and draft PR; then complete only storage task"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "23970bef16f4e3f58e0613719ae9b968607a1593dc6b0d2e39f727864b0cc34b",
+      "sha256": "0fc00514bd2781482cecc9596ec8955fdc306b9ac9238ca3efbd1d853753ab22"
+    },
+    {
+      "revision": 47,
+      "at": 1791497468.4817102,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "storage-run-20261009-0700.json",
+        "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796"
+      },
+      "result": {
+        "path": "artifacts/45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796",
+        "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796",
+        "name": "storage-run-20261009-0700.json"
+      },
+      "previous": "0fc00514bd2781482cecc9596ec8955fdc306b9ac9238ca3efbd1d853753ab22",
+      "sha256": "9a0488e2f66094f5a8da94f2ae4ee6eaf8902da291ed15482768d31fb248fb15"
+    },
+    {
+      "revision": 48,
+      "at": 1791497468.4908266,
+      "action": "complete",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "artifacts": [
+          {
+            "path": "business/ops/artifacts/1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+            "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875"
+          },
+          {
+            "path": "business/ops/artifacts/bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+            "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b"
+          },
+          {
+            "path": "business/ops/artifacts/8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+            "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f"
+          },
+          {
+            "path": "business/ops/artifacts/731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+            "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559"
+          },
+          {
+            "path": "business/ops/artifacts/522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+            "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56"
+          },
+          {
+            "path": "business/ops/artifacts/4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+            "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4"
+          },
+          {
+            "path": "business/ops/artifacts/4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+            "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe"
+          },
+          {
+            "path": "business/evidence/storage-run-20261009-0700.json",
+            "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796"
+          },
+          {
+            "path": "business/ops/artifacts/45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796",
+            "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796"
+          }
+        ],
+        "checks": [
+          "baseline/main difference checked; storage-only plus restart best preservation",
+          "12 browser storage cases pass; build/type/lint/diff/runner checks pass",
+          "exact tested source saved in code commit 1f92675bbf6b0484eb42f0c53b53b8c8a5feafa6 / draft PR8; head/7 blobs readback match",
+          "mobile defects/real-device limitations/metrics null preserved; no public action"
+        ],
+        "next_step": "T-measurement-audit; then T-2048-mobile-shell, keep EXP-merge2048 do until quality gates complete",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "9a0488e2f66094f5a8da94f2ae4ee6eaf8902da291ed15482768d31fb248fb15",
+      "sha256": "c1f8b4cad3ff8598fc74c5406bc8e664f7d7a43386febed3a6b614839ae94604"
     }
   ],
-  "projection_sha256": "6e3840ec038fcf28882bb0bc95017597ca9bce22677aee27b2308918d17420e0"
+  "projection_sha256": "3f2da7791b77af3e4cc081f4d371a63a1ec602ead7de91b3414ffba1b3a51dfd"
 }
