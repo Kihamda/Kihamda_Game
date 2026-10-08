@@ -1,0 +1,201 @@
+{
+  "run_id": "scheduled-game-20261009-0700",
+  "experiment_id": "EXP-merge2048",
+  "baseline": "dcae2496c4e872a0127ab2f61bd79cdc5dd74a9d",
+  "public_main": "8b0d8f51332261874947b115f549d8ddb986cad0",
+  "scope": "storage-only candidate; Chromium localhost synthetic QA, not business metrics",
+  "analytics_blocked": true,
+  "cases": [
+    {
+      "mode": "normal",
+      "raw": null,
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "reloaded_best": 4,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "valid",
+      "raw": "128",
+      "expected_initial_best": 128,
+      "score": 4,
+      "best": 128,
+      "reloaded_best": 128,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "getter-denied",
+      "raw": null,
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "reloaded_best": 0,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "read-throws",
+      "raw": null,
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "reloaded_best": 0,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "write-throws",
+      "raw": null,
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "reloaded_best": 0,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "negative",
+      "raw": "-5",
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "reloaded_best": 0,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "nan",
+      "raw": "NaN",
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "reloaded_best": 0,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "partial",
+      "raw": "12oops",
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "reloaded_best": 0,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "unsafe",
+      "raw": "9007199254740992",
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "reloaded_best": 0,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "decimal",
+      "raw": "3.5",
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "reloaded_best": 0,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "empty",
+      "raw": "",
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "reloaded_best": 0,
+      "result": "pass",
+      "page_errors": []
+    },
+    {
+      "mode": "missing-storage",
+      "raw": null,
+      "expected_initial_best": 0,
+      "score": 4,
+      "best": 4,
+      "reloaded_best": 0,
+      "result": "pass",
+      "page_errors": []
+    }
+  ],
+  "performance": {
+    "dom_content_loaded_ms": 60.5,
+    "fcp_ms": 80,
+    "note": "localhost, no CPU/network throttle; not field CWV"
+  },
+  "safari_real_device_verified": false,
+  "seo": {
+    "title": "Merge 2048 | game.kihamda.net",
+    "canonical": "https://game.kihamda.net/games/merge2048/",
+    "description": "タイルを滑らせて合体させ2048を目指す中毒パズル。爆発エフェクトとコンボが病みつきに"
+  },
+  "viewport_checks": [
+    {
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "geometry": {
+        "x": -75,
+        "y": 221.6875,
+        "width": 120,
+        "height": 120,
+        "fully_inside_frame": false
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "geometry": {
+        "x": -24.900001525878906,
+        "y": 404.98748779296875,
+        "width": 240.79998779296875,
+        "height": 240.79998779296875,
+        "fully_inside_frame": false
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "geometry": {
+        "x": 187,
+        "y": 151.1875,
+        "width": 120,
+        "height": 120,
+        "fully_inside_frame": false
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "geometry": {
+        "x": 606,
+        "y": 225,
+        "width": 400,
+        "height": 400,
+        "fully_inside_frame": true
+      }
+    }
+  ],
+  "real_touch": {
+    "mechanism": "Chromium CDP touch, not synthetic DOM event",
+    "board_changed": true
+  },
+  "passed": true,
+  "resume": "Best score only; reload starts new board. Board resume remains unsupported."
+}

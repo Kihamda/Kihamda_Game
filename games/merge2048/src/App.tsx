@@ -181,7 +181,10 @@ export default function App() {
   }, [playSlideSfx, playMergeSfx, playBigMergeSfx, playWinSfx, getMergeScreenPosition, burst, sparkle, confetti]);
 
   const handleNewGame = useCallback(() => {
-    setGame(initGame());
+    setGame((prev) => {
+      const next = initGame();
+      return { ...next, bestScore: Math.max(prev.bestScore, next.bestScore) };
+    });
     setShowWinOverlay(false);
     playClick();
   }, [playClick]);
