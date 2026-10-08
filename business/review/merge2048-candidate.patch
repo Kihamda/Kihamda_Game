@@ -1,0 +1,139 @@
+diff --git a/games/merge2048/src/App.css b/games/merge2048/src/App.css
+index f4695e7..b60e885 100644
+--- a/games/merge2048/src/App.css
++++ b/games/merge2048/src/App.css
+@@ -12,6 +12,54 @@
+   position: relative;
+ }
+ 
++/* Keep the game usable on short screens without changing other game panels. */
++@media (max-width: 960px) {
++  .game-shell-root[data-game-id="merge2048"] {
++    overflow-y: auto;
++  }
++
++  .game-shell-root[data-game-id="merge2048"] .game-shell-main {
++    height: auto;
++    min-height: 100%;
++    grid-template-rows: auto minmax(340px, 1fr);
++  }
++
++  .game-shell-root[data-game-id="merge2048"] .game-shell-panel-inner {
++    display: grid;
++    grid-template-columns: 1fr auto;
++    align-items: center;
++    gap: 6px 10px;
++    height: auto;
++  }
++
++  .game-shell-root[data-game-id="merge2048"] .game-shell-title {
++    grid-column: 1;
++    grid-row: 1;
++    margin: 0;
++  }
++
++  .game-shell-root[data-game-id="merge2048"] .game-shell-back-button {
++    grid-column: 2;
++    grid-row: 1;
++  }
++
++  .game-shell-root[data-game-id="merge2048"] .game-shell-description,
++  .game-shell-root[data-game-id="merge2048"] .game-shell-section:not(.game-shell-meta) {
++    display: none;
++  }
++
++  .game-shell-root[data-game-id="merge2048"] .game-shell-actions,
++  .game-shell-root[data-game-id="merge2048"] .game-shell-meta {
++    grid-column: 1 / -1;
++    margin-top: 0;
++  }
++
++  .game-shell-root[data-game-id="merge2048"] .game-shell-meta h2,
++  .game-shell-root[data-game-id="merge2048"] .game-shell-meta-copy {
++    display: none;
++  }
++}
++
+ /* Header */
+ .merge2048-header {
+   display: flex;
+diff --git a/games/merge2048/src/lib/game.ts b/games/merge2048/src/lib/game.ts
+index ff74122..0858168 100644
+--- a/games/merge2048/src/lib/game.ts
++++ b/games/merge2048/src/lib/game.ts
+@@ -1,4 +1,5 @@
+-// 2048 game logic - pure functions
++// 2048 game logic
++import { readBestScore, writeBestScore } from "./storage";
+ 
+ export type Direction = "up" | "down" | "left" | "right";
+ 
+@@ -95,8 +96,7 @@ export function initGame(): GameState {
+   tiles = result2.tiles;
+   nextId = result2.nextId;
+   
+-  const saved = localStorage.getItem("merge2048-best");
+-  const bestScore = saved ? parseInt(saved, 10) : 0;
++  const bestScore = readBestScore();
+   
+   return {
+     tiles,
+@@ -227,7 +227,7 @@ export function moveWithResult(state: GameState, direction: Direction): MoveResu
+   const newBestScore = Math.max(state.bestScore, newScore);
+   
+   if (newBestScore > state.bestScore) {
+-    localStorage.setItem("merge2048-best", String(newBestScore));
++    writeBestScore(newBestScore);
+   }
+   
+   const won = newTiles.some((t) => t.value >= 2048);
+diff --git a/src/shared/components/GameShell.tsx b/src/shared/components/GameShell.tsx
+index 8978f46..32a5e68 100644
+--- a/src/shared/components/GameShell.tsx
++++ b/src/shared/components/GameShell.tsx
+@@ -137,7 +137,7 @@ export function GameShell({
+   }, [children, minScale]);
+ 
+   return (
+-    <div className={`game-shell-root game-shell-root--${layout}`}>
++    <div className={`game-shell-root game-shell-root--${layout}`} data-game-id={gameId}>
+       <div className={`game-shell-main game-shell-main--${layout}`}>
+         <aside className="game-shell-panel" aria-label="ゲーム操作パネル">
+           <div className="game-shell-panel-inner">
+@@ -201,7 +201,7 @@ export function GameShell({
+               <div
+                 className={`game-shell-scale-content game-shell-scale-content--${layout}`}
+                 ref={scaledContentRef}
+-                style={{ transform: `translate(-50%, -50%) scale(${scale})` }}
++                style={{ transform: `scale(${scale}) translate(-50%, -50%)` }}
+               >
+                 {children}
+               </div>
+diff --git a/games/merge2048/src/lib/storage.ts b/games/merge2048/src/lib/storage.ts
+new file mode 100644
+index 0000000..b4dab6e
+--- /dev/null
++++ b/games/merge2048/src/lib/storage.ts
+@@ -0,0 +1,22 @@
++// Best-score persistence is optional; playing must survive denied storage.
++const KEY = "merge2048-best";
++
++export function readBestScore(): number {
++  try {
++    const raw = globalThis.localStorage.getItem(KEY);
++    if (raw === null || !/^\d+$/.test(raw)) return 0;
++    const score = Number(raw);
++    return Number.isSafeInteger(score) && score >= 0 ? score : 0;
++  } catch {
++    return 0;
++  }
++}
++
++export function writeBestScore(score: number): void {
++  if (!Number.isSafeInteger(score) || score < 0) return;
++  try {
++    globalThis.localStorage.setItem(KEY, String(score));
++  } catch {
++    // Current-session bestScore stays in game state; persistence may be denied.
++  }
++}

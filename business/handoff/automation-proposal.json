@@ -1,0 +1,16 @@
+{
+  "status": "proposal_only_not_created",
+  "business_id": "B",
+  "timezone": "Asia/Tokyo",
+  "proposed_hours": [3, 9, 15, 21],
+  "runtime_minutes": 30,
+  "title": "ゲームの品質・集客・収益検証",
+  "prompt": "最新projects/income/AGENTS.mdとSTATE.mdを読み、B専用のdecision/task/KPI/成果物を照合する。ゲーム品質・モバイル・検索・再訪を一変更ずつ実制作と検査で改善する。実測不明はnull。内部改善は本人へ丸投げせず、公開・広告契約・投稿は本人の許可まで実行しない。既存BOOTH自動枠を変更しない。revision/lease/保存/再取得とB専用のclaim許可を確認する。変化がない場合は通知せず、新完成物・重要な障害・必要な本人操作だけ通知する。",
+  "activation_requirements": [
+    "本人がゲーム専用自動taskの新規作成と時間を明示許可する",
+    "flowの専用B枠許可を実装・テストする（現在のscheduled claimはA/sharedのみ）",
+    "同時実行制限、revision/lease競合、通知経路を検証する"
+  ],
+  "existing_automation_modified": false,
+  "external_publication_authorized": false
+}

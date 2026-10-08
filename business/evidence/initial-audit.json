@@ -1,0 +1,53 @@
+{
+  "inspected_at": "2026-10-08",
+  "repository": "Kihamda/Kihamda_Game",
+  "main": "dcae2496c4e872a0127ab2f61bd79cdc5dd74a9d",
+  "control_branch": "ops/game-business",
+  "AGENTS_at_initial_main": null,
+  "lockfile_sha256": "fa1c2657a83b9a2496908d19333d70d9d71bad3a4f569938c5ba6faa55ed6802",
+  "deploy": {
+    "main_push": "FTPS build-and-deploy.yml",
+    "tag_push": "release-pipeline.yml may post externally",
+    "workflow_dispatch": "not run"
+  },
+  "live_portal": {
+    "source": "https://game.kihamda.net/",
+    "fixed_cumulative_display": "12,450+",
+    "measured_visitors": null,
+    "bundle_equals_main": null
+  },
+  "measurement": {
+    "tag": "G-L7TY3RFZB7",
+    "intentional_game_start_found": false,
+    "GA4_property_access": null,
+    "Search_Console_access": null,
+    "revenue_access": null
+  },
+  "tools": {
+    "github_connector": "read succeeded; branch/tree/commit/CAS/PR tools available",
+    "shell_git_network": "proxy connection failed; connector used",
+    "python": "3.12.14",
+    "browser": "Chromium/Playwright available for future QA",
+    "scheduler": "automation create/peek available"
+  },
+  "skills_read": [
+    "cloud-environment-runtime",
+    "data-analytics:index",
+    "data-analytics:design-kpis"
+  ],
+  "user_latest_scope": "System and periodic task creation now; specific game improvement deferred",
+  "game_candidate": {
+    "applied": false,
+    "mobile_checks_complete": false,
+    "storage_checks": "10 passed; internal technical evidence only"
+  },
+  "not_done": [
+    "main push/merge",
+    "deploy",
+    "BOOTH modification",
+    "ad contracts",
+    "billing",
+    "external messages"
+  ],
+  "upfront_spend_jpy": 0
+}

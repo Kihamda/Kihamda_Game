@@ -1,0 +1,22 @@
+{
+  "business_id": "B",
+  "product_id": "game-merge2048",
+  "data_status": "unobserved",
+  "not_observations": ["12,450+ hardcoded portal text", "GA4 tag presence", "ads.txt presence", "featured-game flag", "synthetic QA events"],
+  "required_evidence": ["anonymous GA4 property export", "Search Console property export", "ad/sponsor revenue statement", "same-period reconciled cost ledger"],
+  "period": {"start": "required ISO8601 aware timestamp", "end": "required completed ISO8601 aware timestamp", "timezone": "required IANA timezone"},
+  "definitions": {
+    "unique_visitors": "distinct pseudonymous users in the stated GA4 property and period; identity/consent limitations stated",
+    "page_views": "measured page_view events, including repeats; distinguish portal and game pages",
+    "game_starts": "first intentional game action for a stated visit/game; reload and restart counting documented",
+    "start_rate": "same-population sessions with at least one game_start / eligible game-page sessions, not events divided by users",
+    "game_completions": "per-game terminal success definition; not all games have a completion",
+    "return_rate_7d": "users in fixed first-visit cohort returning within next 7 days / cohort users with full 7-day followup; partial followup excluded",
+    "search_clicks": "Search Console web-search clicks for stated property, game URL and period",
+    "page_rpm": "ad_revenue_jpy / measured page_views * 1000, not ad impressions",
+    "monthly_net_profit_jpy": "complete calendar month in stated timezone; ad+sponsor+sales minus actual fees/refunds/direct/fixed/payout costs; missing input remains null; no extrapolation from partial month"
+  },
+  "baseline": {"visitors": null, "game_starts": null, "return_rate_7d": null, "search_clicks": null, "ad_revenue_jpy": null, "monthly_net_profit_jpy": null},
+  "comparison": "After user-approved deployment, compare one change over predeclared matched 14/28-day periods; record seasonality, source mix, sample size and counting-definition changes. No claim of causality from a raw before/after difference.",
+  "privacy": "No passwords, cookies, user identifiers or row-level personal data in chat/Git; aggregates and anonymous evidence references only."
+}

@@ -1,0 +1,80 @@
+{
+  "source_repository": "Kihamda/Sell-Something-Well",
+  "scope": "Selected game-only assets, not a copy of private state; original history preserved",
+  "origin_task_id": "T-20261008-game-storage-fix",
+  "origin_decision_id": "DB-20261008-merge2048-storage",
+  "origin_claim": {
+    "path": "projects/income/events/00094.json",
+    "blob_sha": "d6c21bad5fb726a6f3de0e6b5c254f3979bc7afb"
+  },
+  "decision_source": {
+    "path": "projects/income/decisions/DB-20261008-merge2048-storage.json",
+    "blob_sha": "8e4186ec4c927df3ff770173fedc43c3dc15b914"
+  },
+  "assets": [
+    {
+      "path": "projects/income/game/merge2048-storage/README.md",
+      "blob_sha": "0e9eb9a6b50dca407c8c749779566431547b32cc",
+      "local_path": "business/handoff/merge2048-storage/README.md"
+    },
+    {
+      "path": "projects/income/game/merge2048-storage/baseline.json",
+      "blob_sha": "bffafa2ff57047fa14625ec4a2ce9f6d4dc06039",
+      "local_path": "business/handoff/merge2048-storage/baseline.json"
+    },
+    {
+      "path": "projects/income/game/merge2048-storage/check.mjs",
+      "blob_sha": "ebba6fc30255bc5fdf934c776109fbc6ccb9d868",
+      "local_path": "business/handoff/merge2048-storage/check.mjs"
+    },
+    {
+      "path": "projects/income/game/merge2048-storage/fix.patch",
+      "blob_sha": "2fcc16705800bb64063cbee01b8a7a400a60617d",
+      "local_path": "business/handoff/merge2048-storage/fix.patch"
+    },
+    {
+      "path": "projects/income/game/merge2048-storage/storage.ts",
+      "blob_sha": "b4dab6e749cdb565717527e8dab64db3c290f422",
+      "local_path": "business/handoff/merge2048-storage/storage.ts"
+    },
+    {
+      "path": "projects/income/game/merge2048-storage/verification.json",
+      "blob_sha": "ebaa3317e0b50619982a2954eff32607eabf893d",
+      "local_path": "business/handoff/merge2048-storage/verification.json"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "projects/income/game/measurement-contract.json",
+      "blob_sha": "09effdacf4abee08eb151c752fa871e70172b322"
+    },
+    {
+      "path": "projects/income/game/automation-proposal.json",
+      "blob_sha": "e7a2ea6a3df97ccaa35cba7a1db12e4a05fd3bc8"
+    }
+  ],
+  "preserved_unfinished": [
+    "mobile game shell QA",
+    "anonymous actual measurement",
+    "user-approved release"
+  ],
+  "schedule_reconciliation": {
+    "previous_game_proposal_hours": [
+      3,
+      9,
+      15,
+      21
+    ],
+    "adopted_hours": [
+      1,
+      7,
+      13,
+      19
+    ],
+    "timezone": "Asia/Tokyo",
+    "source": "user:current-thread:2026-10-08:same-timing-as-BOOTH",
+    "booth_automation_id": "6ac48e9c898081919e3f32b3598d3274",
+    "booth_modified": false
+  },
+  "game_source_commit": "dcae2496c4e872a0127ab2f61bd79cdc5dd74a9d"
+}

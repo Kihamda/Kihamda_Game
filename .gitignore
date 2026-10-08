@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+business/ops/*.lock
+business/ops/.ledger-*
+business/ops/.runtime/
+**/__pycache__/
