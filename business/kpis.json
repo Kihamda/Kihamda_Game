@@ -1,0 +1,33 @@
+{
+  "status": "unobserved",
+  "definitions": "handoff/measurement-contract.json",
+  "primary": ["monthly_net_profit_jpy", "return_rate_7d", "start_rate"],
+  "drivers": ["unique_visitors", "search_clicks", "game_starts"],
+  "guardrails": ["playability_on_mobile", "storage_failure_survival", "load_performance", "zero_upfront_spend"],
+  "baseline": {
+    "unique_visitors": null,
+    "eligible_game_page_sessions": null,
+    "game_start_sessions": null,
+    "game_starts": null,
+    "start_rate": null,
+    "return_rate_7d": null,
+    "search_clicks": null,
+    "ad_revenue_jpy": null,
+    "sponsor_revenue_jpy": null,
+    "sales_revenue_jpy": null,
+    "all_costs_jpy": null,
+    "monthly_net_profit_jpy": null
+  },
+  "evidence_available": ["source code", "public portal snapshot", "internal storage regression checks"],
+  "evidence_missing": ["anonymous aggregate GA4 export", "Search Console export", "same-month revenue and all-cost ledger"],
+  "period": null,
+  "property": null,
+  "timezone": "Asia/Tokyo",
+  "targets": null,
+  "target_reason": "Measured baseline unavailable; do not invent conversion or RPM targets.",
+  "current_measurement_gap": "GA4 config tag found, but no intentional game_start event found in source. Tag presence does not confirm collected data or access to the property.",
+  "not_metrics": ["12,450+ hardcoded cumulative plays", "featured flag", "game count", "test count", "self score"],
+  "measurement_task": "T-measurement-audit",
+  "decision_rule": "Reproducible defects can be prioritized without traffic. Traffic/popularity/retention rankings require comparable measured periods.",
+  "comparison": {"windows_days": [14, 28], "start": "verified user-approved release only", "causality": "raw before/after does not establish causality"}
+}

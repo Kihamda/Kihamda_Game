@@ -1,0 +1,23 @@
+{
+  "result": "PASS",
+  "baseline_commit": "dcae2496c4e872a0127ab2f61bd79cdc5dd74a9d",
+  "patch_sha256": "e821edabb0c5d41505b7efbf1fd1b52a8dbf5455d32e899bbf87294f707d8ecc",
+  "checks": [
+    "before: storage read denial crashes init",
+    "before: quota failure crashes scoring move",
+    "before: malformed score becomes NaN",
+    "after: denied read starts playable game",
+    "after: unavailable global storage starts game",
+    "after: throwing storage getter starts game",
+    "after: malformed and unsafe scores are rejected",
+    "after: valid persisted score restored",
+    "after: denied write preserves move and session best",
+    "after: valid write uses existing key and value"
+  ],
+  "not_verified": [
+    "mobile browser interaction",
+    "production deployment",
+    "actual traffic and revenue"
+  ],
+  "external_actions": []
+}
