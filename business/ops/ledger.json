@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 19,
+  "revision": 24,
   "business_id": "game-site",
   "fence": 1,
-  "lease": {
-    "run_id": "manual-bootstrap-20261008",
-    "task_id": "T-system-bootstrap",
-    "fence": 1,
-    "expires_at": 1791458605.256588
-  },
+  "lease": null,
   "tasks": {
     "T-system-bootstrap": {
       "id": "T-system-bootstrap",
@@ -36,7 +31,7 @@
       "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
       "decision_id": "D-game-pdca-20261008",
       "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "run_id": "manual-bootstrap-20261008",
@@ -54,6 +49,29 @@
           ],
           "next_step": "Register dedicated game schedule and verify; then close bootstrap task",
           "at": 1791457028.845449
+        },
+        {
+          "run_id": "manual-bootstrap-20261008",
+          "fence": 1,
+          "artifacts": [
+            {
+              "path": "business/evidence/system-checks.json",
+              "sha256": "367e46d617b7ae3f1d632032a2482b7b01b3be141c1d51193202602cdbaf93da"
+            },
+            {
+              "path": "business/automation.json",
+              "sha256": "e05eb25b7968eeaee6ed00eed0cae15c7063a8c3d3012784942f782a4245fff7"
+            }
+          ],
+          "checks": [
+            "21 unit tests",
+            "full build",
+            "remote initial claim/all changed blobs match",
+            "automation create and peek verified"
+          ],
+          "next_step": "First scheduled run: T-catalog-first-plan",
+          "passed": true,
+          "at": 1791457105.7237804
         }
       ],
       "claims": [
@@ -239,7 +257,7 @@
       "run_id": "manual-bootstrap-20261008",
       "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
       "note": "Bootstrap work before ledger existed is retrospective preparation, not a fabricated prior claim.",
-      "status": "open",
+      "status": "completed",
       "started_at": 1791456805.253445
     }
   },
@@ -254,10 +272,39 @@
       ],
       "measurement_plan": "運用基盤の整合性を内部検査。事業KPI改善は別観測",
       "decision_id": "D-game-pdca-20261008",
-      "next_step": "既存成果と未完了を確認",
+      "next_step": "T-catalog-first-plan; refine runtime only on observed failure",
       "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
-      "stage": "plan",
-      "history": [],
+      "stage": "act",
+      "history": [
+        {
+          "id": "EXP-system",
+          "stage": "do",
+          "source": "bootstrap:2026-10-08",
+          "evidence": "implemented flow.py and tests",
+          "next_step": "record validation",
+          "at": 1791457105.7297165,
+          "previous_stage": "plan"
+        },
+        {
+          "id": "EXP-system",
+          "stage": "check",
+          "source": "QA:2026-10-08",
+          "evidence": "21 tests/build/GitHub/schedule readback",
+          "next_step": "next scheduled plan",
+          "at": 1791457105.7340126,
+          "previous_stage": "do"
+        },
+        {
+          "id": "EXP-system",
+          "stage": "act",
+          "source": "QA:2026-10-08",
+          "evidence": "runtime functional, future run/business results unobserved",
+          "judgment": "continue",
+          "next_step": "T-catalog-first-plan; refine runtime only on observed failure",
+          "at": 1791457105.7386994,
+          "previous_stage": "check"
+        }
+      ],
       "release": null
     },
     "EXP-catalog": {
@@ -325,7 +372,13 @@
       "artifact_sha256": "9c08606143f49f7a7a3a55843f9890bf0cddd86f697a2641f51fed3ca18988fb",
       "run_id": "manual-bootstrap-20261008",
       "fence": 1,
-      "status": "unknown"
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "OP-game-automation-20261008",
+        "status": "confirmed_success",
+        "source": "automation:create+peek:2026-10-08",
+        "evidence": "business/automation.json (enabled, exact prompt/schedule/timezone; BOOTH unchanged)"
+      }
     }
   },
   "observations": [],
@@ -788,7 +841,107 @@
       },
       "previous": "d87c4d850701305f2907e38cda752065ff4b9b07e892394f4bc7f5160eeb1dbc",
       "sha256": "537564ab4ef0e09591680e0f2ce4ddaf3098c72151d0b60300db387a2817a269"
+    },
+    {
+      "revision": 20,
+      "at": 1791457105.7185981,
+      "action": "reconcile-external",
+      "data": {
+        "id": "OP-game-automation-20261008",
+        "status": "confirmed_success",
+        "source": "automation:create+peek:2026-10-08",
+        "evidence": "business/automation.json (enabled, exact prompt/schedule/timezone; BOOTH unchanged)"
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "537564ab4ef0e09591680e0f2ce4ddaf3098c72151d0b60300db387a2817a269",
+      "sha256": "c30c9144e4800f1e8bc5b32223e36d542c13fcd6b30b05ad579e0f5c6d17de4f"
+    },
+    {
+      "revision": 21,
+      "at": 1791457105.7237804,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-bootstrap-20261008",
+        "fence": 1,
+        "artifacts": [
+          {
+            "path": "business/evidence/system-checks.json",
+            "sha256": "367e46d617b7ae3f1d632032a2482b7b01b3be141c1d51193202602cdbaf93da"
+          },
+          {
+            "path": "business/automation.json",
+            "sha256": "e05eb25b7968eeaee6ed00eed0cae15c7063a8c3d3012784942f782a4245fff7"
+          }
+        ],
+        "checks": [
+          "21 unit tests",
+          "full build",
+          "remote initial claim/all changed blobs match",
+          "automation create and peek verified"
+        ],
+        "next_step": "First scheduled run: T-catalog-first-plan",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "c30c9144e4800f1e8bc5b32223e36d542c13fcd6b30b05ad579e0f5c6d17de4f",
+      "sha256": "0d7058150d9b7cc753c396d5f752a2351f7e13dea0affd17c90b48c73c526403"
+    },
+    {
+      "revision": 22,
+      "at": 1791457105.7297165,
+      "action": "experiment-stage",
+      "data": {
+        "id": "EXP-system",
+        "stage": "do",
+        "source": "bootstrap:2026-10-08",
+        "evidence": "implemented flow.py and tests",
+        "next_step": "record validation"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "0d7058150d9b7cc753c396d5f752a2351f7e13dea0affd17c90b48c73c526403",
+      "sha256": "31d2780656be93e776d15799f08d81a5464b5116ef9a91bfb68c87577438e3f7"
+    },
+    {
+      "revision": 23,
+      "at": 1791457105.7340126,
+      "action": "experiment-stage",
+      "data": {
+        "id": "EXP-system",
+        "stage": "check",
+        "source": "QA:2026-10-08",
+        "evidence": "21 tests/build/GitHub/schedule readback",
+        "next_step": "next scheduled plan"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "31d2780656be93e776d15799f08d81a5464b5116ef9a91bfb68c87577438e3f7",
+      "sha256": "129c90144f1ca61f31e8a1b8936b2a40632916ebb3f9c4d0e4885eb719d567f3"
+    },
+    {
+      "revision": 24,
+      "at": 1791457105.7386994,
+      "action": "experiment-stage",
+      "data": {
+        "id": "EXP-system",
+        "stage": "act",
+        "source": "QA:2026-10-08",
+        "evidence": "runtime functional, future run/business results unobserved",
+        "judgment": "continue",
+        "next_step": "T-catalog-first-plan; refine runtime only on observed failure"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "129c90144f1ca61f31e8a1b8936b2a40632916ebb3f9c4d0e4885eb719d567f3",
+      "sha256": "cc72fb8eb40bce48f4a76864704dbb9b836405533b4830e1697219e97dce88ad"
     }
   ],
-  "projection_sha256": "b821328a206a746cd1a75443e7df8efbe22cf947e81dd65d7d359d29019baf2d"
+  "projection_sha256": "e6d656ed03e9362c9dad2606b0ed00d514ff23fa5535127e236f4270f8b34665"
 }

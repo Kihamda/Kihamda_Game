@@ -9,5 +9,8 @@
   "game_source_diff": "none vs dcae249/main",
   "bootstrap_claim_remote_saved": "cb1812b5c23f5df4d82988c2e073bd7817d43d8f",
   "claim_readback": "ledger and 23 changed blob SHAs verified",
-  "main_unchanged": true
+  "main_unchanged": true,
+  "schedule_create": "success",
+  "schedule_readback": "matching prompt/schedule, enabled; BOOTH unchanged",
+  "future_run_observed": false
 }

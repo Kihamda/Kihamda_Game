@@ -40,6 +40,8 @@ GitHub connectorではhead取得→base treeに必要ファイルのみ追加→
 
 workerはfenceごとの隔離worktree／ops/.runtime/FENCEで制作する。publishは有効run_id・fence・期限をロック中に確認し、staged fileのsha256が合う場合だけimmutable artifacts/SHAへ保存する。古いworkerは正本の成果物やゲームソースへ直接書かない。ゲーム修正は隔離branchへ通常保存しPRでレビュー。共有treeへの任意shell書込みまでOS権限で防ぐ製品ではないため、共通treeを複数workerに書かせない。リモート公開はCASで古いworkerを拒否する。
 
+受入済み検査証拠は同じpathへ上書きせず新しい版のファイルにする。過去hashは対応する保存commitとimmutable artifactで照合する。今回system-checks.jsonが完了時の証拠、system-checks-final.jsonは後続CI確認の別版。
+
 ## 失敗復旧と承認
 
 ledgerはevent chainとprojection digestを一つのJSONへ原子的置換し、fsyncする。破損は初期化せず停止、Git保存済snapshot／ハッシュ照合で復旧する。event、decision、完了taskは削除しない。
