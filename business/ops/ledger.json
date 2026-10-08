@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 35,
+  "revision": 37,
   "business_id": "game-site",
-  "fence": 2,
-  "lease": null,
+  "fence": 3,
+  "lease": {
+    "run_id": "scheduled-game-20261009-0700",
+    "task_id": "T-2048-storage-first",
+    "fence": 3,
+    "expires_at": 1791498584.0724099
+  },
   "tasks": {
     "T-system-bootstrap": {
       "id": "T-system-bootstrap",
@@ -355,9 +360,16 @@
         "T-catalog-first-plan"
       ],
       "priority": 15,
-      "status": "ready",
+      "status": "running",
       "checkpoints": [],
-      "claims": []
+      "claims": [
+        {
+          "run_id": "scheduled-game-20261009-0700",
+          "task_id": "T-2048-storage-first",
+          "fence": 3,
+          "expires_at": 1791498584.0724099
+        }
+      ]
     },
     "T-2048-mobile-shell": {
       "decision_id": "D-catalog-2048-20261009",
@@ -432,6 +444,13 @@
       "source": "scheduled:game-site:2026-10-09T01:00:00+09:00",
       "status": "completed",
       "started_at": 1791475210.0343318
+    },
+    "scheduled-game-20261009-0700": {
+      "run_id": "scheduled-game-20261009-0700",
+      "scheduled_at": "2026-10-09T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-09T07:00:00+09:00",
+      "status": "open",
+      "started_at": 1791497084.0574381
     }
   },
   "experiments": {
@@ -525,7 +544,8 @@
     }
   },
   "slots": {
-    "2026-10-09T01:00:00+09:00": "scheduled-game-20261009-0100"
+    "2026-10-09T01:00:00+09:00": "scheduled-game-20261009-0100",
+    "2026-10-09T07:00:00+09:00": "scheduled-game-20261009-0700"
   },
   "feedback": [
     {
@@ -1395,7 +1415,39 @@
       },
       "previous": "cbe885ef2487ca58bfbab2c1861eabd889bb7da54f0232d775c6afd0a09f8f98",
       "sha256": "72237aa63dc3d19136777289c4551cc31ee4ef1c81081e14de3ddf8e4f330499"
+    },
+    {
+      "revision": 36,
+      "at": 1791497084.0574381,
+      "action": "slot",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "scheduled_at": "2026-10-09T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "72237aa63dc3d19136777289c4551cc31ee4ef1c81081e14de3ddf8e4f330499",
+      "sha256": "86c5552e27a4d6252b6607288b8d4a427011817a3ef9089cf5cda80c22e0f960"
+    },
+    {
+      "revision": 37,
+      "at": 1791497084.0724099,
+      "action": "claim",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "task_id": "T-2048-storage-first",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "scheduled-game-20261009-0700",
+        "task_id": "T-2048-storage-first",
+        "fence": 3,
+        "expires_at": 1791498584.0724099
+      },
+      "previous": "86c5552e27a4d6252b6607288b8d4a427011817a3ef9089cf5cda80c22e0f960",
+      "sha256": "14eef43274525207332de67be4224a7a0b18651c4b915794d620b70b845dbfd0"
     }
   ],
-  "projection_sha256": "08d2004a00b6767ad2ce5ebfbe1a6482786bd48259ace3565029ed6719e27483"
+  "projection_sha256": "6e3840ec038fcf28882bb0bc95017597ca9bce22677aee27b2308918d17420e0"
 }
