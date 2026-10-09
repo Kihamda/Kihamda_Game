@@ -96,7 +96,9 @@ class Ledger:
         self.path = Path(path)
         self.clock = clock
         self.root = (self.path.parents[2] if self.path.parent.name == "ops" and
-                     self.path.parent.parent.name == "business" else self.path.parent).resolve()
+                     self.path.parent.parent.name == "business" else
+                     self.path.parents[3] if self.path.parent.name == "ops" and
+                     self.path.parent.parent.parent.name == "business" else self.path.parent).resolve()
 
     def verify_artifacts(self, items):
         artifact_list(items)

@@ -1,0 +1,5 @@
+既存101作品をすべて評価記録へ移し、4作品をUnity移植の参考として残す。削除前の全参照bundleと元カタログを保全し、親フォルダの4プロジェクトも復元可能な引き継ぎ対象へ加えた。
+
+最初のUnity作品Ice Courierは滑走すると出発点が障害物になる配送パズル。3盤面、Undo、保存・再開、解法検査を実装。通常制作はローカルPC、Unity PersonalによるWindows/Web配布ビルドはGitHub Actionsへ変更。作品登録からビルドmatrixを作り、同一commitの版情報とSHA-256を検査してartifactへ保存する。旧Webの本番配信は手動に限定した。
+
+ローカルでUnity Validate、EditMode、PlayMode、Windowsビルド、台帳23検査、ルール単体検査、構成/GUID、actionlintを確認。WebのローカルビルドはUnity内部処理のクラッシュが残るため、GitHubでの実ビルド結果を別途確認する。実プレイの面白さと公開後の収益は未評価。

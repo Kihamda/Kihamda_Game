@@ -17,6 +17,13 @@ ART = [{"path": "evidence/review.json", "sha256": hashlib.sha256(b"reviewed").he
 
 
 class FlowTest(unittest.TestCase):
+    def test_domain_ledger_uses_repository_artifact_root(self):
+        domain_path = self.path.parent / "business/unity/ops/ledger.json"
+        domain_path.parent.mkdir(parents=True)
+        domain = flow.Ledger(domain_path, lambda: self.now)
+        self.assertEqual(domain.root, self.path.parent.resolve())
+        domain.verify_artifacts(ART)
+
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.now = 1000

@@ -1,0 +1,175 @@
+{
+  "schema": 1,
+  "revision": 4,
+  "business_id": "game-site",
+  "fence": 0,
+  "lease": null,
+  "tasks": {
+    "T-ice-courier-unity-evaluation": {
+      "id": "T-ice-courier-unity-evaluation",
+      "objective": "既存の滑走パズルを独自ルールのIce Courierへ移し、実際に動くUnity試作品として検証する",
+      "acceptance": [
+        "Unity C#コンパイル",
+        "EditMode/PlayMode成功",
+        "実画面と入力の検査",
+        "Windows/Web成果物とチェックサム"
+      ],
+      "outputs": [
+        "unity/IceCourier",
+        "検査ログ",
+        "スクリーンショット",
+        "GitHub artifacts"
+      ],
+      "checks": [
+        "ローカルUnity操作",
+        "保存・再開",
+        "GitHub Actions"
+      ],
+      "next_step": "Unity Personal認証後、ローカル検査とGitHubビルドを実行する",
+      "decision_id": "D-local-studio-20261009",
+      "hypothesis": "ルール単体の解法とUndo検査を先に固定し、GUIと配信の問題を別に検証できる",
+      "source": "user:current-thread:2026-10-09:autonomous-studio",
+      "pdca": "do",
+      "experiment_id": "E-ice-courier",
+      "priority": 0,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    }
+  },
+  "decisions": {
+    "D-local-studio-20261009": {
+      "id": "D-local-studio-20261009",
+      "source": "user:current-thread:2026-10-09:autonomous-studio",
+      "quote": "UnityゲームをGitHub Actionsでビルドする。CI,CD以外では僕のPCのを活用してくださいな。既存Web資産は捨てる/捨てない/別のに統合/の後に、順次整理し削除してかまいません。",
+      "hypothesis": "作品のルールを厳選し、通常制作をローカル、成果物ビルドをGitHubへ分ければ、CIの設定だけで制作が止まることを避けられる",
+      "next_step": "Ice CourierのUnity実行と操作検査を終え、同じ作品を一作ずつ改善する。旧定期タスクを保全してローカル実行へ切り替える",
+      "policy": "CI/CDは継続制作の前提条件にしない。採否・統合先・復元元を記録して旧Web実装を整理する"
+    }
+  },
+  "runs": {},
+  "experiments": {
+    "E-ice-courier": {
+      "id": "E-ice-courier",
+      "hypothesis": "出発地点が次の障害物になる滑走ルールにより、移動するほど自分で盤面を変えるパズル体験が生まれる",
+      "game_id": "ice-courier",
+      "primary_metric": "human-playtest-completion-and-return-intent",
+      "quality_acceptance": [
+        "全ステージに解法",
+        "保存と再開",
+        "壁への無効入力で手数を増やさない",
+        "Undoで荷物と霜も戻る",
+        "PCとWebで実際に操作できる"
+      ],
+      "measurement_plan": "技術検査、実操作記録、人間の感想を分離する。未取得の人間評価と公開指標はnull",
+      "decision_id": "D-local-studio-20261009",
+      "next_step": "Unity起動・PlayMode・実画面を検証する",
+      "source": "user:current-thread:2026-10-09:autonomous-studio",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    }
+  },
+  "slots": {},
+  "feedback": [],
+  "approvals": [],
+  "external": {},
+  "observations": [],
+  "events": [
+    {
+      "revision": 1,
+      "at": 1791519799.4993434,
+      "action": "init",
+      "data": {},
+      "result": {
+        "initialized": true
+      },
+      "previous": null,
+      "sha256": "2ab216407541c458e44dadf194f2ecb9777b4f0b464999d699bb393fe0cdee3d"
+    },
+    {
+      "revision": 2,
+      "at": 1791519799.6832888,
+      "action": "decision",
+      "data": {
+        "id": "D-local-studio-20261009",
+        "source": "user:current-thread:2026-10-09:autonomous-studio",
+        "quote": "UnityゲームをGitHub Actionsでビルドする。CI,CD以外では僕のPCのを活用してくださいな。既存Web資産は捨てる/捨てない/別のに統合/の後に、順次整理し削除してかまいません。",
+        "hypothesis": "作品のルールを厳選し、通常制作をローカル、成果物ビルドをGitHubへ分ければ、CIの設定だけで制作が止まることを避けられる",
+        "next_step": "Ice CourierのUnity実行と操作検査を終え、同じ作品を一作ずつ改善する。旧定期タスクを保全してローカル実行へ切り替える",
+        "policy": "CI/CDは継続制作の前提条件にしない。採否・統合先・復元元を記録して旧Web実装を整理する"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "2ab216407541c458e44dadf194f2ecb9777b4f0b464999d699bb393fe0cdee3d",
+      "sha256": "be6f073d6a7adf64a772c1e0e2797eb014af9922fe5087bc2a6c1522d1caf357"
+    },
+    {
+      "revision": 3,
+      "at": 1791519799.8648438,
+      "action": "experiment",
+      "data": {
+        "id": "E-ice-courier",
+        "hypothesis": "出発地点が次の障害物になる滑走ルールにより、移動するほど自分で盤面を変えるパズル体験が生まれる",
+        "game_id": "ice-courier",
+        "primary_metric": "human-playtest-completion-and-return-intent",
+        "quality_acceptance": [
+          "全ステージに解法",
+          "保存と再開",
+          "壁への無効入力で手数を増やさない",
+          "Undoで荷物と霜も戻る",
+          "PCとWebで実際に操作できる"
+        ],
+        "measurement_plan": "技術検査、実操作記録、人間の感想を分離する。未取得の人間評価と公開指標はnull",
+        "decision_id": "D-local-studio-20261009",
+        "next_step": "Unity起動・PlayMode・実画面を検証する",
+        "source": "user:current-thread:2026-10-09:autonomous-studio"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "be6f073d6a7adf64a772c1e0e2797eb014af9922fe5087bc2a6c1522d1caf357",
+      "sha256": "cd53d7ff4e969662b9de22743a52b9afbf0ae55241b3b2a876f6a9e177c96785"
+    },
+    {
+      "revision": 4,
+      "at": 1791519800.0516896,
+      "action": "task",
+      "data": {
+        "id": "T-ice-courier-unity-evaluation",
+        "objective": "既存の滑走パズルを独自ルールのIce Courierへ移し、実際に動くUnity試作品として検証する",
+        "acceptance": [
+          "Unity C#コンパイル",
+          "EditMode/PlayMode成功",
+          "実画面と入力の検査",
+          "Windows/Web成果物とチェックサム"
+        ],
+        "outputs": [
+          "unity/IceCourier",
+          "検査ログ",
+          "スクリーンショット",
+          "GitHub artifacts"
+        ],
+        "checks": [
+          "ローカルUnity操作",
+          "保存・再開",
+          "GitHub Actions"
+        ],
+        "next_step": "Unity Personal認証後、ローカル検査とGitHubビルドを実行する",
+        "decision_id": "D-local-studio-20261009",
+        "hypothesis": "ルール単体の解法とUndo検査を先に固定し、GUIと配信の問題を別に検証できる",
+        "source": "user:current-thread:2026-10-09:autonomous-studio",
+        "pdca": "do",
+        "experiment_id": "E-ice-courier",
+        "priority": 0
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "cd53d7ff4e969662b9de22743a52b9afbf0ae55241b3b2a876f6a9e177c96785",
+      "sha256": "61d758c31624a57105a67d3681165f2ba1fa02eecc7bb7fcdca523fba378b04d"
+    }
+  ],
+  "projection_sha256": "89db21e475a08531ec54b7df62eb67fd2c6be466dbc4b2aff9da635fdfaabb80"
+}

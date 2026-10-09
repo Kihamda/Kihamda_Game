@@ -1,0 +1,1 @@
+{"name":"Kihamda.EditMode","references":["Kihamda.Editor","Kihamda.Runtime"],"includePlatforms":["Editor"],"optionalUnityReferences":["TestAssemblies"]}

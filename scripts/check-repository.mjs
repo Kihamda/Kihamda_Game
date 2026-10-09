@@ -8,7 +8,11 @@ const read = p => readFileSync(resolve(root, p), 'utf8');
 const games = JSON.parse(read('web/src/portal/data/games.json')).games;
 const previous = JSON.parse(read('docs/legacy-recovery/games-current-before.json')).games;
 const previousSources = JSON.parse(read('docs/legacy-recovery/game-source-paths-before.json'));
-assert.deepEqual(games, previous, 'Migration changed legacy game IDs, URLs or metadata');
+const dispositionPath=resolve(root,'business/legacy-dispositions.json');
+const dispositions=existsSync(dispositionPath)?JSON.parse(readFileSync(dispositionPath,'utf8')).records:null;
+const accepted=dispositions?previous.filter(game=>dispositions.find(r=>r.id===game.id)?.decision==='retain'):previous;
+assert.deepEqual(games, accepted, 'Catalog differs from recorded disposition');
+if(dispositions){assert.equal(dispositions.length,previous.length);assert.equal(new Set(dispositions.map(r=>r.id)).size,previous.length);}
 assert.equal(new Set(games.map(g => g.id)).size, games.length, 'Duplicate IDs');
 for (const game of games) {
   const source = `games/${game.id}/src/App.tsx`;
