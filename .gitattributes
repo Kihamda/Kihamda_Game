@@ -5,4 +5,5 @@
 *.asmdef text eol=lf
 *.yml text eol=lf
 *.py text eol=lf
-business/unity/evidence/*.json text eol=lf
+# Evidence hashes bind exact bytes; preserve them on Windows and Linux.
+business/unity/evidence/*.json -text
