@@ -17,4 +17,6 @@
 
 親フォルダのAGENTS.mdから正本へ誘導する。定期実行は親フォルダを対象プロジェクトとして使い、正本とこの引き継ぎ定義を読む。旧リポジトリのSNS・量産・配信入口を新しい運用として再利用しない。
 
-2026-10-10の再確認でAtohitori/ReferenceのMarkdown資料7件も引き継いだ。GitとUnity実装はなく、シナリオ・制作設計のみ。改訂仕様は07_REVISION_V04.mdを参照し、元の原稿を書き換えずUnity候補として保持する。原稿本文は公開リポジトリにコピーせず、_recovery/Atohitori-reference-20261010.zipへ保存し、7件すべての原本と復元バイト列が一致した。SHA-256はbusiness/workspace-projects.jsonに記録。Ice Courierの工程と並列制作しない。
+2026-10-10の再確認でAtohitori/ReferenceのMarkdown資料7件も引き継いだ。GitとUnity実装はなく、シナリオ・制作設計のみ。原稿と設計は本人の制作資料として保全する。原稿本文は公開リポジトリにコピーせず、_recovery/Atohitori-reference-20261010.zipへ保存し、7件すべての原本と復元バイト列が一致した。SHA-256はbusiness/workspace-projects.jsonに記録。自律開発の対象にしない。
+
+本人の2026-10-10追加指示により、Atohitoriの制作は本人が別途担当する。自律的な実装・原稿編集・Unity移植・優先タスク化は行わない。既存の保全記録は残し、完成後に配布を明示依頼された場合のみ成果物を扱う。

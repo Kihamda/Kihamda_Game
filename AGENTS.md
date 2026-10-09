@@ -2,7 +2,7 @@
 
 毎回、天啓.md、STATE.md、business/studio-policy.json、business/unity/ops/ledger.jsonを読む。天啓.mdは本人専用で、AIが書き換えない。本人の最新の直接指示を優先する。
 
-親フォルダの全プロジェクトも引き継ぐ。business/workspace-projects.jsonとdocs/workspace-handoff.mdを参照し、旧フォルダの量産指示を再稼働しない。復元保管庫_recoveryはローカル専用でGitHubへ公開しない。
+親フォルダの全プロジェクトも引き継ぐ。business/workspace-projects.jsonとdocs/workspace-handoff.mdを参照し、旧フォルダの量産指示を再稼働しない。復元保管庫_recoveryはローカル専用でGitHubへ公開しない。Atohitoriは本人が別途制作するため自律開発の対象外。完成後に配布を明示依頼された時だけ扱う。
 
 リポジトリ移行はPR #10でmainへ統合済み。通常の制作・検査・コンサルティングは本人のWindows PCで行い、UnityのWindows/Web配布ビルドはGitHub Actionsで行う。Unity Personalを使用する。CI/CDの障害だけで独立した制作を止めない。認証や実プレイが未確認なら、その検証を済んだことにしない。
 

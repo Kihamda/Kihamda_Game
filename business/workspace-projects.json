@@ -44,8 +44,7 @@
     {
       "folder": "Atohitori",
       "commit": null,
-      "decision": "retain-unity-design",
-      "unityCandidate": "atohitori",
+      "decision": "owner-managed-excluded-from-autonomous-development",
       "implemented": false,
       "sourceKind": "scenario-and-design-only",
       "sourcePriority": "Reference/07_REVISION_V04.md",
@@ -81,7 +80,10 @@
           "path": "Reference/07_REVISION_V04.md",
           "sha256": "c1167bf0b96c0d8e5ed401dcc38c820a97c1e72e8a2cc8be2491498c1083de8b"
         }
-      ]
+      ],
+      "autonomousDevelopment": false,
+      "futureDistribution": "only-after-owner-completion-and-explicit-request",
+      "source": "user:current-thread:2026-10-10:atohitori-owner-managed"
     }
   ],
   "capturedAt": "2026-10-10"
