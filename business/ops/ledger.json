@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 100,
+  "revision": 108,
   "business_id": "game-site",
-  "fence": 4,
-  "lease": null,
+  "fence": 5,
+  "lease": {
+    "run_id": "scheduled-game-20261009-1300",
+    "task_id": "T-measurement-audit",
+    "fence": 5,
+    "expires_at": 1791519913.7402437
+  },
   "tasks": {
     "T-system-bootstrap": {
       "id": "T-system-bootstrap",
@@ -213,9 +218,16 @@
       "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
       "decision_id": "D-game-pdca-20261008",
       "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
-      "status": "ready",
+      "status": "running",
       "checkpoints": [],
-      "claims": []
+      "claims": [
+        {
+          "run_id": "scheduled-game-20261009-1300",
+          "task_id": "T-measurement-audit",
+          "fence": 5,
+          "expires_at": 1791519913.7402437
+        }
+      ]
     },
     "T-migrated-2048-review": {
       "id": "T-migrated-2048-review",
@@ -578,8 +590,16 @@
         "T-2048-storage-first"
       ],
       "priority": 30,
-      "status": "ready",
-      "checkpoints": [],
+      "status": "blocked",
+      "checkpoints": [
+        {
+          "task_id": "T-2048-mobile-shell",
+          "source": "github:main:0d3192f7464a710b0c5b4db34f7d9bb971ed6a85:AGENTS.md/STATE.md/docs/migration-verification.md",
+          "reason": "mainの移行工程先行方針とUnity基盤未実証。旧source配置/実装方針のまま制作しない。成果と未完了は保全。",
+          "next_step": "移行完了証拠後に最新web/Unity方針へ工程を再評価してunblock。保存修正のPR8は再制作しない。",
+          "at": 1791518913.6975868
+        }
+      ],
       "claims": []
     },
     "T-portfolio-20261009": {
@@ -718,8 +738,16 @@
         "T-portfolio-20261009"
       ],
       "priority": 15,
-      "status": "ready",
-      "checkpoints": [],
+      "status": "blocked",
+      "checkpoints": [
+        {
+          "task_id": "T-common-experience-pilot",
+          "source": "github:main:0d3192f7464a710b0c5b4db34f7d9bb971ed6a85:AGENTS.md/STATE.md/docs/migration-verification.md",
+          "reason": "mainの移行工程先行方針とUnity基盤未実証。旧source配置/実装方針のまま制作しない。成果と未完了は保全。",
+          "next_step": "移行完了証拠後に最新web/Unity方針へ工程を再評価してunblock。保存修正のPR8は再制作しない。",
+          "at": 1791518913.6801648
+        }
+      ],
       "claims": []
     },
     "T-portfolio-merge2048-first-slice": {
@@ -1361,6 +1389,41 @@
       "status": "ready",
       "checkpoints": [],
       "claims": []
+    },
+    "T-unity-runtime-evidence": {
+      "id": "T-unity-runtime-evidence",
+      "objective": "移行基盤のUnityコンパイル/test/Windows-Web build実証を照合する",
+      "acceptance": [
+        "指定Unity版/Packages/ProjectSettingsと本人ローカル環境の実行を照合",
+        "license有効化後の実compile/EditMode/PlayMode/Windows/Web build結果と同一commit",
+        "runner/environmentは本人設定の実証を確認。不明値はnull、dispatchしない"
+      ],
+      "outputs": [
+        "source-pinned Unity runtime verification evidence"
+      ],
+      "checks": [
+        "Unity official execution logs without secrets",
+        "commit/build checksums",
+        "migration CI and rollback contract"
+      ],
+      "next_step": "本人ローカルのライセンス有効化と基盤実証の結果を受けてunblock。ゲーム制作はその後。",
+      "decision_id": "D-migration-canonical-reconciled-20261009",
+      "hypothesis": "基盤の実証を先行すれば再現可能な制作ができる",
+      "source": "github:main:0d3192f7464a710b0c5b4db34f7d9bb971ed6a85:AGENTS.md/STATE.md/docs/migration-verification.md",
+      "pdca": "check",
+      "experiment_id": "EXP-system",
+      "priority": 10,
+      "status": "blocked",
+      "checkpoints": [
+        {
+          "task_id": "T-unity-runtime-evidence",
+          "source": "github:main:0d3192f7464a710b0c5b4db34f7d9bb971ed6a85:AGENTS.md/STATE.md/docs/migration-verification.md",
+          "reason": "このクラウド環境にUnity実行commandがない。ローカルのlicense失敗198は移行記録の報告で、現在の本人環境/runner状態は未確認。",
+          "next_step": "本人WindowsのUnity Hubでライセンスを有効化し、既存scripts/Invoke-Unity.ps1による基盤compile/test/buildの結果を確認",
+          "at": 1791518913.6611803
+        }
+      ],
+      "claims": []
     }
   },
   "decisions": {
@@ -1434,6 +1497,28 @@
       "hypothesis": "既存の運用履歴と公開資産を保全してUnityモノレポの基盤を先に検証すれば、制作と移行を混同せず継続開発できる",
       "policy": "Unity-only new games and ports; monorepo; WIP1; no subagents; preserve legacy and private boundaries",
       "next_step": "移行PRのCIと復元検査を確認し、Unityライセンス有効化後に基盤を実証する。ゲーム制作は移行後"
+    },
+    "D-migration-canonical-reconciled-20261009": {
+      "id": "D-migration-canonical-reconciled-20261009",
+      "source": "github:main:0d3192f7464a710b0c5b4db34f7d9bb971ed6a85:AGENTS.md/STATE.md/docs/migration-verification.md",
+      "hypothesis": "元99イベントを保持した移行済みmainへ正本をfast-forwardし、移行前ゲームtaskを停止すれば旧treeへの誤制作を避けられる",
+      "next_step": "Unity実行の証拠待ちは依存taskだけblockedにし、独立したT-measurement-auditを実行",
+      "evidence": {
+        "canonical_before": "85cf1ebefebd330811f5d975bb641ddae3913718",
+        "canonical_after": "0d3192f7464a710b0c5b4db34f7d9bb971ed6a85",
+        "old_99_events_exact_prefix": true,
+        "ledger_revision": 100,
+        "head_blob_readback": true,
+        "repository_contract": "pass",
+        "linux_ledger_tests": 22,
+        "PR10_CI": {
+          "run": 37880234615,
+          "conclusion": "success"
+        },
+        "Unity_current_cloud": "no Unity executable found; Linux environment",
+        "Unity_windows_local": "repo reports license failure198; not rerun here"
+      },
+      "policy": "Migration before game production per current main AGENTS. Direct session main push/merge/dispatch prohibition remains."
     }
   },
   "runs": {
@@ -1463,6 +1548,13 @@
       "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
       "status": "completed",
       "started_at": 1791506140.4654849
+    },
+    "scheduled-game-20261009-1300": {
+      "run_id": "scheduled-game-20261009-1300",
+      "scheduled_at": "2026-10-09T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-09T13:00:00+09:00",
+      "status": "open",
+      "started_at": 1791518913.715109
     }
   },
   "experiments": {
@@ -1947,7 +2039,8 @@
   },
   "slots": {
     "2026-10-09T01:00:00+09:00": "scheduled-game-20261009-0100",
-    "2026-10-09T07:00:00+09:00": "scheduled-game-20261009-0700"
+    "2026-10-09T07:00:00+09:00": "scheduled-game-20261009-0700",
+    "2026-10-09T13:00:00+09:00": "scheduled-game-20261009-1300"
   },
   "feedback": [
     {
@@ -1967,6 +2060,12 @@
       "message": "既存の優秀な約10作を選んで楽しく完成させる。Web全体の一貫した体験と各作の完成度を上げ、新作も約10作。演出強化、育成、クリッカーADVも候補。",
       "next_step": "重点候補/新作案/共通体験と各作の完成条件を正本へ反映。WIP1で順に実制作。",
       "at": 1791506140.427282
+    },
+    {
+      "source": "user:current-thread:2026-10-09:vxace-runtime-question",
+      "message": "RPG Maker VX Aceあるんだけどさ、多分クラウドで動かすよりローカルで定期実行させた方が良いよな",
+      "next_step": "VX AceはWindowsローカル制作候補。質問だけで実行場所/自動タスク/Unity方針を切替えない。",
+      "at": 1791518913.6210628
     }
   ],
   "approvals": [
@@ -4732,7 +4831,168 @@
       },
       "previous": "c74a24dc032a9b0ebbe2fd025cd10ea2f163627313c1ef8284aa722932b33382",
       "sha256": "db16a2c8db9f8f71ae650a72594bf7bc461d26c87883343d5aabb14718825d02"
+    },
+    {
+      "revision": 101,
+      "at": 1791518913.6014128,
+      "action": "decision",
+      "data": {
+        "id": "D-migration-canonical-reconciled-20261009",
+        "source": "github:main:0d3192f7464a710b0c5b4db34f7d9bb971ed6a85:AGENTS.md/STATE.md/docs/migration-verification.md",
+        "hypothesis": "元99イベントを保持した移行済みmainへ正本をfast-forwardし、移行前ゲームtaskを停止すれば旧treeへの誤制作を避けられる",
+        "next_step": "Unity実行の証拠待ちは依存taskだけblockedにし、独立したT-measurement-auditを実行",
+        "evidence": {
+          "canonical_before": "85cf1ebefebd330811f5d975bb641ddae3913718",
+          "canonical_after": "0d3192f7464a710b0c5b4db34f7d9bb971ed6a85",
+          "old_99_events_exact_prefix": true,
+          "ledger_revision": 100,
+          "head_blob_readback": true,
+          "repository_contract": "pass",
+          "linux_ledger_tests": 22,
+          "PR10_CI": {
+            "run": 37880234615,
+            "conclusion": "success"
+          },
+          "Unity_current_cloud": "no Unity executable found; Linux environment",
+          "Unity_windows_local": "repo reports license failure198; not rerun here"
+        },
+        "policy": "Migration before game production per current main AGENTS. Direct session main push/merge/dispatch prohibition remains."
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "db16a2c8db9f8f71ae650a72594bf7bc461d26c87883343d5aabb14718825d02",
+      "sha256": "8d64ecfbc6e9912ad5bae803bdfb962c774c9bd043e6faa3cddd376327f54c47"
+    },
+    {
+      "revision": 102,
+      "at": 1791518913.6210628,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-09:vxace-runtime-question",
+        "message": "RPG Maker VX Aceあるんだけどさ、多分クラウドで動かすよりローカルで定期実行させた方が良いよな",
+        "next_step": "VX AceはWindowsローカル制作候補。質問だけで実行場所/自動タスク/Unity方針を切替えない。"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "8d64ecfbc6e9912ad5bae803bdfb962c774c9bd043e6faa3cddd376327f54c47",
+      "sha256": "b2817a91e32bad198d15cd343a3b297bf4d6c240253e219358911c34c5c0435c"
+    },
+    {
+      "revision": 103,
+      "at": 1791518913.644595,
+      "action": "task",
+      "data": {
+        "id": "T-unity-runtime-evidence",
+        "objective": "移行基盤のUnityコンパイル/test/Windows-Web build実証を照合する",
+        "acceptance": [
+          "指定Unity版/Packages/ProjectSettingsと本人ローカル環境の実行を照合",
+          "license有効化後の実compile/EditMode/PlayMode/Windows/Web build結果と同一commit",
+          "runner/environmentは本人設定の実証を確認。不明値はnull、dispatchしない"
+        ],
+        "outputs": [
+          "source-pinned Unity runtime verification evidence"
+        ],
+        "checks": [
+          "Unity official execution logs without secrets",
+          "commit/build checksums",
+          "migration CI and rollback contract"
+        ],
+        "next_step": "本人ローカルのライセンス有効化と基盤実証の結果を受けてunblock。ゲーム制作はその後。",
+        "decision_id": "D-migration-canonical-reconciled-20261009",
+        "hypothesis": "基盤の実証を先行すれば再現可能な制作ができる",
+        "source": "github:main:0d3192f7464a710b0c5b4db34f7d9bb971ed6a85:AGENTS.md/STATE.md/docs/migration-verification.md",
+        "pdca": "check",
+        "experiment_id": "EXP-system",
+        "priority": 10
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "b2817a91e32bad198d15cd343a3b297bf4d6c240253e219358911c34c5c0435c",
+      "sha256": "c2ef33afdffbb5a717e95622b872de85bd7f549541131158b5b9ec3cab61bb55"
+    },
+    {
+      "revision": 104,
+      "at": 1791518913.6611803,
+      "action": "block",
+      "data": {
+        "task_id": "T-unity-runtime-evidence",
+        "source": "github:main:0d3192f7464a710b0c5b4db34f7d9bb971ed6a85:AGENTS.md/STATE.md/docs/migration-verification.md",
+        "reason": "このクラウド環境にUnity実行commandがない。ローカルのlicense失敗198は移行記録の報告で、現在の本人環境/runner状態は未確認。",
+        "next_step": "本人WindowsのUnity Hubでライセンスを有効化し、既存scripts/Invoke-Unity.ps1による基盤compile/test/buildの結果を確認"
+      },
+      "result": {
+        "recorded": "block"
+      },
+      "previous": "c2ef33afdffbb5a717e95622b872de85bd7f549541131158b5b9ec3cab61bb55",
+      "sha256": "e3fa953d1f6045a76bc4e6ca152b8dab0f27b247f11830f4567ad8ead4c80807"
+    },
+    {
+      "revision": 105,
+      "at": 1791518913.6801648,
+      "action": "block",
+      "data": {
+        "task_id": "T-common-experience-pilot",
+        "source": "github:main:0d3192f7464a710b0c5b4db34f7d9bb971ed6a85:AGENTS.md/STATE.md/docs/migration-verification.md",
+        "reason": "mainの移行工程先行方針とUnity基盤未実証。旧source配置/実装方針のまま制作しない。成果と未完了は保全。",
+        "next_step": "移行完了証拠後に最新web/Unity方針へ工程を再評価してunblock。保存修正のPR8は再制作しない。"
+      },
+      "result": {
+        "recorded": "block"
+      },
+      "previous": "e3fa953d1f6045a76bc4e6ca152b8dab0f27b247f11830f4567ad8ead4c80807",
+      "sha256": "e5c0121ad60e0f5906cf24caa84e2f9fb0de11da505045406b8189ff7d38d152"
+    },
+    {
+      "revision": 106,
+      "at": 1791518913.6975868,
+      "action": "block",
+      "data": {
+        "task_id": "T-2048-mobile-shell",
+        "source": "github:main:0d3192f7464a710b0c5b4db34f7d9bb971ed6a85:AGENTS.md/STATE.md/docs/migration-verification.md",
+        "reason": "mainの移行工程先行方針とUnity基盤未実証。旧source配置/実装方針のまま制作しない。成果と未完了は保全。",
+        "next_step": "移行完了証拠後に最新web/Unity方針へ工程を再評価してunblock。保存修正のPR8は再制作しない。"
+      },
+      "result": {
+        "recorded": "block"
+      },
+      "previous": "e5c0121ad60e0f5906cf24caa84e2f9fb0de11da505045406b8189ff7d38d152",
+      "sha256": "f32d24eb9da2ec40cb7a28d8f0ad3dd81e173ea5b5229f0c022b3e4e3b7244f2"
+    },
+    {
+      "revision": 107,
+      "at": 1791518913.715109,
+      "action": "slot",
+      "data": {
+        "run_id": "scheduled-game-20261009-1300",
+        "scheduled_at": "2026-10-09T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "f32d24eb9da2ec40cb7a28d8f0ad3dd81e173ea5b5229f0c022b3e4e3b7244f2",
+      "sha256": "8f671cf03b9b33e1f085e3c627efb41ecd31c5dd134b89124360d5ca0f778f8d"
+    },
+    {
+      "revision": 108,
+      "at": 1791518913.7402437,
+      "action": "claim",
+      "data": {
+        "run_id": "scheduled-game-20261009-1300",
+        "task_id": "T-measurement-audit",
+        "ttl_seconds": 1000
+      },
+      "result": {
+        "run_id": "scheduled-game-20261009-1300",
+        "task_id": "T-measurement-audit",
+        "fence": 5,
+        "expires_at": 1791519913.7402437
+      },
+      "previous": "8f671cf03b9b33e1f085e3c627efb41ecd31c5dd134b89124360d5ca0f778f8d",
+      "sha256": "4413be9a033fa7040b1aad9ebe475da42e69378141a00c2e1621d490cefe6a48"
     }
   ],
-  "projection_sha256": "141a3bebf179126433c610aa426b5b077f66b58a18986eb32ed74a28212cdd25"
+  "projection_sha256": "48411da0f68aeb8e8d85fd6838e5949a2e4f9238c4168bd0347e02e914fe91d3"
 }
