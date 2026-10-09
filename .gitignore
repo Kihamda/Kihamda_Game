@@ -39,3 +39,11 @@ business/ops/.runtime/
 *.pdb
 *.unitypackage
 __pycache__/
+
+**/bin/
+!tests/CourierCore/CourierCore.csproj
+*.ulf
+*.alf
+
+business/unity/ops/*.lock
+business/unity/ops/.runtime/

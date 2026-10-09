@@ -1,46 +1,88 @@
-name: Unity local CI
-
+name: Unity GitHub builds
 on:
+  push:
+    branches: [main]
+    paths: ['unity/**', 'unity-projects.json', '.github/workflows/unity-ci.yml']
   workflow_dispatch:
-
 permissions:
   contents: read
-
 concurrency:
-  group: unity-local-editor
+  group: unity-personal-license
   cancel-in-progress: false
-
 jobs:
-  unity:
-    # Public PRs never trigger this runner. Enable only after environment protection,
-    # a dedicated runner account and a valid local Unity license are configured.
-    if: github.ref == 'refs/heads/main' && vars.UNITY_LOCAL_CI_ENABLED == 'true'
-    environment: unity-local-ci
-    runs-on: [self-hosted, Windows, X64, unity-trusted]
-    timeout-minutes: 120
+  projects:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.projects.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: projects
+        run: node scripts/unity-matrix.mjs >> "$GITHUB_OUTPUT"
+      - name: Unity Personal authentication preflight
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        run: |
+          for key in UNITY_LICENSE UNITY_EMAIL UNITY_PASSWORD; do
+            if [ -z "${!key}" ]; then echo "::error::$key is not configured in repository Actions Secrets"; exit 1; fi
+          done
+  test-and-build:
+    needs: projects
+    permissions:
+      contents: read
+      checks: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix: ${{ fromJSON(needs.projects.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Validate project
-        shell: pwsh
-        run: ./scripts/Invoke-Unity.ps1 -Operation Validate
-      - name: EditMode
-        shell: pwsh
-        run: ./scripts/Invoke-Unity.ps1 -Operation EditMode
-      - name: PlayMode
-        shell: pwsh
-        run: ./scripts/Invoke-Unity.ps1 -Operation PlayMode
-      - name: Windows build
-        shell: pwsh
-        run: ./scripts/Invoke-Unity.ps1 -Operation Windows
-      - name: Web build
-        shell: pwsh
-        run: ./scripts/Invoke-Unity.ps1 -Operation Web
+      - uses: actions/cache@v4
+        with:
+          path: ${{ matrix.projectPath }}/Library
+          key: unity-${{ matrix.id }}-${{ matrix.target }}-${{ hashFiles('unity/**/Assets/**', 'unity/**/Packages/**', 'unity/**/ProjectSettings/**') }}
+          restore-keys: unity-${{ matrix.id }}-${{ matrix.target }}-
+      - name: EditMode and PlayMode
+        id: tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          testMode: all
+          artifactsPath: artifacts/tests
+      - name: Build checked Unity project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          targetPlatform: ${{ matrix.target }}
+          buildMethod: Kihamda.Editor.StudioBuild.BuildCI
+          customParameters: -studioOutput artifacts/build/${{ matrix.id }}/${{ matrix.target }} -studioCommit ${{ github.sha }}
+          versioning: None
+      - name: Verify artifact contract
+        run: node scripts/check-unity-artifact.mjs artifacts/build/${{ matrix.id }}/${{ matrix.target }} ${{ matrix.target }} ${{ github.sha }} ${{ matrix.id }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: unity-validation-${{ github.sha }}
-          path: artifacts/unity/
+          name: unity-tests-${{ matrix.id }}-${{ matrix.target }}-${{ github.sha }}
+          path: artifacts/tests/
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unity-${{ matrix.id }}-${{ matrix.target }}-${{ github.sha }}
+          path: artifacts/build/${{ matrix.id }}/${{ matrix.target }}/
           retention-days: 90
           if-no-files-found: error

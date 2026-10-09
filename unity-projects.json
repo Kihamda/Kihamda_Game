@@ -1,0 +1,5 @@
+{
+  "projects": [
+    {"id":"ice-courier","path":"unity/IceCourier","unityVersion":"6000.3.23f1","targets":["StandaloneWindows64","WebGL"],"stage":"prototype","distribution":"free-web-demo","legacySource":"iceslide"}
+  ]
+}

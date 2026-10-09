@@ -1,0 +1,13 @@
+{
+  "recordedAt":"2026-10-09",
+  "sourceCommit":"e393bd321dbca383f0fcb31f20219a27df5df6f2",
+  "runUrl":"https://github.com/Kihamda/Kihamda_Game/actions/runs/37945379221",
+  "target":"StandaloneWindows64",
+  "status":"success",
+  "artifact":"unity-ice-courier-StandaloneWindows64-e393bd321dbca383f0fcb31f20219a27df5df6f2",
+  "artifactDigest":"sha256:570d00c77dcaffe4a1f6f4cd98aced5315e48d0c1cbf313f32ea6a729d4bcfd1",
+  "artifactBytes":33729571,
+  "localChecksumValidation":"passed",
+  "webStatusAtCheckpoint":"pending",
+  "businessMetricsObserved":false
+}

@@ -1,0 +1,8 @@
+{
+  "id":"D-local-studio-20261009",
+  "source":"user:current-thread:2026-10-09:autonomous-studio",
+  "quote":"UnityゲームをGitHub Actionsでビルドする。CI,CD以外では僕のPCのを活用してくださいな。既存Web資産は捨てる/捨てない/別のに統合/の後に、順次整理し削除してかまいません。",
+  "hypothesis":"作品のルールを厳選し、通常制作をローカル、成果物ビルドをGitHubへ分ければ、CIの設定だけで制作が止まることを避けられる",
+  "next_step":"Ice CourierのUnity実行と操作検査を終え、同じ作品を一作ずつ改善する。旧定期タスクを保全してローカル実行へ切り替える",
+  "policy":"CI/CDは継続制作の前提条件にしない。採否・統合先・復元元を記録して旧Web実装を整理する"
+}

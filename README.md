@@ -1,44 +1,36 @@
 # Kihamda.NET Unityモノレポ
 
-新作・移植はUnityで制作します。まずリポジトリ移行を完了し、その後で既存ゲームを厳選します。本人の意思表明はルートの `天啓.md`、現在の工程は `STATE.md`、事業の履歴は `business/ops/ledger.json` にあります。
+Unity作品を一作ずつ制作するリポジトリです。本人の意思表明はルートの天啓.mdに記入します。通常の制作はWindows PC、配布ビルドはGitHub Actionsです。
 
-| 領域 | 用途 |
+| 場所 | 用途 |
 | --- | --- |
-| `unity/KihamdaArcade/` | Unity 6000.3.23f1の移行確認用プロジェクト。ゲーム未制作 |
-| `web/` | 従来のReact/Vite版とポータル。既存URLを保持 |
-| `business/` | 継続運用の台帳・検査・既存の証拠 |
-| `scripts/` | モノレポの検査とUnity実行 |
-| `docs/legacy-recovery/` | 移行前の参照・設定・復元手順 |
-| `legacy/` | 旧方針と旧エージェント定義。実行対象外 |
+| unity/IceCourier/ | 滑走後に出発点が凍る配送パズル、3ステージ |
+| unity-projects.json | Unity作品とビルド対象の登録 |
+| web/ | 移植資料として残す4作品と旧ポータル |
+| business/unity/ops/ledger.json | 制作とコンサルティングの正本 |
+| business/legacy-dispositions.json | 101作品の採否と統合先 |
+| docs/legacy-recovery/ | 復元記録と移行前の定義 |
 
-## 既存サイトの開発と検査
+## ローカル検査
+
+Unity Hubで6000.3.23f1のPersonalライセンスを有効化します。
 
 ```powershell
 npm ci --prefix web
 npm run check
 npm run build
-npm run dev
-python -m unittest discover -s business/tests -v
-```
-
-`web/dist/` が従来サイトの配信成果物です。ルートのnpmコマンドはwebへ委譲します。Unityの成果物をweb/distへ混ぜません。
-
-WindowsではPython 3.12以上の仮想環境を用意し、先に `python -m pip install -r business/requirements.txt` を実行します。tzdataはWindowsでの時刻検証に必要です。
-
-## Unity基盤
-
-Unity HubでUnity 6000.3.23f1とWindows/Web Build Supportを用意し、有効なEditorライセンスでサインインします。
-
-```powershell
+dotnet run --project tests/CourierCore/CourierCore.csproj
 pwsh -File scripts/Invoke-Unity.ps1 -Operation Validate
 pwsh -File scripts/Invoke-Unity.ps1 -Operation EditMode
 pwsh -File scripts/Invoke-Unity.ps1 -Operation PlayMode
-pwsh -File scripts/Invoke-Unity.ps1 -Operation Windows
-pwsh -File scripts/Invoke-Unity.ps1 -Operation Web
 ```
 
-これは空の移行確認用シーンを使う基盤検査です。Unity移植やゲーム完成を意味しません。将来の作品は `unity/<Project>/` に独立したプロジェクトとして追加し、同じ検査規約を適用します。
+Windows/Webの制作中ビルドもInvoke-Unity.ps1のWindows/Webで実行できます。認証のないルール単体検査はUnity Editorの代わりにはなりません。
 
-このリポジトリはGitHubでpublicです。未公開有料作品と有償アセットはprivateの管理領域が必要です。ライセンス・生成物・個人情報・認証情報をコミットしないでください。
+## GitHub Actions
 
-CI/CDと復元の制約は `docs/migration.md`、`docs/legacy-recovery/README.md` を参照してください。
+Unity GitHub buildsを信頼済みブランチで手動起動します。mainのUnity変更も対象です。Personal認証用のUNITY_LICENSE、UNITY_EMAIL、UNITY_PASSWORDはActions Secretsへ登録し、値をコードやログへ出しません。Windows/Webは直列でテスト・ビルドし、同じcommitの版情報とSHA-256を確認してartifactへ保存します。
+
+通常のPR検査は台帳のWindows/Linux検査、ゲームルール、WebとGUIDを確認します。公開サイト全体への自動デプロイは停止し、既存Webの配信は手動操作に限定します。Unityの成果物は旧Webのdistへ混ぜません。
+
+現在の検証結果と未確認事項はSTATE.md、制作ルールはAGENTS.mdを参照してください。

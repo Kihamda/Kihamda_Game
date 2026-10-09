@@ -1,0 +1,9 @@
+{
+  "updated":"2026-10-09",
+  "topics":[
+    {"id":"recoverable-curation","title":"101作品を整理する前に、復元できる履歴を残す","evidence":["docs/legacy-dispositions.md","docs/workspace-handoff.md"],"status":"ready","claimLimit":"整理は売上改善の実証ではない"},
+    {"id":"local-unity-hosted-build","title":"Unity Personalの制作PCとGitHubビルドを分ける","evidence":[".github/workflows/unity-ci.yml","docs/studio-verification.md"],"status":"wait-for-build-evidence","claimLimit":"両対象の実ビルド成功後に手順の再現性を記述する"},
+    {"id":"fenced-autonomous-run","title":"定期開発で二重実行と古いworkerを止める","evidence":["business/ops/flow.py","business/tests/test_flow.py"],"status":"ready","claimLimit":"単一ホストの排他だけで分散CASを保証しない"},
+    {"id":"unity-icu-crash","title":"Unity内部の.NETクラッシュをゲームコードのエラーと分ける","evidence":["scripts/Invoke-Unity.ps1","docs/studio-verification.md"],"status":"ready","claimLimit":"このPCのWindows成功例。Webの内部CLR問題は未解決"}
+  ]
+}

@@ -2,10 +2,13 @@
 param(
     [ValidateSet('Validate','EditMode','PlayMode','Windows','Web')]
     [string]$Operation = 'Validate',
-    [string]$Project = 'unity/KihamdaArcade',
+    [string]$Project = 'unity/IceCourier',
     [string]$Editor = $env:UNITY_EDITOR_PATH
 )
 $ErrorActionPreference = 'Stop'
+# This PC's ICU loader crashes inside Unity netcorerun. Limit the workaround
+# to this process and its children; it does not change Windows configuration.
+$env:DOTNET_SYSTEM_GLOBALIZATION_USENLS = '1'
 $repoRoot = Split-Path $PSScriptRoot -Parent
 $projectPath = [IO.Path]::GetFullPath((Join-Path $repoRoot $Project))
 $unityRoot = [IO.Path]::GetFullPath((Join-Path $repoRoot 'unity')) + [IO.Path]::DirectorySeparatorChar
@@ -19,14 +22,14 @@ if (-not $installed.StartsWith($version)) { throw "Expected $version; found $ins
 $output = Join-Path $repoRoot "artifacts/unity/$(Split-Path $projectPath -Leaf)"
 New-Item -ItemType Directory -Force $output | Out-Null
 $log = Join-Path $output "$Operation.log"
-$arguments = @('-batchmode','-projectPath',"`"$projectPath`"",'-logFile',"`"$log`"")
+$arguments = @('-batchmode','-force-d3d11','-projectPath',"`"$projectPath`"",'-logFile',"`"$log`"")
 if ($Operation -in @('EditMode','PlayMode')) {
     $result = Join-Path $output "$Operation.xml"
     if (Test-Path -LiteralPath $result) { Remove-Item -LiteralPath $result }
     $arguments += @('-runTests','-testPlatform',$Operation,'-testResults',"`"$result`"")
 } else {
     $method = @{Validate='Validate'; Windows='BuildWindows'; Web='BuildWeb'}[$Operation]
-    $arguments += @('-quit','-executeMethod',"Kihamda.Editor.MigrationBuild.$method")
+    $arguments += @('-quit','-executeMethod',"Kihamda.Editor.StudioBuild.$method")
     if ($Operation -eq 'Windows') { $arguments += @('-buildTarget','StandaloneWindows64') }
     if ($Operation -eq 'Web') { $arguments += @('-buildTarget','WebGL') }
 }

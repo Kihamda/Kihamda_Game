@@ -1,0 +1,11 @@
+{
+  "id":"E-ice-courier",
+  "hypothesis":"出発地点が次の障害物になる滑走ルールにより、移動するほど自分で盤面を変えるパズル体験が生まれる",
+  "game_id":"ice-courier",
+  "primary_metric":"human-playtest-completion-and-return-intent",
+  "quality_acceptance":["全ステージに解法","保存と再開","壁への無効入力で手数を増やさない","Undoで荷物と霜も戻る","PCとWebで実際に操作できる"],
+  "measurement_plan":"技術検査、実操作記録、人間の感想を分離する。未取得の人間評価と公開指標はnull",
+  "decision_id":"D-local-studio-20261009",
+  "next_step":"Unity起動・PlayMode・実画面を検証する",
+  "source":"user:current-thread:2026-10-09:autonomous-studio"
+}

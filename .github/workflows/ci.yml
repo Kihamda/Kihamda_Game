@@ -30,12 +30,18 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install -r business/requirements.txt
       - run: npm ci --prefix web
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Gameplay rules without Unity license dependency
+        run: dotnet run --project tests/CourierCore/CourierCore.csproj
       - name: Repository and Unity GUID contract
         run: npm run check
       - name: Business history and concurrent execution
         run: |
           python -m unittest discover -s business/tests -v
           python business/ops/flow.py status > /dev/null
+          python business/ops/flow.py status --ledger business/ops/ledger.json > /dev/null
       - name: Preserve legacy URLs and build
         run: |
           npm run build
@@ -57,3 +63,4 @@ jobs:
       - run: python -m pip install -r business/requirements.txt
       - run: python -m unittest discover -s business/tests -v
       - run: python business/ops/flow.py status | Out-Null
+      - run: python business/ops/flow.py status --ledger business/ops/ledger.json | Out-Null

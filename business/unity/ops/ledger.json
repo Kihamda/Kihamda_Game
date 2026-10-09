@@ -1,0 +1,406 @@
+{
+  "schema": 1,
+  "revision": 10,
+  "business_id": "game-site",
+  "fence": 1,
+  "lease": null,
+  "tasks": {
+    "T-ice-courier-unity-evaluation": {
+      "id": "T-ice-courier-unity-evaluation",
+      "objective": "既存の滑走パズルを独自ルールのIce Courierへ移し、実際に動くUnity試作品として検証する",
+      "acceptance": [
+        "Unity C#コンパイル",
+        "EditMode/PlayMode成功",
+        "実画面と入力の検査",
+        "Windows/Web成果物とチェックサム"
+      ],
+      "outputs": [
+        "unity/IceCourier",
+        "検査ログ",
+        "スクリーンショット",
+        "GitHub artifacts"
+      ],
+      "checks": [
+        "ローカルUnity操作",
+        "保存・再開",
+        "GitHub Actions"
+      ],
+      "next_step": "Unity Personal認証後、ローカル検査とGitHubビルドを実行する",
+      "decision_id": "D-local-studio-20261009",
+      "hypothesis": "ルール単体の解法とUndo検査を先に固定し、GUIと配信の問題を別に検証できる",
+      "source": "user:current-thread:2026-10-09:autonomous-studio",
+      "pdca": "do",
+      "experiment_id": "E-ice-courier",
+      "priority": 0,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "manual-studio-validation-20261009-2334",
+          "fence": 1,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/run-37945379221-windows.json",
+              "sha256": "450456b01794f9f0df39122aa5560ffe9fbbab040ef7d24a289e68fa769dabe8"
+            }
+          ],
+          "checks": [
+            "GitHub Windows tests/build passed; downloaded file checksums and source commit verified"
+          ],
+          "next_step": "Wait for run 37945379221 WebGL result, then verify downloaded Web artifact and browser input",
+          "at": 1791557218.7071683
+        },
+        {
+          "run_id": "manual-studio-validation-20261009-2334",
+          "fence": 1,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/run-37945379221-final.json",
+              "sha256": "614b65d42d5fcaa4a5de290995dce992fe08b57536d95be9d8f970281538c25b"
+            }
+          ],
+          "checks": [
+            "Unity compile, EditMode 2/2 and PlayMode 1/1 passed",
+            "Windows and Web hosted builds succeeded; downloaded SHA256 and commit verified",
+            "Actual Windows keyboard and Web keyboard/button, Undo, reload/Resume passed"
+          ],
+          "next_step": "T-ice-courier-touch-polish: improve portrait layout and test real touch; human fun remains unobserved",
+          "passed": true,
+          "at": 1791558150.0099356
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "manual-studio-validation-20261009-2334",
+          "task_id": "T-ice-courier-unity-evaluation",
+          "fence": 1,
+          "expires_at": 1791558248.9308667
+        }
+      ]
+    },
+    "T-ice-courier-touch-polish": {
+      "id": "T-ice-courier-touch-polish",
+      "objective": "少数の盤面でルールを理解できる導入と、スマートフォンで押せる操作部を整える",
+      "acceptance": [
+        "390x844で説明と盤面と主要操作が読める",
+        "Undo・再開と方向ボタンが実タッチで動く",
+        "人間の初回プレイで荷物と到着点とフロストの役割を確認する",
+        "未評価の面白さを自己採点で確定しない"
+      ],
+      "outputs": [
+        "Unity UIの改善",
+        "画面と入力の検査記録",
+        "本人の反応または未観測の記録"
+      ],
+      "checks": [
+        "実Web入力",
+        "390x844とデスクトップの表示",
+        "EditMode/PlayMode"
+      ],
+      "next_step": "配布ビルド検証後に、縦画面の操作部と導入説明を一工程ずつ改善する",
+      "decision_id": "D-local-studio-20261009",
+      "hypothesis": "一つのルールを明確に見せ、Undoで試せる導入の方が盤面数を増やすより検証しやすい",
+      "source": "research:business/unity/research/2026-10-09-puzzle-positioning.md",
+      "pdca": "do",
+      "experiment_id": "E-ice-courier",
+      "priority": 1,
+      "depends_on": [
+        "T-ice-courier-unity-evaluation"
+      ],
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    }
+  },
+  "decisions": {
+    "D-local-studio-20261009": {
+      "id": "D-local-studio-20261009",
+      "source": "user:current-thread:2026-10-09:autonomous-studio",
+      "quote": "UnityゲームをGitHub Actionsでビルドする。CI,CD以外では僕のPCのを活用してくださいな。既存Web資産は捨てる/捨てない/別のに統合/の後に、順次整理し削除してかまいません。",
+      "hypothesis": "作品のルールを厳選し、通常制作をローカル、成果物ビルドをGitHubへ分ければ、CIの設定だけで制作が止まることを避けられる",
+      "next_step": "Ice CourierのUnity実行と操作検査を終え、同じ作品を一作ずつ改善する。旧定期タスクを保全してローカル実行へ切り替える",
+      "policy": "CI/CDは継続制作の前提条件にしない。採否・統合先・復元元を記録して旧Web実装を整理する"
+    }
+  },
+  "runs": {
+    "manual-studio-validation-20261009-2334": {
+      "run_id": "manual-studio-validation-20261009-2334",
+      "source": "user:current-thread:2026-10-09:autonomous-studio",
+      "status": "completed",
+      "started_at": 1791556448.9243035
+    }
+  },
+  "experiments": {
+    "E-ice-courier": {
+      "id": "E-ice-courier",
+      "hypothesis": "出発地点が次の障害物になる滑走ルールにより、移動するほど自分で盤面を変えるパズル体験が生まれる",
+      "game_id": "ice-courier",
+      "primary_metric": "human-playtest-completion-and-return-intent",
+      "quality_acceptance": [
+        "全ステージに解法",
+        "保存と再開",
+        "壁への無効入力で手数を増やさない",
+        "Undoで荷物と霜も戻る",
+        "PCとWebで実際に操作できる"
+      ],
+      "measurement_plan": "技術検査、実操作記録、人間の感想を分離する。未取得の人間評価と公開指標はnull",
+      "decision_id": "D-local-studio-20261009",
+      "next_step": "Verify GitHub Windows/Web artifacts and real browser input",
+      "source": "user:current-thread:2026-10-09:autonomous-studio",
+      "stage": "do",
+      "history": [
+        {
+          "id": "E-ice-courier",
+          "stage": "do",
+          "source": "evidence:docs/studio-verification.md",
+          "evidence": "Local Unity Validate/EditMode/PlayMode and Windows build passed; GitHub build pending",
+          "next_step": "Verify GitHub Windows/Web artifacts and real browser input",
+          "at": 1791556906.5842607,
+          "previous_stage": "plan"
+        }
+      ],
+      "release": null
+    }
+  },
+  "slots": {},
+  "feedback": [],
+  "approvals": [],
+  "external": {},
+  "observations": [],
+  "events": [
+    {
+      "revision": 1,
+      "at": 1791519799.4993434,
+      "action": "init",
+      "data": {},
+      "result": {
+        "initialized": true
+      },
+      "previous": null,
+      "sha256": "2ab216407541c458e44dadf194f2ecb9777b4f0b464999d699bb393fe0cdee3d"
+    },
+    {
+      "revision": 2,
+      "at": 1791519799.6832888,
+      "action": "decision",
+      "data": {
+        "id": "D-local-studio-20261009",
+        "source": "user:current-thread:2026-10-09:autonomous-studio",
+        "quote": "UnityゲームをGitHub Actionsでビルドする。CI,CD以外では僕のPCのを活用してくださいな。既存Web資産は捨てる/捨てない/別のに統合/の後に、順次整理し削除してかまいません。",
+        "hypothesis": "作品のルールを厳選し、通常制作をローカル、成果物ビルドをGitHubへ分ければ、CIの設定だけで制作が止まることを避けられる",
+        "next_step": "Ice CourierのUnity実行と操作検査を終え、同じ作品を一作ずつ改善する。旧定期タスクを保全してローカル実行へ切り替える",
+        "policy": "CI/CDは継続制作の前提条件にしない。採否・統合先・復元元を記録して旧Web実装を整理する"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "2ab216407541c458e44dadf194f2ecb9777b4f0b464999d699bb393fe0cdee3d",
+      "sha256": "be6f073d6a7adf64a772c1e0e2797eb014af9922fe5087bc2a6c1522d1caf357"
+    },
+    {
+      "revision": 3,
+      "at": 1791519799.8648438,
+      "action": "experiment",
+      "data": {
+        "id": "E-ice-courier",
+        "hypothesis": "出発地点が次の障害物になる滑走ルールにより、移動するほど自分で盤面を変えるパズル体験が生まれる",
+        "game_id": "ice-courier",
+        "primary_metric": "human-playtest-completion-and-return-intent",
+        "quality_acceptance": [
+          "全ステージに解法",
+          "保存と再開",
+          "壁への無効入力で手数を増やさない",
+          "Undoで荷物と霜も戻る",
+          "PCとWebで実際に操作できる"
+        ],
+        "measurement_plan": "技術検査、実操作記録、人間の感想を分離する。未取得の人間評価と公開指標はnull",
+        "decision_id": "D-local-studio-20261009",
+        "next_step": "Unity起動・PlayMode・実画面を検証する",
+        "source": "user:current-thread:2026-10-09:autonomous-studio"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "be6f073d6a7adf64a772c1e0e2797eb014af9922fe5087bc2a6c1522d1caf357",
+      "sha256": "cd53d7ff4e969662b9de22743a52b9afbf0ae55241b3b2a876f6a9e177c96785"
+    },
+    {
+      "revision": 4,
+      "at": 1791519800.0516896,
+      "action": "task",
+      "data": {
+        "id": "T-ice-courier-unity-evaluation",
+        "objective": "既存の滑走パズルを独自ルールのIce Courierへ移し、実際に動くUnity試作品として検証する",
+        "acceptance": [
+          "Unity C#コンパイル",
+          "EditMode/PlayMode成功",
+          "実画面と入力の検査",
+          "Windows/Web成果物とチェックサム"
+        ],
+        "outputs": [
+          "unity/IceCourier",
+          "検査ログ",
+          "スクリーンショット",
+          "GitHub artifacts"
+        ],
+        "checks": [
+          "ローカルUnity操作",
+          "保存・再開",
+          "GitHub Actions"
+        ],
+        "next_step": "Unity Personal認証後、ローカル検査とGitHubビルドを実行する",
+        "decision_id": "D-local-studio-20261009",
+        "hypothesis": "ルール単体の解法とUndo検査を先に固定し、GUIと配信の問題を別に検証できる",
+        "source": "user:current-thread:2026-10-09:autonomous-studio",
+        "pdca": "do",
+        "experiment_id": "E-ice-courier",
+        "priority": 0
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "cd53d7ff4e969662b9de22743a52b9afbf0ae55241b3b2a876f6a9e177c96785",
+      "sha256": "61d758c31624a57105a67d3681165f2ba1fa02eecc7bb7fcdca523fba378b04d"
+    },
+    {
+      "revision": 5,
+      "at": 1791556448.9243035,
+      "action": "start",
+      "data": {
+        "run_id": "manual-studio-validation-20261009-2334",
+        "source": "user:current-thread:2026-10-09:autonomous-studio"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "61d758c31624a57105a67d3681165f2ba1fa02eecc7bb7fcdca523fba378b04d",
+      "sha256": "b5af3ca0c3a4555cc149f9b011f09892b2f7e5a2d9df4561686d5051e088662f"
+    },
+    {
+      "revision": 6,
+      "at": 1791556448.9308667,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-studio-validation-20261009-2334",
+        "task_id": "T-ice-courier-unity-evaluation",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "manual-studio-validation-20261009-2334",
+        "task_id": "T-ice-courier-unity-evaluation",
+        "fence": 1,
+        "expires_at": 1791558248.9308667
+      },
+      "previous": "b5af3ca0c3a4555cc149f9b011f09892b2f7e5a2d9df4561686d5051e088662f",
+      "sha256": "5871e9b1e59f7eb3d102dcb40f6e347aff9327cad0a3d5a018aec70a1a23fdfe"
+    },
+    {
+      "revision": 7,
+      "at": 1791556861.5112746,
+      "action": "task",
+      "data": {
+        "id": "T-ice-courier-touch-polish",
+        "objective": "少数の盤面でルールを理解できる導入と、スマートフォンで押せる操作部を整える",
+        "acceptance": [
+          "390x844で説明と盤面と主要操作が読める",
+          "Undo・再開と方向ボタンが実タッチで動く",
+          "人間の初回プレイで荷物と到着点とフロストの役割を確認する",
+          "未評価の面白さを自己採点で確定しない"
+        ],
+        "outputs": [
+          "Unity UIの改善",
+          "画面と入力の検査記録",
+          "本人の反応または未観測の記録"
+        ],
+        "checks": [
+          "実Web入力",
+          "390x844とデスクトップの表示",
+          "EditMode/PlayMode"
+        ],
+        "next_step": "配布ビルド検証後に、縦画面の操作部と導入説明を一工程ずつ改善する",
+        "decision_id": "D-local-studio-20261009",
+        "hypothesis": "一つのルールを明確に見せ、Undoで試せる導入の方が盤面数を増やすより検証しやすい",
+        "source": "research:business/unity/research/2026-10-09-puzzle-positioning.md",
+        "pdca": "do",
+        "experiment_id": "E-ice-courier",
+        "priority": 1,
+        "depends_on": [
+          "T-ice-courier-unity-evaluation"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "5871e9b1e59f7eb3d102dcb40f6e347aff9327cad0a3d5a018aec70a1a23fdfe",
+      "sha256": "53c2e62b9d705409944fe1599a01831241d9ca8b6b2eb82b52d2f04ad35ff9df"
+    },
+    {
+      "revision": 8,
+      "at": 1791556906.5842607,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-ice-courier",
+        "stage": "do",
+        "source": "evidence:docs/studio-verification.md",
+        "evidence": "Local Unity Validate/EditMode/PlayMode and Windows build passed; GitHub build pending",
+        "next_step": "Verify GitHub Windows/Web artifacts and real browser input"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "53c2e62b9d705409944fe1599a01831241d9ca8b6b2eb82b52d2f04ad35ff9df",
+      "sha256": "e57acf9ffbfa776cc26c5e8185c447b8c49ac26708b301ba26b2729a976c708b"
+    },
+    {
+      "revision": 9,
+      "at": 1791557218.7071683,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "manual-studio-validation-20261009-2334",
+        "fence": 1,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/run-37945379221-windows.json",
+            "sha256": "450456b01794f9f0df39122aa5560ffe9fbbab040ef7d24a289e68fa769dabe8"
+          }
+        ],
+        "checks": [
+          "GitHub Windows tests/build passed; downloaded file checksums and source commit verified"
+        ],
+        "next_step": "Wait for run 37945379221 WebGL result, then verify downloaded Web artifact and browser input"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "e57acf9ffbfa776cc26c5e8185c447b8c49ac26708b301ba26b2729a976c708b",
+      "sha256": "643313793288787a80b595860c0e638c77018dc297838f779246b98a4b360c40"
+    },
+    {
+      "revision": 10,
+      "at": 1791558150.0099356,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-studio-validation-20261009-2334",
+        "fence": 1,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/run-37945379221-final.json",
+            "sha256": "614b65d42d5fcaa4a5de290995dce992fe08b57536d95be9d8f970281538c25b"
+          }
+        ],
+        "checks": [
+          "Unity compile, EditMode 2/2 and PlayMode 1/1 passed",
+          "Windows and Web hosted builds succeeded; downloaded SHA256 and commit verified",
+          "Actual Windows keyboard and Web keyboard/button, Undo, reload/Resume passed"
+        ],
+        "next_step": "T-ice-courier-touch-polish: improve portrait layout and test real touch; human fun remains unobserved",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "643313793288787a80b595860c0e638c77018dc297838f779246b98a4b360c40",
+      "sha256": "ce63ad3f0c34db322218a7583ba2b475c65b89af3c3371dd83f5a083e82217b8"
+    }
+  ],
+  "projection_sha256": "cc35c115ada583c85a5d3d86db524779fbe0b59be914aae111173491d1cc7bb2"
+}

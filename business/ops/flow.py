@@ -96,7 +96,9 @@ class Ledger:
         self.path = Path(path)
         self.clock = clock
         self.root = (self.path.parents[2] if self.path.parent.name == "ops" and
-                     self.path.parent.parent.name == "business" else self.path.parent).resolve()
+                     self.path.parent.parent.name == "business" else
+                     self.path.parents[3] if self.path.parent.name == "ops" and
+                     self.path.parent.parent.parent.name == "business" else self.path.parent).resolve()
 
     def verify_artifacts(self, items):
         artifact_list(items)
@@ -362,7 +364,9 @@ def main():
                         "checkpoint", "complete", "recover", "approval", "prepare-external",
                         "reconcile-external", "observe", "experiment", "experiment-stage",
                         "feedback", "slot", "block", "cancel", "unblock", "publish"])
-    parser.add_argument("--ledger", default=str(Path(__file__).with_name("ledger.json")))
+    unity_ledger = Path(__file__).resolve().parents[1] / "unity/ops/ledger.json"
+    parser.add_argument("--ledger", default=str(unity_ledger if unity_ledger.exists()
+                                                else Path(__file__).with_name("ledger.json")))
     parser.add_argument("--expected", type=int)
     parser.add_argument("--data", help="JSON file; no credentials/PII")
     args = parser.parse_args()

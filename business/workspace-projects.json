@@ -1,0 +1,13 @@
+{
+  "source":"user:current-thread:2026-10-09:include-parent-workspace",
+  "canonicalRepository":"Kihamda_Game",
+  "recoveryDirectory":"../_recovery/projects-20261009",
+  "untrackedFilesAtCapture":0,
+  "ignoredFilesArchived":false,
+  "projects":[
+    {"folder":"extreme_tik_tok_toe","commit":"95f3ee02af36803422aa312c58131eda89be2dc1","decision":"merge-reference","unityCandidate":"variable-table","implemented":false,"bundleSha256":"5659ecdb27246ddb8780afb3571248f15ac3604961d286b3bffd919b4fce6a8a","zipSha256":"7de249982c79277bfba4832741c82f2e1efeda052c3429b33dbd6dd169a4201a"},
+    {"folder":"iloveyou","commit":"77ea78084a98cae76ce806be50a3fe1693a3e616","decision":"retire-preserve-history","implemented":false,"bundleSha256":"7727f42ea0e9f9529f4b726a730418f0cdfd749b5e6e926e0c4ffd30dae29d5d","zipSha256":"0e445a14151c32e3ff63a99882e11712b4b33ac8c444c3bf96877a702db34090"},
+    {"folder":"Inf-minesweeper","commit":"361cf68ccf9e5b4cb74c4a8d0ebdfcf0004322ef","decision":"merge-concept","unityCandidate":"survey-at-night","implemented":false,"sourceAvailable":false,"bundleSha256":"c5806d035e228ff91de1bda98ce84608f616ac1a89315f9e32bda4075e829613","zipSha256":"39f614e4c8bce360c30da90d32261d5e84616f4f78ca755c985ef67c045f29af"},
+    {"folder":"pachinko-calculator","commit":"2345bd226503a412ce34a5031b9b7b6ea046a010","decision":"retain-reference","unityCandidate":"number-theatre","implemented":false,"bundleSha256":"d7178b7eee0802a2968a1284cfd6baf82e853ee4bd46937214d646f30a7396f3","zipSha256":"d708c366b6e0d416270f82e0ccf1721d6f585cda2bef4b904e1f755dfb1fc2a5"}
+  ]
+}

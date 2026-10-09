@@ -1,0 +1,14 @@
+{
+  "id":"T-ice-courier-unity-evaluation",
+  "objective":"既存の滑走パズルを独自ルールのIce Courierへ移し、実際に動くUnity試作品として検証する",
+  "acceptance":["Unity C#コンパイル","EditMode/PlayMode成功","実画面と入力の検査","Windows/Web成果物とチェックサム"],
+  "outputs":["unity/IceCourier","検査ログ","スクリーンショット","GitHub artifacts"],
+  "checks":["ローカルUnity操作","保存・再開","GitHub Actions"],
+  "next_step":"Unity Personal認証後、ローカル検査とGitHubビルドを実行する",
+  "decision_id":"D-local-studio-20261009",
+  "hypothesis":"ルール単体の解法とUndo検査を先に固定し、GUIと配信の問題を別に検証できる",
+  "source":"user:current-thread:2026-10-09:autonomous-studio",
+  "pdca":"do",
+  "experiment_id":"E-ice-courier",
+  "priority":0
+}
