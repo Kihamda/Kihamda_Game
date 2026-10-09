@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 4,
+  "revision": 6,
   "business_id": "game-site",
-  "fence": 0,
-  "lease": null,
+  "fence": 1,
+  "lease": {
+    "run_id": "manual-studio-validation-20261009-2334",
+    "task_id": "T-ice-courier-unity-evaluation",
+    "fence": 1,
+    "expires_at": 1791558248.9308667
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -32,9 +37,16 @@
       "pdca": "do",
       "experiment_id": "E-ice-courier",
       "priority": 0,
-      "status": "ready",
+      "status": "running",
       "checkpoints": [],
-      "claims": []
+      "claims": [
+        {
+          "run_id": "manual-studio-validation-20261009-2334",
+          "task_id": "T-ice-courier-unity-evaluation",
+          "fence": 1,
+          "expires_at": 1791558248.9308667
+        }
+      ]
     }
   },
   "decisions": {
@@ -47,7 +59,14 @@
       "policy": "CI/CDは継続制作の前提条件にしない。採否・統合先・復元元を記録して旧Web実装を整理する"
     }
   },
-  "runs": {},
+  "runs": {
+    "manual-studio-validation-20261009-2334": {
+      "run_id": "manual-studio-validation-20261009-2334",
+      "source": "user:current-thread:2026-10-09:autonomous-studio",
+      "status": "open",
+      "started_at": 1791556448.9243035
+    }
+  },
   "experiments": {
     "E-ice-courier": {
       "id": "E-ice-courier",
@@ -169,7 +188,39 @@
       },
       "previous": "cd53d7ff4e969662b9de22743a52b9afbf0ae55241b3b2a876f6a9e177c96785",
       "sha256": "61d758c31624a57105a67d3681165f2ba1fa02eecc7bb7fcdca523fba378b04d"
+    },
+    {
+      "revision": 5,
+      "at": 1791556448.9243035,
+      "action": "start",
+      "data": {
+        "run_id": "manual-studio-validation-20261009-2334",
+        "source": "user:current-thread:2026-10-09:autonomous-studio"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "61d758c31624a57105a67d3681165f2ba1fa02eecc7bb7fcdca523fba378b04d",
+      "sha256": "b5af3ca0c3a4555cc149f9b011f09892b2f7e5a2d9df4561686d5051e088662f"
+    },
+    {
+      "revision": 6,
+      "at": 1791556448.9308667,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-studio-validation-20261009-2334",
+        "task_id": "T-ice-courier-unity-evaluation",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "manual-studio-validation-20261009-2334",
+        "task_id": "T-ice-courier-unity-evaluation",
+        "fence": 1,
+        "expires_at": 1791558248.9308667
+      },
+      "previous": "b5af3ca0c3a4555cc149f9b011f09892b2f7e5a2d9df4561686d5051e088662f",
+      "sha256": "5871e9b1e59f7eb3d102dcb40f6e347aff9327cad0a3d5a018aec70a1a23fdfe"
     }
   ],
-  "projection_sha256": "89db21e475a08531ec54b7df62eb67fd2c6be466dbc4b2aff9da635fdfaabb80"
+  "projection_sha256": "12613a45fb5131f0efd5783fdb9922c4aae550986515f66d2aedb732b2e73860"
 }
