@@ -1,6 +1,6 @@
 # 現在の状態
 
-2026-10-10。移行PR #10はmainへ統合済み（0d3192f）。次の制作ブランチはunity/autonomous-studio。
+2026-10-10。移行PR #10とスタジオPR #12はmainへ統合済み（6b673b86155271de12c22c5f0460ece2b2c2f2fd）。通常制作はこのmainから別ブランチを作って続ける。
 
 101作品の採否を記録し、Ice Slide、Gravity Ball、Mine Rush、nTicTacToeの4作品を移植資料として残した。他の実装はGit履歴と全参照bundle、削除前Webのzipを保全して整理した。採用や統合は実装費用とルールから判断しており、人気や利益の実測による判断ではない。
 
@@ -11,3 +11,5 @@
 制作の正本はbusiness/unity/ops/ledger.json。旧クラウドのbusiness/ops/ledger.jsonと運用履歴を保持し、実行中のleaseには介入しない。本人の指示により旧クラウド定期実行を停止してローカルへ切り替える。ローカル定期実行unityを01/07/13/19時に有効化済み。旧IDは現在の登録一覧に見つからず、停止成功とは断定しない。検証タスクはrevision 10で完了しleaseを解放、次の縦画面改善タスクを準備した。詳細はdocs/studio-verification.md。
 
 天啓.mdは本人専用。本人の最新指示をbusiness/studio-policy.jsonにも記録した。売上・純利益・公開後の指標は未観測。無料公開前に実プレイ、同一版の成果物、復元条件を確認する。
+
+親フォルダは既存Gitプロジェクト4件に加え、Atohitori/Referenceの原稿・設計7件も保全した。GitやUnity実装がない資料を実装済みと扱わない。制作候補として引き継ぎ、元原稿はローカルに保持する。参照順と復元ハッシュはbusiness/workspace-projects.json。

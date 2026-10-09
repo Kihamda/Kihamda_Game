@@ -1,12 +1,13 @@
 # Unityスタジオの検証記録
 
-2026-10-10。通常制作はWindowsローカル、配布ビルドはGitHub Actions。PR #10による移行後の制作ブランチunity/autonomous-studio。
+2026-10-10。通常制作はWindowsローカル、配布ビルドはGitHub Actions。PR #10による移行とPR #12によるスタジオ整備をmainへ統合済み。
 
 | 検査 | 現在の結果 |
 | --- | --- |
 | 101作品の採否と元カタログ | 全件記録、4作品を参考実装として保持 |
 | 削除前の全参照bundle | verify成功、完全履歴 |
 | 親フォルダ4プロジェクト | 全参照bundleと追跡ソースzip保存、bundle verify成功。別フォルダへのclone・元commit checkout・fsckも4件成功 |
+| 親フォルダAtohitori | 非Gitの原稿・設計7件をローカルzipへ保存。原本と保存した7件のバイト列一致。本文を公開ソースへコピーせずUnity候補として保持 |
 | Windows台帳検査 | 24件成功。CAS競合、lease/fence、復旧、履歴改ざん、ASCII環境のCLI、Unity事業台帳の成果物ルートを含む |
 | ゲームルール単体 | 3盤面の解法、荷物、フロスト、境界、Undo、保存・再開、壊れた保存、勝利が成功 |
 | 実Unity Validate | 6000.3.23f1で成功 |
