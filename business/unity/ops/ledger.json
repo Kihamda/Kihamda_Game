@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": 19,
+  "revision": 20,
   "business_id": "game-site",
   "fence": 2,
   "lease": null,
@@ -238,6 +238,17 @@
       "hypothesis": "Unity作品の入口と作品詳細を共通の情報源から生成し、公開状態を正しく示せば、重複した一覧や古いゲーム導線を減らせる",
       "next_step": "トップ・作品詳細・共通案内画面を刷新し、狭い画面と静的ビルドを検査する",
       "policy": "Web刷新を先に進める。Ice Courierは唯一の制作中ゲームとして維持。本番全体置換は実施しない"
+    },
+    "D-portal-review-checkpoint-20261010": {
+      "id": "D-portal-review-checkpoint-20261010",
+      "source": "evidence:business/unity/evidence/portal-20261010-provenance.json",
+      "hypothesis": "Byte-preserved evidence and explicit Git text-normalization provenance allow acceptance to be reproduced on Windows and Linux",
+      "next_step": "Await approval for public branch push/PR; continue next portal player integration locally without repeating rejected transmission",
+      "artifact": {
+        "path": "business/unity/evidence/portal-20261010-provenance.json",
+        "sha256": "971f91db105fddab00d082ff80c54face57e2680f51cfff94be818deaabb9dc5"
+      },
+      "external_status": "push rejected by automatic approval review; not applied; no PR or production publication"
     }
   },
   "runs": {
@@ -783,7 +794,28 @@
       },
       "previous": "a24e29f9b9fae864c94a520ef65d9671ac1788a00888b0234810671f944aeca6",
       "sha256": "7e7c790d384dd25782ad0aca126fe15cfa30c1396c3dc311bc82db97c1a9d7a3"
+    },
+    {
+      "revision": 20,
+      "at": 1791563112.9407725,
+      "action": "decision",
+      "data": {
+        "id": "D-portal-review-checkpoint-20261010",
+        "source": "evidence:business/unity/evidence/portal-20261010-provenance.json",
+        "hypothesis": "Byte-preserved evidence and explicit Git text-normalization provenance allow acceptance to be reproduced on Windows and Linux",
+        "next_step": "Await approval for public branch push/PR; continue next portal player integration locally without repeating rejected transmission",
+        "artifact": {
+          "path": "business/unity/evidence/portal-20261010-provenance.json",
+          "sha256": "971f91db105fddab00d082ff80c54face57e2680f51cfff94be818deaabb9dc5"
+        },
+        "external_status": "push rejected by automatic approval review; not applied; no PR or production publication"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "7e7c790d384dd25782ad0aca126fe15cfa30c1396c3dc311bc82db97c1a9d7a3",
+      "sha256": "0d548e4e58deb31d57c822c0eeceb563fc68385396d0998c52b6b6075454a8b0"
     }
   ],
-  "projection_sha256": "7776e6978f299883b762845806c57e141e47615738524498d4bc5a7ef0d0581b"
+  "projection_sha256": "e643049f28abf7d4565baf6179d27788639920d0518f40ab9c460a882596ad22"
 }
