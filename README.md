@@ -1,81 +1,44 @@
-# extreme_tik_tok_toe platform
+# Kihamda.NET Unityモノレポ
 
-ブラウザゲームプラットフォーム。全ゲームを単一リポジトリで管理し、XServer Static にデプロイする。
+新作・移植はUnityで制作します。まずリポジトリ移行を完了し、その後で既存ゲームを厳選します。本人の意思表明はルートの `天啓.md`、現在の工程は `STATE.md`、事業の履歴は `business/ops/ledger.json` にあります。
 
-現在は **単一 React アプリ + 単一 HTML エントリ (`index.html`)** 構成。
-`/games/:id` ルートで各ゲームコンポーネントを表示する。
+| 領域 | 用途 |
+| --- | --- |
+| `unity/KihamdaArcade/` | Unity 6000.3.23f1の移行確認用プロジェクト。ゲーム未制作 |
+| `web/` | 従来のReact/Vite版とポータル。既存URLを保持 |
+| `business/` | 継続運用の台帳・検査・既存の証拠 |
+| `scripts/` | モノレポの検査とUnity実行 |
+| `docs/legacy-recovery/` | 移行前の参照・設定・復元手順 |
+| `legacy/` | 旧方針と旧エージェント定義。実行対象外 |
 
-**Portal**: https://game.kihamda.net/
+## 既存サイトの開発と検査
 
-## ゲームラインナップ (14本)
-
-| ID            | タイトル     | ジャンル            |
-| ------------- | ------------ | ------------------- |
-| `ntiktaktoe`  | n目並べ      | ストラテジー/多人数 |
-| `flashreflex` | Flash Reflex | 反射神経            |
-| `gravityfour` | Gravity Four | ボード/2人対戦      |
-| `memoryduel`  | Memory Duel  | 記憶/2人対戦        |
-| `snakechaos`  | Snake Chaos  | アーケード          |
-| `merge2048`   | Merge 2048   | パズル              |
-| `brickblast`  | Brick Blast  | アーケード          |
-| `molemania`   | Mole Mania   | アーケード          |
-| `colorburst`  | Color Burst  | 反射神経/パズル     |
-| `taptarget`   | Tap Target   | 反射神経            |
-| `simonecho`   | Simon Echo   | 記憶                |
-| `numhunt`     | Num Hunt     | 反射神経            |
-| `dodgeblitz`  | Dodge Blitz  | アーケード          |
-| `typingblitz` | Typing Blitz | タイピング          |
-
-## 構成
-
-```
-extreme_tik_tok_toe/
-  games/
-    [game-id]/           ← 各ゲーム本体（Appコンポーネント）
-  src/
-    App.tsx              ← 単一アプリルーター (`/`, `/games/:id`)
-    games/
-      metadata.ts        ← `src/portal/data/games.json` を型付きで参照
-      registry.ts        ← `games/*/src/App.tsx` の遅延ロードレジストリ
-    portal/
-      data/games.json    ← ゲームメタデータ唯一ソース
-    shared/              ← 全ゲーム共通ユーティリティ
-  public/                ← 静的アセット(thumbnails, manifest, sw.js)
-  dist/                  ← ビルド出力(単一SPA)
-```
-
-## セットアップ
-
-```bash
-npm install
-```
-
-## 開発
-
-```bash
-npm run dev
-```
-
-## ビルド
-
-プラットフォーム全体を `dist/` に出力
-
-```bash
+```powershell
+npm ci --prefix web
+npm run check
 npm run build
+npm run dev
+python -m unittest discover -s business/tests -v
 ```
 
-## lint
+`web/dist/` が従来サイトの配信成果物です。ルートのnpmコマンドはwebへ委譲します。Unityの成果物をweb/distへ混ぜません。
 
-```bash
-npm run lint
+WindowsではPython 3.12以上の仮想環境を用意し、先に `python -m pip install -r business/requirements.txt` を実行します。tzdataはWindowsでの時刻検証に必要です。
+
+## Unity基盤
+
+Unity HubでUnity 6000.3.23f1とWindows/Web Build Supportを用意し、有効なEditorライセンスでサインインします。
+
+```powershell
+pwsh -File scripts/Invoke-Unity.ps1 -Operation Validate
+pwsh -File scripts/Invoke-Unity.ps1 -Operation EditMode
+pwsh -File scripts/Invoke-Unity.ps1 -Operation PlayMode
+pwsh -File scripts/Invoke-Unity.ps1 -Operation Windows
+pwsh -File scripts/Invoke-Unity.ps1 -Operation Web
 ```
 
-## 新ゲーム追加手順
+これは空の移行確認用シーンを使う基盤検査です。Unity移植やゲーム完成を意味しません。将来の作品は `unity/<Project>/` に独立したプロジェクトとして追加し、同じ検査規約を適用します。
 
-1. `games/_template` を `games/[your-id]` にコピー
-2. `src/` 内をゲームロジックで実装
-3. `src/portal/data/games.json` に登録
-4. `public/thumbnails/[your-id].svg` にサムネイルを追加
-5. `npm run build` で確認
+このリポジトリはGitHubでpublicです。未公開有料作品と有償アセットはprivateの管理領域が必要です。ライセンス・生成物・個人情報・認証情報をコミットしないでください。
 
-補足: `games/*/index.html` は廃止済み。ゲームはすべてルートの `index.html` + SPAルーティング (`/games/:id`) で配信する。
+CI/CDと復元の制約は `docs/migration.md`、`docs/legacy-recovery/README.md` を参照してください。

@@ -1,0 +1,90 @@
+name: Build & Deploy to XServer Static
+
+# すべてのゲーム + portal を1つの dist/ にビルドして
+# XServer Static に FTPS (explicit TLS) でデプロイする。
+#
+# 必要な GitHub Secrets:
+#   FTP_SERVER    - FTPホスト名 (例: sv***.static.ne.jp)
+#   FTP_USERNAME  - FTPユーザー名
+#   FTP_PASSWORD  - FTPパスワード
+#
+# 任意の GitHub Variables:
+#   FTP_SERVER_DIR - アップロード先ディレクトリ (未設定時: public_html/)
+#
+# アップロード構造:
+#   public_html/              ← portal (ゲーム一覧)
+#   public_html/games/[id]/   ← 各ゲーム
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: platform-dist
+          path: dist/
+          retention-days: 1
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: production
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: platform-dist
+          path: dist/
+
+      - name: Deploy to XServer Static via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./dist/
+          server-dir: ${{ vars.FTP_SERVER_DIR || './' }}
+          security: strict
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+
+      - name: Deploy summary
+        if: always()
+        run: |
+          echo "## Deploy Complete" >> $GITHUB_STEP_SUMMARY
+          echo "| Item | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
+          echo "| Protocol | FTPS |" >> $GITHUB_STEP_SUMMARY
+          echo "| Server | \`${{ secrets.FTP_SERVER }}\` |" >> $GITHUB_STEP_SUMMARY

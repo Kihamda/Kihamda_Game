@@ -1,32 +1,10 @@
 {
-  "name": "extreme-tik-tok-toe-platform",
+  "name": "kihamda-unity-monorepo",
   "private": true,
-  "type": "module",
-  "version": "0.1.0",
-  "packageManager": "npm@11.6.0",
   "scripts": {
-    "dev": "vite",
-    "build": "node scripts/prebuild.mjs && tsc -b && eslint . && vite build",
-    "preview": "vite preview",
-    "lint": "eslint ."
-  },
-  "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-router-dom": "^7.13.1"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.0.0",
-    "@types/node": "^25.3.2",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react-swc": "^4.2.3",
-    "eslint": "^9.39.3",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
-    "globals": "^17.3.0",
-    "typescript": "~5.9.3",
-    "typescript-eslint": "^8.56.1",
-    "vite": "^7.3.1"
+    "dev": "npm --prefix web run dev",
+    "build": "npm --prefix web run build",
+    "lint": "npm --prefix web run lint",
+    "check": "node scripts/check-repository.mjs"
   }
 }

@@ -1,0 +1,4712 @@
+{
+  "schema": 1,
+  "revision": 99,
+  "business_id": "game-site",
+  "fence": 4,
+  "lease": null,
+  "tasks": {
+    "T-system-bootstrap": {
+      "id": "T-system-bootstrap",
+      "objective": "実行基盤と定期処理を完成させる",
+      "acceptance": [
+        "単独/WIP1/CAS/期限切れfence/復旧/履歴/PDCA/slotを検査",
+        "別branchへ保存して読戻す",
+        "専用定期処理を登録して照合"
+      ],
+      "outputs": [
+        "business/ops/flow.py",
+        "business/ops/ledger.json",
+        "business/automation.json",
+        "PR"
+      ],
+      "checks": [
+        "python unittest",
+        "GitHub blob/head readback",
+        "automation readback"
+      ],
+      "next_step": "最初の定期runで一作の掲載方針を選ぶ",
+      "experiment_id": "EXP-system",
+      "pdca": "do",
+      "priority": 0,
+      "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
+      "decision_id": "D-game-pdca-20261008",
+      "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "manual-bootstrap-20261008",
+          "fence": 1,
+          "artifacts": [
+            {
+              "path": "business/evidence/system-checks.json",
+              "sha256": "bb6a8190774b2145bb14fa142ceb0254da06827171d59708834eff3c3c7f864e"
+            }
+          ],
+          "checks": [
+            "21 unit tests pass",
+            "full build pass",
+            "remote claim and all changed blobs match"
+          ],
+          "next_step": "Register dedicated game schedule and verify; then close bootstrap task",
+          "at": 1791457028.845449
+        },
+        {
+          "run_id": "manual-bootstrap-20261008",
+          "fence": 1,
+          "artifacts": [
+            {
+              "path": "business/evidence/system-checks.json",
+              "sha256": "367e46d617b7ae3f1d632032a2482b7b01b3be141c1d51193202602cdbaf93da"
+            },
+            {
+              "path": "business/automation.json",
+              "sha256": "e05eb25b7968eeaee6ed00eed0cae15c7063a8c3d3012784942f782a4245fff7"
+            }
+          ],
+          "checks": [
+            "21 unit tests",
+            "full build",
+            "remote initial claim/all changed blobs match",
+            "automation create and peek verified"
+          ],
+          "next_step": "First scheduled run: T-catalog-first-plan",
+          "passed": true,
+          "at": 1791457105.7237804
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "manual-bootstrap-20261008",
+          "task_id": "T-system-bootstrap",
+          "fence": 1,
+          "expires_at": 1791458605.256588
+        }
+      ]
+    },
+    "T-catalog-first-plan": {
+      "id": "T-catalog-first-plan",
+      "objective": "一作ずつ深く作り込む方針で掲載作品と重点改善対象を選ぶ",
+      "acceptance": [
+        "現カタログ/3候補のコア体験と品質根拠",
+        "実測がなければ人気null",
+        "一作の受入条件と次の内部工程"
+      ],
+      "outputs": [
+        "business/evidence/catalog-first-plan.json",
+        "次のdecision/task"
+      ],
+      "checks": [
+        "catalog-policy gate",
+        "匿名集計のsource/定義/期間"
+      ],
+      "next_step": "選んだ一作の具体欠陥を一工程だけ修正・検査",
+      "experiment_id": "EXP-catalog",
+      "pdca": "plan",
+      "priority": 10,
+      "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
+      "decision_id": "D-game-pdca-20261008",
+      "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+      "status": "done",
+      "checkpoints": [
+        {
+          "kind": "artifact",
+          "at": 1791475667.2033086,
+          "run_id": "scheduled-game-20261009-0100",
+          "fence": 2,
+          "artifact": {
+            "path": "artifacts/3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8",
+            "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8",
+            "name": "catalog-first-plan.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791475667.2119353,
+          "run_id": "scheduled-game-20261009-0100",
+          "fence": 2,
+          "artifact": {
+            "path": "artifacts/9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7",
+            "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7",
+            "name": "catalog-qa-20261009-0100.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791475667.2203188,
+          "run_id": "scheduled-game-20261009-0100",
+          "fence": 2,
+          "artifact": {
+            "path": "artifacts/5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e",
+            "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e",
+            "name": "catalog-qa-20261009-0100.mjs"
+          }
+        },
+        {
+          "run_id": "scheduled-game-20261009-0100",
+          "fence": 2,
+          "artifacts": [
+            {
+              "path": "business/evidence/catalog-first-plan.json",
+              "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8"
+            },
+            {
+              "path": "business/ops/artifacts/3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8",
+              "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8"
+            },
+            {
+              "path": "business/evidence/catalog-qa-20261009-0100.json",
+              "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7"
+            },
+            {
+              "path": "business/ops/artifacts/9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7",
+              "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7"
+            },
+            {
+              "path": "business/evidence/catalog-qa-20261009-0100.mjs",
+              "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e"
+            },
+            {
+              "path": "business/ops/artifacts/5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e",
+              "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e"
+            }
+          ],
+          "checks": [
+            "catalog-policy/3 core experiences and browser defects evidenced",
+            "unknown demand/KPI/revenue/profit null; QA separate",
+            "one focused game + acceptance + decision and granular successor tasks",
+            "build pass; no game source edits/no deploy"
+          ],
+          "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
+          "passed": true,
+          "at": 1791475667.228835
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "scheduled-game-20261009-0100",
+          "task_id": "T-catalog-first-plan",
+          "fence": 2,
+          "expires_at": 1791476710.0564196
+        }
+      ]
+    },
+    "T-measurement-audit": {
+      "id": "T-measurement-audit",
+      "objective": "意図的なgame_startと既存計測の欠落を確認する",
+      "acceptance": [
+        "GA4/SC実測と固定表示を区別",
+        "game_start実装/分母/再開の定義案",
+        "資格不明/アクセスなしはnull"
+      ],
+      "outputs": [
+        "business/evidence/measurement-audit.json",
+        "計測用PR候補"
+      ],
+      "checks": [
+        "source audit",
+        "QA送信は実訪問者へ含めない"
+      ],
+      "next_step": "本人許可後の同一版公開と14/28日匿名比較",
+      "experiment_id": "EXP-merge2048",
+      "pdca": "plan",
+      "priority": 20,
+      "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
+      "decision_id": "D-game-pdca-20261008",
+      "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-migrated-2048-review": {
+      "id": "T-migrated-2048-review",
+      "objective": "既存保存patchとモバイル候補を最新mainで再評価する",
+      "acceptance": [
+        "元commit/sha/patch適用差分を確認",
+        "起動/キー/実タッチ/viewport/保存拒否/再開/SEO/性能を検査",
+        "旧10検査をアクセスや収益実績にしない"
+      ],
+      "outputs": [
+        "品質検査記録",
+        "別branchの修正PR"
+      ],
+      "checks": [
+        "storage regressions",
+        "browser interaction",
+        "full build and shared-shell regression"
+      ],
+      "next_step": "同一版への本人公開判断と公開後実測",
+      "experiment_id": "EXP-merge2048",
+      "pdca": "do",
+      "priority": 30,
+      "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
+      "decision_id": "D-game-pdca-20261008",
+      "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+      "depends_on": [
+        "T-catalog-first-plan"
+      ],
+      "origin_id": "T-20261008-game-storage-fix",
+      "origin_decision_id": "DB-20261008-merge2048-storage",
+      "origin_source": "https://github.com/Kihamda/Sell-Something-Well/blob/main/projects/income/events/00094.json",
+      "origin_status": "Historical claim only; old lease not transferred. Patch prepared/not deployed per source README.",
+      "origin_unfinished": [
+        "mobile game shell QA",
+        "anonymous measured data"
+      ],
+      "status": "cancelled",
+      "checkpoints": [
+        {
+          "task_id": "T-migrated-2048-review",
+          "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+          "reason": "広い旧工程を保存→mobileの独立工程へ分割。元ID/出典/未完了/historyを残し、新taskへ継承。実行済み扱いではない。",
+          "next_step": "T-2048-storage-first then T-2048-mobile-shell",
+          "at": 1791475667.189242
+        }
+      ],
+      "claims": []
+    },
+    "T-monetization-eligibility": {
+      "id": "T-monetization-eligibility",
+      "objective": "広告/スポンサー/有料機能の一次条件と実測規模を比較する",
+      "acceptance": [
+        "公式規約/年齢/本人account/費用/保守",
+        "RPM/購入率仮定と実測を区別",
+        "全費用不明の利益null"
+      ],
+      "outputs": [
+        "business/evidence/monetization-options.json"
+      ],
+      "checks": [
+        "official sources with access date",
+        "same-period aggregate revenue/costs when available"
+      ],
+      "next_step": "費用0円の条件で採否decision、契約等は本人",
+      "experiment_id": "EXP-catalog",
+      "pdca": "plan",
+      "priority": 40,
+      "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
+      "decision_id": "D-game-pdca-20261008",
+      "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-release-measurement": {
+      "id": "T-release-measurement",
+      "objective": "本人公開済み版の効果を14/28日窓で確認する",
+      "acceptance": [
+        "対象release証拠",
+        "GA4/SC同一人口/定義/期間",
+        "欠損はnull、raw before/afterを因果効果としない"
+      ],
+      "outputs": [
+        "business/evidence/release-comparison.json"
+      ],
+      "checks": [
+        "contract completeness",
+        "cohort followup"
+      ],
+      "next_step": "continue/improve/stop/unobservedのActと次工程",
+      "experiment_id": "EXP-merge2048",
+      "pdca": "check",
+      "priority": 50,
+      "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
+      "decision_id": "D-game-pdca-20261008",
+      "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+      "status": "blocked",
+      "checkpoints": [
+        {
+          "task_id": "T-release-measurement",
+          "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+          "reason": "公開版・同期間匿名集計がない",
+          "next_step": "本人が公開済み版と集計を共有した時だけ再開",
+          "at": 1791456805.2417746
+        }
+      ],
+      "claims": []
+    },
+    "T-2048-storage-first": {
+      "decision_id": "D-catalog-2048-20261009",
+      "hypothesis": "保存/表示障害の除去が開始/再訪に寄与する可能性、効果未観測",
+      "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+      "experiment_id": "EXP-merge2048",
+      "pdca": "do",
+      "origin_id": "T-20261008-game-storage-fix",
+      "origin_decision_id": "DB-20261008-merge2048-storage",
+      "origin_source": "https://github.com/Kihamda/Sell-Something-Well/blob/main/projects/income/events/00094.json",
+      "id": "T-2048-storage-first",
+      "objective": "2048の保存拒否による起動障害を一工程で修正する",
+      "acceptance": [
+        "指定commitと最新mainの差分を照合、保存のみの候補へ範囲限定",
+        "通常/アクセス拒否/read例外/write例外/不正値でも起動・得点・New Gameが動く",
+        "ゲームsource変更版のbuild/browser QAと同一版差分/リスクを揃え別branch PR、main操作なし"
+      ],
+      "outputs": [
+        "storage-only patch/commit/PR",
+        "browser regression evidence"
+      ],
+      "checks": [
+        "source baseline diff",
+        "storage regressions and real browser",
+        "full build",
+        "remote head/blob readback"
+      ],
+      "next_step": "T-2048-mobile-shell; quality gate前の公開提案は不可",
+      "depends_on": [
+        "T-catalog-first-plan"
+      ],
+      "priority": 15,
+      "status": "done",
+      "checkpoints": [
+        {
+          "kind": "artifact",
+          "at": 1791497359.4817011,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+            "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+            "name": "storage-review-20261009-0700.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497359.4917336,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+            "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+            "name": "storage-qa-20261009-0700.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497359.5004501,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+            "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+            "name": "storage-qa-20261009-0700.mjs"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497359.5096498,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+            "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+            "name": "storage-qa-20261009-0700-before-restart-fix.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497359.5217357,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+            "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+            "name": "App.tsx"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497359.5311275,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+            "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+            "name": "game.ts"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497359.5423567,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+            "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+            "name": "storage.ts"
+          }
+        },
+        {
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifacts": [
+            {
+              "path": "business/ops/artifacts/1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+              "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875"
+            },
+            {
+              "path": "business/ops/artifacts/bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+              "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b"
+            },
+            {
+              "path": "business/ops/artifacts/8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+              "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f"
+            },
+            {
+              "path": "business/ops/artifacts/731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+              "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559"
+            },
+            {
+              "path": "business/ops/artifacts/522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+              "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56"
+            },
+            {
+              "path": "business/ops/artifacts/4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+              "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4"
+            },
+            {
+              "path": "business/ops/artifacts/4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+              "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe"
+            }
+          ],
+          "checks": [
+            "12 browser storage cases pass; New Game retains in-page best",
+            "full build/lint/typecheck pass; diff and runner syntax checks pass",
+            "CDP touch changes board; desktop geometry pass; mobile clipping remains documented",
+            "baseline/main merge2048 and lockfile identical"
+          ],
+          "next_step": "Save same-source game branch and draft PR; then complete only storage task",
+          "at": 1791497359.5524895
+        },
+        {
+          "kind": "artifact",
+          "at": 1791497468.4817102,
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifact": {
+            "path": "artifacts/45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796",
+            "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796",
+            "name": "storage-run-20261009-0700.json"
+          }
+        },
+        {
+          "run_id": "scheduled-game-20261009-0700",
+          "fence": 3,
+          "artifacts": [
+            {
+              "path": "business/ops/artifacts/1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+              "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875"
+            },
+            {
+              "path": "business/ops/artifacts/bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+              "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b"
+            },
+            {
+              "path": "business/ops/artifacts/8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+              "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f"
+            },
+            {
+              "path": "business/ops/artifacts/731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+              "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559"
+            },
+            {
+              "path": "business/ops/artifacts/522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+              "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56"
+            },
+            {
+              "path": "business/ops/artifacts/4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+              "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4"
+            },
+            {
+              "path": "business/ops/artifacts/4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+              "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe"
+            },
+            {
+              "path": "business/evidence/storage-run-20261009-0700.json",
+              "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796"
+            },
+            {
+              "path": "business/ops/artifacts/45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796",
+              "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796"
+            }
+          ],
+          "checks": [
+            "baseline/main difference checked; storage-only plus restart best preservation",
+            "12 browser storage cases pass; build/type/lint/diff/runner checks pass",
+            "exact tested source saved in code commit 1f92675bbf6b0484eb42f0c53b53b8c8a5feafa6 / draft PR8; head/7 blobs readback match",
+            "mobile defects/real-device limitations/metrics null preserved; no public action"
+          ],
+          "next_step": "T-measurement-audit; then T-2048-mobile-shell, keep EXP-merge2048 do until quality gates complete",
+          "passed": true,
+          "at": 1791497468.4908266
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "scheduled-game-20261009-0700",
+          "task_id": "T-2048-storage-first",
+          "fence": 3,
+          "expires_at": 1791498584.0724099
+        }
+      ]
+    },
+    "T-2048-mobile-shell": {
+      "decision_id": "D-catalog-2048-20261009",
+      "hypothesis": "保存/表示障害の除去が開始/再訪に寄与する可能性、効果未観測",
+      "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+      "experiment_id": "EXP-merge2048",
+      "pdca": "do",
+      "origin_id": "T-20261008-game-storage-fix",
+      "origin_decision_id": "DB-20261008-merge2048-storage",
+      "origin_source": "https://github.com/Kihamda/Sell-Something-Well/blob/main/projects/income/events/00094.json",
+      "id": "T-2048-mobile-shell",
+      "objective": "2048のスマホ表示欠損と実タッチ操作を検査・修正する",
+      "acceptance": [
+        "320/390/横画面/desktopで盤面と必須操作のframe clippingを解消",
+        "実touch/key/New Game/reloadの検査とSafari/低性能の未確認を明記",
+        "共有shell変更時はn目並べ/Snakeの表示回帰、別branch PR"
+      ],
+      "outputs": [
+        "mobile patch/PR",
+        "viewport/touch/browser evidence"
+      ],
+      "checks": [
+        "geometry assertions and screenshots",
+        "CDP touch interactions",
+        "full build/shared shell regression"
+      ],
+      "next_step": "同一版の全quality gate検査→本人公開判断→14/28日観測",
+      "depends_on": [
+        "T-2048-storage-first"
+      ],
+      "priority": 30,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-20261009": {
+      "id": "T-portfolio-20261009",
+      "objective": "既存約10作の重点候補と新作約10案を選び、共通体験と各作の完成条件をtask化する",
+      "acceptance": [
+        "ソース根拠つき既存10候補。未プレイ検査と人気nullを区別",
+        "新作10案に操作/進行/終了/再挑戦の異なるコアループ、完成gate",
+        "共通UX/演出設定とWIP1の順次工程、既存未完了を保全"
+      ],
+      "outputs": [
+        "business/portfolio-20261009.json",
+        "business/catalog-policy.md",
+        "successor tasks"
+      ],
+      "checks": [
+        "catalog/source evidence",
+        "task completeness/dependency",
+        "canonical readback"
+      ],
+      "next_step": "共通体験を2048から実装・検査し、各作を順に完成させる",
+      "decision_id": "D-portfolio-20261009",
+      "hypothesis": "一貫した操作と各作品の深いコアループが再訪へ寄与する可能性",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "pdca": "plan",
+      "experiment_id": "EXP-catalog",
+      "priority": 5,
+      "status": "done",
+      "checkpoints": [
+        {
+          "kind": "artifact",
+          "at": 1791506324.1270533,
+          "run_id": "manual-portfolio-20261009-0935",
+          "fence": 4,
+          "artifact": {
+            "path": "artifacts/68efd16d4d0c99cfdf261894a28b1fe97b2fdb0cf1fcef718708a111bcef254d",
+            "sha256": "68efd16d4d0c99cfdf261894a28b1fe97b2fdb0cf1fcef718708a111bcef254d",
+            "name": "portfolio-20261009.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791506324.1468775,
+          "run_id": "manual-portfolio-20261009-0935",
+          "fence": 4,
+          "artifact": {
+            "path": "artifacts/a0630a0a737a2276a9471461effd3056e42d83f9d1b6996c6b2dc25aaceac9d1",
+            "sha256": "a0630a0a737a2276a9471461effd3056e42d83f9d1b6996c6b2dc25aaceac9d1",
+            "name": "catalog-policy.md"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791506324.1669273,
+          "run_id": "manual-portfolio-20261009-0935",
+          "fence": 4,
+          "artifact": {
+            "path": "artifacts/c1bd25106ec3a227167fed721b0f285bed9a84039ffd0db62c308acfd4111015",
+            "sha256": "c1bd25106ec3a227167fed721b0f285bed9a84039ffd0db62c308acfd4111015",
+            "name": "AGENTS.md"
+          }
+        },
+        {
+          "run_id": "manual-portfolio-20261009-0935",
+          "fence": 4,
+          "artifacts": [
+            {
+              "path": "business/portfolio-20261009.json",
+              "sha256": "68efd16d4d0c99cfdf261894a28b1fe97b2fdb0cf1fcef718708a111bcef254d"
+            },
+            {
+              "path": "business/ops/artifacts/68efd16d4d0c99cfdf261894a28b1fe97b2fdb0cf1fcef718708a111bcef254d",
+              "sha256": "68efd16d4d0c99cfdf261894a28b1fe97b2fdb0cf1fcef718708a111bcef254d"
+            },
+            {
+              "path": "business/catalog-policy.md",
+              "sha256": "a0630a0a737a2276a9471461effd3056e42d83f9d1b6996c6b2dc25aaceac9d1"
+            },
+            {
+              "path": "business/ops/artifacts/a0630a0a737a2276a9471461effd3056e42d83f9d1b6996c6b2dc25aaceac9d1",
+              "sha256": "a0630a0a737a2276a9471461effd3056e42d83f9d1b6996c6b2dc25aaceac9d1"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "c1bd25106ec3a227167fed721b0f285bed9a84039ffd0db62c308acfd4111015"
+            },
+            {
+              "path": "business/ops/artifacts/c1bd25106ec3a227167fed721b0f285bed9a84039ffd0db62c308acfd4111015",
+              "sha256": "c1bd25106ec3a227167fed721b0f285bed9a84039ffd0db62c308acfd4111015"
+            }
+          ],
+          "checks": [
+            "existing10/new10 distinct core-loop candidates and exact-main source audit",
+            "task required fields/dependencies checked; WIP1/old unfinished/history preserved",
+            "common/fun/technical/release/measurement gates documented; metrics null",
+            "owner feedback and updated catalog-policy/AGENTS consistent; manual run consumes no slot"
+          ],
+          "next_step": "T-common-experience-pilot; then existing/new first-slices in serial order, append completion stages in same experiments",
+          "passed": true,
+          "at": 1791506324.194701
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "manual-portfolio-20261009-0935",
+          "task_id": "T-portfolio-20261009",
+          "fence": 4,
+          "expires_at": 1791507640.473669
+        }
+      ]
+    },
+    "T-common-experience-pilot": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-catalog",
+      "id": "T-common-experience-pilot",
+      "objective": "2048で共通プレイ導線のpilotを実装し最初の表示/入力欠損を直す",
+      "acceptance": [
+        "最新main/PR8の成果を再制作せず取り込む",
+        "320/390/横画面/desktopで盤面/開始/再挑戦/戻るが操作できる。共通UIの配置/文言と音/演出設定の接続方針を固定",
+        "起動/キー/実touch/保存拒否/再開仕様/build/共有shell回帰の証拠、同一版PR"
+      ],
+      "outputs": [
+        "shared UX pilot patch/PR",
+        "browser QA and common UI contract"
+      ],
+      "checks": [
+        "real browser viewport/touch/key",
+        "shared shell regression",
+        "build and remote readback"
+      ],
+      "next_step": "既存T-2048-mobile-shellはこのpilotの同一版証拠を照合し、残差だけ処理。次に重点作のfirst-sliceへ",
+      "depends_on": [
+        "T-portfolio-20261009"
+      ],
+      "priority": 15,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-merge2048-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-merge2048",
+      "id": "T-portfolio-merge2048-first-slice",
+      "objective": "既存重点作 Merge 2048 の最初の改善工程",
+      "acceptance": [
+        "小画面の欠損を直して必須操作を表示。合体の理由が分かるチュートリアルと明確な挑戦目標を追加",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 初回操作→合体→勝敗/目標→結果→New Gameの一巡。盤面保存/再開仕様を説明し検査 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-common-experience-pilot"
+      ],
+      "priority": 60,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-brickmania-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-brickmania",
+      "id": "T-portfolio-brickmania-first-slice",
+      "objective": "既存重点作 Brick Mania の最初の改善工程",
+      "acceptance": [
+        "パドル操作と衝突判定を調整し、初回stageのクリア/失敗が成立する状態へ",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 狙う技術が得点につながる。強化の効果/期限を表示し、stageをクリアして次へ進む。類似Brick Blast/Brick Outは統合検討のみ を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-merge2048-first-slice"
+      ],
+      "priority": 61,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-light-companion-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-light-companion",
+      "id": "T-portfolio-light-companion-first-slice",
+      "objective": "新作 ひかりの相棒 の一巡する縦切りprototype工程",
+      "acceptance": [
+        "世話/訓練/探索の一周、相棒の変化と保存再開を含む縦切りprototype",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 育成3段階と選択に応じた分岐、探索成果/図鑑、育て方で体験が変わる。待ち時間強制なし を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-brickmania-first-slice"
+      ],
+      "priority": 62,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-iceslide-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-iceslide",
+      "id": "T-portfolio-iceslide-first-slice",
+      "objective": "既存重点作 Ice Slide の最初の改善工程",
+      "acceptance": [
+        "第一stageを確実に解ける状態にし、undo/resetと操作説明を磨く",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 解けるstageと段階的な新ギミック。手数/解法理解が進行へ繋がり、詰みから再挑戦できる を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-light-companion-first-slice"
+      ],
+      "priority": 63,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-towerdefense-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-towerdefense",
+      "id": "T-portfolio-towerdefense-first-slice",
+      "objective": "既存重点作 Tower Defense の最初の改善工程",
+      "acceptance": [
+        "tower配置→wave開始→突破/防衛の第一waveを成立させる",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 複数の防衛戦略が機能し、敵の特性/射程/費用が見える。最終waveの勝利と敗北の両経路を検査 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-iceslide-first-slice"
+      ],
+      "priority": 64,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-stardust-agency-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-stardust-agency",
+      "id": "T-portfolio-stardust-agency-first-slice",
+      "objective": "新作 星屑調査局 の一巡する縦切りprototype工程",
+      "acceptance": [
+        "手動調査→1upgrade→証拠選択→第1事件の結末",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで クリック連打だけに頼らない事件/選択分岐。章の到達点と進行保存、誤解答/再調査の道 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-towerdefense-first-slice"
+      ],
+      "priority": 65,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-rhythmbeat-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-rhythmbeat",
+      "id": "T-portfolio-rhythmbeat-first-slice",
+      "objective": "既存重点作 Rhythm Beat の最初の改善工程",
+      "acceptance": [
+        "audio開始と判定時間を照合し短い譜面を一曲完走させる",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 同期/判定誤差を明示。難易度選択、音量/演出設定、楽曲終了/結果/再挑戦。音源は権利確認済み自作のみ を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-stardust-agency-first-slice"
+      ],
+      "priority": 66,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-minigolf-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-minigolf",
+      "id": "T-portfolio-minigolf-first-slice",
+      "objective": "既存重点作 Mini Golf の最初の改善工程",
+      "acceptance": [
+        "狙い/力/実touchを調整し初回ホールインまで検査",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 練習→コース攻略→打数結果→再挑戦。詰み位置からreset可、ショット予測と実軌道に納得感 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-rhythmbeat-first-slice"
+      ],
+      "priority": 67,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-neon-workshop-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-neon-workshop",
+      "id": "T-portfolio-neon-workshop-first-slice",
+      "objective": "新作 ネオン工房 の一巡する縦切りprototype工程",
+      "acceptance": [
+        "材料2種の加工と工程選択で1注文を完成",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 生産経路とボトルネックの判断が中心。注文の完了と新レシピ、効率だけでなく作る目的 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-minigolf-first-slice"
+      ],
+      "priority": 68,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-ntiktaktoe-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-ntiktaktoe",
+      "id": "T-portfolio-ntiktaktoe-first-slice",
+      "objective": "既存重点作 n目並べ の最初の改善工程",
+      "acceptance": [
+        "0pxセル/CSS不一致を直して置く→ターン交代→勝敗の最小対戦を成立させる",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 分かる初期ルール、勝利/引分け、誤操作undo/確認、再開とreset。大きい盤面もスマホで操作できる を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-neon-workshop-first-slice"
+      ],
+      "priority": 69,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-dodgeblitz-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-dodgeblitz",
+      "id": "T-portfolio-dodgeblitz-first-slice",
+      "objective": "既存重点作 Dodge Blitz の最初の改善工程",
+      "acceptance": [
+        "最初の敵攻撃に予告を付け、入力と被弾理由を検査",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 回避可能な攻撃、段階的難易度、被弾原因と再挑戦。画面演出が弾/操作対象を隠さない を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-ntiktaktoe-first-slice"
+      ],
+      "priority": 70,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-merge-summoners-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-merge-summoners",
+      "id": "T-portfolio-merge-summoners-first-slice",
+      "objective": "新作 合体召喚隊 の一巡する縦切りprototype工程",
+      "acceptance": [
+        "2種ユニットの合体と1戦闘の勝敗/再挑戦",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 複数build、敵予告、短いrunのboss/結末、毎回異なる選択。合体2048とは異なる戦術 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-dodgeblitz-first-slice"
+      ],
+      "priority": 71,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-fishing-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-fishing",
+      "id": "T-portfolio-fishing-first-slice",
+      "objective": "既存重点作 Fishing の最初の改善工程",
+      "acceptance": [
+        "アタリの合図と巻き取り入力を調整し1匹釣って結果まで検査",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 狙う魚/場所/装備に選択理由がある。図鑑と目標、失敗原因/再挑戦、進行保存 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-merge-summoners-first-slice"
+      ],
+      "priority": 72,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-endlessrun-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-endlessrun",
+      "id": "T-portfolio-endlessrun-first-slice",
+      "objective": "既存重点作 Endless Run の最初の改善工程",
+      "acceptance": [
+        "初回区間のジャンプと障害物gapを調整し避けられない生成を防ぐ",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで ジャンプの学習→距離目標→段階的難度→失敗原因/即再挑戦。入力遅延と実touchを検査 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-fishing-first-slice"
+      ],
+      "priority": 73,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-slime-garden-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-slime-garden",
+      "id": "T-portfolio-slime-garden-first-slice",
+      "objective": "新作 スライムの小庭 の一巡する縦切りprototype工程",
+      "acceptance": [
+        "環境と2住人の相互作用、図鑑発見を体験",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 個体の世話より環境/組合せの発見が主役。住人の反応が見える、庭保存、目標達成 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-endlessrun-first-slice"
+      ],
+      "priority": 74,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-rhythm-delivery-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-rhythm-delivery",
+      "id": "T-portfolio-rhythm-delivery-first-slice",
+      "objective": "新作 リズム運送店 の一巡する縦切りprototype工程",
+      "acceptance": [
+        "仕分けとルート選択で1営業を終える",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 譜面だけにしない経営選択。タイミング評価/収支はゲーム内架空資源、難易度/結果/再挑戦 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-slime-garden-first-slice"
+      ],
+      "priority": 75,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-pocket-expedition-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-pocket-expedition",
+      "id": "T-portfolio-pocket-expedition-first-slice",
+      "objective": "新作 ポケット探検隊 の一巡する縦切りprototype工程",
+      "acceptance": [
+        "2分岐と資源判断を含む1探索を帰還まで",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 隊員の能力とルートが結果を変える。失敗でも学び/再挑戦、探索完結と進行保存 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-rhythm-delivery-first-slice"
+      ],
+      "priority": 76,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-bullet-alchemist-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-bullet-alchemist",
+      "id": "T-portfolio-bullet-alchemist-first-slice",
+      "objective": "新作 弾幕錬金術 の一巡する縦切りprototype工程",
+      "acceptance": [
+        "回避と2種素材合成、1敵の勝敗",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 回避とbuildの両方に選択。エフェクトと弾の視認性を両立、短いrunと明確なboss終点 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-pocket-expedition-first-slice"
+      ],
+      "priority": 77,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-mirror-labyrinth-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-mirror-labyrinth",
+      "id": "T-portfolio-mirror-labyrinth-first-slice",
+      "objective": "新作 反転迷宮 の一巡する縦切りprototype工程",
+      "acceptance": [
+        "反転操作で解く最初のstageとundo/reset",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 既存Ice Slideと区別できる反転ルール。全stageの解法確認、段階的学習/進行保存 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-bullet-alchemist-first-slice"
+      ],
+      "priority": 78,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    },
+    "T-portfolio-time-repair-first-slice": {
+      "decision_id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "pdca": "do",
+      "experiment_id": "EXP-portfolio-time-repair",
+      "id": "T-portfolio-time-repair-first-slice",
+      "objective": "新作 時間修理屋 の一巡する縦切りprototype工程",
+      "acceptance": [
+        "調査/巻戻し/因果変更で1依頼を完結",
+        "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+        "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+      ],
+      "outputs": [
+        "isolated branch playable slice",
+        "source-pinned QA and next completion task/decision",
+        "review PR when slice acceptance passes"
+      ],
+      "checks": [
+        "core-loop actual interaction",
+        "quality and fun gates",
+        "build/remote readback"
+      ],
+      "next_step": "同じexperimentで 手掛かりが結論に繋がる短編群。softlock防止、hint、chapter結末と再開 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+      "depends_on": [
+        "T-portfolio-mirror-labyrinth-first-slice"
+      ],
+      "priority": 79,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
+    }
+  },
+  "decisions": {
+    "D-game-pdca-20261008": {
+      "id": "D-game-pdca-20261008",
+      "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+      "hypothesis": "一作の品質・再訪・実流入を改善し、費用を照合して継続純利益につなげる",
+      "next_step": "ゲーム改善は定期runへ移し、今はPDCA基盤・PR・同時刻の定期処理を完成する",
+      "supersedes": "handoff:DB-20261008-merge2048-storage",
+      "restrictions": [
+        "main push/merge starts CD",
+        "no deployment",
+        "no BOOTH changes",
+        "0 JPY upfront"
+      ]
+    },
+    "D-catalog-2048-20261009": {
+      "id": "D-catalog-2048-20261009",
+      "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+      "hypothesis": "保存拒否での起動とモバイル表示を成立させれば意図的な開始/再訪の改善につながる可能性。事業効果未観測。",
+      "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
+      "selected_game": "merge2048",
+      "experiment_id": "EXP-merge2048",
+      "evidence": "business/evidence/catalog-first-plan.json"
+    },
+    "D-2048-storage-ci-20261009": {
+      "id": "D-2048-storage-ci-20261009",
+      "source": "https://github.com/Kihamda/Kihamda_Game/actions/runs/37851793681",
+      "hypothesis": "保存品質の改善が開始/再訪へ寄与する可能性。CI成功は技術品質だけで事業効果は未観測。",
+      "next_step": "T-measurement-audit then T-2048-mobile-shell; no public action",
+      "experiment_id": "EXP-merge2048",
+      "evidence": {
+        "code_commit": "1f92675bbf6b0484eb42f0c53b53b8c8a5feafa6",
+        "workflow": "CI — Lint & Build",
+        "run_id": 37851793681,
+        "status": "completed",
+        "conclusion": "success",
+        "checked_at": "2026-10-08T22:12:21Z"
+      },
+      "note": "Post-completion read-only CI confirmation; preserve prior report and hashes without rewriting."
+    },
+    "D-portfolio-20261009": {
+      "id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "共通体験の一貫性と各作の挑戦/進行/再挑戦、演出が開始と再訪を改善する可能性。実測未観測。",
+      "next_step": "既存約10作と新作約10案を選び、独立taskと完成gateを定義し、定期runで順に実制作。",
+      "supersedes": "D-catalog-2048-20261009",
+      "constraints": [
+        "WIP1",
+        "no main push/merge",
+        "zero upfront",
+        "counts are scope not success KPI"
+      ]
+    },
+    "D-portfolio-finish-before-next-20261009": {
+      "id": "D-portfolio-finish-before-next-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new; planning:portfolio-20261009",
+      "hypothesis": "各作品を遊べる一巡から完成gateまで仕上げることで、薄いprototypeの蓄積を避けられる。事業効果未観測。",
+      "next_step": "各first-sliceのcomplete前に残差のcompletion taskを同じexperimentへpriority25で追加する。次の候補first-slice(priority60以上)より完成工程を優先。品質/コアループ検査とレビューPRまで進め、公開/匿名集計待ちは依存taskだけblocked。共通pilotが最優先。",
+      "rules": [
+        "first-sliceだけで作品完成にしない",
+        "同じ作品の未完了工程を捨てない",
+        "選定調査は2run以内に採用/改善/停止",
+        "約10+10は制作範囲、KPIではない"
+      ]
+    }
+  },
+  "runs": {
+    "manual-bootstrap-20261008": {
+      "run_id": "manual-bootstrap-20261008",
+      "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+      "note": "Bootstrap work before ledger existed is retrospective preparation, not a fabricated prior claim.",
+      "status": "completed",
+      "started_at": 1791456805.253445
+    },
+    "scheduled-game-20261009-0100": {
+      "scheduled_at": "2026-10-09T01:00:00+09:00",
+      "run_id": "scheduled-game-20261009-0100",
+      "source": "scheduled:game-site:2026-10-09T01:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791475210.0343318
+    },
+    "scheduled-game-20261009-0700": {
+      "run_id": "scheduled-game-20261009-0700",
+      "scheduled_at": "2026-10-09T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-09T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791497084.0574381
+    },
+    "manual-portfolio-20261009-0935": {
+      "run_id": "manual-portfolio-20261009-0935",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "status": "completed",
+      "started_at": 1791506140.4654849
+    }
+  },
+  "experiments": {
+    "EXP-system": {
+      "id": "EXP-system",
+      "game_id": "business-runtime",
+      "primary_metric": "consistent_monthly_net_profit",
+      "hypothesis": "改善した品質が意図的な開始と再訪につながる（効果未観測）",
+      "quality_acceptance": [
+        "fencing/CAS/recovery tested"
+      ],
+      "measurement_plan": "運用基盤の整合性を内部検査。事業KPI改善は別観測",
+      "decision_id": "D-game-pdca-20261008",
+      "next_step": "T-catalog-first-plan; refine runtime only on observed failure",
+      "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+      "stage": "act",
+      "history": [
+        {
+          "id": "EXP-system",
+          "stage": "do",
+          "source": "bootstrap:2026-10-08",
+          "evidence": "implemented flow.py and tests",
+          "next_step": "record validation",
+          "at": 1791457105.7297165,
+          "previous_stage": "plan"
+        },
+        {
+          "id": "EXP-system",
+          "stage": "check",
+          "source": "QA:2026-10-08",
+          "evidence": "21 tests/build/GitHub/schedule readback",
+          "next_step": "next scheduled plan",
+          "at": 1791457105.7340126,
+          "previous_stage": "do"
+        },
+        {
+          "id": "EXP-system",
+          "stage": "act",
+          "source": "QA:2026-10-08",
+          "evidence": "runtime functional, future run/business results unobserved",
+          "judgment": "continue",
+          "next_step": "T-catalog-first-plan; refine runtime only on observed failure",
+          "at": 1791457105.7386994,
+          "previous_stage": "check"
+        }
+      ],
+      "release": null
+    },
+    "EXP-catalog": {
+      "id": "EXP-catalog",
+      "game_id": "catalog",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "改善した品質が意図的な開始と再訪につながる（効果未観測）",
+      "quality_acceptance": [
+        "一作の重点改善方針と掲載gate"
+      ],
+      "measurement_plan": "匿名集計があれば期間・定義・sourceで人気/離脱/再訪を比較。なければ品質根拠だけ",
+      "decision_id": "D-game-pdca-20261008",
+      "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
+      "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+      "stage": "do",
+      "history": [
+        {
+          "id": "EXP-catalog",
+          "stage": "do",
+          "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+          "evidence": "business/evidence/catalog-first-plan.json",
+          "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
+          "at": 1791475667.1956582,
+          "previous_stage": "plan"
+        }
+      ],
+      "release": null
+    },
+    "EXP-merge2048": {
+      "id": "EXP-merge2048",
+      "game_id": "merge2048",
+      "primary_metric": "start_rate",
+      "hypothesis": "改善した品質が意図的な開始と再訪につながる（効果未観測）",
+      "quality_acceptance": [
+        "保存拒否でも起動/得点できる",
+        "モバイル盤面と操作"
+      ],
+      "measurement_plan": "同一版公開後14/28日。game_start欠落を点検し測定定義変更を前後比較で混ぜない",
+      "decision_id": "D-game-pdca-20261008",
+      "next_step": "Save storage-only review PR, then T-measurement-audit / T-2048-mobile-shell; no deployment",
+      "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+      "stage": "do",
+      "history": [
+        {
+          "id": "EXP-merge2048",
+          "stage": "do",
+          "source": "run:scheduled-game-20261009-0700",
+          "evidence": "business/evidence/storage-review-20261009-0700.json; storage-qa-20261009-0700.json",
+          "next_step": "Save storage-only review PR, then T-measurement-audit / T-2048-mobile-shell; no deployment",
+          "at": 1791497359.472251,
+          "previous_stage": "plan"
+        }
+      ],
+      "release": null
+    },
+    "EXP-portfolio-brickmania": {
+      "id": "EXP-portfolio-brickmania",
+      "game_id": "brickmania",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "狙う技術が得点につながる。強化の効果/期限を表示し、stageをクリアして次へ進む。類似Brick Blast/Brick Outは統合検討のみ"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "パドル操作と衝突判定を調整し、初回stageのクリア/失敗が成立する状態へ",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-light-companion": {
+      "id": "EXP-portfolio-light-companion",
+      "game_id": "light-companion",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "育成3段階と選択に応じた分岐、探索成果/図鑑、育て方で体験が変わる。待ち時間強制なし"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "世話/訓練/探索の一周、相棒の変化と保存再開を含む縦切りprototype",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-iceslide": {
+      "id": "EXP-portfolio-iceslide",
+      "game_id": "iceslide",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "解けるstageと段階的な新ギミック。手数/解法理解が進行へ繋がり、詰みから再挑戦できる"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "第一stageを確実に解ける状態にし、undo/resetと操作説明を磨く",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-towerdefense": {
+      "id": "EXP-portfolio-towerdefense",
+      "game_id": "towerdefense",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "複数の防衛戦略が機能し、敵の特性/射程/費用が見える。最終waveの勝利と敗北の両経路を検査"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "tower配置→wave開始→突破/防衛の第一waveを成立させる",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-stardust-agency": {
+      "id": "EXP-portfolio-stardust-agency",
+      "game_id": "stardust-agency",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "クリック連打だけに頼らない事件/選択分岐。章の到達点と進行保存、誤解答/再調査の道"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "手動調査→1upgrade→証拠選択→第1事件の結末",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-rhythmbeat": {
+      "id": "EXP-portfolio-rhythmbeat",
+      "game_id": "rhythmbeat",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "同期/判定誤差を明示。難易度選択、音量/演出設定、楽曲終了/結果/再挑戦。音源は権利確認済み自作のみ"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "audio開始と判定時間を照合し短い譜面を一曲完走させる",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-minigolf": {
+      "id": "EXP-portfolio-minigolf",
+      "game_id": "minigolf",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "練習→コース攻略→打数結果→再挑戦。詰み位置からreset可、ショット予測と実軌道に納得感"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "狙い/力/実touchを調整し初回ホールインまで検査",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-neon-workshop": {
+      "id": "EXP-portfolio-neon-workshop",
+      "game_id": "neon-workshop",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "生産経路とボトルネックの判断が中心。注文の完了と新レシピ、効率だけでなく作る目的"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "材料2種の加工と工程選択で1注文を完成",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-ntiktaktoe": {
+      "id": "EXP-portfolio-ntiktaktoe",
+      "game_id": "ntiktaktoe",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "分かる初期ルール、勝利/引分け、誤操作undo/確認、再開とreset。大きい盤面もスマホで操作できる"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "0pxセル/CSS不一致を直して置く→ターン交代→勝敗の最小対戦を成立させる",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-dodgeblitz": {
+      "id": "EXP-portfolio-dodgeblitz",
+      "game_id": "dodgeblitz",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "回避可能な攻撃、段階的難易度、被弾原因と再挑戦。画面演出が弾/操作対象を隠さない"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "最初の敵攻撃に予告を付け、入力と被弾理由を検査",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-merge-summoners": {
+      "id": "EXP-portfolio-merge-summoners",
+      "game_id": "merge-summoners",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "複数build、敵予告、短いrunのboss/結末、毎回異なる選択。合体2048とは異なる戦術"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "2種ユニットの合体と1戦闘の勝敗/再挑戦",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-fishing": {
+      "id": "EXP-portfolio-fishing",
+      "game_id": "fishing",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "狙う魚/場所/装備に選択理由がある。図鑑と目標、失敗原因/再挑戦、進行保存"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "アタリの合図と巻き取り入力を調整し1匹釣って結果まで検査",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-endlessrun": {
+      "id": "EXP-portfolio-endlessrun",
+      "game_id": "endlessrun",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "ジャンプの学習→距離目標→段階的難度→失敗原因/即再挑戦。入力遅延と実touchを検査"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "初回区間のジャンプと障害物gapを調整し避けられない生成を防ぐ",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-slime-garden": {
+      "id": "EXP-portfolio-slime-garden",
+      "game_id": "slime-garden",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "個体の世話より環境/組合せの発見が主役。住人の反応が見える、庭保存、目標達成"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "環境と2住人の相互作用、図鑑発見を体験",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-rhythm-delivery": {
+      "id": "EXP-portfolio-rhythm-delivery",
+      "game_id": "rhythm-delivery",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "譜面だけにしない経営選択。タイミング評価/収支はゲーム内架空資源、難易度/結果/再挑戦"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "仕分けとルート選択で1営業を終える",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-pocket-expedition": {
+      "id": "EXP-portfolio-pocket-expedition",
+      "game_id": "pocket-expedition",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "隊員の能力とルートが結果を変える。失敗でも学び/再挑戦、探索完結と進行保存"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "2分岐と資源判断を含む1探索を帰還まで",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-bullet-alchemist": {
+      "id": "EXP-portfolio-bullet-alchemist",
+      "game_id": "bullet-alchemist",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "回避とbuildの両方に選択。エフェクトと弾の視認性を両立、短いrunと明確なboss終点"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "回避と2種素材合成、1敵の勝敗",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-mirror-labyrinth": {
+      "id": "EXP-portfolio-mirror-labyrinth",
+      "game_id": "mirror-labyrinth",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "既存Ice Slideと区別できる反転ルール。全stageの解法確認、段階的学習/進行保存"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "反転操作で解く最初のstageとundo/reset",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    },
+    "EXP-portfolio-time-repair": {
+      "id": "EXP-portfolio-time-repair",
+      "game_id": "time-repair",
+      "primary_metric": "return_rate_7d",
+      "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+      "quality_acceptance": [
+        "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+        "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+        "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+        "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+        "手掛かりが結論に繋がる短編群。softlock防止、hint、chapter結末と再開"
+      ],
+      "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+      "decision_id": "D-portfolio-20261009",
+      "next_step": "調査/巻戻し/因果変更で1依頼を完結",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "stage": "plan",
+      "history": [],
+      "release": null
+    }
+  },
+  "slots": {
+    "2026-10-09T01:00:00+09:00": "scheduled-game-20261009-0100",
+    "2026-10-09T07:00:00+09:00": "scheduled-game-20261009-0700"
+  },
+  "feedback": [
+    {
+      "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+      "message": "今は具体改善をせず、BOOTH同時刻の定期処理とPDCA管理を構築",
+      "next_step": "専用定期処理を同時刻に登録、既存BOOTH変更なし",
+      "at": 1791456805.2453876
+    },
+    {
+      "source": "user:current-thread:2026-10-08:main-cd",
+      "message": "mainにpushするとCD走るからってのは覚えといて",
+      "next_step": "別branchへの保存・PR作成まで。main push/merge/auto-merge禁止",
+      "at": 1791456805.2505584
+    },
+    {
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "message": "既存の優秀な約10作を選んで楽しく完成させる。Web全体の一貫した体験と各作の完成度を上げ、新作も約10作。演出強化、育成、クリッカーADVも候補。",
+      "next_step": "重点候補/新作案/共通体験と各作の完成条件を正本へ反映。WIP1で順に実制作。",
+      "at": 1791506140.427282
+    }
+  ],
+  "approvals": [
+    {
+      "source": "user:current-thread:2026-10-08:same-timing-as-BOOTH",
+      "quote": "Boothと同じタイミングで定期処理を走らせて、そこで作業させる、PDCAが回っていくタスク管理システムを要件に合わせて構築",
+      "action": "create_game_automation",
+      "artifact_sha256": "9c08606143f49f7a7a3a55843f9890bf0cddd86f697a2641f51fed3ca18988fb",
+      "status": "approved"
+    }
+  ],
+  "external": {
+    "OP-game-automation-20261008": {
+      "id": "OP-game-automation-20261008",
+      "action": "create_game_automation",
+      "artifact_sha256": "9c08606143f49f7a7a3a55843f9890bf0cddd86f697a2641f51fed3ca18988fb",
+      "run_id": "manual-bootstrap-20261008",
+      "fence": 1,
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "OP-game-automation-20261008",
+        "status": "confirmed_success",
+        "source": "automation:create+peek:2026-10-08",
+        "evidence": "business/automation.json (enabled, exact prompt/schedule/timezone; BOOTH unchanged)"
+      }
+    }
+  },
+  "observations": [],
+  "events": [
+    {
+      "revision": 1,
+      "at": 1791456805.1957896,
+      "action": "init",
+      "data": {},
+      "result": {
+        "initialized": true
+      },
+      "previous": null,
+      "sha256": "bd2cbdb7b8ed52af799f7f7756be33c073dc4f102e7adef71733c47635d92d12"
+    },
+    {
+      "revision": 2,
+      "at": 1791456805.203418,
+      "action": "decision",
+      "data": {
+        "id": "D-game-pdca-20261008",
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+        "hypothesis": "一作の品質・再訪・実流入を改善し、費用を照合して継続純利益につなげる",
+        "next_step": "ゲーム改善は定期runへ移し、今はPDCA基盤・PR・同時刻の定期処理を完成する",
+        "supersedes": "handoff:DB-20261008-merge2048-storage",
+        "restrictions": [
+          "main push/merge starts CD",
+          "no deployment",
+          "no BOOTH changes",
+          "0 JPY upfront"
+        ]
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "bd2cbdb7b8ed52af799f7f7756be33c073dc4f102e7adef71733c47635d92d12",
+      "sha256": "2d81fae2ec3b0168456f038b5dc6ab7cf0f369a19f17a74dd6924a9a0be14e2e"
+    },
+    {
+      "revision": 3,
+      "at": 1791456805.2095177,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-system",
+        "game_id": "business-runtime",
+        "primary_metric": "consistent_monthly_net_profit",
+        "hypothesis": "改善した品質が意図的な開始と再訪につながる（効果未観測）",
+        "quality_acceptance": [
+          "fencing/CAS/recovery tested"
+        ],
+        "measurement_plan": "運用基盤の整合性を内部検査。事業KPI改善は別観測",
+        "decision_id": "D-game-pdca-20261008",
+        "next_step": "既存成果と未完了を確認",
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "2d81fae2ec3b0168456f038b5dc6ab7cf0f369a19f17a74dd6924a9a0be14e2e",
+      "sha256": "bdd3841574f118053a2a8a96ae36690d50638d3f40c84bce1f8cb44f7adc695f"
+    },
+    {
+      "revision": 4,
+      "at": 1791456805.2173016,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-catalog",
+        "game_id": "catalog",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "改善した品質が意図的な開始と再訪につながる（効果未観測）",
+        "quality_acceptance": [
+          "一作の重点改善方針と掲載gate"
+        ],
+        "measurement_plan": "匿名集計があれば期間・定義・sourceで人気/離脱/再訪を比較。なければ品質根拠だけ",
+        "decision_id": "D-game-pdca-20261008",
+        "next_step": "既存成果と未完了を確認",
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "bdd3841574f118053a2a8a96ae36690d50638d3f40c84bce1f8cb44f7adc695f",
+      "sha256": "4f52b20ce4ff9cfe87937d761d3df55a145cbd1105b9c0de9ce466f6f1dc7ab5"
+    },
+    {
+      "revision": 5,
+      "at": 1791456805.2192123,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-merge2048",
+        "game_id": "merge2048",
+        "primary_metric": "start_rate",
+        "hypothesis": "改善した品質が意図的な開始と再訪につながる（効果未観測）",
+        "quality_acceptance": [
+          "保存拒否でも起動/得点できる",
+          "モバイル盤面と操作"
+        ],
+        "measurement_plan": "同一版公開後14/28日。game_start欠落を点検し測定定義変更を前後比較で混ぜない",
+        "decision_id": "D-game-pdca-20261008",
+        "next_step": "既存成果と未完了を確認",
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "4f52b20ce4ff9cfe87937d761d3df55a145cbd1105b9c0de9ce466f6f1dc7ab5",
+      "sha256": "4b0da83f2b32625aa6e83b463d7816f69fb65439f0366720cb669468bf482b88"
+    },
+    {
+      "revision": 6,
+      "at": 1791456805.2234921,
+      "action": "task",
+      "data": {
+        "id": "T-system-bootstrap",
+        "objective": "実行基盤と定期処理を完成させる",
+        "acceptance": [
+          "単独/WIP1/CAS/期限切れfence/復旧/履歴/PDCA/slotを検査",
+          "別branchへ保存して読戻す",
+          "専用定期処理を登録して照合"
+        ],
+        "outputs": [
+          "business/ops/flow.py",
+          "business/ops/ledger.json",
+          "business/automation.json",
+          "PR"
+        ],
+        "checks": [
+          "python unittest",
+          "GitHub blob/head readback",
+          "automation readback"
+        ],
+        "next_step": "最初の定期runで一作の掲載方針を選ぶ",
+        "experiment_id": "EXP-system",
+        "pdca": "do",
+        "priority": 0,
+        "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
+        "decision_id": "D-game-pdca-20261008",
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "4b0da83f2b32625aa6e83b463d7816f69fb65439f0366720cb669468bf482b88",
+      "sha256": "60951fd015d0f7d42a259fc7eb66ce0b6feb171841981a15c024a05b9b1ca4c1"
+    },
+    {
+      "revision": 7,
+      "at": 1791456805.226624,
+      "action": "task",
+      "data": {
+        "id": "T-catalog-first-plan",
+        "objective": "一作ずつ深く作り込む方針で掲載作品と重点改善対象を選ぶ",
+        "acceptance": [
+          "現カタログ/3候補のコア体験と品質根拠",
+          "実測がなければ人気null",
+          "一作の受入条件と次の内部工程"
+        ],
+        "outputs": [
+          "business/evidence/catalog-first-plan.json",
+          "次のdecision/task"
+        ],
+        "checks": [
+          "catalog-policy gate",
+          "匿名集計のsource/定義/期間"
+        ],
+        "next_step": "選んだ一作の具体欠陥を一工程だけ修正・検査",
+        "experiment_id": "EXP-catalog",
+        "pdca": "plan",
+        "priority": 10,
+        "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
+        "decision_id": "D-game-pdca-20261008",
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "60951fd015d0f7d42a259fc7eb66ce0b6feb171841981a15c024a05b9b1ca4c1",
+      "sha256": "7590e3ae2d839b32934592837a98aaed51d7f8f55470fa8e42874a2a9b31b92f"
+    },
+    {
+      "revision": 8,
+      "at": 1791456805.22972,
+      "action": "task",
+      "data": {
+        "id": "T-measurement-audit",
+        "objective": "意図的なgame_startと既存計測の欠落を確認する",
+        "acceptance": [
+          "GA4/SC実測と固定表示を区別",
+          "game_start実装/分母/再開の定義案",
+          "資格不明/アクセスなしはnull"
+        ],
+        "outputs": [
+          "business/evidence/measurement-audit.json",
+          "計測用PR候補"
+        ],
+        "checks": [
+          "source audit",
+          "QA送信は実訪問者へ含めない"
+        ],
+        "next_step": "本人許可後の同一版公開と14/28日匿名比較",
+        "experiment_id": "EXP-merge2048",
+        "pdca": "plan",
+        "priority": 20,
+        "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
+        "decision_id": "D-game-pdca-20261008",
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "7590e3ae2d839b32934592837a98aaed51d7f8f55470fa8e42874a2a9b31b92f",
+      "sha256": "8c948447920cdac95b847bdd9a44c8d1c0a5263a88c4dc515751d2e7cdbe9a83"
+    },
+    {
+      "revision": 9,
+      "at": 1791456805.2326627,
+      "action": "task",
+      "data": {
+        "id": "T-migrated-2048-review",
+        "objective": "既存保存patchとモバイル候補を最新mainで再評価する",
+        "acceptance": [
+          "元commit/sha/patch適用差分を確認",
+          "起動/キー/実タッチ/viewport/保存拒否/再開/SEO/性能を検査",
+          "旧10検査をアクセスや収益実績にしない"
+        ],
+        "outputs": [
+          "品質検査記録",
+          "別branchの修正PR"
+        ],
+        "checks": [
+          "storage regressions",
+          "browser interaction",
+          "full build and shared-shell regression"
+        ],
+        "next_step": "同一版への本人公開判断と公開後実測",
+        "experiment_id": "EXP-merge2048",
+        "pdca": "do",
+        "priority": 30,
+        "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
+        "decision_id": "D-game-pdca-20261008",
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+        "depends_on": [
+          "T-catalog-first-plan"
+        ],
+        "origin_id": "T-20261008-game-storage-fix",
+        "origin_decision_id": "DB-20261008-merge2048-storage",
+        "origin_source": "https://github.com/Kihamda/Sell-Something-Well/blob/main/projects/income/events/00094.json",
+        "origin_status": "Historical claim only; old lease not transferred. Patch prepared/not deployed per source README.",
+        "origin_unfinished": [
+          "mobile game shell QA",
+          "anonymous measured data"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "8c948447920cdac95b847bdd9a44c8d1c0a5263a88c4dc515751d2e7cdbe9a83",
+      "sha256": "1ab063a1e3ecad7b85610a0300bc7fee2d8112bad40184e1268179763f30305c"
+    },
+    {
+      "revision": 10,
+      "at": 1791456805.2357225,
+      "action": "task",
+      "data": {
+        "id": "T-monetization-eligibility",
+        "objective": "広告/スポンサー/有料機能の一次条件と実測規模を比較する",
+        "acceptance": [
+          "公式規約/年齢/本人account/費用/保守",
+          "RPM/購入率仮定と実測を区別",
+          "全費用不明の利益null"
+        ],
+        "outputs": [
+          "business/evidence/monetization-options.json"
+        ],
+        "checks": [
+          "official sources with access date",
+          "same-period aggregate revenue/costs when available"
+        ],
+        "next_step": "費用0円の条件で採否decision、契約等は本人",
+        "experiment_id": "EXP-catalog",
+        "pdca": "plan",
+        "priority": 40,
+        "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
+        "decision_id": "D-game-pdca-20261008",
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "1ab063a1e3ecad7b85610a0300bc7fee2d8112bad40184e1268179763f30305c",
+      "sha256": "8f55c974ffa71f8e8cb1130cc73f616e1230c8d2bc78798df42b21274ee099c2"
+    },
+    {
+      "revision": 11,
+      "at": 1791456805.2388294,
+      "action": "task",
+      "data": {
+        "id": "T-release-measurement",
+        "objective": "本人公開済み版の効果を14/28日窓で確認する",
+        "acceptance": [
+          "対象release証拠",
+          "GA4/SC同一人口/定義/期間",
+          "欠損はnull、raw before/afterを因果効果としない"
+        ],
+        "outputs": [
+          "business/evidence/release-comparison.json"
+        ],
+        "checks": [
+          "contract completeness",
+          "cohort followup"
+        ],
+        "next_step": "continue/improve/stop/unobservedのActと次工程",
+        "experiment_id": "EXP-merge2048",
+        "pdca": "check",
+        "priority": 50,
+        "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
+        "decision_id": "D-game-pdca-20261008",
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "8f55c974ffa71f8e8cb1130cc73f616e1230c8d2bc78798df42b21274ee099c2",
+      "sha256": "75294b81322735c816fda265119816ad8a3a7b81c298a94ff75659172386d17e"
+    },
+    {
+      "revision": 12,
+      "at": 1791456805.2417746,
+      "action": "block",
+      "data": {
+        "task_id": "T-release-measurement",
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+        "reason": "公開版・同期間匿名集計がない",
+        "next_step": "本人が公開済み版と集計を共有した時だけ再開"
+      },
+      "result": {
+        "recorded": "block"
+      },
+      "previous": "75294b81322735c816fda265119816ad8a3a7b81c298a94ff75659172386d17e",
+      "sha256": "6c3cc60d12e07b1f6385f390bb876e10a548a72c2f7a7160af0b531a039c200a"
+    },
+    {
+      "revision": 13,
+      "at": 1791456805.2453876,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+        "message": "今は具体改善をせず、BOOTH同時刻の定期処理とPDCA管理を構築",
+        "next_step": "専用定期処理を同時刻に登録、既存BOOTH変更なし"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "6c3cc60d12e07b1f6385f390bb876e10a548a72c2f7a7160af0b531a039c200a",
+      "sha256": "701cb22d42771258eb5d81d7cbf46bfb6e1f580593d6fc397031dce5c37c044a"
+    },
+    {
+      "revision": 14,
+      "at": 1791456805.2505584,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-08:main-cd",
+        "message": "mainにpushするとCD走るからってのは覚えといて",
+        "next_step": "別branchへの保存・PR作成まで。main push/merge/auto-merge禁止"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "701cb22d42771258eb5d81d7cbf46bfb6e1f580593d6fc397031dce5c37c044a",
+      "sha256": "6e71e7b793ec2a0750830d78f4e6c2f447dc7a35b6b7f09da838c268e4bce35f"
+    },
+    {
+      "revision": 15,
+      "at": 1791456805.253445,
+      "action": "start",
+      "data": {
+        "run_id": "manual-bootstrap-20261008",
+        "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
+        "note": "Bootstrap work before ledger existed is retrospective preparation, not a fabricated prior claim."
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "6e71e7b793ec2a0750830d78f4e6c2f447dc7a35b6b7f09da838c268e4bce35f",
+      "sha256": "5bb306955f0077c06ab1c1c8ad07382689124188868dc8f2d6bf551118a3cc32"
+    },
+    {
+      "revision": 16,
+      "at": 1791456805.256588,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-bootstrap-20261008",
+        "task_id": "T-system-bootstrap"
+      },
+      "result": {
+        "run_id": "manual-bootstrap-20261008",
+        "task_id": "T-system-bootstrap",
+        "fence": 1,
+        "expires_at": 1791458605.256588
+      },
+      "previous": "5bb306955f0077c06ab1c1c8ad07382689124188868dc8f2d6bf551118a3cc32",
+      "sha256": "4286666f0fa084bfb8643ded7230f95b042fb33e97888ab0a22e6e7419ef322b"
+    },
+    {
+      "revision": 17,
+      "at": 1791457028.845449,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "manual-bootstrap-20261008",
+        "fence": 1,
+        "artifacts": [
+          {
+            "path": "business/evidence/system-checks.json",
+            "sha256": "bb6a8190774b2145bb14fa142ceb0254da06827171d59708834eff3c3c7f864e"
+          }
+        ],
+        "checks": [
+          "21 unit tests pass",
+          "full build pass",
+          "remote claim and all changed blobs match"
+        ],
+        "next_step": "Register dedicated game schedule and verify; then close bootstrap task"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "4286666f0fa084bfb8643ded7230f95b042fb33e97888ab0a22e6e7419ef322b",
+      "sha256": "c66a941990d5d0749308deebbd070deaae7fd4fcde5fb1855ead7070fd9cdacb"
+    },
+    {
+      "revision": 18,
+      "at": 1791457028.8507004,
+      "action": "approval",
+      "data": {
+        "source": "user:current-thread:2026-10-08:same-timing-as-BOOTH",
+        "quote": "Boothと同じタイミングで定期処理を走らせて、そこで作業させる、PDCAが回っていくタスク管理システムを要件に合わせて構築",
+        "action": "create_game_automation",
+        "artifact_sha256": "9c08606143f49f7a7a3a55843f9890bf0cddd86f697a2641f51fed3ca18988fb",
+        "status": "approved"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "c66a941990d5d0749308deebbd070deaae7fd4fcde5fb1855ead7070fd9cdacb",
+      "sha256": "d87c4d850701305f2907e38cda752065ff4b9b07e892394f4bc7f5160eeb1dbc"
+    },
+    {
+      "revision": 19,
+      "at": 1791457028.8550293,
+      "action": "prepare-external",
+      "data": {
+        "id": "OP-game-automation-20261008",
+        "action": "create_game_automation",
+        "artifact_sha256": "9c08606143f49f7a7a3a55843f9890bf0cddd86f697a2641f51fed3ca18988fb",
+        "run_id": "manual-bootstrap-20261008",
+        "fence": 1
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "d87c4d850701305f2907e38cda752065ff4b9b07e892394f4bc7f5160eeb1dbc",
+      "sha256": "537564ab4ef0e09591680e0f2ce4ddaf3098c72151d0b60300db387a2817a269"
+    },
+    {
+      "revision": 20,
+      "at": 1791457105.7185981,
+      "action": "reconcile-external",
+      "data": {
+        "id": "OP-game-automation-20261008",
+        "status": "confirmed_success",
+        "source": "automation:create+peek:2026-10-08",
+        "evidence": "business/automation.json (enabled, exact prompt/schedule/timezone; BOOTH unchanged)"
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "537564ab4ef0e09591680e0f2ce4ddaf3098c72151d0b60300db387a2817a269",
+      "sha256": "c30c9144e4800f1e8bc5b32223e36d542c13fcd6b30b05ad579e0f5c6d17de4f"
+    },
+    {
+      "revision": 21,
+      "at": 1791457105.7237804,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-bootstrap-20261008",
+        "fence": 1,
+        "artifacts": [
+          {
+            "path": "business/evidence/system-checks.json",
+            "sha256": "367e46d617b7ae3f1d632032a2482b7b01b3be141c1d51193202602cdbaf93da"
+          },
+          {
+            "path": "business/automation.json",
+            "sha256": "e05eb25b7968eeaee6ed00eed0cae15c7063a8c3d3012784942f782a4245fff7"
+          }
+        ],
+        "checks": [
+          "21 unit tests",
+          "full build",
+          "remote initial claim/all changed blobs match",
+          "automation create and peek verified"
+        ],
+        "next_step": "First scheduled run: T-catalog-first-plan",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "c30c9144e4800f1e8bc5b32223e36d542c13fcd6b30b05ad579e0f5c6d17de4f",
+      "sha256": "0d7058150d9b7cc753c396d5f752a2351f7e13dea0affd17c90b48c73c526403"
+    },
+    {
+      "revision": 22,
+      "at": 1791457105.7297165,
+      "action": "experiment-stage",
+      "data": {
+        "id": "EXP-system",
+        "stage": "do",
+        "source": "bootstrap:2026-10-08",
+        "evidence": "implemented flow.py and tests",
+        "next_step": "record validation"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "0d7058150d9b7cc753c396d5f752a2351f7e13dea0affd17c90b48c73c526403",
+      "sha256": "31d2780656be93e776d15799f08d81a5464b5116ef9a91bfb68c87577438e3f7"
+    },
+    {
+      "revision": 23,
+      "at": 1791457105.7340126,
+      "action": "experiment-stage",
+      "data": {
+        "id": "EXP-system",
+        "stage": "check",
+        "source": "QA:2026-10-08",
+        "evidence": "21 tests/build/GitHub/schedule readback",
+        "next_step": "next scheduled plan"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "31d2780656be93e776d15799f08d81a5464b5116ef9a91bfb68c87577438e3f7",
+      "sha256": "129c90144f1ca61f31e8a1b8936b2a40632916ebb3f9c4d0e4885eb719d567f3"
+    },
+    {
+      "revision": 24,
+      "at": 1791457105.7386994,
+      "action": "experiment-stage",
+      "data": {
+        "id": "EXP-system",
+        "stage": "act",
+        "source": "QA:2026-10-08",
+        "evidence": "runtime functional, future run/business results unobserved",
+        "judgment": "continue",
+        "next_step": "T-catalog-first-plan; refine runtime only on observed failure"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "129c90144f1ca61f31e8a1b8936b2a40632916ebb3f9c4d0e4885eb719d567f3",
+      "sha256": "cc72fb8eb40bce48f4a76864704dbb9b836405533b4830e1697219e97dce88ad"
+    },
+    {
+      "revision": 25,
+      "at": 1791475210.0343318,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-09T01:00:00+09:00",
+        "run_id": "scheduled-game-20261009-0100"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "cc72fb8eb40bce48f4a76864704dbb9b836405533b4830e1697219e97dce88ad",
+      "sha256": "39c5f0da613500fa5e659bcca52ef71effa44dda11a9ad68c9a81986807bb90c"
+    },
+    {
+      "revision": 26,
+      "at": 1791475210.0564196,
+      "action": "claim",
+      "data": {
+        "run_id": "scheduled-game-20261009-0100",
+        "task_id": "T-catalog-first-plan",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "scheduled-game-20261009-0100",
+        "task_id": "T-catalog-first-plan",
+        "fence": 2,
+        "expires_at": 1791476710.0564196
+      },
+      "previous": "39c5f0da613500fa5e659bcca52ef71effa44dda11a9ad68c9a81986807bb90c",
+      "sha256": "9fbec1813f903e97753dc52464d4070dfa7ec99c9b41c57aea860d0c871dc078"
+    },
+    {
+      "revision": 27,
+      "at": 1791475667.169461,
+      "action": "decision",
+      "data": {
+        "id": "D-catalog-2048-20261009",
+        "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+        "hypothesis": "保存拒否での起動とモバイル表示を成立させれば意図的な開始/再訪の改善につながる可能性。事業効果未観測。",
+        "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
+        "selected_game": "merge2048",
+        "experiment_id": "EXP-merge2048",
+        "evidence": "business/evidence/catalog-first-plan.json"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "9fbec1813f903e97753dc52464d4070dfa7ec99c9b41c57aea860d0c871dc078",
+      "sha256": "2de0b88ebbac9f970453f84913bc909bbe4307414af80f1544c4910367cb239b"
+    },
+    {
+      "revision": 28,
+      "at": 1791475667.177449,
+      "action": "task",
+      "data": {
+        "decision_id": "D-catalog-2048-20261009",
+        "hypothesis": "保存/表示障害の除去が開始/再訪に寄与する可能性、効果未観測",
+        "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+        "experiment_id": "EXP-merge2048",
+        "pdca": "do",
+        "origin_id": "T-20261008-game-storage-fix",
+        "origin_decision_id": "DB-20261008-merge2048-storage",
+        "origin_source": "https://github.com/Kihamda/Sell-Something-Well/blob/main/projects/income/events/00094.json",
+        "id": "T-2048-storage-first",
+        "objective": "2048の保存拒否による起動障害を一工程で修正する",
+        "acceptance": [
+          "指定commitと最新mainの差分を照合、保存のみの候補へ範囲限定",
+          "通常/アクセス拒否/read例外/write例外/不正値でも起動・得点・New Gameが動く",
+          "ゲームsource変更版のbuild/browser QAと同一版差分/リスクを揃え別branch PR、main操作なし"
+        ],
+        "outputs": [
+          "storage-only patch/commit/PR",
+          "browser regression evidence"
+        ],
+        "checks": [
+          "source baseline diff",
+          "storage regressions and real browser",
+          "full build",
+          "remote head/blob readback"
+        ],
+        "next_step": "T-2048-mobile-shell; quality gate前の公開提案は不可",
+        "depends_on": [
+          "T-catalog-first-plan"
+        ],
+        "priority": 15
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "2de0b88ebbac9f970453f84913bc909bbe4307414af80f1544c4910367cb239b",
+      "sha256": "8c230f871f15e974e84b930f705994d4de117e51cfe65154e7745e877102cce0"
+    },
+    {
+      "revision": 29,
+      "at": 1791475667.18352,
+      "action": "task",
+      "data": {
+        "decision_id": "D-catalog-2048-20261009",
+        "hypothesis": "保存/表示障害の除去が開始/再訪に寄与する可能性、効果未観測",
+        "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+        "experiment_id": "EXP-merge2048",
+        "pdca": "do",
+        "origin_id": "T-20261008-game-storage-fix",
+        "origin_decision_id": "DB-20261008-merge2048-storage",
+        "origin_source": "https://github.com/Kihamda/Sell-Something-Well/blob/main/projects/income/events/00094.json",
+        "id": "T-2048-mobile-shell",
+        "objective": "2048のスマホ表示欠損と実タッチ操作を検査・修正する",
+        "acceptance": [
+          "320/390/横画面/desktopで盤面と必須操作のframe clippingを解消",
+          "実touch/key/New Game/reloadの検査とSafari/低性能の未確認を明記",
+          "共有shell変更時はn目並べ/Snakeの表示回帰、別branch PR"
+        ],
+        "outputs": [
+          "mobile patch/PR",
+          "viewport/touch/browser evidence"
+        ],
+        "checks": [
+          "geometry assertions and screenshots",
+          "CDP touch interactions",
+          "full build/shared shell regression"
+        ],
+        "next_step": "同一版の全quality gate検査→本人公開判断→14/28日観測",
+        "depends_on": [
+          "T-2048-storage-first"
+        ],
+        "priority": 30
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "8c230f871f15e974e84b930f705994d4de117e51cfe65154e7745e877102cce0",
+      "sha256": "4e749067ba2458e8dc186e3e5c1fc9eaae49130df828372fa680ced8829d83d3"
+    },
+    {
+      "revision": 30,
+      "at": 1791475667.189242,
+      "action": "cancel",
+      "data": {
+        "task_id": "T-migrated-2048-review",
+        "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+        "reason": "広い旧工程を保存→mobileの独立工程へ分割。元ID/出典/未完了/historyを残し、新taskへ継承。実行済み扱いではない。",
+        "next_step": "T-2048-storage-first then T-2048-mobile-shell"
+      },
+      "result": {
+        "recorded": "cancel"
+      },
+      "previous": "4e749067ba2458e8dc186e3e5c1fc9eaae49130df828372fa680ced8829d83d3",
+      "sha256": "e7373e7b6b60865c8c4992812b7100c37b9430ce0103bfb7326bea8e546b0844"
+    },
+    {
+      "revision": 31,
+      "at": 1791475667.1956582,
+      "action": "experiment-stage",
+      "data": {
+        "id": "EXP-catalog",
+        "stage": "do",
+        "source": "repo:business/evidence/catalog-qa-20261009-0100.json;run:scheduled-game-20261009-0100",
+        "evidence": "business/evidence/catalog-first-plan.json",
+        "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "e7373e7b6b60865c8c4992812b7100c37b9430ce0103bfb7326bea8e546b0844",
+      "sha256": "5d6180d054b85e1b5d104d2b9eadbe17b58cf31575dac7cd153f62df0d9f73d9"
+    },
+    {
+      "revision": 32,
+      "at": 1791475667.2033086,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0100",
+        "fence": 2,
+        "name": "catalog-first-plan.json",
+        "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8"
+      },
+      "result": {
+        "path": "artifacts/3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8",
+        "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8",
+        "name": "catalog-first-plan.json"
+      },
+      "previous": "5d6180d054b85e1b5d104d2b9eadbe17b58cf31575dac7cd153f62df0d9f73d9",
+      "sha256": "7fa1b9a3294bba04a9d600ae3a607e2bfa4742ced4e8da03225cb014de6e107a"
+    },
+    {
+      "revision": 33,
+      "at": 1791475667.2119353,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0100",
+        "fence": 2,
+        "name": "catalog-qa-20261009-0100.json",
+        "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7"
+      },
+      "result": {
+        "path": "artifacts/9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7",
+        "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7",
+        "name": "catalog-qa-20261009-0100.json"
+      },
+      "previous": "7fa1b9a3294bba04a9d600ae3a607e2bfa4742ced4e8da03225cb014de6e107a",
+      "sha256": "1bcd1c82fb9d5169ea1e89214e8e96acd6ae51b46c2a31d89649f961f65a847a"
+    },
+    {
+      "revision": 34,
+      "at": 1791475667.2203188,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0100",
+        "fence": 2,
+        "name": "catalog-qa-20261009-0100.mjs",
+        "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e"
+      },
+      "result": {
+        "path": "artifacts/5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e",
+        "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e",
+        "name": "catalog-qa-20261009-0100.mjs"
+      },
+      "previous": "1bcd1c82fb9d5169ea1e89214e8e96acd6ae51b46c2a31d89649f961f65a847a",
+      "sha256": "cbe885ef2487ca58bfbab2c1861eabd889bb7da54f0232d775c6afd0a09f8f98"
+    },
+    {
+      "revision": 35,
+      "at": 1791475667.228835,
+      "action": "complete",
+      "data": {
+        "run_id": "scheduled-game-20261009-0100",
+        "fence": 2,
+        "artifacts": [
+          {
+            "path": "business/evidence/catalog-first-plan.json",
+            "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8"
+          },
+          {
+            "path": "business/ops/artifacts/3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8",
+            "sha256": "3b2b0b22bcac75e750e71247aef43a40af02afd7fc6c487f3f3c90a6de4faae8"
+          },
+          {
+            "path": "business/evidence/catalog-qa-20261009-0100.json",
+            "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7"
+          },
+          {
+            "path": "business/ops/artifacts/9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7",
+            "sha256": "9b3a36fce4db99cef8f243df30f1954374f1fce273260bc949c35633128aacf7"
+          },
+          {
+            "path": "business/evidence/catalog-qa-20261009-0100.mjs",
+            "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e"
+          },
+          {
+            "path": "business/ops/artifacts/5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e",
+            "sha256": "5eb5f9706670fb55d2cb9ed19457ad9245c3d2e699cf50074d17fcab8e236c2e"
+          }
+        ],
+        "checks": [
+          "catalog-policy/3 core experiences and browser defects evidenced",
+          "unknown demand/KPI/revenue/profit null; QA separate",
+          "one focused game + acceptance + decision and granular successor tasks",
+          "build pass; no game source edits/no deploy"
+        ],
+        "next_step": "T-2048-storage-first: compare dcae249 with latest main, apply storage-only candidate on isolated branch, browser regression and build, prepare reviewed PR; no publication",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "cbe885ef2487ca58bfbab2c1861eabd889bb7da54f0232d775c6afd0a09f8f98",
+      "sha256": "72237aa63dc3d19136777289c4551cc31ee4ef1c81081e14de3ddf8e4f330499"
+    },
+    {
+      "revision": 36,
+      "at": 1791497084.0574381,
+      "action": "slot",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "scheduled_at": "2026-10-09T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "72237aa63dc3d19136777289c4551cc31ee4ef1c81081e14de3ddf8e4f330499",
+      "sha256": "86c5552e27a4d6252b6607288b8d4a427011817a3ef9089cf5cda80c22e0f960"
+    },
+    {
+      "revision": 37,
+      "at": 1791497084.0724099,
+      "action": "claim",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "task_id": "T-2048-storage-first",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "scheduled-game-20261009-0700",
+        "task_id": "T-2048-storage-first",
+        "fence": 3,
+        "expires_at": 1791498584.0724099
+      },
+      "previous": "86c5552e27a4d6252b6607288b8d4a427011817a3ef9089cf5cda80c22e0f960",
+      "sha256": "14eef43274525207332de67be4224a7a0b18651c4b915794d620b70b845dbfd0"
+    },
+    {
+      "revision": 38,
+      "at": 1791497359.472251,
+      "action": "experiment-stage",
+      "data": {
+        "id": "EXP-merge2048",
+        "stage": "do",
+        "source": "run:scheduled-game-20261009-0700",
+        "evidence": "business/evidence/storage-review-20261009-0700.json; storage-qa-20261009-0700.json",
+        "next_step": "Save storage-only review PR, then T-measurement-audit / T-2048-mobile-shell; no deployment"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "14eef43274525207332de67be4224a7a0b18651c4b915794d620b70b845dbfd0",
+      "sha256": "6e062e4f587a7d5cb3a79a80d46df682d80f44b891556e71dc9ccd1dd0d78c2c"
+    },
+    {
+      "revision": 39,
+      "at": 1791497359.4817011,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "storage-review-20261009-0700.json",
+        "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875"
+      },
+      "result": {
+        "path": "artifacts/1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+        "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+        "name": "storage-review-20261009-0700.json"
+      },
+      "previous": "6e062e4f587a7d5cb3a79a80d46df682d80f44b891556e71dc9ccd1dd0d78c2c",
+      "sha256": "38e7ee66ad16daf8da3dda74b5153fb79d5597511819bc17ce63270115fedec5"
+    },
+    {
+      "revision": 40,
+      "at": 1791497359.4917336,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "storage-qa-20261009-0700.json",
+        "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b"
+      },
+      "result": {
+        "path": "artifacts/bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+        "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+        "name": "storage-qa-20261009-0700.json"
+      },
+      "previous": "38e7ee66ad16daf8da3dda74b5153fb79d5597511819bc17ce63270115fedec5",
+      "sha256": "f7aec28264d169e4c897f82b48a056a116eb69c0d05efc26f1fa7f8df602696d"
+    },
+    {
+      "revision": 41,
+      "at": 1791497359.5004501,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "storage-qa-20261009-0700.mjs",
+        "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f"
+      },
+      "result": {
+        "path": "artifacts/8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+        "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+        "name": "storage-qa-20261009-0700.mjs"
+      },
+      "previous": "f7aec28264d169e4c897f82b48a056a116eb69c0d05efc26f1fa7f8df602696d",
+      "sha256": "228b71801c7ab016a662fcae4b682e42235d9b82e0e40c0996ec0313816b1b1c"
+    },
+    {
+      "revision": 42,
+      "at": 1791497359.5096498,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "storage-qa-20261009-0700-before-restart-fix.json",
+        "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559"
+      },
+      "result": {
+        "path": "artifacts/731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+        "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+        "name": "storage-qa-20261009-0700-before-restart-fix.json"
+      },
+      "previous": "228b71801c7ab016a662fcae4b682e42235d9b82e0e40c0996ec0313816b1b1c",
+      "sha256": "58bc431b98b565f5e8b523fca1f8d24279d45e59a5abefb9a6a9ed9e3feca8fd"
+    },
+    {
+      "revision": 43,
+      "at": 1791497359.5217357,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "App.tsx",
+        "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56"
+      },
+      "result": {
+        "path": "artifacts/522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+        "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+        "name": "App.tsx"
+      },
+      "previous": "58bc431b98b565f5e8b523fca1f8d24279d45e59a5abefb9a6a9ed9e3feca8fd",
+      "sha256": "a0401dadc4c37fe30d7473dd09a46ae42ea24924ad2b02fecd6c33a45ed1d78e"
+    },
+    {
+      "revision": 44,
+      "at": 1791497359.5311275,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "game.ts",
+        "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4"
+      },
+      "result": {
+        "path": "artifacts/4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+        "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+        "name": "game.ts"
+      },
+      "previous": "a0401dadc4c37fe30d7473dd09a46ae42ea24924ad2b02fecd6c33a45ed1d78e",
+      "sha256": "be8cf192cd8e27bc8acb9ed1864aaa25c2f97b413c463ce4ec5d4396ca24198e"
+    },
+    {
+      "revision": 45,
+      "at": 1791497359.5423567,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "storage.ts",
+        "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe"
+      },
+      "result": {
+        "path": "artifacts/4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+        "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+        "name": "storage.ts"
+      },
+      "previous": "be8cf192cd8e27bc8acb9ed1864aaa25c2f97b413c463ce4ec5d4396ca24198e",
+      "sha256": "23970bef16f4e3f58e0613719ae9b968607a1593dc6b0d2e39f727864b0cc34b"
+    },
+    {
+      "revision": 46,
+      "at": 1791497359.5524895,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "artifacts": [
+          {
+            "path": "business/ops/artifacts/1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+            "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875"
+          },
+          {
+            "path": "business/ops/artifacts/bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+            "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b"
+          },
+          {
+            "path": "business/ops/artifacts/8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+            "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f"
+          },
+          {
+            "path": "business/ops/artifacts/731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+            "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559"
+          },
+          {
+            "path": "business/ops/artifacts/522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+            "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56"
+          },
+          {
+            "path": "business/ops/artifacts/4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+            "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4"
+          },
+          {
+            "path": "business/ops/artifacts/4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+            "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe"
+          }
+        ],
+        "checks": [
+          "12 browser storage cases pass; New Game retains in-page best",
+          "full build/lint/typecheck pass; diff and runner syntax checks pass",
+          "CDP touch changes board; desktop geometry pass; mobile clipping remains documented",
+          "baseline/main merge2048 and lockfile identical"
+        ],
+        "next_step": "Save same-source game branch and draft PR; then complete only storage task"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "23970bef16f4e3f58e0613719ae9b968607a1593dc6b0d2e39f727864b0cc34b",
+      "sha256": "0fc00514bd2781482cecc9596ec8955fdc306b9ac9238ca3efbd1d853753ab22"
+    },
+    {
+      "revision": 47,
+      "at": 1791497468.4817102,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "name": "storage-run-20261009-0700.json",
+        "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796"
+      },
+      "result": {
+        "path": "artifacts/45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796",
+        "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796",
+        "name": "storage-run-20261009-0700.json"
+      },
+      "previous": "0fc00514bd2781482cecc9596ec8955fdc306b9ac9238ca3efbd1d853753ab22",
+      "sha256": "9a0488e2f66094f5a8da94f2ae4ee6eaf8902da291ed15482768d31fb248fb15"
+    },
+    {
+      "revision": 48,
+      "at": 1791497468.4908266,
+      "action": "complete",
+      "data": {
+        "run_id": "scheduled-game-20261009-0700",
+        "fence": 3,
+        "artifacts": [
+          {
+            "path": "business/ops/artifacts/1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875",
+            "sha256": "1ab9e8ccc411c66ad6d115b75dcc0f93a3de3b583cb01d7ffd459fbb38c38875"
+          },
+          {
+            "path": "business/ops/artifacts/bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b",
+            "sha256": "bd0fd02f6cd09cdd7067b981c1643c5eea4e6cf75f3217935cb77b6a0a63f56b"
+          },
+          {
+            "path": "business/ops/artifacts/8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f",
+            "sha256": "8ea53a8550c5d84dddbbd194d56f2733662f2b13b4be7a4622553f05258f9b2f"
+          },
+          {
+            "path": "business/ops/artifacts/731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559",
+            "sha256": "731229486bdc484cf7f06a662b8bd19e6f3da7d3d074d70cb61709fb0aaf4559"
+          },
+          {
+            "path": "business/ops/artifacts/522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+            "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56"
+          },
+          {
+            "path": "business/ops/artifacts/4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+            "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4"
+          },
+          {
+            "path": "business/ops/artifacts/4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+            "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe"
+          },
+          {
+            "path": "business/evidence/storage-run-20261009-0700.json",
+            "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796"
+          },
+          {
+            "path": "business/ops/artifacts/45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796",
+            "sha256": "45b141525c1da9da60640875d6076e820e7cde82d0c31593ceb315792c681796"
+          }
+        ],
+        "checks": [
+          "baseline/main difference checked; storage-only plus restart best preservation",
+          "12 browser storage cases pass; build/type/lint/diff/runner checks pass",
+          "exact tested source saved in code commit 1f92675bbf6b0484eb42f0c53b53b8c8a5feafa6 / draft PR8; head/7 blobs readback match",
+          "mobile defects/real-device limitations/metrics null preserved; no public action"
+        ],
+        "next_step": "T-measurement-audit; then T-2048-mobile-shell, keep EXP-merge2048 do until quality gates complete",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "9a0488e2f66094f5a8da94f2ae4ee6eaf8902da291ed15482768d31fb248fb15",
+      "sha256": "c1f8b4cad3ff8598fc74c5406bc8e664f7d7a43386febed3a6b614839ae94604"
+    },
+    {
+      "revision": 49,
+      "at": 1791497564.6947236,
+      "action": "decision",
+      "data": {
+        "id": "D-2048-storage-ci-20261009",
+        "source": "https://github.com/Kihamda/Kihamda_Game/actions/runs/37851793681",
+        "hypothesis": "保存品質の改善が開始/再訪へ寄与する可能性。CI成功は技術品質だけで事業効果は未観測。",
+        "next_step": "T-measurement-audit then T-2048-mobile-shell; no public action",
+        "experiment_id": "EXP-merge2048",
+        "evidence": {
+          "code_commit": "1f92675bbf6b0484eb42f0c53b53b8c8a5feafa6",
+          "workflow": "CI — Lint & Build",
+          "run_id": 37851793681,
+          "status": "completed",
+          "conclusion": "success",
+          "checked_at": "2026-10-08T22:12:21Z"
+        },
+        "note": "Post-completion read-only CI confirmation; preserve prior report and hashes without rewriting."
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "c1f8b4cad3ff8598fc74c5406bc8e664f7d7a43386febed3a6b614839ae94604",
+      "sha256": "9afcf89b79d935566902b8e6999dc39cba3ebe22f417468b393d000835da971b"
+    },
+    {
+      "revision": 50,
+      "at": 1791506140.427282,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "message": "既存の優秀な約10作を選んで楽しく完成させる。Web全体の一貫した体験と各作の完成度を上げ、新作も約10作。演出強化、育成、クリッカーADVも候補。",
+        "next_step": "重点候補/新作案/共通体験と各作の完成条件を正本へ反映。WIP1で順に実制作。"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "9afcf89b79d935566902b8e6999dc39cba3ebe22f417468b393d000835da971b",
+      "sha256": "696863ea3eb704e796b1119a1cba3ce149cb688ea7a3e4777c2d9c84d6274269"
+    },
+    {
+      "revision": 51,
+      "at": 1791506140.439447,
+      "action": "decision",
+      "data": {
+        "id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "共通体験の一貫性と各作の挑戦/進行/再挑戦、演出が開始と再訪を改善する可能性。実測未観測。",
+        "next_step": "既存約10作と新作約10案を選び、独立taskと完成gateを定義し、定期runで順に実制作。",
+        "supersedes": "D-catalog-2048-20261009",
+        "constraints": [
+          "WIP1",
+          "no main push/merge",
+          "zero upfront",
+          "counts are scope not success KPI"
+        ]
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "696863ea3eb704e796b1119a1cba3ce149cb688ea7a3e4777c2d9c84d6274269",
+      "sha256": "7e3313a6a650690102cd79e3633e95d7b5680f88a193ac2e11b8f9a72dd7a8e3"
+    },
+    {
+      "revision": 52,
+      "at": 1791506140.4501612,
+      "action": "task",
+      "data": {
+        "id": "T-portfolio-20261009",
+        "objective": "既存約10作の重点候補と新作約10案を選び、共通体験と各作の完成条件をtask化する",
+        "acceptance": [
+          "ソース根拠つき既存10候補。未プレイ検査と人気nullを区別",
+          "新作10案に操作/進行/終了/再挑戦の異なるコアループ、完成gate",
+          "共通UX/演出設定とWIP1の順次工程、既存未完了を保全"
+        ],
+        "outputs": [
+          "business/portfolio-20261009.json",
+          "business/catalog-policy.md",
+          "successor tasks"
+        ],
+        "checks": [
+          "catalog/source evidence",
+          "task completeness/dependency",
+          "canonical readback"
+        ],
+        "next_step": "共通体験を2048から実装・検査し、各作を順に完成させる",
+        "decision_id": "D-portfolio-20261009",
+        "hypothesis": "一貫した操作と各作品の深いコアループが再訪へ寄与する可能性",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "pdca": "plan",
+        "experiment_id": "EXP-catalog",
+        "priority": 5
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "7e3313a6a650690102cd79e3633e95d7b5680f88a193ac2e11b8f9a72dd7a8e3",
+      "sha256": "a95e7f22631f6a692d2e6e37a63e829a38cbb0deeed1fb2763143471e1874242"
+    },
+    {
+      "revision": 53,
+      "at": 1791506140.4654849,
+      "action": "start",
+      "data": {
+        "run_id": "manual-portfolio-20261009-0935",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "a95e7f22631f6a692d2e6e37a63e829a38cbb0deeed1fb2763143471e1874242",
+      "sha256": "ec2ab7db99ffeada210e75e069bcc00b8a384a3e955c2bbd90668891a6546dc1"
+    },
+    {
+      "revision": 54,
+      "at": 1791506140.473669,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-portfolio-20261009-0935",
+        "task_id": "T-portfolio-20261009",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "manual-portfolio-20261009-0935",
+        "task_id": "T-portfolio-20261009",
+        "fence": 4,
+        "expires_at": 1791507640.473669
+      },
+      "previous": "ec2ab7db99ffeada210e75e069bcc00b8a384a3e955c2bbd90668891a6546dc1",
+      "sha256": "5d35700cce46872fb04418005d7ab01079266baad7dd5ef1ed30e30942e85240"
+    },
+    {
+      "revision": 55,
+      "at": 1791506323.4777,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-catalog",
+        "id": "T-common-experience-pilot",
+        "objective": "2048で共通プレイ導線のpilotを実装し最初の表示/入力欠損を直す",
+        "acceptance": [
+          "最新main/PR8の成果を再制作せず取り込む",
+          "320/390/横画面/desktopで盤面/開始/再挑戦/戻るが操作できる。共通UIの配置/文言と音/演出設定の接続方針を固定",
+          "起動/キー/実touch/保存拒否/再開仕様/build/共有shell回帰の証拠、同一版PR"
+        ],
+        "outputs": [
+          "shared UX pilot patch/PR",
+          "browser QA and common UI contract"
+        ],
+        "checks": [
+          "real browser viewport/touch/key",
+          "shared shell regression",
+          "build and remote readback"
+        ],
+        "next_step": "既存T-2048-mobile-shellはこのpilotの同一版証拠を照合し、残差だけ処理。次に重点作のfirst-sliceへ",
+        "depends_on": [
+          "T-portfolio-20261009"
+        ],
+        "priority": 15
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "5d35700cce46872fb04418005d7ab01079266baad7dd5ef1ed30e30942e85240",
+      "sha256": "ef8548b3dc4982e78b703cc3b4f8eb87e48b0f189e554061444a7574b12b8a4b"
+    },
+    {
+      "revision": 56,
+      "at": 1791506323.4916646,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-merge2048",
+        "id": "T-portfolio-merge2048-first-slice",
+        "objective": "既存重点作 Merge 2048 の最初の改善工程",
+        "acceptance": [
+          "小画面の欠損を直して必須操作を表示。合体の理由が分かるチュートリアルと明確な挑戦目標を追加",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 初回操作→合体→勝敗/目標→結果→New Gameの一巡。盤面保存/再開仕様を説明し検査 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-common-experience-pilot"
+        ],
+        "priority": 60
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "ef8548b3dc4982e78b703cc3b4f8eb87e48b0f189e554061444a7574b12b8a4b",
+      "sha256": "eadb9372279cea8185ee01c79ea334c7fb871417010c8dcaf3132970d210c227"
+    },
+    {
+      "revision": 57,
+      "at": 1791506323.504279,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-brickmania",
+        "game_id": "brickmania",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "狙う技術が得点につながる。強化の効果/期限を表示し、stageをクリアして次へ進む。類似Brick Blast/Brick Outは統合検討のみ"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "パドル操作と衝突判定を調整し、初回stageのクリア/失敗が成立する状態へ",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "eadb9372279cea8185ee01c79ea334c7fb871417010c8dcaf3132970d210c227",
+      "sha256": "0f998b80d3bc8a4bd8b83598ca3f9286fcac11bebac3f3203cdb7aa536fb80eb"
+    },
+    {
+      "revision": 58,
+      "at": 1791506323.518667,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-brickmania",
+        "id": "T-portfolio-brickmania-first-slice",
+        "objective": "既存重点作 Brick Mania の最初の改善工程",
+        "acceptance": [
+          "パドル操作と衝突判定を調整し、初回stageのクリア/失敗が成立する状態へ",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 狙う技術が得点につながる。強化の効果/期限を表示し、stageをクリアして次へ進む。類似Brick Blast/Brick Outは統合検討のみ を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-merge2048-first-slice"
+        ],
+        "priority": 61
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "0f998b80d3bc8a4bd8b83598ca3f9286fcac11bebac3f3203cdb7aa536fb80eb",
+      "sha256": "bd6fbd191a51d93d4553ec09f521c407eb579e406381fe841c6f4bef245b319e"
+    },
+    {
+      "revision": 59,
+      "at": 1791506323.5325058,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-light-companion",
+        "game_id": "light-companion",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "育成3段階と選択に応じた分岐、探索成果/図鑑、育て方で体験が変わる。待ち時間強制なし"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "世話/訓練/探索の一周、相棒の変化と保存再開を含む縦切りprototype",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "bd6fbd191a51d93d4553ec09f521c407eb579e406381fe841c6f4bef245b319e",
+      "sha256": "0c41295b582266ae3b9570d0764fa4f94b791d5559af94d78b5d7ca2a99f2dc1"
+    },
+    {
+      "revision": 60,
+      "at": 1791506323.5419166,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-light-companion",
+        "id": "T-portfolio-light-companion-first-slice",
+        "objective": "新作 ひかりの相棒 の一巡する縦切りprototype工程",
+        "acceptance": [
+          "世話/訓練/探索の一周、相棒の変化と保存再開を含む縦切りprototype",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 育成3段階と選択に応じた分岐、探索成果/図鑑、育て方で体験が変わる。待ち時間強制なし を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-brickmania-first-slice"
+        ],
+        "priority": 62
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "0c41295b582266ae3b9570d0764fa4f94b791d5559af94d78b5d7ca2a99f2dc1",
+      "sha256": "6b4994e7a84df0f3c274d4d650c64c1b78a27e5ddd4aa28898791be0087094eb"
+    },
+    {
+      "revision": 61,
+      "at": 1791506323.5536954,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-iceslide",
+        "game_id": "iceslide",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "解けるstageと段階的な新ギミック。手数/解法理解が進行へ繋がり、詰みから再挑戦できる"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "第一stageを確実に解ける状態にし、undo/resetと操作説明を磨く",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "6b4994e7a84df0f3c274d4d650c64c1b78a27e5ddd4aa28898791be0087094eb",
+      "sha256": "0b480d1245773cba279aea30b78a5428d89bc3e7c04fb39ccb34474a30f2becd"
+    },
+    {
+      "revision": 62,
+      "at": 1791506323.5730755,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-iceslide",
+        "id": "T-portfolio-iceslide-first-slice",
+        "objective": "既存重点作 Ice Slide の最初の改善工程",
+        "acceptance": [
+          "第一stageを確実に解ける状態にし、undo/resetと操作説明を磨く",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 解けるstageと段階的な新ギミック。手数/解法理解が進行へ繋がり、詰みから再挑戦できる を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-light-companion-first-slice"
+        ],
+        "priority": 63
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "0b480d1245773cba279aea30b78a5428d89bc3e7c04fb39ccb34474a30f2becd",
+      "sha256": "be6b79579380d7d3dbc3e6c61412d99a7b4be9441a793e74353e654a1e66595a"
+    },
+    {
+      "revision": 63,
+      "at": 1791506323.586041,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-towerdefense",
+        "game_id": "towerdefense",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "複数の防衛戦略が機能し、敵の特性/射程/費用が見える。最終waveの勝利と敗北の両経路を検査"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "tower配置→wave開始→突破/防衛の第一waveを成立させる",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "be6b79579380d7d3dbc3e6c61412d99a7b4be9441a793e74353e654a1e66595a",
+      "sha256": "2e747189148c0bf72905f3671e4c6e6b2d18789aaa827c7bda70068264b78741"
+    },
+    {
+      "revision": 64,
+      "at": 1791506323.5975466,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-towerdefense",
+        "id": "T-portfolio-towerdefense-first-slice",
+        "objective": "既存重点作 Tower Defense の最初の改善工程",
+        "acceptance": [
+          "tower配置→wave開始→突破/防衛の第一waveを成立させる",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 複数の防衛戦略が機能し、敵の特性/射程/費用が見える。最終waveの勝利と敗北の両経路を検査 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-iceslide-first-slice"
+        ],
+        "priority": 64
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "2e747189148c0bf72905f3671e4c6e6b2d18789aaa827c7bda70068264b78741",
+      "sha256": "be729e1e0082963acc3b79b871a3ccff71e007e0c7646f385ad1e3da1276049b"
+    },
+    {
+      "revision": 65,
+      "at": 1791506323.612499,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-stardust-agency",
+        "game_id": "stardust-agency",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "クリック連打だけに頼らない事件/選択分岐。章の到達点と進行保存、誤解答/再調査の道"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "手動調査→1upgrade→証拠選択→第1事件の結末",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "be729e1e0082963acc3b79b871a3ccff71e007e0c7646f385ad1e3da1276049b",
+      "sha256": "3fc1d4d1895509b9a28e3bf1c625804f78c30cb448d08e4ec4f80ffd75bfbe01"
+    },
+    {
+      "revision": 66,
+      "at": 1791506323.6247046,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-stardust-agency",
+        "id": "T-portfolio-stardust-agency-first-slice",
+        "objective": "新作 星屑調査局 の一巡する縦切りprototype工程",
+        "acceptance": [
+          "手動調査→1upgrade→証拠選択→第1事件の結末",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで クリック連打だけに頼らない事件/選択分岐。章の到達点と進行保存、誤解答/再調査の道 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-towerdefense-first-slice"
+        ],
+        "priority": 65
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "3fc1d4d1895509b9a28e3bf1c625804f78c30cb448d08e4ec4f80ffd75bfbe01",
+      "sha256": "335ef49a9d741c42e95d98fbf84dfa5086c426a6da3bfce2cf374d5d602cb54a"
+    },
+    {
+      "revision": 67,
+      "at": 1791506323.640289,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-rhythmbeat",
+        "game_id": "rhythmbeat",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "同期/判定誤差を明示。難易度選択、音量/演出設定、楽曲終了/結果/再挑戦。音源は権利確認済み自作のみ"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "audio開始と判定時間を照合し短い譜面を一曲完走させる",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "335ef49a9d741c42e95d98fbf84dfa5086c426a6da3bfce2cf374d5d602cb54a",
+      "sha256": "73ad949dd28ee9a67d044c7673c0ab595deffa7a48ec55c91f636865c819ac84"
+    },
+    {
+      "revision": 68,
+      "at": 1791506323.651464,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-rhythmbeat",
+        "id": "T-portfolio-rhythmbeat-first-slice",
+        "objective": "既存重点作 Rhythm Beat の最初の改善工程",
+        "acceptance": [
+          "audio開始と判定時間を照合し短い譜面を一曲完走させる",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 同期/判定誤差を明示。難易度選択、音量/演出設定、楽曲終了/結果/再挑戦。音源は権利確認済み自作のみ を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-stardust-agency-first-slice"
+        ],
+        "priority": 66
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "73ad949dd28ee9a67d044c7673c0ab595deffa7a48ec55c91f636865c819ac84",
+      "sha256": "aff3b33f9bc82de17d0beabce37b6b895419ce91691dfb4da8e24c0c289ee4b3"
+    },
+    {
+      "revision": 69,
+      "at": 1791506323.6672032,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-minigolf",
+        "game_id": "minigolf",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "練習→コース攻略→打数結果→再挑戦。詰み位置からreset可、ショット予測と実軌道に納得感"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "狙い/力/実touchを調整し初回ホールインまで検査",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "aff3b33f9bc82de17d0beabce37b6b895419ce91691dfb4da8e24c0c289ee4b3",
+      "sha256": "259390f4783f28d5c91550202ffb0cd11a5a8beef097c89e692722fe2153ecd3"
+    },
+    {
+      "revision": 70,
+      "at": 1791506323.6798034,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-minigolf",
+        "id": "T-portfolio-minigolf-first-slice",
+        "objective": "既存重点作 Mini Golf の最初の改善工程",
+        "acceptance": [
+          "狙い/力/実touchを調整し初回ホールインまで検査",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 練習→コース攻略→打数結果→再挑戦。詰み位置からreset可、ショット予測と実軌道に納得感 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-rhythmbeat-first-slice"
+        ],
+        "priority": 67
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "259390f4783f28d5c91550202ffb0cd11a5a8beef097c89e692722fe2153ecd3",
+      "sha256": "4710b4aa2092435f8ad23b349276f32c6ff9bfc4cfe344638508d96befddb5bb"
+    },
+    {
+      "revision": 71,
+      "at": 1791506323.693995,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-neon-workshop",
+        "game_id": "neon-workshop",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "生産経路とボトルネックの判断が中心。注文の完了と新レシピ、効率だけでなく作る目的"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "材料2種の加工と工程選択で1注文を完成",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "4710b4aa2092435f8ad23b349276f32c6ff9bfc4cfe344638508d96befddb5bb",
+      "sha256": "0e3dca9615262b0095626e345f313ee977b19729592198117505d96e952585b0"
+    },
+    {
+      "revision": 72,
+      "at": 1791506323.7061327,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-neon-workshop",
+        "id": "T-portfolio-neon-workshop-first-slice",
+        "objective": "新作 ネオン工房 の一巡する縦切りprototype工程",
+        "acceptance": [
+          "材料2種の加工と工程選択で1注文を完成",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 生産経路とボトルネックの判断が中心。注文の完了と新レシピ、効率だけでなく作る目的 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-minigolf-first-slice"
+        ],
+        "priority": 68
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "0e3dca9615262b0095626e345f313ee977b19729592198117505d96e952585b0",
+      "sha256": "4d8c5c44d4623774064a7b545b9979f26ec1f5e78f37c07b9eb49aa83d555a70"
+    },
+    {
+      "revision": 73,
+      "at": 1791506323.7240717,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-ntiktaktoe",
+        "game_id": "ntiktaktoe",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "分かる初期ルール、勝利/引分け、誤操作undo/確認、再開とreset。大きい盤面もスマホで操作できる"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "0pxセル/CSS不一致を直して置く→ターン交代→勝敗の最小対戦を成立させる",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "4d8c5c44d4623774064a7b545b9979f26ec1f5e78f37c07b9eb49aa83d555a70",
+      "sha256": "adbb0ded0d211932c26eb66b5af1c2e095895109f54895ccb4881f0ee1f8b64c"
+    },
+    {
+      "revision": 74,
+      "at": 1791506323.738919,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-ntiktaktoe",
+        "id": "T-portfolio-ntiktaktoe-first-slice",
+        "objective": "既存重点作 n目並べ の最初の改善工程",
+        "acceptance": [
+          "0pxセル/CSS不一致を直して置く→ターン交代→勝敗の最小対戦を成立させる",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 分かる初期ルール、勝利/引分け、誤操作undo/確認、再開とreset。大きい盤面もスマホで操作できる を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-neon-workshop-first-slice"
+        ],
+        "priority": 69
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "adbb0ded0d211932c26eb66b5af1c2e095895109f54895ccb4881f0ee1f8b64c",
+      "sha256": "2484d4d8c453648f21560d72d696780d327448ee15ecc04332932b8347f685bc"
+    },
+    {
+      "revision": 75,
+      "at": 1791506323.7563965,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-dodgeblitz",
+        "game_id": "dodgeblitz",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "回避可能な攻撃、段階的難易度、被弾原因と再挑戦。画面演出が弾/操作対象を隠さない"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "最初の敵攻撃に予告を付け、入力と被弾理由を検査",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "2484d4d8c453648f21560d72d696780d327448ee15ecc04332932b8347f685bc",
+      "sha256": "aeb3135271d0ac3156461070741f997a2b3d64162de555c459572f4934519fce"
+    },
+    {
+      "revision": 76,
+      "at": 1791506323.7695782,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-dodgeblitz",
+        "id": "T-portfolio-dodgeblitz-first-slice",
+        "objective": "既存重点作 Dodge Blitz の最初の改善工程",
+        "acceptance": [
+          "最初の敵攻撃に予告を付け、入力と被弾理由を検査",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 回避可能な攻撃、段階的難易度、被弾原因と再挑戦。画面演出が弾/操作対象を隠さない を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-ntiktaktoe-first-slice"
+        ],
+        "priority": 70
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "aeb3135271d0ac3156461070741f997a2b3d64162de555c459572f4934519fce",
+      "sha256": "80e36e067d62f91200c25a1f45d1f41bd7c809f6a3276f6103604fab8e5e54aa"
+    },
+    {
+      "revision": 77,
+      "at": 1791506323.7852154,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-merge-summoners",
+        "game_id": "merge-summoners",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "複数build、敵予告、短いrunのboss/結末、毎回異なる選択。合体2048とは異なる戦術"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "2種ユニットの合体と1戦闘の勝敗/再挑戦",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "80e36e067d62f91200c25a1f45d1f41bd7c809f6a3276f6103604fab8e5e54aa",
+      "sha256": "4c2d1fda3a55ec1ea622aab41c7f2dc8c4e031f5ee35ace84949ce96fe74006a"
+    },
+    {
+      "revision": 78,
+      "at": 1791506323.7986727,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-merge-summoners",
+        "id": "T-portfolio-merge-summoners-first-slice",
+        "objective": "新作 合体召喚隊 の一巡する縦切りprototype工程",
+        "acceptance": [
+          "2種ユニットの合体と1戦闘の勝敗/再挑戦",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 複数build、敵予告、短いrunのboss/結末、毎回異なる選択。合体2048とは異なる戦術 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-dodgeblitz-first-slice"
+        ],
+        "priority": 71
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "4c2d1fda3a55ec1ea622aab41c7f2dc8c4e031f5ee35ace84949ce96fe74006a",
+      "sha256": "0686e2c901306521573511c599386b9e3d7a2e3fa136246845acf94e3c81e2b2"
+    },
+    {
+      "revision": 79,
+      "at": 1791506323.8222601,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-fishing",
+        "game_id": "fishing",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "狙う魚/場所/装備に選択理由がある。図鑑と目標、失敗原因/再挑戦、進行保存"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "アタリの合図と巻き取り入力を調整し1匹釣って結果まで検査",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "0686e2c901306521573511c599386b9e3d7a2e3fa136246845acf94e3c81e2b2",
+      "sha256": "5f9b222acbb9b029aac4685b079b88d21da459384ff53798b1502a9fd5cb9e19"
+    },
+    {
+      "revision": 80,
+      "at": 1791506323.840794,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-fishing",
+        "id": "T-portfolio-fishing-first-slice",
+        "objective": "既存重点作 Fishing の最初の改善工程",
+        "acceptance": [
+          "アタリの合図と巻き取り入力を調整し1匹釣って結果まで検査",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 狙う魚/場所/装備に選択理由がある。図鑑と目標、失敗原因/再挑戦、進行保存 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-merge-summoners-first-slice"
+        ],
+        "priority": 72
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "5f9b222acbb9b029aac4685b079b88d21da459384ff53798b1502a9fd5cb9e19",
+      "sha256": "0d6bd77499552148b7f1e025075f6c2db844feebb2e6704608960ed5d6db6dd4"
+    },
+    {
+      "revision": 81,
+      "at": 1791506323.8584766,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-endlessrun",
+        "game_id": "endlessrun",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "ジャンプの学習→距離目標→段階的難度→失敗原因/即再挑戦。入力遅延と実touchを検査"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "初回区間のジャンプと障害物gapを調整し避けられない生成を防ぐ",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "0d6bd77499552148b7f1e025075f6c2db844feebb2e6704608960ed5d6db6dd4",
+      "sha256": "0e152298d4b828044d06ef85d5f913592e95b3c0918096029875b8e2b8701fe4"
+    },
+    {
+      "revision": 82,
+      "at": 1791506323.874585,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-endlessrun",
+        "id": "T-portfolio-endlessrun-first-slice",
+        "objective": "既存重点作 Endless Run の最初の改善工程",
+        "acceptance": [
+          "初回区間のジャンプと障害物gapを調整し避けられない生成を防ぐ",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで ジャンプの学習→距離目標→段階的難度→失敗原因/即再挑戦。入力遅延と実touchを検査 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-fishing-first-slice"
+        ],
+        "priority": 73
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "0e152298d4b828044d06ef85d5f913592e95b3c0918096029875b8e2b8701fe4",
+      "sha256": "1d4635f719b5d4a9f93a95bcfd286bfa9af43a49cdf1e5afab21e494f44feeb9"
+    },
+    {
+      "revision": 83,
+      "at": 1791506323.8912277,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-slime-garden",
+        "game_id": "slime-garden",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "個体の世話より環境/組合せの発見が主役。住人の反応が見える、庭保存、目標達成"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "環境と2住人の相互作用、図鑑発見を体験",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "1d4635f719b5d4a9f93a95bcfd286bfa9af43a49cdf1e5afab21e494f44feeb9",
+      "sha256": "ab98f1089f5e953eca71bd7cce848d394dbfc241efaf4f0c3d099e201d25b698"
+    },
+    {
+      "revision": 84,
+      "at": 1791506323.9053106,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-slime-garden",
+        "id": "T-portfolio-slime-garden-first-slice",
+        "objective": "新作 スライムの小庭 の一巡する縦切りprototype工程",
+        "acceptance": [
+          "環境と2住人の相互作用、図鑑発見を体験",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 個体の世話より環境/組合せの発見が主役。住人の反応が見える、庭保存、目標達成 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-endlessrun-first-slice"
+        ],
+        "priority": 74
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "ab98f1089f5e953eca71bd7cce848d394dbfc241efaf4f0c3d099e201d25b698",
+      "sha256": "524baf1397b55e22532830e8b3017c38b84f9533cb02b40ae44eed658dc8ac1d"
+    },
+    {
+      "revision": 85,
+      "at": 1791506323.9296818,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-rhythm-delivery",
+        "game_id": "rhythm-delivery",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "譜面だけにしない経営選択。タイミング評価/収支はゲーム内架空資源、難易度/結果/再挑戦"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "仕分けとルート選択で1営業を終える",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "524baf1397b55e22532830e8b3017c38b84f9533cb02b40ae44eed658dc8ac1d",
+      "sha256": "daf7b0c9a24b93bab401f1061162665da31d23c3416a495ba9512efec5d72f06"
+    },
+    {
+      "revision": 86,
+      "at": 1791506323.9451928,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-rhythm-delivery",
+        "id": "T-portfolio-rhythm-delivery-first-slice",
+        "objective": "新作 リズム運送店 の一巡する縦切りprototype工程",
+        "acceptance": [
+          "仕分けとルート選択で1営業を終える",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 譜面だけにしない経営選択。タイミング評価/収支はゲーム内架空資源、難易度/結果/再挑戦 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-slime-garden-first-slice"
+        ],
+        "priority": 75
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "daf7b0c9a24b93bab401f1061162665da31d23c3416a495ba9512efec5d72f06",
+      "sha256": "23cfb303786b9b1c3a2ec7fd14f2dcc6a547c8d6b1535d07d1202c4a876f0b54"
+    },
+    {
+      "revision": 87,
+      "at": 1791506323.9662037,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-pocket-expedition",
+        "game_id": "pocket-expedition",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "隊員の能力とルートが結果を変える。失敗でも学び/再挑戦、探索完結と進行保存"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "2分岐と資源判断を含む1探索を帰還まで",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "23cfb303786b9b1c3a2ec7fd14f2dcc6a547c8d6b1535d07d1202c4a876f0b54",
+      "sha256": "9e940ef6cc7c93aa5a854731950bd12fc3fed2070e6c68b38205d7cc9565fbcd"
+    },
+    {
+      "revision": 88,
+      "at": 1791506323.9820735,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-pocket-expedition",
+        "id": "T-portfolio-pocket-expedition-first-slice",
+        "objective": "新作 ポケット探検隊 の一巡する縦切りprototype工程",
+        "acceptance": [
+          "2分岐と資源判断を含む1探索を帰還まで",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 隊員の能力とルートが結果を変える。失敗でも学び/再挑戦、探索完結と進行保存 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-rhythm-delivery-first-slice"
+        ],
+        "priority": 76
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "9e940ef6cc7c93aa5a854731950bd12fc3fed2070e6c68b38205d7cc9565fbcd",
+      "sha256": "29993d8bea79d592a613be648351ad0cd7d97bdb780e7b1ce8e6c1a7f4aae888"
+    },
+    {
+      "revision": 89,
+      "at": 1791506324.0016007,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-bullet-alchemist",
+        "game_id": "bullet-alchemist",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "回避とbuildの両方に選択。エフェクトと弾の視認性を両立、短いrunと明確なboss終点"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "回避と2種素材合成、1敵の勝敗",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "29993d8bea79d592a613be648351ad0cd7d97bdb780e7b1ce8e6c1a7f4aae888",
+      "sha256": "053b3cc364a9c3fb4da9bf3484ae51fc313e92731bd1046511755ae93006cb22"
+    },
+    {
+      "revision": 90,
+      "at": 1791506324.0219188,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-bullet-alchemist",
+        "id": "T-portfolio-bullet-alchemist-first-slice",
+        "objective": "新作 弾幕錬金術 の一巡する縦切りprototype工程",
+        "acceptance": [
+          "回避と2種素材合成、1敵の勝敗",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 回避とbuildの両方に選択。エフェクトと弾の視認性を両立、短いrunと明確なboss終点 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-pocket-expedition-first-slice"
+        ],
+        "priority": 77
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "053b3cc364a9c3fb4da9bf3484ae51fc313e92731bd1046511755ae93006cb22",
+      "sha256": "8fbacdab0d7ea1a684a90184baab3449088015e186afc69df1fcba4b8fb67922"
+    },
+    {
+      "revision": 91,
+      "at": 1791506324.0468912,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-mirror-labyrinth",
+        "game_id": "mirror-labyrinth",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "既存Ice Slideと区別できる反転ルール。全stageの解法確認、段階的学習/進行保存"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "反転操作で解く最初のstageとundo/reset",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "8fbacdab0d7ea1a684a90184baab3449088015e186afc69df1fcba4b8fb67922",
+      "sha256": "eb1b1e8d9210141ecdbe6c48ddf0d8eea9520861b8b59fb361add9c16e1142a4"
+    },
+    {
+      "revision": 92,
+      "at": 1791506324.0677729,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-mirror-labyrinth",
+        "id": "T-portfolio-mirror-labyrinth-first-slice",
+        "objective": "新作 反転迷宮 の一巡する縦切りprototype工程",
+        "acceptance": [
+          "反転操作で解く最初のstageとundo/reset",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 既存Ice Slideと区別できる反転ルール。全stageの解法確認、段階的学習/進行保存 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-bullet-alchemist-first-slice"
+        ],
+        "priority": 78
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "eb1b1e8d9210141ecdbe6c48ddf0d8eea9520861b8b59fb361add9c16e1142a4",
+      "sha256": "090c538f25cb2fb4fb96c9976098de20fd893c7981eb6b4e45256829379beedd"
+    },
+    {
+      "revision": 93,
+      "at": 1791506324.090078,
+      "action": "experiment",
+      "data": {
+        "id": "EXP-portfolio-time-repair",
+        "game_id": "time-repair",
+        "primary_metric": "return_rate_7d",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "quality_acceptance": [
+          "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+          "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+          "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+          "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない",
+          "手掛かりが結論に繋がる短編群。softlock防止、hint、chapter結末と再開"
+        ],
+        "measurement_plan": "本人公開した同一版の14/28日。kpis/measurement-contractの期間/timezone/人口/分母/sourceを満たす匿名集計だけ、未観測null。",
+        "decision_id": "D-portfolio-20261009",
+        "next_step": "調査/巻戻し/因果変更で1依頼を完結",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "090c538f25cb2fb4fb96c9976098de20fd893c7981eb6b4e45256829379beedd",
+      "sha256": "a46f432c1f174d4fb9ba524a9bfbae2991996d3e9f4d360842ab94d04ce60f22"
+    },
+    {
+      "revision": 94,
+      "at": 1791506324.1068797,
+      "action": "task",
+      "data": {
+        "decision_id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "一貫した操作と各作の学習/進行/再挑戦が開始/再訪に寄与する可能性。未観測。",
+        "pdca": "do",
+        "experiment_id": "EXP-portfolio-time-repair",
+        "id": "T-portfolio-time-repair-first-slice",
+        "objective": "新作 時間修理屋 の一巡する縦切りprototype工程",
+        "acceptance": [
+          "調査/巻戻し/因果変更で1依頼を完結",
+          "実プレイ選定は2run以内に採用/改善/停止。内部QA/未確認の本人fun feedback/需要を区別",
+          "共通UX contractへ接続、起動/実touch/key/viewport/save/終了再挑戦を実物確認。次の完成工程を同じexperimentに残す"
+        ],
+        "outputs": [
+          "isolated branch playable slice",
+          "source-pinned QA and next completion task/decision",
+          "review PR when slice acceptance passes"
+        ],
+        "checks": [
+          "core-loop actual interaction",
+          "quality and fun gates",
+          "build/remote readback"
+        ],
+        "next_step": "同じexperimentで 手掛かりが結論に繋がる短編群。softlock防止、hint、chapter結末と再開 を満たす次の独立工程を追加。first-sliceだけで完成/公開にしない。",
+        "depends_on": [
+          "T-portfolio-mirror-labyrinth-first-slice"
+        ],
+        "priority": 79
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "a46f432c1f174d4fb9ba524a9bfbae2991996d3e9f4d360842ab94d04ce60f22",
+      "sha256": "8a0be3ae884822087f0c15cca81a063b829a75e94a978b96e10a295085876ca0"
+    },
+    {
+      "revision": 95,
+      "at": 1791506324.1270533,
+      "action": "publish",
+      "data": {
+        "run_id": "manual-portfolio-20261009-0935",
+        "fence": 4,
+        "name": "portfolio-20261009.json",
+        "sha256": "68efd16d4d0c99cfdf261894a28b1fe97b2fdb0cf1fcef718708a111bcef254d"
+      },
+      "result": {
+        "path": "artifacts/68efd16d4d0c99cfdf261894a28b1fe97b2fdb0cf1fcef718708a111bcef254d",
+        "sha256": "68efd16d4d0c99cfdf261894a28b1fe97b2fdb0cf1fcef718708a111bcef254d",
+        "name": "portfolio-20261009.json"
+      },
+      "previous": "8a0be3ae884822087f0c15cca81a063b829a75e94a978b96e10a295085876ca0",
+      "sha256": "360df0cfe00c38c97c9478c55c73d40c63b090f3cdf16c6958bb13d20c484576"
+    },
+    {
+      "revision": 96,
+      "at": 1791506324.1468775,
+      "action": "publish",
+      "data": {
+        "run_id": "manual-portfolio-20261009-0935",
+        "fence": 4,
+        "name": "catalog-policy.md",
+        "sha256": "a0630a0a737a2276a9471461effd3056e42d83f9d1b6996c6b2dc25aaceac9d1"
+      },
+      "result": {
+        "path": "artifacts/a0630a0a737a2276a9471461effd3056e42d83f9d1b6996c6b2dc25aaceac9d1",
+        "sha256": "a0630a0a737a2276a9471461effd3056e42d83f9d1b6996c6b2dc25aaceac9d1",
+        "name": "catalog-policy.md"
+      },
+      "previous": "360df0cfe00c38c97c9478c55c73d40c63b090f3cdf16c6958bb13d20c484576",
+      "sha256": "77f9a3d3c6609430fdfd80dd695f0187525ef2cfeab914f5c276e4cab2088721"
+    },
+    {
+      "revision": 97,
+      "at": 1791506324.1669273,
+      "action": "publish",
+      "data": {
+        "run_id": "manual-portfolio-20261009-0935",
+        "fence": 4,
+        "name": "AGENTS.md",
+        "sha256": "c1bd25106ec3a227167fed721b0f285bed9a84039ffd0db62c308acfd4111015"
+      },
+      "result": {
+        "path": "artifacts/c1bd25106ec3a227167fed721b0f285bed9a84039ffd0db62c308acfd4111015",
+        "sha256": "c1bd25106ec3a227167fed721b0f285bed9a84039ffd0db62c308acfd4111015",
+        "name": "AGENTS.md"
+      },
+      "previous": "77f9a3d3c6609430fdfd80dd695f0187525ef2cfeab914f5c276e4cab2088721",
+      "sha256": "45f75e99d3c716565556203b916f75996a31b6113a09103afef783d88c7791d2"
+    },
+    {
+      "revision": 98,
+      "at": 1791506324.194701,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-portfolio-20261009-0935",
+        "fence": 4,
+        "artifacts": [
+          {
+            "path": "business/portfolio-20261009.json",
+            "sha256": "68efd16d4d0c99cfdf261894a28b1fe97b2fdb0cf1fcef718708a111bcef254d"
+          },
+          {
+            "path": "business/ops/artifacts/68efd16d4d0c99cfdf261894a28b1fe97b2fdb0cf1fcef718708a111bcef254d",
+            "sha256": "68efd16d4d0c99cfdf261894a28b1fe97b2fdb0cf1fcef718708a111bcef254d"
+          },
+          {
+            "path": "business/catalog-policy.md",
+            "sha256": "a0630a0a737a2276a9471461effd3056e42d83f9d1b6996c6b2dc25aaceac9d1"
+          },
+          {
+            "path": "business/ops/artifacts/a0630a0a737a2276a9471461effd3056e42d83f9d1b6996c6b2dc25aaceac9d1",
+            "sha256": "a0630a0a737a2276a9471461effd3056e42d83f9d1b6996c6b2dc25aaceac9d1"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "c1bd25106ec3a227167fed721b0f285bed9a84039ffd0db62c308acfd4111015"
+          },
+          {
+            "path": "business/ops/artifacts/c1bd25106ec3a227167fed721b0f285bed9a84039ffd0db62c308acfd4111015",
+            "sha256": "c1bd25106ec3a227167fed721b0f285bed9a84039ffd0db62c308acfd4111015"
+          }
+        ],
+        "checks": [
+          "existing10/new10 distinct core-loop candidates and exact-main source audit",
+          "task required fields/dependencies checked; WIP1/old unfinished/history preserved",
+          "common/fun/technical/release/measurement gates documented; metrics null",
+          "owner feedback and updated catalog-policy/AGENTS consistent; manual run consumes no slot"
+        ],
+        "next_step": "T-common-experience-pilot; then existing/new first-slices in serial order, append completion stages in same experiments",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "45f75e99d3c716565556203b916f75996a31b6113a09103afef783d88c7791d2",
+      "sha256": "262da5b5be94268cfce521d14ffb213bdcef8a0bb9f3c157412f2ff6840828de"
+    },
+    {
+      "revision": 99,
+      "at": 1791506356.265384,
+      "action": "decision",
+      "data": {
+        "id": "D-portfolio-finish-before-next-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new; planning:portfolio-20261009",
+        "hypothesis": "各作品を遊べる一巡から完成gateまで仕上げることで、薄いprototypeの蓄積を避けられる。事業効果未観測。",
+        "next_step": "各first-sliceのcomplete前に残差のcompletion taskを同じexperimentへpriority25で追加する。次の候補first-slice(priority60以上)より完成工程を優先。品質/コアループ検査とレビューPRまで進め、公開/匿名集計待ちは依存taskだけblocked。共通pilotが最優先。",
+        "rules": [
+          "first-sliceだけで作品完成にしない",
+          "同じ作品の未完了工程を捨てない",
+          "選定調査は2run以内に採用/改善/停止",
+          "約10+10は制作範囲、KPIではない"
+        ]
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "262da5b5be94268cfce521d14ffb213bdcef8a0bb9f3c157412f2ff6840828de",
+      "sha256": "c74a24dc032a9b0ebbe2fd025cd10ea2f163627313c1ef8284aa722932b33382"
+    }
+  ],
+  "projection_sha256": "db3731754d328b53320ccc73a5df92a0ded9759c7cb60800c96fd3fa95f58c1e"
+}

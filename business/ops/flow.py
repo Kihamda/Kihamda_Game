@@ -2,14 +2,48 @@
 """Single-host, fenced business ledger. No deployment, network or scheduler."""
 import argparse
 import copy
-import fcntl
+from contextlib import contextmanager
 import hashlib
 import json
 import os
+import sys
 from pathlib import Path
 import tempfile
 import time
 import uuid
+
+
+@contextmanager
+def ledger_lock(path):
+    """Lock one stable file on Windows and POSIX; atomic replacement keeps this inode."""
+    with path.open("a+b") as lock:
+        if os.name == "nt":
+            import msvcrt
+            if path.stat().st_size == 0:
+                lock.write(b"\0")
+                lock.flush()
+            deadline = time.monotonic() + 30
+            while True:
+                try:
+                    lock.seek(0)
+                    msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+                    break
+                except OSError:
+                    if time.monotonic() >= deadline:
+                        raise Conflict("ledger lock timeout; inspect current worker")
+                    time.sleep(0.05)
+            try:
+                yield
+            finally:
+                lock.seek(0)
+                msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(lock, fcntl.LOCK_UN)
 
 
 class Conflict(ValueError):
@@ -76,7 +110,7 @@ class Ledger:
                     "artifact changed; check again, never complete stale acceptance")
 
     def read(self):
-        with self.path.open() as f:
+        with self.path.open(encoding="utf-8") as f:
             state = json.load(f)
         verify(state)
         return state
@@ -84,8 +118,7 @@ class Ledger:
     def transact(self, expected, action, data):
         self.path.parent.mkdir(parents=True, exist_ok=True)
         # A stable separate inode; never lock the atomically replaced ledger file.
-        with self.path.with_suffix(".lock").open("a") as lock:
-            fcntl.flock(lock, fcntl.LOCK_EX)
+        with ledger_lock(self.path.with_suffix(".lock")):
             s = self.read() if self.path.exists() else fresh()
             require(s["revision"] == expected, "revision conflict; reread before retry")
             require(action == "init" or self.path.exists(), "init required")
@@ -103,17 +136,18 @@ class Ledger:
             # One atomic commit contains projection AND append-only history.
             fd, name = tempfile.mkstemp(prefix=".ledger-", dir=self.path.parent)
             try:
-                with os.fdopen(fd, "w") as f:
+                with os.fdopen(fd, "w", encoding="utf-8") as f:
                     json.dump(s, f, ensure_ascii=False, indent=2)
                     f.write("\n")
                     f.flush()
                     os.fsync(f.fileno())
                 os.replace(name, self.path)
-                parent = os.open(self.path.parent, os.O_DIRECTORY)
-                try:
-                    os.fsync(parent)
-                finally:
-                    os.close(parent)
+                if os.name != "nt":
+                    parent = os.open(self.path.parent, os.O_DIRECTORY)
+                    try:
+                        os.fsync(parent)
+                    finally:
+                        os.close(parent)
             finally:
                 if os.path.exists(name):
                     os.unlink(name)
@@ -319,6 +353,10 @@ class Ledger:
 
 
 def main():
+    # Windows redirected output otherwise inherits an ANSI code page.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser()
     parser.add_argument("action", choices=["status", "next", "init", "decision", "task", "start", "claim",
                         "checkpoint", "complete", "recover", "approval", "prepare-external",
@@ -342,7 +380,7 @@ def main():
             result = {k: s[k] for k in ("revision", "lease", "tasks", "approvals", "external")}
         else:
             require(args.expected is not None, "--expected revision required")
-            data = json.loads(Path(args.data).read_text()) if args.data else {}
+            data = json.loads(Path(args.data).read_text(encoding="utf-8")) if args.data else {}
             result = ledger.transact(args.expected, args.action, data)
         print(json.dumps(result, ensure_ascii=False, indent=2))
     except (Conflict, KeyError, ValueError) as exc:

@@ -26,3 +26,16 @@ business/ops/*.lock
 business/ops/.ledger-*
 business/ops/.runtime/
 **/__pycache__/
+
+# Unity and local verification outputs
+**/[Ll]ibrary/
+**/[Tt]emp/
+**/[Oo]bj/
+**/[Ll]ogs/
+**/[Uu]ser[Ss]ettings/
+/artifacts/
+*.csproj
+*.pidb
+*.pdb
+*.unitypackage
+__pycache__/

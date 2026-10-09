@@ -1,0 +1,8 @@
+{
+  "id": "D-unity-repository-first-20261009",
+  "source": "user:current-thread:2026-10-09:repository-first",
+  "quote": "まず先にリポジトリ移行をやれ。ゲーム制作はそのあとだ",
+  "hypothesis": "既存の運用履歴と公開資産を保全してUnityモノレポの基盤を先に検証すれば、制作と移行を混同せず継続開発できる",
+  "policy": "Unity-only new games and ports; monorepo; WIP1; no subagents; preserve legacy and private boundaries",
+  "next_step": "移行PRのCIと復元検査を確認し、Unityライセンス有効化後に基盤を実証する。ゲーム制作は移行後"
+}

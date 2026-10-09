@@ -1,70 +1,60 @@
 name: Build & Deploy to XServer Static
 
-# すべてのゲーム + portal を1つの dist/ にビルドして
-# XServer Static に FTPS (explicit TLS) でデプロイする。
-#
-# 必要な GitHub Secrets:
-#   FTP_SERVER    - FTPホスト名 (例: sv***.static.ne.jp)
-#   FTP_USERNAME  - FTPユーザー名
-#   FTP_PASSWORD  - FTPパスワード
-#
-# 任意の GitHub Variables:
-#   FTP_SERVER_DIR - アップロード先ディレクトリ (未設定時: public_html/)
-#
-# アップロード構造:
-#   public_html/              ← portal (ゲーム一覧)
-#   public_html/games/[id]/   ← 各ゲーム
-
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 concurrency:
   group: deploy-production
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Build
-        run: npm run build
-
-      - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - uses: actions/setup-python@v5
         with:
-          name: platform-dist
-          path: dist/
-          retention-days: 1
-
+          python-version: '3.12'
+      - run: python -m pip install -r business/requirements.txt
+      - run: npm ci --prefix web
+      - run: npm run check
+      - run: |
+          python -m unittest discover -s business/tests -v
+          python business/ops/flow.py status > /dev/null
+      - run: npm run build
+      - run: node scripts/check-web-build.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: platform-dist-${{ github.sha }}
+          path: web/dist/
+          retention-days: 90
+          if-no-files-found: error
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    environment:
-      name: production
+    timeout-minutes: 20
+    environment: production
     steps:
-      - name: Download dist artifact
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
-          name: platform-dist
+          name: platform-dist-${{ github.sha }}
           path: dist/
-
-      - name: Deploy to XServer Static via FTPS
+      - name: Verify exact artifact before publication
+        working-directory: dist
+        run: sha256sum --check SHA256SUMS
+      - name: Deploy existing portal via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -75,16 +65,21 @@ jobs:
           local-dir: ./dist/
           server-dir: ${{ vars.FTP_SERVER_DIR || './' }}
           security: strict
+          dangerous-clean-slate: false
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
-
-      - name: Deploy summary
-        if: always()
+            unity/**
+            unity-staging/**
+      - name: Confirm deployed version
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
         run: |
-          echo "## Deploy Complete" >> $GITHUB_STEP_SUMMARY
-          echo "| Item | Value |" >> $GITHUB_STEP_SUMMARY
-          echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
-          echo "| Protocol | FTPS |" >> $GITHUB_STEP_SUMMARY
-          echo "| Server | \`${{ secrets.FTP_SERVER }}\` |" >> $GITHUB_STEP_SUMMARY
+          curl --fail --silent --show-error --retry 3 "https://game.kihamda.net/build-version.json?sha=$EXPECTED_SHA" > version.json
+          node -e 'const v=JSON.parse(require("fs").readFileSync("version.json")); if(v.commit!==process.env.EXPECTED_SHA) process.exit(1)'
+      - name: Report publication outcome
+        if: always()
+        env:
+          OUTCOME: ${{ job.status }}
+        run: echo "Portal deployment result is $OUTCOME. Artifact platform-dist-${{ github.sha }} is retained for recovery." >> "$GITHUB_STEP_SUMMARY"
