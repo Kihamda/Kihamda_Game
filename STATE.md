@@ -1,5 +1,13 @@
 # 現在の状態
 
+2026-10-10 07時枠では、T-unity-portal-player-integrationのローカル接続を完了した。詳細画面の開始・読み込み・操作可能・失敗・再試行・終了・一覧へ戻るを実装し、GitHub Actions run 37945379221のWebGL版と18ファイルのSHA256を照合した。Unity本体はそのsourceCommitから変更していない。成果物をdistへコピーせず、loopback限定の検査サーバーから検証済みバイト列を配信する。
+
+実ブラウザで方向キーによる荷物回収と配送完了、ZのUndo、終了・再起動後のResume、Down画面ボタンを確認した。Tabでページの終了ボタンへ戻れ、Enter終了後は開始ボタンへフォーカスが戻り、iframeは0になる。ローダー通信遮断で失敗案内を確認し、解除後の再試行も成功。一覧へ戻ると/#worksに移動し、worksへフォーカスが戻る。1280×720と390×844で枠を検査し、横のはみ出しはない。通常フラグなしの画面には開始ボタン・iframeがない。
+
+TypeScript・ESLint・Vite、静的5ページ、旧4URL、Unity GUID、生成リンク、Web成果物のハッシュ、git diff --checkが成功。親4プロジェクトのHEADと復元zip/bundleも一致。Unity再コンパイル・EditMode・PlayMode・新Windows/Web配布ビルドは今回未実行。実タッチ、人間の反応、利益と公開指標は未観測。390pxではUnity内部の文字と操作部が小さいため、次の一工程は既存T-ice-courier-touch-polishで縦画面UIを改善すること。
+
+証跡はbusiness/unity/evidence/player-20261010-0700.json、説明はdocs/portal-player-integration.md。開発記事をbusiness/blog/drafts/2026-10-10-unity-player-shell.mdへ未投稿の下書きとして保存。別ブランチweb/unity-player-20261010-0700にローカル保存し、外部pushの既知の承認待ちは再送していない。PR・mainへのmerge・本番配信は実施していない。Web刷新全体は未完了なので天啓.mdを保持し、Atohitoriでは作業していない。
+
 2026-10-10。移行PR #10とスタジオPR #12はmainへ統合済み（6b673b86155271de12c22c5f0460ece2b2c2f2fd）。通常制作はこのmainから別ブランチを作って続ける。
 
 101作品の採否を記録し、Ice Slide、Gravity Ball、Mine Rush、nTicTacToeの4作品を移植資料として残した。他の実装はGit履歴と全参照bundle、削除前Webのzipを保全して整理した。採用や統合は実装費用とルールから判断しており、人気や利益の実測による判断ではない。

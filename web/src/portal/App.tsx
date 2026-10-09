@@ -1,6 +1,7 @@
 import { useState } from "react";
 import catalog from "./data/unity-games.json";
 import "./App.css";
+import UnityPlayer from "./UnityPlayer";
 
 function IceBoard() {
   return <div className="ice-art" role="img" aria-label="氷の盤面に配達員、荷物、到着点を配置したルールのイメージ図">
@@ -40,7 +41,7 @@ function Home() {
 
 function GameDetail() {
   const game = catalog.games[0];
-  return <><div className="breadcrumbs"><a href="/#works">作品一覧</a><span aria-hidden="true"> / </span><span>{game.title}</span></div><section className="detail-hero"><div><p className="eyebrow">FROST DELIVERY PUZZLE</p><h1>{game.title}</h1><p className="detail-lead">滑ったあとが、<br />次の障害物になる。</p><p>{game.description}</p><span className="status-badge">制作中</span><p className="release-note">ブラウザ版の公開を準備しています。公開後、この画面から遊べます。</p><dl className="detail-facts"><div><dt>人数</dt><dd>1人</dd></div><div><dt>内容</dt><dd>3ステージ</dd></div><div><dt>操作</dt><dd>方向キー・画面ボタン</dd></div></dl></div><IceBoard /></section><section className="rules-section" aria-labelledby="rules-title"><p className="eyebrow">HOW TO PLAY</p><h2 id="rules-title">届けるまでの、3つのルール。</h2><ol className="rules-grid"><li><span>01</span><h3>壁まで滑る</h3><p>方向を選ぶと、壁や障害物にぶつかるまで進みます。</p></li><li><span>02</span><h3>出発点が凍る</h3><p>動くたびに、出発したマスが障害物になります。次の道も考えて進みましょう。</p></li><li><span>03</span><h3>荷物を届ける</h3><p>荷物を拾って到着点へ。行き詰まったらUndoで一手戻せます。</p></li></ol></section><section className="detail-support"><h2>気軽に試せるように。</h2><p>Undoは荷物と凍ったマスも一緒に戻します。保存した進行は、再開して続きを遊べます。</p><p>スマートフォン向けの表示と操作は調整中です。</p><a href="/contact/" className="text-link">作品について問い合わせる →</a></section></>;
+  return <><div className="breadcrumbs"><a href="/#works">作品一覧</a><span aria-hidden="true"> / </span><span>{game.title}</span></div><section className="detail-hero"><div><p className="eyebrow">FROST DELIVERY PUZZLE</p><h1>{game.title}</h1><p className="detail-lead">滑ったあとが、<br />次の障害物になる。</p><p>{game.description}</p><span className="status-badge">制作中</span><p className="release-note">ブラウザ版の公開を準備しています。公開後、この画面から遊べます。</p><dl className="detail-facts"><div><dt>人数</dt><dd>1人</dd></div><div><dt>内容</dt><dd>3ステージ</dd></div><div><dt>操作</dt><dd>方向キー・画面ボタン</dd></div></dl></div><IceBoard /></section><UnityPlayer /><section className="rules-section" aria-labelledby="rules-title"><p className="eyebrow">HOW TO PLAY</p><h2 id="rules-title">届けるまでの、3つのルール。</h2><ol className="rules-grid"><li><span>01</span><h3>壁まで滑る</h3><p>方向を選ぶと、壁や障害物にぶつかるまで進みます。</p></li><li><span>02</span><h3>出発点が凍る</h3><p>動くたびに、出発したマスが障害物になります。次の道も考えて進みましょう。</p></li><li><span>03</span><h3>荷物を届ける</h3><p>荷物を拾って到着点へ。行き詰まったらUndoで一手戻せます。</p></li></ol></section><section className="detail-support"><h2>気軽に試せるように。</h2><p>Undoは荷物と凍ったマスも一緒に戻します。保存した進行は、再開して続きを遊べます。</p><p>スマートフォン向けの表示と操作は調整中です。</p><a href="/contact/" className="text-link">作品について問い合わせる →</a></section></>;
 }
 
 function Info({ pathname }: { pathname: string }) {

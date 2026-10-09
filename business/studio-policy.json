@@ -17,7 +17,7 @@
   "currentProject": "ice-courier",
   "currentPriority": "unity-web-portal-renovation",
   "prioritySource": "user:天啓.md:2026-10-10:web-renovation",
-  "portalPolicy": "共通画面から静的生成。未公開の作品に開始リンクを出さない。本番全体置換を行わず、ローカル接続と同一成果物の検査を続ける。",
+  "portalPolicy": "共通画面から静的生成。未公開の作品に開始リンクを出さない。検証済み成果物のローカル接続は完了。次は既存Ice CourierのUnity内部の縦画面UIを改善し、実タッチ未検証を区別する。本番全体置換はしない。",
   "allowed": [
     "edit",
     "test",

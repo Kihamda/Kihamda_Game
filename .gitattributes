@@ -6,4 +6,4 @@
 *.yml text eol=lf
 *.py text eol=lf
 # Evidence hashes bind exact bytes; preserve them on Windows and Linux.
-business/unity/evidence/*.json -text
+business/unity/evidence/*.json -text whitespace=cr-at-eol

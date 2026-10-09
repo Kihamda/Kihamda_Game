@@ -37,6 +37,7 @@ function files(directory) {
   });
 }
 const sums = files(dist).filter(path => !path.endsWith('SHA256SUMS')).sort().map(path => {
+  assert(!/WebGL\.(?:wasm|data|loader\.js|framework\.js)$|runner\.html$|__local-unity/.test(path), `Local Unity preview leaked into publication artifact: ${path}`);
   const sha = createHash('sha256').update(readFileSync(path)).digest('hex');
   return `${sha}  ${relative(dist, path).replaceAll('\\', '/')}`;
 });

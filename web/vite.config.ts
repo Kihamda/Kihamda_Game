@@ -4,11 +4,12 @@ import { resolve } from "path";
 import { fileURLToPath } from "url";
 import portalSSG from "./plugins/portal-ssg";
 import gamePagesGenerator from "./plugins/game-pages-generator";
+import localUnityPlayer from "./plugins/local-unity-player";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineConfig({
-  plugins: [react(), portalSSG(), gamePagesGenerator()],
+  plugins: [react(), portalSSG(), gamePagesGenerator(), localUnityPlayer()],
   root: resolve(__dirname),
   publicDir: resolve(__dirname, "public"),
   resolve: {

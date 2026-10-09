@@ -104,3 +104,11 @@
 @media (max-width: 900px) { .header-inner, .portal-main, .footer-inner { padding-inline: 28px; } .home-hero, .detail-hero { gap: 28px; } .hero-copy h1 { font-size: 34px; letter-spacing: -1px; } .work-copy { padding: 24px; } .footer-inner nav { gap: 16px; } }
 @media (max-width: 600px) { .header-inner, .portal-main, .footer-inner { padding-inline: 20px; } .header-inner { min-height: 104px; flex-wrap: wrap; gap: 4px; padding-block: 16px; } .brand { font-size: 21px; } .header-inner nav { width: 100%; gap: 24px; font-size: 12px; } .header-inner nav a { padding-block: 8px; } .home-hero { grid-template-columns: 1fr; padding-block: 40px 48px; gap: 32px; } .hero-copy h1 { margin-block: 18px; font-size: 32px; } .hero-description { font-size: 14px; } .ice-art { padding: 22px; } .section-heading { display: block; } .section-heading > p { margin-top: 12px; } .catalog-tools { flex-wrap: wrap; gap: 16px; } .search-label { width: 100%; } .search-label input { width: 100%; } .work-card { grid-template-columns: 1fr; } .work-art .ice-board { width: 66%; } .work-copy { padding: 24px; } .work-copy h3 { font-size: 28px; } .studio-strip h2 { font-size: 25px; } .footer-inner { grid-template-columns: 1fr; } .footer-inner nav { grid-row: auto; grid-column: auto; flex-wrap: wrap; gap: 16px; } .footer-inner small { text-align: left; } .detail-hero { grid-template-columns: 1fr; gap: 28px; padding-block: 32px 40px; } .rules-section h2 { font-size: 24px; } .rules-grid { grid-template-columns: 1fr; gap: 24px; } .rules-grid li { border-bottom: 1px solid #172b2833; padding-bottom: 24px; } .info-page { padding-block: 40px 56px; } .info-panel { padding: 20px; } .info-lead { font-size: 21px; } }
 @media (prefers-reduced-motion: no-preference) { .portal a, .portal button { transition: background-color .15s; } }
+
+.player-section { border-top: 1px solid #172b2833; padding-block: 32px; }
+.player-section h2 { font-size: 26px; margin-bottom: 12px; }
+.player-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-block: 20px; }
+.player-actions button:disabled { opacity: .5; cursor: default; }
+.player-status { margin-block: 16px !important; font-size: 14px; }
+.player-note { color: var(--muted); font-size: 12px; margin-block: 12px !important; }
+.unity-player { display: block; width: 100%; aspect-ratio: 8 / 5; border: 0; background: #142828; }

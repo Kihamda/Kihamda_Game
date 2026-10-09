@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 20,
+  "revision": 24,
   "business_id": "game-site",
-  "fence": 2,
+  "fence": 3,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -217,9 +217,52 @@
       "depends_on": [
         "T-unity-portal-foundation"
       ],
-      "status": "ready",
-      "checkpoints": [],
-      "claims": []
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261010T0700-cc24abcda9c1",
+          "fence": 3,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/player-20261010-0700.json",
+              "sha256": "cb485571977a2699fa058c83789145041f05c25d41fc1545b4128d628460a2d1"
+            }
+          ],
+          "checks": [
+            "Build, repository, hashes and actual player load/input/return/failure checks passed",
+            "390x844 frame checked; real touch and human response unobserved",
+            "07 blog draft saved, no publication"
+          ],
+          "next_step": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately",
+          "at": 1791584704.5300887
+        },
+        {
+          "run_id": "unity-20261010T0700-cc24abcda9c1",
+          "fence": 3,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/player-20261010-0700.json",
+              "sha256": "cb485571977a2699fa058c83789145041f05c25d41fc1545b4128d628460a2d1"
+            }
+          ],
+          "checks": [
+            "Build, repository, hashes and actual player load/input/return/failure checks passed",
+            "390x844 frame checked; real touch and human response unobserved",
+            "07 blog draft saved, no publication"
+          ],
+          "next_step": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately",
+          "passed": true,
+          "at": 1791584704.5375438
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261010T0700-cc24abcda9c1",
+          "task_id": "T-unity-portal-player-integration",
+          "fence": 3,
+          "expires_at": 1791584859.5750847
+        }
+      ]
     }
   },
   "decisions": {
@@ -264,6 +307,13 @@
       "source": "scheduled:game-site:2026-10-10T01:00:00+09:00",
       "status": "completed",
       "started_at": 1791561870.5733407
+    },
+    "unity-20261010T0700-cc24abcda9c1": {
+      "run_id": "unity-20261010T0700-cc24abcda9c1",
+      "scheduled_at": "2026-10-10T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-10T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791583359.509933
     }
   },
   "experiments": {
@@ -327,7 +377,8 @@
     }
   },
   "slots": {
-    "2026-10-10T01:00:00+09:00": "unity-20261010T0100-9e5710806c84"
+    "2026-10-10T01:00:00+09:00": "unity-20261010T0100-9e5710806c84",
+    "2026-10-10T07:00:00+09:00": "unity-20261010T0700-cc24abcda9c1"
   },
   "feedback": [],
   "approvals": [],
@@ -815,7 +866,92 @@
       },
       "previous": "7e7c790d384dd25782ad0aca126fe15cfa30c1396c3dc311bc82db97c1a9d7a3",
       "sha256": "0d548e4e58deb31d57c822c0eeceb563fc68385396d0998c52b6b6075454a8b0"
+    },
+    {
+      "revision": 21,
+      "at": 1791583359.509933,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261010T0700-cc24abcda9c1",
+        "scheduled_at": "2026-10-10T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "0d548e4e58deb31d57c822c0eeceb563fc68385396d0998c52b6b6075454a8b0",
+      "sha256": "c53571171536fe39dacd180d08b3dce86dfee6ca678328d7d60462c34578ec9e"
+    },
+    {
+      "revision": 22,
+      "at": 1791583359.5750847,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261010T0700-cc24abcda9c1",
+        "task_id": "T-unity-portal-player-integration",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261010T0700-cc24abcda9c1",
+        "task_id": "T-unity-portal-player-integration",
+        "fence": 3,
+        "expires_at": 1791584859.5750847
+      },
+      "previous": "c53571171536fe39dacd180d08b3dce86dfee6ca678328d7d60462c34578ec9e",
+      "sha256": "b11d27c90f80ccc9bc973ec72385528b4dfcbca8550ab5ee75bb4dcba6cb28e6"
+    },
+    {
+      "revision": 23,
+      "at": 1791584704.5300887,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261010T0700-cc24abcda9c1",
+        "fence": 3,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/player-20261010-0700.json",
+            "sha256": "cb485571977a2699fa058c83789145041f05c25d41fc1545b4128d628460a2d1"
+          }
+        ],
+        "checks": [
+          "Build, repository, hashes and actual player load/input/return/failure checks passed",
+          "390x844 frame checked; real touch and human response unobserved",
+          "07 blog draft saved, no publication"
+        ],
+        "next_step": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "b11d27c90f80ccc9bc973ec72385528b4dfcbca8550ab5ee75bb4dcba6cb28e6",
+      "sha256": "cc23855f0ce71a409abff02772e4768b46fc61757e7ba669a87b43394710b7fa"
+    },
+    {
+      "revision": 24,
+      "at": 1791584704.5375438,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261010T0700-cc24abcda9c1",
+        "fence": 3,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/player-20261010-0700.json",
+            "sha256": "cb485571977a2699fa058c83789145041f05c25d41fc1545b4128d628460a2d1"
+          }
+        ],
+        "checks": [
+          "Build, repository, hashes and actual player load/input/return/failure checks passed",
+          "390x844 frame checked; real touch and human response unobserved",
+          "07 blog draft saved, no publication"
+        ],
+        "next_step": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "cc23855f0ce71a409abff02772e4768b46fc61757e7ba669a87b43394710b7fa",
+      "sha256": "668f63fb08c88c2dfeacf80aa5675e526ede87d70dc624d7806567182b0f8ca8"
     }
   ],
-  "projection_sha256": "e643049f28abf7d4565baf6179d27788639920d0518f40ab9c460a882596ad22"
+  "projection_sha256": "35718d9092f1d6bdb7a867090b5ef3d9dbbeebae86e314595e2f17d544d6141e"
 }
