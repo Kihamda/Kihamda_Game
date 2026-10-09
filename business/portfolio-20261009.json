@@ -1,0 +1,1233 @@
+{
+  "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+  "decision_id": "D-portfolio-20261009",
+  "main_audited": "4523cc58ea2824ea99d29d724b51685a3946189e",
+  "status": "owner-requested scope; candidates selected from source, quality/fun/market performance not yet proven",
+  "success_kpis": "business/kpis.json; counts are scope, not success",
+  "existing": [
+    {
+      "id": "merge2048",
+      "title": "Merge 2048",
+      "selection_reason": "既存の保存修正を活かし、滑らせる戦略と短い再挑戦を磨ける",
+      "first_slice": "小画面の欠損を直して必須操作を表示。合体の理由が分かるチュートリアルと明確な挑戦目標を追加",
+      "completion": "初回操作→合体→勝敗/目標→結果→New Gameの一巡。盤面保存/再開仕様を説明し検査",
+      "quality_status": "候補・実プレイQA未完了",
+      "popularity": null
+    },
+    {
+      "id": "brickmania",
+      "title": "Brick Mania",
+      "selection_reason": "ステージ進行とアイテム・コンボがコードにあり、薄い類似作を増やさず磨ける",
+      "first_slice": "パドル操作と衝突判定を調整し、初回stageのクリア/失敗が成立する状態へ",
+      "completion": "狙う技術が得点につながる。強化の効果/期限を表示し、stageをクリアして次へ進む。類似Brick Blast/Brick Outは統合検討のみ",
+      "quality_status": "候補・実プレイQA未完了",
+      "popularity": null
+    },
+    {
+      "id": "dodgeblitz",
+      "title": "Dodge Blitz",
+      "selection_reason": "回避の学習と生存時間の挑戦があり、派手な演出を操作結果に結びつけられる",
+      "first_slice": "最初の敵攻撃に予告を付け、入力と被弾理由を検査",
+      "completion": "回避可能な攻撃、段階的難易度、被弾原因と再挑戦。画面演出が弾/操作対象を隠さない",
+      "quality_status": "候補・実プレイQA未完了",
+      "popularity": null
+    },
+    {
+      "id": "towerdefense",
+      "title": "Tower Defense",
+      "selection_reason": "waveと異なるtowerの役割・配置判断が既存コードにある",
+      "first_slice": "tower配置→wave開始→突破/防衛の第一waveを成立させる",
+      "completion": "複数の防衛戦略が機能し、敵の特性/射程/費用が見える。最終waveの勝利と敗北の両経路を検査",
+      "quality_status": "候補・実プレイQA未完了",
+      "popularity": null
+    },
+    {
+      "id": "minigolf",
+      "title": "Mini Golf",
+      "selection_reason": "コースとショットの技能、ホールごとの到達点がある",
+      "first_slice": "狙い/力/実touchを調整し初回ホールインまで検査",
+      "completion": "練習→コース攻略→打数結果→再挑戦。詰み位置からreset可、ショット予測と実軌道に納得感",
+      "quality_status": "候補・実プレイQA未完了",
+      "popularity": null
+    },
+    {
+      "id": "rhythmbeat",
+      "title": "Rhythm Beat",
+      "selection_reason": "Perfect/Good/Miss・コンボ・result画面があり、演出の強弱に意味を持たせやすい",
+      "first_slice": "audio開始と判定時間を照合し短い譜面を一曲完走させる",
+      "completion": "同期/判定誤差を明示。難易度選択、音量/演出設定、楽曲終了/結果/再挑戦。音源は権利確認済み自作のみ",
+      "quality_status": "候補・実プレイQA未完了",
+      "popularity": null
+    },
+    {
+      "id": "iceslide",
+      "title": "Ice Slide",
+      "selection_reason": "stage select/clearと滑走ルールがあり、学習→解法の段階を作れる",
+      "first_slice": "第一stageを確実に解ける状態にし、undo/resetと操作説明を磨く",
+      "completion": "解けるstageと段階的な新ギミック。手数/解法理解が進行へ繋がり、詰みから再挑戦できる",
+      "quality_status": "候補・実プレイQA未完了",
+      "popularity": null
+    },
+    {
+      "id": "fishing",
+      "title": "Fishing",
+      "selection_reason": "waiting/bite/reeling/afterの操作段階と魚種があり、育成/収集層への橋渡しになる",
+      "first_slice": "アタリの合図と巻き取り入力を調整し1匹釣って結果まで検査",
+      "completion": "狙う魚/場所/装備に選択理由がある。図鑑と目標、失敗原因/再挑戦、進行保存",
+      "quality_status": "候補・実プレイQA未完了",
+      "popularity": null
+    },
+    {
+      "id": "endlessrun",
+      "title": "Endless Run",
+      "selection_reason": "一入力jumpと障害物回避の理解しやすいコアループがある",
+      "first_slice": "初回区間のジャンプと障害物gapを調整し避けられない生成を防ぐ",
+      "completion": "ジャンプの学習→距離目標→段階的難度→失敗原因/即再挑戦。入力遅延と実touchを検査",
+      "quality_status": "候補・実プレイQA未完了",
+      "popularity": null
+    },
+    {
+      "id": "ntiktaktoe",
+      "title": "n目並べ",
+      "selection_reason": "可変盤面/人数/重力のローカル対戦は他候補と異なる体験",
+      "first_slice": "0pxセル/CSS不一致を直して置く→ターン交代→勝敗の最小対戦を成立させる",
+      "completion": "分かる初期ルール、勝利/引分け、誤操作undo/確認、再開とreset。大きい盤面もスマホで操作できる",
+      "quality_status": "候補・実プレイQA未完了",
+      "popularity": null
+    }
+  ],
+  "new": [
+    {
+      "id": "light-companion",
+      "title": "ひかりの相棒",
+      "genre": "育成",
+      "loop": "世話・訓練・短い探索を選ぶ→能力/姿が変わる→新しい課題へ",
+      "first_slice": "世話/訓練/探索の一周、相棒の変化と保存再開を含む縦切りprototype",
+      "completion": "育成3段階と選択に応じた分岐、探索成果/図鑑、育て方で体験が変わる。待ち時間強制なし",
+      "status": "制作予定案・未実装",
+      "popularity": null
+    },
+    {
+      "id": "stardust-agency",
+      "title": "星屑調査局",
+      "genre": "クリッカーADV",
+      "loop": "クリックで手掛かり→助手の自動調査を強化→証拠を選び事件解決",
+      "first_slice": "手動調査→1upgrade→証拠選択→第1事件の結末",
+      "completion": "クリック連打だけに頼らない事件/選択分岐。章の到達点と進行保存、誤解答/再調査の道",
+      "status": "制作予定案・未実装",
+      "popularity": null
+    },
+    {
+      "id": "neon-workshop",
+      "title": "ネオン工房",
+      "genre": "制作インクリメンタル",
+      "loop": "材料採集→加工工程を組む→注文を完成→工房を拡張",
+      "first_slice": "材料2種の加工と工程選択で1注文を完成",
+      "completion": "生産経路とボトルネックの判断が中心。注文の完了と新レシピ、効率だけでなく作る目的",
+      "status": "制作予定案・未実装",
+      "popularity": null
+    },
+    {
+      "id": "merge-summoners",
+      "title": "合体召喚隊",
+      "genre": "戦術ローグライト",
+      "loop": "同系ユニット合体→隊形/能力選択→短い戦闘→報酬を選ぶ",
+      "first_slice": "2種ユニットの合体と1戦闘の勝敗/再挑戦",
+      "completion": "複数build、敵予告、短いrunのboss/結末、毎回異なる選択。合体2048とは異なる戦術",
+      "status": "制作予定案・未実装",
+      "popularity": null
+    },
+    {
+      "id": "slime-garden",
+      "title": "スライムの小庭",
+      "genre": "生態系育成",
+      "loop": "環境を配置→性質の異なる住人を迎える→共生/採集→図鑑を広げる",
+      "first_slice": "環境と2住人の相互作用、図鑑発見を体験",
+      "completion": "個体の世話より環境/組合せの発見が主役。住人の反応が見える、庭保存、目標達成",
+      "status": "制作予定案・未実装",
+      "popularity": null
+    },
+    {
+      "id": "rhythm-delivery",
+      "title": "リズム運送店",
+      "genre": "リズム経営",
+      "loop": "拍に合わせて荷物仕分け→ルート判断→配達評価→店を育てる",
+      "first_slice": "仕分けとルート選択で1営業を終える",
+      "completion": "譜面だけにしない経営選択。タイミング評価/収支はゲーム内架空資源、難易度/結果/再挑戦",
+      "status": "制作予定案・未実装",
+      "popularity": null
+    },
+    {
+      "id": "pocket-expedition",
+      "title": "ポケット探検隊",
+      "genre": "探索ADV",
+      "loop": "隊員/持物を選ぶ→分岐イベント→資源を使い探索→帰還/成長",
+      "first_slice": "2分岐と資源判断を含む1探索を帰還まで",
+      "completion": "隊員の能力とルートが結果を変える。失敗でも学び/再挑戦、探索完結と進行保存",
+      "status": "制作予定案・未実装",
+      "popularity": null
+    },
+    {
+      "id": "bullet-alchemist",
+      "title": "弾幕錬金術",
+      "genre": "アクションbuild",
+      "loop": "予告弾を回避→素材を得る→魔法の性質を合成→bossへ",
+      "first_slice": "回避と2種素材合成、1敵の勝敗",
+      "completion": "回避とbuildの両方に選択。エフェクトと弾の視認性を両立、短いrunと明確なboss終点",
+      "status": "制作予定案・未実装",
+      "popularity": null
+    },
+    {
+      "id": "mirror-labyrinth",
+      "title": "反転迷宮",
+      "genre": "ギミックパズル",
+      "loop": "鏡面/重力を反転→道を組み替え→ゴール→新ギミック",
+      "first_slice": "反転操作で解く最初のstageとundo/reset",
+      "completion": "既存Ice Slideと区別できる反転ルール。全stageの解法確認、段階的学習/進行保存",
+      "status": "制作予定案・未実装",
+      "popularity": null
+    },
+    {
+      "id": "time-repair",
+      "title": "時間修理屋",
+      "genre": "謎解きADV",
+      "loop": "物を調べる→時間を巻き戻して因果を変える→人物の問題を解く",
+      "first_slice": "調査/巻戻し/因果変更で1依頼を完結",
+      "completion": "手掛かりが結論に繋がる短編群。softlock防止、hint、chapter結末と再開",
+      "status": "制作予定案・未実装",
+      "popularity": null
+    }
+  ],
+  "common_experience": [
+    "ゲーム一覧→説明→意図的開始→プレイ→結果→再挑戦/一覧へ戻るを共通の言葉/位置で揃える",
+    "スマホ/キー/フォーカス/タッチcancel、320/390/横画面/desktop、入力がページscrollと衝突しない",
+    "音量/ミュート、演出強度(控えめ/標準/強め)をサイト共通で保持。reduced-motionを尊重。保存拒否で設定もゲームも壊れない",
+    "合体/命中/成功/失敗の意味で粒子・短い音・揺れ・得点表示を使い分ける。操作対象/危険/説明を隠さず上限を持たせる",
+    "設定menu/開始条件/中断再開を統一し、背景tab中のsimulation/音を止める。中断で有利不利が変わらない",
+    "コアUIは共有し、色/人物/テーマ/操作の固有部分は各作の個性を残す",
+    "保存仕様/壊れた保存/終了/再読込/SEO/読込み/性能を実物検査し、Safari実機/低性能の未確認は明記"
+  ],
+  "fun_gate": [
+    "初回プレイで目的/操作/成功条件が説明され、操作に即座に意味のあるfeedback",
+    "選択または学習が結果を変える。演出だけの増量で完成扱いしない",
+    "進行/挑戦/結果/失敗後再挑戦が一巡し、save/reloadが仕様どおり",
+    "本人のプレイfeedbackで不明点/退屈/不公平/次も遊ぶ理由を確認。内部QAを本人評価/実訪問者実績とは呼ばない"
+  ],
+  "schedule": "WIP1。共通導線を2048でpilot→既存2作の重点改善→新作育成1作→既存/新作を交互。各taskの工程を30分runでcheckpoint継続し、一作の品質未達で大量公開しない。実測があれば順を見直す。",
+  "selection_rule": "ソース/コアループに基づく候補。同じ候補の実プレイ選定は最大2runで採用/改善/停止または根拠付き差替え。featured/固定カウンタを人気根拠にしない。既存一覧の削除/統合/公開変更は個別PR。",
+  "delivery_gate": "既存改善と新作とも同一版の実物検査・差分・リスク・main用PRまで。main push/merge/CD/契約/課金/外部連絡は禁止。追加先払い0円、素材は自作/許諾確認済みのみ。",
+  "measurements": {
+    "visitors": null,
+    "start_rate": null,
+    "return_rate_7d": null,
+    "search_clicks": null,
+    "monthly_net_profit_jpy": null
+  },
+  "source_audit": {
+    "merge2048": [
+      {
+        "path": "games/merge2048/src/App.tsx",
+        "sha256": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+        "samples": [
+          {
+            "line": 86,
+            "text": "const touchStartRef = useRef<{ x: number; y: number } | null>(null);"
+          },
+          {
+            "line": 221,
+            "text": "// Touch/swipe controls"
+          },
+          {
+            "line": 226,
+            "text": "const handleTouchStart = (e: TouchEvent) => {"
+          },
+          {
+            "line": 227,
+            "text": "const touch = e.touches[0];"
+          },
+          {
+            "line": 228,
+            "text": "touchStartRef.current = { x: touch.clientX, y: touch.clientY };"
+          },
+          {
+            "line": 231,
+            "text": "const handleTouchEnd = (e: TouchEvent) => {"
+          }
+        ]
+      },
+      {
+        "path": "games/merge2048/src/lib/game.ts",
+        "sha256": "4b0c8cb3285d076d67db86be718df9f62c71ee53e6d30a0575dd4dd7c2f002f4",
+        "samples": []
+      },
+      {
+        "path": "games/merge2048/src/lib/storage.ts",
+        "sha256": "4afe9be92c56daf2e268cc4bf96c0a127549df84e53f1959869c5ed40f4590fe",
+        "samples": [
+          {
+            "line": 6,
+            "text": "const raw = globalThis.localStorage.getItem(KEY);"
+          },
+          {
+            "line": 18,
+            "text": "globalThis.localStorage.setItem(KEY, String(score));"
+          }
+        ]
+      }
+    ],
+    "brickmania": [
+      {
+        "path": "games/brickmania/src/App.tsx",
+        "sha256": "6be1aea68383db1550f5aa2fbc2546e433af1c3263e2e589f77f9f1933175490",
+        "samples": [
+          {
+            "line": 46,
+            "text": "const [combo, setCombo] = useState(0);"
+          },
+          {
+            "line": 115,
+            "text": "if (state.phase === \"start\") {"
+          },
+          {
+            "line": 116,
+            "text": "gameStateRef.current = { ...state, phase: \"playing\" };"
+          },
+          {
+            "line": 122,
+            "text": "} else if (state.phase === \"cleared\") {"
+          },
+          {
+            "line": 131,
+            "text": "} else if (state.phase === \"gameover\") {"
+          },
+          {
+            "line": 141,
+            "text": "} else if (state.phase === \"playing\" && state.laserActive) {"
+          }
+        ]
+      },
+      {
+        "path": "games/brickmania/src/lib/brickmania.ts",
+        "sha256": "860e20e6d02b12cba3317fea1035fbfb5075cc37c254135705165d649148d5d5",
+        "samples": [
+          {
+            "line": 71,
+            "text": "export function createBricks(stage: number): Brick[] {"
+          },
+          {
+            "line": 72,
+            "text": "const config = STAGE_CONFIGS[Math.min(stage - 1, STAGE_CONFIGS.length - 1)];"
+          },
+          {
+            "line": 107,
+            "text": "phase: \"start\","
+          },
+          {
+            "line": 108,
+            "text": "stage: 1,"
+          },
+          {
+            "line": 118,
+            "text": "comboCount: 0,"
+          },
+          {
+            "line": 119,
+            "text": "comboTimer: 0,"
+          }
+        ]
+      },
+      {
+        "path": "games/brickmania/src/lib/constants.ts",
+        "sha256": "f84d51235f9456dbad005e7fab130a0fd8f0ae1089e6dc818eea3666785e9b37",
+        "samples": []
+      },
+      {
+        "path": "games/brickmania/src/lib/storage.ts",
+        "sha256": "219aa44cf7cb73624bd2f8ad08b051f97a2838e3c5f18edd01c3b203e07acc63",
+        "samples": [
+          {
+            "line": 5,
+            "text": "const saved = localStorage.getItem(STORAGE_KEY);"
+          },
+          {
+            "line": 14,
+            "text": "localStorage.setItem(STORAGE_KEY, score.toString());"
+          }
+        ]
+      },
+      {
+        "path": "games/brickmania/src/lib/types.ts",
+        "sha256": "ccb4245eb024b5142274f7842228a1e677f6b2c62547a79f3896cd87c72cc174",
+        "samples": [
+          {
+            "line": 61,
+            "text": "phase: GamePhase;"
+          },
+          {
+            "line": 62,
+            "text": "stage: number;"
+          },
+          {
+            "line": 72,
+            "text": "comboCount: number;"
+          },
+          {
+            "line": 73,
+            "text": "comboTimer: number;"
+          }
+        ]
+      },
+      {
+        "path": "games/brickmania/src/main.tsx",
+        "sha256": "cd7ea6a4a57c2dab52ed10099977533613771fc16b4e964cbbedf342e29a083f",
+        "samples": []
+      }
+    ],
+    "dodgeblitz": [
+      {
+        "path": "games/dodgeblitz/src/App.tsx",
+        "sha256": "55005010868b1377ed117db72f21787316bbb102f0fe87782d330c7208aaad4d",
+        "samples": [
+          {
+            "line": 28,
+            "text": "phase: \"before\" | \"playing\" | \"gameover\";"
+          },
+          {
+            "line": 133,
+            "text": "phase: \"before\","
+          },
+          {
+            "line": 138,
+            "text": "highScore: parseInt(localStorage.getItem(\"dodgeblitz_highscore\") || \"0\"),"
+          },
+          {
+            "line": 150,
+            "text": "if (gameState.phase !== \"playing\") return;"
+          },
+          {
+            "line": 154,
+            "text": "if (!state || state.phase !== \"playing\") return;"
+          },
+          {
+            "line": 202,
+            "text": "showPopupRef.current(\"CLOSE CALL!\", \"combo\");"
+          }
+        ]
+      }
+    ],
+    "towerdefense": [
+      {
+        "path": "games/towerdefense/src/App.tsx",
+        "sha256": "8cb013c4ceb20378cdd4a5c0c4ebecc6edaf8449a5e4e4bbf4bce03abedd5301",
+        "samples": [
+          {
+            "line": 286,
+            "text": "if (gameState.phase !== \"playing\") return;"
+          },
+          {
+            "line": 307,
+            "text": "if (!state || state.phase !== \"playing\") return;"
+          },
+          {
+            "line": 317,
+            "text": "if (state.waveInProgress && newEnemiesToSpawn > 0) {"
+          },
+          {
+            "line": 320,
+            "text": "newEnemies.push(createEnemy(state.wave));"
+          },
+          {
+            "line": 395,
+            "text": "\"combo\","
+          },
+          {
+            "line": 407,
+            "text": "// Check wave completion"
+          }
+        ]
+      },
+      {
+        "path": "games/towerdefense/src/lib/constants.ts",
+        "sha256": "24dc8c1aeaaa09424e249eea2f1a47b30e76bef222929458ebe3611519255cb6",
+        "samples": [
+          {
+            "line": 74,
+            "text": "export const STORAGE_KEY = \"towerdefense_highwave\";"
+          }
+        ]
+      },
+      {
+        "path": "games/towerdefense/src/lib/storage.ts",
+        "sha256": "8182c4213a09dd9a89cc1f36a7913a19df4b25682d803b09dcf7e890bad1946e",
+        "samples": [
+          {
+            "line": 5,
+            "text": "const saved = localStorage.getItem(STORAGE_KEY);"
+          },
+          {
+            "line": 12,
+            "text": "export function saveHighestWave(wave: number): void {"
+          },
+          {
+            "line": 14,
+            "text": "localStorage.setItem(STORAGE_KEY, String(wave));"
+          }
+        ]
+      },
+      {
+        "path": "games/towerdefense/src/lib/towerdefense.ts",
+        "sha256": "18cef67b09b781cc7c151366ab4db3edf23d251eeae806ad9897c9052f4d809b",
+        "samples": [
+          {
+            "line": 38,
+            "text": "export function createEnemy(wave: number): Enemy {"
+          },
+          {
+            "line": 39,
+            "text": "const health = Math.floor(ENEMY_BASE_HEALTH * Math.pow(ENEMY_HEALTH_SCALE, wave - 1));"
+          },
+          {
+            "line": 46,
+            "text": "speed: Math.min(ENEMY_MAX_SPEED, ENEMY_BASE_SPEED + wave * 0.1),"
+          },
+          {
+            "line": 247,
+            "text": "phase: \"before\","
+          },
+          {
+            "line": 253,
+            "text": "wave: 0,"
+          },
+          {
+            "line": 254,
+            "text": "waveInProgress: false,"
+          }
+        ]
+      },
+      {
+        "path": "games/towerdefense/src/lib/types.ts",
+        "sha256": "08535070afb792eba9b03ed2eb6694de5938e2ab73660b16ad431a72580b835d",
+        "samples": [
+          {
+            "line": 39,
+            "text": "phase: GamePhase;"
+          },
+          {
+            "line": 45,
+            "text": "wave: number;"
+          },
+          {
+            "line": 46,
+            "text": "waveInProgress: boolean;"
+          }
+        ]
+      },
+      {
+        "path": "games/towerdefense/src/main.tsx",
+        "sha256": "cd7ea6a4a57c2dab52ed10099977533613771fc16b4e964cbbedf342e29a083f",
+        "samples": []
+      }
+    ],
+    "minigolf": [
+      {
+        "path": "games/minigolf/src/App.tsx",
+        "sha256": "25bd8e3a839bfd1523f8aadcfd1acfa0b20bc5cacebd2ee296764f45ee8f40fb",
+        "samples": [
+          {
+            "line": 22,
+            "text": "import { COURSES, MIN_POWER, MAX_POWER } from \"./lib/constants\";"
+          },
+          {
+            "line": 70,
+            "text": "if (state.phase !== \"rolling\" || !state.ball.active) return;"
+          },
+          {
+            "line": 72,
+            "text": "const course = COURSES[state.currentHole];"
+          },
+          {
+            "line": 120,
+            "text": "else if (diff === -1) variant = \"combo\";"
+          },
+          {
+            "line": 163,
+            "text": "const isLastHole = prev.currentHole >= COURSES.length - 1;"
+          },
+          {
+            "line": 169,
+            "text": "phase: isLastHole ? \"gameover\" : \"holein\","
+          }
+        ]
+      },
+      {
+        "path": "games/minigolf/src/components/GameView.tsx",
+        "sha256": "ef5f4df2598e2087466abcc44427af16af774774cd7c8c8b8948684f338979c3",
+        "samples": [
+          {
+            "line": 75,
+            "text": "style={{ touchAction: \"none\", cursor: isAiming ? \"grabbing\" : \"grab\" }}"
+          }
+        ]
+      },
+      {
+        "path": "games/minigolf/src/components/ResultScreen.tsx",
+        "sha256": "256da489bae7368a2526841d278d05d60ae06971b9eb7c2c3b281925805519d8",
+        "samples": [
+          {
+            "line": 2,
+            "text": "import { GAME_WIDTH, GAME_HEIGHT, COLORS, COURSES } from \"../lib/constants\";"
+          },
+          {
+            "line": 51,
+            "text": "<td>{COURSES[i].par}</td>"
+          }
+        ]
+      },
+      {
+        "path": "games/minigolf/src/components/StartScreen.tsx",
+        "sha256": "77eb0b57ce355534cf6eeb4bbe89bad1a0db2a403d051eecc879d4b4c057e5a2",
+        "samples": [
+          {
+            "line": 1,
+            "text": "import { GAME_WIDTH, GAME_HEIGHT, COLORS, COURSES } from \"../lib/constants\";"
+          },
+          {
+            "line": 9,
+            "text": "const totalPar = COURSES.reduce((sum, c) => sum + c.par, 0);"
+          }
+        ]
+      },
+      {
+        "path": "games/minigolf/src/lib/constants.ts",
+        "sha256": "4576dd6618de33563677d352513c05dd54b0180eb37809d808fcf21a4bd467c9",
+        "samples": [
+          {
+            "line": 19,
+            "text": "export const COURSES: HoleConfig[] = ["
+          }
+        ]
+      },
+      {
+        "path": "games/minigolf/src/lib/minigolf.ts",
+        "sha256": "4b537a4c5d795585d6574fcbbe8a90a4d83e0a3864e8d52598387c36e6736905",
+        "samples": [
+          {
+            "line": 8,
+            "text": "COURSES,"
+          },
+          {
+            "line": 13,
+            "text": "const course = COURSES[0];"
+          },
+          {
+            "line": 15,
+            "text": "phase: \"start\","
+          },
+          {
+            "line": 33,
+            "text": "const course = COURSES[holeIndex];"
+          }
+        ]
+      },
+      {
+        "path": "games/minigolf/src/lib/storage.ts",
+        "sha256": "50fc25507e6a8e633af69afbc7caf893cf088890a6f8f74f05ee86d0c067c966",
+        "samples": [
+          {
+            "line": 7,
+            "text": "const saved = localStorage.getItem(STORAGE_KEY);"
+          },
+          {
+            "line": 21,
+            "text": "localStorage.setItem(STORAGE_KEY, String(score));"
+          }
+        ]
+      },
+      {
+        "path": "games/minigolf/src/lib/types.ts",
+        "sha256": "fa0dd587e6f05ce005f778b88bd9e6db3ce513dd9a390c02b2de4d0f3747bdc1",
+        "samples": [
+          {
+            "line": 71,
+            "text": "phase: GamePhase;"
+          }
+        ]
+      },
+      {
+        "path": "games/minigolf/src/main.tsx",
+        "sha256": "f16b1288df85d28fe822ba562852dfcac2b8b85b098c98e0a38f73c3759a2e4a",
+        "samples": []
+      }
+    ],
+    "rhythmbeat": [
+      {
+        "path": "games/rhythmbeat/src/App.tsx",
+        "sha256": "7853c40026e46b7a4e929d42c1f71b692986a3d253df3d8eb54a46b39e9ff363",
+        "samples": [
+          {
+            "line": 16,
+            "text": "const [phase, setPhase] = useState<GamePhase>(\"start\");"
+          },
+          {
+            "line": 63,
+            "text": "{phase === \"start\" && ("
+          },
+          {
+            "line": 67,
+            "text": "{phase === \"playing\" && gameState && ("
+          },
+          {
+            "line": 76,
+            "text": "{phase === \"result\" && gameState && ("
+          }
+        ]
+      },
+      {
+        "path": "games/rhythmbeat/src/components/GameView.tsx",
+        "sha256": "008adc18e6f47a725e5658db595bd68b4f97e91441bbd93a828387a800beba16",
+        "samples": [
+          {
+            "line": 115,
+            "text": "perfect: { text: \"✨ PERFECT! ✨\", variant: \"critical\", size: \"lg\" },"
+          },
+          {
+            "line": 131,
+            "text": "const prevComboRef = useRef(state.combo);"
+          },
+          {
+            "line": 241,
+            "text": "if (judgedNote.judgment === \"perfect\") {"
+          },
+          {
+            "line": 257,
+            "text": "if (newState.combo > prevComboRef.current && newState.combo >= 5) {"
+          },
+          {
+            "line": 258,
+            "text": "audio.playCombo(newState.combo);"
+          },
+          {
+            "line": 261,
+            "text": "if (newState.combo >= 10) {"
+          }
+        ]
+      },
+      {
+        "path": "games/rhythmbeat/src/components/ResultScreen.tsx",
+        "sha256": "fefe1624c90c020d6c1ca196dce05116e84e67be7576f2b99ab8f5246265cac3",
+        "samples": [
+          {
+            "line": 23,
+            "text": "isFullCombo && state.perfectCount === state.notes.length;"
+          },
+          {
+            "line": 79,
+            "text": "<span className=\"rhythmbeat-stat-value perfect\">{state.perfectCount}</span>"
+          }
+        ]
+      },
+      {
+        "path": "games/rhythmbeat/src/components/StartScreen.tsx",
+        "sha256": "cf05e7e875fedffd680a9f0c9600c89cb6ae44c22b4e5a109027bf645372a652",
+        "samples": []
+      },
+      {
+        "path": "games/rhythmbeat/src/lib/constants.ts",
+        "sha256": "bcf991c3ddf511f935edfd82a6cc653af33f003d9be337a265bbb66a59d11257",
+        "samples": [
+          {
+            "line": 59,
+            "text": "/** localStorage のキー */"
+          }
+        ]
+      },
+      {
+        "path": "games/rhythmbeat/src/lib/rhythmbeat.ts",
+        "sha256": "3fffc023586b5c6e439cc4ff5fa721511becbd175f3efb8eac6d12c419bf4e02",
+        "samples": [
+          {
+            "line": 17,
+            "text": "combo: 0,"
+          },
+          {
+            "line": 19,
+            "text": "perfectCount: 0,"
+          },
+          {
+            "line": 101,
+            "text": "if (absDiff <= PERFECT_WINDOW) return \"perfect\";"
+          },
+          {
+            "line": 151,
+            "text": "let newCombo = state.combo;"
+          },
+          {
+            "line": 153,
+            "text": "let newPerfect = state.perfectCount;"
+          },
+          {
+            "line": 157,
+            "text": "if (judgment === \"perfect\") {"
+          }
+        ]
+      },
+      {
+        "path": "games/rhythmbeat/src/lib/storage.ts",
+        "sha256": "a0f4a153ab2cbab785b8d885b40b34ccafe3a093850edfb316dade3a31de8409",
+        "samples": [
+          {
+            "line": 6,
+            "text": "const val = localStorage.getItem(STORAGE_KEY);"
+          },
+          {
+            "line": 16,
+            "text": "localStorage.setItem(STORAGE_KEY, String(score));"
+          }
+        ]
+      },
+      {
+        "path": "games/rhythmbeat/src/lib/types.ts",
+        "sha256": "fa3d41b436160e4f7960484b2b96d2c238e4a786f5a2137b34ac22bdfa433923",
+        "samples": [
+          {
+            "line": 2,
+            "text": "export type Judgment = \"perfect\" | \"good\" | \"miss\";"
+          },
+          {
+            "line": 23,
+            "text": "combo: number;"
+          },
+          {
+            "line": 27,
+            "text": "perfectCount: number;"
+          }
+        ]
+      },
+      {
+        "path": "games/rhythmbeat/src/main.tsx",
+        "sha256": "daedab8e601d5b57b2e2bf1b61a85ca18894c350e267b4ef260fec4f300e6318",
+        "samples": []
+      }
+    ],
+    "iceslide": [
+      {
+        "path": "games/iceslide/src/App.tsx",
+        "sha256": "f18e674504fa7e93441607f5ed79a396dd6c977f1d786131fd36e399bc7b56ba",
+        "samples": [
+          {
+            "line": 22,
+            "text": "const [phase, setPhase] = useState<Phase>(\"menu\");"
+          },
+          {
+            "line": 47,
+            "text": "setPhase(\"stageSelect\");"
+          },
+          {
+            "line": 51,
+            "text": "const startGame = useCallback((stageId: number) => {"
+          },
+          {
+            "line": 52,
+            "text": "const stage = STAGES.find((s) => s.id === stageId) ?? STAGES[0];"
+          },
+          {
+            "line": 53,
+            "text": "setCurrentStageId(stage.id);"
+          },
+          {
+            "line": 54,
+            "text": "setGameState(createInitialState(stage));"
+          }
+        ]
+      },
+      {
+        "path": "games/iceslide/src/components/GameView.tsx",
+        "sha256": "017fbbdee8df0fe578fff7c427f9a8008a9d4d00f04be34dbedf16fcc2867757",
+        "samples": [
+          {
+            "line": 6,
+            "text": "stage: Stage;"
+          },
+          {
+            "line": 15,
+            "text": "stage,"
+          },
+          {
+            "line": 23,
+            "text": "const touchStartRef = useRef<{ x: number; y: number } | null>(null);"
+          },
+          {
+            "line": 73,
+            "text": "const handleTouchStart = useCallback((e: React.TouchEvent) => {"
+          },
+          {
+            "line": 74,
+            "text": "const touch = e.touches[0];"
+          },
+          {
+            "line": 75,
+            "text": "touchStartRef.current = { x: touch.clientX, y: touch.clientY };"
+          }
+        ]
+      },
+      {
+        "path": "games/iceslide/src/components/ResultScreen.tsx",
+        "sha256": "ebd829868f266723af06b1d8e389a7f5dcb51e709df380ab95f9cf3e15a474db",
+        "samples": [
+          {
+            "line": 5,
+            "text": "stage: Stage;"
+          },
+          {
+            "line": 14,
+            "text": "stage,"
+          },
+          {
+            "line": 21,
+            "text": "const stars = getRating(moves, stage.par);"
+          },
+          {
+            "line": 26,
+            "text": "<div className=\"is-result-stage\">"
+          },
+          {
+            "line": 27,
+            "text": "Stage {stage.id}: {stage.name}"
+          },
+          {
+            "line": 30,
+            "text": "{moves} 手でクリア (パー: {stage.par})"
+          }
+        ]
+      },
+      {
+        "path": "games/iceslide/src/components/StageSelect.tsx",
+        "sha256": "90046c73af6eed0a65875b676933c2e5e5038d6d5aae5c1259c46f94effad86f",
+        "samples": [
+          {
+            "line": 7,
+            "text": "onSelect: (stageId: number) => void;"
+          },
+          {
+            "line": 12,
+            "text": "const isUnlocked = (stage: Stage): boolean => {"
+          },
+          {
+            "line": 14,
+            "text": "if (stage.id === 1) return true;"
+          },
+          {
+            "line": 15,
+            "text": "// Unlock if previous stage is cleared"
+          },
+          {
+            "line": 16,
+            "text": "return progress.cleared.includes(stage.id - 1);"
+          },
+          {
+            "line": 22,
+            "text": "<div className=\"is-stage-grid\">"
+          }
+        ]
+      },
+      {
+        "path": "games/iceslide/src/components/StartScreen.tsx",
+        "sha256": "4f9bcf9afeee934c35a72adf3516f3117375faf1820b40d6b4bcd920e94e86e2",
+        "samples": []
+      },
+      {
+        "path": "games/iceslide/src/lib/constants.ts",
+        "sha256": "5232ce214c198df713e106c370c86ff9de898ae96d774f3228786aa1a868896b",
+        "samples": []
+      },
+      {
+        "path": "games/iceslide/src/lib/iceslide.ts",
+        "sha256": "0cbfa06bd9c3435c456f3f5a4d05842f48239c7c4dbd20e153af3cf63b80ae16",
+        "samples": [
+          {
+            "line": 16,
+            "text": "export function isWall(stage: Stage, x: number, y: number): boolean {"
+          },
+          {
+            "line": 17,
+            "text": "if (x < 0 || x >= stage.width || y < 0 || y >= stage.height) {"
+          },
+          {
+            "line": 20,
+            "text": "return stage.cells[y][x] === \"wall\";"
+          },
+          {
+            "line": 26,
+            "text": "export function isGoal(stage: Stage, x: number, y: number): boolean {"
+          },
+          {
+            "line": 27,
+            "text": "if (x < 0 || x >= stage.width || y < 0 || y >= stage.height) {"
+          },
+          {
+            "line": 30,
+            "text": "return stage.cells[y][x] === \"goal\";"
+          }
+        ]
+      },
+      {
+        "path": "games/iceslide/src/lib/storage.ts",
+        "sha256": "4d39150a1d85a0f96c648fb1ba9b3ce8e343d050e954cd0896d80676ad3b7173",
+        "samples": [
+          {
+            "line": 19,
+            "text": "const data = localStorage.getItem(STORAGE_KEY);"
+          },
+          {
+            "line": 29,
+            "text": "localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));"
+          },
+          {
+            "line": 36,
+            "text": "stageId: number,"
+          },
+          {
+            "line": 41,
+            "text": "if (!progress.cleared.includes(stageId)) {"
+          },
+          {
+            "line": 42,
+            "text": "progress.cleared.push(stageId);"
+          },
+          {
+            "line": 45,
+            "text": "const prevBest = progress.bestMoves[stageId];"
+          }
+        ]
+      },
+      {
+        "path": "games/iceslide/src/lib/types.ts",
+        "sha256": "1ed4edc4869a3716b110721228d50265ce8269ce245ec59559bf88a42c34fbfd",
+        "samples": [
+          {
+            "line": 2,
+            "text": "export type Phase = \"menu\" | \"playing\" | \"cleared\" | \"stageSelect\";"
+          },
+          {
+            "line": 34,
+            "text": "stageId: number;"
+          }
+        ]
+      },
+      {
+        "path": "games/iceslide/src/main.tsx",
+        "sha256": "daedab8e601d5b57b2e2bf1b61a85ca18894c350e267b4ef260fec4f300e6318",
+        "samples": []
+      }
+    ],
+    "fishing": [
+      {
+        "path": "games/fishing/src/App.tsx",
+        "sha256": "022fc4c2bd45fb4e245e9358ae6ff357b34622adafbcabb387ae43710e260c16",
+        "samples": [
+          {
+            "line": 41,
+            "text": "type GamePhase = \"before\" | \"waiting\" | \"bite\" | \"reeling\" | \"after\";"
+          },
+          {
+            "line": 64,
+            "text": "phase: GamePhase;"
+          },
+          {
+            "line": 92,
+            "text": "phase: \"before\","
+          },
+          {
+            "line": 167,
+            "text": "gameStateRef.current.phase = \"waiting\";"
+          },
+          {
+            "line": 191,
+            "text": "if (state.phase === \"before\") {"
+          },
+          {
+            "line": 196,
+            "text": "if (state.phase === \"after\") {"
+          }
+        ]
+      },
+      {
+        "path": "games/fishing/src/main.tsx",
+        "sha256": "f16b1288df85d28fe822ba562852dfcac2b8b85b098c98e0a38f73c3759a2e4a",
+        "samples": []
+      }
+    ],
+    "endlessrun": [
+      {
+        "path": "games/endlessrun/src/App.tsx",
+        "sha256": "1f73a0b74f63536c2b58d8b951596be9e31a9bfeb91494433a13b99c003239b3",
+        "samples": [
+          {
+            "line": 70,
+            "text": "phase: \"before\" | \"playing\" | \"gameover\";"
+          },
+          {
+            "line": 173,
+            "text": "phase: \"before\","
+          },
+          {
+            "line": 181,
+            "text": "highScore: parseInt(localStorage.getItem(\"endlessrun_highscore\") || \"0\"),"
+          },
+          {
+            "line": 207,
+            "text": "if (gameState.phase !== \"playing\") return;"
+          },
+          {
+            "line": 211,
+            "text": "if (!state || state.phase !== \"playing\") return;"
+          },
+          {
+            "line": 318,
+            "text": "localStorage.setItem(\"endlessrun_highscore\", newHighScore.toString());"
+          }
+        ]
+      },
+      {
+        "path": "games/endlessrun/src/main.tsx",
+        "sha256": "cd7ea6a4a57c2dab52ed10099977533613771fc16b4e964cbbedf342e29a083f",
+        "samples": []
+      }
+    ],
+    "ntiktaktoe": [
+      {
+        "path": "games/ntiktaktoe/src/App.tsx",
+        "sha256": "acf2c25fc3f203e6edaca26ebe1f0e680545e18182a552d8535452c95a6d87fe",
+        "samples": [
+          {
+            "line": 49,
+            "text": "const saved = localStorage.getItem(STREAK_KEY);"
+          },
+          {
+            "line": 62,
+            "text": "localStorage.setItem(STREAK_KEY, JSON.stringify({ count, configHash }));"
+          }
+        ]
+      },
+      {
+        "path": "games/ntiktaktoe/src/components/GameView.tsx",
+        "sha256": "51c8c64e5b205b9e06476854a2a39dedc61f2effac87c4d217b49beb69e1e3e3",
+        "samples": [
+          {
+            "line": 164,
+            "text": "{gameSettings.gameMode === \"gravity\" ? \"重力あり\" : \"クラシック\"}"
+          }
+        ]
+      },
+      {
+        "path": "games/ntiktaktoe/src/components/ResultScreen.tsx",
+        "sha256": "c06056702816adaecfebd64e6247584988eda4c599f100d577af2ecae5cbc012",
+        "samples": []
+      },
+      {
+        "path": "games/ntiktaktoe/src/components/StartScreen.tsx",
+        "sha256": "fd47683b9a2795ff4197db10a8fbe31ea959356454c88e6ba88ea07f4cdf6eb4",
+        "samples": [
+          {
+            "line": 77,
+            "text": "gameMode: mode,"
+          },
+          {
+            "line": 125,
+            "text": "value={newGameSettings.gameMode}"
+          }
+        ]
+      },
+      {
+        "path": "games/ntiktaktoe/src/lib/audio.ts",
+        "sha256": "26ac8758afa7735b086c8298e3e36e158df6513a8fad26208347c239a2ea184a",
+        "samples": []
+      },
+      {
+        "path": "games/ntiktaktoe/src/lib/board.ts",
+        "sha256": "52c650bf8d68c790e6c7685ea028e1f9aa6f62bb9ae7a10df5f58640a88c7be2",
+        "samples": [
+          {
+            "line": 22,
+            "text": "gameMode,"
+          },
+          {
+            "line": 29,
+            "text": "if (gameMode === \"gravity\") {"
+          }
+        ]
+      },
+      {
+        "path": "games/ntiktaktoe/src/lib/constants.ts",
+        "sha256": "0313bf5fb43d89a67781a3a0ff903ed5884e282ca4aba99e7a4da42991e0c918",
+        "samples": []
+      },
+      {
+        "path": "games/ntiktaktoe/src/lib/players.ts",
+        "sha256": "c1d72fbf64614fb0486db090d336c26057791c53a0bb6c0567d8586ae4c991d1",
+        "samples": []
+      },
+      {
+        "path": "games/ntiktaktoe/src/lib/settings.ts",
+        "sha256": "99c49419cde6c44804508feec75b9ec3343f47190e827ae5517bd50066b5ca83",
+        "samples": [
+          {
+            "line": 69,
+            "text": "gameMode: \"classic\","
+          },
+          {
+            "line": 80,
+            "text": "gameMode: settings.gameMode,"
+          },
+          {
+            "line": 110,
+            "text": "gameMode: normalizeGameMode(settings?.gameMode),"
+          }
+        ]
+      },
+      {
+        "path": "games/ntiktaktoe/src/lib/storage.ts",
+        "sha256": "8f8aa757d8adbf2e0d8ee07830b7948f10827edeb62d739caf3c0e25196679c4",
+        "samples": [
+          {
+            "line": 10,
+            "text": "const saved = localStorage.getItem(STORAGE_KEY);"
+          },
+          {
+            "line": 30,
+            "text": "localStorage.setItem(STORAGE_KEY, JSON.stringify(state));"
+          },
+          {
+            "line": 37,
+            "text": "localStorage.removeItem(STORAGE_KEY);"
+          },
+          {
+            "line": 42,
+            "text": "const saved = localStorage.getItem(DEVICE_PREFS_KEY);"
+          },
+          {
+            "line": 63,
+            "text": "localStorage.setItem(DEVICE_PREFS_KEY, JSON.stringify(prefs));"
+          }
+        ]
+      },
+      {
+        "path": "games/ntiktaktoe/src/lib/types.ts",
+        "sha256": "43fe6547f8ec94966e9d19b6212c42c509de5391712709c19efdb3cfe4c8a5f9",
+        "samples": [
+          {
+            "line": 16,
+            "text": "gameMode: GameMode;"
+          }
+        ]
+      }
+    ]
+  },
+  "unfinished_preserved": [
+    "T-measurement-audit",
+    "T-2048-mobile-shell",
+    "T-monetization-eligibility",
+    "T-release-measurement"
+  ],
+  "first_step": "T-common-experience-pilot: 2048の既存mobile工程へ共通UIのpilot条件を渡す。設計だけ反復せず最初の表示/操作欠損を修正・検査。"
+}
