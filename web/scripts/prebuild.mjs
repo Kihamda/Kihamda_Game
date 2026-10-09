@@ -4,6 +4,7 @@ const SITE = "https://game.kihamda.net";
 
 const data = JSON.parse(readFileSync("src/portal/data/games.json", "utf-8"));
 const games = data.games;
+const unityGames = JSON.parse(readFileSync("src/portal/data/unity-games.json", "utf-8")).games;
 const staticPages = ["/about/", "/privacy-policy/", "/contact/"];
 
 // sitemap.xml
@@ -28,12 +29,11 @@ ${staticPages
   </url>`,
   )
   .join("\n")}
-${games
+${[...games, ...unityGames]
   .map(
     (g) => `  <url>
     <loc>${SITE}/games/${g.id}/</loc>
-    <lastmod>${g.publishedAt}</lastmod>
-    <priority>0.7</priority>
+${g.publishedAt ? `    <lastmod>${g.publishedAt}</lastmod>\n` : ""}    <priority>0.7</priority>
   </url>`,
   )
   .join("\n")}
@@ -42,17 +42,15 @@ ${games
 writeFileSync("public/sitemap.xml", sitemap);
 
 // _redirects (SPA fallback per game)
-const redirects = games
+const redirects = [...games, ...unityGames]
   .flatMap((g) => [
     `/games/${g.id}  /games/${g.id}/  301`,
     `/games/${g.id}/index.html  /games/${g.id}/  301`,
-    `/games/${g.id}/  /index.html  200`,
-    `/games/${g.id}/*  /index.html  200`,
   ])
   .join("\n");
 
 writeFileSync("public/_redirects", redirects);
 
 console.log(
-  `Generated sitemap.xml (${games.length + staticPages.length + 1} URLs) + _redirects`,
+  `Generated sitemap.xml (${games.length + unityGames.length + staticPages.length + 1} URLs) + canonical redirects`,
 );

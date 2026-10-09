@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 10,
+  "revision": 19,
   "business_id": "game-site",
-  "fence": 1,
+  "fence": 2,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -109,6 +109,117 @@
       "status": "ready",
       "checkpoints": [],
       "claims": []
+    },
+    "T-unity-portal-foundation": {
+      "id": "T-unity-portal-foundation",
+      "objective": "Unity作品のトップ・詳細・共通案内画面を刷新し、重複一覧と架空のプレイ数を除く",
+      "acceptance": [
+        "トップからIce Courierの詳細へ到達できる",
+        "検索の一致と空結果を表示できる",
+        "未配信作品に壊れたプレイリンクを出さない",
+        "about・contact・privacyに共通導線を設ける",
+        "デスクトップと390pxで表示・キーボード操作を検査する",
+        "静的ビルド・リンク・旧URL保持検査が成功する"
+      ],
+      "outputs": [
+        "web/src/portal",
+        "静的Webプレビュー",
+        "表示と操作の検査記録"
+      ],
+      "checks": [
+        "npm run build",
+        "npm run check",
+        "node scripts/check-web-build.mjs",
+        "ブラウザ表示と操作"
+      ],
+      "next_step": "Unity配布成果物を組み込む前段の共通画面を実装・検査する",
+      "decision_id": "D-web-renovation-20261010",
+      "hypothesis": "一覧を一つにし作品詳細でルールと公開状態を伝えれば、作品数を増やさず入口を改善できる",
+      "source": "user:天啓.md:2026-10-10:web-renovation",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261010T0100-9e5710806c84",
+          "fence": 2,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-20261010-0100.json",
+              "sha256": "895f5fdf490e90cb1a17cf2412b129f4d483041925748a3944bfa8486a34097e"
+            }
+          ],
+          "checks": [
+            "Build, repository, static links/checksums passed",
+            "Actual browser search/filter/navigation/keyboard and desktop/390x844 passed",
+            "24 ledger tests and 4 parent recovery comparisons passed"
+          ],
+          "next_step": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks",
+          "at": 1791562881.2569656
+        },
+        {
+          "run_id": "unity-20261010T0100-9e5710806c84",
+          "fence": 2,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-20261010-0100.json",
+              "sha256": "895f5fdf490e90cb1a17cf2412b129f4d483041925748a3944bfa8486a34097e"
+            }
+          ],
+          "checks": [
+            "Build, repository, static links/checksums passed",
+            "Actual browser search/filter/navigation/keyboard and desktop/390x844 passed",
+            "24 ledger tests and 4 parent recovery comparisons passed"
+          ],
+          "next_step": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks",
+          "passed": true,
+          "at": 1791562881.2708127
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261010T0100-9e5710806c84",
+          "task_id": "T-unity-portal-foundation",
+          "fence": 2,
+          "expires_at": 1791563370.6444685
+        }
+      ]
+    },
+    "T-unity-portal-player-integration": {
+      "id": "T-unity-portal-player-integration",
+      "objective": "検証済みIce Courier WebGL成果物を新しい作品詳細へローカル接続する",
+      "acceptance": [
+        "成果物のsourceCommitとSHA256を照合する",
+        "詳細から読み込み・開始・終了して一覧へ戻れる",
+        "読み込み失敗時に再試行と戻る導線を表示する",
+        "Unity内部入力とページ操作の干渉を検査する",
+        "デスクトップと390x844でプレイヤー枠を確認し実タッチ未実行を区別する",
+        "本番全体置換をせず未配信を公開中と扱わない"
+      ],
+      "outputs": [
+        "Unityプレイヤーの共通Web枠",
+        "同一版成果物との接続記録",
+        "表示と入力の検査記録"
+      ],
+      "checks": [
+        "ローカルWebGL実画面と入力",
+        "配布版照合",
+        "Web静的ビルドと内部リンク"
+      ],
+      "next_step": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks",
+      "decision_id": "D-web-renovation-20261010",
+      "hypothesis": "作品詳細のルール説明と開始後の戻り先を揃えれば、公開時に迷わずUnity作品へ移れる",
+      "source": "user:天啓.md:2026-10-10:web-renovation",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-unity-portal-foundation"
+      ],
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -119,6 +230,14 @@
       "hypothesis": "作品のルールを厳選し、通常制作をローカル、成果物ビルドをGitHubへ分ければ、CIの設定だけで制作が止まることを避けられる",
       "next_step": "Ice CourierのUnity実行と操作検査を終え、同じ作品を一作ずつ改善する。旧定期タスクを保全してローカル実行へ切り替える",
       "policy": "CI/CDは継続制作の前提条件にしない。採否・統合先・復元元を記録して旧Web実装を整理する"
+    },
+    "D-web-renovation-20261010": {
+      "id": "D-web-renovation-20261010",
+      "source": "user:天啓.md:2026-10-10:web-renovation",
+      "quote": "Webのトップ画面を含む画面全体の刷新を優先する。画面構成・導線・使い勝手から見直す。",
+      "hypothesis": "Unity作品の入口と作品詳細を共通の情報源から生成し、公開状態を正しく示せば、重複した一覧や古いゲーム導線を減らせる",
+      "next_step": "トップ・作品詳細・共通案内画面を刷新し、狭い画面と静的ビルドを検査する",
+      "policy": "Web刷新を先に進める。Ice Courierは唯一の制作中ゲームとして維持。本番全体置換は実施しない"
     }
   },
   "runs": {
@@ -127,6 +246,13 @@
       "source": "user:current-thread:2026-10-09:autonomous-studio",
       "status": "completed",
       "started_at": 1791556448.9243035
+    },
+    "unity-20261010T0100-9e5710806c84": {
+      "run_id": "unity-20261010T0100-9e5710806c84",
+      "scheduled_at": "2026-10-10T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-10T01:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791561870.5733407
     }
   },
   "experiments": {
@@ -159,9 +285,39 @@
         }
       ],
       "release": null
+    },
+    "E-unity-portal": {
+      "id": "E-unity-portal",
+      "hypothesis": "一作品でもルールと遊び方を理解してから開始できる画面なら、将来の作品追加でも導線を一貫させられる",
+      "game_id": "ice-courier",
+      "primary_metric": "observed-play-start-rate",
+      "quality_acceptance": [
+        "トップから作品詳細へ移動できる",
+        "未公開を公開済みと表示しない",
+        "390pxとデスクトップで読める"
+      ],
+      "measurement_plan": "内部表示・操作検査と公開後の開始率を分離する。公開指標は未観測でnull",
+      "decision_id": "D-web-renovation-20261010",
+      "next_step": "Connect verified Ice Courier WebGL artifact to local detail shell and inspect load/start/return/failure",
+      "source": "user:天啓.md:2026-10-10:web-renovation",
+      "stage": "do",
+      "history": [
+        {
+          "id": "E-unity-portal",
+          "stage": "do",
+          "source": "evidence:business/unity/evidence/portal-20261010-0100.json",
+          "evidence": "Shared portal foundation implemented; static build and real browser search/navigation/portrait checks passed. Production and play-start-rate unobserved.",
+          "next_step": "Connect verified Ice Courier WebGL artifact to local detail shell and inspect load/start/return/failure",
+          "at": 1791562925.7279973,
+          "previous_stage": "plan"
+        }
+      ],
+      "release": null
     }
   },
-  "slots": {},
+  "slots": {
+    "2026-10-10T01:00:00+09:00": "unity-20261010T0100-9e5710806c84"
+  },
   "feedback": [],
   "approvals": [],
   "external": {},
@@ -400,7 +556,234 @@
       },
       "previous": "643313793288787a80b595860c0e638c77018dc297838f779246b98a4b360c40",
       "sha256": "ce63ad3f0c34db322218a7583ba2b475c65b89af3c3371dd83f5a083e82217b8"
+    },
+    {
+      "revision": 11,
+      "at": 1791561870.5536256,
+      "action": "decision",
+      "data": {
+        "id": "D-web-renovation-20261010",
+        "source": "user:天啓.md:2026-10-10:web-renovation",
+        "quote": "Webのトップ画面を含む画面全体の刷新を優先する。画面構成・導線・使い勝手から見直す。",
+        "hypothesis": "Unity作品の入口と作品詳細を共通の情報源から生成し、公開状態を正しく示せば、重複した一覧や古いゲーム導線を減らせる",
+        "next_step": "トップ・作品詳細・共通案内画面を刷新し、狭い画面と静的ビルドを検査する",
+        "policy": "Web刷新を先に進める。Ice Courierは唯一の制作中ゲームとして維持。本番全体置換は実施しない"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "ce63ad3f0c34db322218a7583ba2b475c65b89af3c3371dd83f5a083e82217b8",
+      "sha256": "e45b0948beede6b6fd2e9611ed04c0e975a550c2cc17027bad44c2a9e70961d0"
+    },
+    {
+      "revision": 12,
+      "at": 1791561870.5601661,
+      "action": "experiment",
+      "data": {
+        "id": "E-unity-portal",
+        "hypothesis": "一作品でもルールと遊び方を理解してから開始できる画面なら、将来の作品追加でも導線を一貫させられる",
+        "game_id": "ice-courier",
+        "primary_metric": "observed-play-start-rate",
+        "quality_acceptance": [
+          "トップから作品詳細へ移動できる",
+          "未公開を公開済みと表示しない",
+          "390pxとデスクトップで読める"
+        ],
+        "measurement_plan": "内部表示・操作検査と公開後の開始率を分離する。公開指標は未観測でnull",
+        "decision_id": "D-web-renovation-20261010",
+        "next_step": "共通画面とUnityカタログを実装する",
+        "source": "user:天啓.md:2026-10-10:web-renovation"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "e45b0948beede6b6fd2e9611ed04c0e975a550c2cc17027bad44c2a9e70961d0",
+      "sha256": "345e97ad31927025ff1c6e469a1b9ca9b3231cec5ba17f44544b42902f55fbae"
+    },
+    {
+      "revision": 13,
+      "at": 1791561870.5665717,
+      "action": "task",
+      "data": {
+        "id": "T-unity-portal-foundation",
+        "objective": "Unity作品のトップ・詳細・共通案内画面を刷新し、重複一覧と架空のプレイ数を除く",
+        "acceptance": [
+          "トップからIce Courierの詳細へ到達できる",
+          "検索の一致と空結果を表示できる",
+          "未配信作品に壊れたプレイリンクを出さない",
+          "about・contact・privacyに共通導線を設ける",
+          "デスクトップと390pxで表示・キーボード操作を検査する",
+          "静的ビルド・リンク・旧URL保持検査が成功する"
+        ],
+        "outputs": [
+          "web/src/portal",
+          "静的Webプレビュー",
+          "表示と操作の検査記録"
+        ],
+        "checks": [
+          "npm run build",
+          "npm run check",
+          "node scripts/check-web-build.mjs",
+          "ブラウザ表示と操作"
+        ],
+        "next_step": "Unity配布成果物を組み込む前段の共通画面を実装・検査する",
+        "decision_id": "D-web-renovation-20261010",
+        "hypothesis": "一覧を一つにし作品詳細でルールと公開状態を伝えれば、作品数を増やさず入口を改善できる",
+        "source": "user:天啓.md:2026-10-10:web-renovation",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 0
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "345e97ad31927025ff1c6e469a1b9ca9b3231cec5ba17f44544b42902f55fbae",
+      "sha256": "44eb5fe837a68e12134973886f67128edad7c722de359994344af8430096c7c4"
+    },
+    {
+      "revision": 14,
+      "at": 1791561870.5733407,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261010T0100-9e5710806c84",
+        "scheduled_at": "2026-10-10T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "44eb5fe837a68e12134973886f67128edad7c722de359994344af8430096c7c4",
+      "sha256": "71d492b1a9f72571b85554264d03f7d5147bcbb47055a04240af3b6ef2f3bf4b"
+    },
+    {
+      "revision": 15,
+      "at": 1791561870.6444685,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261010T0100-9e5710806c84",
+        "task_id": "T-unity-portal-foundation",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261010T0100-9e5710806c84",
+        "task_id": "T-unity-portal-foundation",
+        "fence": 2,
+        "expires_at": 1791563370.6444685
+      },
+      "previous": "71d492b1a9f72571b85554264d03f7d5147bcbb47055a04240af3b6ef2f3bf4b",
+      "sha256": "cf6ab03cc76fae393942490e62b52352d358c263b558f15a1c1951fbaa32cf06"
+    },
+    {
+      "revision": 16,
+      "at": 1791562881.2569656,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261010T0100-9e5710806c84",
+        "fence": 2,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-20261010-0100.json",
+            "sha256": "895f5fdf490e90cb1a17cf2412b129f4d483041925748a3944bfa8486a34097e"
+          }
+        ],
+        "checks": [
+          "Build, repository, static links/checksums passed",
+          "Actual browser search/filter/navigation/keyboard and desktop/390x844 passed",
+          "24 ledger tests and 4 parent recovery comparisons passed"
+        ],
+        "next_step": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "cf6ab03cc76fae393942490e62b52352d358c263b558f15a1c1951fbaa32cf06",
+      "sha256": "6b2c1c9a68761cad2ae91c3c8bb23040257c727a4a4eee22feb814c3aacfe24a"
+    },
+    {
+      "revision": 17,
+      "at": 1791562881.2639525,
+      "action": "task",
+      "data": {
+        "id": "T-unity-portal-player-integration",
+        "objective": "検証済みIce Courier WebGL成果物を新しい作品詳細へローカル接続する",
+        "acceptance": [
+          "成果物のsourceCommitとSHA256を照合する",
+          "詳細から読み込み・開始・終了して一覧へ戻れる",
+          "読み込み失敗時に再試行と戻る導線を表示する",
+          "Unity内部入力とページ操作の干渉を検査する",
+          "デスクトップと390x844でプレイヤー枠を確認し実タッチ未実行を区別する",
+          "本番全体置換をせず未配信を公開中と扱わない"
+        ],
+        "outputs": [
+          "Unityプレイヤーの共通Web枠",
+          "同一版成果物との接続記録",
+          "表示と入力の検査記録"
+        ],
+        "checks": [
+          "ローカルWebGL実画面と入力",
+          "配布版照合",
+          "Web静的ビルドと内部リンク"
+        ],
+        "next_step": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks",
+        "decision_id": "D-web-renovation-20261010",
+        "hypothesis": "作品詳細のルール説明と開始後の戻り先を揃えれば、公開時に迷わずUnity作品へ移れる",
+        "source": "user:天啓.md:2026-10-10:web-renovation",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-unity-portal-foundation"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "6b2c1c9a68761cad2ae91c3c8bb23040257c727a4a4eee22feb814c3aacfe24a",
+      "sha256": "c71d366b095bd3b7daa4bba2994cd231465442b81605a722acb197cb64eb7863"
+    },
+    {
+      "revision": 18,
+      "at": 1791562881.2708127,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261010T0100-9e5710806c84",
+        "fence": 2,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-20261010-0100.json",
+            "sha256": "895f5fdf490e90cb1a17cf2412b129f4d483041925748a3944bfa8486a34097e"
+          }
+        ],
+        "checks": [
+          "Build, repository, static links/checksums passed",
+          "Actual browser search/filter/navigation/keyboard and desktop/390x844 passed",
+          "24 ledger tests and 4 parent recovery comparisons passed"
+        ],
+        "next_step": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "c71d366b095bd3b7daa4bba2994cd231465442b81605a722acb197cb64eb7863",
+      "sha256": "a24e29f9b9fae864c94a520ef65d9671ac1788a00888b0234810671f944aeca6"
+    },
+    {
+      "revision": 19,
+      "at": 1791562925.7279973,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "do",
+        "source": "evidence:business/unity/evidence/portal-20261010-0100.json",
+        "evidence": "Shared portal foundation implemented; static build and real browser search/navigation/portrait checks passed. Production and play-start-rate unobserved.",
+        "next_step": "Connect verified Ice Courier WebGL artifact to local detail shell and inspect load/start/return/failure"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "a24e29f9b9fae864c94a520ef65d9671ac1788a00888b0234810671f944aeca6",
+      "sha256": "7e7c790d384dd25782ad0aca126fe15cfa30c1396c3dc311bc82db97c1a9d7a3"
     }
   ],
-  "projection_sha256": "cc35c115ada583c85a5d3d86db524779fbe0b59be914aae111173491d1cc7bb2"
+  "projection_sha256": "7776e6978f299883b762845806c57e141e47615738524498d4bc5a7ef0d0581b"
 }

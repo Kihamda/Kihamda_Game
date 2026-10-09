@@ -2,11 +2,10 @@ import type { Plugin, ResolvedConfig } from "vite";
 import { build } from "vite";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { readFileSync, writeFileSync, rmSync } from "fs";
+import { readFileSync, writeFileSync, rmSync, mkdirSync } from "fs";
 import { resolve } from "path";
 import { pathToFileURL } from "url";
-
-const RANDOM_SCRIPT = `<script>var r=document.querySelector("[data-random-paths]");if(r){var p=JSON.parse(r.dataset.randomPaths);r.href=p[Math.floor(Math.random()*p.length)]}</script>`;
+import { portalPaths, portalPages } from "../src/portal/routes";
 
 export default function portalSSG(): Plugin {
   let config: ResolvedConfig;
@@ -37,25 +36,26 @@ export default function portalSSG(): Plugin {
       // Render to static markup
       const appUrl = pathToFileURL(resolve(ssgDir, "App.js")).href;
       const { default: App } = await import(appUrl);
-      const markup = renderToStaticMarkup(createElement(App));
 
       // Rewrite dist/index.html
       const htmlPath = resolve(outDir, "index.html");
-      let html = readFileSync(htmlPath, "utf-8");
-
-      html = html
-        // Inject static content
-        .replace('<div id="root"></div>', `<div id="root">${markup}</div>`)
-        // Strip all Vite-injected JS (no hydration needed)
-        .replace(/\s*<script type="module" crossorigin[^>]*><\/script>/g, "")
-        .replace(/\s*<link rel="modulepreload"[^>]*>/g, "")
-        // Add random-game inline script
-        .replace("</body>", `${RANDOM_SCRIPT}\n</body>`);
-
-      writeFileSync(htmlPath, html);
+      const template = readFileSync(htmlPath, "utf-8");
+      for (const pathname of portalPaths as string[]) {
+        const markup = renderToStaticMarkup(createElement(App, { pathname }));
+        const title = `${portalPages[pathname].title} | Kihamda.NET`;
+        const html = template
+          .replace('<div id="root"></div>', `<div id="root">${markup}</div>`)
+          .replace(/<title>.*?<\/title>/, `<title>${title}</title>`)
+          .replace(/content="__TITLE__"/g, `content="${title}"`)
+          .replace(/content="__DESCRIPTION__"/g, `content="${portalPages[pathname].description}"`)
+          .replaceAll("__URL__", `https://game.kihamda.net${pathname}`);
+        const directory = resolve(outDir, pathname.slice(1));
+        mkdirSync(directory, { recursive: true });
+        writeFileSync(resolve(directory, "index.html"), html);
+      }
       rmSync(ssgDir, { recursive: true, force: true });
 
-      config.logger.info("\x1b[32m✓ Portal SSG: static HTML injected\x1b[0m");
+      config.logger.info(`✓ Portal SSG: ${portalPaths.length} shared pages generated`);
     },
   };
 }

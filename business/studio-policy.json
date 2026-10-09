@@ -15,6 +15,9 @@
     "19:00": "analysis-and-strategy"
   },
   "currentProject": "ice-courier",
+  "currentPriority": "unity-web-portal-renovation",
+  "prioritySource": "user:天啓.md:2026-10-10:web-renovation",
+  "portalPolicy": "共通画面から静的生成。未公開の作品に開始リンクを出さない。本番全体置換を行わず、ローカル接続と同一成果物の検査を続ける。",
   "allowed": [
     "edit",
     "test",

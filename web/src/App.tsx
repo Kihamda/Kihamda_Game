@@ -1,11 +1,13 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import PortalApp from "./portal/App";
+import { isPortalPath, portalPages, canonicalPath } from "./portal/routes";
 import "./app/AppShell.css";
 import { getGameById } from "./games/metadata";
 import { gameComponents, hasGameComponent } from "./games/registry";
 
 type Route =
   | { type: "home" }
+  | { type: "portal"; pathname: string }
   | { type: "game"; gameId: string }
   | { type: "notFound" };
 
@@ -23,6 +25,7 @@ function normalizePathname(pathname: string): string {
 function parseRoute(pathname: string): Route {
   const normalized = normalizePathname(pathname);
   if (normalized === "/") return { type: "home" };
+  if (isPortalPath(normalized)) return { type: "portal", pathname: normalized };
 
   const gameMatch = normalized.match(/^\/games\/([^/]+)$/);
   if (gameMatch?.[1]) {
@@ -83,6 +86,26 @@ function App() {
   const route = useMemo(() => parseRoute(pathname), [pathname]);
 
   useEffect(() => {
+    const page = portalPages[canonicalPath(pathname)];
+    if (page) {
+      document.title = `${page.title} | Kihamda.NET`;
+      for (const selector of ['meta[name="description"]', 'meta[property="og:description"]']) {
+        document.querySelector(selector)?.setAttribute("content", page.description);
+      }
+      document.querySelector('meta[property="og:title"]')?.setAttribute("content", document.title);
+      const url = `https://game.kihamda.net${canonicalPath(pathname)}`;
+      document.querySelector('link[rel="canonical"]')?.setAttribute("href", url);
+      document.querySelector('meta[property="og:url"]')?.setAttribute("content", url);
+    }
+    if (window.location.hash) {
+      document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
+    } else {
+      window.scrollTo(0, 0);
+    }
+    if (window.location.hash) document.getElementById(window.location.hash.slice(1))?.focus({ preventScroll: true });
+  }, [pathname]);
+
+  useEffect(() => {
     const isGameRoute = route.type === "game";
     document.body.classList.toggle("is-game-route", isGameRoute);
 
@@ -93,6 +116,9 @@ function App() {
 
   if (route.type === "home") {
     return <PortalApp />;
+  }
+  if (route.type === "portal") {
+    return <PortalApp pathname={route.pathname} />;
   }
 
   if (route.type === "game") {

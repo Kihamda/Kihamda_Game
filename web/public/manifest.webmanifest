@@ -1,11 +1,11 @@
 {
-  "name": "Game Platform",
-  "short_name": "Games",
+  "name": "Kihamda.NET Unityゲーム",
+  "short_name": "Kihamda.NET",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#f8fafc",
-  "theme_color": "#1d4ed8",
+  "background_color": "#f3f1e9",
+  "theme_color": "#172b28",
   "icons": [
     {
       "src": "/icons/icon.svg",

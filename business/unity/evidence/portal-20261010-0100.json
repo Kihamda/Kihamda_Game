@@ -1,0 +1,100 @@
+{
+  "runId": "unity-20261010T0100-9e5710806c84",
+  "scheduledAt": "2026-10-10T01:00:00+09:00",
+  "recordedAt": "2026-10-10T01:21:21.249901+09:00",
+  "baselineCommit": "08a91bb",
+  "scope": "Unity portal foundation; full renovation remains in progress",
+  "checks": {
+    "build": "TypeScript, ESLint, Vite, 5 shared static pages passed",
+    "repository": "4 legacy URLs and 17 Unity GUIDs preserved; Unity catalog registered",
+    "artifact": "local links, metadata, JS bundle and checksums passed",
+    "browser": [
+      "search matching and no results",
+      "filter released zero and reset",
+      "Enter activates filter and detail link",
+      "detail to list and contact",
+      "privacy and about shared pages",
+      "reload and title update",
+      "desktop and 390x844 screenshots; no horizontal overflow across 5 portal pages; console errors empty"
+    ],
+    "businessTests": "24 passed using artifacts/test-temp after sandbox default-temp permission failure",
+    "parentRecovery": "4 HEAD commits and all 8 archive hashes match workspace-projects.json"
+  },
+  "unverified": [
+    "Unity player integration with redesigned shell",
+    "new Unity compile and distribution build this run",
+    "real touch",
+    "human fun",
+    "production publication"
+  ],
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "playStarts": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "artifacts": [
+    {
+      "path": "web/src/portal/App.tsx",
+      "sha256": "7bb63a35a2bca2ef7a5c587f89706cca98f1663615f4f4deae3564353ce47a5a"
+    },
+    {
+      "path": "web/src/portal/App.css",
+      "sha256": "4fafe705ffbf1628ac4e80ce9e0aea3a86f60139c60a0f2ceba0aeb952b9df86"
+    },
+    {
+      "path": "web/src/portal/routes.ts",
+      "sha256": "e0aaeab1f50e35c90fec570414bd8a1bed1b1d7247482a7f82123b96e37390d8"
+    },
+    {
+      "path": "web/src/portal/data/unity-games.json",
+      "sha256": "dccc1a13c0217e8d09628c7b5c501d5504e8e1e5eccf8979c9fbe9cdf1aaed89"
+    },
+    {
+      "path": "web/src/App.tsx",
+      "sha256": "be99fc14955ef4006a04fb3ca36480e7e29057cee05d00dde5ab7103fe3738a8"
+    },
+    {
+      "path": "web/plugins/portal-ssg.ts",
+      "sha256": "8285eaa0d87e73c2b8eeeb09c0f0d819b234f4233c1b715b8d7b13586da81b3b"
+    },
+    {
+      "path": "web/scripts/prebuild.mjs",
+      "sha256": "7ca8580943bc047a6e0e89e00fb1ffcea12efd9403b2fe8e00a0003c3fcb0203"
+    },
+    {
+      "path": "scripts/check-repository.mjs",
+      "sha256": "1e792a60f698992e41f70c945b1c8b6ebfd2a7932b7561201749c732e0c60142"
+    },
+    {
+      "path": "scripts/check-web-build.mjs",
+      "sha256": "6f6237548e37d4262c084c1cee2df486c6ca67c738d4311c949d383927a59dd2"
+    },
+    {
+      "path": "web/dist/index.html",
+      "sha256": "9ac5b484c28dfc8e2fa7072222035b64d315bcd26f575498b94316f0864b5436"
+    },
+    {
+      "path": "web/dist/games/ice-courier/index.html",
+      "sha256": "17018e777bf349ded7a16255f3ff5badd0440fc12c76208054a838fdde3a5ff2"
+    },
+    {
+      "path": "web/dist/SHA256SUMS",
+      "sha256": "1697675440f35684b652c5384e62cc7b9a1f0d8e9048cb6713bd073a4150d935"
+    },
+    {
+      "path": "docs/images/portal-20261010-desktop.jpg",
+      "sha256": "4382ddc1f11caf507a93e98310fab9c5d6a9319d0dbca8a96ef43dad18d66d4b"
+    },
+    {
+      "path": "docs/images/portal-20261010-mobile.jpg",
+      "sha256": "2179f86734511f0e289a5777869a4692cc8e668185fa02958c1d184869fc7d54"
+    },
+    {
+      "path": "docs/portal-renovation.md",
+      "sha256": "99e024d48753cfe752a5a7ef9531d72931317e7c615b3444ed44c1530107f8e5"
+    }
+  ],
+  "nextStep": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks"
+}

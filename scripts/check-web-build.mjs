@@ -7,14 +7,28 @@ import assert from 'node:assert/strict';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = resolve(root, 'web/dist');
 const games = JSON.parse(readFileSync(resolve(root, 'web/src/portal/data/games.json'), 'utf8')).games;
-for (const path of ['index.html', ...games.map(game => `games/${game.id}/index.html`)]) {
+const unityGames = JSON.parse(readFileSync(resolve(root, 'web/src/portal/data/unity-games.json'), 'utf8')).games;
+const portalPaths = ['index.html', 'about/index.html', 'contact/index.html', 'privacy-policy/index.html', ...unityGames.map(game => `games/${game.id}/index.html`)];
+for (const path of [...portalPaths, ...games.map(game => `games/${game.id}/index.html`)]) {
   const html = readFileSync(resolve(dist, path), 'utf8');
   assert(html.includes('<html'), `Missing HTML ${path}`);
   for (const [, asset] of html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)/g)) {
     assert(statSync(resolve(dist, asset.slice(1))).isFile(), `Missing ${asset} in ${path}`);
   }
 }
-const version = { commit: process.env.GITHUB_SHA ?? 'local-uncommitted', gameCount: games.length, source: 'web', generatedAt: new Date().toISOString() };
+for (const path of portalPaths) {
+  const html = readFileSync(resolve(dist, path), 'utf8');
+  assert(html.includes('id="main"') && html.includes('フッター'), `Missing shared navigation ${path}`);
+  assert(!/__TITLE__|__DESCRIPTION__|__URL__|12,450|SearchAction|flashreflex/.test(html), `Stale metadata ${path}`);
+  assert(/<script type="module" crossorigin src="\/assets\//.test(html), `Interactive bundle absent ${path}`);
+  for (const [, href] of html.matchAll(/href="(\/[^"?#]*)/g)) {
+    const target = href.endsWith('/') ? `${href}index.html` : href;
+    assert(statSync(resolve(dist, target.slice(1))).isFile(), `Broken local link ${href} in ${path}`);
+  }
+}
+const detail = readFileSync(resolve(dist, 'games/ice-courier/index.html'), 'utf8');
+assert(detail.includes('公開を準備') && !detail.includes('<iframe'), 'Unreleased game must not expose a fake player');
+const version = { commit: process.env.GITHUB_SHA ?? 'local-uncommitted', gameCount: unityGames.length, legacyRouteCount: games.length, source: 'web', generatedAt: new Date().toISOString() };
 writeFileSync(resolve(dist, 'build-version.json'), JSON.stringify(version, null, 2) + '\n');
 function files(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
