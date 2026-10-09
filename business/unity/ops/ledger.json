@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": 24,
+  "revision": 25,
   "business_id": "game-site",
   "fence": 3,
   "lease": null,
@@ -292,6 +292,16 @@
         "sha256": "971f91db105fddab00d082ff80c54face57e2680f51cfff94be818deaabb9dc5"
       },
       "external_status": "push rejected by automatic approval review; not applied; no PR or production publication"
+    },
+    "D-player-image-provenance-20261010": {
+      "id": "D-player-image-provenance-20261010",
+      "source": "evidence:business/unity/evidence/player-20261010-provenance.json",
+      "hypothesis": "Verified Git source hashes and a corrected screenshot clip preserve reproducible acceptance without changing history",
+      "next_step": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately",
+      "artifact": {
+        "path": "business/unity/evidence/player-20261010-provenance.json",
+        "sha256": "78f655e1552cef4235249fab9fba19b211c886c84f8c79b14d6a3b1d1768f955"
+      }
     }
   },
   "runs": {
@@ -951,7 +961,27 @@
       },
       "previous": "cc23855f0ce71a409abff02772e4768b46fc61757e7ba669a87b43394710b7fa",
       "sha256": "668f63fb08c88c2dfeacf80aa5675e526ede87d70dc624d7806567182b0f8ca8"
+    },
+    {
+      "revision": 25,
+      "at": 1791584778.1413975,
+      "action": "decision",
+      "data": {
+        "id": "D-player-image-provenance-20261010",
+        "source": "evidence:business/unity/evidence/player-20261010-provenance.json",
+        "hypothesis": "Verified Git source hashes and a corrected screenshot clip preserve reproducible acceptance without changing history",
+        "next_step": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately",
+        "artifact": {
+          "path": "business/unity/evidence/player-20261010-provenance.json",
+          "sha256": "78f655e1552cef4235249fab9fba19b211c886c84f8c79b14d6a3b1d1768f955"
+        }
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "668f63fb08c88c2dfeacf80aa5675e526ede87d70dc624d7806567182b0f8ca8",
+      "sha256": "d9c5ed7f3e208c0451ce8691349272fe5592dfdb901be8a7f8697916c77ed78d"
     }
   ],
-  "projection_sha256": "35718d9092f1d6bdb7a867090b5ef3d9dbbeebae86e314595e2f17d544d6141e"
+  "projection_sha256": "96431458452b3becf057b7aad91090199a39fe9e35618f380f9ad23f3f183a62"
 }

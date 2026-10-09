@@ -30,6 +30,8 @@
 
 ![390pxの検査枠](images/player-20261010-390.png)
 
+縦画面の画像は390×844のviewportのうち、操作枠を含む390×720の範囲。初回の画像切り出しを修正し、元の検査記録を変更せず追加証跡player-20261010-provenance.jsonへ保存した。
+
 ## ローカルでの確認
 
 先にnpm run buildを実行する。PowerShellで$env:KIHAMDA_LOCAL_PLAYER='1'を設定し、web/でnode node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 4178 --strictPortを起動する。ローカル成果物がない環境ではこのフラグを設定しない。通常のビルドとプレビューはフラグ不要。
