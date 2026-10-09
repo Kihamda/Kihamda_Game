@@ -10,7 +10,7 @@
 | web/への移動後のTypeScript・ESLint・Vite build | 成功。101ゲームページ生成 |
 | 旧カタログ、URL、.meta/GUIDの構成検査 | 成功。カタログ101件を維持。元から3件のゲームソース欠落あり |
 | 配信成果物のHTML、参照asset、SHA-256 | 成功。101旧URL、402ファイル |
-| Windows台帳unit test | 21件成功。2プロセスCAS競合、lease/fence、失敗復旧、履歴改ざん、外部結果未確定を含む |
+| Windows台帳unit test | 22件。2プロセスCAS競合、lease/fence、失敗復旧、履歴改ざん、外部結果未確定、ANSI環境でのCLI出力を含む |
 | 元台帳のevent chainとprojection検証 | 成功。revision 99で検証後、CLIで移行決定を追加してrevision 100 |
 | Unity Editor起動 | 実行したがライセンス不在で198終了 |
 | Unity実コンパイル・test・Windows/Web build | 未実証。ライセンスを有効化して再実行する |
@@ -19,6 +19,8 @@
 | ゲーム制作・移植・実プレイ | 未実施。今回の作業範囲から外した |
 
 最初のWindowsテストではtzdata不在が判明した。固定依存をローカル仮想環境へ導入し、全21検査が成功した。OS全体のPython環境は変更していない。
+
+GitHub Windows CIでは21テストは通ったが、台帳CLIのリダイレクト出力がANSIコードページで失敗した。CLI標準出力をUTF-8へ固定し、ASCII環境で実際のCLIを起動する回帰検査を追加した。
 
 Unityのpackage lockと自動生成ProjectSettingsはEditorの初回成功後にレビューして保存する。現時点で再現可能なUnityビルドが完成したとは報告しない。
 

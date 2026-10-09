@@ -6,6 +6,7 @@ from contextlib import contextmanager
 import hashlib
 import json
 import os
+import sys
 from pathlib import Path
 import tempfile
 import time
@@ -352,6 +353,10 @@ class Ledger:
 
 
 def main():
+    # Windows redirected output otherwise inherits an ANSI code page.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser()
     parser.add_argument("action", choices=["status", "next", "init", "decision", "task", "start", "claim",
                         "checkpoint", "complete", "recover", "approval", "prepare-external",

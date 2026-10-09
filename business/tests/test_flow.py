@@ -1,6 +1,7 @@
 import copy
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -232,6 +233,14 @@ class FlowTest(unittest.TestCase):
         (self.path.parent / "evidence/review.json").write_bytes(b"changed")
         with self.assertRaises(flow.Conflict):
             self.send("complete", passed=True, **self.evidence(lease))
+
+    def test_cli_unicode_output_with_ascii_environment(self):
+        self.send("feedback", source="user:test", message="移行を先に進める", next_step="基盤検査")
+        env = dict(os.environ, PYTHONIOENCODING="ascii", PYTHONUTF8="0")
+        result = subprocess.run([sys.executable, str(FLOW), "status", "--ledger", str(self.path)],
+                                capture_output=True, env=env)
+        self.assertEqual(result.returncode, 0, result.stderr.decode("utf-8"))
+        self.assertEqual(json.loads(result.stdout.decode("utf-8"))["revision"], self.rev)
 
 
 if __name__ == "__main__":
