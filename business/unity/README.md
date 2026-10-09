@@ -2,6 +2,8 @@
 
 `ops/ledger.json` がUnity制作・コンサルティングの正本です。古いクラウド運用のbusiness/ops/ledger.jsonは履歴として保持し、同じleaseや成果物保存領域を共有しません。更新は共通のflow.pyを使い、元のイベントを消しません。
 
+CLIはUnity台帳があるcheckoutではそれを既定に使います。各更新で--ledger business/unity/ops/ledger.jsonを明示してください。旧履歴を検査するときだけ--ledger business/ops/ledger.jsonを指定します。
+
 ```powershell
 python business/ops/flow.py status --ledger business/unity/ops/ledger.json
 python business/ops/flow.py next --ledger business/unity/ops/ledger.json

@@ -6,6 +6,7 @@
   "wipLimit": 1,
   "canonicalState": "business/unity/ops/ledger.json",
   "ownerInstructions": "天啓.md",
+  "workspaceHandoff": "business/workspace-projects.json",
   "scheduleTimezone": "Asia/Tokyo",
   "slots": {"01:00":"implementation","07:00":"implementation-and-quality","13:00":"market-research-and-concrete-priorities","19:00":"analysis-and-strategy"},
   "currentProject": "ice-courier",

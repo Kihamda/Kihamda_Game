@@ -1,0 +1,15 @@
+{
+  "id":"T-ice-courier-touch-polish",
+  "objective":"少数の盤面でルールを理解できる導入と、スマートフォンで押せる操作部を整える",
+  "acceptance":["390x844で説明と盤面と主要操作が読める","Undo・再開と方向ボタンが実タッチで動く","人間の初回プレイで荷物と到着点とフロストの役割を確認する","未評価の面白さを自己採点で確定しない"],
+  "outputs":["Unity UIの改善","画面と入力の検査記録","本人の反応または未観測の記録"],
+  "checks":["実Web入力","390x844とデスクトップの表示","EditMode/PlayMode"],
+  "next_step":"配布ビルド検証後に、縦画面の操作部と導入説明を一工程ずつ改善する",
+  "decision_id":"D-local-studio-20261009",
+  "hypothesis":"一つのルールを明確に見せ、Undoで試せる導入の方が盤面数を増やすより検証しやすい",
+  "source":"research:business/unity/research/2026-10-09-puzzle-positioning.md",
+  "pdca":"do",
+  "experiment_id":"E-ice-courier",
+  "priority":1,
+  "depends_on":["T-ice-courier-unity-evaluation"]
+}

@@ -17,6 +17,17 @@ ART = [{"path": "evidence/review.json", "sha256": hashlib.sha256(b"reviewed").he
 
 
 class FlowTest(unittest.TestCase):
+    def test_cli_defaults_to_canonical_unity_domain(self):
+        canonical = FLOW.parents[1] / "unity/ops/ledger.json"
+        if not canonical.exists():
+            self.skipTest("legacy checkout has no Unity domain")
+        expected = json.loads(canonical.read_text(encoding="utf-8"))
+        result = subprocess.run([sys.executable, str(FLOW), "status"],
+                                capture_output=True, text=True, encoding="utf-8", check=True)
+        actual = json.loads(result.stdout)
+        self.assertEqual(actual["revision"], expected["revision"])
+        self.assertEqual(actual["tasks"], expected["tasks"])
+
     def test_domain_ledger_uses_repository_artifact_root(self):
         domain_path = self.path.parent / "business/unity/ops/ledger.json"
         domain_path.parent.mkdir(parents=True)

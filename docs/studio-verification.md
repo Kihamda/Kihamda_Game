@@ -6,17 +6,17 @@
 | --- | --- |
 | 101作品の採否と元カタログ | 全件記録、4作品を参考実装として保持 |
 | 削除前の全参照bundle | verify成功、完全履歴 |
-| 親フォルダ4プロジェクト | 全参照bundleと追跡ソースzip保存、bundle verify成功、採否記録 |
+| 親フォルダ4プロジェクト | 全参照bundleと追跡ソースzip保存、bundle verify成功。別フォルダへのclone・元commit checkout・fsckも4件成功 |
 | Windows台帳検査 | 23件成功。CAS競合、lease/fence、復旧、履歴改ざん、ASCII環境のCLI、Unity事業台帳の成果物ルートを含む |
 | ゲームルール単体 | 3盤面の解法、荷物、フロスト、境界、Undo、保存・再開、壊れた保存、勝利が成功 |
 | 実Unity Validate | 6000.3.23f1で成功 |
 | 実Unity EditMode/PlayMode | 成功。シーン起動・移動・保存・再開を検査 |
 | Windows制作中ビルド | 成功、EXE・版情報・SHA-256を検査 |
-| Windows実画面 | タイトル、盤面、荷物、操作説明を表示。ルート2へ進んだ状態も確認 |
+| Windows実画面・キー | 実方向キーで回収・フロスト・2手の勝利を確認。盤面、説明、次ルートボタンを表示 |
 | Web制作中ビルド | 未成功。Shader compiler通信切断の後、内部CLRエラー。ゲームソースのC#エラーではなく、GitHub Linux環境と比較する |
 | actionlint | 成功 |
 | Unity Actions Secrets | 3項目の存在確認。本人の明示承認でLICENSEを登録、EMAIL/PASSWORDは本人が登録 |
-| GitHub Unity配布ビルド | 次の工程で同一commitを実行し、結果を追記する |
+| GitHub Unity配布ビルド | 最初のrun 37944786802でEditMode 2/2、PlayMode 1/1が成功。チェック登録権限不足を修正し、run 37945379221で再実行中 |
 | 新ローカル定期実行 | ID unity、ACTIVE、01/07/13/19時、localプロジェクト設定を保存先TOMLでも確認 |
 | 旧クラウド定期実行 | 停止を本人が承認。旧IDの更新は登録不存在で失敗。ブラウザーの全状態検索でも「ゲーム事業」の登録が見つからない。停止成功とは断定しない |
 | 売上・純利益・開始/再訪 | 未観測、null |
