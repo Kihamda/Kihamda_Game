@@ -1,0 +1,16 @@
+{
+  "status": "created_and_readback_verified",
+  "automation_id": "6ac77735d534819188a56592fb0dd5c4",
+  "title": "ゲーム事業の品質・成長PDCA",
+  "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Asia/Tokyo:20261009T010000\nRRULE:FREQ=DAILY;BYHOUR=1,7,13,19;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+  "timezone": "Asia/Tokyo",
+  "is_enabled": true,
+  "created_at": "2026-10-08T10:58:19.003114+00:00",
+  "source": "user:current-thread:2026-10-08:same-timing-as-BOOTH",
+  "request_file": "business/automation-request.json",
+  "booth_schedule_unchanged": true,
+  "booth_id": "6ac48e9c898081919e3f32b3598d3274",
+  "scheduled_run_observed": false,
+  "main_push_or_merge_authorized": false,
+  "notes": "Registration verified; future execution and business outcomes remain unobserved."
+}

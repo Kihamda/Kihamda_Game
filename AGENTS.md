@@ -1,17 +1,19 @@
-# game.kihamda.net 改善事業
+# Kihamda.NETゲーム事業
 
-正本はこのリポジトリの `business/ops/ledger.json`。`business/README.md` と直近checkpointを読み、最新mainと作業branchを照合する。Sell-Something-Wellは参照元であり、BOOTH商品・自動タスク・private state・認証情報を変更／全コピーしない。
+毎回、ルートの `天啓.md`、`STATE.md`、`business/ops/ledger.json` の順に確認する。天啓は本人の意思表明用。本人が書いた内容をAIの都合で変更しない。直接の最新指示を最優先し、ファイルを読んだ事実だけで公開許可を捏造しない。
 
-成功指標は実訪問者、意図的なプレイ開始率、7日再訪、検索流入、継続的な月間純利益。表示カウンタ、GAタグ、検査件数、ゲーム数は実績でない。匿名集計の期間・定義・sourceが揃わない値はnull。全費用と同期間収益がない純利益もnull。
+現在の工程はリポジトリ移行。移行とCI/CD確認が終わるまでゲーム制作を始めない。新作と移植の実装はすべてUnity。既存React版は `web/` に保全し、従来URLの維持と不具合対応に限定する。ゲーム選定は次工程で実物と根拠を評価して行う。
 
-本人の最新指示: 今回は具体的ゲーム改善を行わず基盤を構築し、改善はBOOTHと同時刻の定期処理で進める。ゲーム専用の日本時間01/07/13/19時処理の新規登録は明示許可済み。BOOTH既存タスクは変更しない。一作ずつ大きく作り込み、ゲーム数・掲載作品の構成も再検討する。毎回薄い新作を増やさない。
+単一実行主体、サブエージェント禁止、WIP1。運用履歴は `business/ops/ledger.json` の正本を維持し、手書き、初期化、イベント削除を禁止する。`business/ops/flow.py` でexpected revision、run ID、fence、leaseを照合する。別マシンの競合はリモートheadのCASで照合する。未知の外部結果は照合前に再実行しない。
 
-正本管理branchはops/game-business。内部修正と検査、通常の別branch保存は許可済み。**mainへのpush・PRのmergeはCDが走る公開操作**。定期処理は別branch保存・PR作成まで。main push、merge、自動merge、デプロイdispatch、release tagは実行しない。公開、広告契約、課金、外部連絡は対象版への本人許可が必要。AI検査合格は承認でない。追加先払い0円。
+Unity作品は `unity/<Project>/` に分離し、Assetsと.meta、Packages、ProjectSettingsを保存する。Library、Temp、ビルド成果物、ライセンスをGitへ追加しない。このGitHubリポジトリはpublic。有償アセットや未公開有料作品のソースを入れない。生成アセットには出所と利用条件を残す。
 
-実行は `python3 business/ops/flow.py`。WIP1。全状態更新はexpected revision、worker更新はrun_id/fence/有効leaseを照合する。25分でcheckpoint、30分以内に保存。期限切れleaseは自動claimしない。外部結果不明は照合証拠まで停止。過去event、task、decisionと未完了を削除しない。ledgerを手書きしない。別マシン間ではbranch headのCASも必須。競合したledgerを自動mergeせず保全・照合する。
+内部編集・検査・別ブランチ保存は許可済み。mainへのpush/mergeは既存CDを起動する。今回の移行版は作業ブランチで検証し、公開サイト全体の置換、DNS、販売、決済、外部連絡を実行しない。検証済み無料Unity作品の配信は許可された領域に限定し、技術検査・ステージング・復元条件を満たした時点で行う。新たな公開範囲は事前確認する。
 
-taskは目的・受入条件・成果物・検査・次作業を必須とし、仮説→変更→テスト→公開後観測→判断を結ぶ。移管taskは元IDと出典を保持する。報告は技術品質、集客、実利益を分け、修正・検査・保存commit・未観測・次の一工程を示す。
+GitHubの外部PRをローカルself-hosted runnerで実行しない。Unityの実行は信頼済みmainと保護されたenvironmentに限定し、CI不合格品を公開しない。ライセンス、runner、FTPの値をコードへ埋め込まない。
 
-## 2026-10-09 最新の本人feedback
+成功指標は継続的な月間純利益。売上、訪問者、開始率、再訪率の未観測はnull。ゲーム数、検査数、ビルド成功、AIの自己評価を事業成果や面白さの証明にしない。
 
-既存約10作の重点候補を完成させて楽しくし、新作約10作も制作する。共通UXと個々のゲームの完成度を両立。育成/クリッカーADV、結果が伝わる演出を候補に含む。`business/portfolio-20261009.json` と `catalog-policy.md` の最新節に従う。WIP1で既存/新作を順に制作し、途中工程を捨てない。ゲーム本数は制作範囲であり事業成果ではない。実制作は従来どおり定期runで行い、main push/mergeは禁止。
+BOOTH向け文章商品の新規量産を停止し、既存資産を保存する。記事は下書きで保存し、自動投稿しない。Sell-Something-Wellのprivate stateや認証情報をこのpublicリポジトリへコピーしない。別事業のスケジュール切替は移行工程の後に元設定を保全して行う。
+
+各runは25分でcheckpoint、30分以内に保存。終了時は成果物、実施した検査、未確認事項、次の一工程を記録する。意味と事実を保った簡潔な日本語で報告する。

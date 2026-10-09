@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": 100,
+  "revision": 99,
   "business_id": "game-site",
   "fence": 4,
   "lease": null,
@@ -1426,14 +1426,6 @@
         "選定調査は2run以内に採用/改善/停止",
         "約10+10は制作範囲、KPIではない"
       ]
-    },
-    "D-unity-repository-first-20261009": {
-      "id": "D-unity-repository-first-20261009",
-      "source": "user:current-thread:2026-10-09:repository-first",
-      "quote": "まず先にリポジトリ移行をやれ。ゲーム制作はそのあとだ",
-      "hypothesis": "既存の運用履歴と公開資産を保全してUnityモノレポの基盤を先に検証すれば、制作と移行を混同せず継続開発できる",
-      "policy": "Unity-only new games and ports; monorepo; WIP1; no subagents; preserve legacy and private boundaries",
-      "next_step": "移行PRのCIと復元検査を確認し、Unityライセンス有効化後に基盤を実証する。ゲーム制作は移行後"
     }
   },
   "runs": {
@@ -4714,25 +4706,7 @@
       },
       "previous": "262da5b5be94268cfce521d14ffb213bdcef8a0bb9f3c157412f2ff6840828de",
       "sha256": "c74a24dc032a9b0ebbe2fd025cd10ea2f163627313c1ef8284aa722932b33382"
-    },
-    {
-      "revision": 100,
-      "at": 1791516707.2971842,
-      "action": "decision",
-      "data": {
-        "id": "D-unity-repository-first-20261009",
-        "source": "user:current-thread:2026-10-09:repository-first",
-        "quote": "まず先にリポジトリ移行をやれ。ゲーム制作はそのあとだ",
-        "hypothesis": "既存の運用履歴と公開資産を保全してUnityモノレポの基盤を先に検証すれば、制作と移行を混同せず継続開発できる",
-        "policy": "Unity-only new games and ports; monorepo; WIP1; no subagents; preserve legacy and private boundaries",
-        "next_step": "移行PRのCIと復元検査を確認し、Unityライセンス有効化後に基盤を実証する。ゲーム制作は移行後"
-      },
-      "result": {
-        "recorded": "decision"
-      },
-      "previous": "c74a24dc032a9b0ebbe2fd025cd10ea2f163627313c1ef8284aa722932b33382",
-      "sha256": "db16a2c8db9f8f71ae650a72594bf7bc461d26c87883343d5aabb14718825d02"
     }
   ],
-  "projection_sha256": "141a3bebf179126433c610aa426b5b077f66b58a18986eb32ed74a28212cdd25"
+  "projection_sha256": "db3731754d328b53320ccc73a5df92a0ded9759c7cb60800c96fd3fa95f58c1e"
 }

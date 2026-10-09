@@ -1,0 +1,46 @@
+name: Unity local CI
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: unity-local-editor
+  cancel-in-progress: false
+
+jobs:
+  unity:
+    # Public PRs never trigger this runner. Enable only after environment protection,
+    # a dedicated runner account and a valid local Unity license are configured.
+    if: github.ref == 'refs/heads/main' && vars.UNITY_LOCAL_CI_ENABLED == 'true'
+    environment: unity-local-ci
+    runs-on: [self-hosted, Windows, X64, unity-trusted]
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate project
+        shell: pwsh
+        run: ./scripts/Invoke-Unity.ps1 -Operation Validate
+      - name: EditMode
+        shell: pwsh
+        run: ./scripts/Invoke-Unity.ps1 -Operation EditMode
+      - name: PlayMode
+        shell: pwsh
+        run: ./scripts/Invoke-Unity.ps1 -Operation PlayMode
+      - name: Windows build
+        shell: pwsh
+        run: ./scripts/Invoke-Unity.ps1 -Operation Windows
+      - name: Web build
+        shell: pwsh
+        run: ./scripts/Invoke-Unity.ps1 -Operation Web
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unity-validation-${{ github.sha }}
+          path: artifacts/unity/
+          retention-days: 90
+          if-no-files-found: error

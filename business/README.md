@@ -1,5 +1,7 @@
 # ゲーム改善事業の定期実行
 
+2026-10-09移行作業の最新指示はルートの天啓.md、AGENTS.md、STATE.mdとdocs/migration.mdを優先する。以下は旧運用の説明として保全する。新しいゲーム制作はリポジトリ移行完了後。台帳のCLIはWindows排他とUTF-8へ対応済みで、Windowsではbusiness/requirements.txtのtzdataが必要。過去のroot games/参照は当時のcommitに照合し、新規のWeb参照はweb/games/を使う。
+
 事業の正本は Kihamda/Kihamda_Game の **ops/game-business branch**。mainは公開ソースであり、push・mergeがCDを起動する。管理branchへの通常保存と改善用branchのPR作成までがAIの作業範囲。mainへのpush、PRのmerge、自動merge、workflow_dispatch、release tagのpushを実行しない。
 
 本人の最新指示により、今回はゲーム修正の実施を停止し、この基盤を構築した。2048の途中差分はreview/merge2048-candidate.patchへ保全し、ゲームソースを元に戻した。保存patchの10検査は内部検査、モバイル差分は未完了候補。公開も集客・収益改善の実績もない。
