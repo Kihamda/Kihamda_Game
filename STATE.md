@@ -12,4 +12,4 @@
 
 天啓.mdは本人専用。本人の最新指示をbusiness/studio-policy.jsonにも記録した。売上・純利益・公開後の指標は未観測。無料公開前に実プレイ、同一版の成果物、復元条件を確認する。
 
-親フォルダは既存Gitプロジェクト4件に加え、Atohitori/Referenceの原稿・設計7件も保全した。GitやUnity実装がない資料を実装済みと扱わない。制作候補として引き継ぎ、元原稿はローカルに保持する。参照順と復元ハッシュはbusiness/workspace-projects.json。
+親フォルダは既存Gitプロジェクト4件に加え、Atohitori/Referenceの原稿・設計7件も保全した。GitやUnity実装がない資料を実装済みと扱わない。本人の2026-10-10指示により、Atohitoriは本人が別途制作するため自律開発の対象外。原稿と保全記録は保持し、完成後に本人から配布の依頼があった場合だけ扱う。参照順と復元ハッシュはbusiness/workspace-projects.json。

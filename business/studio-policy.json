@@ -8,11 +8,40 @@
   "ownerInstructions": "天啓.md",
   "workspaceHandoff": "business/workspace-projects.json",
   "scheduleTimezone": "Asia/Tokyo",
-  "slots": {"01:00":"implementation","07:00":"implementation-and-quality","13:00":"market-research-and-concrete-priorities","19:00":"analysis-and-strategy"},
+  "slots": {
+    "01:00": "implementation",
+    "07:00": "implementation-and-quality",
+    "13:00": "market-research-and-concrete-priorities",
+    "19:00": "analysis-and-strategy"
+  },
   "currentProject": "ice-courier",
-  "allowed": ["edit", "test", "curate-and-remove-legacy-with-recovery", "generate-original-assets", "github-branch-save", "pull-request", "github-actions-build"],
+  "allowed": [
+    "edit",
+    "test",
+    "curate-and-remove-legacy-with-recovery",
+    "generate-original-assets",
+    "github-branch-save",
+    "pull-request",
+    "github-actions-build"
+  ],
   "publication": "validated-free-games-in-existing-permitted-domain-only",
-  "notAuthorized": ["BOOTH-listing", "payments", "paid-contracts", "DNS-changes", "secret-publication", "mass-SNS-posting"],
-  "metrics": {"monthlyNetProfitJpy":null,"visitors":null,"playStarts":null,"completionRate":null,"returnRate":null},
-  "ciOptionalForLocalProgress": true
+  "notAuthorized": [
+    "BOOTH-listing",
+    "payments",
+    "paid-contracts",
+    "DNS-changes",
+    "secret-publication",
+    "mass-SNS-posting"
+  ],
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "playStarts": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "ciOptionalForLocalProgress": true,
+  "ownerManagedProjects": [
+    "Atohitori"
+  ]
 }
