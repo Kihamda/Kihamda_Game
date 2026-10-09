@@ -5,3 +5,4 @@
 *.asmdef text eol=lf
 *.yml text eol=lf
 *.py text eol=lf
+business/unity/evidence/*.json text eol=lf
