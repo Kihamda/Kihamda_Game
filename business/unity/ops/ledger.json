@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 9,
+  "revision": 10,
   "business_id": "game-site",
   "fence": 1,
-  "lease": {
-    "run_id": "manual-studio-validation-20261009-2334",
-    "task_id": "T-ice-courier-unity-evaluation",
-    "fence": 1,
-    "expires_at": 1791558248.9308667
-  },
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -37,7 +32,7 @@
       "pdca": "do",
       "experiment_id": "E-ice-courier",
       "priority": 0,
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "run_id": "manual-studio-validation-20261009-2334",
@@ -53,6 +48,24 @@
           ],
           "next_step": "Wait for run 37945379221 WebGL result, then verify downloaded Web artifact and browser input",
           "at": 1791557218.7071683
+        },
+        {
+          "run_id": "manual-studio-validation-20261009-2334",
+          "fence": 1,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/run-37945379221-final.json",
+              "sha256": "614b65d42d5fcaa4a5de290995dce992fe08b57536d95be9d8f970281538c25b"
+            }
+          ],
+          "checks": [
+            "Unity compile, EditMode 2/2 and PlayMode 1/1 passed",
+            "Windows and Web hosted builds succeeded; downloaded SHA256 and commit verified",
+            "Actual Windows keyboard and Web keyboard/button, Undo, reload/Resume passed"
+          ],
+          "next_step": "T-ice-courier-touch-polish: improve portrait layout and test real touch; human fun remains unobserved",
+          "passed": true,
+          "at": 1791558150.0099356
         }
       ],
       "claims": [
@@ -112,7 +125,7 @@
     "manual-studio-validation-20261009-2334": {
       "run_id": "manual-studio-validation-20261009-2334",
       "source": "user:current-thread:2026-10-09:autonomous-studio",
-      "status": "open",
+      "status": "completed",
       "started_at": 1791556448.9243035
     }
   },
@@ -360,7 +373,34 @@
       },
       "previous": "e57acf9ffbfa776cc26c5e8185c447b8c49ac26708b301ba26b2729a976c708b",
       "sha256": "643313793288787a80b595860c0e638c77018dc297838f779246b98a4b360c40"
+    },
+    {
+      "revision": 10,
+      "at": 1791558150.0099356,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-studio-validation-20261009-2334",
+        "fence": 1,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/run-37945379221-final.json",
+            "sha256": "614b65d42d5fcaa4a5de290995dce992fe08b57536d95be9d8f970281538c25b"
+          }
+        ],
+        "checks": [
+          "Unity compile, EditMode 2/2 and PlayMode 1/1 passed",
+          "Windows and Web hosted builds succeeded; downloaded SHA256 and commit verified",
+          "Actual Windows keyboard and Web keyboard/button, Undo, reload/Resume passed"
+        ],
+        "next_step": "T-ice-courier-touch-polish: improve portrait layout and test real touch; human fun remains unobserved",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "643313793288787a80b595860c0e638c77018dc297838f779246b98a4b360c40",
+      "sha256": "ce63ad3f0c34db322218a7583ba2b475c65b89af3c3371dd83f5a083e82217b8"
     }
   ],
-  "projection_sha256": "c16976f5bf98d51acf13986d771cd45cb70e7bc65666834b160e0e8cfecf71e1"
+  "projection_sha256": "cc35c115ada583c85a5d3d86db524779fbe0b59be914aae111173491d1cc7bb2"
 }

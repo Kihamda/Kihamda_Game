@@ -1,5 +1,7 @@
 # リポジトリ移行の決定
 
+以下はPR #10時点の履歴。2026-10-10時点の運用はSTATE.mdとdocs/studio-verification.mdを正本とする。Unity CIはPersonalを使うGitHubホスト型runnerへ置換済みで、self-hosted runnerは不要。旧Web CDは手動に変更済み。親フォルダ4件の引き継ぎと101作品の採否も後続PR #12で整備した。
+
 2026-10-09の本人指示「まず先にリポジトリ移行をやれ。ゲーム制作はそのあとだ」に従う。今回の対象はKihamda/Kihamda_Gameの開発・運用構成。先にUnity移植を実装しかけたコードは削除し、ゲーム選定も次工程へ戻した。
 
 ## 正本と履歴

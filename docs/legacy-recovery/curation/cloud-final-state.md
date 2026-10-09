@@ -1,0 +1,7 @@
+# 旧クラウド履歴の最終照合
+
+2026-10-09にops/game-businessを再取得した。最新commitは4acf793713b066a9ceceef8a94cae5d29b84851d、保存時刻は2026-10-09T13:14:35+09:00。最新ledgerはrevision 118、leaseはnull、未知の外部結果は0件。13時の計測監査が完了しており、19時の新しい保存commitは見つからない。
+
+event chainとprojectionを共通CLIで検証した。台帳原本を含むbusiness/ops、business/evidence、STATE.mdは親フォルダのローカル専用_recovery/cloud-ops-4acf793.zipへ保存した。公開リポジトリにはこの照合記録だけを追加する。zipのSHA-256は7777086efaeda30fd5c9fbd709bf5ab284557d685fe3606902d8b5ead6922b32。現在のmain由来の旧履歴とUnity制作の新台帳は上書きしていない。分岐した履歴を一つのevent chainへ無理にmergeしない。
+
+旧タスクIDの停止は本人が承認したが、管理ツールは登録不存在を返した。ブラウザーの全状態検索にも「ゲーム事業」は現れない。停止操作の成功は断定せず、登録が見つからないことと新しいローカル定期実行が有効であることを区別する。
