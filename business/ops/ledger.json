@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 49,
+  "revision": 54,
   "business_id": "game-site",
-  "fence": 3,
-  "lease": null,
+  "fence": 4,
+  "lease": {
+    "run_id": "manual-portfolio-20261009-0935",
+    "task_id": "T-portfolio-20261009",
+    "fence": 4,
+    "expires_at": 1791507640.473669
+  },
   "tasks": {
     "T-system-bootstrap": {
       "id": "T-system-bootstrap",
@@ -581,6 +586,42 @@
       "status": "ready",
       "checkpoints": [],
       "claims": []
+    },
+    "T-portfolio-20261009": {
+      "id": "T-portfolio-20261009",
+      "objective": "既存約10作の重点候補と新作約10案を選び、共通体験と各作の完成条件をtask化する",
+      "acceptance": [
+        "ソース根拠つき既存10候補。未プレイ検査と人気nullを区別",
+        "新作10案に操作/進行/終了/再挑戦の異なるコアループ、完成gate",
+        "共通UX/演出設定とWIP1の順次工程、既存未完了を保全"
+      ],
+      "outputs": [
+        "business/portfolio-20261009.json",
+        "business/catalog-policy.md",
+        "successor tasks"
+      ],
+      "checks": [
+        "catalog/source evidence",
+        "task completeness/dependency",
+        "canonical readback"
+      ],
+      "next_step": "共通体験を2048から実装・検査し、各作を順に完成させる",
+      "decision_id": "D-portfolio-20261009",
+      "hypothesis": "一貫した操作と各作品の深いコアループが再訪へ寄与する可能性",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "pdca": "plan",
+      "experiment_id": "EXP-catalog",
+      "priority": 5,
+      "status": "running",
+      "checkpoints": [],
+      "claims": [
+        {
+          "run_id": "manual-portfolio-20261009-0935",
+          "task_id": "T-portfolio-20261009",
+          "fence": 4,
+          "expires_at": 1791507640.473669
+        }
+      ]
     }
   },
   "decisions": {
@@ -621,6 +662,19 @@
         "checked_at": "2026-10-08T22:12:21Z"
       },
       "note": "Post-completion read-only CI confirmation; preserve prior report and hashes without rewriting."
+    },
+    "D-portfolio-20261009": {
+      "id": "D-portfolio-20261009",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "hypothesis": "共通体験の一貫性と各作の挑戦/進行/再挑戦、演出が開始と再訪を改善する可能性。実測未観測。",
+      "next_step": "既存約10作と新作約10案を選び、独立taskと完成gateを定義し、定期runで順に実制作。",
+      "supersedes": "D-catalog-2048-20261009",
+      "constraints": [
+        "WIP1",
+        "no main push/merge",
+        "zero upfront",
+        "counts are scope not success KPI"
+      ]
     }
   },
   "runs": {
@@ -644,6 +698,12 @@
       "source": "scheduled:game-site:2026-10-09T07:00:00+09:00",
       "status": "completed",
       "started_at": 1791497084.0574381
+    },
+    "manual-portfolio-20261009-0935": {
+      "run_id": "manual-portfolio-20261009-0935",
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "status": "open",
+      "started_at": 1791506140.4654849
     }
   },
   "experiments": {
@@ -762,6 +822,12 @@
       "message": "mainにpushするとCD走るからってのは覚えといて",
       "next_step": "別branchへの保存・PR作成まで。main push/merge/auto-merge禁止",
       "at": 1791456805.2505584
+    },
+    {
+      "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+      "message": "既存の優秀な約10作を選んで楽しく完成させる。Web全体の一貫した体験と各作の完成度を上げ、新作も約10作。演出強化、育成、クリッカーADVも候補。",
+      "next_step": "重点候補/新作案/共通体験と各作の完成条件を正本へ反映。WIP1で順に実制作。",
+      "at": 1791506140.427282
     }
   ],
   "approvals": [
@@ -1948,7 +2014,113 @@
       },
       "previous": "c1f8b4cad3ff8598fc74c5406bc8e664f7d7a43386febed3a6b614839ae94604",
       "sha256": "9afcf89b79d935566902b8e6999dc39cba3ebe22f417468b393d000835da971b"
+    },
+    {
+      "revision": 50,
+      "at": 1791506140.427282,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "message": "既存の優秀な約10作を選んで楽しく完成させる。Web全体の一貫した体験と各作の完成度を上げ、新作も約10作。演出強化、育成、クリッカーADVも候補。",
+        "next_step": "重点候補/新作案/共通体験と各作の完成条件を正本へ反映。WIP1で順に実制作。"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "9afcf89b79d935566902b8e6999dc39cba3ebe22f417468b393d000835da971b",
+      "sha256": "696863ea3eb704e796b1119a1cba3ce149cb688ea7a3e4777c2d9c84d6274269"
+    },
+    {
+      "revision": 51,
+      "at": 1791506140.439447,
+      "action": "decision",
+      "data": {
+        "id": "D-portfolio-20261009",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "hypothesis": "共通体験の一貫性と各作の挑戦/進行/再挑戦、演出が開始と再訪を改善する可能性。実測未観測。",
+        "next_step": "既存約10作と新作約10案を選び、独立taskと完成gateを定義し、定期runで順に実制作。",
+        "supersedes": "D-catalog-2048-20261009",
+        "constraints": [
+          "WIP1",
+          "no main push/merge",
+          "zero upfront",
+          "counts are scope not success KPI"
+        ]
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "696863ea3eb704e796b1119a1cba3ce149cb688ea7a3e4777c2d9c84d6274269",
+      "sha256": "7e3313a6a650690102cd79e3633e95d7b5680f88a193ac2e11b8f9a72dd7a8e3"
+    },
+    {
+      "revision": 52,
+      "at": 1791506140.4501612,
+      "action": "task",
+      "data": {
+        "id": "T-portfolio-20261009",
+        "objective": "既存約10作の重点候補と新作約10案を選び、共通体験と各作の完成条件をtask化する",
+        "acceptance": [
+          "ソース根拠つき既存10候補。未プレイ検査と人気nullを区別",
+          "新作10案に操作/進行/終了/再挑戦の異なるコアループ、完成gate",
+          "共通UX/演出設定とWIP1の順次工程、既存未完了を保全"
+        ],
+        "outputs": [
+          "business/portfolio-20261009.json",
+          "business/catalog-policy.md",
+          "successor tasks"
+        ],
+        "checks": [
+          "catalog/source evidence",
+          "task completeness/dependency",
+          "canonical readback"
+        ],
+        "next_step": "共通体験を2048から実装・検査し、各作を順に完成させる",
+        "decision_id": "D-portfolio-20261009",
+        "hypothesis": "一貫した操作と各作品の深いコアループが再訪へ寄与する可能性",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new",
+        "pdca": "plan",
+        "experiment_id": "EXP-catalog",
+        "priority": 5
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "7e3313a6a650690102cd79e3633e95d7b5680f88a193ac2e11b8f9a72dd7a8e3",
+      "sha256": "a95e7f22631f6a692d2e6e37a63e829a38cbb0deeed1fb2763143471e1874242"
+    },
+    {
+      "revision": 53,
+      "at": 1791506140.4654849,
+      "action": "start",
+      "data": {
+        "run_id": "manual-portfolio-20261009-0935",
+        "source": "user:current-thread:2026-10-09:ten-existing-ten-new"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "a95e7f22631f6a692d2e6e37a63e829a38cbb0deeed1fb2763143471e1874242",
+      "sha256": "ec2ab7db99ffeada210e75e069bcc00b8a384a3e955c2bbd90668891a6546dc1"
+    },
+    {
+      "revision": 54,
+      "at": 1791506140.473669,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-portfolio-20261009-0935",
+        "task_id": "T-portfolio-20261009",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "manual-portfolio-20261009-0935",
+        "task_id": "T-portfolio-20261009",
+        "fence": 4,
+        "expires_at": 1791507640.473669
+      },
+      "previous": "ec2ab7db99ffeada210e75e069bcc00b8a384a3e955c2bbd90668891a6546dc1",
+      "sha256": "5d35700cce46872fb04418005d7ab01079266baad7dd5ef1ed30e30942e85240"
     }
   ],
-  "projection_sha256": "8180d8afc551a5a8f2a02b72fda924e6d87dee14309ea53a03f4090fb9d24c9d"
+  "projection_sha256": "4a0310e7beaf1ab42917adf0392c555b142ca9d4003f4af5c14817a047b3fa1e"
 }
