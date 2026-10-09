@@ -1,0 +1,85 @@
+{
+  "run_id": "scheduled-game-20261009-1300",
+  "source_main": "0d3192f7464a710b0c5b4db34f7d9bb971ed6a85",
+  "purpose": "Source-level tag queue behavior on local browser, not collected GA4 data",
+  "analytics_blocked": true,
+  "external_requests_aborted": 3,
+  "cases": [
+    {
+      "case": "portal_initial",
+      "fixed_counter_present": true,
+      "queue": [
+        {
+          "command": "js",
+          "name": "object"
+        },
+        {
+          "command": "config",
+          "name": "G-L7TY3RFZB7"
+        }
+      ]
+    },
+    {
+      "case": "SPA_game_navigation",
+      "path": "/games/merge2048/",
+      "queue": [
+        {
+          "command": "js",
+          "name": "object"
+        },
+        {
+          "command": "config",
+          "name": "G-L7TY3RFZB7"
+        }
+      ]
+    },
+    {
+      "case": "intentional_board_move",
+      "board_changed": true,
+      "queue": [
+        {
+          "command": "js",
+          "name": "object"
+        },
+        {
+          "command": "config",
+          "name": "G-L7TY3RFZB7"
+        }
+      ]
+    },
+    {
+      "case": "restart",
+      "queue": [
+        {
+          "command": "js",
+          "name": "object"
+        },
+        {
+          "command": "config",
+          "name": "G-L7TY3RFZB7"
+        }
+      ]
+    },
+    {
+      "case": "direct_game_load",
+      "queue": [
+        {
+          "command": "js",
+          "name": "object"
+        },
+        {
+          "command": "config",
+          "name": "G-L7TY3RFZB7"
+        }
+      ],
+      "seo": {
+        "title": "Merge 2048 | game.kihamda.net",
+        "canonical": "https://game.kihamda.net/games/merge2048/"
+      }
+    }
+  ],
+  "custom_game_start_observed": false,
+  "audit_passed": true,
+  "page_errors": [],
+  "limits": "gtag remote library blocked: does not establish actual GA4 collection, enhanced measurement history settings, consent coverage, property access, or visitor behavior."
+}

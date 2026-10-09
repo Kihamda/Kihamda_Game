@@ -1,0 +1,132 @@
+{
+  "run_id": "scheduled-game-20261009-1300",
+  "task_id": "T-measurement-audit",
+  "experiment_id": "EXP-merge2048",
+  "source_main": "0d3192f7464a710b0c5b4db34f7d9bb971ed6a85",
+  "source_pins_sha256": {
+    "web/index.html": "cb3af3ece39619ddf8c943b1967246965898eb7ef851f9d9ceabf68eb3dabf39",
+    "web/plugins/game-pages-generator.ts": "c451e5d6de62aab98b6bd205e1d64581914ad010d60273cf734eefd1e88cfede",
+    "web/src/App.tsx": "6e15c0a48266ee98e2f46b1ce6865db8b680f7a29376d6fe142b7ec00f4ce4c3",
+    "web/src/portal/App.tsx": "4bfdd5af63b55cb96d5f145092d3da221d2a684d9badbdc69b19a86009080846",
+    "web/src/games/registry.ts": "4499590f7f7901e56051fbfac873164ca059582e22f42d8bf162a7b1118bee8b",
+    "web/games/merge2048/src/App.tsx": "522d7708fa5c77930234601f78616850511040fd25d0059d36aec01f7dd0bc56",
+    "web/games/snakechaos/src/App.tsx": "63e62682b3600b7acdd978fc310a4be47c145cbf0cdf44a303f284ed9a7f7d19",
+    "web/games/ntiktaktoe/src/App.tsx": "acf2c25fc3f203e6edaca26ebe1f0e680545e18182a552d8535452c95a6d87fe",
+    "web/package-lock.json": "fa1c2657a83b9a2496908d19333d70d9d71bad3a4f569938c5ba6faa55ed6802",
+    ".github/workflows/build-and-deploy.yml": "99831b3541b726d3ccbcb91c631ef25fa1654c880e79d5de00a249fa24a4bbcc"
+  },
+  "measurement_contract": "business/handoff/measurement-contract.json",
+  "kpis": "business/kpis.json",
+  "source_findings": [
+    {
+      "source": "web/index.html:85;web/plugins/game-pages-generator.ts:71",
+      "finding": "公開tag ID G-L7TY3RFZB7のjs/config初期化がある。収集成功/権限/consent/匿名集計を証明しない。"
+    },
+    {
+      "source": "web/src/portal/App.tsx:81",
+      "finding": "12,450+は固定文字列。期間・定義・出典付き実測ではない。"
+    },
+    {
+      "source": "web/src/App.tsx:42-87",
+      "finding": "内部linkをpushState/popstateで遷移する。明示page_view/custom game_start呼出しはない。GA4 enhanced measurementがhistoryを追うかはproperty設定未確認。"
+    },
+    {
+      "source": "web/src/games/registry.ts",
+      "finding": "カタログと実体を分ける。simonecho/minesweeper/slidepuzzleは移行構成検査で本体欠落を確認。これらを正常に開始可能な人口へ混ぜない。"
+    },
+    {
+      "source": "web/games/merge2048/src/App.tsx:133,199;web/games/snakechaos/src/App.tsx:99;web/games/ntiktaktoe/src/App.tsx:324",
+      "finding": "実操作/開始の候補hookはあるがgame_start送信はない。2048のinit/renderだけでは意図的開始ではない。"
+    }
+  ],
+  "browser_evidence": "business/evidence/measurement-browser-20261009-1300.json",
+  "collection_status": {
+    "GA4_aggregate_available": false,
+    "GA4_account_access": null,
+    "SearchConsole_aggregate_available": false,
+    "SearchConsole_account_access": null,
+    "analytics_connector_tools_available": false,
+    "revenues_and_complete_cost_ledger": null
+  },
+  "metrics": {
+    "unique_visitors": null,
+    "eligible_game_page_sessions": null,
+    "game_start_sessions": null,
+    "start_rate": null,
+    "return_rate_7d": null,
+    "search_clicks": null,
+    "monthly_net_profit_jpy": null
+  },
+  "schema_proposal": {
+    "status": "design-only; no tracking/source/account/public change",
+    "version": "intentional-start-v1",
+    "parameters": [
+      "game_id (catalog stable ID)",
+      "release_id (tested public commit/build ID)",
+      "schema_version",
+      "action (controlled enum; no user text/identifier)"
+    ],
+    "events": {
+      "game_page_ready": "route/componentが正常に準備完了。開始ではない。操作不能/404をreadyとしない。",
+      "game_start": "本人が開始/再開を選んでactive gameplayへ入る、または2048では最初の盤面を変える有効入力。自動init/reload/画面表示/no-opは含めない。",
+      "game_restart": "同じ訪問で再挑戦。attemptは別集計できるが開始sessionの分子を増やさない。",
+      "game_resume": "本人操作で保存盤面を再開。自動復元だけではstartを送らず、同じsession/gameの分子は一度。",
+      "game_complete": "作品で定義したterminal successのみ。2048は2048tile達成。失敗と途中離脱を混ぜない。"
+    },
+    "transport": "既存Webと将来Unity Web adapterで同じ意味を使う。QA/stagingは送信をdefaultで抑制。IDやcookieをrepoへ保存しない。Consent/property設定の変更は本人の操作だけ。GA4が任意event_idを自動dedupするとは仮定しない。"
+  },
+  "denominator_proposal": {
+    "metric": "start_rate",
+    "numerator": "対象game URLを訪れた同じGA4 session人口のうち、対象gameのintentional-start-v1 game_startが1回以上あるdistinct session数",
+    "denominator": "同じgame URL、release/schema、期間/timezone、QA/bot/internal除外条件のgame-page sessions。404/本体欠落を別に報告。正常readyのみの開始率を併記するならready denominatorと明記して混ぜない。",
+    "dedup": "GA4 sessionキーで集計側distinct、複数event/restart/reloadを1session/gameへ畳む。サーバー集計は匿名数だけ共有し、row-level IDはrepo/chatへ出さない。",
+    "exceptions": "denominator=0/欠落・同一人口不成立ならnull。ページビューやクリック数で代用しない。"
+  },
+  "diagnostics": {
+    "not_started": "eligible game-page sessions minus started sessions。操作不能/読込失敗/単に閲覧など内訳を区別、未開始を即離脱と呼ばない。",
+    "abandonment": "開始sessionでterminal success未到達をloss/exit/paused/unknownへ分類。時間timeoutだけでfailureを推定しない。",
+    "return_7d": "固定first-visit cohortで7日追跡が完了した人口のみ。識別/consent制約を注記。",
+    "search_clicks": "SC web search、対象property/URL/同じ完了期間/timezone/source。GA4 organic sessionsと同一指標にしない。"
+  },
+  "release_observation": {
+    "start": "本人公開のrelease証拠と計測schema/QA passが揃ってから14/28日の窓を固定",
+    "before_after": "旧版にgame_startがないため開始率のbeforeはnull。新イベント導入後の数字を旧版への改善率と呼ばない。季節/流入/consent変化を併記。",
+    "current_release_verified": false,
+    "current_window": null,
+    "decision": "unobserved until qualified aggregates; do not reset existing experiment"
+  },
+  "anonymous_export_request": {
+    "required": [
+      "source/property reference (no credentials)",
+      "completed period start/end/timezone",
+      "game URL/release/schema and QA/internal/bot filters",
+      "unique users / eligible sessions / started sessions / ready sessions with same population",
+      "7d cohort size, fully-followed users, returned users",
+      "SC search clicks source/URL/search type/date boundaries",
+      "same calendar month complete revenue and all costs for profit"
+    ],
+    "method": "本人が既存GA4/SCから匿名集計を出せる場合の提案。新規有料サービス/BigQuery設定/広告契約を要求しない。"
+  },
+  "implementation_review_proposal": {
+    "step": "移行基盤実証後、実制作と独立した一工程でadapterを別branchへ実装・検査",
+    "acceptance": [
+      "render/reload/no-opでstartなし、最初の有効操作でstart、restart/resumeとsession集計が定義どおり",
+      "SPA navigation / direct load / 404 / storage拒否 / consentなし / QA送信抑制",
+      "同じversion source diff・技術QA・metadataを揃えレビューPR。アカウント/公開設定は変更しない"
+    ],
+    "file_candidates": [
+      "web/src/shared/measurement adapter (proposal)",
+      "Unity Web bridge (proposal; no current implementation)"
+    ],
+    "public_action": "main push/merge/dispatch禁止。計測用PR案は本管理PRの設計成果で、計測が実装済みとは扱わない。"
+  },
+  "quality_checks": {
+    "repository_contract": "pass; existing 3 missing sources separately recorded",
+    "ledger_unit_tests": 22,
+    "web_build": "pass; typecheck/lint/vite and migrated URL/asset checksum verifier",
+    "browser_queue": "pass: portal/SPA/direct/real key move/restart observed, no custom game_start in queued calls; remote analytics blocked",
+    "field_CWV": null,
+    "real_device_Safari": null
+  },
+  "next_step": "T-unity-runtime-evidenceの本人local実証結果を照合。承認/集計待ちは依存taskだけblocked。独立した移行復元/CI結果点検は続ける。"
+}

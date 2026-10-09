@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 108,
+  "revision": 118,
   "business_id": "game-site",
   "fence": 5,
-  "lease": {
-    "run_id": "scheduled-game-20261009-1300",
-    "task_id": "T-measurement-audit",
-    "fence": 5,
-    "expires_at": 1791519913.7402437
-  },
+  "lease": null,
   "tasks": {
     "T-system-bootstrap": {
       "id": "T-system-bootstrap",
@@ -218,8 +213,119 @@
       "hypothesis": "実物・検査・観測を同じ実験へ結ぶ",
       "decision_id": "D-game-pdca-20261008",
       "source": "user:current-thread:2026-10-08:game-pdca-scheduling",
-      "status": "running",
-      "checkpoints": [],
+      "status": "done",
+      "checkpoints": [
+        {
+          "kind": "artifact",
+          "at": 1791519230.234826,
+          "run_id": "scheduled-game-20261009-1300",
+          "fence": 5,
+          "artifact": {
+            "path": "artifacts/9224b9877386f20af3fae7ef5e5efa98bc1df68b7611493caf7e5cc36979a0b9",
+            "sha256": "9224b9877386f20af3fae7ef5e5efa98bc1df68b7611493caf7e5cc36979a0b9",
+            "name": "measurement-audit-20261009-1300.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791519230.262202,
+          "run_id": "scheduled-game-20261009-1300",
+          "fence": 5,
+          "artifact": {
+            "path": "artifacts/551dc2d0d86712bd4b860d88bd916f60daf7fabe07fa60989e4823ec6b85d9e2",
+            "sha256": "551dc2d0d86712bd4b860d88bd916f60daf7fabe07fa60989e4823ec6b85d9e2",
+            "name": "measurement-audit.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791519230.2829838,
+          "run_id": "scheduled-game-20261009-1300",
+          "fence": 5,
+          "artifact": {
+            "path": "artifacts/d16773d718d5f0560bfef5615a7b192ea954da81f872028fd5eb08ded3c74309",
+            "sha256": "d16773d718d5f0560bfef5615a7b192ea954da81f872028fd5eb08ded3c74309",
+            "name": "measurement-browser-20261009-1300.json"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791519230.3041067,
+          "run_id": "scheduled-game-20261009-1300",
+          "fence": 5,
+          "artifact": {
+            "path": "artifacts/c419369a922f8456b37cf4925eae1afe097378d8f2f84b77c8184090f203333d",
+            "sha256": "c419369a922f8456b37cf4925eae1afe097378d8f2f84b77c8184090f203333d",
+            "name": "measurement-browser-20261009-1300.mjs"
+          }
+        },
+        {
+          "kind": "artifact",
+          "at": 1791519230.324274,
+          "run_id": "scheduled-game-20261009-1300",
+          "fence": 5,
+          "artifact": {
+            "path": "artifacts/dbe9bcba42700bb38fb3441bfa29144f243b0a08c8a790e9db19beb4e79200a7",
+            "sha256": "dbe9bcba42700bb38fb3441bfa29144f243b0a08c8a790e9db19beb4e79200a7",
+            "name": "STATE.md"
+          }
+        },
+        {
+          "run_id": "scheduled-game-20261009-1300",
+          "fence": 5,
+          "artifacts": [
+            {
+              "path": "business/evidence/measurement-audit-20261009-1300.json",
+              "sha256": "9224b9877386f20af3fae7ef5e5efa98bc1df68b7611493caf7e5cc36979a0b9"
+            },
+            {
+              "path": "business/ops/artifacts/9224b9877386f20af3fae7ef5e5efa98bc1df68b7611493caf7e5cc36979a0b9",
+              "sha256": "9224b9877386f20af3fae7ef5e5efa98bc1df68b7611493caf7e5cc36979a0b9"
+            },
+            {
+              "path": "business/evidence/measurement-audit.json",
+              "sha256": "551dc2d0d86712bd4b860d88bd916f60daf7fabe07fa60989e4823ec6b85d9e2"
+            },
+            {
+              "path": "business/ops/artifacts/551dc2d0d86712bd4b860d88bd916f60daf7fabe07fa60989e4823ec6b85d9e2",
+              "sha256": "551dc2d0d86712bd4b860d88bd916f60daf7fabe07fa60989e4823ec6b85d9e2"
+            },
+            {
+              "path": "business/evidence/measurement-browser-20261009-1300.json",
+              "sha256": "d16773d718d5f0560bfef5615a7b192ea954da81f872028fd5eb08ded3c74309"
+            },
+            {
+              "path": "business/ops/artifacts/d16773d718d5f0560bfef5615a7b192ea954da81f872028fd5eb08ded3c74309",
+              "sha256": "d16773d718d5f0560bfef5615a7b192ea954da81f872028fd5eb08ded3c74309"
+            },
+            {
+              "path": "business/evidence/measurement-browser-20261009-1300.mjs",
+              "sha256": "c419369a922f8456b37cf4925eae1afe097378d8f2f84b77c8184090f203333d"
+            },
+            {
+              "path": "business/ops/artifacts/c419369a922f8456b37cf4925eae1afe097378d8f2f84b77c8184090f203333d",
+              "sha256": "c419369a922f8456b37cf4925eae1afe097378d8f2f84b77c8184090f203333d"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "dbe9bcba42700bb38fb3441bfa29144f243b0a08c8a790e9db19beb4e79200a7"
+            },
+            {
+              "path": "business/ops/artifacts/dbe9bcba42700bb38fb3441bfa29144f243b0a08c8a790e9db19beb4e79200a7",
+              "sha256": "dbe9bcba42700bb38fb3441bfa29144f243b0a08c8a790e9db19beb4e79200a7"
+            }
+          ],
+          "checks": [
+            "GA4/SC exports and permission unknown, all real metrics null; fixed/tag separated",
+            "main source and actual local browser queue confirm no custom game_start; external requests blocked",
+            "schema/denominator/session dedup/restart/resume/14-28 windows and implementation PR proposal completed",
+            "web build/checksums/repository contract/22 ledger tests pass; no tracking/game/public change"
+          ],
+          "next_step": "T-migration-cd-rollback-evidence independent audit; T-unity-runtime-evidence and T-intentional-start-adapter remain blocked on actual local runtime evidence",
+          "passed": true,
+          "at": 1791519230.3492408
+        }
+      ],
       "claims": [
         {
           "run_id": "scheduled-game-20261009-1300",
@@ -1424,6 +1530,71 @@
         }
       ],
       "claims": []
+    },
+    "T-intentional-start-adapter": {
+      "id": "T-intentional-start-adapter",
+      "objective": "移行後のWeb/Unityで同じ意味のintentional-start adapterを一工程ずつ実装する",
+      "acceptance": [
+        "measurement-audit-20261009-1300のschema/分母/再挑戦/再開/QA抑制に従う",
+        "render/reload/no-opで開始にせず有効開始操作でevent。SPA/direct/404/保存拒否/consent/QA抑制を検査",
+        "計測設定/公開を変更せず同一版sourceと検査を揃え別branch PR"
+      ],
+      "outputs": [
+        "adapter source/QA/PR"
+      ],
+      "checks": [
+        "real browser event transport stub",
+        "Unity adapter test when runtime available",
+        "build/remote readback"
+      ],
+      "next_step": "本人が同一版公開した証拠と匿名集計が揃えばT-release-measurementをunblock",
+      "decision_id": "D-intentional-start-contract-20261009",
+      "hypothesis": "意図的開始と閲覧を区別し効果判断を可能にする",
+      "source": "run:scheduled-game-20261009-1300; business/evidence/measurement-audit-20261009-1300.json",
+      "pdca": "do",
+      "experiment_id": "EXP-merge2048",
+      "depends_on": [
+        "T-unity-runtime-evidence"
+      ],
+      "priority": 25,
+      "status": "blocked",
+      "checkpoints": [
+        {
+          "task_id": "T-intentional-start-adapter",
+          "source": "run:scheduled-game-20261009-1300; business/evidence/measurement-audit-20261009-1300.json",
+          "reason": "移行基盤が未実証。現在は設計と内部監査のみ。Unity側compile/test/buildは実行できない。",
+          "next_step": "本人local基盤実証の同一commit証拠が揃えばunblock。GA4/SCアカウント設定は操作しない。",
+          "at": 1791519230.1924167
+        }
+      ],
+      "claims": []
+    },
+    "T-migration-cd-rollback-evidence": {
+      "id": "T-migration-cd-rollback-evidence",
+      "objective": "移行版のCI/CD公式結果と復元契約を独立した読取り検査で照合する",
+      "acceptance": [
+        "現在main/ops/PR10とGitHub公式結果をpinして照合",
+        "公開成功/rollback外部結果は証拠なしでnull。dispatch/deploy/restoreの外部操作をしない",
+        "欠ける証拠/次の実行可能工程を分離し、Unity待ちで独立検査を停止しない"
+      ],
+      "outputs": [
+        "version-pinned migration CI/CD/recovery audit"
+      ],
+      "checks": [
+        "official GitHub readback",
+        "artifact checksum and source contract",
+        "local restoration when authorized artifacts available"
+      ],
+      "next_step": "Unity待ちとは別に移行整合を判断、同じ選択の調査2run以内でdecision",
+      "decision_id": "D-migration-canonical-reconciled-20261009",
+      "hypothesis": "外部操作を再実行せず保存版と公式結果を照合すれば安全に移行基盤を継続検査できる",
+      "source": "run:scheduled-game-20261009-1300; business/evidence/measurement-audit-20261009-1300.json",
+      "pdca": "check",
+      "experiment_id": "EXP-system",
+      "priority": 15,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -1519,6 +1690,15 @@
         "Unity_windows_local": "repo reports license failure198; not rerun here"
       },
       "policy": "Migration before game production per current main AGENTS. Direct session main push/merge/dispatch prohibition remains."
+    },
+    "D-intentional-start-contract-20261009": {
+      "id": "D-intentional-start-contract-20261009",
+      "source": "run:scheduled-game-20261009-1300; business/evidence/measurement-audit-20261009-1300.json",
+      "hypothesis": "閲覧と意図的開始を分け、同じsession人口を集計すれば品質改善の公開後効果を判断できる。現段階未観測。",
+      "next_step": "移行基盤の実証後にadapterの独立工程を実装・QA・PR。旧版start_rateはnullのまま。公開前後14/28日比較でschema違いを混ぜない。",
+      "experiment_id": "EXP-merge2048",
+      "schema": "intentional-start-v1",
+      "status": "design_only_not_implemented"
     }
   },
   "runs": {
@@ -1553,7 +1733,7 @@
       "run_id": "scheduled-game-20261009-1300",
       "scheduled_at": "2026-10-09T13:00:00+09:00",
       "source": "scheduled:game-site:2026-10-09T13:00:00+09:00",
-      "status": "open",
+      "status": "completed",
       "started_at": 1791518913.715109
     }
   },
@@ -4992,7 +5172,267 @@
       },
       "previous": "8f671cf03b9b33e1f085e3c627efb41ecd31c5dd134b89124360d5ca0f778f8d",
       "sha256": "4413be9a033fa7040b1aad9ebe475da42e69378141a00c2e1621d490cefe6a48"
+    },
+    {
+      "revision": 109,
+      "at": 1791519230.1503932,
+      "action": "decision",
+      "data": {
+        "id": "D-intentional-start-contract-20261009",
+        "source": "run:scheduled-game-20261009-1300; business/evidence/measurement-audit-20261009-1300.json",
+        "hypothesis": "閲覧と意図的開始を分け、同じsession人口を集計すれば品質改善の公開後効果を判断できる。現段階未観測。",
+        "next_step": "移行基盤の実証後にadapterの独立工程を実装・QA・PR。旧版start_rateはnullのまま。公開前後14/28日比較でschema違いを混ぜない。",
+        "experiment_id": "EXP-merge2048",
+        "schema": "intentional-start-v1",
+        "status": "design_only_not_implemented"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "4413be9a033fa7040b1aad9ebe475da42e69378141a00c2e1621d490cefe6a48",
+      "sha256": "7cd4c7c79052f1634c3e992dd1b22af06706aafa279d069de64ec1cf0393bf82"
+    },
+    {
+      "revision": 110,
+      "at": 1791519230.1708,
+      "action": "task",
+      "data": {
+        "id": "T-intentional-start-adapter",
+        "objective": "移行後のWeb/Unityで同じ意味のintentional-start adapterを一工程ずつ実装する",
+        "acceptance": [
+          "measurement-audit-20261009-1300のschema/分母/再挑戦/再開/QA抑制に従う",
+          "render/reload/no-opで開始にせず有効開始操作でevent。SPA/direct/404/保存拒否/consent/QA抑制を検査",
+          "計測設定/公開を変更せず同一版sourceと検査を揃え別branch PR"
+        ],
+        "outputs": [
+          "adapter source/QA/PR"
+        ],
+        "checks": [
+          "real browser event transport stub",
+          "Unity adapter test when runtime available",
+          "build/remote readback"
+        ],
+        "next_step": "本人が同一版公開した証拠と匿名集計が揃えばT-release-measurementをunblock",
+        "decision_id": "D-intentional-start-contract-20261009",
+        "hypothesis": "意図的開始と閲覧を区別し効果判断を可能にする",
+        "source": "run:scheduled-game-20261009-1300; business/evidence/measurement-audit-20261009-1300.json",
+        "pdca": "do",
+        "experiment_id": "EXP-merge2048",
+        "depends_on": [
+          "T-unity-runtime-evidence"
+        ],
+        "priority": 25
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "7cd4c7c79052f1634c3e992dd1b22af06706aafa279d069de64ec1cf0393bf82",
+      "sha256": "10fc3cb2c8182da307dd68ad4ea3b27e85aac857415f9d778a5fddc06e363360"
+    },
+    {
+      "revision": 111,
+      "at": 1791519230.1924167,
+      "action": "block",
+      "data": {
+        "task_id": "T-intentional-start-adapter",
+        "source": "run:scheduled-game-20261009-1300; business/evidence/measurement-audit-20261009-1300.json",
+        "reason": "移行基盤が未実証。現在は設計と内部監査のみ。Unity側compile/test/buildは実行できない。",
+        "next_step": "本人local基盤実証の同一commit証拠が揃えばunblock。GA4/SCアカウント設定は操作しない。"
+      },
+      "result": {
+        "recorded": "block"
+      },
+      "previous": "10fc3cb2c8182da307dd68ad4ea3b27e85aac857415f9d778a5fddc06e363360",
+      "sha256": "46b12abbdee4cb03581cde89c0df77c7eb535390aae5dd92dcab8f330a8b5fa7"
+    },
+    {
+      "revision": 112,
+      "at": 1791519230.2136865,
+      "action": "task",
+      "data": {
+        "id": "T-migration-cd-rollback-evidence",
+        "objective": "移行版のCI/CD公式結果と復元契約を独立した読取り検査で照合する",
+        "acceptance": [
+          "現在main/ops/PR10とGitHub公式結果をpinして照合",
+          "公開成功/rollback外部結果は証拠なしでnull。dispatch/deploy/restoreの外部操作をしない",
+          "欠ける証拠/次の実行可能工程を分離し、Unity待ちで独立検査を停止しない"
+        ],
+        "outputs": [
+          "version-pinned migration CI/CD/recovery audit"
+        ],
+        "checks": [
+          "official GitHub readback",
+          "artifact checksum and source contract",
+          "local restoration when authorized artifacts available"
+        ],
+        "next_step": "Unity待ちとは別に移行整合を判断、同じ選択の調査2run以内でdecision",
+        "decision_id": "D-migration-canonical-reconciled-20261009",
+        "hypothesis": "外部操作を再実行せず保存版と公式結果を照合すれば安全に移行基盤を継続検査できる",
+        "source": "run:scheduled-game-20261009-1300; business/evidence/measurement-audit-20261009-1300.json",
+        "pdca": "check",
+        "experiment_id": "EXP-system",
+        "priority": 15
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "46b12abbdee4cb03581cde89c0df77c7eb535390aae5dd92dcab8f330a8b5fa7",
+      "sha256": "2ab3639fae0f416accb970db0d67a74e7d1a18650149cc54d8acfd4541b44661"
+    },
+    {
+      "revision": 113,
+      "at": 1791519230.234826,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-1300",
+        "fence": 5,
+        "name": "measurement-audit-20261009-1300.json",
+        "sha256": "9224b9877386f20af3fae7ef5e5efa98bc1df68b7611493caf7e5cc36979a0b9"
+      },
+      "result": {
+        "path": "artifacts/9224b9877386f20af3fae7ef5e5efa98bc1df68b7611493caf7e5cc36979a0b9",
+        "sha256": "9224b9877386f20af3fae7ef5e5efa98bc1df68b7611493caf7e5cc36979a0b9",
+        "name": "measurement-audit-20261009-1300.json"
+      },
+      "previous": "2ab3639fae0f416accb970db0d67a74e7d1a18650149cc54d8acfd4541b44661",
+      "sha256": "d3ff3229e65eb70863a1740af814acf38f63eb0db19389a18a639b7fd23702ef"
+    },
+    {
+      "revision": 114,
+      "at": 1791519230.262202,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-1300",
+        "fence": 5,
+        "name": "measurement-audit.json",
+        "sha256": "551dc2d0d86712bd4b860d88bd916f60daf7fabe07fa60989e4823ec6b85d9e2"
+      },
+      "result": {
+        "path": "artifacts/551dc2d0d86712bd4b860d88bd916f60daf7fabe07fa60989e4823ec6b85d9e2",
+        "sha256": "551dc2d0d86712bd4b860d88bd916f60daf7fabe07fa60989e4823ec6b85d9e2",
+        "name": "measurement-audit.json"
+      },
+      "previous": "d3ff3229e65eb70863a1740af814acf38f63eb0db19389a18a639b7fd23702ef",
+      "sha256": "ce9d103522d96cc676df7123206506f5e1177b04e44c71731b2d4ff079a19420"
+    },
+    {
+      "revision": 115,
+      "at": 1791519230.2829838,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-1300",
+        "fence": 5,
+        "name": "measurement-browser-20261009-1300.json",
+        "sha256": "d16773d718d5f0560bfef5615a7b192ea954da81f872028fd5eb08ded3c74309"
+      },
+      "result": {
+        "path": "artifacts/d16773d718d5f0560bfef5615a7b192ea954da81f872028fd5eb08ded3c74309",
+        "sha256": "d16773d718d5f0560bfef5615a7b192ea954da81f872028fd5eb08ded3c74309",
+        "name": "measurement-browser-20261009-1300.json"
+      },
+      "previous": "ce9d103522d96cc676df7123206506f5e1177b04e44c71731b2d4ff079a19420",
+      "sha256": "fd6e4b2b50fad434d6c62f5cba8d51c460c6a9b0fac18fdedfd0d933053b893f"
+    },
+    {
+      "revision": 116,
+      "at": 1791519230.3041067,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-1300",
+        "fence": 5,
+        "name": "measurement-browser-20261009-1300.mjs",
+        "sha256": "c419369a922f8456b37cf4925eae1afe097378d8f2f84b77c8184090f203333d"
+      },
+      "result": {
+        "path": "artifacts/c419369a922f8456b37cf4925eae1afe097378d8f2f84b77c8184090f203333d",
+        "sha256": "c419369a922f8456b37cf4925eae1afe097378d8f2f84b77c8184090f203333d",
+        "name": "measurement-browser-20261009-1300.mjs"
+      },
+      "previous": "fd6e4b2b50fad434d6c62f5cba8d51c460c6a9b0fac18fdedfd0d933053b893f",
+      "sha256": "fba92a298d471d2a6e3b6c74844bd43157d0e9cff80c195d091da385f125fe43"
+    },
+    {
+      "revision": 117,
+      "at": 1791519230.324274,
+      "action": "publish",
+      "data": {
+        "run_id": "scheduled-game-20261009-1300",
+        "fence": 5,
+        "name": "STATE.md",
+        "sha256": "dbe9bcba42700bb38fb3441bfa29144f243b0a08c8a790e9db19beb4e79200a7"
+      },
+      "result": {
+        "path": "artifacts/dbe9bcba42700bb38fb3441bfa29144f243b0a08c8a790e9db19beb4e79200a7",
+        "sha256": "dbe9bcba42700bb38fb3441bfa29144f243b0a08c8a790e9db19beb4e79200a7",
+        "name": "STATE.md"
+      },
+      "previous": "fba92a298d471d2a6e3b6c74844bd43157d0e9cff80c195d091da385f125fe43",
+      "sha256": "414030fc6067982cf5c7b04bccfb7222988fa8eee331525cdef5fe1057f77004"
+    },
+    {
+      "revision": 118,
+      "at": 1791519230.3492408,
+      "action": "complete",
+      "data": {
+        "run_id": "scheduled-game-20261009-1300",
+        "fence": 5,
+        "artifacts": [
+          {
+            "path": "business/evidence/measurement-audit-20261009-1300.json",
+            "sha256": "9224b9877386f20af3fae7ef5e5efa98bc1df68b7611493caf7e5cc36979a0b9"
+          },
+          {
+            "path": "business/ops/artifacts/9224b9877386f20af3fae7ef5e5efa98bc1df68b7611493caf7e5cc36979a0b9",
+            "sha256": "9224b9877386f20af3fae7ef5e5efa98bc1df68b7611493caf7e5cc36979a0b9"
+          },
+          {
+            "path": "business/evidence/measurement-audit.json",
+            "sha256": "551dc2d0d86712bd4b860d88bd916f60daf7fabe07fa60989e4823ec6b85d9e2"
+          },
+          {
+            "path": "business/ops/artifacts/551dc2d0d86712bd4b860d88bd916f60daf7fabe07fa60989e4823ec6b85d9e2",
+            "sha256": "551dc2d0d86712bd4b860d88bd916f60daf7fabe07fa60989e4823ec6b85d9e2"
+          },
+          {
+            "path": "business/evidence/measurement-browser-20261009-1300.json",
+            "sha256": "d16773d718d5f0560bfef5615a7b192ea954da81f872028fd5eb08ded3c74309"
+          },
+          {
+            "path": "business/ops/artifacts/d16773d718d5f0560bfef5615a7b192ea954da81f872028fd5eb08ded3c74309",
+            "sha256": "d16773d718d5f0560bfef5615a7b192ea954da81f872028fd5eb08ded3c74309"
+          },
+          {
+            "path": "business/evidence/measurement-browser-20261009-1300.mjs",
+            "sha256": "c419369a922f8456b37cf4925eae1afe097378d8f2f84b77c8184090f203333d"
+          },
+          {
+            "path": "business/ops/artifacts/c419369a922f8456b37cf4925eae1afe097378d8f2f84b77c8184090f203333d",
+            "sha256": "c419369a922f8456b37cf4925eae1afe097378d8f2f84b77c8184090f203333d"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "dbe9bcba42700bb38fb3441bfa29144f243b0a08c8a790e9db19beb4e79200a7"
+          },
+          {
+            "path": "business/ops/artifacts/dbe9bcba42700bb38fb3441bfa29144f243b0a08c8a790e9db19beb4e79200a7",
+            "sha256": "dbe9bcba42700bb38fb3441bfa29144f243b0a08c8a790e9db19beb4e79200a7"
+          }
+        ],
+        "checks": [
+          "GA4/SC exports and permission unknown, all real metrics null; fixed/tag separated",
+          "main source and actual local browser queue confirm no custom game_start; external requests blocked",
+          "schema/denominator/session dedup/restart/resume/14-28 windows and implementation PR proposal completed",
+          "web build/checksums/repository contract/22 ledger tests pass; no tracking/game/public change"
+        ],
+        "next_step": "T-migration-cd-rollback-evidence independent audit; T-unity-runtime-evidence and T-intentional-start-adapter remain blocked on actual local runtime evidence",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "414030fc6067982cf5c7b04bccfb7222988fa8eee331525cdef5fe1057f77004",
+      "sha256": "f0e7c0d7aa331607bddd85f4a8477bd42231e021a1ad9cea8f4a7884592e1957"
     }
   ],
-  "projection_sha256": "48411da0f68aeb8e8d85fd6838e5949a2e4f9238c4168bd0347e02e914fe91d3"
+  "projection_sha256": "37460bd3a18ca8c885640d5d5a3a35e2dab04fb33aeb2aad8faf36f9d3554aa0"
 }
