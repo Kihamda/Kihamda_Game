@@ -19,7 +19,7 @@
 
 ## CI/CD
 
-ホスト型GitHub runnerで構成・GUID・旧URL・Webビルド、Linux/Windowsで台帳の21検査を実行する。PRの成果物は30日、本番成果物は90日保存し、commitとSHA256SUMSを対応させる。
+ホスト型GitHub runnerで構成・GUID・旧URL・Webビルド、Linux/Windowsで台帳の22検査を実行する。PRの成果物は30日、本番成果物は90日保存し、commitとSHA256SUMSを対応させる。移行ブランチはPRのみでCIを起動し、pushとPRの二重実行を避ける。
 
 既存ポータルCDはmain限定。進行中デプロイを取り消さず、検査成功後に元のFTPS配信先へ送る。Unity配信ディレクトリを除外し、成功表示は実際のjob結果で出す。配信後はbuild-version.jsonとcommitを確認する。これは既存サイトの維持用CDであり、Unityの自動公開はまだ有効ではない。
 

@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main, dev, ops/game-business]
   push:
-    branches: [dev, ops/game-business, 'unity/**']
+    branches: [dev, ops/game-business]
   workflow_dispatch:
 
 permissions:
