@@ -1,5 +1,11 @@
 # 現在の状態
 
+2026-10-10の19時枠は、画面取得ツールが約103分戻らず実行上限を超えた。デスクトップの部分結果、HEAD不変、外部操作なしを照合して期限切れleaseをrecoverした。本人の「フルアクセスつけたから続けて」により別の手動runで再開し、19時枠は再取得していない。中断の履歴と未完了を残した。
+
+現行の検証済みWebGL版で390×844を測ると、iframeは335×209.375px、canvasのCSS寸法は334.4×209pxだった。Unity座標から換算した方向ボタンは約20.63×14.85px、本文は約4.68pxで、縦画面の受入寸法を満たさない。1280×720では方向ボタン約71.05×51.16px、本文約16.11pxだが、操作間隔は約2.84pxで8pxに届かない。技術上はimprove、事業はunobservedと判断した。既存T-ice-courier-touch-polishはそのまま維持し、Unity縦配置とWeb枠を合わせて改善する。
+
+起動状態、Tabから終了ボタンへの復帰、Enter終了後のiframe除去と開始ボタンへの復帰を確認した。390pxの実画面画像、全3ルートの実操作、保存往復、実タッチ、Safari、人間評価は今回未実行。新しいUnityコンパイル・EditMode/PlayMode・配布ビルドも未実行。主指標と14/28日観測は未取得で、利益・訪問・開始率・完了率・再訪はnull。成果はbusiness/unity/research/2026-10-10-measured-portrait-strategy.mdと対応証跡へ保存した。再開後のcheckpointとreview完了はrevision41/42、leaseなし。別ブランチstrategy/ice-courier-measurement-20261010-1900へローカル保存し、外部送信・merge・配信は今回行っていない。天啓.mdは未完了のため保持し、Atohitoriにはアクセスしていない。
+
 2026-10-10 13時枠では、一次資料の市場調査と現行UIの読み取りから、既存T-ice-courier-touch-polishへ具体的な検査仕様を補った。Cosmic ExpressとA Good Snowmanの販売者説明、Unity 6.3のcanvas・入力・ブラウザ互換性、W3Cの操作対象寸法を確認した。結論は作品数の追加ではなく、縦画面の説明・盤面・押せる操作部を先に整えること。調査成果はbusiness/unity/research/2026-10-10-portrait-entry-acceptance.mdへ保存した。
 
 960×760のUnity画面を960×600へ収め、Web枠でも縮小する現行ソースから、390px幅でも方向ボタンの高さは約17.32CSS px以下と計算した。ブラウザ実測ではない。次の一工程はUnity縦画面UIと、その寸法を保てるローカルWeb枠の改善。最終寸法44×44CSS px以上の操作部、本文16px以上、盤面内だけのスワイプ、既存の終了・再試行・一覧への戻りの回帰検査を仕様化した。Safariのiframe内IndexedDB制限も資料で確認し、保存・再開をブラウザごとに検査する条件を追加した。人間の導入理解と実タッチは未実行のまま残した。

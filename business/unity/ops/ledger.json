@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 31,
+  "revision": 42,
   "business_id": "game-site",
-  "fence": 4,
+  "fence": 6,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -349,6 +349,113 @@
           "expires_at": 1791606330.1653361
         }
       ]
+    },
+    "T-ice-courier-strategy-review-20261010": {
+      "id": "T-ice-courier-strategy-review-20261010",
+      "objective": "Measure the current portrait player and make a bounded strategy decision from technical evidence and unobserved human/business data",
+      "acceptance": [
+        "Measure desktop and 390x844 canvas/host geometry on the verified artifact",
+        "Separate DOM measurements from Unity coordinate calculations and physical touch/human observations",
+        "Preserve the existing implementation task and use improve for technical UX, unobserved for business",
+        "Record checkpoint hashes and check repository, legacy recovery and ledger history"
+      ],
+      "outputs": [
+        "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+        "business/unity/evidence/strategy-20261010-1900.json"
+      ],
+      "checks": [
+        "Real browser geometry and existing player exit regression",
+        "Source/artifact hashes and ledger prefix",
+        "Repository contracts and recovery checks"
+      ],
+      "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; then compile and verify actual display",
+      "decision_id": "D-ice-courier-portrait-acceptance-20261010",
+      "hypothesis": "Measured end-to-end display geometry identifies whether host resizing or Unity layout needs correction without inventing demand",
+      "source": "user:automation:unity:19-strategy",
+      "pdca": "check",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-unity-portal-player-integration",
+        "T-ice-courier-portrait-research-20261010"
+      ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "source": "user:current-thread:full-access-continue",
+          "reconciliation": "Original HEAD and no external operations; desktop partial evidence persisted; no unknown operations; viewport reset; screenshot tool delay exceeded lease; acceptance incomplete",
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/strategy-20261010-1900-interrupted.json",
+              "sha256": "733cb105485e8124bf36158aac2717dfb26ae8189e729abbeeb775119706cdd6"
+            }
+          ],
+          "next_step": "Owner authorized manual continuation; finish remaining geometry and strategy review without consuming the 19 slot again",
+          "at": 1791632712.9162526,
+          "recovered_fence": 5
+        },
+        {
+          "run_id": "unity-manual-20261010-cf7a96dccbb6",
+          "fence": 6,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/strategy-20261010-1900.json",
+              "sha256": "f51a812812171336dff8b6923c54dd11b9110fac04584258da57c15de734f9c6"
+            },
+            {
+              "path": "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+              "sha256": "82ab5221d35a5fe2c3f6416c114ebe221b952020fe4f4d6aa3b6d1ce86c8fe0d"
+            }
+          ],
+          "checks": [
+            "Desktop and390x844 DOM geometry and source-derived control sizes recorded; unsupported real-touch/human claims excluded",
+            "Existing player Tab/Enter exit and iframe removal passed; source/artifact18 hashes matched",
+            "Repository4 legacy/17 GUID contract, parent4 HEAD/8 recovery and report links passed",
+            "Original31 ledger events and existing implementation task preserved; owner/old cloud ledger unchanged",
+            "Interrupted scheduled run recovered with partial artifact; manual user continuation completed without another slot"
+          ],
+          "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+          "at": 1791632941.5115044
+        },
+        {
+          "run_id": "unity-manual-20261010-cf7a96dccbb6",
+          "fence": 6,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/strategy-20261010-1900.json",
+              "sha256": "f51a812812171336dff8b6923c54dd11b9110fac04584258da57c15de734f9c6"
+            },
+            {
+              "path": "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+              "sha256": "82ab5221d35a5fe2c3f6416c114ebe221b952020fe4f4d6aa3b6d1ce86c8fe0d"
+            }
+          ],
+          "checks": [
+            "Desktop and390x844 DOM geometry and source-derived control sizes recorded; unsupported real-touch/human claims excluded",
+            "Existing player Tab/Enter exit and iframe removal passed; source/artifact18 hashes matched",
+            "Repository4 legacy/17 GUID contract, parent4 HEAD/8 recovery and report links passed",
+            "Original31 ledger events and existing implementation task preserved; owner/old cloud ledger unchanged",
+            "Interrupted scheduled run recovered with partial artifact; manual user continuation completed without another slot"
+          ],
+          "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+          "passed": true,
+          "at": 1791632941.5210066
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261010T1900-e6047e8667b5",
+          "task_id": "T-ice-courier-strategy-review-20261010",
+          "fence": 5,
+          "expires_at": 1791627928.0944247
+        },
+        {
+          "run_id": "unity-manual-20261010-cf7a96dccbb6",
+          "task_id": "T-ice-courier-strategy-review-20261010",
+          "fence": 6,
+          "expires_at": 1791634223.0896156
+        }
+      ]
     }
   },
   "decisions": {
@@ -403,6 +510,22 @@
       },
       "judgment": "unobserved",
       "scope": "research-only; no implementation or demand claim"
+    },
+    "D-ice-courier-measured-strategy-20261010": {
+      "id": "D-ice-courier-measured-strategy-20261010",
+      "source": "evidence:business/unity/evidence/strategy-20261010-1900.json",
+      "hypothesis": "Measured 334.4px portrait canvas and Unity coordinates identify a concrete layout deficit without inferring business demand",
+      "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+      "artifact": {
+        "path": "business/unity/evidence/strategy-20261010-1900.json",
+        "sha256": "f51a812812171336dff8b6923c54dd11b9110fac04584258da57c15de734f9c6"
+      },
+      "target_task_id": "T-ice-courier-touch-polish",
+      "judgment": "unobserved",
+      "technical_disposition": "improve",
+      "business_evidence": "Human feedback, release and14/28-day metrics remain unobserved",
+      "acceptance_addendum": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+      "owner_continuation": "user:current-thread:full-access-continue"
     }
   },
   "runs": {
@@ -432,6 +555,20 @@
       "source": "scheduled:game-site:2026-10-10T13:00:00+09:00",
       "status": "completed",
       "started_at": 1791604830.0937312
+    },
+    "unity-20261010T1900-e6047e8667b5": {
+      "run_id": "unity-20261010T1900-e6047e8667b5",
+      "scheduled_at": "2026-10-10T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-10T19:00:00+09:00",
+      "status": "recovered",
+      "started_at": 1791626428.0277896
+    },
+    "unity-manual-20261010-cf7a96dccbb6": {
+      "run_id": "unity-manual-20261010-cf7a96dccbb6",
+      "source": "user:current-thread:full-access-continue",
+      "resumes_run": "unity-20261010T1900-e6047e8667b5",
+      "status": "completed",
+      "started_at": 1791632723.081074
     }
   },
   "experiments": {
@@ -477,9 +614,9 @@
       ],
       "measurement_plan": "内部表示・操作検査と公開後の開始率を分離する。公開指標は未観測でnull",
       "decision_id": "D-web-renovation-20261010",
-      "next_step": "Connect verified Ice Courier WebGL artifact to local detail shell and inspect load/start/return/failure",
+      "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
       "source": "user:天啓.md:2026-10-10:web-renovation",
-      "stage": "do",
+      "stage": "act",
       "history": [
         {
           "id": "E-unity-portal",
@@ -489,6 +626,26 @@
           "next_step": "Connect verified Ice Courier WebGL artifact to local detail shell and inspect load/start/return/failure",
           "at": 1791562925.7279973,
           "previous_stage": "plan"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "check",
+          "source": "evidence:business/unity/evidence/strategy-20261010-1900.json",
+          "evidence": "Verified old WebGL source and measured desktop/portrait host/canvas; focus exit passes; portrait targets fail coordinate-derived size; primary start-rate unobserved",
+          "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+          "at": 1791632941.493243,
+          "previous_stage": "do"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "act",
+          "source": "decision:D-ice-courier-measured-strategy-20261010",
+          "evidence": "Do not infer market value from synthetic geometry. Preserve existing UI implementation task; improve technical layout while business remains unobserved",
+          "judgment": "unobserved",
+          "technical_disposition": "improve",
+          "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+          "at": 1791632941.5025334,
+          "previous_stage": "check"
         }
       ],
       "release": null
@@ -497,7 +654,8 @@
   "slots": {
     "2026-10-10T01:00:00+09:00": "unity-20261010T0100-9e5710806c84",
     "2026-10-10T07:00:00+09:00": "unity-20261010T0700-cc24abcda9c1",
-    "2026-10-10T13:00:00+09:00": "unity-20261010T1300-6f6e11091565"
+    "2026-10-10T13:00:00+09:00": "unity-20261010T1300-6f6e11091565",
+    "2026-10-10T19:00:00+09:00": "unity-20261010T1900-e6047e8667b5"
   },
   "feedback": [],
   "approvals": [],
@@ -1250,7 +1408,260 @@
       },
       "previous": "55abb172f3f9920c95eec94a3d1e70bb14290177705399eb9e05ce980be2a49f",
       "sha256": "b8a1ccd7489d6b26569ee1d21d7292b069a3b0eb33b1b327431fc1a0212ecc83"
+    },
+    {
+      "revision": 32,
+      "at": 1791626428.0277896,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261010T1900-e6047e8667b5",
+        "scheduled_at": "2026-10-10T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "b8a1ccd7489d6b26569ee1d21d7292b069a3b0eb33b1b327431fc1a0212ecc83",
+      "sha256": "4915e319347c8a09f9a74705ce604496137a03c3d1ef7d55a013bb8a0f3613b3"
+    },
+    {
+      "revision": 33,
+      "at": 1791626428.0844312,
+      "action": "task",
+      "data": {
+        "id": "T-ice-courier-strategy-review-20261010",
+        "objective": "Measure the current portrait player and make a bounded strategy decision from technical evidence and unobserved human/business data",
+        "acceptance": [
+          "Measure desktop and 390x844 canvas/host geometry on the verified artifact",
+          "Separate DOM measurements from Unity coordinate calculations and physical touch/human observations",
+          "Preserve the existing implementation task and use improve for technical UX, unobserved for business",
+          "Record checkpoint hashes and check repository, legacy recovery and ledger history"
+        ],
+        "outputs": [
+          "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+          "business/unity/evidence/strategy-20261010-1900.json"
+        ],
+        "checks": [
+          "Real browser geometry and existing player exit regression",
+          "Source/artifact hashes and ledger prefix",
+          "Repository contracts and recovery checks"
+        ],
+        "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; then compile and verify actual display",
+        "decision_id": "D-ice-courier-portrait-acceptance-20261010",
+        "hypothesis": "Measured end-to-end display geometry identifies whether host resizing or Unity layout needs correction without inventing demand",
+        "source": "user:automation:unity:19-strategy",
+        "pdca": "check",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-unity-portal-player-integration",
+          "T-ice-courier-portrait-research-20261010"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "4915e319347c8a09f9a74705ce604496137a03c3d1ef7d55a013bb8a0f3613b3",
+      "sha256": "acbd0afce9cff4c75b405dcf3e4da68c7949249c91646011532aa87875e389f1"
+    },
+    {
+      "revision": 34,
+      "at": 1791626428.0944247,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261010T1900-e6047e8667b5",
+        "task_id": "T-ice-courier-strategy-review-20261010",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261010T1900-e6047e8667b5",
+        "task_id": "T-ice-courier-strategy-review-20261010",
+        "fence": 5,
+        "expires_at": 1791627928.0944247
+      },
+      "previous": "acbd0afce9cff4c75b405dcf3e4da68c7949249c91646011532aa87875e389f1",
+      "sha256": "09d1034e8ed641dcca5c3cbb6056f81f19465beca87665800b5aaf330526b79f"
+    },
+    {
+      "revision": 35,
+      "at": 1791632712.9162526,
+      "action": "recover",
+      "data": {
+        "source": "user:current-thread:full-access-continue",
+        "reconciliation": "Original HEAD and no external operations; desktop partial evidence persisted; no unknown operations; viewport reset; screenshot tool delay exceeded lease; acceptance incomplete",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/strategy-20261010-1900-interrupted.json",
+            "sha256": "733cb105485e8124bf36158aac2717dfb26ae8189e729abbeeb775119706cdd6"
+          }
+        ],
+        "next_step": "Owner authorized manual continuation; finish remaining geometry and strategy review without consuming the 19 slot again"
+      },
+      "result": {
+        "recorded": "recover"
+      },
+      "previous": "09d1034e8ed641dcca5c3cbb6056f81f19465beca87665800b5aaf330526b79f",
+      "sha256": "e915f3fe6851ba833e7d37175319e156618f4b716de56b936be48e175dddea2a"
+    },
+    {
+      "revision": 36,
+      "at": 1791632723.081074,
+      "action": "start",
+      "data": {
+        "run_id": "unity-manual-20261010-cf7a96dccbb6",
+        "source": "user:current-thread:full-access-continue",
+        "resumes_run": "unity-20261010T1900-e6047e8667b5"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "e915f3fe6851ba833e7d37175319e156618f4b716de56b936be48e175dddea2a",
+      "sha256": "30152f2821986cfd05224fe88f463abe6277569859886b4879318cef0de5065b"
+    },
+    {
+      "revision": 37,
+      "at": 1791632723.0896156,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-manual-20261010-cf7a96dccbb6",
+        "task_id": "T-ice-courier-strategy-review-20261010",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-manual-20261010-cf7a96dccbb6",
+        "task_id": "T-ice-courier-strategy-review-20261010",
+        "fence": 6,
+        "expires_at": 1791634223.0896156
+      },
+      "previous": "30152f2821986cfd05224fe88f463abe6277569859886b4879318cef0de5065b",
+      "sha256": "256d8d0b965e4c9afd5c3c300cf2d079294ed58999eb936e3afb2c9e60a1e598"
+    },
+    {
+      "revision": 38,
+      "at": 1791632941.4836397,
+      "action": "decision",
+      "data": {
+        "id": "D-ice-courier-measured-strategy-20261010",
+        "source": "evidence:business/unity/evidence/strategy-20261010-1900.json",
+        "hypothesis": "Measured 334.4px portrait canvas and Unity coordinates identify a concrete layout deficit without inferring business demand",
+        "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+        "artifact": {
+          "path": "business/unity/evidence/strategy-20261010-1900.json",
+          "sha256": "f51a812812171336dff8b6923c54dd11b9110fac04584258da57c15de734f9c6"
+        },
+        "target_task_id": "T-ice-courier-touch-polish",
+        "judgment": "unobserved",
+        "technical_disposition": "improve",
+        "business_evidence": "Human feedback, release and14/28-day metrics remain unobserved",
+        "acceptance_addendum": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+        "owner_continuation": "user:current-thread:full-access-continue"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "256d8d0b965e4c9afd5c3c300cf2d079294ed58999eb936e3afb2c9e60a1e598",
+      "sha256": "4eaa43d19e45aade368fdf09139146a6d9442007810fb6640952cdcbf353edc6"
+    },
+    {
+      "revision": 39,
+      "at": 1791632941.493243,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "check",
+        "source": "evidence:business/unity/evidence/strategy-20261010-1900.json",
+        "evidence": "Verified old WebGL source and measured desktop/portrait host/canvas; focus exit passes; portrait targets fail coordinate-derived size; primary start-rate unobserved",
+        "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "4eaa43d19e45aade368fdf09139146a6d9442007810fb6640952cdcbf353edc6",
+      "sha256": "87b22ed07b317338a13cc15776e4cb26dd73a49b45423486f2928c9a1ef53707"
+    },
+    {
+      "revision": 40,
+      "at": 1791632941.5025334,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "act",
+        "source": "decision:D-ice-courier-measured-strategy-20261010",
+        "evidence": "Do not infer market value from synthetic geometry. Preserve existing UI implementation task; improve technical layout while business remains unobserved",
+        "judgment": "unobserved",
+        "technical_disposition": "improve",
+        "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "87b22ed07b317338a13cc15776e4cb26dd73a49b45423486f2928c9a1ef53707",
+      "sha256": "e672d964e7a204ad0141fc1d5cd22b6decdd93472e60dea9d8aceee4df6eef25"
+    },
+    {
+      "revision": 41,
+      "at": 1791632941.5115044,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-manual-20261010-cf7a96dccbb6",
+        "fence": 6,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/strategy-20261010-1900.json",
+            "sha256": "f51a812812171336dff8b6923c54dd11b9110fac04584258da57c15de734f9c6"
+          },
+          {
+            "path": "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+            "sha256": "82ab5221d35a5fe2c3f6416c114ebe221b952020fe4f4d6aa3b6d1ce86c8fe0d"
+          }
+        ],
+        "checks": [
+          "Desktop and390x844 DOM geometry and source-derived control sizes recorded; unsupported real-touch/human claims excluded",
+          "Existing player Tab/Enter exit and iframe removal passed; source/artifact18 hashes matched",
+          "Repository4 legacy/17 GUID contract, parent4 HEAD/8 recovery and report links passed",
+          "Original31 ledger events and existing implementation task preserved; owner/old cloud ledger unchanged",
+          "Interrupted scheduled run recovered with partial artifact; manual user continuation completed without another slot"
+        ],
+        "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "e672d964e7a204ad0141fc1d5cd22b6decdd93472e60dea9d8aceee4df6eef25",
+      "sha256": "336ce0f75a6b64ee1a5d0cffdc66686d0e7da35e20703a6d7d10c24edcd84d98"
+    },
+    {
+      "revision": 42,
+      "at": 1791632941.5210066,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-manual-20261010-cf7a96dccbb6",
+        "fence": 6,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/strategy-20261010-1900.json",
+            "sha256": "f51a812812171336dff8b6923c54dd11b9110fac04584258da57c15de734f9c6"
+          },
+          {
+            "path": "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+            "sha256": "82ab5221d35a5fe2c3f6416c114ebe221b952020fe4f4d6aa3b6d1ce86c8fe0d"
+          }
+        ],
+        "checks": [
+          "Desktop and390x844 DOM geometry and source-derived control sizes recorded; unsupported real-touch/human claims excluded",
+          "Existing player Tab/Enter exit and iframe removal passed; source/artifact18 hashes matched",
+          "Repository4 legacy/17 GUID contract, parent4 HEAD/8 recovery and report links passed",
+          "Original31 ledger events and existing implementation task preserved; owner/old cloud ledger unchanged",
+          "Interrupted scheduled run recovered with partial artifact; manual user continuation completed without another slot"
+        ],
+        "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "336ce0f75a6b64ee1a5d0cffdc66686d0e7da35e20703a6d7d10c24edcd84d98",
+      "sha256": "ec68b3c96bca45a78450dce4b82c0420ea1903e6faa8adb1e2a2b9d5d0505488"
     }
   ],
-  "projection_sha256": "491fb44bb0d501d60169d285f38d7370d87c85a77c4bad2a2e32d218b0f563e9"
+  "projection_sha256": "79be46314f236b7060c307da282d6ddda909be29c6d470ed1014fb9ba0998ad2"
 }

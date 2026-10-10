@@ -16,6 +16,8 @@ WIP1、サブエージェント禁止。現在はIce Courierを継続する。01
 
 既存T-ice-courier-touch-polishの検査仕様はbusiness/unity/research/2026-10-10-portrait-entry-acceptance.mdを参照する。Unity内部とWeb枠の二重縮小を一緒に改善し、最終CSS寸法で押せる大きさを確認する。実タッチ、人間の導入理解、ブラウザ別の保存・再開を別々に記録し、未実行を合格にしない。調査のたびに元の実装タスクを置き換えない。
 
+2026-10-10の実測はbusiness/unity/research/2026-10-10-measured-portrait-strategy.md。390pxの現在の枠は335px幅、canvasは334.4px幅。操作寸法は実測canvasとUnity座標の換算で、画像や物理タッチ検査ではない。技術上のimproveと、公開主指標が未観測のunobservedを分ける。次の実装枠では既存T-ice-courier-touch-polishを優先する。ツール待ちでleaseが切れた場合は部分結果と外部操作を照合してrecoverし、本人から再開指示がある場合は手動runとして記録する。消費済みslotは取り直さない。
+
 既存Web資産の採否はbusiness/legacy-dispositions.json。削除前にGit履歴・bundle・復元先を確認する。4作品はUnity移植の資料として残し、検証済みUnity版へ順次置き換える。新規Reactゲームを作らない。
 
 編集・内部検査・別ブランチ保存・PR作成・GitHub Actionsビルドは許可済み。検証した無料作品だけ既存の許可済み領域へ配信する。ポータル全体の置換、販売、決済、DNS、有料契約、外部連絡、SNS送信は行わない。Web本番配信は手動で、同一版の検査と復元条件を揃える。外部PRから認証付きUnityビルドを起動しない。本人のPCをGitHub runnerとして公開しない。

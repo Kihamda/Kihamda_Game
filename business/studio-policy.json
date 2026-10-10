@@ -19,6 +19,8 @@
   "prioritySource": "user:天啓.md:2026-10-10:web-renovation",
   "portalPolicy": "共通画面から静的生成。未公開の作品に開始リンクを出さない。検証済み成果物のローカル接続は完了。次は既存Ice CourierのUnity内部の縦画面UIを改善し、実タッチ未検証を区別する。本番全体置換はしない。",
   "portraitAcceptanceSource": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+  "portraitMeasurementSource": "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+  "strategyPolicy": "技術上の改善判断と人間・公開主指標の未観測を分ける。次の実装枠では既存T-ice-courier-touch-polishを継続。期限切れleaseは部分結果と外部操作を照合してrecoverし、本人の再開指示は手動runに記録する。消費済みslotを取り直さない。",
   "portraitPolicy": "既存T-ice-courier-touch-polishを継続する。UnityとWeb枠を合わせた最終CSS寸法で操作44px・本文16pxを検査し、実タッチ・人間評価・Safari埋め込み保存を別記録にする。ソース計算と実測、技術成功と需要を分ける。",
   "allowed": [
     "edit",
