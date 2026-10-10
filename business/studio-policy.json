@@ -50,5 +50,7 @@
   "ciOptionalForLocalProgress": true,
   "ownerManagedProjects": [
     "Atohitori"
-  ]
+  ],
+  "portraitImplementationSource": "docs/ice-courier-responsive-ui.md",
+  "partialRunPolicy": "期限内に部分成果をハッシュ付きでcheckpointしyieldで同じタスクへ引き継ぐ。未完了をcompleteしない。承認・応答待ちが長ければ追加検査を止めて保存。期限切れは照合してrecoverする。"
 }

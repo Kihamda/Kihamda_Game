@@ -9,3 +9,8 @@
 business/unity/evidence/*.json -text whitespace=cr-at-eol
 # Research checkpoints must retain their hashed bytes after Windows checkout.
 business/unity/research/*.md text eol=lf
+# Responsive-player source receipts retain identical bytes on Windows checkout.
+web/plugins/local-unity-player.ts text eol=lf
+web/src/portal/UnityPlayer.tsx text eol=lf
+web/src/portal/App.css -text whitespace=cr-at-eol
+docs/ice-courier-responsive-ui.md text eol=lf

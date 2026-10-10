@@ -14,6 +14,8 @@ WIP1、サブエージェント禁止。現在はIce Courierを継続する。01
 
 制作の正本はbusiness/unity/ops/ledger.json。business/ops/ledger.jsonは旧クラウド履歴で、別のleaseを持つため上書きしない。共通business/ops/flow.pyを使い、expected revision、run ID、lease、fenceを確認する。台帳を手書き・初期化・競合自動merge・force pushしない。期限切れleaseは成果物と外部結果を照合してrecoverする。未知の外部操作を再送しない。25分でcheckpoint、30分以内に保存し、次の一工程を残す。
 
+未完了の工程は期限内に成果物・検査・次工程を保存し、flow.pyのyieldで同じタスクをreadyへ戻す。完了条件を満たしていないタスクをcompleteしない。未知の外部結果、変更済み成果物、期限切れleaseはyieldできない。長いアプリ承認待ちや応答待ちが起きたら追加検査を続けず、部分結果を先に保存する。期限切れなら照合後にrecoverする。2026-10-11の縦画面UIと検査制限はdocs/ice-courier-responsive-ui.md。新responsive-v1のActions成果物を検査してから新枠へ接続し、旧版を新UIの検査へ流用しない。
+
 既存T-ice-courier-touch-polishの検査仕様はbusiness/unity/research/2026-10-10-portrait-entry-acceptance.mdを参照する。Unity内部とWeb枠の二重縮小を一緒に改善し、最終CSS寸法で押せる大きさを確認する。実タッチ、人間の導入理解、ブラウザ別の保存・再開を別々に記録し、未実行を合格にしない。調査のたびに元の実装タスクを置き換えない。
 
 2026-10-10の実測はbusiness/unity/research/2026-10-10-measured-portrait-strategy.md。390pxの現在の枠は335px幅、canvasは334.4px幅。操作寸法は実測canvasとUnity座標の換算で、画像や物理タッチ検査ではない。技術上のimproveと、公開主指標が未観測のunobservedを分ける。次の実装枠では既存T-ice-courier-touch-polishを優先する。ツール待ちでleaseが切れた場合は部分結果と外部操作を照合してrecoverし、本人から再開指示がある場合は手動runとして記録する。消費済みslotは取り直さない。

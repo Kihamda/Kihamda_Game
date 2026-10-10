@@ -1,5 +1,13 @@
 # 現在の状態
 
+2026-10-11の01時枠で既存T-ice-courier-touch-polishのUnity縦画面UIとWeb枠の切替を実装した。説明・盤面・操作の縦配置、本文16px、操作高さ48px・間隔8px、C/G/+/@の記号、盤面内だけの単指スワイプと取消、Resumeの待機解除を追加。新ビルドのresponsive-v1だけCSS同期・DPR 1と高さ820pxの枠を使い、旧検証済み版は従来表示を保つ。新Actions版をrun ID指定で接続できるようにし、未確認の版は検証済みとしない。
+
+初回Unity Validate、EditMode 10件、PlayMode 1件、ルール単体3ルート、Webビルド・36成果物チェックサム、GUID 19件、親4commit・復元8ハッシュ、台帳27テストが成功。実画面取得はアプリ承認待ちが時間切れ、HTTP検査もsocket拒否後に応答待ちで失敗し、後続Unity起動はライセンス初期化で失敗した。後から追加した未検証のUnity変更を除いて初回検査済み実装へ戻した。初回PlayMode XMLは後続実行準備で削除されたため、実行結果記録に成功と証拠の制限を残す。
+
+承認・要求待ちで30分上限を超え、期限内checkpoint・完了は未達。元HEAD・成果物・外部操作なしを照合し、revision45で期限切れleaseをrecoverした。タスクはready、leaseなし。同じ01時slotは取り直していない。共通flow.pyのyieldで検査済み部分成果を同じタスクへ引き継げるようにしたが、今回は期限切れのためrecoverを使った。詳細はdocs/ice-courier-responsive-ui.md、証跡はbusiness/unity/evidence/portrait-20261011-0100.json。
+
+次の一工程は同じタスクで新UIの実画面・入力・保存を確認すること。新Windows/Web配布ビルド、最終CSS寸法の実測、実タッチ、Safari、人間評価は未実行。利益・訪問・開始率・完了率・再訪はnull。別ブランチunity/ice-courier-portrait-20261011-0100へローカル保存し、push・PR・merge・配信は行わない。天啓.mdのWeb刷新指示は未完了として保持し、Atohitoriは対象外。
+
 2026-10-10の19時枠は、画面取得ツールが約103分戻らず実行上限を超えた。デスクトップの部分結果、HEAD不変、外部操作なしを照合して期限切れleaseをrecoverした。本人の「フルアクセスつけたから続けて」により別の手動runで再開し、19時枠は再取得していない。中断の履歴と未完了を残した。
 
 現行の検証済みWebGL版で390×844を測ると、iframeは335×209.375px、canvasのCSS寸法は334.4×209pxだった。Unity座標から換算した方向ボタンは約20.63×14.85px、本文は約4.68pxで、縦画面の受入寸法を満たさない。1280×720では方向ボタン約71.05×51.16px、本文約16.11pxだが、操作間隔は約2.84pxで8pxに届かない。技術上はimprove、事業はunobservedと判断した。既存T-ice-courier-touch-polishはそのまま維持し、Unity縦配置とWeb枠を合わせて改善する。

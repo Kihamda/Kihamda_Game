@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 42,
+  "revision": 45,
   "business_id": "game-site",
-  "fence": 6,
+  "fence": 7,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -107,8 +107,29 @@
         "T-ice-courier-unity-evaluation"
       ],
       "status": "ready",
-      "checkpoints": [],
-      "claims": []
+      "checkpoints": [
+        {
+          "source": "user:automation:unity:20261011-0100",
+          "reconciliation": "UI app-approval and request waits exceeded lease. Original HEAD unchanged, no external operations or unknown results. Implementation hashes and partial checks saved; later untested additions removed to restore initially compiled/tested Unity source. No duplicate slot.",
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portrait-20261011-0100.json",
+              "sha256": "95d52c07b9308ec81883e1681cc9f5c12cdc8584529cee1618bf0072a1fb583e"
+            }
+          ],
+          "next_step": "Same T-ice-courier-touch-polish: verify new UI actual screen/input, then exact-source hosted artifacts and physical-device save/touch separately",
+          "at": 1791650205.345042,
+          "recovered_fence": 7
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261011T0100-3d0983464e72",
+          "task_id": "T-ice-courier-touch-polish",
+          "fence": 7,
+          "expires_at": 1791649820.0850632
+        }
+      ]
     },
     "T-unity-portal-foundation": {
       "id": "T-unity-portal-foundation",
@@ -569,6 +590,13 @@
       "resumes_run": "unity-20261010T1900-e6047e8667b5",
       "status": "completed",
       "started_at": 1791632723.081074
+    },
+    "unity-20261011T0100-3d0983464e72": {
+      "run_id": "unity-20261011T0100-3d0983464e72",
+      "scheduled_at": "2026-10-11T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-11T01:00:00+09:00",
+      "status": "recovered",
+      "started_at": 1791648020.0336773
     }
   },
   "experiments": {
@@ -655,7 +683,8 @@
     "2026-10-10T01:00:00+09:00": "unity-20261010T0100-9e5710806c84",
     "2026-10-10T07:00:00+09:00": "unity-20261010T0700-cc24abcda9c1",
     "2026-10-10T13:00:00+09:00": "unity-20261010T1300-6f6e11091565",
-    "2026-10-10T19:00:00+09:00": "unity-20261010T1900-e6047e8667b5"
+    "2026-10-10T19:00:00+09:00": "unity-20261010T1900-e6047e8667b5",
+    "2026-10-11T01:00:00+09:00": "unity-20261011T0100-3d0983464e72"
   },
   "feedback": [],
   "approvals": [],
@@ -1661,7 +1690,60 @@
       },
       "previous": "336ce0f75a6b64ee1a5d0cffdc66686d0e7da35e20703a6d7d10c24edcd84d98",
       "sha256": "ec68b3c96bca45a78450dce4b82c0420ea1903e6faa8adb1e2a2b9d5d0505488"
+    },
+    {
+      "revision": 43,
+      "at": 1791648020.0336773,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261011T0100-3d0983464e72",
+        "scheduled_at": "2026-10-11T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "ec68b3c96bca45a78450dce4b82c0420ea1903e6faa8adb1e2a2b9d5d0505488",
+      "sha256": "1e6a9593f911da779afe9f4d1005b4c181502d9db1fbc28a7d65c1e24070b28d"
+    },
+    {
+      "revision": 44,
+      "at": 1791648020.0850632,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261011T0100-3d0983464e72",
+        "task_id": "T-ice-courier-touch-polish",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261011T0100-3d0983464e72",
+        "task_id": "T-ice-courier-touch-polish",
+        "fence": 7,
+        "expires_at": 1791649820.0850632
+      },
+      "previous": "1e6a9593f911da779afe9f4d1005b4c181502d9db1fbc28a7d65c1e24070b28d",
+      "sha256": "2e888f0f9a18fa274ea28d4c618e5d2c10f1b3b5478e69c98e8fa5215a4626dd"
+    },
+    {
+      "revision": 45,
+      "at": 1791650205.345042,
+      "action": "recover",
+      "data": {
+        "source": "user:automation:unity:20261011-0100",
+        "reconciliation": "UI app-approval and request waits exceeded lease. Original HEAD unchanged, no external operations or unknown results. Implementation hashes and partial checks saved; later untested additions removed to restore initially compiled/tested Unity source. No duplicate slot.",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portrait-20261011-0100.json",
+            "sha256": "95d52c07b9308ec81883e1681cc9f5c12cdc8584529cee1618bf0072a1fb583e"
+          }
+        ],
+        "next_step": "Same T-ice-courier-touch-polish: verify new UI actual screen/input, then exact-source hosted artifacts and physical-device save/touch separately"
+      },
+      "result": {
+        "recorded": "recover"
+      },
+      "previous": "2e888f0f9a18fa274ea28d4c618e5d2c10f1b3b5478e69c98e8fa5215a4626dd",
+      "sha256": "0527462a3bad392ed838fd5b590ec82226fdbae2ffe6b82280f31b312f3a3137"
     }
   ],
-  "projection_sha256": "79be46314f236b7060c307da282d6ddda909be29c6d470ed1014fb9ba0998ad2"
+  "projection_sha256": "0e2327fbefefa86d3ec6825666c1a91f95b736961578e967c0322cec91a95dbc"
 }
