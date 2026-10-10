@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 25,
+  "revision": 31,
   "business_id": "game-site",
-  "fence": 3,
+  "fence": 4,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -263,6 +263,92 @@
           "expires_at": 1791584859.5750847
         }
       ]
+    },
+    "T-ice-courier-portrait-research-20261010": {
+      "id": "T-ice-courier-portrait-research-20261010",
+      "objective": "一次資料と現行UIから既存の縦画面改善工程へ具体的な受入条件を補う",
+      "acceptance": [
+        "競合の販売者資料2件とUnity・W3Cの一次資料を確認する",
+        "現行ソースの縮小率とCSS寸法の推定を実測と区別する",
+        "既存T-ice-courier-touch-polishへ検査条件と次の一工程を紐付ける",
+        "未取得指標と人間評価をnullに保ち成果物ハッシュを保存する"
+      ],
+      "outputs": [
+        "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+        "business/unity/evidence/research-20261010-1300.json"
+      ],
+      "checks": [
+        "一次資料の本文と根拠リンク",
+        "現行ソースと寸法計算",
+        "親4件のcommitと復元ハッシュ",
+        "flowの履歴と成果物ハッシュ"
+      ],
+      "next_step": "既存T-ice-courier-touch-polishのUnity縦画面UIとWeb枠の寸法を改善する",
+      "decision_id": "D-web-renovation-20261010",
+      "hypothesis": "押せる操作部とルールを見分けられる導入を優先すれば、作品を増やさず開始体験の問題を検証できる",
+      "source": "research:business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+      "pdca": "plan",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-unity-portal-player-integration"
+      ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261010T1300-6f6e11091565",
+          "fence": 4,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/research-20261010-1300.json",
+              "sha256": "b20a5a11f32de8d29debe378c096e0cc3a38e6a1531bb18632c89bce69238b2a"
+            },
+            {
+              "path": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+              "sha256": "758b07473c08b11dd006f0e7518bc221ff95403995bdf62fa363ad5f08cd41f9"
+            }
+          ],
+          "checks": [
+            "6 primary sources read and linked; source-derived dimensions explicitly separated from measurements",
+            "8 acceptance details linked to existing implementation task; no replacement/new game",
+            "Repository contract and diff check passed; 4 parent HEADs and 8 recovery hashes verified",
+            "Owner instructions and old cloud ledger untouched; unobserved metrics remain null"
+          ],
+          "next_step": "Existing T-ice-courier-touch-polish: improve Unity portrait UI and local Web frame together; compile and verify actual display",
+          "at": 1791605017.6936588
+        },
+        {
+          "run_id": "unity-20261010T1300-6f6e11091565",
+          "fence": 4,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/research-20261010-1300.json",
+              "sha256": "b20a5a11f32de8d29debe378c096e0cc3a38e6a1531bb18632c89bce69238b2a"
+            },
+            {
+              "path": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+              "sha256": "758b07473c08b11dd006f0e7518bc221ff95403995bdf62fa363ad5f08cd41f9"
+            }
+          ],
+          "checks": [
+            "6 primary sources read and linked; source-derived dimensions explicitly separated from measurements",
+            "8 acceptance details linked to existing implementation task; no replacement/new game",
+            "Repository contract and diff check passed; 4 parent HEADs and 8 recovery hashes verified",
+            "Owner instructions and old cloud ledger untouched; unobserved metrics remain null"
+          ],
+          "next_step": "Existing T-ice-courier-touch-polish: improve Unity portrait UI and local Web frame together; compile and verify actual display",
+          "passed": true,
+          "at": 1791605017.7016575
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261010T1300-6f6e11091565",
+          "task_id": "T-ice-courier-portrait-research-20261010",
+          "fence": 4,
+          "expires_at": 1791606330.1653361
+        }
+      ]
     }
   },
   "decisions": {
@@ -302,6 +388,21 @@
         "path": "business/unity/evidence/player-20261010-provenance.json",
         "sha256": "78f655e1552cef4235249fab9fba19b211c886c84f8c79b14d6a3b1d1768f955"
       }
+    },
+    "D-ice-courier-portrait-acceptance-20261010": {
+      "id": "D-ice-courier-portrait-acceptance-20261010",
+      "source": "research:business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+      "hypothesis": "最終CSS寸法と導入ルールの識別を検査すれば、二重縮小と入力の問題を作品追加なしで改善できる",
+      "next_step": "Existing T-ice-courier-touch-polish: improve Unity portrait UI and local Web frame together; compile and verify actual display",
+      "target_task_id": "T-ice-courier-touch-polish",
+      "supersedes_scope": "acceptance-details-only; existing task and owner priority preserved",
+      "acceptance_addendum": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+      "artifact": {
+        "path": "business/unity/evidence/research-20261010-1300.json",
+        "sha256": "b20a5a11f32de8d29debe378c096e0cc3a38e6a1531bb18632c89bce69238b2a"
+      },
+      "judgment": "unobserved",
+      "scope": "research-only; no implementation or demand claim"
     }
   },
   "runs": {
@@ -324,6 +425,13 @@
       "source": "scheduled:game-site:2026-10-10T07:00:00+09:00",
       "status": "completed",
       "started_at": 1791583359.509933
+    },
+    "unity-20261010T1300-6f6e11091565": {
+      "run_id": "unity-20261010T1300-6f6e11091565",
+      "scheduled_at": "2026-10-10T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-10T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791604830.0937312
     }
   },
   "experiments": {
@@ -388,7 +496,8 @@
   },
   "slots": {
     "2026-10-10T01:00:00+09:00": "unity-20261010T0100-9e5710806c84",
-    "2026-10-10T07:00:00+09:00": "unity-20261010T0700-cc24abcda9c1"
+    "2026-10-10T07:00:00+09:00": "unity-20261010T0700-cc24abcda9c1",
+    "2026-10-10T13:00:00+09:00": "unity-20261010T1300-6f6e11091565"
   },
   "feedback": [],
   "approvals": [],
@@ -981,7 +1090,167 @@
       },
       "previous": "668f63fb08c88c2dfeacf80aa5675e526ede87d70dc624d7806567182b0f8ca8",
       "sha256": "d9c5ed7f3e208c0451ce8691349272fe5592dfdb901be8a7f8697916c77ed78d"
+    },
+    {
+      "revision": 26,
+      "at": 1791604830.0937312,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261010T1300-6f6e11091565",
+        "scheduled_at": "2026-10-10T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "d9c5ed7f3e208c0451ce8691349272fe5592dfdb901be8a7f8697916c77ed78d",
+      "sha256": "be393d67eaf82cd09eea61ce95966f84d9814067f18f2383bdbf234c3104e5ce"
+    },
+    {
+      "revision": 27,
+      "at": 1791604830.1581254,
+      "action": "task",
+      "data": {
+        "id": "T-ice-courier-portrait-research-20261010",
+        "objective": "一次資料と現行UIから既存の縦画面改善工程へ具体的な受入条件を補う",
+        "acceptance": [
+          "競合の販売者資料2件とUnity・W3Cの一次資料を確認する",
+          "現行ソースの縮小率とCSS寸法の推定を実測と区別する",
+          "既存T-ice-courier-touch-polishへ検査条件と次の一工程を紐付ける",
+          "未取得指標と人間評価をnullに保ち成果物ハッシュを保存する"
+        ],
+        "outputs": [
+          "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+          "business/unity/evidence/research-20261010-1300.json"
+        ],
+        "checks": [
+          "一次資料の本文と根拠リンク",
+          "現行ソースと寸法計算",
+          "親4件のcommitと復元ハッシュ",
+          "flowの履歴と成果物ハッシュ"
+        ],
+        "next_step": "既存T-ice-courier-touch-polishのUnity縦画面UIとWeb枠の寸法を改善する",
+        "decision_id": "D-web-renovation-20261010",
+        "hypothesis": "押せる操作部とルールを見分けられる導入を優先すれば、作品を増やさず開始体験の問題を検証できる",
+        "source": "research:business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+        "pdca": "plan",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-unity-portal-player-integration"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "be393d67eaf82cd09eea61ce95966f84d9814067f18f2383bdbf234c3104e5ce",
+      "sha256": "518803432315148f47f32933c08da43b28544e74d03f88424297176471dd7225"
+    },
+    {
+      "revision": 28,
+      "at": 1791604830.1653361,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261010T1300-6f6e11091565",
+        "task_id": "T-ice-courier-portrait-research-20261010",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261010T1300-6f6e11091565",
+        "task_id": "T-ice-courier-portrait-research-20261010",
+        "fence": 4,
+        "expires_at": 1791606330.1653361
+      },
+      "previous": "518803432315148f47f32933c08da43b28544e74d03f88424297176471dd7225",
+      "sha256": "2cdd474e3c126d0ff66f7bb344d377579e6da2b16762b960de749d9af8aeb430"
+    },
+    {
+      "revision": 29,
+      "at": 1791605017.6855102,
+      "action": "decision",
+      "data": {
+        "id": "D-ice-courier-portrait-acceptance-20261010",
+        "source": "research:business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+        "hypothesis": "最終CSS寸法と導入ルールの識別を検査すれば、二重縮小と入力の問題を作品追加なしで改善できる",
+        "next_step": "Existing T-ice-courier-touch-polish: improve Unity portrait UI and local Web frame together; compile and verify actual display",
+        "target_task_id": "T-ice-courier-touch-polish",
+        "supersedes_scope": "acceptance-details-only; existing task and owner priority preserved",
+        "acceptance_addendum": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+        "artifact": {
+          "path": "business/unity/evidence/research-20261010-1300.json",
+          "sha256": "b20a5a11f32de8d29debe378c096e0cc3a38e6a1531bb18632c89bce69238b2a"
+        },
+        "judgment": "unobserved",
+        "scope": "research-only; no implementation or demand claim"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "2cdd474e3c126d0ff66f7bb344d377579e6da2b16762b960de749d9af8aeb430",
+      "sha256": "fcb99752419cb26ad9c270422d44f0691905aeb158a410b953298496a758c9ab"
+    },
+    {
+      "revision": 30,
+      "at": 1791605017.6936588,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261010T1300-6f6e11091565",
+        "fence": 4,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/research-20261010-1300.json",
+            "sha256": "b20a5a11f32de8d29debe378c096e0cc3a38e6a1531bb18632c89bce69238b2a"
+          },
+          {
+            "path": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+            "sha256": "758b07473c08b11dd006f0e7518bc221ff95403995bdf62fa363ad5f08cd41f9"
+          }
+        ],
+        "checks": [
+          "6 primary sources read and linked; source-derived dimensions explicitly separated from measurements",
+          "8 acceptance details linked to existing implementation task; no replacement/new game",
+          "Repository contract and diff check passed; 4 parent HEADs and 8 recovery hashes verified",
+          "Owner instructions and old cloud ledger untouched; unobserved metrics remain null"
+        ],
+        "next_step": "Existing T-ice-courier-touch-polish: improve Unity portrait UI and local Web frame together; compile and verify actual display"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "fcb99752419cb26ad9c270422d44f0691905aeb158a410b953298496a758c9ab",
+      "sha256": "55abb172f3f9920c95eec94a3d1e70bb14290177705399eb9e05ce980be2a49f"
+    },
+    {
+      "revision": 31,
+      "at": 1791605017.7016575,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261010T1300-6f6e11091565",
+        "fence": 4,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/research-20261010-1300.json",
+            "sha256": "b20a5a11f32de8d29debe378c096e0cc3a38e6a1531bb18632c89bce69238b2a"
+          },
+          {
+            "path": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+            "sha256": "758b07473c08b11dd006f0e7518bc221ff95403995bdf62fa363ad5f08cd41f9"
+          }
+        ],
+        "checks": [
+          "6 primary sources read and linked; source-derived dimensions explicitly separated from measurements",
+          "8 acceptance details linked to existing implementation task; no replacement/new game",
+          "Repository contract and diff check passed; 4 parent HEADs and 8 recovery hashes verified",
+          "Owner instructions and old cloud ledger untouched; unobserved metrics remain null"
+        ],
+        "next_step": "Existing T-ice-courier-touch-polish: improve Unity portrait UI and local Web frame together; compile and verify actual display",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "55abb172f3f9920c95eec94a3d1e70bb14290177705399eb9e05ce980be2a49f",
+      "sha256": "b8a1ccd7489d6b26569ee1d21d7292b069a3b0eb33b1b327431fc1a0212ecc83"
     }
   ],
-  "projection_sha256": "96431458452b3becf057b7aad91090199a39fe9e35618f380f9ad23f3f183a62"
+  "projection_sha256": "491fb44bb0d501d60169d285f38d7370d87c85a77c4bad2a2e32d218b0f563e9"
 }
