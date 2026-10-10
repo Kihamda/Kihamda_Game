@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 45,
+  "revision": 49,
   "business_id": "game-site",
-  "fence": 7,
+  "fence": 8,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -120,6 +120,68 @@
           "next_step": "Same T-ice-courier-touch-polish: verify new UI actual screen/input, then exact-source hosted artifacts and physical-device save/touch separately",
           "at": 1791650205.345042,
           "recovered_fence": 7
+        },
+        {
+          "run_id": "unity-20261011T0700-b1404a964998",
+          "fence": 8,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/quality-20261011-0700.json",
+              "sha256": "a83ee7f9844b1bfd31e1f2f5b389c58e96adf766e688148ae206beea0af09683"
+            },
+            {
+              "path": "docs/ice-courier-editor-quality-20261011.md",
+              "sha256": "bb2e45245120a2fc000fea05ddb74105d52f0bb3f7eb5887cdf806d16aba1d6a"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-11-unity-portrait-editor-check.md",
+              "sha256": "cfbbf753ab278aaf17aa082c3bd2b428ba882d88989e36c2f79f3126d0e4a523"
+            },
+            {
+              "path": "scripts/Invoke-Unity.ps1",
+              "sha256": "0d03bc82e9cb747657b7ea67ec2b28c36b799f29b5b7e906a8a4e2f9391e46fe"
+            }
+          ],
+          "checks": [
+            "Unity Validate passed; EditMode10/10 and PlayMode1/1 before and after helper change",
+            "Editor390x844 all3 routes and Undo/Play-cycle Resume passed;335/1280 route3 and mouse-drag checks passed",
+            "Same run operation refusal preserved existing XML",
+            "Web build/repository/GUID/36 checksums passed;4 parent HEADs/8 recovery hashes matched",
+            "Unverified Actions/new browser/device/human checks retained; old ledger and owner text unchanged"
+          ],
+          "next_step": "Same T-ice-courier-touch-polish: obtain exact-source responsive-v1 Actions artifacts, verify source/checksums and attach to local Web host; separately verify browser/device/human acceptance",
+          "at": 1791670448.4896421
+        },
+        {
+          "run_id": "unity-20261011T0700-b1404a964998",
+          "fence": 8,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/quality-20261011-0700.json",
+              "sha256": "a83ee7f9844b1bfd31e1f2f5b389c58e96adf766e688148ae206beea0af09683"
+            },
+            {
+              "path": "docs/ice-courier-editor-quality-20261011.md",
+              "sha256": "bb2e45245120a2fc000fea05ddb74105d52f0bb3f7eb5887cdf806d16aba1d6a"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-11-unity-portrait-editor-check.md",
+              "sha256": "cfbbf753ab278aaf17aa082c3bd2b428ba882d88989e36c2f79f3126d0e4a523"
+            },
+            {
+              "path": "scripts/Invoke-Unity.ps1",
+              "sha256": "0d03bc82e9cb747657b7ea67ec2b28c36b799f29b5b7e906a8a4e2f9391e46fe"
+            }
+          ],
+          "checks": [
+            "Unity Validate passed; EditMode10/10 and PlayMode1/1 before and after helper change",
+            "Editor390x844 all3 routes and Undo/Play-cycle Resume passed;335/1280 route3 and mouse-drag checks passed",
+            "Same run operation refusal preserved existing XML",
+            "Web build/repository/GUID/36 checksums passed;4 parent HEADs/8 recovery hashes matched",
+            "Unverified Actions/new browser/device/human checks retained; old ledger and owner text unchanged"
+          ],
+          "next_step": "Same T-ice-courier-touch-polish: obtain exact-source responsive-v1 Actions artifacts, verify source/checksums and attach to local Web host; separately verify browser/device/human acceptance",
+          "at": 1791670448.4991417
         }
       ],
       "claims": [
@@ -128,6 +190,12 @@
           "task_id": "T-ice-courier-touch-polish",
           "fence": 7,
           "expires_at": 1791649820.0850632
+        },
+        {
+          "run_id": "unity-20261011T0700-b1404a964998",
+          "task_id": "T-ice-courier-touch-polish",
+          "fence": 8,
+          "expires_at": 1791671416.3817098
         }
       ]
     },
@@ -597,6 +665,13 @@
       "source": "scheduled:game-site:2026-10-11T01:00:00+09:00",
       "status": "recovered",
       "started_at": 1791648020.0336773
+    },
+    "unity-20261011T0700-b1404a964998": {
+      "run_id": "unity-20261011T0700-b1404a964998",
+      "scheduled_at": "2026-10-11T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-11T07:00:00+09:00",
+      "status": "checkpointed",
+      "started_at": 1791669616.3241487
     }
   },
   "experiments": {
@@ -684,7 +759,8 @@
     "2026-10-10T07:00:00+09:00": "unity-20261010T0700-cc24abcda9c1",
     "2026-10-10T13:00:00+09:00": "unity-20261010T1300-6f6e11091565",
     "2026-10-10T19:00:00+09:00": "unity-20261010T1900-e6047e8667b5",
-    "2026-10-11T01:00:00+09:00": "unity-20261011T0100-3d0983464e72"
+    "2026-10-11T01:00:00+09:00": "unity-20261011T0100-3d0983464e72",
+    "2026-10-11T07:00:00+09:00": "unity-20261011T0700-b1404a964998"
   },
   "feedback": [],
   "approvals": [],
@@ -1743,7 +1819,119 @@
       },
       "previous": "2e888f0f9a18fa274ea28d4c618e5d2c10f1b3b5478e69c98e8fa5215a4626dd",
       "sha256": "0527462a3bad392ed838fd5b590ec82226fdbae2ffe6b82280f31b312f3a3137"
+    },
+    {
+      "revision": 46,
+      "at": 1791669616.3241487,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261011T0700-b1404a964998",
+        "scheduled_at": "2026-10-11T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "0527462a3bad392ed838fd5b590ec82226fdbae2ffe6b82280f31b312f3a3137",
+      "sha256": "1a235c5e84ca8c52743b9d39d08738333bf6963bbdd563f0012081bc035a730c"
+    },
+    {
+      "revision": 47,
+      "at": 1791669616.3817098,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261011T0700-b1404a964998",
+        "task_id": "T-ice-courier-touch-polish",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261011T0700-b1404a964998",
+        "task_id": "T-ice-courier-touch-polish",
+        "fence": 8,
+        "expires_at": 1791671416.3817098
+      },
+      "previous": "1a235c5e84ca8c52743b9d39d08738333bf6963bbdd563f0012081bc035a730c",
+      "sha256": "f51e99acff7c29ea1722300c57016537f5b9de4a2c07c5b51f105fbc54607504"
+    },
+    {
+      "revision": 48,
+      "at": 1791670448.4896421,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261011T0700-b1404a964998",
+        "fence": 8,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/quality-20261011-0700.json",
+            "sha256": "a83ee7f9844b1bfd31e1f2f5b389c58e96adf766e688148ae206beea0af09683"
+          },
+          {
+            "path": "docs/ice-courier-editor-quality-20261011.md",
+            "sha256": "bb2e45245120a2fc000fea05ddb74105d52f0bb3f7eb5887cdf806d16aba1d6a"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-11-unity-portrait-editor-check.md",
+            "sha256": "cfbbf753ab278aaf17aa082c3bd2b428ba882d88989e36c2f79f3126d0e4a523"
+          },
+          {
+            "path": "scripts/Invoke-Unity.ps1",
+            "sha256": "0d03bc82e9cb747657b7ea67ec2b28c36b799f29b5b7e906a8a4e2f9391e46fe"
+          }
+        ],
+        "checks": [
+          "Unity Validate passed; EditMode10/10 and PlayMode1/1 before and after helper change",
+          "Editor390x844 all3 routes and Undo/Play-cycle Resume passed;335/1280 route3 and mouse-drag checks passed",
+          "Same run operation refusal preserved existing XML",
+          "Web build/repository/GUID/36 checksums passed;4 parent HEADs/8 recovery hashes matched",
+          "Unverified Actions/new browser/device/human checks retained; old ledger and owner text unchanged"
+        ],
+        "next_step": "Same T-ice-courier-touch-polish: obtain exact-source responsive-v1 Actions artifacts, verify source/checksums and attach to local Web host; separately verify browser/device/human acceptance"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "f51e99acff7c29ea1722300c57016537f5b9de4a2c07c5b51f105fbc54607504",
+      "sha256": "ee162ee4ba0bc04c11d32883f3d6ca2c007042e405e1283cbb56b2385f98b2d2"
+    },
+    {
+      "revision": 49,
+      "at": 1791670448.4991417,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261011T0700-b1404a964998",
+        "fence": 8,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/quality-20261011-0700.json",
+            "sha256": "a83ee7f9844b1bfd31e1f2f5b389c58e96adf766e688148ae206beea0af09683"
+          },
+          {
+            "path": "docs/ice-courier-editor-quality-20261011.md",
+            "sha256": "bb2e45245120a2fc000fea05ddb74105d52f0bb3f7eb5887cdf806d16aba1d6a"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-11-unity-portrait-editor-check.md",
+            "sha256": "cfbbf753ab278aaf17aa082c3bd2b428ba882d88989e36c2f79f3126d0e4a523"
+          },
+          {
+            "path": "scripts/Invoke-Unity.ps1",
+            "sha256": "0d03bc82e9cb747657b7ea67ec2b28c36b799f29b5b7e906a8a4e2f9391e46fe"
+          }
+        ],
+        "checks": [
+          "Unity Validate passed; EditMode10/10 and PlayMode1/1 before and after helper change",
+          "Editor390x844 all3 routes and Undo/Play-cycle Resume passed;335/1280 route3 and mouse-drag checks passed",
+          "Same run operation refusal preserved existing XML",
+          "Web build/repository/GUID/36 checksums passed;4 parent HEADs/8 recovery hashes matched",
+          "Unverified Actions/new browser/device/human checks retained; old ledger and owner text unchanged"
+        ],
+        "next_step": "Same T-ice-courier-touch-polish: obtain exact-source responsive-v1 Actions artifacts, verify source/checksums and attach to local Web host; separately verify browser/device/human acceptance"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "ee162ee4ba0bc04c11d32883f3d6ca2c007042e405e1283cbb56b2385f98b2d2",
+      "sha256": "c49c482691b55d6ff91a5816c07917ac817b7c1b0641b6a8c58049fadc1974f9"
     }
   ],
-  "projection_sha256": "0e2327fbefefa86d3ec6825666c1a91f95b736961578e967c0322cec91a95dbc"
+  "projection_sha256": "15cf1c9faeb67838ade2b0647280fedfcbd8f2a107ce1451ec8f47b5edcc1162"
 }

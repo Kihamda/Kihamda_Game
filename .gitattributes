@@ -14,3 +14,6 @@ web/plugins/local-unity-player.ts text eol=lf
 web/src/portal/UnityPlayer.tsx text eol=lf
 web/src/portal/App.css -text whitespace=cr-at-eol
 docs/ice-courier-responsive-ui.md text eol=lf
+docs/ice-courier-editor-quality-20261011.md text eol=lf
+business/blog/drafts/2026-10-11-unity-portrait-editor-check.md text eol=lf
+scripts/Invoke-Unity.ps1 -text whitespace=cr-at-eol

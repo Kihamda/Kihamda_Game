@@ -3,7 +3,11 @@ param(
     [ValidateSet('Validate','EditMode','PlayMode','Windows','Web')]
     [string]$Operation = 'Validate',
     [string]$Project = 'unity/IceCourier',
-    [string]$Editor = $env:UNITY_EDITOR_PATH
+    [string]$Editor = $env:UNITY_EDITOR_PATH,
+    [ValidatePattern('^[a-zA-Z0-9_-]+$')]
+    [string]$RunId = ('local-' + (Get-Date -Format 'yyyyMMddTHHmmssffff') + '-' + [guid]::NewGuid().ToString('N').Substring(0,8)),
+    [ValidateRange(1,1200)]
+    [int]$TimeoutSeconds = 300
 )
 $ErrorActionPreference = 'Stop'
 # This PC's ICU loader crashes inside Unity netcorerun. Limit the workaround
@@ -19,13 +23,14 @@ if (-not $Editor) { $Editor = "C:\Program Files\Unity\Hub\Editor\$version\Editor
 if (-not (Test-Path -LiteralPath $Editor)) { throw "Install Unity $version or set UNITY_EDITOR_PATH" }
 $installed = (Get-Item -LiteralPath $Editor).VersionInfo.ProductVersion
 if (-not $installed.StartsWith($version)) { throw "Expected $version; found $installed" }
-$output = Join-Path $repoRoot "artifacts/unity/$(Split-Path $projectPath -Leaf)"
+$output = Join-Path $repoRoot "artifacts/unity/$(Split-Path $projectPath -Leaf)/$RunId"
 New-Item -ItemType Directory -Force $output | Out-Null
 $log = Join-Path $output "$Operation.log"
+if (Test-Path -LiteralPath $log) { throw 'Run/operation already has evidence; use a new RunId' }
 $arguments = @('-batchmode','-force-d3d11','-projectPath',"`"$projectPath`"",'-logFile',"`"$log`"")
 if ($Operation -in @('EditMode','PlayMode')) {
     $result = Join-Path $output "$Operation.xml"
-    if (Test-Path -LiteralPath $result) { Remove-Item -LiteralPath $result }
+    if (Test-Path -LiteralPath $result) { throw 'Test evidence already exists; use a new RunId' }
     $arguments += @('-runTests','-testPlatform',$Operation,'-testResults',"`"$result`"")
 } else {
     $method = @{Validate='Validate'; Windows='BuildWindows'; Web='BuildWeb'}[$Operation]
@@ -35,7 +40,7 @@ if ($Operation -in @('EditMode','PlayMode')) {
 }
 # One Editor per project; it exits itself after tests. Do not suppress license failures.
 $process = Start-Process -FilePath $Editor -ArgumentList $arguments -WindowStyle Hidden -PassThru
-if (-not $process.WaitForExit(1800000)) { $process.Kill(); throw 'Unity timed out; inspect log before retrying' }
+if (-not $process.WaitForExit($TimeoutSeconds * 1000)) { $process.Kill(); $process.WaitForExit(); throw "Unity timed out after $TimeoutSeconds seconds; inspect log before retrying" }
 if ($process.ExitCode -ne 0) { throw "Unity failed ($($process.ExitCode)). Log: $log" }
 if (-not (Test-Path -LiteralPath $log)) { throw 'Unity produced no log' }
 if ($Operation -in @('EditMode','PlayMode')) {

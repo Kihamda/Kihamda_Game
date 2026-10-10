@@ -1,5 +1,13 @@
 # 現在の状態
 
+2026-10-11の07時枠は既存T-ice-courier-touch-polishを継続した。Unity 6000.3.23f1の実画面390×844で全3ルートの説明・盤面・操作ラベルを確認し、実入力で2・10・9手の配送完了、Undo、Play停止・再起動後のResumeを確認。3番目のルートでは盤面外へのマウスドラッグ取消と盤面内の1回移動、335×820と1280×720への切替による状態維持、無効Upも確認した。Editor内PlayerPrefsの往復であり、配布版・ブラウザ・実タッチの確認ではない。ゲームとWeb枠のソースは01時検査済みcommit 6449812から変更していない。
+
+Unity検査スクリプトをRunIdごとの保存へ変更し、既存operationの証跡があれば起動前に拒否する。標準待機を300秒にした。変更前後でUnity Validate、EditMode 10/10、PlayMode 1/1が成功。重複実行の拒否でXMLハッシュ不変を確認した。タイムアウト分岐の強制終了は未実行。Webビルド、旧4作品・GUID 19件、36成果物チェックサム、親4commit・復元8ハッシュも一致した。
+
+実画面16枚・XML・ログはローカルartifactsに保持。検査報告はdocs/ice-courier-editor-quality-20261011.md、ハッシュ付き証跡はbusiness/unity/evidence/quality-20261011-0700.json。記事business/blog/drafts/2026-10-11-unity-portrait-editor-check.mdは下書き保存だけで投稿していない。今回起動したEditorは終了し、解像度プリセットのみローカルに残した。
+
+07時slotは一度だけ取得し、run unity-20261011T0700-b1404a964998、fence8。期限内にflow.pyでcheckpoint48、yield49を保存してleaseを解放した。同じタスクはreadyで未完了。次は同一ソースの新responsive-v1 Actions成果物を照合してローカルWebへ接続する。新Windows/Web配布版、最終CSS寸法、ブラウザのフォーカス・終了・失敗・再試行・保存、実タッチ、Safari、人間評価は未確認。利益・訪問・開始率・完了率・再訪はnull、14/28日観測は未開始。外部push・PR・merge・配信なし。天啓.mdの全体刷新指示は未完了として保持し、旧クラウド台帳とAtohitoriは変更していない。
+
 2026-10-11の01時枠で既存T-ice-courier-touch-polishのUnity縦画面UIとWeb枠の切替を実装した。説明・盤面・操作の縦配置、本文16px、操作高さ48px・間隔8px、C/G/+/@の記号、盤面内だけの単指スワイプと取消、Resumeの待機解除を追加。新ビルドのresponsive-v1だけCSS同期・DPR 1と高さ820pxの枠を使い、旧検証済み版は従来表示を保つ。新Actions版をrun ID指定で接続できるようにし、未確認の版は検証済みとしない。
 
 初回Unity Validate、EditMode 10件、PlayMode 1件、ルール単体3ルート、Webビルド・36成果物チェックサム、GUID 19件、親4commit・復元8ハッシュ、台帳27テストが成功。実画面取得はアプリ承認待ちが時間切れ、HTTP検査もsocket拒否後に応答待ちで失敗し、後続Unity起動はライセンス初期化で失敗した。後から追加した未検証のUnity変更を除いて初回検査済み実装へ戻した。初回PlayMode XMLは後続実行準備で削除されたため、実行結果記録に成功と証拠の制限を残す。
