@@ -4,7 +4,7 @@
       "id": "ice-courier",
       "title": "Ice Courier",
       "path": "/games/ice-courier/",
-      "description": "氷の上を滑って、荷物を届けるパズル。出発したマスが凍るから、一手ごとに次の道が変わります。",
+      "description": "氷の上を滑って、荷物を届けるパズル。出発した1マスだけが凍るから、一手ごとに次の道が変わります。",
       "tags": ["パズル", "配送", "Unity"],
       "release": null
     }

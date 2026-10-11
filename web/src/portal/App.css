@@ -116,3 +116,15 @@
 @container (max-width: 719px) {
   .unity-player.responsive { height: 820px; aspect-ratio: auto; }
 }
+.game-guide { border-top: 1px solid #172b2833; padding-block: 32px; font-size: 16px; }
+.game-guide h2 { font-size: 24px; margin-bottom: 16px; }
+.game-guide p { margin-bottom: 16px; }
+.symbol-guide, .control-guide { display: grid; gap: 16px; margin-block: 24px; }
+.symbol-guide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.symbol-guide > div, .control-guide > div { background: #e8e9de; padding: 16px; }
+.game-guide dt { font-weight: 700; overflow-wrap: anywhere; }
+.game-guide dd { margin: 4px 0 0; }
+.save-guide { color: var(--muted); }
+.control-help { margin-bottom: 16px; }
+.control-help summary { min-height: 44px; padding: 12px 16px; background: #e8e9de; cursor: pointer; }
+.control-help summary:focus-visible { outline: 3px solid #3d7253; outline-offset: 5px; }

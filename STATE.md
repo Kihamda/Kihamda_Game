@@ -1,5 +1,13 @@
 # 現在の状態
 
+2026-10-11の19時枠は既存T-ice-courier-touch-polishを継続し、Webの初回案内を改善した。出発した1マスだけが凍ると作品カード・詳細・メタ説明へ明記。C/G/+/@の日本語対応、展開式の英語ボタン説明、再開前のUndo履歴が残らないこと、Restartの保存上書き、未確認のWeb保存を保証しない案内を追加した。詳細はbusiness/unity/research/2026-10-11-guidance-strategy.md、ハッシュ付き証跡はbusiness/unity/evidence/strategy-20261011-1900.json。
+
+変更していないCourierBoard.csをPowerShellのAdd-Typeで実行し、初期→右1手→Undo、Restore後の旧Undo履歴初期化、新しい下移動・配送完了→Undoを確認した。.NETの盤面検査であり、Unityコンパイル・Editor・PlayerPrefs検査ではない。Webの390×844と1280×720で案内幅335/1152px・本文16px・横はみ出しなし、展開操作335×52.80pxとEnter開閉を確認。検索「凍る」1件、公開中0件、全件復帰・一覧と詳細往復、標準版の開始ボタン・iframeなしも確認した。WebビルドのTypeScript/ESLint/Vite・5静的ページ、旧4URL・GUID19件、36成果物チェックサム、親4HEAD・復元8ハッシュ、最新checkpoint2成果物・元55イベント・元タスクの契約を照合した。
+
+GitHubのunity-ci.ymlを読み取り照会したが、新responsive-v1版はまだない。Unityソース不変、新Unity検査・新Windows/Web配布版・Web保存往復・実タッチ・Safari・人間の反応は今回未実行。利益・訪問・開始率・完了率・再訪はnull、release=null、14/28日観測未開始。技術上はimprove、事業判断はunobserved。同じE-unity-portalへ計画・実装・検査・判断を追記し、新作・別計画へ置き換えていない。
+
+19時slotは一度だけ取得。run unity-20261011T1900-8b31b641b674、fence10。flow.pyのcheckpoint63・yield64で期限内に保存してleaseを解放した。既存タスクはreadyで未完了。次の一工程は同一ソースのresponsive-v1 Actions成果物照合とローカル接続。保留時は同じタスクのF3で保存不可案内が配送完了noticeに上書きされる順序を再現・修正する。ソース順序は確認済みだが、例外を起こす実画面の再現は未実行。既知の外部待ちは再送せず、push・PR・merge・配信・投稿なし。天啓.mdの全体刷新は未完了として保持し、旧クラウド台帳・親の原本・復元保管庫・Atohitoriは変更していない。今回の初回preview設定漏れとworkflow404は訂正し、誤った旧distを検査結果には採用していない。自分の検査用サーバーと一時タブを終了し、viewportを戻す。既存4178には介入しない。
+
 2026-10-11の13時枠は、作者・販売者の一次資料とUnity 6.3の保存仕様を調べ、既存T-ice-courier-touch-polishへ初回説明と保存案内の受入条件を補った。成果はbusiness/unity/research/2026-10-11-first-play-and-save-acceptance.md。出発した1マスだけが凍ること、C/G/+/@と英語ボタンの日本語対応、再開前のUndo履歴が戻らないこと、未確認のWeb保存を保証しないことを検査条件にした。イメージ図と同一版の実画面、ローカル検査と一般公開も区別する。
 
 今回の判断は提示方法と技術仕様に基づく仮説で、需要や人間の初回理解を実測した結果ではない。利益・訪問・開始率・完了率・再訪はnull、14/28日観測は未開始。新しい実装・Unity検査・Actions配布版・ブラウザ実測・実タッチ・Safari・人間評価は今回未実行。07時のEditor検査と前回の縦画面条件を保持する。天啓.mdの全体刷新指示は未完了のため残した。

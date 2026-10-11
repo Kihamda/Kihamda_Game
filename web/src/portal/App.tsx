@@ -34,14 +34,34 @@ function Home() {
     <section className="works-section" id="works" tabIndex={-1} aria-labelledby="works-title"><div className="section-heading"><div><p className="eyebrow">THE COLLECTION</p><h2 id="works-title">作品を探す</h2></div><p>ルールを知ってから、遊びを選ぶ。</p></div>
       <div className="catalog-tools"><div className="filter-group" role="group" aria-label="公開状態で絞り込み"><button type="button" aria-pressed={filter === "all"} onClick={() => setFilter("all")}>すべて</button><button type="button" aria-pressed={filter === "released"} onClick={() => setFilter("released")}>公開中</button></div><label className="search-label"><span>作品名・キーワード</span><input type="search" placeholder="作品を検索" value={query} onChange={event => setQuery(event.target.value)} /></label></div>
       <p className="result-count" role="status" aria-live="polite">{games.length}作品{filter === "released" ? "が公開中" : "を表示"}</p>
-      {games.length ? <div className="work-list">{games.map(game => <article className="work-card" key={game.id}><a href={game.path} className="work-art" aria-label={`${game.title}の詳細`}><IceBoard /></a><div className="work-copy"><span className="status-badge">{game.release ? "公開中" : "制作中"}</span><p className="work-genre">{game.tags.join(" / ")}</p><h3><a href={game.path}>{game.title}</a></h3><p>{game.description}</p><ul className="work-facts"><li>1人用</li><li>3ステージ</li><li>Undo・保存・再開</li></ul><a className="text-link" href={game.path}>ルールと遊び方を見る <span aria-hidden="true">→</span></a></div></article>)}</div> : <div className="empty-state"><h3>{filter === "released" && !query ? "公開中の作品はまだありません" : "条件に合う作品がありません"}</h3><p>{filter === "released" && !query ? "制作中の作品では、ルールや遊び方をご覧いただけます。" : "別のキーワードで探すか、絞り込みを解除してください。"}</p><button className="button secondary" type="button" onClick={() => { setQuery(""); setFilter("all"); }}>すべての作品を表示</button></div>}
+      {games.length ? <div className="work-list">{games.map(game => <article className="work-card" key={game.id}><a href={game.path} className="work-art" aria-label={`${game.title}の詳細`}><IceBoard /></a><div className="work-copy"><span className="status-badge">{game.release ? "公開中" : "制作中"}</span><p className="work-genre">{game.tags.join(" / ")}</p><h3><a href={game.path}>{game.title}</a></h3><p>{game.description}</p><ul className="work-facts"><li>1人用</li><li>3ステージ</li><li>一手戻す</li></ul><a className="text-link" href={game.path}>ルールと遊び方を見る <span aria-hidden="true">→</span></a></div></article>)}</div> : <div className="empty-state"><h3>{filter === "released" && !query ? "公開中の作品はまだありません" : "条件に合う作品がありません"}</h3><p>{filter === "released" && !query ? "制作中の作品では、ルールや遊び方をご覧いただけます。" : "別のキーワードで探すか、絞り込みを解除してください。"}</p><button className="button secondary" type="button" onClick={() => { setQuery(""); setFilter("all"); }}>すべての作品を表示</button></div>}
     </section><section className="studio-strip"><p className="eyebrow">MADE WITH CURIOSITY</p><h2>たくさんより、ひとつを深く。</h2><p>ルールを磨き、実際に遊んで確かめる。<br />作品ごとの小さな違いを、大切にしています。</p><a className="text-link" href="/about/">このスタジオについて →</a></section>
   </>;
 }
 
+function GameGuide() {
+  return <section className="game-guide" aria-labelledby="guide-title">
+    <h2 id="guide-title">ゲーム画面の見方と操作</h2>
+    <p>荷物をすべて拾って、到着点へ届けます。動かす前に、記号とボタンを確認できます。</p>
+    <dl className="symbol-guide" aria-label="盤面の記号">
+      <div><dt>C</dt><dd>荷物</dd></div><div><dt>G</dt><dd>到着点</dd></div>
+      <div><dt>+</dt><dd>凍った出発点</dd></div><div><dt>@</dt><dd>配達員</dd></div>
+    </dl>
+    <details className="control-help"><summary>英語ボタンの意味と保存・再開の条件</summary>
+    <dl className="control-guide" aria-label="ゲーム内ボタンの意味">
+      <div><dt>UP / LEFT / DOWN / RIGHT</dt><dd>上・左・下・右へ滑る</dd></div>
+      <div><dt>UNDO</dt><dd>一手戻す。荷物と凍ったマスも戻ります。</dd></div>
+      <div><dt>RESTART</dt><dd>このルートを最初から。現在の進行と保存を初期状態に戻します。</dd></div>
+      <div><dt>RESUME</dt><dd>最後に保存した盤面から再開。再開前のUndo履歴は残りません。</dd></div>
+      <div><dt>NEXT</dt><dd>配送完了後、次のルートへ進む。最後のルートには表示されません。</dd></div>
+    </dl></details>
+    <p className="save-guide">保存・再開は対応環境を確認中です。ブラウザ版で続きが残ることは、まだ確認できていません。</p>
+  </section>;
+}
+
 function GameDetail() {
   const game = catalog.games[0];
-  return <><div className="breadcrumbs"><a href="/#works">作品一覧</a><span aria-hidden="true"> / </span><span>{game.title}</span></div><section className="detail-hero"><div><p className="eyebrow">FROST DELIVERY PUZZLE</p><h1>{game.title}</h1><p className="detail-lead">滑ったあとが、<br />次の障害物になる。</p><p>{game.description}</p><span className="status-badge">制作中</span><p className="release-note">ブラウザ版の公開を準備しています。公開後、この画面から遊べます。</p><dl className="detail-facts"><div><dt>人数</dt><dd>1人</dd></div><div><dt>内容</dt><dd>3ステージ</dd></div><div><dt>操作</dt><dd>方向キー・画面ボタン</dd></div></dl></div><IceBoard /></section><UnityPlayer /><section className="rules-section" aria-labelledby="rules-title"><p className="eyebrow">HOW TO PLAY</p><h2 id="rules-title">届けるまでの、3つのルール。</h2><ol className="rules-grid"><li><span>01</span><h3>壁まで滑る</h3><p>方向を選ぶと、壁や障害物にぶつかるまで進みます。</p></li><li><span>02</span><h3>出発点が凍る</h3><p>動くたびに、出発したマスが障害物になります。次の道も考えて進みましょう。</p></li><li><span>03</span><h3>荷物を届ける</h3><p>荷物を拾って到着点へ。行き詰まったらUndoで一手戻せます。</p></li></ol></section><section className="detail-support"><h2>気軽に試せるように。</h2><p>Undoは荷物と凍ったマスも一緒に戻します。保存した進行は、再開して続きを遊べます。</p><p>スマートフォン向けの表示と操作は調整中です。</p><a href="/contact/" className="text-link">作品について問い合わせる →</a></section></>;
+  return <><div className="breadcrumbs"><a href="/#works">作品一覧</a><span aria-hidden="true"> / </span><span>{game.title}</span></div><section className="detail-hero"><div><p className="eyebrow">FROST DELIVERY PUZZLE</p><h1>{game.title}</h1><p className="detail-lead">出発した1マスが、<br />次の障害物になる。</p><p>{game.description}</p><span className="status-badge">制作中</span><p className="release-note">ブラウザ版の公開を準備しています。公開後、この画面から遊べます。</p><dl className="detail-facts"><div><dt>人数</dt><dd>1人</dd></div><div><dt>内容</dt><dd>3ステージ</dd></div><div><dt>操作</dt><dd>方向キー・画面ボタン</dd></div></dl></div><IceBoard /></section><GameGuide /><UnityPlayer /><section className="rules-section" aria-labelledby="rules-title"><p className="eyebrow">HOW TO PLAY</p><h2 id="rules-title">届けるまでの、3つのルール。</h2><ol className="rules-grid"><li><span>01</span><h3>壁まで滑る</h3><p>方向を選ぶと、壁や障害物にぶつかるまで進みます。</p></li><li><span>02</span><h3>出発点が凍る</h3><p>移動できたとき、出発した1マスだけが凍って障害物になります。次の道も考えて進みましょう。</p></li><li><span>03</span><h3>荷物を届ける</h3><p>荷物をすべて拾って到着点へ。行き詰まったらUNDOで一手戻せます。</p></li></ol></section><section className="detail-support"><h2>気軽に試せるように。</h2><p>方向キー・WASD・画面ボタンで操作できます。Zは一手戻す、Rはこのルートを最初からやり直す操作です。</p><p>スマートフォン向けの表示と操作は調整中です。</p><a href="/contact/" className="text-link">作品について問い合わせる →</a></section></>;
 }
 
 function Info({ pathname }: { pathname: string }) {

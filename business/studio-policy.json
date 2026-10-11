@@ -20,7 +20,7 @@
   "portalPolicy": "共通画面から静的生成。未公開の作品に開始リンクを出さない。旧検証済み成果物のローカル接続は完了。新縦画面UIのEditor実画面と3ルート・Undo・Play再起動後Resumeを確認した。次は同一ソースのresponsive-v1 Actions成果物を照合してローカルWebへ接続する。実タッチ・ブラウザ保存・人間評価は未検証として区別し、本番全体置換はしない。",
   "portraitAcceptanceSource": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
   "portraitMeasurementSource": "business/unity/research/2026-10-10-measured-portrait-strategy.md",
-  "strategyPolicy": "技術上の改善判断と人間・公開主指標の未観測を分ける。次の実装枠では既存T-ice-courier-touch-polishを継続。期限切れleaseは部分結果と外部操作を照合してrecoverし、本人の再開指示は手動runに記録する。消費済みslotを取り直さない。",
+  "strategyPolicy": "技術上の改善と人間・公開主指標の未観測を分ける。既存T-ice-courier-touch-polishを維持。Webの日本語記号・展開式ボタン案内・保存範囲は390/1280pxで検査済み。次は同一ソースのresponsive-v1 Actions成果物を照合してローカル接続。保留時は同じタスクのF3保存不可案内と配送完了noticeの競合を再現・修正する。期限切れleaseは照合してrecoverし、消費済みslotは取り直さない。",
   "portraitPolicy": "既存T-ice-courier-touch-polishを継続する。UnityとWeb枠を合わせた最終CSS寸法で操作44px・本文16pxを検査し、実タッチ・人間評価・Safari埋め込み保存を別記録にする。ソース計算と実測、技術成功と需要を分ける。",
   "allowed": [
     "edit",
@@ -56,5 +56,6 @@
   "portraitEditorQualitySource": "docs/ice-courier-editor-quality-20261011.md",
   "unityTestEvidencePolicy": "Invoke-Unity.ps1は一意なRunIdごとの証跡へ保存し、同じoperationの既存証跡を上書きしない。標準待機300秒。Editorの実操作と配布版・実タッチを別々に検査する。",
   "firstPlayAcceptanceSource": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
-  "firstPlayPolicy": "既存T-ice-courier-touch-polishで出発1マスの凍結、日本語と実画面記号・英語操作の対応、保存の確認範囲と再開後Undo履歴初期化を検査する。前回の寸法と実端末・人間評価条件を保持し、新Actions成果物待ちでも説明整備を継続する。掲載作品の説明から需要を推定しない。"
+  "firstPlayPolicy": "既存T-ice-courier-touch-polishで出発1マスの凍結、日本語と実画面記号・英語操作の対応、保存の確認範囲と再開後Undo履歴初期化を検査する。前回の寸法と実端末・人間評価条件を保持し、新Actions成果物待ちでも説明整備を継続する。掲載作品の説明から需要を推定しない。",
+  "guidanceStrategySource": "business/unity/research/2026-10-11-guidance-strategy.md"
 }

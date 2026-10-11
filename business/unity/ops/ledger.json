@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 55,
+  "revision": 64,
   "business_id": "game-site",
-  "fence": 9,
+  "fence": 10,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -182,6 +182,124 @@
           ],
           "next_step": "Same T-ice-courier-touch-polish: obtain exact-source responsive-v1 Actions artifacts, verify source/checksums and attach to local Web host; separately verify browser/device/human acceptance",
           "at": 1791670448.4991417
+        },
+        {
+          "run_id": "unity-20261011T1900-8b31b641b674",
+          "fence": 10,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-11-guidance-strategy.md",
+              "sha256": "c9cd734c715404571c922f898f0299a3c4860a8fcbc5b31711adb59f694408ac"
+            },
+            {
+              "path": "docs/images/guidance-20261011-390.jpg",
+              "sha256": "ea3f507c2c0349722349c49fa25a477c349bf4168f268c9354e7d9b29c681186"
+            },
+            {
+              "path": "docs/images/guidance-20261011-controls-390.jpg",
+              "sha256": "d457be371fe93fb68f9089be16d6489993fcfa44b32beb15f048b06a7732dddd"
+            },
+            {
+              "path": "docs/images/guidance-20261011-1280.jpg",
+              "sha256": "d0ee959709cb05ddc49885bc3322571b9774e238cd61374f9c5126ceb2d172c0"
+            },
+            {
+              "path": "business/unity/evidence/strategy-20261011-1900.json",
+              "sha256": "49dff95d9b8358e5758de62a5a1723934f9de1f271950f8dfe0d47cd854f5e81"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "4d09854c8eda82d913a079c9f92380f1c407433cd7e6aa29fdecc9e30b57153f"
+            },
+            {
+              "path": "web/src/portal/App.css",
+              "sha256": "5086ede81bc49889410ed71275bc6ca8a366efab8474bee17fe879095309974c"
+            },
+            {
+              "path": "web/src/portal/data/unity-games.json",
+              "sha256": "01d015cacdd9233703f3f312287cee86ad1964dfc84a114f696660e8253bc468"
+            },
+            {
+              "path": "web/src/portal/routes.ts",
+              "sha256": "032bc484fec43ebe8c9a34c1dd21aa257c5ad724f8e0d95d3d3999aa5ef2944e"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierBoard.cs",
+              "sha256": "24115037343d7dfe9923a807af8b7ccabddc1097fb1f806709ecb709a8a0bfbf"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+              "sha256": "66a179eff8ae6e8198a7933080e4e4f989be0896a677353531e900d4ede08c02"
+            }
+          ],
+          "checks": [
+            "Web TypeScript/ESLint/Vite/5 SSG passed; repository4 legacy/19 GUID and36 checksums/public-artifact exclusion passed",
+            "Unchanged CourierBoard compiled/executed with PowerShell Add-Type: initial/right/Undo, Restore clears old history, new move Undo passes; not Unity/PlayerPrefs",
+            "390/1280 Web guidance measured16px and no horizontal overflow; summary335x52.796875, Enter open/close; standard preview no start/iframe",
+            "Browser search frozen1; released0; clear/all/details/list return passed; screenshots game portal only",
+            "Latest checkpoint2, original55 ledger event prefix/task contract, protected owner/old ledger/Unity and parent4 HEAD/recovery8 hashes matched"
+          ],
+          "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+          "at": 1791713595.670249
+        },
+        {
+          "run_id": "unity-20261011T1900-8b31b641b674",
+          "fence": 10,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-11-guidance-strategy.md",
+              "sha256": "c9cd734c715404571c922f898f0299a3c4860a8fcbc5b31711adb59f694408ac"
+            },
+            {
+              "path": "docs/images/guidance-20261011-390.jpg",
+              "sha256": "ea3f507c2c0349722349c49fa25a477c349bf4168f268c9354e7d9b29c681186"
+            },
+            {
+              "path": "docs/images/guidance-20261011-controls-390.jpg",
+              "sha256": "d457be371fe93fb68f9089be16d6489993fcfa44b32beb15f048b06a7732dddd"
+            },
+            {
+              "path": "docs/images/guidance-20261011-1280.jpg",
+              "sha256": "d0ee959709cb05ddc49885bc3322571b9774e238cd61374f9c5126ceb2d172c0"
+            },
+            {
+              "path": "business/unity/evidence/strategy-20261011-1900.json",
+              "sha256": "49dff95d9b8358e5758de62a5a1723934f9de1f271950f8dfe0d47cd854f5e81"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "4d09854c8eda82d913a079c9f92380f1c407433cd7e6aa29fdecc9e30b57153f"
+            },
+            {
+              "path": "web/src/portal/App.css",
+              "sha256": "5086ede81bc49889410ed71275bc6ca8a366efab8474bee17fe879095309974c"
+            },
+            {
+              "path": "web/src/portal/data/unity-games.json",
+              "sha256": "01d015cacdd9233703f3f312287cee86ad1964dfc84a114f696660e8253bc468"
+            },
+            {
+              "path": "web/src/portal/routes.ts",
+              "sha256": "032bc484fec43ebe8c9a34c1dd21aa257c5ad724f8e0d95d3d3999aa5ef2944e"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierBoard.cs",
+              "sha256": "24115037343d7dfe9923a807af8b7ccabddc1097fb1f806709ecb709a8a0bfbf"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+              "sha256": "66a179eff8ae6e8198a7933080e4e4f989be0896a677353531e900d4ede08c02"
+            }
+          ],
+          "checks": [
+            "Web TypeScript/ESLint/Vite/5 SSG passed; repository4 legacy/19 GUID and36 checksums/public-artifact exclusion passed",
+            "Unchanged CourierBoard compiled/executed with PowerShell Add-Type: initial/right/Undo, Restore clears old history, new move Undo passes; not Unity/PlayerPrefs",
+            "390/1280 Web guidance measured16px and no horizontal overflow; summary335x52.796875, Enter open/close; standard preview no start/iframe",
+            "Browser search frozen1; released0; clear/all/details/list return passed; screenshots game portal only",
+            "Latest checkpoint2, original55 ledger event prefix/task contract, protected owner/old ledger/Unity and parent4 HEAD/recovery8 hashes matched"
+          ],
+          "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+          "at": 1791713595.682315
         }
       ],
       "claims": [
@@ -196,6 +314,12 @@
           "task_id": "T-ice-courier-touch-polish",
           "fence": 8,
           "expires_at": 1791671416.3817098
+        },
+        {
+          "run_id": "unity-20261011T1900-8b31b641b674",
+          "task_id": "T-ice-courier-touch-polish",
+          "fence": 10,
+          "expires_at": 1791714554.204556
         }
       ]
     },
@@ -711,6 +835,16 @@
       "acceptance_addendum": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
       "judgment": "unobserved",
       "technical_disposition": "improve"
+    },
+    "D-ice-courier-guidance-strategy-20261011": {
+      "id": "D-ice-courier-guidance-strategy-20261011",
+      "source": "user:automation:unity:20261011-1900;local:source-board-execution-and-browser-measurement",
+      "hypothesis": "Explicit departure-cell rule and Japanese symbol/control mapping with scoped save claims let first-play understanding be assessed without another game",
+      "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+      "target_task_id": "T-ice-courier-touch-polish",
+      "judgment": "unobserved",
+      "technical_disposition": "improve",
+      "evidence": "business/unity/research/2026-10-11-guidance-strategy.md"
     }
   },
   "runs": {
@@ -775,6 +909,13 @@
       "source": "scheduled:game-site:2026-10-11T13:00:00+09:00",
       "status": "completed",
       "started_at": 1791691256.7592325
+    },
+    "unity-20261011T1900-8b31b641b674": {
+      "run_id": "unity-20261011T1900-8b31b641b674",
+      "scheduled_at": "2026-10-11T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-11T19:00:00+09:00",
+      "status": "checkpointed",
+      "started_at": 1791713054.1635542
     }
   },
   "experiments": {
@@ -820,7 +961,7 @@
       ],
       "measurement_plan": "内部表示・操作検査と公開後の開始率を分離する。公開指標は未観測でnull",
       "decision_id": "D-web-renovation-20261010",
-      "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+      "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
       "source": "user:天啓.md:2026-10-10:web-renovation",
       "stage": "act",
       "history": [
@@ -852,6 +993,44 @@
           "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
           "at": 1791632941.5025334,
           "previous_stage": "check"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "plan",
+          "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+          "evidence": "Preserve existing WIP and portrait/F1-F6 acceptance; use independent Web guidance while exact-source hosted artifact remains absent",
+          "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+          "at": 1791713489.437415,
+          "previous_stage": "act"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "do",
+          "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+          "evidence": "Japanese symbol guide, expandable English control help and save scope implemented in existing portal; Unity source unchanged",
+          "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+          "at": 1791713489.446335,
+          "previous_stage": "plan"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "check",
+          "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+          "evidence": "Web build and 390/1280 measurements, keyboard help toggle, search/navigation and actual unchanged board .NET execution passed; new Unity/Web persistence and human metrics unobserved",
+          "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+          "at": 1791713489.4553587,
+          "previous_stage": "do"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "act",
+          "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+          "evidence": "Technical explanation improved; retain same task, null business metrics and pending source-bound artifact/device/human acceptance",
+          "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+          "judgment": "unobserved",
+          "technical_disposition": "improve",
+          "at": 1791713489.464152,
+          "previous_stage": "check"
         }
       ],
       "release": null
@@ -864,7 +1043,8 @@
     "2026-10-10T19:00:00+09:00": "unity-20261010T1900-e6047e8667b5",
     "2026-10-11T01:00:00+09:00": "unity-20261011T0100-3d0983464e72",
     "2026-10-11T07:00:00+09:00": "unity-20261011T0700-b1404a964998",
-    "2026-10-11T13:00:00+09:00": "unity-20261011T1300-7f20ad59a424"
+    "2026-10-11T13:00:00+09:00": "unity-20261011T1300-7f20ad59a424",
+    "2026-10-11T19:00:00+09:00": "unity-20261011T1900-8b31b641b674"
   },
   "feedback": [],
   "approvals": [],
@@ -2190,7 +2370,265 @@
       },
       "previous": "1389e73348d8366965bedb73deb935b08f9fb0c46999b19ba6f280ab2aba6126",
       "sha256": "2dd26ce48faca2411ff3599a82c743542fce431a7f0c4650041fdab7aa65a40c"
+    },
+    {
+      "revision": 56,
+      "at": 1791713054.1635542,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261011T1900-8b31b641b674",
+        "scheduled_at": "2026-10-11T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "2dd26ce48faca2411ff3599a82c743542fce431a7f0c4650041fdab7aa65a40c",
+      "sha256": "9eb63bf3c4f518ff14bfc3c8fc938594ad4b374f793cbe568ad20c74b6be23cb"
+    },
+    {
+      "revision": 57,
+      "at": 1791713054.204556,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261011T1900-8b31b641b674",
+        "task_id": "T-ice-courier-touch-polish",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261011T1900-8b31b641b674",
+        "task_id": "T-ice-courier-touch-polish",
+        "fence": 10,
+        "expires_at": 1791714554.204556
+      },
+      "previous": "9eb63bf3c4f518ff14bfc3c8fc938594ad4b374f793cbe568ad20c74b6be23cb",
+      "sha256": "d60fe39e16721125833e2d922a732fac61718b4d81b3369dc0eb5e848972673d"
+    },
+    {
+      "revision": 58,
+      "at": 1791713489.4267364,
+      "action": "decision",
+      "data": {
+        "id": "D-ice-courier-guidance-strategy-20261011",
+        "source": "user:automation:unity:20261011-1900;local:source-board-execution-and-browser-measurement",
+        "hypothesis": "Explicit departure-cell rule and Japanese symbol/control mapping with scoped save claims let first-play understanding be assessed without another game",
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+        "target_task_id": "T-ice-courier-touch-polish",
+        "judgment": "unobserved",
+        "technical_disposition": "improve",
+        "evidence": "business/unity/research/2026-10-11-guidance-strategy.md"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "d60fe39e16721125833e2d922a732fac61718b4d81b3369dc0eb5e848972673d",
+      "sha256": "f40b3de9a6b02b70c1fa06b5d4002349113dbc95a4735afbc98475989471c4db"
+    },
+    {
+      "revision": 59,
+      "at": 1791713489.437415,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "plan",
+        "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+        "evidence": "Preserve existing WIP and portrait/F1-F6 acceptance; use independent Web guidance while exact-source hosted artifact remains absent",
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate."
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "f40b3de9a6b02b70c1fa06b5d4002349113dbc95a4735afbc98475989471c4db",
+      "sha256": "28fa8bea170464aede935d89318ee740e6cd019054578a2c12270878322b33ba"
+    },
+    {
+      "revision": 60,
+      "at": 1791713489.446335,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "do",
+        "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+        "evidence": "Japanese symbol guide, expandable English control help and save scope implemented in existing portal; Unity source unchanged",
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate."
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "28fa8bea170464aede935d89318ee740e6cd019054578a2c12270878322b33ba",
+      "sha256": "b3483061ac6a0818059151fd1e4edbd8d4cdb5abe71e5696ef0b36a9484bb947"
+    },
+    {
+      "revision": 61,
+      "at": 1791713489.4553587,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "check",
+        "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+        "evidence": "Web build and 390/1280 measurements, keyboard help toggle, search/navigation and actual unchanged board .NET execution passed; new Unity/Web persistence and human metrics unobserved",
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate."
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "b3483061ac6a0818059151fd1e4edbd8d4cdb5abe71e5696ef0b36a9484bb947",
+      "sha256": "d9f715e63b51336fe7af8d99e378e4e1756a802f0cf810fd2525eb2c8c5c2b23"
+    },
+    {
+      "revision": 62,
+      "at": 1791713489.464152,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "act",
+        "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+        "evidence": "Technical explanation improved; retain same task, null business metrics and pending source-bound artifact/device/human acceptance",
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+        "judgment": "unobserved",
+        "technical_disposition": "improve"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "d9f715e63b51336fe7af8d99e378e4e1756a802f0cf810fd2525eb2c8c5c2b23",
+      "sha256": "32bfafad31e1d216f081fa54bb0fab3a178ca298c8f9e7835b3c36954255b248"
+    },
+    {
+      "revision": 63,
+      "at": 1791713595.670249,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261011T1900-8b31b641b674",
+        "fence": 10,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-11-guidance-strategy.md",
+            "sha256": "c9cd734c715404571c922f898f0299a3c4860a8fcbc5b31711adb59f694408ac"
+          },
+          {
+            "path": "docs/images/guidance-20261011-390.jpg",
+            "sha256": "ea3f507c2c0349722349c49fa25a477c349bf4168f268c9354e7d9b29c681186"
+          },
+          {
+            "path": "docs/images/guidance-20261011-controls-390.jpg",
+            "sha256": "d457be371fe93fb68f9089be16d6489993fcfa44b32beb15f048b06a7732dddd"
+          },
+          {
+            "path": "docs/images/guidance-20261011-1280.jpg",
+            "sha256": "d0ee959709cb05ddc49885bc3322571b9774e238cd61374f9c5126ceb2d172c0"
+          },
+          {
+            "path": "business/unity/evidence/strategy-20261011-1900.json",
+            "sha256": "49dff95d9b8358e5758de62a5a1723934f9de1f271950f8dfe0d47cd854f5e81"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "4d09854c8eda82d913a079c9f92380f1c407433cd7e6aa29fdecc9e30b57153f"
+          },
+          {
+            "path": "web/src/portal/App.css",
+            "sha256": "5086ede81bc49889410ed71275bc6ca8a366efab8474bee17fe879095309974c"
+          },
+          {
+            "path": "web/src/portal/data/unity-games.json",
+            "sha256": "01d015cacdd9233703f3f312287cee86ad1964dfc84a114f696660e8253bc468"
+          },
+          {
+            "path": "web/src/portal/routes.ts",
+            "sha256": "032bc484fec43ebe8c9a34c1dd21aa257c5ad724f8e0d95d3d3999aa5ef2944e"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierBoard.cs",
+            "sha256": "24115037343d7dfe9923a807af8b7ccabddc1097fb1f806709ecb709a8a0bfbf"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+            "sha256": "66a179eff8ae6e8198a7933080e4e4f989be0896a677353531e900d4ede08c02"
+          }
+        ],
+        "checks": [
+          "Web TypeScript/ESLint/Vite/5 SSG passed; repository4 legacy/19 GUID and36 checksums/public-artifact exclusion passed",
+          "Unchanged CourierBoard compiled/executed with PowerShell Add-Type: initial/right/Undo, Restore clears old history, new move Undo passes; not Unity/PlayerPrefs",
+          "390/1280 Web guidance measured16px and no horizontal overflow; summary335x52.796875, Enter open/close; standard preview no start/iframe",
+          "Browser search frozen1; released0; clear/all/details/list return passed; screenshots game portal only",
+          "Latest checkpoint2, original55 ledger event prefix/task contract, protected owner/old ledger/Unity and parent4 HEAD/recovery8 hashes matched"
+        ],
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate."
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "32bfafad31e1d216f081fa54bb0fab3a178ca298c8f9e7835b3c36954255b248",
+      "sha256": "419367650b933040c43d8725ab79c0354fe59ae7de986667fddc728150688a18"
+    },
+    {
+      "revision": 64,
+      "at": 1791713595.682315,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261011T1900-8b31b641b674",
+        "fence": 10,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-11-guidance-strategy.md",
+            "sha256": "c9cd734c715404571c922f898f0299a3c4860a8fcbc5b31711adb59f694408ac"
+          },
+          {
+            "path": "docs/images/guidance-20261011-390.jpg",
+            "sha256": "ea3f507c2c0349722349c49fa25a477c349bf4168f268c9354e7d9b29c681186"
+          },
+          {
+            "path": "docs/images/guidance-20261011-controls-390.jpg",
+            "sha256": "d457be371fe93fb68f9089be16d6489993fcfa44b32beb15f048b06a7732dddd"
+          },
+          {
+            "path": "docs/images/guidance-20261011-1280.jpg",
+            "sha256": "d0ee959709cb05ddc49885bc3322571b9774e238cd61374f9c5126ceb2d172c0"
+          },
+          {
+            "path": "business/unity/evidence/strategy-20261011-1900.json",
+            "sha256": "49dff95d9b8358e5758de62a5a1723934f9de1f271950f8dfe0d47cd854f5e81"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "4d09854c8eda82d913a079c9f92380f1c407433cd7e6aa29fdecc9e30b57153f"
+          },
+          {
+            "path": "web/src/portal/App.css",
+            "sha256": "5086ede81bc49889410ed71275bc6ca8a366efab8474bee17fe879095309974c"
+          },
+          {
+            "path": "web/src/portal/data/unity-games.json",
+            "sha256": "01d015cacdd9233703f3f312287cee86ad1964dfc84a114f696660e8253bc468"
+          },
+          {
+            "path": "web/src/portal/routes.ts",
+            "sha256": "032bc484fec43ebe8c9a34c1dd21aa257c5ad724f8e0d95d3d3999aa5ef2944e"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierBoard.cs",
+            "sha256": "24115037343d7dfe9923a807af8b7ccabddc1097fb1f806709ecb709a8a0bfbf"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+            "sha256": "66a179eff8ae6e8198a7933080e4e4f989be0896a677353531e900d4ede08c02"
+          }
+        ],
+        "checks": [
+          "Web TypeScript/ESLint/Vite/5 SSG passed; repository4 legacy/19 GUID and36 checksums/public-artifact exclusion passed",
+          "Unchanged CourierBoard compiled/executed with PowerShell Add-Type: initial/right/Undo, Restore clears old history, new move Undo passes; not Unity/PlayerPrefs",
+          "390/1280 Web guidance measured16px and no horizontal overflow; summary335x52.796875, Enter open/close; standard preview no start/iframe",
+          "Browser search frozen1; released0; clear/all/details/list return passed; screenshots game portal only",
+          "Latest checkpoint2, original55 ledger event prefix/task contract, protected owner/old ledger/Unity and parent4 HEAD/recovery8 hashes matched"
+        ],
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate."
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "419367650b933040c43d8725ab79c0354fe59ae7de986667fddc728150688a18",
+      "sha256": "ff7fcabd1338396913ef9887218f811f298079bf87128983368d728631f64ec9"
     }
   ],
-  "projection_sha256": "b337081b35193effa932b4955e1e942c44ab96b52a05dee8554e4fca83cff4c7"
+  "projection_sha256": "10b35b7eab228b2a59ee109102487ff1e50febb800fc470ef2ac47a24f456a72"
 }

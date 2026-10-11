@@ -17,3 +17,7 @@ docs/ice-courier-responsive-ui.md text eol=lf
 docs/ice-courier-editor-quality-20261011.md text eol=lf
 business/blog/drafts/2026-10-11-unity-portrait-editor-check.md text eol=lf
 scripts/Invoke-Unity.ps1 -text whitespace=cr-at-eol
+# Japanese portal guidance receipts bind the same bytes in Git and Windows.
+web/src/portal/App.tsx text eol=lf
+web/src/portal/data/unity-games.json text eol=lf
+web/src/portal/routes.ts text eol=lf
