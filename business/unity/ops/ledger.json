@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 64,
+  "revision": 72,
   "business_id": "game-site",
-  "fence": 10,
+  "fence": 11,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -106,7 +106,7 @@
       "depends_on": [
         "T-ice-courier-unity-evaluation"
       ],
-      "status": "ready",
+      "status": "cancelled",
       "checkpoints": [
         {
           "source": "user:automation:unity:20261011-0100",
@@ -300,6 +300,161 @@
           ],
           "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
           "at": 1791713595.682315
+        },
+        {
+          "fence": 11,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/save-notice-20261012-0100.json",
+              "sha256": "2a22b211f9221395bf9ad3b57023304dab6fdb7317a02f7db50692925840d6bc"
+            },
+            {
+              "path": "docs/ice-courier-save-notice-20261012.md",
+              "sha256": "3b830d4f416c5c2f12ce1aaf319957e13df0c0cbd71ec507a025c865f6993012"
+            },
+            {
+              "path": "docs/web-technology-policy-20261012.md",
+              "sha256": "07871ccbafc223e06d4bbb8d678432ddf74ade4dce0d1152fe119e71eca54e6e"
+            },
+            {
+              "path": "docs/images/save-notice-20261012-1280.png",
+              "sha256": "3fd14c850e4bb18ca819c746b2426e91e2045320c239b664b339e27df13fd651"
+            },
+            {
+              "path": "docs/images/save-notice-20261012-390.png",
+              "sha256": "59cc338a567c736b991e6bf0cc7e69280d731beae80cf02f41d11346f19aa99e"
+            },
+            {
+              "path": "docs/images/save-notice-20261012-335.png",
+              "sha256": "04cff41d7b0f8e02d3fcf84331333c69b0091bfb7b4754c3ce20649ce933ca26"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+              "sha256": "2fa4bc34a6b92e065d859da3be2982111659a38ed1c6d71f24b0f2a405558f5b"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Tests/PlayMode/MigrationLoadTests.cs",
+              "sha256": "12d971b6e43182acce69ea6a9d9f828e5d11a8ba59cb527d5b87ee936bd8777a"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "72a3d5ee894dd5a61bb627ad4514e1c9a0b9b2727358ad526f2c6d6ad621b11f"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "eebc62abe636c72deb179997840696a48121558356cc9064f295f76e528bc5a1"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "cf753941c03dd15ae548629732db0f516204fe60125180557b863a8033e03cc4"
+            },
+            {
+              "path": "README.md",
+              "sha256": "cf0457f3f91a835e42d3f1784e67716dcec4bc54b808db8e5f4e648da0601299"
+            },
+            {
+              "path": "business/unity/README.md",
+              "sha256": "04aac0d6aff306636b825d8e0644883a440761761903933badebae9273380cce"
+            },
+            {
+              "path": "docs/workspace-handoff.md",
+              "sha256": "eb4b3c716341c0c9791bca86a7a6dfa3dbd64bfd02d05494d0d523831b5f9719"
+            }
+          ],
+          "checks": [
+            "Before work latest checkpoint11 hashes verified",
+            "Parent4 HEADs/recovery8 hashes matched",
+            "Repository4 preserved catalog/19 GUID passed",
+            "No changes to owner text, old cloud ledger, board rules, layout or Web source",
+            "Raw logs/XML/screenshots local only; 3 game-only crops visually inspected",
+            "No external push/PR/merge/build/deploy/post or Atohitori access",
+            "Final Unity PlayMode3/3, prior EditMode10/10 and Validate passed; red1/3 reproduced2 regressions",
+            "Saved automation Web policy verified with original schedule/model/local target"
+          ],
+          "run_id": "unity-20261012T0100-613a8862a2d4",
+          "next_step": "Existing Web portal catalog/rendering supports Web apps and owner-provided finished Unity artifacts; no unverified start links",
+          "at": 1791735647.6306062
+        },
+        {
+          "fence": 11,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/save-notice-20261012-0100.json",
+              "sha256": "2a22b211f9221395bf9ad3b57023304dab6fdb7317a02f7db50692925840d6bc"
+            },
+            {
+              "path": "docs/ice-courier-save-notice-20261012.md",
+              "sha256": "3b830d4f416c5c2f12ce1aaf319957e13df0c0cbd71ec507a025c865f6993012"
+            },
+            {
+              "path": "docs/web-technology-policy-20261012.md",
+              "sha256": "07871ccbafc223e06d4bbb8d678432ddf74ade4dce0d1152fe119e71eca54e6e"
+            },
+            {
+              "path": "docs/images/save-notice-20261012-1280.png",
+              "sha256": "3fd14c850e4bb18ca819c746b2426e91e2045320c239b664b339e27df13fd651"
+            },
+            {
+              "path": "docs/images/save-notice-20261012-390.png",
+              "sha256": "59cc338a567c736b991e6bf0cc7e69280d731beae80cf02f41d11346f19aa99e"
+            },
+            {
+              "path": "docs/images/save-notice-20261012-335.png",
+              "sha256": "04cff41d7b0f8e02d3fcf84331333c69b0091bfb7b4754c3ce20649ce933ca26"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+              "sha256": "2fa4bc34a6b92e065d859da3be2982111659a38ed1c6d71f24b0f2a405558f5b"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Tests/PlayMode/MigrationLoadTests.cs",
+              "sha256": "12d971b6e43182acce69ea6a9d9f828e5d11a8ba59cb527d5b87ee936bd8777a"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "72a3d5ee894dd5a61bb627ad4514e1c9a0b9b2727358ad526f2c6d6ad621b11f"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "eebc62abe636c72deb179997840696a48121558356cc9064f295f76e528bc5a1"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "cf753941c03dd15ae548629732db0f516204fe60125180557b863a8033e03cc4"
+            },
+            {
+              "path": "README.md",
+              "sha256": "cf0457f3f91a835e42d3f1784e67716dcec4bc54b808db8e5f4e648da0601299"
+            },
+            {
+              "path": "business/unity/README.md",
+              "sha256": "04aac0d6aff306636b825d8e0644883a440761761903933badebae9273380cce"
+            },
+            {
+              "path": "docs/workspace-handoff.md",
+              "sha256": "eb4b3c716341c0c9791bca86a7a6dfa3dbd64bfd02d05494d0d523831b5f9719"
+            }
+          ],
+          "checks": [
+            "Before work latest checkpoint11 hashes verified",
+            "Parent4 HEADs/recovery8 hashes matched",
+            "Repository4 preserved catalog/19 GUID passed",
+            "No changes to owner text, old cloud ledger, board rules, layout or Web source",
+            "Raw logs/XML/screenshots local only; 3 game-only crops visually inspected",
+            "No external push/PR/merge/build/deploy/post or Atohitori access",
+            "Final Unity PlayMode3/3, prior EditMode10/10 and Validate passed; red1/3 reproduced2 regressions",
+            "Saved automation Web policy verified with original schedule/model/local target"
+          ],
+          "run_id": "unity-20261012T0100-613a8862a2d4",
+          "next_step": "Existing Web portal catalog/rendering supports Web apps and owner-provided finished Unity artifacts; no unverified start links",
+          "at": 1791735647.8371303
+        },
+        {
+          "next_step": "T-web-portal-technology-catalog",
+          "task_id": "T-ice-courier-touch-polish",
+          "source": "user:current-thread:2026-10-12:web-technology-policy",
+          "reason": "Owner changed Web application production from mandatory Unity to Web technologies. Partial Unity evidence preserved in checkpoint67/yield68; acceptance remains unmet, not completed.",
+          "at": 1791735693.9894085
         }
       ],
       "claims": [
@@ -320,6 +475,12 @@
           "task_id": "T-ice-courier-touch-polish",
           "fence": 10,
           "expires_at": 1791714554.204556
+        },
+        {
+          "run_id": "unity-20261012T0100-613a8862a2d4",
+          "task_id": "T-ice-courier-touch-polish",
+          "fence": 11,
+          "expires_at": 1791735917.0193048
         }
       ]
     },
@@ -755,6 +916,36 @@
           "expires_at": 1791692756.828931
         }
       ]
+    },
+    "T-web-portal-technology-catalog": {
+      "hypothesis": "Web technologies reduce the production burden identified by the owner while a separate finished-Unity deployment path preserves compatibility",
+      "outputs": [
+        "Web作品データと表示の修正",
+        "受入れ・未公開状態の検査証跡"
+      ],
+      "acceptance": [
+        "制作技術web/unityと、制作中の既存試作品/本人持込完成品の扱いを区別し、実態を誤表示しない",
+        "一覧・検索・詳細で制作技術に依存した誤案内をなくし、release=nullに開始リンクを出さない",
+        "Unity完成品の受入れ口と既存ローカル検査入口を保全し、未受領の完成品や配信実績を作らない",
+        "型・静的検査・ビルドと390/1280px実ブラウザで一覧・詳細・公開状態・戻り先を確認する"
+      ],
+      "pdca": "plan",
+      "experiment_id": "E-unity-portal",
+      "next_step": "Implement technology-aware existing catalog and rendering while retaining owner-provided finished Unity deployment compatibility",
+      "priority": 0,
+      "id": "T-web-portal-technology-catalog",
+      "depends_on": [],
+      "source": "user:current-thread:2026-10-12:web-technology-policy",
+      "decision_id": "D-web-technology-policy-20261012",
+      "objective": "既存Webポータルの作品データと一覧・詳細をWeb製アプリと本人持込Unity完成品に対応させる",
+      "checks": [
+        "TypeScript/ESLint/Web build",
+        "Repository contract",
+        "Actual browser catalog/detail/unpublished navigation"
+      ],
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -845,6 +1036,15 @@
       "judgment": "unobserved",
       "technical_disposition": "improve",
       "evidence": "business/unity/research/2026-10-11-guidance-strategy.md"
+    },
+    "D-web-technology-policy-20261012": {
+      "id": "D-web-technology-policy-20261012",
+      "hypothesis": "Web technologies reduce the production burden identified by the owner while a separate finished-Unity deployment path preserves compatibility",
+      "evidence": "docs/web-technology-policy-20261012.md",
+      "judgment": "unobserved",
+      "target_task_id": "T-web-portal-technology-catalog",
+      "source": "user:current-thread:2026-10-12:web-technology-policy",
+      "next_step": "T-web-portal-technology-catalog"
     }
   },
   "runs": {
@@ -916,6 +1116,13 @@
       "source": "scheduled:game-site:2026-10-11T19:00:00+09:00",
       "status": "checkpointed",
       "started_at": 1791713054.1635542
+    },
+    "unity-20261012T0100-613a8862a2d4": {
+      "scheduled_at": "2026-10-12T01:00:00+09:00",
+      "run_id": "unity-20261012T0100-613a8862a2d4",
+      "source": "scheduled:game-site:2026-10-12T01:00:00+09:00",
+      "status": "checkpointed",
+      "started_at": 1791734416.8401327
     }
   },
   "experiments": {
@@ -1044,9 +1251,17 @@
     "2026-10-11T01:00:00+09:00": "unity-20261011T0100-3d0983464e72",
     "2026-10-11T07:00:00+09:00": "unity-20261011T0700-b1404a964998",
     "2026-10-11T13:00:00+09:00": "unity-20261011T1300-7f20ad59a424",
-    "2026-10-11T19:00:00+09:00": "unity-20261011T1900-8b31b641b674"
+    "2026-10-11T19:00:00+09:00": "unity-20261011T1900-8b31b641b674",
+    "2026-10-12T01:00:00+09:00": "unity-20261012T0100-613a8862a2d4"
   },
-  "feedback": [],
+  "feedback": [
+    {
+      "next_step": "Preserve Unity work; stop autonomous Unity development and support both Web apps and owner-provided finished Unity artifacts in the existing portal",
+      "source": "user:current-thread:2026-10-12:web-technology-policy",
+      "message": "WebアプリはWeb技術で制作する方針に戻します。そうでないと負荷が高すぎるからです。ただし、一部僕が他で開発したUnityアプリは、その完成品のデプロイを受け入れます。その余地は残してください。",
+      "at": 1791735693.704843
+    }
+  ],
   "approvals": [],
   "external": {},
   "observations": [],
@@ -2628,7 +2843,292 @@
       },
       "previous": "419367650b933040c43d8725ab79c0354fe59ae7de986667fddc728150688a18",
       "sha256": "ff7fcabd1338396913ef9887218f811f298079bf87128983368d728631f64ec9"
+    },
+    {
+      "revision": 65,
+      "at": 1791734416.8401327,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-12T01:00:00+09:00",
+        "run_id": "unity-20261012T0100-613a8862a2d4"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "ff7fcabd1338396913ef9887218f811f298079bf87128983368d728631f64ec9",
+      "sha256": "963afd95fa00a5bfd9e2cbb089c9f9e5fab04626bd1ac75dc31db78d9ce7b03f"
+    },
+    {
+      "revision": 66,
+      "at": 1791734417.0193048,
+      "action": "claim",
+      "data": {
+        "ttl_seconds": 1500,
+        "task_id": "T-ice-courier-touch-polish",
+        "run_id": "unity-20261012T0100-613a8862a2d4"
+      },
+      "result": {
+        "run_id": "unity-20261012T0100-613a8862a2d4",
+        "task_id": "T-ice-courier-touch-polish",
+        "fence": 11,
+        "expires_at": 1791735917.0193048
+      },
+      "previous": "963afd95fa00a5bfd9e2cbb089c9f9e5fab04626bd1ac75dc31db78d9ce7b03f",
+      "sha256": "44c7a333cc2aa1d505e37d0c88cb1dc0290e45c376735f39eea9803383c41ca8"
+    },
+    {
+      "revision": 67,
+      "at": 1791735647.6306062,
+      "action": "checkpoint",
+      "data": {
+        "fence": 11,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/save-notice-20261012-0100.json",
+            "sha256": "2a22b211f9221395bf9ad3b57023304dab6fdb7317a02f7db50692925840d6bc"
+          },
+          {
+            "path": "docs/ice-courier-save-notice-20261012.md",
+            "sha256": "3b830d4f416c5c2f12ce1aaf319957e13df0c0cbd71ec507a025c865f6993012"
+          },
+          {
+            "path": "docs/web-technology-policy-20261012.md",
+            "sha256": "07871ccbafc223e06d4bbb8d678432ddf74ade4dce0d1152fe119e71eca54e6e"
+          },
+          {
+            "path": "docs/images/save-notice-20261012-1280.png",
+            "sha256": "3fd14c850e4bb18ca819c746b2426e91e2045320c239b664b339e27df13fd651"
+          },
+          {
+            "path": "docs/images/save-notice-20261012-390.png",
+            "sha256": "59cc338a567c736b991e6bf0cc7e69280d731beae80cf02f41d11346f19aa99e"
+          },
+          {
+            "path": "docs/images/save-notice-20261012-335.png",
+            "sha256": "04cff41d7b0f8e02d3fcf84331333c69b0091bfb7b4754c3ce20649ce933ca26"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+            "sha256": "2fa4bc34a6b92e065d859da3be2982111659a38ed1c6d71f24b0f2a405558f5b"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Tests/PlayMode/MigrationLoadTests.cs",
+            "sha256": "12d971b6e43182acce69ea6a9d9f828e5d11a8ba59cb527d5b87ee936bd8777a"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "72a3d5ee894dd5a61bb627ad4514e1c9a0b9b2727358ad526f2c6d6ad621b11f"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "eebc62abe636c72deb179997840696a48121558356cc9064f295f76e528bc5a1"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "cf753941c03dd15ae548629732db0f516204fe60125180557b863a8033e03cc4"
+          },
+          {
+            "path": "README.md",
+            "sha256": "cf0457f3f91a835e42d3f1784e67716dcec4bc54b808db8e5f4e648da0601299"
+          },
+          {
+            "path": "business/unity/README.md",
+            "sha256": "04aac0d6aff306636b825d8e0644883a440761761903933badebae9273380cce"
+          },
+          {
+            "path": "docs/workspace-handoff.md",
+            "sha256": "eb4b3c716341c0c9791bca86a7a6dfa3dbd64bfd02d05494d0d523831b5f9719"
+          }
+        ],
+        "checks": [
+          "Before work latest checkpoint11 hashes verified",
+          "Parent4 HEADs/recovery8 hashes matched",
+          "Repository4 preserved catalog/19 GUID passed",
+          "No changes to owner text, old cloud ledger, board rules, layout or Web source",
+          "Raw logs/XML/screenshots local only; 3 game-only crops visually inspected",
+          "No external push/PR/merge/build/deploy/post or Atohitori access",
+          "Final Unity PlayMode3/3, prior EditMode10/10 and Validate passed; red1/3 reproduced2 regressions",
+          "Saved automation Web policy verified with original schedule/model/local target"
+        ],
+        "run_id": "unity-20261012T0100-613a8862a2d4",
+        "next_step": "Existing Web portal catalog/rendering supports Web apps and owner-provided finished Unity artifacts; no unverified start links"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "44c7a333cc2aa1d505e37d0c88cb1dc0290e45c376735f39eea9803383c41ca8",
+      "sha256": "1cde3ee387799ad75a3bc1b095923ad4e386f1e18920ff7e61035053815abd0b"
+    },
+    {
+      "revision": 68,
+      "at": 1791735647.8371303,
+      "action": "yield",
+      "data": {
+        "fence": 11,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/save-notice-20261012-0100.json",
+            "sha256": "2a22b211f9221395bf9ad3b57023304dab6fdb7317a02f7db50692925840d6bc"
+          },
+          {
+            "path": "docs/ice-courier-save-notice-20261012.md",
+            "sha256": "3b830d4f416c5c2f12ce1aaf319957e13df0c0cbd71ec507a025c865f6993012"
+          },
+          {
+            "path": "docs/web-technology-policy-20261012.md",
+            "sha256": "07871ccbafc223e06d4bbb8d678432ddf74ade4dce0d1152fe119e71eca54e6e"
+          },
+          {
+            "path": "docs/images/save-notice-20261012-1280.png",
+            "sha256": "3fd14c850e4bb18ca819c746b2426e91e2045320c239b664b339e27df13fd651"
+          },
+          {
+            "path": "docs/images/save-notice-20261012-390.png",
+            "sha256": "59cc338a567c736b991e6bf0cc7e69280d731beae80cf02f41d11346f19aa99e"
+          },
+          {
+            "path": "docs/images/save-notice-20261012-335.png",
+            "sha256": "04cff41d7b0f8e02d3fcf84331333c69b0091bfb7b4754c3ce20649ce933ca26"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+            "sha256": "2fa4bc34a6b92e065d859da3be2982111659a38ed1c6d71f24b0f2a405558f5b"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Tests/PlayMode/MigrationLoadTests.cs",
+            "sha256": "12d971b6e43182acce69ea6a9d9f828e5d11a8ba59cb527d5b87ee936bd8777a"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "72a3d5ee894dd5a61bb627ad4514e1c9a0b9b2727358ad526f2c6d6ad621b11f"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "eebc62abe636c72deb179997840696a48121558356cc9064f295f76e528bc5a1"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "cf753941c03dd15ae548629732db0f516204fe60125180557b863a8033e03cc4"
+          },
+          {
+            "path": "README.md",
+            "sha256": "cf0457f3f91a835e42d3f1784e67716dcec4bc54b808db8e5f4e648da0601299"
+          },
+          {
+            "path": "business/unity/README.md",
+            "sha256": "04aac0d6aff306636b825d8e0644883a440761761903933badebae9273380cce"
+          },
+          {
+            "path": "docs/workspace-handoff.md",
+            "sha256": "eb4b3c716341c0c9791bca86a7a6dfa3dbd64bfd02d05494d0d523831b5f9719"
+          }
+        ],
+        "checks": [
+          "Before work latest checkpoint11 hashes verified",
+          "Parent4 HEADs/recovery8 hashes matched",
+          "Repository4 preserved catalog/19 GUID passed",
+          "No changes to owner text, old cloud ledger, board rules, layout or Web source",
+          "Raw logs/XML/screenshots local only; 3 game-only crops visually inspected",
+          "No external push/PR/merge/build/deploy/post or Atohitori access",
+          "Final Unity PlayMode3/3, prior EditMode10/10 and Validate passed; red1/3 reproduced2 regressions",
+          "Saved automation Web policy verified with original schedule/model/local target"
+        ],
+        "run_id": "unity-20261012T0100-613a8862a2d4",
+        "next_step": "Existing Web portal catalog/rendering supports Web apps and owner-provided finished Unity artifacts; no unverified start links"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "1cde3ee387799ad75a3bc1b095923ad4e386f1e18920ff7e61035053815abd0b",
+      "sha256": "67455ebb2996c32efc207a3fbdc20fbf9f1c36ba18e96a8e50a088fdd2f30c4a"
+    },
+    {
+      "revision": 69,
+      "at": 1791735693.704843,
+      "action": "feedback",
+      "data": {
+        "next_step": "Preserve Unity work; stop autonomous Unity development and support both Web apps and owner-provided finished Unity artifacts in the existing portal",
+        "source": "user:current-thread:2026-10-12:web-technology-policy",
+        "message": "WebアプリはWeb技術で制作する方針に戻します。そうでないと負荷が高すぎるからです。ただし、一部僕が他で開発したUnityアプリは、その完成品のデプロイを受け入れます。その余地は残してください。"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "67455ebb2996c32efc207a3fbdc20fbf9f1c36ba18e96a8e50a088fdd2f30c4a",
+      "sha256": "f7f001455ce23efdf61f2ac8cec61f02eb8bb1c0b93391e4586abdfe4b30dff3"
+    },
+    {
+      "revision": 70,
+      "at": 1791735693.8480022,
+      "action": "decision",
+      "data": {
+        "id": "D-web-technology-policy-20261012",
+        "hypothesis": "Web technologies reduce the production burden identified by the owner while a separate finished-Unity deployment path preserves compatibility",
+        "evidence": "docs/web-technology-policy-20261012.md",
+        "judgment": "unobserved",
+        "target_task_id": "T-web-portal-technology-catalog",
+        "source": "user:current-thread:2026-10-12:web-technology-policy",
+        "next_step": "T-web-portal-technology-catalog"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "f7f001455ce23efdf61f2ac8cec61f02eb8bb1c0b93391e4586abdfe4b30dff3",
+      "sha256": "9d86ddaf41882f85ad069aa574f5e35edae3f87e75c955060c62b8184de0ac9c"
+    },
+    {
+      "revision": 71,
+      "at": 1791735693.9894085,
+      "action": "cancel",
+      "data": {
+        "next_step": "T-web-portal-technology-catalog",
+        "task_id": "T-ice-courier-touch-polish",
+        "source": "user:current-thread:2026-10-12:web-technology-policy",
+        "reason": "Owner changed Web application production from mandatory Unity to Web technologies. Partial Unity evidence preserved in checkpoint67/yield68; acceptance remains unmet, not completed."
+      },
+      "result": {
+        "recorded": "cancel"
+      },
+      "previous": "9d86ddaf41882f85ad069aa574f5e35edae3f87e75c955060c62b8184de0ac9c",
+      "sha256": "6d9e0939e43f1080ac34fb817e943711c9dfe7989c826623950452b6cbb68952"
+    },
+    {
+      "revision": 72,
+      "at": 1791735694.147532,
+      "action": "task",
+      "data": {
+        "hypothesis": "Web technologies reduce the production burden identified by the owner while a separate finished-Unity deployment path preserves compatibility",
+        "outputs": [
+          "Web作品データと表示の修正",
+          "受入れ・未公開状態の検査証跡"
+        ],
+        "acceptance": [
+          "制作技術web/unityと、制作中の既存試作品/本人持込完成品の扱いを区別し、実態を誤表示しない",
+          "一覧・検索・詳細で制作技術に依存した誤案内をなくし、release=nullに開始リンクを出さない",
+          "Unity完成品の受入れ口と既存ローカル検査入口を保全し、未受領の完成品や配信実績を作らない",
+          "型・静的検査・ビルドと390/1280px実ブラウザで一覧・詳細・公開状態・戻り先を確認する"
+        ],
+        "pdca": "plan",
+        "experiment_id": "E-unity-portal",
+        "next_step": "Implement technology-aware existing catalog and rendering while retaining owner-provided finished Unity deployment compatibility",
+        "priority": 0,
+        "id": "T-web-portal-technology-catalog",
+        "depends_on": [],
+        "source": "user:current-thread:2026-10-12:web-technology-policy",
+        "decision_id": "D-web-technology-policy-20261012",
+        "objective": "既存Webポータルの作品データと一覧・詳細をWeb製アプリと本人持込Unity完成品に対応させる",
+        "checks": [
+          "TypeScript/ESLint/Web build",
+          "Repository contract",
+          "Actual browser catalog/detail/unpublished navigation"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "6d9e0939e43f1080ac34fb817e943711c9dfe7989c826623950452b6cbb68952",
+      "sha256": "b1063c4535a6d2ae845e5e59617daa792365067a10c96ad7f36370802752c8f9"
     }
   ],
-  "projection_sha256": "10b35b7eab228b2a59ee109102487ff1e50febb800fc470ef2ac47a24f456a72"
+  "projection_sha256": "9b108e93b95664c22fa89292e1d95c642bb8a9c31055d5634acf7561fae8e3f0"
 }

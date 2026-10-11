@@ -1,5 +1,17 @@
 # 現在の状態
 
+2026-10-12、本人が制作負荷を理由に方針を変更した。WebアプリはWeb技術で制作し、他で本人が開発したUnityアプリは完成品のデプロイを受け入れる余地を残す。この直接指示が天啓.mdの旧Unity必須方針に優先する。本人の原文と追記欄は変更していない。正本と親フォルダのAGENTS.md、business/studio-policy.json、README、引き継ぎ案内、定期実行unityのプロンプトへ反映した。定期実行名は「Web制作と事業改善」へ変更し、01/07/13/19時・実行場所・モデル・ACTIVE・IDを維持する。
+
+直前のUnity保存警告修正は検証済み成果として保全し、自律Unity制作をこれ以上継続しない。既存タスクT-ice-courier-touch-polishは成果をcheckpoint・yield後、本人の方針転換を根拠にcancelとする。完了条件を満たした扱いにはしない。新しい次の一工程T-web-portal-technology-catalogは、既存Webポータルの作品データと表示をWeb製アプリと本人持込Unity完成品に対応させること。Web版ゲームの新規実装・移植はこの方針反映中に着手していない。
+
+Unityソース・Assets/.meta/Packages/ProjectSettings、Personal設定・CI・過去の検査・復元記録を保持した。Unity完成品はまだ受領しておらず、配布・再ビルドは未実行。今回の方針反映は制作負荷を下げるための変更で、事業成果の実測ではない。利益・訪問・開始率・完了率・再訪はnull。旧クラウド台帳、親4作品の原本と採否、復元保管庫、Atohitoriは変更していない。親のAGENTS.mdだけは継続ルールを更新した。
+
+2026-10-12の01時枠は既存T-ice-courier-touch-polish内でF3の保存失敗案内を修正した。保存例外後の配送完了による案内上書きとOpenによる消失を、修正前のPlayModeで再現した。保存警告を通常の案内から分離し、保存APIが成功するまで残す。過去の保存の再開では解除しない。修正後はUnity PlayMode3/3、EditMode10/10、Validateが成功。Editor専用の例外注入メニューを含む最終ソースでもPlayMode3/3が成功した。テストは既存PlayerPrefsを退避・復元する。
+
+Editor実画面1280×720・390×844・335×820の1倍で警告と配送完了が同時に収まり、実ボタン入力による2手の完了、390pxのUndo・Restart・再開不可案内との共存を確認した。注入後は実保存をせず、Play停止・表示サイズ復帰・自分のEditor終了を確認した。生画像・XML・ログはローカルartifactsだけに保存し、ゲーム領域の3画像を確認して別保存した。説明はdocs/ice-courier-save-notice-20261012.md、ハッシュ付き証跡はbusiness/unity/evidence/save-notice-20261012-0100.json。盤面・配置・Webソースは変更していない。
+
+run unity-20261012T0100-613a8862a2d4、fence11、01時slotを一度だけ取得した。保存成果をflow.pyでcheckpoint・yieldし、続く本人の方針転換を根拠に旧Unity工程を取りやめる。従来の次工程だったresponsive-v1 Actions成果物取得は追加実行しない。実ブラウザ保存障害と永続化、配布版、実タッチ、Safari、人間評価は未確認。新Actions成果物は読み取り照会でまだなく、公開・PR・merge・配布ビルド・記事投稿は行っていない。利益と公開指標はnull、14/28日観測未開始。天啓.mdの全体刷新は未完了のため保持する。
+
 2026-10-11の19時枠は既存T-ice-courier-touch-polishを継続し、Webの初回案内を改善した。出発した1マスだけが凍ると作品カード・詳細・メタ説明へ明記。C/G/+/@の日本語対応、展開式の英語ボタン説明、再開前のUndo履歴が残らないこと、Restartの保存上書き、未確認のWeb保存を保証しない案内を追加した。詳細はbusiness/unity/research/2026-10-11-guidance-strategy.md、ハッシュ付き証跡はbusiness/unity/evidence/strategy-20261011-1900.json。
 
 変更していないCourierBoard.csをPowerShellのAdd-Typeで実行し、初期→右1手→Undo、Restore後の旧Undo履歴初期化、新しい下移動・配送完了→Undoを確認した。.NETの盤面検査であり、Unityコンパイル・Editor・PlayerPrefs検査ではない。Webの390×844と1280×720で案内幅335/1152px・本文16px・横はみ出しなし、展開操作335×52.80pxとEnter開閉を確認。検索「凍る」1件、公開中0件、全件復帰・一覧と詳細往復、標準版の開始ボタン・iframeなしも確認した。WebビルドのTypeScript/ESLint/Vite・5静的ページ、旧4URL・GUID19件、36成果物チェックサム、親4HEAD・復元8ハッシュ、最新checkpoint2成果物・元55イベント・元タスクの契約を照合した。

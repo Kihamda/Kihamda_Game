@@ -1,8 +1,8 @@
 {
-  "source": "user:current-thread:2026-10-09:autonomous-studio",
+  "source": "user:current-thread:2026-10-12:web-technology-policy",
   "developmentEnvironment": "local-windows",
-  "buildEnvironment": "github-hosted-actions",
-  "license": "Unity Personal",
+  "buildEnvironment": "local-web-and-existing-ci",
+  "license": "Unity Personal for preserved or owner-provided Unity products",
   "wipLimit": 1,
   "canonicalState": "business/unity/ops/ledger.json",
   "ownerInstructions": "天啓.md",
@@ -15,13 +15,13 @@
     "19:00": "analysis-and-strategy"
   },
   "currentProject": "ice-courier",
-  "currentPriority": "unity-web-portal-renovation",
-  "prioritySource": "user:天啓.md:2026-10-10:web-renovation",
-  "portalPolicy": "共通画面から静的生成。未公開の作品に開始リンクを出さない。旧検証済み成果物のローカル接続は完了。新縦画面UIのEditor実画面と3ルート・Undo・Play再起動後Resumeを確認した。次は同一ソースのresponsive-v1 Actions成果物を照合してローカルWebへ接続する。実タッチ・ブラウザ保存・人間評価は未検証として区別し、本番全体置換はしない。",
+  "currentPriority": "web-portal-renovation",
+  "prioritySource": "user:current-thread:2026-10-12:web-technology-policy",
+  "portalPolicy": "既存Web入口の刷新を継続。作品データと表示をWeb製アプリと本人持込Unity完成品に対応させる。制作技術と公開状態を区別し、release=nullに開始リンクを出さない。本番全体置換をしない。",
   "portraitAcceptanceSource": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
   "portraitMeasurementSource": "business/unity/research/2026-10-10-measured-portrait-strategy.md",
-  "strategyPolicy": "技術上の改善と人間・公開主指標の未観測を分ける。既存T-ice-courier-touch-polishを維持。Webの日本語記号・展開式ボタン案内・保存範囲は390/1280pxで検査済み。次は同一ソースのresponsive-v1 Actions成果物を照合してローカル接続。保留時は同じタスクのF3保存不可案内と配送完了noticeの競合を再現・修正する。期限切れleaseは照合してrecoverし、消費済みslotは取り直さない。",
-  "portraitPolicy": "既存T-ice-courier-touch-polishを継続する。UnityとWeb枠を合わせた最終CSS寸法で操作44px・本文16pxを検査し、実タッチ・人間評価・Safari埋め込み保存を別記録にする。ソース計算と実測、技術成功と需要を分ける。",
+  "strategyPolicy": "本人の2026-10-12方針転換でUnity自律制作を終了。保存済み成果と旧工程の履歴を保持し、Web技術の工程へ引き継ぐ。技術検査と事業成果を区別し、未観測値はnull。",
+  "portraitPolicy": "過去のUnity寸法・検査仕様は保全記録。今後のWeb版または本人持込Unity完成品は版と対象環境に応じて画面・入力・実タッチを検査し、旧成功を流用しない。",
   "allowed": [
     "edit",
     "test",
@@ -56,6 +56,13 @@
   "portraitEditorQualitySource": "docs/ice-courier-editor-quality-20261011.md",
   "unityTestEvidencePolicy": "Invoke-Unity.ps1は一意なRunIdごとの証跡へ保存し、同じoperationの既存証跡を上書きしない。標準待機300秒。Editorの実操作と配布版・実タッチを別々に検査する。",
   "firstPlayAcceptanceSource": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
-  "firstPlayPolicy": "既存T-ice-courier-touch-polishで出発1マスの凍結、日本語と実画面記号・英語操作の対応、保存の確認範囲と再開後Undo履歴初期化を検査する。前回の寸法と実端末・人間評価条件を保持し、新Actions成果物待ちでも説明整備を継続する。掲載作品の説明から需要を推定しない。",
-  "guidanceStrategySource": "business/unity/research/2026-10-11-guidance-strategy.md"
+  "firstPlayPolicy": "既存の初回説明・記号・保存の受入条件は参照資料として残す。Unity自律制作の再開条件にせず、対象となるWebアプリまたは本人持込完成品に合わせて検査する。",
+  "guidanceStrategySource": "business/unity/research/2026-10-11-guidance-strategy.md",
+  "saveNoticeVerificationSource": "docs/ice-courier-save-notice-20261012.md",
+  "webApplicationTechnology": "web",
+  "autonomousUnityDevelopment": false,
+  "acceptOwnerProvidedUnityFinishedArtifacts": true,
+  "nextStep": "T-web-portal-technology-catalog: support Web apps and owner-provided finished Unity artifacts in the existing portal",
+  "unityFinishedArtifactPolicy": "本人が他で開発したUnityアプリの完成品デプロイを受け入れる。受領後に版・対象環境・ハッシュ・実動作・配布条件・復元方法を確認する。ソース提供・移植・再ビルドを一律必須にしない。",
+  "ownerInstructionConflictPolicy": "最新の直接指示が天啓.mdの旧すべてUnity製方針に優先する。本人の原文を書き換えて整合させない。"
 }

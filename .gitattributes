@@ -21,3 +21,12 @@ scripts/Invoke-Unity.ps1 -text whitespace=cr-at-eol
 web/src/portal/App.tsx text eol=lf
 web/src/portal/data/unity-games.json text eol=lf
 web/src/portal/routes.ts text eol=lf
+docs/ice-courier-save-notice-20261012.md text eol=lf
+docs/web-technology-policy-20261012.md text eol=lf
+AGENTS.md text eol=lf
+STATE.md text eol=lf
+# Policy checkpoint receipts bind the existing Windows bytes.
+README.md -text whitespace=cr-at-eol
+business/unity/README.md -text whitespace=cr-at-eol
+docs/workspace-handoff.md -text whitespace=cr-at-eol
+business/studio-policy.json -text whitespace=cr-at-eol

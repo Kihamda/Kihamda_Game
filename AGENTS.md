@@ -1,33 +1,27 @@
-# Kihamda.NET Unityスタジオ
+# Kihamda.NET制作スタジオ
 
-毎回、天啓.md、STATE.md、business/studio-policy.json、business/unity/ops/ledger.jsonを読む。天啓.mdは本人の指示入力用。本人の最新の直接指示を優先する。意味を変更せず、取り組みと必要な検証が完了した指示だけ、STATE.mdに実施内容・結果・未確認事項を記録してから削除する。継続方針はこのファイルやbusiness/studio-policy.jsonにも保存する。未完了の指示と作業中の本人の追記・変更は消さない。天啓.md自体と追記欄は残す。
+毎回、天啓.md、STATE.md、business/studio-policy.json、business/unity/ops/ledger.json、最新checkpointとGit状態を読む。本人の最新の直接指示を優先する。天啓.mdは本人の指示入力用で、未完了の指示と作業中の追記・変更は消さない。取り組みと必要な検証が完了した指示だけ、STATE.mdへ結果を記録してから削除する。継続方針はこのファイルとbusiness/studio-policy.jsonへ保存する。天啓.md自体と追記欄は残す。
 
-親フォルダの全プロジェクトも引き継ぐ。business/workspace-projects.jsonとdocs/workspace-handoff.mdを参照し、旧フォルダの量産指示を再稼働しない。復元保管庫_recoveryはローカル専用でGitHubへ公開しない。Atohitoriは本人が別途制作するため自律開発の対象外。完成後に配布を明示依頼された時だけ扱う。
+2026-10-12の本人の直接指示により、WebアプリはWeb技術で制作する。Unity必須による制作・検査負荷を避けるための方針転換で、天啓.mdに残る旧「すべてUnity製」方針より優先する。本人の意思表明本文をAIが書き換えて整合させない。Webのトップ・作品詳細・案内ページ全体の刷新は引き続き優先する。新作量産や毎回の計画の作り直しは行わない。
 
-リポジトリ移行はPR #10でmainへ統合済み。通常の制作・検査・コンサルティングは本人のWindows PCで行い、UnityのWindows/Web配布ビルドはGitHub Actionsで行う。Unity Personalを使用する。CI/CDの障害だけで独立した制作を止めない。認証や実プレイが未確認なら、その検証を済んだことにしない。
+本人が他で開発したUnityアプリは、完成品のデプロイを受け入れる余地を残す。Webポータルから検証済み完成品を配布できる構成にする。Unityへの統一、未完成作品の自律制作、ソースの自動移植や再ビルドを再開しない。受領前に完成品があるものと扱わない。受領後は対象環境、版、ファイルハッシュ、実画面・入力・保存・再開、配布条件と復元方法を確認し、未実行を成功扱いにしない。
 
-新作・移植はすべてUnity。unity-projects.jsonに登録し、unity/<Project>/へ分離する。Assetsと.meta、Packages、ProjectSettingsを保存し、Library、Temp、ビルド、ライセンス、認証情報はGitへ追加しない。公開リポジトリに有料作品の非公開ソースや有償素材を置かない。生成素材の出所はdocs/generated-assets.mdへ残す。
+既存のunity/IceCourier、Assets/.meta/Packages/ProjectSettings、ビルドと検査履歴は保全する。旧Unity検査の成功はWeb技術で制作した版の検証にはならない。Unity Personalと既存CIは保全するが、通常のWeb制作にUnity認証やUnity配布ビルドを前提としない。有料契約はしない。
 
-WIP1、サブエージェント禁止。現在はIce Courierを継続する。01/07時は実装と品質、13時は一次資料の市場調査を具体的な優先タスクへ変換、19時は実測と検査から戦略を調整する。毎回新しいゲームを量産しない。売上・純利益・訪問・再訪など未観測値はnull。ビルド成功を面白さや事業成果の証明にしない。
+WIP1、サブエージェント禁止。通常制作・Web検査・コンサルティングは本人のWindows PC。01時は実装、07時は実装・品質検査と開発記事の下書き、13時は一次資料の市場調査から受入条件付きタスク、19時は実測・人間の反応・技術検査から戦略を調整する。07時の記事はbusiness/blog/draftsへの下書き保存だけで、自動投稿しない。CI/CDや認証の障害は依存工程だけ保留し、独立した内部作業を続ける。
 
-2026-10-10の本人指示により、当面はUnity作品のWeb入口の刷新を優先する。ゲームのWIPはIce Courierのみを維持する。トップ・作品詳細・案内ページは共通のReact画面から静的生成し、Unityカタログと旧URL保全カタログを区別する。配信未確認の作品に開始リンクを出さない。旧検証済みWeb成果物のローカル接続と読み込み・戻る・失敗時の検査は完了。新UIは2026-10-11にUnity Editorの390×844で全3ルート、取り消し、Play停止・再起動後の再開を確認した。次は同一ソースの新responsive-v1 Actions成果物を照合してローカルWebへ接続し、最終CSS寸法とWeb操作を検査する。実タッチと人間の反応は未観測として残す。本番全体置換は行わない。
+次の一工程は既存Webポータルの作品データと表示を、Web製アプリと本人持込Unity完成品の両方に対応させること。公開未確認の作品に開始リンクを出さない。release=nullを維持し、制作技術と公開状態を別に扱う。Webはビルド・型・静的検査、実ブラウザの画面・入力・保存・再読み込みを変更範囲に応じて確認する。実タッチと人間評価は別記録にする。本番サイト全体の置換は行わない。
 
-制作の正本はbusiness/unity/ops/ledger.json。business/ops/ledger.jsonは旧クラウド履歴で、別のleaseを持つため上書きしない。共通business/ops/flow.pyを使い、expected revision、run ID、lease、fenceを確認する。台帳を手書き・初期化・競合自動merge・force pushしない。期限切れleaseは成果物と外部結果を照合してrecoverする。未知の外部操作を再送しない。25分でcheckpoint、30分以内に保存し、次の一工程を残す。
+制作台帳は既存のbusiness/unity/ops/ledger.jsonを継続使用する。パス名は履歴保全のため残し、現在のWeb制作をUnity必須にする意味ではない。business/ops/ledger.jsonは旧クラウド履歴で、別のleaseに介入しない。共通business/ops/flow.pyを使い、expected revision、run ID、lease、fenceを確認する。手書き・初期化・履歴削除・競合自動merge・force pushは禁止。期限切れleaseは成果物・commit・PR・外部結果を照合してrecoverし、未知の外部操作を再送しない。
 
-未完了の工程は期限内に成果物・検査・次工程を保存し、flow.pyのyieldで同じタスクをreadyへ戻す。完了条件を満たしていないタスクをcompleteしない。未知の外部結果、変更済み成果物、期限切れleaseはyieldできない。長いアプリ承認待ちや応答待ちが起きたら追加検査を続けず、部分結果を先に保存する。期限切れなら照合後にrecoverする。2026-10-11の縦画面UIと検査制限はdocs/ice-courier-responsive-ui.md。新responsive-v1のActions成果物を検査してから新枠へ接続し、旧版を新UIの検査へ流用しない。
+25分でcheckpoint、30分以内に成果物ハッシュ・検査・未確認事項と次の一工程を保存する。未完了はflow.pyのyieldで同じタスクをreadyへ戻し、完了条件未達をcompleteにしない。今回のように本人が方針を変更した場合は、成果を保存してから旧工程を根拠付きでcancelし、新方針の工程へ引き継ぐ。消費済みslotは取り直さない。
 
-既存T-ice-courier-touch-polishの検査仕様はbusiness/unity/research/2026-10-10-portrait-entry-acceptance.mdを参照する。Unity内部とWeb枠の二重縮小を一緒に改善し、最終CSS寸法で押せる大きさを確認する。実タッチ、人間の導入理解、ブラウザ別の保存・再開を別々に記録し、未実行を合格にしない。調査のたびに元の実装タスクを置き換えない。
+親フォルダ全体も引き継ぐ。business/workspace-projects.json、docs/workspace-handoff.md、business/legacy-dispositions.jsonを参照する。旧4プロジェクトは設計資料として保持し、旧フォルダへ新しいWebアプリを追加しない。Unity候補名は過去の保全記録であり、今後の実装技術を拘束しない。削除・移動前にGit履歴、bundle、zip、未追跡・無視ファイルの保全を照合する。_recoveryは認証・ホスティング設定を含むローカル保管庫で、GitHubへコピーしない。
 
-2026-10-10の実測はbusiness/unity/research/2026-10-10-measured-portrait-strategy.md。390pxの現在の枠は335px幅、canvasは334.4px幅。操作寸法は実測canvasとUnity座標の換算で、画像や物理タッチ検査ではない。技術上のimproveと、公開主指標が未観測のunobservedを分ける。次の実装枠では既存T-ice-courier-touch-polishを優先する。ツール待ちでleaseが切れた場合は部分結果と外部操作を照合してrecoverし、本人から再開指示がある場合は手動runとして記録する。消費済みslotは取り直さない。
+Atohitoriは本人が別途制作するため自律開発の対象外。原稿編集・実装・移植・優先タスク化やそのフォルダでの作業は行わない。既存保全記録を残し、本人が完成後の配布を明示依頼した場合だけ成果物を扱う。
 
-既存Web資産の採否はbusiness/legacy-dispositions.json。削除前にGit履歴・bundle・復元先を確認する。4作品はUnity移植の資料として残し、検証済みUnity版へ順次置き換える。新規Reactゲームを作らない。
+編集・内部検査・別ブランチ保存・PR作成は許可済み。検証した無料作品だけ既存許可領域へ配信する。サイト全体置換、販売、決済、DNS、有料契約、SNS送信、外部連絡は行わない。認証情報、非公開原稿、他事業のprivate state、生のデスクトップ画像・ログをGitへ含めない。生成素材の出所はdocs/generated-assets.mdに残す。mainへ未検証の作品をmergeしない。
 
-編集・内部検査・別ブランチ保存・PR作成・GitHub Actionsビルドは許可済み。検証した無料作品だけ既存の許可済み領域へ配信する。ポータル全体の置換、販売、決済、DNS、有料契約、外部連絡、SNS送信は行わない。Web本番配信は手動で、同一版の検査と復元条件を揃える。外部PRから認証付きUnityビルドを起動しない。本人のPCをGitHub runnerとして公開しない。
+利益・訪問・開始率・完了率・再訪の未観測値はnull。14/28日の実観測でcontinue/improve/stop/unobservedを判断する。ゲーム数やビルド成功を需要・面白さ・事業成果の証明にしない。通知は新しい完成物、重大障害、本人に必要な具体操作だけにし、同じ認証待ちを反復通知しない。
 
-Unity検査はscripts/Invoke-Unity.ps1のRunIdごとの証跡へ保存する。同じRunId・operationの再実行は拒否するため、再検査は新しいRunIdを使う。標準待機300秒を超える設定でもcheckpoint期限を守る。Editorの実画面・入力・保存の確認を、Web配布版や実端末タッチの確認へ読み替えない。2026-10-11の検査範囲はdocs/ice-courier-editor-quality-20261011.md。生の画面・ログ・XMLはローカルartifactsに保管する。
-
-ブログは下書き保存に限定し、別事業のprivate stateや認証をコピーしない。BOOTH向け量産を再開しない。定期実行の元設定を保全し、登録した事実と実行した事実を区別する。通知は新しい完成物、重大な障害、本人操作が必要な事項に限定する。
-
-初回説明と保存案内はbusiness/unity/research/2026-10-11-first-play-and-save-acceptance.mdのF1〜F6を既存T-ice-courier-touch-polish内で検査する。出発1マスの凍結、実画面記号と日本語案内、再開後のUndo履歴初期化を明示し、Editor成功だけでWeb保存を保証しない。前回の寸法・実端末・人間評価条件を保持する。新Actions成果物が保留なら同じ工程の説明整備を継続し、新作や別計画へ置き換えない。
-
-2026-10-11の19時にWebの日本語記号案内・展開できる英語ボタン説明・保存の確認範囲を反映した。business/unity/research/2026-10-11-guidance-strategy.mdを参照する。.NETの盤面検査とWeb案内の390/1280px実測を、新Unity配布版・実タッチ・人間評価へ読み替えない。次は同一ソースのresponsive-v1 Actions成果物を照合してローカルへ接続する。保留時は同じタスク内でF3の保存不可案内と配送完了noticeの競合を再現・修正する。Web刷新全体と既存タスクは未完了のまま保持する。
+方針転換前に検証した保存警告の成果はdocs/ice-courier-save-notice-20261012.mdへ保全した。例外注入・保存API成功・ブラウザ永続化は別々に扱う。過去の縦画面・導入・保存の検査仕様と証跡は履歴として保持し、自律Unity制作の再開指示には使わない。

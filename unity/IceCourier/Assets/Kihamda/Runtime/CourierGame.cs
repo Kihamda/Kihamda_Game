@@ -12,6 +12,9 @@ namespace Kihamda
         int touchId = -1;
         float busyUntil;
         string notice="";
+        string saveWarning="";
+        System.Action<string> writeSave=WritePlayerPrefs;
+        public string StatusText => saveWarning.Length==0?notice:saveWarning+(notice.Length==0?"":"\n"+notice);
         bool initialized;
         const string SaveKey="ice-courier-v1";
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -41,22 +44,23 @@ namespace Kihamda
         {
             if(Time.unscaledTime<busyUntil || !Board.Slide(dx,dy))return false;
             busyUntil=Time.unscaledTime+0.17f;Save();
-            if(Board.Won)notice="Delivery complete. Every departure changed the route.";
+            if(Board.Won)notice="Delivery complete.";
             return true;
         }
         public void Undo() {if(Board.Undo()){busyUntil=0;notice="";Save();}}
         public void Save()
         {
-            try {PlayerPrefs.SetString(SaveKey,Level+";"+Board.Export());PlayerPrefs.Save();}
-            catch(System.Exception){notice="Saving is unavailable. You can still play.";}
+            try {writeSave(Level+";"+Board.Export());saveWarning="";}
+            catch(System.Exception){saveWarning="Saving unavailable. Play can continue.";}
         }
+        static void WritePlayerPrefs(string route){PlayerPrefs.SetString(SaveKey,route);PlayerPrefs.Save();}
         public bool Resume()
         {
             try {
                 string[] parts=PlayerPrefs.GetString(SaveKey,"").Split(';');
                 if(parts.Length!=2 || !int.TryParse(parts[0],out int level) || level<0 || level>=CourierBoard.Levels.Length)return false;
                 var restored=new CourierBoard(CourierBoard.Levels[level]);if(!restored.Restore(parts[1]))return false;
-                Level=level;Board=restored;display=new Vector2(Board.X,Board.Y);busyUntil=0;gesture.Cancel();touchId=-1;notice="Route restored. Undo history starts here.";return true;
+                Level=level;Board=restored;display=new Vector2(Board.X,Board.Y);busyUntil=0;gesture.Cancel();touchId=-1;notice="Route restored. Undo starts here.";return true;
             }catch(System.Exception){notice="Save data could not be restored.";return false;}
         }
         void Update(){
@@ -112,7 +116,7 @@ namespace Kihamda
             if(GUI.Button(layout.Restart,"RESTART",button)){Open(Level);Save();}
             if(GUI.Button(layout.Resume,"RESUME",button)&&!Resume())notice="No valid saved route.";
             if(Board.Won&&Level+1<CourierBoard.Levels.Length&&GUI.Button(layout.Next,"NEXT",button)){Open(Level+1);Save();}
-            Text(layout.Notice,notice.Length>0?notice:"Arrow keys / WASD or buttons. R: restart. Z: undo. Swipe within the board.",body,new Color(.76f,.86f,.9f));
+            Text(layout.Notice,StatusText.Length>0?StatusText:"Arrow keys / WASD or buttons. R: restart. Z: undo. Swipe within the board.",body,new Color(.76f,.86f,.9f));
             var e=Event.current;
             if(e.type==EventType.KeyDown){
                 switch(e.keyCode){case KeyCode.W:case KeyCode.UpArrow:Move(0,-1);break;case KeyCode.S:case KeyCode.DownArrow:Move(0,1);break;case KeyCode.A:case KeyCode.LeftArrow:Move(-1,0);break;case KeyCode.D:case KeyCode.RightArrow:Move(1,0);break;case KeyCode.Z:Undo();break;case KeyCode.R:Open(Level);Save();break;default:return;}e.Use();

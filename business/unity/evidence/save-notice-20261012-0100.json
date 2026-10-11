@@ -1,0 +1,199 @@
+{
+  "runId": "unity-20261012T0100-613a8862a2d4",
+  "scheduledAt": "2026-10-12T01:00:00+09:00",
+  "recordedAt": "2026-10-12T01:20:47.3638988+09:00",
+  "fence": 11,
+  "worktreeBaseCommit": "15d0bbfab3782cf3383181d383d347c5b9da3bc5",
+  "branch": "unity/ice-courier-save-notice-20261012-0100",
+  "sourceHashes": [
+    {
+      "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+      "sha256": "2fa4bc34a6b92e065d859da3be2982111659a38ed1c6d71f24b0f2a405558f5b"
+    },
+    {
+      "path": "unity/IceCourier/Assets/Kihamda/Tests/PlayMode/MigrationLoadTests.cs",
+      "sha256": "12d971b6e43182acce69ea6a9d9f828e5d11a8ba59cb527d5b87ee936bd8777a"
+    },
+    {
+      "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierLayout.cs",
+      "sha256": "5d49754485d9d9a3c3b7d68d9b8c63002c965f1acfdd70f5199a0a9e8e194c12"
+    },
+    {
+      "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierBoard.cs",
+      "sha256": "24115037343d7dfe9923a807af8b7ccabddc1097fb1f806709ecb709a8a0bfbf"
+    },
+    {
+      "path": "天啓.md",
+      "sha256": "822695f70fae8c9ae8bc3d5169dda4c0b85240f8012b53b4ad2bd6835b47f223"
+    },
+    {
+      "path": "business/ops/ledger.json",
+      "sha256": "5b206aa5596459db59f88ad1bab31ab31b618e7ede58fc72d6ce3f4fd9e73b41"
+    }
+  ],
+  "tests": {
+    "redPlayMode": {
+      "failed": 2,
+      "failures": [
+        "Delivery complete hides save warning",
+        "Open clears save warning"
+      ],
+      "passed": 1
+    },
+    "reproduction": "Injected synchronous storage exception in real Unity; not actual browser storage outage",
+    "finalPlayMode": {
+      "passed": 3,
+      "failed": 0
+    },
+    "greenEditMode": {
+      "passed": 10,
+      "failed": 0
+    },
+    "saveRestore": "Tests preserve prior PlayerPrefs presence/value; UI injection makes no real writes",
+    "validate": "passed",
+    "unityVersion": "6000.3.23f1"
+  },
+  "screenChecks": {
+    "rawImagesNotPublished": true,
+    "resolutionRestored": "1280x720",
+    "environment": "Windows Unity Editor DX12",
+    "scale": 1,
+    "sizes": [
+      "1280x720",
+      "390x844",
+      "335x820"
+    ],
+    "ownEditorClosed": true,
+    "inputs": [
+      "1280 Right/Down win2 warning plus completion",
+      "390 Undo keeps warning; Restart resets state; Resume no-valid warning plus notice",
+      "335 Right/Down win2 warning plus completion"
+    ]
+  },
+  "croppedImages": [
+    {
+      "sha256": "3fd14c850e4bb18ca819c746b2426e91e2045320c239b664b339e27df13fd651",
+      "path": "docs/images/save-notice-20261012-1280.png",
+      "source": "artifacts/unity-20261012T0100-613a8862a2d4/win-1280.png",
+      "rectangle": [
+        320,
+        272,
+        1280,
+        720
+      ]
+    },
+    {
+      "sha256": "59cc338a567c736b991e6bf0cc7e69280d731beae80cf02f41d11346f19aa99e",
+      "path": "docs/images/save-notice-20261012-390.png",
+      "source": "artifacts/unity-20261012T0100-613a8862a2d4/win-390.png",
+      "rectangle": [
+        765,
+        210,
+        390,
+        844
+      ]
+    },
+    {
+      "sha256": "04cff41d7b0f8e02d3fcf84331333c69b0091bfb7b4754c3ce20649ce933ca26",
+      "path": "docs/images/save-notice-20261012-335.png",
+      "source": "artifacts/unity-20261012T0100-613a8862a2d4/win-335.png",
+      "rectangle": [
+        793,
+        222,
+        335,
+        820
+      ]
+    }
+  ],
+  "localEvidence": [
+    {
+      "sha256": "aeacecfd9b13ed00f400740e49b1a0c44117c87afd35a9077da965b8a3fd43ed",
+      "localOnly": true,
+      "path": "artifacts/unity/IceCourier/unity-20261012T0100-613a8862a2d4-red/PlayMode.xml"
+    },
+    {
+      "sha256": "6cc125df4f9c256ae2c7f49a56c6a0c30299a57cd10439c85857866a3fd3ab7c",
+      "localOnly": true,
+      "path": "artifacts/unity/IceCourier/unity-20261012T0100-613a8862a2d4-green/EditMode.xml"
+    },
+    {
+      "sha256": "4b3f686f094cc8b9ff1f86baed029bda506419e23cb699bc09fdeff7e92415eb",
+      "localOnly": true,
+      "path": "artifacts/unity/IceCourier/unity-20261012T0100-613a8862a2d4-green/Validate.log"
+    },
+    {
+      "sha256": "ac478fffd6b1f68f08b5b7d34f3877954b334069e2680a108b40e91ec093b128",
+      "localOnly": true,
+      "path": "artifacts/unity/IceCourier/unity-20261012T0100-613a8862a2d4-final/PlayMode.xml"
+    },
+    {
+      "sha256": "fbbf6ee3e24af8c7fa679d2cc18c35cf27feb35932aefceea89ad05c54b58525",
+      "localOnly": true,
+      "path": "artifacts/unity-20261012T0100-613a8862a2d4/restart-390.png"
+    },
+    {
+      "sha256": "3e218ef9068fb3c435c55cd0ba58bb64509fe1ce16b5df8ac53c3c9b18d6629e",
+      "localOnly": true,
+      "path": "artifacts/unity-20261012T0100-613a8862a2d4/resume-no-valid-390.png"
+    },
+    {
+      "sha256": "ed97541e7c7b2d78df90a86c9449f213fb62d1731534b1f89921941efbcaaaa7",
+      "localOnly": true,
+      "path": "artifacts/unity-20261012T0100-613a8862a2d4/undo-390.png"
+    },
+    {
+      "sha256": "9eb9c004cbb2dd83bd6bc2fbe3a906b7f1140c886735311efbcad1db191bcc6a",
+      "localOnly": true,
+      "path": "artifacts/unity-20261012T0100-613a8862a2d4/win-1280.png"
+    },
+    {
+      "sha256": "1153c7b0a99ddfc73a24b0306601bd5e3ad59e0b9b39c812de89c01561bccf20",
+      "localOnly": true,
+      "path": "artifacts/unity-20261012T0100-613a8862a2d4/win-335.png"
+    },
+    {
+      "sha256": "20c3dead80bacf7fb5ff4fd989cce98aa0e8fb374fed871938bb8800a20c6e00",
+      "localOnly": true,
+      "path": "artifacts/unity-20261012T0100-613a8862a2d4/win-390.png"
+    }
+  ],
+  "policyChange": {
+    "ownerFileUnchanged": true,
+    "savedSettingsVerified": true,
+    "automationId": "unity",
+    "source": "user:current-thread:2026-10-12",
+    "webApplications": "Web technologies",
+    "autonomousUnityDevelopment": false,
+    "reason": "Unity requirement creates excessive production load",
+    "unityAcceptance": "Owner-provided finished Unity applications can be deployed after validation",
+    "nextTask": "T-web-portal-technology-catalog",
+    "automationName": "Web制作と事業改善",
+    "parentPolicySha256": "b6a863298b819d0577cd586fe479c5375af8755f1a9733294fe0479ff5f61a0b",
+    "legacyUnityTask": "cancel after preserving partial evidence",
+    "schedulePreserved": true
+  },
+  "checks": [
+    "Before work latest checkpoint11 hashes verified",
+    "Parent4 HEADs/recovery8 hashes matched",
+    "Repository4 preserved catalog/19 GUID passed",
+    "No changes to owner text, old cloud ledger, board rules, layout or Web source",
+    "Raw logs/XML/screenshots local only; 3 game-only crops visually inspected",
+    "No external push/PR/merge/build/deploy/post or Atohitori access"
+  ],
+  "unverified": [
+    "New hosted Windows/Web builds",
+    "Actual browser save outage/persistence/reload",
+    "Physical touch/Safari",
+    "Human understanding/fun",
+    "Next scheduled automation execution"
+  ],
+  "metrics": {
+    "completionRate": null,
+    "monthlyNetProfitJpy": null,
+    "playStarts": null,
+    "visitors": null,
+    "returnRate": null
+  },
+  "release": null,
+  "nextStep": "Existing Web portal catalog/rendering supports Web apps and owner-provided finished Unity artifacts; no unverified start links"
+}
