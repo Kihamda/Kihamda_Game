@@ -19,7 +19,7 @@ business/blog/drafts/2026-10-11-unity-portrait-editor-check.md text eol=lf
 scripts/Invoke-Unity.ps1 -text whitespace=cr-at-eol
 # Japanese portal guidance receipts bind the same bytes in Git and Windows.
 web/src/portal/App.tsx text eol=lf
-web/src/portal/data/unity-games.json text eol=lf
+web/src/portal/data/works.json text eol=lf
 web/src/portal/routes.ts text eol=lf
 docs/ice-courier-save-notice-20261012.md text eol=lf
 docs/web-technology-policy-20261012.md text eol=lf
@@ -30,3 +30,13 @@ README.md -text whitespace=cr-at-eol
 business/unity/README.md -text whitespace=cr-at-eol
 docs/workspace-handoff.md -text whitespace=cr-at-eol
 business/studio-policy.json -text whitespace=cr-at-eol
+
+web/src/portal/catalog.ts text eol=lf
+
+# Technology catalog checkpoint bytes.
+docs/web-catalog-20261012.md text eol=lf
+business/blog/drafts/2026-10-12-web-catalog.md text eol=lf
+scripts/check-repository.mjs text eol=lf
+scripts/check-web-build.mjs text eol=lf
+web/scripts/prebuild.mjs text eol=lf
+web/src/portal/data/works.json -text whitespace=cr-at-eol

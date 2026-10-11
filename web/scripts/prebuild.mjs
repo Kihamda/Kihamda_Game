@@ -4,7 +4,7 @@ const SITE = "https://game.kihamda.net";
 
 const data = JSON.parse(readFileSync("src/portal/data/games.json", "utf-8"));
 const games = data.games;
-const unityGames = JSON.parse(readFileSync("src/portal/data/unity-games.json", "utf-8")).games;
+const unityGames = JSON.parse(readFileSync("src/portal/data/works.json", "utf-8")).games;
 const staticPages = ["/about/", "/privacy-policy/", "/contact/"];
 
 // sitemap.xml

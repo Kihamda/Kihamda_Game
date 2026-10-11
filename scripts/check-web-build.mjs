@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = resolve(root, 'web/dist');
 const games = JSON.parse(readFileSync(resolve(root, 'web/src/portal/data/games.json'), 'utf8')).games;
-const unityGames = JSON.parse(readFileSync(resolve(root, 'web/src/portal/data/unity-games.json'), 'utf8')).games;
+const unityGames = JSON.parse(readFileSync(resolve(root, 'web/src/portal/data/works.json'), 'utf8')).games;
 const portalPaths = ['index.html', 'about/index.html', 'contact/index.html', 'privacy-policy/index.html', ...unityGames.map(game => `games/${game.id}/index.html`)];
 for (const path of [...portalPaths, ...games.map(game => `games/${game.id}/index.html`)]) {
   const html = readFileSync(resolve(dist, path), 'utf8');
@@ -27,7 +27,7 @@ for (const path of portalPaths) {
   }
 }
 const detail = readFileSync(resolve(dist, 'games/ice-courier/index.html'), 'utf8');
-assert(detail.includes('公開を準備') && !detail.includes('<iframe'), 'Unreleased game must not expose a fake player');
+assert(detail.includes('制作停止・保全中') && !detail.includes('作品を開始') && !detail.includes('<iframe'), 'Unreleased game must not expose a fake player');
 const version = { commit: process.env.GITHUB_SHA ?? 'local-uncommitted', gameCount: unityGames.length, legacyRouteCount: games.length, source: 'web', generatedAt: new Date().toISOString() };
 writeFileSync(resolve(dist, 'build-version.json'), JSON.stringify(version, null, 2) + '\n');
 function files(directory) {

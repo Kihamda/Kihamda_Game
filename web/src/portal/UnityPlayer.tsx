@@ -38,11 +38,11 @@ export default function UnityPlayer() {
   }, [state, attempt]);
   if (!preview) return null;
   const stop = () => { returnFocus.current = true; setState("idle"); };
-  return <section className="player-section" aria-labelledby="player-title"><h2 id="player-title">Ice Courierを試す</h2><p className="player-note">ローカル検査用。ブラウザ版は公開準備中です。</p>
+  return <section className="player-section" aria-labelledby="player-title"><h2 id="player-title">Ice Courierを試す</h2><p className="player-note">保全した旧試作品のローカル検査用です。一般公開していません。</p>
     <div className="player-actions"><button ref={start} type="button" className="button secondary" disabled={state === "loading" || state === "ready"} onClick={() => { setAttempt(value => value + 1); setState("loading"); }}>ゲームを開始</button>{state !== "idle" && <button ref={end} type="button" className="button secondary" onClick={stop}>ゲームを終了</button>}<a className="text-link" href="/#works">作品一覧へ戻る</a></div>
     <p role={state === "error" ? "alert" : "status"} aria-live="polite" className="player-status">{state === "loading" ? "ゲームを読み込んでいます。" : state === "ready" ? "ゲームを操作できます。方向キー・ZでUndo。ページの操作に戻るにはTabを押してください。" : state === "error" ? "ゲームを読み込めませんでした。もう一度試すか、作品一覧へ戻ってください。" : "開始するとゲームを読み込みます。"}</p>
     {state === "error" && <button className="button secondary" type="button" onClick={() => { setAttempt(value => value + 1); setState("loading"); }}>もう一度読み込む</button>}
     {(state === "loading" || state === "ready") && <iframe ref={frame} key={attempt} className={`unity-player${preview.uiLayout === "responsive-v1" ? " responsive" : ""}`} title="Ice Courierゲーム画面" src={preview.playerUrl} allow="fullscreen" onError={() => setState("error")} />}
-    <p className="player-note">{preview.uiLayout === "responsive-v1" ? "縦画面では説明・盤面・操作を縦に表示します。実端末でのタッチ操作は検査中です。" : "この検証済み版はスマートフォン幅で縮小表示します。文字と操作の大きさは調整中です。"}</p>
+    <p className="player-note">{preview.uiLayout === "responsive-v1" ? "縦画面では説明・盤面・操作を縦に表示します。実端末でのタッチ操作は検査中です。" : "この検証済み版はスマートフォン幅で縮小表示します。実端末での見やすさと操作は未確認です。"}</p>
   </section>;
 }

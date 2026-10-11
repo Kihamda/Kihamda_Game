@@ -1,5 +1,9 @@
 # 現在の状態
 
+2026-10-12の07時枠でT-web-portal-technology-catalogを実装・検査した。works.jsonへ制作技術web/unity、制作元studio-web/owner-finished/preserved-prototype、制作状態と独立したreleaseを保存。未公開リンクを出さず、不完全な公開記録を拒否する。Ice Courierは制作停止・保全中へ表示を改め、既存Unity本体とローカル検査入口を保持した。本人持込完成品は未受領。
+
+最終Web型・静的検査・ビルド、5静的ページ、旧4URL/GUID19/36ハッシュ、インメモリWeb/持込Unityの公開前後表示が成功。390/1280px実ブラウザで検索・公開状態・一覧往復・再読み込みと横はみ出しなし、開始/iframeなしを確認。末尾スラッシュの作品未検出を修正した。ブラウザで戻ると検索語が消える現状は次工程へ残す。詳細はdocs/web-catalog-20261012.md、記事はbusiness/blog/drafts/2026-10-12-web-catalog.mdに下書き保存のみ。全体刷新は未完了で天啓.mdを保持する。実完成品受入れ・物理タッチ・Safari・人間評価・保存永続化は未実行。公開・push・PR・merge・投稿なし、事業指標null。
+
 2026-10-12、本人が制作負荷を理由に方針を変更した。WebアプリはWeb技術で制作し、他で本人が開発したUnityアプリは完成品のデプロイを受け入れる余地を残す。この直接指示が天啓.mdの旧Unity必須方針に優先する。本人の原文と追記欄は変更していない。正本と親フォルダのAGENTS.md、business/studio-policy.json、README、引き継ぎ案内、定期実行unityのプロンプトへ反映した。定期実行名は「Web制作と事業改善」へ変更し、01/07/13/19時・実行場所・モデル・ACTIVE・IDを維持する。
 
 直前のUnity保存警告修正は検証済み成果として保全し、自律Unity制作をこれ以上継続しない。既存タスクT-ice-courier-touch-polishは成果をcheckpoint・yield後、本人の方針転換を根拠にcancelとする。完了条件を満たした扱いにはしない。新しい次の一工程T-web-portal-technology-catalogは、既存Webポータルの作品データと表示をWeb製アプリと本人持込Unity完成品に対応させること。Web版ゲームの新規実装・移植はこの方針反映中に着手していない。
@@ -83,3 +87,5 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 今回はWebの入口の工程のみ完了。Unityの再コンパイル・新しい配布ビルド・実タッチ・人間の反応・公開後の指標は今回未検証。Ice Courierの公開状態は準備中で、未配信の開始リンクは出していない。Web刷新全体は未完了なので、天啓.mdの指示は消していない。次の一工程は、既存の検証済みWebGL成果物をローカルで詳細画面へ接続し、読み込み・終了して戻る・失敗時の案内を検査する。別ブランチweb/unity-portal-20261010-0100でレビューへ進め、本番全体置換とmainへの自動mergeは行わない。検査証跡はdocs/portal-renovation.md。
 
 この枠のローカルcommitは保存済み。公開リポジトリへのpushは自動承認レビューに拒否され、PRは未作成。初回は送信先の信頼性を指摘されたため、既存のKihamda/Kihamda_Gameが公開リポジトリで、本人に管理権限があり、直前のPR #14も本人所有であることを読み取り専用で確認した。再審査では、未公開ソースと運用記録の一般公開について具体的な追加承認が必要とされた。別経路では送信しない。本人の承認を待ち、依存しないローカル制作は継続する。チェックサム付き証跡の改行変換を防ぐため、.gitattributesで証跡のバイト列を保持し、GitのLF正規化後のソースとの一致もbusiness/unity/evidence/portal-20261010-provenance.jsonへ保存した。制作台帳はrevision 20、leaseなし、次工程はT-unity-portal-player-integration。
+
+07時slotを一度だけ取得。run unity-20261012T0700-ffb98d9c5b5b、fence12。flow.py checkpoint75・complete76で作品データ工程を保存し、同じE-unity-portalの次の一工程T-web-portal-navigation-stateをreadyへ引き継ぐ。親4commit・復元8ハッシュ・元72イベントを照合し、旧クラウドleaseへ介入していない。

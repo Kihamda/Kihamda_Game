@@ -6,11 +6,11 @@ import assert from 'node:assert/strict';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = p => readFileSync(resolve(root, p), 'utf8');
 const games = JSON.parse(read('web/src/portal/data/games.json')).games;
-const unityCatalog = JSON.parse(read('web/src/portal/data/unity-games.json')).games;
+const unityCatalog = JSON.parse(read('web/src/portal/data/works.json')).games;
 const unityProjects = JSON.parse(read('unity-projects.json')).projects;
 assert.equal(new Set(unityCatalog.map(game => game.id)).size, unityCatalog.length, 'Duplicate Unity catalog IDs');
 for (const game of unityCatalog) {
-  assert(unityProjects.some(project => project.id === game.id), `Unregistered Unity game ${game.id}`);
+  assert(game.technology !== "unity" || game.origin !== "preserved-prototype" || unityProjects.some(project => project.id === game.id), `Unregistered Unity game ${game.id}`);
   assert.equal(game.path, `/games/${game.id}/`);
   assert(!games.some(legacy => legacy.id === game.id), `Unity/legacy route collision ${game.id}`);
   assert(game.title && game.description && game.tags.length, `Incomplete Unity catalog ${game.id}`);

@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 72,
+  "revision": 77,
   "business_id": "game-site",
-  "fence": 11,
+  "fence": 12,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -943,6 +943,214 @@
         "Repository contract",
         "Actual browser catalog/detail/unpublished navigation"
       ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+          "fence": 12,
+          "artifacts": [
+            {
+              "path": "docs/web-catalog-20261012.md",
+              "sha256": "ec4892b1ed707f605531f8ed060c4aedca4990fda8a476e3d3a52f71a92c9d82"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-12-web-catalog.md",
+              "sha256": "43ac480dd676cba06d57d40b2048acf8db8266ebc9aa6c47253080772015aa8c"
+            },
+            {
+              "path": "docs/images/catalog-20261012-390.png",
+              "sha256": "bb654ee4423fa250ee749c5642f840f81dea4baa06e7a29e340c96f616eea589"
+            },
+            {
+              "path": "docs/images/catalog-20261012-1280.png",
+              "sha256": "5c704e0c9354846af459fd9764a6fc589b52c829902230aa2ba07adbde93d71d"
+            },
+            {
+              "path": "web/src/portal/catalog.ts",
+              "sha256": "841684b3835e241c7e39f3e10d6aef10c04b660595d4191f0950f45db48818ef"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "819fe6821f77b25b2436ebf59ac7fb52baaacf7bf1f4ceb49304c3a8b690df1d"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "35399229720a070b766ccffe15d23f609cec6858e91797f67826d6687963d10b"
+            },
+            {
+              "path": "web/src/portal/routes.ts",
+              "sha256": "1aa08b946c41348239166a372ab08b72225ccb8c1167b746061323e9f4872661"
+            },
+            {
+              "path": "web/src/portal/UnityPlayer.tsx",
+              "sha256": "ef6663f1d0e9a859a1888b099ca22ad393a4604559eb1a101365303655da91b8"
+            },
+            {
+              "path": "scripts/check-repository.mjs",
+              "sha256": "adf4f530e87bcf4e442fed2bd3c03e415bf0dca7ee9be6f307f4644c25ea48b8"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "8adc3bf78314bb9e3ef2a338dd39c3364c2c1d6639469bffe7bcbf401a5d3a03"
+            },
+            {
+              "path": "web/scripts/prebuild.mjs",
+              "sha256": "56f5406099ed00249c70ab1469094e55161cdc2467b05d01c1e54001f0b10ff7"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "1c3fc63943412dcac9ff0ef9cfbe0e48741936aea559573422e3c2e76b412981"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d499c087d4602d7dbd6b0c1ac2ebf235e88faeb249f896548bb4e67c061a7406"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "4db2cbf52501e5230342d0d7ca0ddd8ca0c1750355df6ad1dc9d350f2c2e560a"
+            },
+            {
+              "path": "business/unity/evidence/catalog-20261012-0700.json",
+              "sha256": "24940fd19d6a3f6d1e9d4b7960d0b9fa2c3406a4fe2fdbbd3842621929dabc46"
+            }
+          ],
+          "checks": [
+            "Final TypeScript/ESLint/Vite/5SSG passed",
+            "Repository4 legacy URLs/19 GUIDs and36 checksums/public artifact exclusion passed",
+            "In-memory Web/owner-finished Unity SSR released/unreleased and slash variants passed; no fixture registration",
+            "Release invalid/incomplete metadata and unsafe URLs rejected",
+            "Actual Chromium390/1280 catalog/detail/search/filter/back/list return/reload passed; no overflow/start/iframe",
+            "Observed search term resets after detail/browser back; next task, not fixed",
+            "Parent4 commits and recovery8 hashes matched; initial checkpoint14 verified",
+            "Original72 event prefix preserved; owner text/oldcloud ledger/Unity source/local manifest plugin unchanged",
+            "No received Unity finished artifact, physical touch/Safari/human feedback/save persistence validation; metrics null",
+            "No public push/PR/merge/deploy/post; own browser tabs closed and viewport reset"
+          ],
+          "next_step": "T-web-portal-navigation-state: preserve query/filter and accessible list return",
+          "at": 1791756701.7100863
+        },
+        {
+          "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+          "fence": 12,
+          "artifacts": [
+            {
+              "path": "docs/web-catalog-20261012.md",
+              "sha256": "ec4892b1ed707f605531f8ed060c4aedca4990fda8a476e3d3a52f71a92c9d82"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-12-web-catalog.md",
+              "sha256": "43ac480dd676cba06d57d40b2048acf8db8266ebc9aa6c47253080772015aa8c"
+            },
+            {
+              "path": "docs/images/catalog-20261012-390.png",
+              "sha256": "bb654ee4423fa250ee749c5642f840f81dea4baa06e7a29e340c96f616eea589"
+            },
+            {
+              "path": "docs/images/catalog-20261012-1280.png",
+              "sha256": "5c704e0c9354846af459fd9764a6fc589b52c829902230aa2ba07adbde93d71d"
+            },
+            {
+              "path": "web/src/portal/catalog.ts",
+              "sha256": "841684b3835e241c7e39f3e10d6aef10c04b660595d4191f0950f45db48818ef"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "819fe6821f77b25b2436ebf59ac7fb52baaacf7bf1f4ceb49304c3a8b690df1d"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "35399229720a070b766ccffe15d23f609cec6858e91797f67826d6687963d10b"
+            },
+            {
+              "path": "web/src/portal/routes.ts",
+              "sha256": "1aa08b946c41348239166a372ab08b72225ccb8c1167b746061323e9f4872661"
+            },
+            {
+              "path": "web/src/portal/UnityPlayer.tsx",
+              "sha256": "ef6663f1d0e9a859a1888b099ca22ad393a4604559eb1a101365303655da91b8"
+            },
+            {
+              "path": "scripts/check-repository.mjs",
+              "sha256": "adf4f530e87bcf4e442fed2bd3c03e415bf0dca7ee9be6f307f4644c25ea48b8"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "8adc3bf78314bb9e3ef2a338dd39c3364c2c1d6639469bffe7bcbf401a5d3a03"
+            },
+            {
+              "path": "web/scripts/prebuild.mjs",
+              "sha256": "56f5406099ed00249c70ab1469094e55161cdc2467b05d01c1e54001f0b10ff7"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "1c3fc63943412dcac9ff0ef9cfbe0e48741936aea559573422e3c2e76b412981"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d499c087d4602d7dbd6b0c1ac2ebf235e88faeb249f896548bb4e67c061a7406"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "4db2cbf52501e5230342d0d7ca0ddd8ca0c1750355df6ad1dc9d350f2c2e560a"
+            },
+            {
+              "path": "business/unity/evidence/catalog-20261012-0700.json",
+              "sha256": "24940fd19d6a3f6d1e9d4b7960d0b9fa2c3406a4fe2fdbbd3842621929dabc46"
+            }
+          ],
+          "checks": [
+            "Final TypeScript/ESLint/Vite/5SSG passed",
+            "Repository4 legacy URLs/19 GUIDs and36 checksums/public artifact exclusion passed",
+            "In-memory Web/owner-finished Unity SSR released/unreleased and slash variants passed; no fixture registration",
+            "Release invalid/incomplete metadata and unsafe URLs rejected",
+            "Actual Chromium390/1280 catalog/detail/search/filter/back/list return/reload passed; no overflow/start/iframe",
+            "Observed search term resets after detail/browser back; next task, not fixed",
+            "Parent4 commits and recovery8 hashes matched; initial checkpoint14 verified",
+            "Original72 event prefix preserved; owner text/oldcloud ledger/Unity source/local manifest plugin unchanged",
+            "No received Unity finished artifact, physical touch/Safari/human feedback/save persistence validation; metrics null",
+            "No public push/PR/merge/deploy/post; own browser tabs closed and viewport reset"
+          ],
+          "next_step": "T-web-portal-navigation-state: preserve query/filter and accessible list return",
+          "passed": true,
+          "at": 1791756701.7243314
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+          "task_id": "T-web-portal-technology-catalog",
+          "fence": 12,
+          "expires_at": 1791757773.3269246
+        }
+      ]
+    },
+    "T-web-portal-navigation-state": {
+      "id": "T-web-portal-navigation-state",
+      "decision_id": "D-web-technology-policy-20261012",
+      "source": "user:current-thread:2026-10-12:web-technology-policy",
+      "objective": "既存Web入口の一覧と詳細の往復で検索条件を保持する",
+      "hypothesis": "詳細を見て戻るたびに検索をやり直す操作を減らせる",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-web-portal-technology-catalog"
+      ],
+      "outputs": [
+        "検索語と公開状態を保持する導線",
+        "実ブラウザの戻る・進む・再読み込み証跡"
+      ],
+      "checks": [
+        "TypeScript/ESLint/Web build",
+        "Actual browser navigation and keyboard"
+      ],
+      "acceptance": [
+        "一覧の検索語・公開フィルターが詳細から戻る操作で復元する",
+        "明示の一覧リンクとブラウザ戻る・進むを区別し、作品一覧へ到達する",
+        "390/1280pxでキーボード操作と再読み込みを検査しrelease=nullの開始リンクなしを保つ",
+        "実作品・配布許可・事業指標をテスト状態から作らない"
+      ],
+      "next_step": "Implement persistent catalog navigation state in existing Web portal; no new game",
       "status": "ready",
       "checkpoints": [],
       "claims": []
@@ -1123,6 +1331,13 @@
       "source": "scheduled:game-site:2026-10-12T01:00:00+09:00",
       "status": "checkpointed",
       "started_at": 1791734416.8401327
+    },
+    "unity-20261012T0700-ffb98d9c5b5b": {
+      "scheduled_at": "2026-10-12T07:00:00+09:00",
+      "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+      "source": "scheduled:game-site:2026-10-12T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791756273.2688477
     }
   },
   "experiments": {
@@ -1252,7 +1467,8 @@
     "2026-10-11T07:00:00+09:00": "unity-20261011T0700-b1404a964998",
     "2026-10-11T13:00:00+09:00": "unity-20261011T1300-7f20ad59a424",
     "2026-10-11T19:00:00+09:00": "unity-20261011T1900-8b31b641b674",
-    "2026-10-12T01:00:00+09:00": "unity-20261012T0100-613a8862a2d4"
+    "2026-10-12T01:00:00+09:00": "unity-20261012T0100-613a8862a2d4",
+    "2026-10-12T07:00:00+09:00": "unity-20261012T0700-ffb98d9c5b5b"
   },
   "feedback": [
     {
@@ -3128,7 +3344,264 @@
       },
       "previous": "6d9e0939e43f1080ac34fb817e943711c9dfe7989c826623950452b6cbb68952",
       "sha256": "b1063c4535a6d2ae845e5e59617daa792365067a10c96ad7f36370802752c8f9"
+    },
+    {
+      "revision": 73,
+      "at": 1791756273.2688477,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-12T07:00:00+09:00",
+        "run_id": "unity-20261012T0700-ffb98d9c5b5b"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "b1063c4535a6d2ae845e5e59617daa792365067a10c96ad7f36370802752c8f9",
+      "sha256": "d32317a9fce83dfb35e3031efddfa0e3f278b579014a677fb42d37f5d28f3843"
+    },
+    {
+      "revision": 74,
+      "at": 1791756273.3269246,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+        "task_id": "T-web-portal-technology-catalog",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+        "task_id": "T-web-portal-technology-catalog",
+        "fence": 12,
+        "expires_at": 1791757773.3269246
+      },
+      "previous": "d32317a9fce83dfb35e3031efddfa0e3f278b579014a677fb42d37f5d28f3843",
+      "sha256": "6023c2411eebf090baaa1b6a54fde2c9808ad3128e60445d8f7320f47e7fc2eb"
+    },
+    {
+      "revision": 75,
+      "at": 1791756701.7100863,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+        "fence": 12,
+        "artifacts": [
+          {
+            "path": "docs/web-catalog-20261012.md",
+            "sha256": "ec4892b1ed707f605531f8ed060c4aedca4990fda8a476e3d3a52f71a92c9d82"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-12-web-catalog.md",
+            "sha256": "43ac480dd676cba06d57d40b2048acf8db8266ebc9aa6c47253080772015aa8c"
+          },
+          {
+            "path": "docs/images/catalog-20261012-390.png",
+            "sha256": "bb654ee4423fa250ee749c5642f840f81dea4baa06e7a29e340c96f616eea589"
+          },
+          {
+            "path": "docs/images/catalog-20261012-1280.png",
+            "sha256": "5c704e0c9354846af459fd9764a6fc589b52c829902230aa2ba07adbde93d71d"
+          },
+          {
+            "path": "web/src/portal/catalog.ts",
+            "sha256": "841684b3835e241c7e39f3e10d6aef10c04b660595d4191f0950f45db48818ef"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "819fe6821f77b25b2436ebf59ac7fb52baaacf7bf1f4ceb49304c3a8b690df1d"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "35399229720a070b766ccffe15d23f609cec6858e91797f67826d6687963d10b"
+          },
+          {
+            "path": "web/src/portal/routes.ts",
+            "sha256": "1aa08b946c41348239166a372ab08b72225ccb8c1167b746061323e9f4872661"
+          },
+          {
+            "path": "web/src/portal/UnityPlayer.tsx",
+            "sha256": "ef6663f1d0e9a859a1888b099ca22ad393a4604559eb1a101365303655da91b8"
+          },
+          {
+            "path": "scripts/check-repository.mjs",
+            "sha256": "adf4f530e87bcf4e442fed2bd3c03e415bf0dca7ee9be6f307f4644c25ea48b8"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "8adc3bf78314bb9e3ef2a338dd39c3364c2c1d6639469bffe7bcbf401a5d3a03"
+          },
+          {
+            "path": "web/scripts/prebuild.mjs",
+            "sha256": "56f5406099ed00249c70ab1469094e55161cdc2467b05d01c1e54001f0b10ff7"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "1c3fc63943412dcac9ff0ef9cfbe0e48741936aea559573422e3c2e76b412981"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d499c087d4602d7dbd6b0c1ac2ebf235e88faeb249f896548bb4e67c061a7406"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "4db2cbf52501e5230342d0d7ca0ddd8ca0c1750355df6ad1dc9d350f2c2e560a"
+          },
+          {
+            "path": "business/unity/evidence/catalog-20261012-0700.json",
+            "sha256": "24940fd19d6a3f6d1e9d4b7960d0b9fa2c3406a4fe2fdbbd3842621929dabc46"
+          }
+        ],
+        "checks": [
+          "Final TypeScript/ESLint/Vite/5SSG passed",
+          "Repository4 legacy URLs/19 GUIDs and36 checksums/public artifact exclusion passed",
+          "In-memory Web/owner-finished Unity SSR released/unreleased and slash variants passed; no fixture registration",
+          "Release invalid/incomplete metadata and unsafe URLs rejected",
+          "Actual Chromium390/1280 catalog/detail/search/filter/back/list return/reload passed; no overflow/start/iframe",
+          "Observed search term resets after detail/browser back; next task, not fixed",
+          "Parent4 commits and recovery8 hashes matched; initial checkpoint14 verified",
+          "Original72 event prefix preserved; owner text/oldcloud ledger/Unity source/local manifest plugin unchanged",
+          "No received Unity finished artifact, physical touch/Safari/human feedback/save persistence validation; metrics null",
+          "No public push/PR/merge/deploy/post; own browser tabs closed and viewport reset"
+        ],
+        "next_step": "T-web-portal-navigation-state: preserve query/filter and accessible list return"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "6023c2411eebf090baaa1b6a54fde2c9808ad3128e60445d8f7320f47e7fc2eb",
+      "sha256": "f2449c2af82726a2e35dc1b9eb19c9154628d72818d5e9a8818cae24fb261b97"
+    },
+    {
+      "revision": 76,
+      "at": 1791756701.7243314,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+        "fence": 12,
+        "artifacts": [
+          {
+            "path": "docs/web-catalog-20261012.md",
+            "sha256": "ec4892b1ed707f605531f8ed060c4aedca4990fda8a476e3d3a52f71a92c9d82"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-12-web-catalog.md",
+            "sha256": "43ac480dd676cba06d57d40b2048acf8db8266ebc9aa6c47253080772015aa8c"
+          },
+          {
+            "path": "docs/images/catalog-20261012-390.png",
+            "sha256": "bb654ee4423fa250ee749c5642f840f81dea4baa06e7a29e340c96f616eea589"
+          },
+          {
+            "path": "docs/images/catalog-20261012-1280.png",
+            "sha256": "5c704e0c9354846af459fd9764a6fc589b52c829902230aa2ba07adbde93d71d"
+          },
+          {
+            "path": "web/src/portal/catalog.ts",
+            "sha256": "841684b3835e241c7e39f3e10d6aef10c04b660595d4191f0950f45db48818ef"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "819fe6821f77b25b2436ebf59ac7fb52baaacf7bf1f4ceb49304c3a8b690df1d"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "35399229720a070b766ccffe15d23f609cec6858e91797f67826d6687963d10b"
+          },
+          {
+            "path": "web/src/portal/routes.ts",
+            "sha256": "1aa08b946c41348239166a372ab08b72225ccb8c1167b746061323e9f4872661"
+          },
+          {
+            "path": "web/src/portal/UnityPlayer.tsx",
+            "sha256": "ef6663f1d0e9a859a1888b099ca22ad393a4604559eb1a101365303655da91b8"
+          },
+          {
+            "path": "scripts/check-repository.mjs",
+            "sha256": "adf4f530e87bcf4e442fed2bd3c03e415bf0dca7ee9be6f307f4644c25ea48b8"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "8adc3bf78314bb9e3ef2a338dd39c3364c2c1d6639469bffe7bcbf401a5d3a03"
+          },
+          {
+            "path": "web/scripts/prebuild.mjs",
+            "sha256": "56f5406099ed00249c70ab1469094e55161cdc2467b05d01c1e54001f0b10ff7"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "1c3fc63943412dcac9ff0ef9cfbe0e48741936aea559573422e3c2e76b412981"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d499c087d4602d7dbd6b0c1ac2ebf235e88faeb249f896548bb4e67c061a7406"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "4db2cbf52501e5230342d0d7ca0ddd8ca0c1750355df6ad1dc9d350f2c2e560a"
+          },
+          {
+            "path": "business/unity/evidence/catalog-20261012-0700.json",
+            "sha256": "24940fd19d6a3f6d1e9d4b7960d0b9fa2c3406a4fe2fdbbd3842621929dabc46"
+          }
+        ],
+        "checks": [
+          "Final TypeScript/ESLint/Vite/5SSG passed",
+          "Repository4 legacy URLs/19 GUIDs and36 checksums/public artifact exclusion passed",
+          "In-memory Web/owner-finished Unity SSR released/unreleased and slash variants passed; no fixture registration",
+          "Release invalid/incomplete metadata and unsafe URLs rejected",
+          "Actual Chromium390/1280 catalog/detail/search/filter/back/list return/reload passed; no overflow/start/iframe",
+          "Observed search term resets after detail/browser back; next task, not fixed",
+          "Parent4 commits and recovery8 hashes matched; initial checkpoint14 verified",
+          "Original72 event prefix preserved; owner text/oldcloud ledger/Unity source/local manifest plugin unchanged",
+          "No received Unity finished artifact, physical touch/Safari/human feedback/save persistence validation; metrics null",
+          "No public push/PR/merge/deploy/post; own browser tabs closed and viewport reset"
+        ],
+        "next_step": "T-web-portal-navigation-state: preserve query/filter and accessible list return",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "f2449c2af82726a2e35dc1b9eb19c9154628d72818d5e9a8818cae24fb261b97",
+      "sha256": "b6f21d4848728beca634c88321dc135f63ba3124e4066ac2abed4cd8bb723dba"
+    },
+    {
+      "revision": 77,
+      "at": 1791756701.738354,
+      "action": "task",
+      "data": {
+        "id": "T-web-portal-navigation-state",
+        "decision_id": "D-web-technology-policy-20261012",
+        "source": "user:current-thread:2026-10-12:web-technology-policy",
+        "objective": "既存Web入口の一覧と詳細の往復で検索条件を保持する",
+        "hypothesis": "詳細を見て戻るたびに検索をやり直す操作を減らせる",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-web-portal-technology-catalog"
+        ],
+        "outputs": [
+          "検索語と公開状態を保持する導線",
+          "実ブラウザの戻る・進む・再読み込み証跡"
+        ],
+        "checks": [
+          "TypeScript/ESLint/Web build",
+          "Actual browser navigation and keyboard"
+        ],
+        "acceptance": [
+          "一覧の検索語・公開フィルターが詳細から戻る操作で復元する",
+          "明示の一覧リンクとブラウザ戻る・進むを区別し、作品一覧へ到達する",
+          "390/1280pxでキーボード操作と再読み込みを検査しrelease=nullの開始リンクなしを保つ",
+          "実作品・配布許可・事業指標をテスト状態から作らない"
+        ],
+        "next_step": "Implement persistent catalog navigation state in existing Web portal; no new game"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "b6f21d4848728beca634c88321dc135f63ba3124e4066ac2abed4cd8bb723dba",
+      "sha256": "27b83da53f6089ca9a29ed1f56371a4fbcfb9765181f28ea7d97434149c062c3"
     }
   ],
-  "projection_sha256": "9b108e93b95664c22fa89292e1d95c642bb8a9c31055d5634acf7561fae8e3f0"
+  "projection_sha256": "6941a1b1996d1a95036d7418d4a4c5605f8a09466d7182041e29596408acea7d"
 }
