@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 49,
+  "revision": 55,
   "business_id": "game-site",
-  "fence": 8,
+  "fence": 9,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -545,6 +545,92 @@
           "expires_at": 1791634223.0896156
         }
       ]
+    },
+    "T-ice-courier-first-play-research-20261011": {
+      "id": "T-ice-courier-first-play-research-20261011",
+      "objective": "一次資料と現行ソースから初回説明・保存案内の受入条件を既存工程に補う",
+      "acceptance": [
+        "作者・販売者の一次資料を複数作品で確認し提示方法と需要を分ける",
+        "現行ソースに結び付く検査項目・優先順・未確認事項を残す",
+        "既存T-ice-courier-touch-polishと前回検査条件を保持し新作を追加しない"
+      ],
+      "outputs": [
+        "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+        "business/unity/evidence/research-20261011-1300.json"
+      ],
+      "checks": [
+        "Primary-source provenance and source SHA256",
+        "Ledger event prefix and original task equality",
+        "Latest checkpoint, parent HEAD/recovery and repository contracts"
+      ],
+      "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+      "decision_id": "D-ice-courier-first-play-20261011",
+      "hypothesis": "Explicit departure-cell rule, Japanese symbol/control mapping and verified persistence disclosure make the first play easier to assess without adding stages",
+      "source": "user:automation:unity:20261011-1300",
+      "pdca": "check",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-ice-courier-portrait-research-20261010"
+      ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261011T1300-7f20ad59a424",
+          "fence": 9,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+              "sha256": "cf44307d6dcb212b62ac6eba3e89206e01035537f000e21ed7e9ab8a71021605"
+            },
+            {
+              "path": "business/unity/evidence/research-20261011-1300.json",
+              "sha256": "fd875af827b6a952f33bb6181d36dfe218f51132ef629fe8957f4d116b04e0c1"
+            }
+          ],
+          "checks": [
+            "7 creator/publisher/Unity primary sources verified; marketing, source-derived expectations and unobserved human results separated",
+            "Existing implementation task and portrait acceptance unchanged; original49 events preserved",
+            "Latest checkpoint4 hashes, parent4 HEADs/recovery8 hashes, repository4 legacy/19 GUID,3 local report links and JSON verified",
+            "Owner text and old cloud ledger unchanged; no new game/UI implementation, external operations or Atohitori access",
+            "Source receipt hashes matched and null metrics/14-28 unstarted retained"
+          ],
+          "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+          "at": 1791691342.6670527
+        },
+        {
+          "run_id": "unity-20261011T1300-7f20ad59a424",
+          "fence": 9,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+              "sha256": "cf44307d6dcb212b62ac6eba3e89206e01035537f000e21ed7e9ab8a71021605"
+            },
+            {
+              "path": "business/unity/evidence/research-20261011-1300.json",
+              "sha256": "fd875af827b6a952f33bb6181d36dfe218f51132ef629fe8957f4d116b04e0c1"
+            }
+          ],
+          "checks": [
+            "7 creator/publisher/Unity primary sources verified; marketing, source-derived expectations and unobserved human results separated",
+            "Existing implementation task and portrait acceptance unchanged; original49 events preserved",
+            "Latest checkpoint4 hashes, parent4 HEADs/recovery8 hashes, repository4 legacy/19 GUID,3 local report links and JSON verified",
+            "Owner text and old cloud ledger unchanged; no new game/UI implementation, external operations or Atohitori access",
+            "Source receipt hashes matched and null metrics/14-28 unstarted retained"
+          ],
+          "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+          "passed": true,
+          "at": 1791691342.6850042
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261011T1300-7f20ad59a424",
+          "task_id": "T-ice-courier-first-play-research-20261011",
+          "fence": 9,
+          "expires_at": 1791692756.828931
+        }
+      ]
     }
   },
   "decisions": {
@@ -615,6 +701,16 @@
       "business_evidence": "Human feedback, release and14/28-day metrics remain unobserved",
       "acceptance_addendum": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
       "owner_continuation": "user:current-thread:full-access-continue"
+    },
+    "D-ice-courier-first-play-20261011": {
+      "id": "D-ice-courier-first-play-20261011",
+      "source": "user:automation:unity:13-research;primary-source:developer-storefronts-and-Unity-PlayerPrefs",
+      "hypothesis": "Explicit departure-cell rule, Japanese symbol/control mapping and verified persistence disclosure make the first play easier to assess without adding stages",
+      "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+      "target_task_id": "T-ice-courier-touch-polish",
+      "acceptance_addendum": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+      "judgment": "unobserved",
+      "technical_disposition": "improve"
     }
   },
   "runs": {
@@ -672,6 +768,13 @@
       "source": "scheduled:game-site:2026-10-11T07:00:00+09:00",
       "status": "checkpointed",
       "started_at": 1791669616.3241487
+    },
+    "unity-20261011T1300-7f20ad59a424": {
+      "run_id": "unity-20261011T1300-7f20ad59a424",
+      "scheduled_at": "2026-10-11T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-11T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791691256.7592325
     }
   },
   "experiments": {
@@ -760,7 +863,8 @@
     "2026-10-10T13:00:00+09:00": "unity-20261010T1300-6f6e11091565",
     "2026-10-10T19:00:00+09:00": "unity-20261010T1900-e6047e8667b5",
     "2026-10-11T01:00:00+09:00": "unity-20261011T0100-3d0983464e72",
-    "2026-10-11T07:00:00+09:00": "unity-20261011T0700-b1404a964998"
+    "2026-10-11T07:00:00+09:00": "unity-20261011T0700-b1404a964998",
+    "2026-10-11T13:00:00+09:00": "unity-20261011T1300-7f20ad59a424"
   },
   "feedback": [],
   "approvals": [],
@@ -1931,7 +2035,162 @@
       },
       "previous": "ee162ee4ba0bc04c11d32883f3d6ca2c007042e405e1283cbb56b2385f98b2d2",
       "sha256": "c49c482691b55d6ff91a5816c07917ac817b7c1b0641b6a8c58049fadc1974f9"
+    },
+    {
+      "revision": 50,
+      "at": 1791691256.7420926,
+      "action": "decision",
+      "data": {
+        "id": "D-ice-courier-first-play-20261011",
+        "source": "user:automation:unity:13-research;primary-source:developer-storefronts-and-Unity-PlayerPrefs",
+        "hypothesis": "Explicit departure-cell rule, Japanese symbol/control mapping and verified persistence disclosure make the first play easier to assess without adding stages",
+        "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+        "target_task_id": "T-ice-courier-touch-polish",
+        "acceptance_addendum": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+        "judgment": "unobserved",
+        "technical_disposition": "improve"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "c49c482691b55d6ff91a5816c07917ac817b7c1b0641b6a8c58049fadc1974f9",
+      "sha256": "37c4024b74b57d488172f7ce09bf494e98904ccca4c6b88cce89fffe9b749fe4"
+    },
+    {
+      "revision": 51,
+      "at": 1791691256.7513058,
+      "action": "task",
+      "data": {
+        "id": "T-ice-courier-first-play-research-20261011",
+        "objective": "一次資料と現行ソースから初回説明・保存案内の受入条件を既存工程に補う",
+        "acceptance": [
+          "作者・販売者の一次資料を複数作品で確認し提示方法と需要を分ける",
+          "現行ソースに結び付く検査項目・優先順・未確認事項を残す",
+          "既存T-ice-courier-touch-polishと前回検査条件を保持し新作を追加しない"
+        ],
+        "outputs": [
+          "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+          "business/unity/evidence/research-20261011-1300.json"
+        ],
+        "checks": [
+          "Primary-source provenance and source SHA256",
+          "Ledger event prefix and original task equality",
+          "Latest checkpoint, parent HEAD/recovery and repository contracts"
+        ],
+        "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+        "decision_id": "D-ice-courier-first-play-20261011",
+        "hypothesis": "Explicit departure-cell rule, Japanese symbol/control mapping and verified persistence disclosure make the first play easier to assess without adding stages",
+        "source": "user:automation:unity:20261011-1300",
+        "pdca": "check",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-ice-courier-portrait-research-20261010"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "37c4024b74b57d488172f7ce09bf494e98904ccca4c6b88cce89fffe9b749fe4",
+      "sha256": "4726a3c73dc49e42360b8749af03ecbe51e5a10b823c1ace0db6d8ba24044607"
+    },
+    {
+      "revision": 52,
+      "at": 1791691256.7592325,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261011T1300-7f20ad59a424",
+        "scheduled_at": "2026-10-11T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "4726a3c73dc49e42360b8749af03ecbe51e5a10b823c1ace0db6d8ba24044607",
+      "sha256": "f9f51326a54e342f89a1fd95ed5597183a5b06dac6313272810702d1976995f8"
+    },
+    {
+      "revision": 53,
+      "at": 1791691256.828931,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261011T1300-7f20ad59a424",
+        "task_id": "T-ice-courier-first-play-research-20261011",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261011T1300-7f20ad59a424",
+        "task_id": "T-ice-courier-first-play-research-20261011",
+        "fence": 9,
+        "expires_at": 1791692756.828931
+      },
+      "previous": "f9f51326a54e342f89a1fd95ed5597183a5b06dac6313272810702d1976995f8",
+      "sha256": "2a1f12c627ee544dac547272a2c9cd5d7cdca1c9740f84641c9fa96a7f3b6cc5"
+    },
+    {
+      "revision": 54,
+      "at": 1791691342.6670527,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261011T1300-7f20ad59a424",
+        "fence": 9,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+            "sha256": "cf44307d6dcb212b62ac6eba3e89206e01035537f000e21ed7e9ab8a71021605"
+          },
+          {
+            "path": "business/unity/evidence/research-20261011-1300.json",
+            "sha256": "fd875af827b6a952f33bb6181d36dfe218f51132ef629fe8957f4d116b04e0c1"
+          }
+        ],
+        "checks": [
+          "7 creator/publisher/Unity primary sources verified; marketing, source-derived expectations and unobserved human results separated",
+          "Existing implementation task and portrait acceptance unchanged; original49 events preserved",
+          "Latest checkpoint4 hashes, parent4 HEADs/recovery8 hashes, repository4 legacy/19 GUID,3 local report links and JSON verified",
+          "Owner text and old cloud ledger unchanged; no new game/UI implementation, external operations or Atohitori access",
+          "Source receipt hashes matched and null metrics/14-28 unstarted retained"
+        ],
+        "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "2a1f12c627ee544dac547272a2c9cd5d7cdca1c9740f84641c9fa96a7f3b6cc5",
+      "sha256": "1389e73348d8366965bedb73deb935b08f9fb0c46999b19ba6f280ab2aba6126"
+    },
+    {
+      "revision": 55,
+      "at": 1791691342.6850042,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261011T1300-7f20ad59a424",
+        "fence": 9,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+            "sha256": "cf44307d6dcb212b62ac6eba3e89206e01035537f000e21ed7e9ab8a71021605"
+          },
+          {
+            "path": "business/unity/evidence/research-20261011-1300.json",
+            "sha256": "fd875af827b6a952f33bb6181d36dfe218f51132ef629fe8957f4d116b04e0c1"
+          }
+        ],
+        "checks": [
+          "7 creator/publisher/Unity primary sources verified; marketing, source-derived expectations and unobserved human results separated",
+          "Existing implementation task and portrait acceptance unchanged; original49 events preserved",
+          "Latest checkpoint4 hashes, parent4 HEADs/recovery8 hashes, repository4 legacy/19 GUID,3 local report links and JSON verified",
+          "Owner text and old cloud ledger unchanged; no new game/UI implementation, external operations or Atohitori access",
+          "Source receipt hashes matched and null metrics/14-28 unstarted retained"
+        ],
+        "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "1389e73348d8366965bedb73deb935b08f9fb0c46999b19ba6f280ab2aba6126",
+      "sha256": "2dd26ce48faca2411ff3599a82c743542fce431a7f0c4650041fdab7aa65a40c"
     }
   ],
-  "projection_sha256": "15cf1c9faeb67838ade2b0647280fedfcbd8f2a107ce1451ec8f47b5edcc1162"
+  "projection_sha256": "b337081b35193effa932b4955e1e942c44ab96b52a05dee8554e4fca83cff4c7"
 }

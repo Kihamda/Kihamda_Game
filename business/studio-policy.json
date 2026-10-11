@@ -54,5 +54,7 @@
   "portraitImplementationSource": "docs/ice-courier-responsive-ui.md",
   "partialRunPolicy": "期限内に部分成果をハッシュ付きでcheckpointしyieldで同じタスクへ引き継ぐ。未完了をcompleteしない。承認・応答待ちが長ければ追加検査を止めて保存。期限切れは照合してrecoverする。",
   "portraitEditorQualitySource": "docs/ice-courier-editor-quality-20261011.md",
-  "unityTestEvidencePolicy": "Invoke-Unity.ps1は一意なRunIdごとの証跡へ保存し、同じoperationの既存証跡を上書きしない。標準待機300秒。Editorの実操作と配布版・実タッチを別々に検査する。"
+  "unityTestEvidencePolicy": "Invoke-Unity.ps1は一意なRunIdごとの証跡へ保存し、同じoperationの既存証跡を上書きしない。標準待機300秒。Editorの実操作と配布版・実タッチを別々に検査する。",
+  "firstPlayAcceptanceSource": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+  "firstPlayPolicy": "既存T-ice-courier-touch-polishで出発1マスの凍結、日本語と実画面記号・英語操作の対応、保存の確認範囲と再開後Undo履歴初期化を検査する。前回の寸法と実端末・人間評価条件を保持し、新Actions成果物待ちでも説明整備を継続する。掲載作品の説明から需要を推定しない。"
 }

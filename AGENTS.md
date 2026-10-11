@@ -27,3 +27,5 @@ WIP1、サブエージェント禁止。現在はIce Courierを継続する。01
 Unity検査はscripts/Invoke-Unity.ps1のRunIdごとの証跡へ保存する。同じRunId・operationの再実行は拒否するため、再検査は新しいRunIdを使う。標準待機300秒を超える設定でもcheckpoint期限を守る。Editorの実画面・入力・保存の確認を、Web配布版や実端末タッチの確認へ読み替えない。2026-10-11の検査範囲はdocs/ice-courier-editor-quality-20261011.md。生の画面・ログ・XMLはローカルartifactsに保管する。
 
 ブログは下書き保存に限定し、別事業のprivate stateや認証をコピーしない。BOOTH向け量産を再開しない。定期実行の元設定を保全し、登録した事実と実行した事実を区別する。通知は新しい完成物、重大な障害、本人操作が必要な事項に限定する。
+
+初回説明と保存案内はbusiness/unity/research/2026-10-11-first-play-and-save-acceptance.mdのF1〜F6を既存T-ice-courier-touch-polish内で検査する。出発1マスの凍結、実画面記号と日本語案内、再開後のUndo履歴初期化を明示し、Editor成功だけでWeb保存を保証しない。前回の寸法・実端末・人間評価条件を保持する。新Actions成果物が保留なら同じ工程の説明整備を継続し、新作や別計画へ置き換えない。
