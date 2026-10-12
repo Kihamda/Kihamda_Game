@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "runId": "unity-continuation-20261013T0700-retention-0512d8",
+  "fence": 20,
+  "sourceCommit": "4a0e1783ef22e147601799dcb698a116175628cc",
+  "ciBuildMergeRef": "6b8ca36b409cdc81a7288d267f66352be5253329",
+  "ciWebSourceMatchesHead": true,
+  "publication": "prepared-not-deployed",
+  "files": [
+    {
+      "path": "artifacts/releases/web-20261013-quality/web-release.tar.gz",
+      "sha256": "dc59952d39255ee7b3a3471699d6459941ef0febcb7968abdc20d82d1e711fe9"
+    },
+    {
+      "path": "artifacts/releases/web-20261013-quality/web-release.tar.gz.sha256",
+      "sha256": "f1648186b6fa2b2742d7fbdb9c0615e0572ca26e00a6a080f79e8a7a1599a1c0"
+    },
+    {
+      "path": "artifacts/releases/web-20261013-quality/source.zip",
+      "sha256": "219983fea8986e078a7f044ae48e04a0b51b8f7b9093a1cbc31051b22a566e5e"
+    },
+    {
+      "path": "artifacts/releases/web-20261013-quality/restored/manifest.json",
+      "sha256": "5122a4f9ebba51d0700fdb8460ee85e5a438820d5e0902252992a65b75dc5bd1"
+    }
+  ],
+  "currentAuditAll": 0,
+  "currentAuditProduction": 0,
+  "restoredFiles": 37,
+  "restoredPages": 5,
+  "browserTestedIndexHtmlAndAssetMatches": 22,
+  "historicalPackage": {
+    "sourceCommit": "1cef2efce3e230d8b5dbcea579c47334f6db581b",
+    "role": "historical-pre-dependency-update-not-current",
+    "sha256": "234a50c1737a6b491f5a4a65f1afcb99d9dd2b2e255d57ecc1a09685cc0027e3",
+    "path": "artifacts/web-release-20261013.zip"
+  },
+  "retention": "Local files have no Actions expiration; no off-PC backup or recovery after disk failure verified",
+  "nextStep": "Preserved Web routes browser rule/input/save regression; no production replacement"
+}

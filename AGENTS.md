@@ -39,3 +39,5 @@ Atohitoriは本人が別途制作するため自律開発の対象外。原稿�
 Web配布準備はdocs/web-release-package-20261013.md。manifestとsiteのみを圧縮し、元commit・ファイルハッシュ・別フォルダ復元を照合する。CI成果物は30日保持で本番配置ではない。次はWeb依存関係の監査と互換性確認を行う。監査指摘の詳細はローカルで扱い、強制更新しない。
 
 2026-10-13のWeb依存関係更新後は全体/本番の監査指摘0件。結果はdocs/web-dependency-quality-20261013.md。次はT-web-release-retentionで現行CI成果物の版と復元元を保持し、更新前ZIPと区別する。本番サイト全体置換は行わない。
+
+現行Web配布準備版はartifacts/releases/web-20261013-qualityに保存し、索引はbusiness/unity/evidence/web-current-retention-20261013.json。通常の検査整理でartifacts/releasesを削除せず、別保存先と照合してから扱う。次はT-web-legacy-browser-acceptanceで既存4ルートのルール・入力・保存を一作ずつ検査する。

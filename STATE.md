@@ -1,5 +1,7 @@
 # 現在の状態
 
+2026-10-13の07時枠内で配布準備・依存関係・現行成果物保管を順次完了。PR #20はhead4a0e178のLinux38秒/Windows18秒CI成功後42d9075へマージ。更新済みCI成果物をartifacts/releases/web-20261013-qualityへ保存し、アーカイブSHA-256・37ファイル・5画面・実ブラウザ検査版のindex.html/assets22ファイルと元ソースZIPのlockfileを照合した。CIの30日期限とは別にローカル保管し、更新前ZIPを現行版にしない。保管索引はbusiness/unity/evidence/web-current-retention-20261013.json、手順はdocs/web-current-retention-20261013.md。別PCバックアップ・ディスク故障からの復元は未確認。本番配置なし。次は旧Web4ルートの実ルール・入力・保存の回帰検査を一作ずつ行う。
+
 2026-10-13の07時枠を元の時間上限内で順次継続。配布準備PR #19はhead322c212のLinux33秒/Windows26秒CI成功後、--match-head-commitでec3f546へマージ。CIのtar.gzを取得し、別のマージ用ref6c444ac・アーカイブハッシュ・37ファイル・5画面を照合した。続くT-web-dependency-qualityでは既存許容範囲内でlockfileを更新し、監査指摘は全体15→0、本番依存関係2→0。TypeScript/ESLint/Vite・導線/案内SSR・配布準備の回帰検査、実ブラウザのポータル操作と旧4URLの初期表示・一部入力が成功した。新しい配布版との対応は依存関係PRのCIで確認する。旧ZIPは更新前の履歴として保持する。本番配置・投稿なし。
 
 2026-10-13の07時枠でT-web-portal-release-packageを実施。元commit1cef2efce3e230d8b5dbcea579c47334f6db581bの追跡Webソースを別フォルダへ取得し、npm ci、TypeScript・ESLint・Vite・5SSG・36成果物ハッシュを検査した。manifest付きZIPを別復元先へ展開し、全37ファイル・5画面の版とハッシュを照合。改変・欠落・追加・版不一致・manifest改変の拒否検査も成功。復元版の実ブラウザ390×844/1280×720の5画面、検索条件保持・Enter案内・再読み込み・本文フォーカス・はみ出しなしを確認した。CIへtar.gzの作成・展開・再検査・ハッシュ保存を追加。

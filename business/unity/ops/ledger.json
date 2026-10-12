@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 127,
+  "revision": 135,
   "business_id": "game-site",
-  "fence": 19,
+  "fence": 20,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -2126,6 +2126,122 @@
         "No production replacement or paid hosting"
       ],
       "next_step": "Retain current-source verified Web artifact and restoration index",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-continuation-20261013T0700-retention-0512d8",
+          "fence": 20,
+          "artifacts": [
+            {
+              "path": "docs/web-current-retention-20261013.md",
+              "sha256": "cba10d645e53037c74edc68ec3ed7f7da5b987b88c52d1d31ebb286ec8a7a28f"
+            },
+            {
+              "path": "business/unity/evidence/web-current-retention-20261013.json",
+              "sha256": "43fc28c36765706a3ba2be789702990e464d122070bf7a2e82e5e5cac31a0ff4"
+            },
+            {
+              "path": "business/unity/evidence/delivery-web-quality-20261013.json",
+              "sha256": "bab185ff06f141ef7e657da7f485afc550e4ed8d3a7c80491ac41e4925187f57"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "4a15db8e982830fa7eb4f1c22b0b6f81bdf1885f99e9dbb71489adc09358989d"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "9deeade871da4fc4ed06e0ab4890d14599e0ce9ce4c4a2494b00578de30dc9d1"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "f5b15ca906cdb0ef3efbd26bd216358f95377cd4267ab8859ea11a6db936011e"
+            }
+          ],
+          "checks": [
+            "PR20 head CI38315562735 Linux38s/Windows18s guardedmerge",
+            "Current downloaded archive hash/37files/5pages",
+            "CI source matches head;22browser-tested HTML/assets identical",
+            "Source ZIP lockfile extract/hash"
+          ],
+          "next_step": "T-web-legacy-browser-acceptance; deliver retention records through CI",
+          "at": 1791843563.561458
+        },
+        {
+          "run_id": "unity-continuation-20261013T0700-retention-0512d8",
+          "fence": 20,
+          "artifacts": [
+            {
+              "path": "docs/web-current-retention-20261013.md",
+              "sha256": "cba10d645e53037c74edc68ec3ed7f7da5b987b88c52d1d31ebb286ec8a7a28f"
+            },
+            {
+              "path": "business/unity/evidence/web-current-retention-20261013.json",
+              "sha256": "43fc28c36765706a3ba2be789702990e464d122070bf7a2e82e5e5cac31a0ff4"
+            },
+            {
+              "path": "business/unity/evidence/delivery-web-quality-20261013.json",
+              "sha256": "bab185ff06f141ef7e657da7f485afc550e4ed8d3a7c80491ac41e4925187f57"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "4a15db8e982830fa7eb4f1c22b0b6f81bdf1885f99e9dbb71489adc09358989d"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "9deeade871da4fc4ed06e0ab4890d14599e0ce9ce4c4a2494b00578de30dc9d1"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "f5b15ca906cdb0ef3efbd26bd216358f95377cd4267ab8859ea11a6db936011e"
+            }
+          ],
+          "checks": [
+            "PR20 head CI38315562735 Linux38s/Windows18s guardedmerge",
+            "Current downloaded archive hash/37files/5pages",
+            "CI source matches head;22browser-tested HTML/assets identical",
+            "Source ZIP lockfile extract/hash"
+          ],
+          "next_step": "T-web-legacy-browser-acceptance; deliver retention records through CI",
+          "passed": true,
+          "at": 1791843563.5796635
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-continuation-20261013T0700-retention-0512d8",
+          "task_id": "T-web-release-retention",
+          "fence": 20,
+          "expires_at": 1791844158.0771968
+        }
+      ]
+    },
+    "T-web-legacy-browser-acceptance": {
+      "id": "T-web-legacy-browser-acceptance",
+      "decision_id": "D-web-technology-policy-20261012",
+      "source": "user:automation:Web-quality:preserved-routes-unverified-cases",
+      "objective": "Verify preserved Web routes rules, input, save and reload one work at a time",
+      "hypothesis": "Observed rule and state regressions identify quality gaps beyond initial loading; demand unobserved",
+      "pdca": "check",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-web-release-retention"
+      ],
+      "outputs": [
+        "Per-work browser acceptance evidence and unresolved cases"
+      ],
+      "checks": [
+        "Observed initial/input/undo-reset states",
+        "Browser saved-state and reload behavior where implemented",
+        "Desktop/mobile layout; actual touch and human results separate"
+      ],
+      "acceptance": [
+        "Begin with existing iceslide route and finish its acceptance before next work",
+        "Do not infer full acceptance from route loading or Unity tests",
+        "Record unimplemented save and unobserved cases accurately",
+        "No new game or work in old parent repositories; no production replacement"
+      ],
+      "next_step": "Inspect preserved iceslide Web route rules/input/state/reload as first work",
       "status": "ready",
       "checkpoints": [],
       "claims": []
@@ -2374,6 +2490,12 @@
       "source": "user:automation:2026-10-13:continue-sequential-work-within-original-30min",
       "status": "completed",
       "started_at": 1791843021.678058
+    },
+    "unity-continuation-20261013T0700-retention-0512d8": {
+      "run_id": "unity-continuation-20261013T0700-retention-0512d8",
+      "source": "user:automation:continue-within-original-30min-no-slot-reclaim",
+      "status": "completed",
+      "started_at": 1791843408.0605202
     }
   },
   "experiments": {
@@ -2560,6 +2682,15 @@
       "status": "approved",
       "target": "Kihamda/Kihamda_Game",
       "head_commit": "322c212a5a21199fade2ed888276b4a9ef670713"
+    },
+    {
+      "source": "user:automation:2026-10-13:autonomous-repository",
+      "quote": "Repository editing, commit/push, PR and verified-head CI-gated merge explicitly authorized",
+      "action": "publish-reviewed-branch-and-merge-verified-pr",
+      "artifact_sha256": "d0bdc10eb1d5f7442c7321bf9309906deeade14a257d54ce347cc21b29d7be89",
+      "status": "approved",
+      "target": "Kihamda/Kihamda_Game",
+      "head_commit": "4a0e1783ef22e147601799dcb698a116175628cc"
     }
   ],
   "external": {
@@ -2629,6 +2760,25 @@
           {
             "path": "business/unity/evidence/delivery-web-package-20261013.json",
             "sha256": "81c4527752e27acf2979ea2d574397d181267c8bda2c26210fa491e8701f73ef"
+          }
+        ]
+      }
+    },
+    "OP-web-quality-publish-20261013": {
+      "id": "OP-web-quality-publish-20261013",
+      "action": "publish-reviewed-branch-and-merge-verified-pr",
+      "artifact_sha256": "d0bdc10eb1d5f7442c7321bf9309906deeade14a257d54ce347cc21b29d7be89",
+      "head_commit": "4a0e1783ef22e147601799dcb698a116175628cc",
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "OP-web-quality-publish-20261013",
+        "status": "confirmed_success",
+        "source": "github:Kihamda/Kihamda_Game:pr20",
+        "evidence": "PR20 verifiedhead4a0e178 CI38315562735 success guardedmerge; downloaded sourcebound CI archive and all37files/5pages verified; no deployment",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-quality-20261013.json",
+            "sha256": "bab185ff06f141ef7e657da7f485afc550e4ed8d3a7c80491ac41e4925187f57"
           }
         ]
       }
@@ -6345,7 +6495,229 @@
       },
       "previous": "7b45606b59663dbc724e47b577d0095db8670874e736a4642f1cdd7f5b766700",
       "sha256": "e3dd727974177f1dfb06f8e8cc6b285d75f4024efdd576c0300e56ae0b764bcc"
+    },
+    {
+      "revision": 128,
+      "at": 1791843294.5960596,
+      "action": "approval",
+      "data": {
+        "source": "user:automation:2026-10-13:autonomous-repository",
+        "quote": "Repository editing, commit/push, PR and verified-head CI-gated merge explicitly authorized",
+        "action": "publish-reviewed-branch-and-merge-verified-pr",
+        "artifact_sha256": "d0bdc10eb1d5f7442c7321bf9309906deeade14a257d54ce347cc21b29d7be89",
+        "status": "approved",
+        "target": "Kihamda/Kihamda_Game",
+        "head_commit": "4a0e1783ef22e147601799dcb698a116175628cc"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "e3dd727974177f1dfb06f8e8cc6b285d75f4024efdd576c0300e56ae0b764bcc",
+      "sha256": "5dd091cc36560c33a5a2f29aeb91dd08bbc143f6a551b111d1cce72b31c00585"
+    },
+    {
+      "revision": 129,
+      "at": 1791843294.6225963,
+      "action": "prepare-external",
+      "data": {
+        "id": "OP-web-quality-publish-20261013",
+        "action": "publish-reviewed-branch-and-merge-verified-pr",
+        "artifact_sha256": "d0bdc10eb1d5f7442c7321bf9309906deeade14a257d54ce347cc21b29d7be89",
+        "head_commit": "4a0e1783ef22e147601799dcb698a116175628cc"
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "5dd091cc36560c33a5a2f29aeb91dd08bbc143f6a551b111d1cce72b31c00585",
+      "sha256": "f31104ab55159e2f4a62f51e701de3fcbed49e3dbc3defac24b018c54968e97b"
+    },
+    {
+      "revision": 130,
+      "at": 1791843408.0439708,
+      "action": "reconcile-external",
+      "data": {
+        "id": "OP-web-quality-publish-20261013",
+        "status": "confirmed_success",
+        "source": "github:Kihamda/Kihamda_Game:pr20",
+        "evidence": "PR20 verifiedhead4a0e178 CI38315562735 success guardedmerge; downloaded sourcebound CI archive and all37files/5pages verified; no deployment",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-quality-20261013.json",
+            "sha256": "bab185ff06f141ef7e657da7f485afc550e4ed8d3a7c80491ac41e4925187f57"
+          }
+        ]
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "f31104ab55159e2f4a62f51e701de3fcbed49e3dbc3defac24b018c54968e97b",
+      "sha256": "9ee71ca5dd606e52db4291de4a3d369d3f51da4466b09d0222fd50784cd8a9fc"
+    },
+    {
+      "revision": 131,
+      "at": 1791843408.0605202,
+      "action": "start",
+      "data": {
+        "run_id": "unity-continuation-20261013T0700-retention-0512d8",
+        "source": "user:automation:continue-within-original-30min-no-slot-reclaim"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "9ee71ca5dd606e52db4291de4a3d369d3f51da4466b09d0222fd50784cd8a9fc",
+      "sha256": "b7f3300e89efcba8d0f6ee7a11ee5cd91905cc40b8afdc95b27df7e1c718e0fa"
+    },
+    {
+      "revision": 132,
+      "at": 1791843408.0771968,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-continuation-20261013T0700-retention-0512d8",
+        "task_id": "T-web-release-retention",
+        "ttl_seconds": 750
+      },
+      "result": {
+        "run_id": "unity-continuation-20261013T0700-retention-0512d8",
+        "task_id": "T-web-release-retention",
+        "fence": 20,
+        "expires_at": 1791844158.0771968
+      },
+      "previous": "b7f3300e89efcba8d0f6ee7a11ee5cd91905cc40b8afdc95b27df7e1c718e0fa",
+      "sha256": "d5b667d9c4bd37dacbc8f8be66b45f1b82f0bd50b10f4fbb02bbf578f415b2d0"
+    },
+    {
+      "revision": 133,
+      "at": 1791843563.561458,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-continuation-20261013T0700-retention-0512d8",
+        "fence": 20,
+        "artifacts": [
+          {
+            "path": "docs/web-current-retention-20261013.md",
+            "sha256": "cba10d645e53037c74edc68ec3ed7f7da5b987b88c52d1d31ebb286ec8a7a28f"
+          },
+          {
+            "path": "business/unity/evidence/web-current-retention-20261013.json",
+            "sha256": "43fc28c36765706a3ba2be789702990e464d122070bf7a2e82e5e5cac31a0ff4"
+          },
+          {
+            "path": "business/unity/evidence/delivery-web-quality-20261013.json",
+            "sha256": "bab185ff06f141ef7e657da7f485afc550e4ed8d3a7c80491ac41e4925187f57"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "4a15db8e982830fa7eb4f1c22b0b6f81bdf1885f99e9dbb71489adc09358989d"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "9deeade871da4fc4ed06e0ab4890d14599e0ce9ce4c4a2494b00578de30dc9d1"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "f5b15ca906cdb0ef3efbd26bd216358f95377cd4267ab8859ea11a6db936011e"
+          }
+        ],
+        "checks": [
+          "PR20 head CI38315562735 Linux38s/Windows18s guardedmerge",
+          "Current downloaded archive hash/37files/5pages",
+          "CI source matches head;22browser-tested HTML/assets identical",
+          "Source ZIP lockfile extract/hash"
+        ],
+        "next_step": "T-web-legacy-browser-acceptance; deliver retention records through CI"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "d5b667d9c4bd37dacbc8f8be66b45f1b82f0bd50b10f4fbb02bbf578f415b2d0",
+      "sha256": "d945633e2400fab1be975a530c3c32f29b437f77ebe2fed6dcaf4e0bc64a35e5"
+    },
+    {
+      "revision": 134,
+      "at": 1791843563.5796635,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-continuation-20261013T0700-retention-0512d8",
+        "fence": 20,
+        "artifacts": [
+          {
+            "path": "docs/web-current-retention-20261013.md",
+            "sha256": "cba10d645e53037c74edc68ec3ed7f7da5b987b88c52d1d31ebb286ec8a7a28f"
+          },
+          {
+            "path": "business/unity/evidence/web-current-retention-20261013.json",
+            "sha256": "43fc28c36765706a3ba2be789702990e464d122070bf7a2e82e5e5cac31a0ff4"
+          },
+          {
+            "path": "business/unity/evidence/delivery-web-quality-20261013.json",
+            "sha256": "bab185ff06f141ef7e657da7f485afc550e4ed8d3a7c80491ac41e4925187f57"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "4a15db8e982830fa7eb4f1c22b0b6f81bdf1885f99e9dbb71489adc09358989d"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "9deeade871da4fc4ed06e0ab4890d14599e0ce9ce4c4a2494b00578de30dc9d1"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "f5b15ca906cdb0ef3efbd26bd216358f95377cd4267ab8859ea11a6db936011e"
+          }
+        ],
+        "checks": [
+          "PR20 head CI38315562735 Linux38s/Windows18s guardedmerge",
+          "Current downloaded archive hash/37files/5pages",
+          "CI source matches head;22browser-tested HTML/assets identical",
+          "Source ZIP lockfile extract/hash"
+        ],
+        "next_step": "T-web-legacy-browser-acceptance; deliver retention records through CI",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "d945633e2400fab1be975a530c3c32f29b437f77ebe2fed6dcaf4e0bc64a35e5",
+      "sha256": "a4fab33b7b2392ae00944ef5187407957724ffe1cb44ab3b8cc37552c8efd87c"
+    },
+    {
+      "revision": 135,
+      "at": 1791843563.6004834,
+      "action": "task",
+      "data": {
+        "id": "T-web-legacy-browser-acceptance",
+        "decision_id": "D-web-technology-policy-20261012",
+        "source": "user:automation:Web-quality:preserved-routes-unverified-cases",
+        "objective": "Verify preserved Web routes rules, input, save and reload one work at a time",
+        "hypothesis": "Observed rule and state regressions identify quality gaps beyond initial loading; demand unobserved",
+        "pdca": "check",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-web-release-retention"
+        ],
+        "outputs": [
+          "Per-work browser acceptance evidence and unresolved cases"
+        ],
+        "checks": [
+          "Observed initial/input/undo-reset states",
+          "Browser saved-state and reload behavior where implemented",
+          "Desktop/mobile layout; actual touch and human results separate"
+        ],
+        "acceptance": [
+          "Begin with existing iceslide route and finish its acceptance before next work",
+          "Do not infer full acceptance from route loading or Unity tests",
+          "Record unimplemented save and unobserved cases accurately",
+          "No new game or work in old parent repositories; no production replacement"
+        ],
+        "next_step": "Inspect preserved iceslide Web route rules/input/state/reload as first work"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "a4fab33b7b2392ae00944ef5187407957724ffe1cb44ab3b8cc37552c8efd87c",
+      "sha256": "67e3f9465885849e1edb67106e651e8636164f13599371606dba14bb243ba412"
     }
   ],
-  "projection_sha256": "7e24b16ea697a19e526c67ae434301b85ecb820eec8645a79b9a62b290f93e52"
+  "projection_sha256": "10b8eca972f17efb1618d3ba45574a1e81644d9597d7c09d13c008c77db14ff0"
 }
