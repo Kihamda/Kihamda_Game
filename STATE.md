@@ -1,5 +1,9 @@
 # 現在の状態
 
+2026-10-12の13時枠は一次資料から既存Web入口の作品案内を比較した。報告はbusiness/unity/research/2026-10-12-web-entry-acceptance.md。制作技術・配布形式・公開状態の区別、作品固有の操作、版に紐付いた実画面、確認済み環境を受入条件にした。既存T-web-portal-navigation-stateは契約とready状態を保持し、これに依存するT-web-portal-release-presentationを追加した。新作やUnity試作品の再開は行っていない。
+
+13時slotを一度だけ取得。run unity-20261012T1300-4ec28b2cd023、fence13。前回checkpoint16件、親4元commit・復元8ハッシュ、元77イベントを照合。今回は制作コード変更・新ブラウザ検査・配布・外部投稿なし。需要・効果・人間評価は未観測で指標はnull、14/28日観測未開始。天啓.mdの全体刷新は未完了のため残す。次の一工程は検索条件と一覧への復帰を保持する実装。
+
 2026-10-12の07時枠でT-web-portal-technology-catalogを実装・検査した。works.jsonへ制作技術web/unity、制作元studio-web/owner-finished/preserved-prototype、制作状態と独立したreleaseを保存。未公開リンクを出さず、不完全な公開記録を拒否する。Ice Courierは制作停止・保全中へ表示を改め、既存Unity本体とローカル検査入口を保持した。本人持込完成品は未受領。
 
 最終Web型・静的検査・ビルド、5静的ページ、旧4URL/GUID19/36ハッシュ、インメモリWeb/持込Unityの公開前後表示が成功。390/1280px実ブラウザで検索・公開状態・一覧往復・再読み込みと横はみ出しなし、開始/iframeなしを確認。末尾スラッシュの作品未検出を修正した。ブラウザで戻ると検索語が消える現状は次工程へ残す。詳細はdocs/web-catalog-20261012.md、記事はbusiness/blog/drafts/2026-10-12-web-catalog.mdに下書き保存のみ。全体刷新は未完了で天啓.mdを保持する。実完成品受入れ・物理タッチ・Safari・人間評価・保存永続化は未実行。公開・push・PR・merge・投稿なし、事業指標null。

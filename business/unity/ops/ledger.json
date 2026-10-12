@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 77,
+  "revision": 84,
   "business_id": "game-site",
-  "fence": 12,
+  "fence": 13,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -1154,6 +1154,132 @@
       "status": "ready",
       "checkpoints": [],
       "claims": []
+    },
+    "T-web-portal-entry-research-20261012": {
+      "id": "T-web-portal-entry-research-20261012",
+      "objective": "一次資料から既存Web入口の作品案内と公開前検査を具体化する",
+      "hypothesis": "作品固有の操作・実画面・確認済み環境を公開状態と別に示すと、遊ぶ前の判断と誤案内を減らせる。効果は未観測。",
+      "decision_id": "D-web-portal-release-presentation-20261012",
+      "source": "primary-source:2026-10-12:itch-html5-and-author-pages",
+      "pdca": "plan",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "depends_on": [],
+      "outputs": [
+        "一次資料の比較報告",
+        "受入条件付き後続タスク"
+      ],
+      "checks": [
+        "Source facts and assumptions separated",
+        "Protected files and prior checkpoint hashes",
+        "Ledger chain and preserved navigation task"
+      ],
+      "acceptance": [
+        "一次資料のURLと確認日、観察と推測を記録する",
+        "既存検索導線修正を保持し受入条件付き後続タスクを作成する",
+        "未受領完成品・配布・事業指標を実績にしない"
+      ],
+      "next_step": "T-web-portal-navigation-state remains next implementation",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261012T1300-4ec28b2cd023",
+          "fence": 13,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+              "sha256": "d9eb58370102aa94a4edaa3e06bec4d2f4e63d900c6cca995e4a5ac575f79659"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "872a5567a0105a5b82699ddb7a0507e6b301e2f01d2b74d830bee587f5065e57"
+            },
+            {
+              "path": "business/unity/evidence/research-20261012-1300.json",
+              "sha256": "3d39bb861abaaebe132f276ad2aa3ef3222fa54a6110f733e9a8340171203e81"
+            }
+          ],
+          "checks": [
+            "5 primary source URLs reviewed; report differentiates facts/inferences",
+            "Prior16 checkpoint hashes and parent4HEAD/recovery8 hashes matched",
+            "Repository4 legacy entries/19GUID and git diff check passed",
+            "Original77 events and exact navigation task preserved",
+            "No implementation/browser test/Unity resumption/new game/external publication; metrics null"
+          ],
+          "next_step": "T-web-portal-navigation-state remains next; dependent T-web-portal-release-presentation created",
+          "at": 1791777750.3083944
+        },
+        {
+          "run_id": "unity-20261012T1300-4ec28b2cd023",
+          "fence": 13,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+              "sha256": "d9eb58370102aa94a4edaa3e06bec4d2f4e63d900c6cca995e4a5ac575f79659"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "872a5567a0105a5b82699ddb7a0507e6b301e2f01d2b74d830bee587f5065e57"
+            },
+            {
+              "path": "business/unity/evidence/research-20261012-1300.json",
+              "sha256": "3d39bb861abaaebe132f276ad2aa3ef3222fa54a6110f733e9a8340171203e81"
+            }
+          ],
+          "checks": [
+            "5 primary source URLs reviewed; report differentiates facts/inferences",
+            "Prior16 checkpoint hashes and parent4HEAD/recovery8 hashes matched",
+            "Repository4 legacy entries/19GUID and git diff check passed",
+            "Original77 events and exact navigation task preserved",
+            "No implementation/browser test/Unity resumption/new game/external publication; metrics null"
+          ],
+          "next_step": "T-web-portal-navigation-state remains next; dependent T-web-portal-release-presentation created",
+          "passed": true,
+          "at": 1791777750.3284063
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261012T1300-4ec28b2cd023",
+          "task_id": "T-web-portal-entry-research-20261012",
+          "fence": 13,
+          "expires_at": 1791779127.9965627
+        }
+      ]
+    },
+    "T-web-portal-release-presentation": {
+      "id": "T-web-portal-release-presentation",
+      "objective": "既存Web入口で作品固有の操作・確認済み環境・実画面を案内する",
+      "hypothesis": "作品固有の操作・実画面・確認済み環境を公開状態と別に示すと、遊ぶ前の判断と誤案内を減らせる。効果は未観測。",
+      "decision_id": "D-web-portal-release-presentation-20261012",
+      "source": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 2,
+      "depends_on": [
+        "T-web-portal-navigation-state"
+      ],
+      "outputs": [
+        "作品ごとの操作・環境・実画面の表示",
+        "公開前後・案内欠落・静的生成の検査証跡"
+      ],
+      "checks": [
+        "TypeScript/ESLint/Web build",
+        "In-memory Web/owner-finished Unity cases",
+        "390/1280 actual browser keyboard/navigation"
+      ],
+      "acceptance": [
+        "作品固有の操作・保存・検査環境を扱い未確認を対応済みとしない",
+        "実画面を版・SHA-256・検査記録に紐付けイメージ図と区別する",
+        "架空作品を実登録せずWeb/持込Unityの公開前後と案内なしを検査する",
+        "release=nullの開始リンクなしと既存公開受入条件を維持する",
+        "一覧閲覧時にアプリを起動せず390/1280pxと型・静的・ビルドを検査する",
+        "Unity完成品は受領後に実物・配布条件を照合しソース・再ビルドを一律必須にしない"
+      ],
+      "next_step": "After navigation state completes, implement work-specific presentation within existing portal",
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -1253,6 +1379,14 @@
       "target_task_id": "T-web-portal-technology-catalog",
       "source": "user:current-thread:2026-10-12:web-technology-policy",
       "next_step": "T-web-portal-technology-catalog"
+    },
+    "D-web-portal-release-presentation-20261012": {
+      "id": "D-web-portal-release-presentation-20261012",
+      "source": "primary-source:2026-10-12:itch-html5-and-author-pages",
+      "hypothesis": "作品固有の操作・実画面・確認済み環境を公開状態と別に示すと、遊ぶ前の判断と誤案内を減らせる。効果は未観測。",
+      "evidence": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+      "judgment": "unobserved",
+      "next_step": "Keep T-web-portal-navigation-state first, then T-web-portal-release-presentation"
     }
   },
   "runs": {
@@ -1338,6 +1472,13 @@
       "source": "scheduled:game-site:2026-10-12T07:00:00+09:00",
       "status": "completed",
       "started_at": 1791756273.2688477
+    },
+    "unity-20261012T1300-4ec28b2cd023": {
+      "scheduled_at": "2026-10-12T13:00:00+09:00",
+      "run_id": "unity-20261012T1300-4ec28b2cd023",
+      "source": "scheduled:game-site:2026-10-12T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791777627.8783987
     }
   },
   "experiments": {
@@ -1468,7 +1609,8 @@
     "2026-10-11T13:00:00+09:00": "unity-20261011T1300-7f20ad59a424",
     "2026-10-11T19:00:00+09:00": "unity-20261011T1900-8b31b641b674",
     "2026-10-12T01:00:00+09:00": "unity-20261012T0100-613a8862a2d4",
-    "2026-10-12T07:00:00+09:00": "unity-20261012T0700-ffb98d9c5b5b"
+    "2026-10-12T07:00:00+09:00": "unity-20261012T0700-ffb98d9c5b5b",
+    "2026-10-12T13:00:00+09:00": "unity-20261012T1300-4ec28b2cd023"
   },
   "feedback": [
     {
@@ -3601,7 +3743,207 @@
       },
       "previous": "b6f21d4848728beca634c88321dc135f63ba3124e4066ac2abed4cd8bb723dba",
       "sha256": "27b83da53f6089ca9a29ed1f56371a4fbcfb9765181f28ea7d97434149c062c3"
+    },
+    {
+      "revision": 78,
+      "at": 1791777627.8783987,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-12T13:00:00+09:00",
+        "run_id": "unity-20261012T1300-4ec28b2cd023"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "27b83da53f6089ca9a29ed1f56371a4fbcfb9765181f28ea7d97434149c062c3",
+      "sha256": "1fd1c11ceb2dc3dba4e4e2f7cb1f96640afac40f7b42160253ef92ee67811861"
+    },
+    {
+      "revision": 79,
+      "at": 1791777627.964428,
+      "action": "decision",
+      "data": {
+        "id": "D-web-portal-release-presentation-20261012",
+        "source": "primary-source:2026-10-12:itch-html5-and-author-pages",
+        "hypothesis": "作品固有の操作・実画面・確認済み環境を公開状態と別に示すと、遊ぶ前の判断と誤案内を減らせる。効果は未観測。",
+        "evidence": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+        "judgment": "unobserved",
+        "next_step": "Keep T-web-portal-navigation-state first, then T-web-portal-release-presentation"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "1fd1c11ceb2dc3dba4e4e2f7cb1f96640afac40f7b42160253ef92ee67811861",
+      "sha256": "707dff6143f14d75e15cc36d2d2f7f875b43954b813ed8b69000521246012ac4"
+    },
+    {
+      "revision": 80,
+      "at": 1791777627.9806037,
+      "action": "task",
+      "data": {
+        "id": "T-web-portal-entry-research-20261012",
+        "objective": "一次資料から既存Web入口の作品案内と公開前検査を具体化する",
+        "hypothesis": "作品固有の操作・実画面・確認済み環境を公開状態と別に示すと、遊ぶ前の判断と誤案内を減らせる。効果は未観測。",
+        "decision_id": "D-web-portal-release-presentation-20261012",
+        "source": "primary-source:2026-10-12:itch-html5-and-author-pages",
+        "pdca": "plan",
+        "experiment_id": "E-unity-portal",
+        "priority": 1,
+        "depends_on": [],
+        "outputs": [
+          "一次資料の比較報告",
+          "受入条件付き後続タスク"
+        ],
+        "checks": [
+          "Source facts and assumptions separated",
+          "Protected files and prior checkpoint hashes",
+          "Ledger chain and preserved navigation task"
+        ],
+        "acceptance": [
+          "一次資料のURLと確認日、観察と推測を記録する",
+          "既存検索導線修正を保持し受入条件付き後続タスクを作成する",
+          "未受領完成品・配布・事業指標を実績にしない"
+        ],
+        "next_step": "T-web-portal-navigation-state remains next implementation"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "707dff6143f14d75e15cc36d2d2f7f875b43954b813ed8b69000521246012ac4",
+      "sha256": "5b02a96b68bcee2b0489cba59c4e1e09c2a7e51837df50dc0d04f5504da88204"
+    },
+    {
+      "revision": 81,
+      "at": 1791777627.9965627,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261012T1300-4ec28b2cd023",
+        "task_id": "T-web-portal-entry-research-20261012",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261012T1300-4ec28b2cd023",
+        "task_id": "T-web-portal-entry-research-20261012",
+        "fence": 13,
+        "expires_at": 1791779127.9965627
+      },
+      "previous": "5b02a96b68bcee2b0489cba59c4e1e09c2a7e51837df50dc0d04f5504da88204",
+      "sha256": "af8ce9e8e7ec554ecc4ecdf50309b3774f72b5e24ee420904afdc4582d3a0ec0"
+    },
+    {
+      "revision": 82,
+      "at": 1791777732.1170385,
+      "action": "task",
+      "data": {
+        "id": "T-web-portal-release-presentation",
+        "objective": "既存Web入口で作品固有の操作・確認済み環境・実画面を案内する",
+        "hypothesis": "作品固有の操作・実画面・確認済み環境を公開状態と別に示すと、遊ぶ前の判断と誤案内を減らせる。効果は未観測。",
+        "decision_id": "D-web-portal-release-presentation-20261012",
+        "source": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 2,
+        "depends_on": [
+          "T-web-portal-navigation-state"
+        ],
+        "outputs": [
+          "作品ごとの操作・環境・実画面の表示",
+          "公開前後・案内欠落・静的生成の検査証跡"
+        ],
+        "checks": [
+          "TypeScript/ESLint/Web build",
+          "In-memory Web/owner-finished Unity cases",
+          "390/1280 actual browser keyboard/navigation"
+        ],
+        "acceptance": [
+          "作品固有の操作・保存・検査環境を扱い未確認を対応済みとしない",
+          "実画面を版・SHA-256・検査記録に紐付けイメージ図と区別する",
+          "架空作品を実登録せずWeb/持込Unityの公開前後と案内なしを検査する",
+          "release=nullの開始リンクなしと既存公開受入条件を維持する",
+          "一覧閲覧時にアプリを起動せず390/1280pxと型・静的・ビルドを検査する",
+          "Unity完成品は受領後に実物・配布条件を照合しソース・再ビルドを一律必須にしない"
+        ],
+        "next_step": "After navigation state completes, implement work-specific presentation within existing portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "af8ce9e8e7ec554ecc4ecdf50309b3774f72b5e24ee420904afdc4582d3a0ec0",
+      "sha256": "3e041a735d1c5eba64eaf29a2af75d7d55a492f3f3db5f562a34de201d3aa4ef"
+    },
+    {
+      "revision": 83,
+      "at": 1791777750.3083944,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261012T1300-4ec28b2cd023",
+        "fence": 13,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+            "sha256": "d9eb58370102aa94a4edaa3e06bec4d2f4e63d900c6cca995e4a5ac575f79659"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "872a5567a0105a5b82699ddb7a0507e6b301e2f01d2b74d830bee587f5065e57"
+          },
+          {
+            "path": "business/unity/evidence/research-20261012-1300.json",
+            "sha256": "3d39bb861abaaebe132f276ad2aa3ef3222fa54a6110f733e9a8340171203e81"
+          }
+        ],
+        "checks": [
+          "5 primary source URLs reviewed; report differentiates facts/inferences",
+          "Prior16 checkpoint hashes and parent4HEAD/recovery8 hashes matched",
+          "Repository4 legacy entries/19GUID and git diff check passed",
+          "Original77 events and exact navigation task preserved",
+          "No implementation/browser test/Unity resumption/new game/external publication; metrics null"
+        ],
+        "next_step": "T-web-portal-navigation-state remains next; dependent T-web-portal-release-presentation created"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "3e041a735d1c5eba64eaf29a2af75d7d55a492f3f3db5f562a34de201d3aa4ef",
+      "sha256": "30f9a882e5071a04f8266b2b0002f49951c797527f1f1154963fb828f7ecec82"
+    },
+    {
+      "revision": 84,
+      "at": 1791777750.3284063,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261012T1300-4ec28b2cd023",
+        "fence": 13,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+            "sha256": "d9eb58370102aa94a4edaa3e06bec4d2f4e63d900c6cca995e4a5ac575f79659"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "872a5567a0105a5b82699ddb7a0507e6b301e2f01d2b74d830bee587f5065e57"
+          },
+          {
+            "path": "business/unity/evidence/research-20261012-1300.json",
+            "sha256": "3d39bb861abaaebe132f276ad2aa3ef3222fa54a6110f733e9a8340171203e81"
+          }
+        ],
+        "checks": [
+          "5 primary source URLs reviewed; report differentiates facts/inferences",
+          "Prior16 checkpoint hashes and parent4HEAD/recovery8 hashes matched",
+          "Repository4 legacy entries/19GUID and git diff check passed",
+          "Original77 events and exact navigation task preserved",
+          "No implementation/browser test/Unity resumption/new game/external publication; metrics null"
+        ],
+        "next_step": "T-web-portal-navigation-state remains next; dependent T-web-portal-release-presentation created",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "30f9a882e5071a04f8266b2b0002f49951c797527f1f1154963fb828f7ecec82",
+      "sha256": "f8bc4bbf35599e10dd7d191ce5b67407793559d6f5c0a61bd348bc4cd649dec5"
     }
   ],
-  "projection_sha256": "6941a1b1996d1a95036d7418d4a4c5605f8a09466d7182041e29596408acea7d"
+  "projection_sha256": "5a8fcf5a14ce05fcabb77f3a37767310211fa8aeb385491b90aca1123e053f74"
 }
