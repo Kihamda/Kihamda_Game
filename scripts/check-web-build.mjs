@@ -18,6 +18,13 @@ for (const path of [...portalPaths, ...games.map(game => `games/${game.id}/index
 }
 for (const path of portalPaths) {
   const html = readFileSync(resolve(dist, path), 'utf8');
+  const pathname = path === 'index.html' ? '/' : `/${path.replace(/index\.html$/, '')}`;
+  const canonical = `https://game.kihamda.net${pathname}`;
+  const title = html.match(/<title>(.*?)<\/title>/)?.[1];
+  assert(title && html.includes(`property="og:title" content="${title}"`), `Title/OG mismatch ${path}`);
+  assert(html.includes(`rel="canonical" href="${canonical}"`) && html.includes(`property="og:url" content="${canonical}"`), `Canonical/OG URL mismatch ${path}`);
+  assert((html.match(/<h1(?:\s|>)/g) ?? []).length === 1, `Expected one main heading ${path}`);
+  assert(html.includes('href="#main"') && html.includes('id="main"') && html.includes('tabindex="-1"'), `Missing keyboard main entry ${path}`);
   assert(html.includes('id="main"') && html.includes('フッター'), `Missing shared navigation ${path}`);
   assert(!/__TITLE__|__DESCRIPTION__|__URL__|12,450|SearchAction|flashreflex/.test(html), `Stale metadata ${path}`);
   assert(/<script type="module" crossorigin src="\/assets\//.test(html), `Interactive bundle absent ${path}`);

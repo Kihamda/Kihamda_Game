@@ -33,3 +33,5 @@ Atohitoriは本人が別途制作するため自律開発の対象外。原稿�
 検索条件はURLのqとfilterで保持する。次の一工程はT-web-portal-release-presentation。UnityのCI設定は保全し、Web方針に従ってpushからの自律追加ビルドは止める。Unity workflow_dispatchは残す。
 
 作品ごとのguideはWorkGuideで案内する。証跡は版・成果物SHA-256・検査記録と実画像SHA-256を持ち、公開版と一致する必要がある。空の項目を確認済みにせず、他作品の案内を流用しない。次の一工程はT-web-portal-renovation-acceptanceで5画面の横断受入検査を行う。
+
+5画面の刷新はdocs/web-acceptance-20261013.mdの横断検査まで完了。次はT-web-portal-release-packageで検証済みWeb成果物の版・SHA-256・復元手順を配布準備へまとめる。本番サイト全体の置換は行わない。ポータル遷移では本文、#worksでは一覧へフォーカスし、検索編集では入力を維持する。
