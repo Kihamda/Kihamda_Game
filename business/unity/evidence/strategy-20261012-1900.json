@@ -1,0 +1,73 @@
+{
+  "runId": "unity-20261012T1900-d7205d33896f",
+  "fence": 14,
+  "sourceCommit": "29d620c8e9758f9410aa85e16a0f18e25671b4bf",
+  "initialCheckpointArtifacts": 3,
+  "parentCommitsMatched": 4,
+  "recoveryHashesMatched": 8,
+  "protectedHashes": {
+    "天啓.md": "822695f70fae8c9ae8bc3d5169dda4c0b85240f8012b53b4ad2bd6835b47f223",
+    "business/ops/ledger.json": "5b206aa5596459db59f88ad1bab31ab31b618e7ede58fc72d6ce3f4fd9e73b41",
+    "web/src/portal/App.tsx": "35399229720a070b766ccffe15d23f609cec6858e91797f67826d6687963d10b",
+    "web/src/portal/catalog.ts": "841684b3835e241c7e39f3e10d6aef10c04b660595d4191f0950f45db48818ef",
+    "web/src/portal/data/works.json": "819fe6821f77b25b2436ebf59ac7fb52baaacf7bf1f4ceb49304c3a8b690df1d"
+  },
+  "browser": {
+    "backSearch": {
+      "before": "Unity",
+      "after": ""
+    },
+    "explicitListSearch": {
+      "before": "Unity",
+      "after": "",
+      "hash": "#works",
+      "focused": "works"
+    },
+    "reloadSearch": {
+      "before": "配送",
+      "after": ""
+    },
+    "reloadFilter": {
+      "before": "released",
+      "after": "all"
+    },
+    "viewports": [
+      {
+        "width": 390,
+        "height": 844,
+        "overflow": false
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "overflow": false
+      }
+    ],
+    "unreleasedStartLinks": 0,
+    "iframe": 0,
+    "screenshots": "observed, not saved",
+    "physicalTouch": null,
+    "humanFeedback": null,
+    "forward": "not tested"
+  },
+  "checks": [
+    "TypeScript/ESLint/Vite/5SSG passed",
+    "4 preserved catalog entries/19 GUIDs passed",
+    "4 legacy routes/36 checksums passed",
+    "Original84events and navigation task unchanged",
+    "Protected owner/oldcloud/Web hashes unchanged"
+  ],
+  "judgment": {
+    "technical": "improve",
+    "business": "unobserved"
+  },
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "startRate": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "nextStep": "T-web-portal-navigation-state",
+  "externalOperations": []
+}

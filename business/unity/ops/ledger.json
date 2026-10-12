@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 84,
+  "revision": 90,
   "business_id": "game-site",
-  "fence": 13,
+  "fence": 14,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -1280,6 +1280,102 @@
       "status": "ready",
       "checkpoints": [],
       "claims": []
+    },
+    "T-web-portal-strategy-20261012": {
+      "id": "T-web-portal-strategy-20261012",
+      "objective": "既存Web入口の導線と技術品質を再確認し優先順位を判断する",
+      "hypothesis": "検索条件保持を先に検証し、公開案内を後続にする。利用者効果は未観測。",
+      "decision_id": "D-web-portal-strategy-20261012",
+      "source": "technical-review:2026-10-12:19-slot",
+      "pdca": "check",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "depends_on": [],
+      "outputs": [
+        "戦略検査報告",
+        "ハッシュ付き証跡"
+      ],
+      "checks": [
+        "Web build and repository",
+        "Browser navigation",
+        "Protected evidence and task preservation"
+      ],
+      "acceptance": [
+        "現行導線と技術結果を実測・推測に分ける",
+        "人間反応と事業指標の未観測を保持する",
+        "既存次工程を保持し証跡を保存する"
+      ],
+      "next_step": "T-web-portal-navigation-state",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261012T1900-d7205d33896f",
+          "fence": 14,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-12-web-portal-strategy.md",
+              "sha256": "b96b398350e858c74e2ca70cb5eaeda5197ce4a2ab1e10d58786d757c9f960ef"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "782d231104aba407bfccfc346ec1eb3b5830270aa0fbab354c3849edf3474a4d"
+            },
+            {
+              "path": "business/unity/evidence/strategy-20261012-1900.json",
+              "sha256": "5d5db8bd0679744afae76b833b19ac015ef206bb7eb18209caaf50f6c8993371"
+            }
+          ],
+          "checks": [
+            "TypeScript/ESLint/Vite/5SSG passed",
+            "4 preserved catalog entries/19 GUIDs passed",
+            "4 legacy routes/36 checksums passed",
+            "Original84events and navigation task unchanged",
+            "Protected owner/oldcloud/Web hashes unchanged",
+            "Browser observed search/filter loss; not a fixed implementation",
+            "Human/business observations remain null"
+          ],
+          "next_step": "T-web-portal-navigation-state remains next; release presentation follows",
+          "at": 1791799510.8072398
+        },
+        {
+          "run_id": "unity-20261012T1900-d7205d33896f",
+          "fence": 14,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-12-web-portal-strategy.md",
+              "sha256": "b96b398350e858c74e2ca70cb5eaeda5197ce4a2ab1e10d58786d757c9f960ef"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "782d231104aba407bfccfc346ec1eb3b5830270aa0fbab354c3849edf3474a4d"
+            },
+            {
+              "path": "business/unity/evidence/strategy-20261012-1900.json",
+              "sha256": "5d5db8bd0679744afae76b833b19ac015ef206bb7eb18209caaf50f6c8993371"
+            }
+          ],
+          "checks": [
+            "TypeScript/ESLint/Vite/5SSG passed",
+            "4 preserved catalog entries/19 GUIDs passed",
+            "4 legacy routes/36 checksums passed",
+            "Original84events and navigation task unchanged",
+            "Protected owner/oldcloud/Web hashes unchanged",
+            "Browser observed search/filter loss; not a fixed implementation",
+            "Human/business observations remain null"
+          ],
+          "next_step": "T-web-portal-navigation-state remains next; release presentation follows",
+          "passed": true,
+          "at": 1791799510.8218672
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261012T1900-d7205d33896f",
+          "task_id": "T-web-portal-strategy-20261012",
+          "fence": 14,
+          "expires_at": 1791800791.6015558
+        }
+      ]
     }
   },
   "decisions": {
@@ -1387,6 +1483,13 @@
       "evidence": "business/unity/research/2026-10-12-web-entry-acceptance.md",
       "judgment": "unobserved",
       "next_step": "Keep T-web-portal-navigation-state first, then T-web-portal-release-presentation"
+    },
+    "D-web-portal-strategy-20261012": {
+      "id": "D-web-portal-strategy-20261012",
+      "source": "technical-review:2026-10-12:19-slot",
+      "hypothesis": "検索条件保持を先に検証し、公開案内を後続にする。利用者効果は未観測。",
+      "next_step": "T-web-portal-navigation-state",
+      "judgment": "unobserved"
     }
   },
   "runs": {
@@ -1479,6 +1582,13 @@
       "source": "scheduled:game-site:2026-10-12T13:00:00+09:00",
       "status": "completed",
       "started_at": 1791777627.8783987
+    },
+    "unity-20261012T1900-d7205d33896f": {
+      "scheduled_at": "2026-10-12T19:00:00+09:00",
+      "run_id": "unity-20261012T1900-d7205d33896f",
+      "source": "scheduled:game-site:2026-10-12T19:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791799291.5214257
     }
   },
   "experiments": {
@@ -1610,7 +1720,8 @@
     "2026-10-11T19:00:00+09:00": "unity-20261011T1900-8b31b641b674",
     "2026-10-12T01:00:00+09:00": "unity-20261012T0100-613a8862a2d4",
     "2026-10-12T07:00:00+09:00": "unity-20261012T0700-ffb98d9c5b5b",
-    "2026-10-12T13:00:00+09:00": "unity-20261012T1300-4ec28b2cd023"
+    "2026-10-12T13:00:00+09:00": "unity-20261012T1300-4ec28b2cd023",
+    "2026-10-12T19:00:00+09:00": "unity-20261012T1900-d7205d33896f"
   },
   "feedback": [
     {
@@ -3943,7 +4054,169 @@
       },
       "previous": "30f9a882e5071a04f8266b2b0002f49951c797527f1f1154963fb828f7ecec82",
       "sha256": "f8bc4bbf35599e10dd7d191ce5b67407793559d6f5c0a61bd348bc4cd649dec5"
+    },
+    {
+      "revision": 85,
+      "at": 1791799291.5214257,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-12T19:00:00+09:00",
+        "run_id": "unity-20261012T1900-d7205d33896f"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "f8bc4bbf35599e10dd7d191ce5b67407793559d6f5c0a61bd348bc4cd649dec5",
+      "sha256": "fdb95505035dd4d0a5ce1a630993a735705c17efebc01c035b2fc5ae82949fdd"
+    },
+    {
+      "revision": 86,
+      "at": 1791799291.5771778,
+      "action": "decision",
+      "data": {
+        "id": "D-web-portal-strategy-20261012",
+        "source": "technical-review:2026-10-12:19-slot",
+        "hypothesis": "検索条件保持を先に検証し、公開案内を後続にする。利用者効果は未観測。",
+        "next_step": "T-web-portal-navigation-state",
+        "judgment": "unobserved"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "fdb95505035dd4d0a5ce1a630993a735705c17efebc01c035b2fc5ae82949fdd",
+      "sha256": "6f4c102eb667e0915c379429511931f9ce440119905fb8d7c155a6356102b312"
+    },
+    {
+      "revision": 87,
+      "at": 1791799291.5895555,
+      "action": "task",
+      "data": {
+        "id": "T-web-portal-strategy-20261012",
+        "objective": "既存Web入口の導線と技術品質を再確認し優先順位を判断する",
+        "hypothesis": "検索条件保持を先に検証し、公開案内を後続にする。利用者効果は未観測。",
+        "decision_id": "D-web-portal-strategy-20261012",
+        "source": "technical-review:2026-10-12:19-slot",
+        "pdca": "check",
+        "experiment_id": "E-unity-portal",
+        "priority": 1,
+        "depends_on": [],
+        "outputs": [
+          "戦略検査報告",
+          "ハッシュ付き証跡"
+        ],
+        "checks": [
+          "Web build and repository",
+          "Browser navigation",
+          "Protected evidence and task preservation"
+        ],
+        "acceptance": [
+          "現行導線と技術結果を実測・推測に分ける",
+          "人間反応と事業指標の未観測を保持する",
+          "既存次工程を保持し証跡を保存する"
+        ],
+        "next_step": "T-web-portal-navigation-state"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "6f4c102eb667e0915c379429511931f9ce440119905fb8d7c155a6356102b312",
+      "sha256": "9b75731023defb7dc6d3c53e99c74a59735ca7152107d4ab2415e6d3e982a71d"
+    },
+    {
+      "revision": 88,
+      "at": 1791799291.6015558,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261012T1900-d7205d33896f",
+        "task_id": "T-web-portal-strategy-20261012",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261012T1900-d7205d33896f",
+        "task_id": "T-web-portal-strategy-20261012",
+        "fence": 14,
+        "expires_at": 1791800791.6015558
+      },
+      "previous": "9b75731023defb7dc6d3c53e99c74a59735ca7152107d4ab2415e6d3e982a71d",
+      "sha256": "b64970643a64c2dd41bcc237940248d687fb9625883a6a749f2dd15ebe4c5808"
+    },
+    {
+      "revision": 89,
+      "at": 1791799510.8072398,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261012T1900-d7205d33896f",
+        "fence": 14,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-12-web-portal-strategy.md",
+            "sha256": "b96b398350e858c74e2ca70cb5eaeda5197ce4a2ab1e10d58786d757c9f960ef"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "782d231104aba407bfccfc346ec1eb3b5830270aa0fbab354c3849edf3474a4d"
+          },
+          {
+            "path": "business/unity/evidence/strategy-20261012-1900.json",
+            "sha256": "5d5db8bd0679744afae76b833b19ac015ef206bb7eb18209caaf50f6c8993371"
+          }
+        ],
+        "checks": [
+          "TypeScript/ESLint/Vite/5SSG passed",
+          "4 preserved catalog entries/19 GUIDs passed",
+          "4 legacy routes/36 checksums passed",
+          "Original84events and navigation task unchanged",
+          "Protected owner/oldcloud/Web hashes unchanged",
+          "Browser observed search/filter loss; not a fixed implementation",
+          "Human/business observations remain null"
+        ],
+        "next_step": "T-web-portal-navigation-state remains next; release presentation follows"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "b64970643a64c2dd41bcc237940248d687fb9625883a6a749f2dd15ebe4c5808",
+      "sha256": "37ef96d494f61492ae68f63c7be1931156d7a94f46664dbdb73cf819321779e5"
+    },
+    {
+      "revision": 90,
+      "at": 1791799510.8218672,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261012T1900-d7205d33896f",
+        "fence": 14,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-12-web-portal-strategy.md",
+            "sha256": "b96b398350e858c74e2ca70cb5eaeda5197ce4a2ab1e10d58786d757c9f960ef"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "782d231104aba407bfccfc346ec1eb3b5830270aa0fbab354c3849edf3474a4d"
+          },
+          {
+            "path": "business/unity/evidence/strategy-20261012-1900.json",
+            "sha256": "5d5db8bd0679744afae76b833b19ac015ef206bb7eb18209caaf50f6c8993371"
+          }
+        ],
+        "checks": [
+          "TypeScript/ESLint/Vite/5SSG passed",
+          "4 preserved catalog entries/19 GUIDs passed",
+          "4 legacy routes/36 checksums passed",
+          "Original84events and navigation task unchanged",
+          "Protected owner/oldcloud/Web hashes unchanged",
+          "Browser observed search/filter loss; not a fixed implementation",
+          "Human/business observations remain null"
+        ],
+        "next_step": "T-web-portal-navigation-state remains next; release presentation follows",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "37ef96d494f61492ae68f63c7be1931156d7a94f46664dbdb73cf819321779e5",
+      "sha256": "cafe55153f105dee49ea5acde2dec856a76b3270c311e94e90f0ff6b85cd85e6"
     }
   ],
-  "projection_sha256": "5a8fcf5a14ce05fcabb77f3a37767310211fa8aeb385491b90aca1123e053f74"
+  "projection_sha256": "5f72a2ad277118272a4a1295dacb8345965d88a63db28389d3c81235f7ddbdb1"
 }

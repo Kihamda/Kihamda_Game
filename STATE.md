@@ -93,3 +93,6 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 この枠のローカルcommitは保存済み。公開リポジトリへのpushは自動承認レビューに拒否され、PRは未作成。初回は送信先の信頼性を指摘されたため、既存のKihamda/Kihamda_Gameが公開リポジトリで、本人に管理権限があり、直前のPR #14も本人所有であることを読み取り専用で確認した。再審査では、未公開ソースと運用記録の一般公開について具体的な追加承認が必要とされた。別経路では送信しない。本人の承認を待ち、依存しないローカル制作は継続する。チェックサム付き証跡の改行変換を防ぐため、.gitattributesで証跡のバイト列を保持し、GitのLF正規化後のソースとの一致もbusiness/unity/evidence/portal-20261010-provenance.jsonへ保存した。制作台帳はrevision 20、leaseなし、次工程はT-unity-portal-player-integration。
 
 07時slotを一度だけ取得。run unity-20261012T0700-ffb98d9c5b5b、fence12。flow.py checkpoint75・complete76で作品データ工程を保存し、同じE-unity-portalの次の一工程T-web-portal-navigation-stateをreadyへ引き継ぐ。親4commit・復元8ハッシュ・元72イベントを照合し、旧クラウドleaseへ介入していない。
+
+
+2026-10-12の19時枠では現行Web入口を実ブラウザと技術検査で再確認した。ビルド・型・静的検査、旧4URL・36チェックサムが成功。詳細から戻る/明示一覧リンクと再読み込みで検索語が消え、公開中フィルターも再読み込みで戻ることを再確認。390×844一覧、1280×720一覧・詳細で横のはみ出しなし、未公開作品に開始リンク・iframeなし。Enterの詳細/一覧移動と一覧フォーカスも確認した。今回は実装変更せず、既存T-web-portal-navigation-stateを先に、T-web-portal-release-presentationを後続にする順序を維持。技術はimprove、事業はunobserved。指標はnull、14/28日観測は未開始。報告business/unity/research/2026-10-12-web-portal-strategy.md、証跡business/unity/evidence/strategy-20261012-1900.json。人間評価・実タッチ・Safari・ゲーム保存・持込完成品受入は未実行。天啓.mdの全体刷新は未完了として保持し、Unity制作・新作・外部配信は行っていない。
