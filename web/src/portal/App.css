@@ -128,3 +128,11 @@
 .control-help { margin-bottom: 16px; }
 .control-help summary { min-height: 44px; padding: 12px 16px; background: #e8e9de; cursor: pointer; }
 .control-help summary:focus-visible { outline: 3px solid #3d7253; outline-offset: 5px; }
+
+.game-guide h3 { font-size: 18px; margin-block: 24px 12px; }
+.verified-environments { padding-left: 20px; }
+.verified-environments span { display: block; color: var(--muted); }
+.work-screenshots { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 24px; margin-top: 24px; }
+.work-screenshots figure { margin: 0; }
+.work-screenshots img { width: 100%; height: auto; }
+.work-screenshots figcaption { font-size: 14px; margin-top: 8px; }

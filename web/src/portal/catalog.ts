@@ -14,6 +14,15 @@ export type Work = {
   origin: "studio-web" | "owner-finished" | "preserved-prototype";
   status: "development" | "paused" | "verification";
   release: Release | null;
+  guide?: WorkGuide;
+};
+export type BuildEvidence = { version: string; artifactSha256: string; verification: string };
+export type WorkGuide = {
+  controls?: { input: string; action: string }[];
+  symbols?: { symbol: string; meaning: string }[];
+  saving?: { status: "verified" | "unverified" | "none"; description: string; evidence?: BuildEvidence };
+  environments?: (BuildEvidence & { name: string; input: string })[];
+  screenshots?: (BuildEvidence & { url: string; alt: string; imageSha256: string })[];
 };
 
 // Reject incomplete publication receipts rather than infer release from technology.
@@ -32,6 +41,20 @@ export function parseCatalog(data: unknown): Work[] {
       if (!release || !/^\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9]+)?\/?$/.test(release.url) || release.url === game.path
         || !/^[a-f0-9]{64}$/.test(release.sha256) || ![release.version, release.platform, release.verification, release.distributionPermission, release.recovery].every(text)
         || game.status !== "verification" || game.origin === "preserved-prototype") throw new Error("Unverified work release");
+    }
+    if (game.guide !== undefined) {
+      const guide = game.guide;
+      const list = <T>(value: unknown, check: (item: T) => boolean) => value === undefined || (Array.isArray(value) && value.every(item => check(item as T)));
+      const evidence = (item: BuildEvidence | undefined) => !!item && text(item.version) && /^[a-f0-9]{64}$/.test(item.artifactSha256) && text(item.verification)
+        && (!game.release || (item.version === game.release.version && item.artifactSha256 === game.release.sha256));
+      if (!guide || typeof guide !== "object" || Array.isArray(guide)
+        || !list(guide.controls, (item: { input: string; action: string }) => !!item && text(item.input) && text(item.action))
+        || !list(guide.symbols, (item: { symbol: string; meaning: string }) => !!item && text(item.symbol) && text(item.meaning))
+        || (guide.saving !== undefined && (!guide.saving || !["verified", "unverified", "none"].includes(guide.saving.status) || !text(guide.saving.description)
+          || (guide.saving.status === "verified" && !evidence(guide.saving.evidence))))
+        || !list(guide.environments, (item: BuildEvidence & { name: string; input: string }) => !!item && text(item.name) && text(item.input) && evidence(item))
+        || !list(guide.screenshots, (item: BuildEvidence & { url: string; alt: string; imageSha256: string }) => !!item && /^\/media\/[a-zA-Z0-9_/-]+\.(?:png|jpg|webp)$/.test(item.url)
+          && !item.url.includes("//") && text(item.alt) && /^[a-f0-9]{64}$/.test(item.imageSha256) && evidence(item))) throw new Error("Invalid work guide evidence");
     }
     return game;
   });

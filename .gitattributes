@@ -44,3 +44,6 @@ web/src/App.tsx text eol=lf
 web/src/portal/navigation.ts text eol=lf
 scripts/check-portal-navigation.mjs text eol=lf
 docs/web-navigation-20261012.md text eol=lf
+web/src/portal/WorkGuide.tsx text eol=lf
+scripts/check-portal-work-guides.mjs text eol=lf
+docs/web-work-guides-20261012.md text eol=lf
