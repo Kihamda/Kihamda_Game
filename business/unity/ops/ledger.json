@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": 111,
+  "revision": 114,
   "business_id": "game-site",
   "fence": 17,
   "lease": null,
@@ -2246,6 +2246,15 @@
       "status": "approved",
       "target": "Kihamda/Kihamda_Game",
       "head_commit": "b7e26abb66cd86ef843b4aaaa94d28e953f04d25"
+    },
+    {
+      "source": "user:automation:2026-10-13:autonomous-repository",
+      "quote": "必要な調査・編集・検査・commit/push・PR作成と、検証済み変更のCI成功後のPRマージを自律的に進めます",
+      "action": "publish-reviewed-branch-and-merge-verified-pr",
+      "artifact_sha256": "e55938121adcb9328cfaed8bc73ccaf6f184d928fb99b981bd1d3dab75cab377",
+      "status": "approved",
+      "target": "Kihamda/Kihamda_Game",
+      "head_commit": "6ec0ea1b8734ea3ad6645d0df6fc2dc55623eea4"
     }
   ],
   "external": {
@@ -2277,6 +2286,25 @@
           {
             "path": "business/unity/evidence/delivery-20261013.json",
             "sha256": "2017d33f1c5fc861ba8802ff43bc2dd4fe37ade0462dccb710dfea86524a9f80"
+          }
+        ]
+      }
+    },
+    "OP-portal-acceptance-publish-20261013": {
+      "id": "OP-portal-acceptance-publish-20261013",
+      "action": "publish-reviewed-branch-and-merge-verified-pr",
+      "artifact_sha256": "e55938121adcb9328cfaed8bc73ccaf6f184d928fb99b981bd1d3dab75cab377",
+      "head_commit": "6ec0ea1b8734ea3ad6645d0df6fc2dc55623eea4",
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "OP-portal-acceptance-publish-20261013",
+        "status": "confirmed_success",
+        "source": "github:Kihamda/Kihamda_Game:pr17",
+        "evidence": "PR17 head6ec0ea1 merged as45802575 after Linux48s/Windows16s CI38275564413 success; no production deployment",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-acceptance-20261013.json",
+            "sha256": "424127e22e42034c51132b675c6f9965f1f671b9bd5658d90eab9b9acdce6497"
           }
         ]
       }
@@ -5499,7 +5527,64 @@
       },
       "previous": "6cc93ba1e3b9eaa75875f2558f3bbee4f8c1e884614d225bbd8976013741c329",
       "sha256": "dd0672e89408b052612170404751da7507f6d613aae6c4e84512691b954d5ddc"
+    },
+    {
+      "revision": 112,
+      "at": 1791821415.7084394,
+      "action": "approval",
+      "data": {
+        "source": "user:automation:2026-10-13:autonomous-repository",
+        "quote": "必要な調査・編集・検査・commit/push・PR作成と、検証済み変更のCI成功後のPRマージを自律的に進めます",
+        "action": "publish-reviewed-branch-and-merge-verified-pr",
+        "artifact_sha256": "e55938121adcb9328cfaed8bc73ccaf6f184d928fb99b981bd1d3dab75cab377",
+        "status": "approved",
+        "target": "Kihamda/Kihamda_Game",
+        "head_commit": "6ec0ea1b8734ea3ad6645d0df6fc2dc55623eea4"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "dd0672e89408b052612170404751da7507f6d613aae6c4e84512691b954d5ddc",
+      "sha256": "4aaf5c2976d8db0d5e35b2a700c5612eca0f1288df77908cce25fa64803b917c"
+    },
+    {
+      "revision": 113,
+      "at": 1791821415.7240636,
+      "action": "prepare-external",
+      "data": {
+        "id": "OP-portal-acceptance-publish-20261013",
+        "action": "publish-reviewed-branch-and-merge-verified-pr",
+        "artifact_sha256": "e55938121adcb9328cfaed8bc73ccaf6f184d928fb99b981bd1d3dab75cab377",
+        "head_commit": "6ec0ea1b8734ea3ad6645d0df6fc2dc55623eea4"
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "4aaf5c2976d8db0d5e35b2a700c5612eca0f1288df77908cce25fa64803b917c",
+      "sha256": "040460dbb04f6ea20d12106ae3915717930182ec4eb852e8dfcf963763bbc387"
+    },
+    {
+      "revision": 114,
+      "at": 1791821540.4180088,
+      "action": "reconcile-external",
+      "data": {
+        "id": "OP-portal-acceptance-publish-20261013",
+        "status": "confirmed_success",
+        "source": "github:Kihamda/Kihamda_Game:pr17",
+        "evidence": "PR17 head6ec0ea1 merged as45802575 after Linux48s/Windows16s CI38275564413 success; no production deployment",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-acceptance-20261013.json",
+            "sha256": "424127e22e42034c51132b675c6f9965f1f671b9bd5658d90eab9b9acdce6497"
+          }
+        ]
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "040460dbb04f6ea20d12106ae3915717930182ec4eb852e8dfcf963763bbc387",
+      "sha256": "83bb4e9270932eebc20ba2c3951e97c5649771fa9e0f5618cb7afbd404f2cbbe"
     }
   ],
-  "projection_sha256": "90b609acce04c565148e9b01bc292f83dd2d1ab6313edc4289ba4a8ae41a7ebe"
+  "projection_sha256": "5bca793be943f08c548f695d6047654eaaeb9e05fd8a9ccc9daa45f928cd4ab7"
 }
