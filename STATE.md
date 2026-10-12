@@ -1,5 +1,7 @@
 # 現在の状態
 
+2026-10-13の07時枠を元の時間上限内で順次継続。配布準備PR #19はhead322c212のLinux33秒/Windows26秒CI成功後、--match-head-commitでec3f546へマージ。CIのtar.gzを取得し、別のマージ用ref6c444ac・アーカイブハッシュ・37ファイル・5画面を照合した。続くT-web-dependency-qualityでは既存許容範囲内でlockfileを更新し、監査指摘は全体15→0、本番依存関係2→0。TypeScript/ESLint/Vite・導線/案内SSR・配布準備の回帰検査、実ブラウザのポータル操作と旧4URLの初期表示・一部入力が成功した。新しい配布版との対応は依存関係PRのCIで確認する。旧ZIPは更新前の履歴として保持する。本番配置・投稿なし。
+
 2026-10-13の07時枠でT-web-portal-release-packageを実施。元commit1cef2efce3e230d8b5dbcea579c47334f6db581bの追跡Webソースを別フォルダへ取得し、npm ci、TypeScript・ESLint・Vite・5SSG・36成果物ハッシュを検査した。manifest付きZIPを別復元先へ展開し、全37ファイル・5画面の版とハッシュを照合。改変・欠落・追加・版不一致・manifest改変の拒否検査も成功。復元版の実ブラウザ390×844/1280×720の5画面、検索条件保持・Enter案内・再読み込み・本文フォーカス・はみ出しなしを確認した。CIへtar.gzの作成・展開・再検査・ハッシュ保存を追加。
 
 ローカルZIPのSHA-256は234a50c1737a6b491f5a4a65f1afcb99d9dd2b2e255d57ecc1a09685cc0027e3。docs/web-release-package-20261013.mdとbusiness/unity/evidence/web-package-20261013-0700.jsonへ結果を保存。07時記事はbusiness/blog/drafts/2026-10-13-web-package-restoration.mdへの下書き保存のみ。持込Unity完成品未受領、実タッチ・Safari・人間評価・利益と公開指標は未観測。天啓.mdの継続指示と既存Unity・旧クラウド台帳・親4原本・復元8ファイル・Atohitoriを保持した。本番配信・全体置換はしていない。

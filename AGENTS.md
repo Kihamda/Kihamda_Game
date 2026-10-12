@@ -37,3 +37,5 @@ Atohitoriは本人が別途制作するため自律開発の対象外。原稿�
 5画面の刷新はdocs/web-acceptance-20261013.mdの横断検査まで完了。次はT-web-portal-release-packageで検証済みWeb成果物の版・SHA-256・復元手順を配布準備へまとめる。本番サイト全体の置換は行わない。ポータル遷移では本文、#worksでは一覧へフォーカスし、検索編集では入力を維持する。
 
 Web配布準備はdocs/web-release-package-20261013.md。manifestとsiteのみを圧縮し、元commit・ファイルハッシュ・別フォルダ復元を照合する。CI成果物は30日保持で本番配置ではない。次はWeb依存関係の監査と互換性確認を行う。監査指摘の詳細はローカルで扱い、強制更新しない。
+
+2026-10-13のWeb依存関係更新後は全体/本番の監査指摘0件。結果はdocs/web-dependency-quality-20261013.md。次はT-web-release-retentionで現行CI成果物の版と復元元を保持し、更新前ZIPと区別する。本番サイト全体置換は行わない。

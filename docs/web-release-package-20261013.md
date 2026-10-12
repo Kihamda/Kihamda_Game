@@ -22,3 +22,7 @@ ZIPの別フォルダ展開後に全37ファイルと5画面が一致した。�
 npm ciは15件の依存関係の監査指摘を報告した。今回の工程では強制更新や修正を行っていない。配布準備の整合性検査を、依存関係の安全性検査の完了とは扱わない。
 
 証跡は[検査記録](../business/unity/evidence/web-package-20261013-0700.json)と[manifest](../business/unity/evidence/web-package-manifest-20261013.json)。本番配置は未実施。
+
+配布準備PR #19はhead`322c212a5a21199fade2ed888276b4a9ef670713`のCI成功後にマージした。CIのビルド版はPRのマージ用ref`6c444ac190c30b042c2a42178d6c825185dc0832`で、PR headとは別の識別子。ダウンロードしたtar.gzのハッシュと展開後の37ファイル・5画面も一致した。[配布準備の反映記録](../business/unity/evidence/delivery-web-package-20261013.json)に識別子を分けて保存した。
+
+続く同日07時の[依存関係工程](web-dependency-quality-20261013.md)では更新後の監査指摘0件を確認した。上記ローカルZIPは更新前の元commitに結び付いた履歴であり、更新後の成果物として配布しない。
