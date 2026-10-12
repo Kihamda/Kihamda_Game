@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": 103,
+  "revision": 106,
   "business_id": "game-site",
   "fence": 16,
   "lease": null,
@@ -2076,6 +2076,15 @@
       "status": "approved",
       "target": "Kihamda/Kihamda_Game",
       "head_commit": "125f4effddeec4f03860593b6f41e35a0f74947b"
+    },
+    {
+      "source": "user:current-thread:2026-10-12:autonomous-work",
+      "quote": "このリポジトリなら何でもアクセスしてもらって構いません。(勝手にPR通したりも)",
+      "action": "publish-reviewed-branch-and-merge-verified-pr",
+      "artifact_sha256": "156f736239541840f2e0a0191697a17fd7bcb47a210519cd473b963ab2802b1a",
+      "status": "approved",
+      "target": "Kihamda/Kihamda_Game",
+      "head_commit": "b7e26abb66cd86ef843b4aaaa94d28e953f04d25"
     }
   ],
   "external": {
@@ -2090,6 +2099,25 @@
         "status": "confirmed_success",
         "source": "github:Kihamda/Kihamda_Game:pr15",
         "evidence": "https://github.com/Kihamda/Kihamda_Game/pull/15 merged at2026-10-12T14:54:54Z; head125f4effddeec4f03860593b6f41e35a0f74947b; Linux/Windows CI38266219274 success; merge4fe57e288ce7020b7f4537980fec300cd0b91775"
+      }
+    },
+    "OP-work-guides-publish-20261012": {
+      "id": "OP-work-guides-publish-20261012",
+      "action": "publish-reviewed-branch-and-merge-verified-pr",
+      "artifact_sha256": "156f736239541840f2e0a0191697a17fd7bcb47a210519cd473b963ab2802b1a",
+      "head_commit": "b7e26abb66cd86ef843b4aaaa94d28e953f04d25",
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "OP-work-guides-publish-20261012",
+        "status": "confirmed_success",
+        "source": "github:Kihamda/Kihamda_Game:pr16",
+        "evidence": "PR16 merged headb7e26abb66cd86ef843b4aaaa94d28e953f04d25 after Linux/Windows CI38267414212 success; merge57c19991b7ebe206a6e6a1ba0624ded45777f75b; receipt business/unity/evidence/delivery-20261013.json SHA256 2017d33f1c5fc861ba8802ff43bc2dd4fe37ade0462dccb710dfea86524a9f80",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-20261013.json",
+            "sha256": "2017d33f1c5fc861ba8802ff43bc2dd4fe37ade0462dccb710dfea86524a9f80"
+          }
+        ]
       }
     }
   },
@@ -5051,7 +5079,64 @@
       },
       "previous": "4c6c5c73b2277232973bb99ce4014948369527da1eea498518c8181384996f39",
       "sha256": "2347a2e9784c641b65a6f4a36ce35468cbce66584cf5b19fc143abe402a88035"
+    },
+    {
+      "revision": 104,
+      "at": 1791817393.4077632,
+      "action": "approval",
+      "data": {
+        "source": "user:current-thread:2026-10-12:autonomous-work",
+        "quote": "このリポジトリなら何でもアクセスしてもらって構いません。(勝手にPR通したりも)",
+        "action": "publish-reviewed-branch-and-merge-verified-pr",
+        "artifact_sha256": "156f736239541840f2e0a0191697a17fd7bcb47a210519cd473b963ab2802b1a",
+        "status": "approved",
+        "target": "Kihamda/Kihamda_Game",
+        "head_commit": "b7e26abb66cd86ef843b4aaaa94d28e953f04d25"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "2347a2e9784c641b65a6f4a36ce35468cbce66584cf5b19fc143abe402a88035",
+      "sha256": "526a72888d01131ca2713021ec605f7b1967d8c3d5d413ad0ea3a3f1a4038f8d"
+    },
+    {
+      "revision": 105,
+      "at": 1791817393.423033,
+      "action": "prepare-external",
+      "data": {
+        "id": "OP-work-guides-publish-20261012",
+        "action": "publish-reviewed-branch-and-merge-verified-pr",
+        "artifact_sha256": "156f736239541840f2e0a0191697a17fd7bcb47a210519cd473b963ab2802b1a",
+        "head_commit": "b7e26abb66cd86ef843b4aaaa94d28e953f04d25"
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "526a72888d01131ca2713021ec605f7b1967d8c3d5d413ad0ea3a3f1a4038f8d",
+      "sha256": "46df031914c6452fcc9351d9f16e467930e579c9be43e1407b59c29f240a3847"
+    },
+    {
+      "revision": 106,
+      "at": 1791817542.923703,
+      "action": "reconcile-external",
+      "data": {
+        "id": "OP-work-guides-publish-20261012",
+        "status": "confirmed_success",
+        "source": "github:Kihamda/Kihamda_Game:pr16",
+        "evidence": "PR16 merged headb7e26abb66cd86ef843b4aaaa94d28e953f04d25 after Linux/Windows CI38267414212 success; merge57c19991b7ebe206a6e6a1ba0624ded45777f75b; receipt business/unity/evidence/delivery-20261013.json SHA256 2017d33f1c5fc861ba8802ff43bc2dd4fe37ade0462dccb710dfea86524a9f80",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-20261013.json",
+            "sha256": "2017d33f1c5fc861ba8802ff43bc2dd4fe37ade0462dccb710dfea86524a9f80"
+          }
+        ]
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "46df031914c6452fcc9351d9f16e467930e579c9be43e1407b59c29f240a3847",
+      "sha256": "fe73f896cc0e73a4cb6dfbe85f950aa80f616f639a4ea6a8088cdae632455974"
     }
   ],
-  "projection_sha256": "9fa2334e0b6699252ad15a306ecb39eec41b1f8f348f56681f8a0f23bcb1734a"
+  "projection_sha256": "63e93d15b407b98b75b94c86bf938166c535cfe24bfff501c9aa5d40b4902a44"
 }

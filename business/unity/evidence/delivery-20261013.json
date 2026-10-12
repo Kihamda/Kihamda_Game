@@ -1,0 +1,79 @@
+{
+  "recordedAt": "2026-10-13T00:05:42.907338+09:00",
+  "pullRequests": [
+    {
+      "headRefOid": "125f4effddeec4f03860593b6f41e35a0f74947b",
+      "mergeCommit": {
+        "oid": "4fe57e288ce7020b7f4537980fec300cd0b91775"
+      },
+      "mergedAt": "2026-10-12T14:54:54Z",
+      "state": "MERGED",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T14:54:14Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/Kihamda/Kihamda_Game/actions/runs/38266219274/job/114868937823",
+          "name": "repository-and-web",
+          "startedAt": "2026-10-12T14:53:39Z",
+          "status": "COMPLETED",
+          "workflowName": "Monorepo CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T14:53:57Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/Kihamda/Kihamda_Game/actions/runs/38266219274/job/114868938081",
+          "name": "windows-business",
+          "startedAt": "2026-10-12T14:53:39Z",
+          "status": "COMPLETED",
+          "workflowName": "Monorepo CI"
+        }
+      ],
+      "url": "https://github.com/Kihamda/Kihamda_Game/pull/15"
+    },
+    {
+      "headRefOid": "b7e26abb66cd86ef843b4aaaa94d28e953f04d25",
+      "mergeCommit": {
+        "oid": "57c19991b7ebe206a6e6a1ba0624ded45777f75b"
+      },
+      "mergedAt": "2026-10-12T15:04:53Z",
+      "state": "MERGED",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T15:03:58Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/Kihamda/Kihamda_Game/actions/runs/38267414212/job/114872950477",
+          "name": "repository-and-web",
+          "startedAt": "2026-10-12T15:03:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Monorepo CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-12T15:03:47Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/Kihamda/Kihamda_Game/actions/runs/38267414212/job/114872949521",
+          "name": "windows-business",
+          "startedAt": "2026-10-12T15:03:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Monorepo CI"
+        }
+      ],
+      "url": "https://github.com/Kihamda/Kihamda_Game/pull/16"
+    }
+  ],
+  "automation": {
+    "id": "unity",
+    "updated": true,
+    "schedule": "01/07/13/19 JST unchanged",
+    "projectAndModelUnchanged": true,
+    "autonomousVerifiedMerge": true
+  },
+  "noProductionDeployment": true,
+  "nextStep": "T-web-portal-renovation-acceptance",
+  "finishedUnityReceived": false,
+  "humanFeedback": null,
+  "metrics": null
+}
