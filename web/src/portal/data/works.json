@@ -17,7 +17,55 @@
         "1人用",
         "3ステージ",
         "一手戻す"
-      ]
+      ],
+      "guide": {
+        "symbols": [
+          {
+            "symbol": "C",
+            "meaning": "荷物"
+          },
+          {
+            "symbol": "G",
+            "meaning": "到着点"
+          },
+          {
+            "symbol": "+",
+            "meaning": "凍った出発点"
+          },
+          {
+            "symbol": "@",
+            "meaning": "配達員"
+          }
+        ],
+        "controls": [
+          {
+            "input": "方向キー / WASD / 画面ボタン",
+            "action": "上・左・下・右へ滑る。"
+          },
+          {
+            "input": "UNDO / Z",
+            "action": "一手戻す。荷物と凍ったマスも戻ります。"
+          },
+          {
+            "input": "RESTART / R",
+            "action": "このルートを最初から。現在の進行と保存を初期状態に戻します。"
+          },
+          {
+            "input": "RESUME",
+            "action": "最後に保存した盤面から再開。再開前のUndo履歴は残りません。"
+          },
+          {
+            "input": "NEXT",
+            "action": "配送完了後、次のルートへ進む。最後のルートには表示されません。"
+          }
+        ],
+        "saving": {
+          "status": "unverified",
+          "description": "旧試作品の保存・再開は対応環境を確認中です。ブラウザ版で続きが残ることは、まだ確認できていません。"
+        },
+        "environments": [],
+        "screenshots": []
+      }
     }
   ]
 }

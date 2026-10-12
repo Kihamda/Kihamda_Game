@@ -99,3 +99,6 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 
 
 2026-10-12の本人の追加指示により、既存Web検索条件保持を実装。URLのq/filter、詳細からの一覧リンク、戻る/進む・再読み込み、直接詳細を検査し、390/1280pxとTab/Enter・文字履歴・記号往復を確認。ビルド・SSR・旧4URL/GUID19・36チェックサム・台帳27テスト・既存Core3ルートが成功。記録docs/web-navigation-20261012.md。次はT-web-portal-release-presentation。調査だけで短く終了せず実装とPR反映まで進める方針、およびCI成功後の自律マージ許可をAGENTS・policy・定期実行unityへ保存した。旧Unityソースと検査履歴は保全し、Unity push追加ビルドを停止、手動設定は保持。天啓.md全体刷新は未完了のため原文保持。指標null、実タッチ/Safari/人間評価/完成品受入は未確認。本番全体置換はしない。
+
+
+本人の自律継続指示により検索保持に続けて作品固有案内も実装。guideへ操作/記号/保存条件/確認済み環境/版付き実画面を保持し、未確認表示と証跡の版・ハッシュ照合を追加。8通りのインメモリWeb/持込Unity検査と390/1280の実ブラウザEnter展開・再読み込み・検索一覧戻りが成功。旧試作品の説明と公開版を区別し、実画像や完成品を架空登録していない。記録docs/web-work-guides-20261012.md。次は5画面の横断受入検査T-web-portal-renovation-acceptance。天啓.md全体刷新は未完了のまま保持。PR15はLinux/Windows CI38266219274成功後にhead125f4efだけをマージし、merge4fe57e288ce7020b7f4537980fec300cd0b91775をGitHubで確認した。本番配信なし。

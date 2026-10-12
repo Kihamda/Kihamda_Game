@@ -27,6 +27,12 @@ for (const path of portalPaths) {
   }
 }
 const detail = readFileSync(resolve(dist, 'games/ice-courier/index.html'), 'utf8');
+for (const work of unityGames) {
+  for (const shot of work.guide?.screenshots ?? []) {
+    const screenshot = readFileSync(resolve(dist, shot.url.slice(1)));
+    assert(createHash('sha256').update(screenshot).digest('hex') === shot.imageSha256, `Screenshot checksum mismatch: ${work.id}`);
+  }
+}
 assert(detail.includes('制作停止・保全中') && !detail.includes('作品を開始') && !detail.includes('<iframe'), 'Unreleased game must not expose a fake player');
 const version = { commit: process.env.GITHUB_SHA ?? 'local-uncommitted', gameCount: unityGames.length, legacyRouteCount: games.length, source: 'web', generatedAt: new Date().toISOString() };
 writeFileSync(resolve(dist, 'build-version.json'), JSON.stringify(version, null, 2) + '\n');

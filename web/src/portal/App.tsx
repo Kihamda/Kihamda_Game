@@ -4,6 +4,7 @@ import { parseCatalog, technologyLabel, statusLabel, releaseNote } from "./catal
 const catalog = { games: parseCatalog(data) };
 import "./App.css";
 import UnityPlayer from "./UnityPlayer";
+import WorkGuide from "./WorkGuide";
 
 function IceBoard() {
   return <div className="ice-art" role="img" aria-label="氷の盤面に配達員、荷物、到着点を配置したルールのイメージ図">
@@ -40,31 +41,11 @@ function Home({ state, onChange }: { state: CatalogState; onChange: (state: Cata
   </>;
 }
 
-function GameGuide() {
-  return <section className="game-guide" aria-labelledby="guide-title">
-    <h2 id="guide-title">ゲーム画面の見方と操作</h2>
-    <p>荷物をすべて拾って、到着点へ届けます。動かす前に、記号とボタンを確認できます。</p>
-    <dl className="symbol-guide" aria-label="盤面の記号">
-      <div><dt>C</dt><dd>荷物</dd></div><div><dt>G</dt><dd>到着点</dd></div>
-      <div><dt>+</dt><dd>凍った出発点</dd></div><div><dt>@</dt><dd>配達員</dd></div>
-    </dl>
-    <details className="control-help"><summary>英語ボタンの意味と保存・再開の条件</summary>
-    <dl className="control-guide" aria-label="ゲーム内ボタンの意味">
-      <div><dt>UP / LEFT / DOWN / RIGHT</dt><dd>上・左・下・右へ滑る</dd></div>
-      <div><dt>UNDO</dt><dd>一手戻す。荷物と凍ったマスも戻ります。</dd></div>
-      <div><dt>RESTART</dt><dd>このルートを最初から。現在の進行と保存を初期状態に戻します。</dd></div>
-      <div><dt>RESUME</dt><dd>最後に保存した盤面から再開。再開前のUndo履歴は残りません。</dd></div>
-      <div><dt>NEXT</dt><dd>配送完了後、次のルートへ進む。最後のルートには表示されません。</dd></div>
-    </dl></details>
-    <p className="save-guide">保存・再開は対応環境を確認中です。ブラウザ版で続きが残ることは、まだ確認できていません。</p>
-  </section>;
-}
-
 function GameDetail({ pathname, state }: { pathname: string; state: CatalogState }) {
   const game = catalog.games.find(work => work.path === `${pathname.replace(/\/$/, "")}/`);
   if (!game) return <section className="info-page"><h1>作品が見つかりません</h1><a href={catalogHref(state)}>作品一覧へ戻る</a></section>;
-  if (game.id !== "ice-courier") return <section className="info-page"><a href={catalogHref(state)}>作品一覧へ戻る</a><h1>{game.title}</h1><p>{game.description}</p><p>{technologyLabel(game)} / {statusLabel(game)}</p><p>{releaseNote(game)}</p>{game.release && <a className="button primary" href={game.release.url}>作品を開始</a>}</section>;
-  return <><div className="breadcrumbs"><a href={catalogHref(state)}>作品一覧</a><span aria-hidden="true"> / </span><span>{game.title}</span></div><section className="detail-hero"><div><p className="eyebrow">FROST DELIVERY PUZZLE</p><h1>{game.title}</h1><p className="detail-lead">出発した1マスが、<br />次の障害物になる。</p><p>{game.description}</p><span className="status-badge">{statusLabel(game)}</span><p className="work-genre">{technologyLabel(game)}</p><p className="release-note">{releaseNote(game)}</p>{game.release && <a className="button primary" href={game.release.url}>作品を開始</a>}<dl className="detail-facts"><div><dt>人数</dt><dd>1人</dd></div><div><dt>内容</dt><dd>3ステージ</dd></div><div><dt>操作</dt><dd>方向キー・画面ボタン</dd></div></dl></div><IceBoard /></section><GameGuide />{game.technology === "unity" && game.origin === "preserved-prototype" && <UnityPlayer />}<section className="rules-section" aria-labelledby="rules-title"><p className="eyebrow">HOW TO PLAY</p><h2 id="rules-title">届けるまでの、3つのルール。</h2><ol className="rules-grid"><li><span>01</span><h3>壁まで滑る</h3><p>方向を選ぶと、壁や障害物にぶつかるまで進みます。</p></li><li><span>02</span><h3>出発点が凍る</h3><p>移動できたとき、出発した1マスだけが凍って障害物になります。次の道も考えて進みましょう。</p></li><li><span>03</span><h3>荷物を届ける</h3><p>荷物をすべて拾って到着点へ。行き詰まったらUNDOで一手戻せます。</p></li></ol></section><section className="detail-support"><h2>気軽に試せるように。</h2><p>方向キー・WASD・画面ボタンで操作できます。Zは一手戻す、Rはこのルートを最初からやり直す操作です。</p><p>旧試作品の操作説明です。実端末のタッチ操作と公開版は未確認です。</p><a href="/contact/" className="text-link">作品について問い合わせる →</a></section></>;
+  if (game.id !== "ice-courier") return <section className="info-page"><a href={catalogHref(state)}>作品一覧へ戻る</a><h1>{game.title}</h1><p>{game.description}</p><p>{technologyLabel(game)} / {statusLabel(game)}</p><p>{releaseNote(game)}</p>{game.release && <a className="button primary" href={game.release.url}>作品を開始</a>}<WorkGuide work={game} /></section>;
+  return <><div className="breadcrumbs"><a href={catalogHref(state)}>作品一覧</a><span aria-hidden="true"> / </span><span>{game.title}</span></div><section className="detail-hero"><div><p className="eyebrow">FROST DELIVERY PUZZLE</p><h1>{game.title}</h1><p className="detail-lead">出発した1マスが、<br />次の障害物になる。</p><p>{game.description}</p><span className="status-badge">{statusLabel(game)}</span><p className="work-genre">{technologyLabel(game)}</p><p className="release-note">{releaseNote(game)}</p>{game.release && <a className="button primary" href={game.release.url}>作品を開始</a>}<dl className="detail-facts"><div><dt>人数</dt><dd>1人</dd></div><div><dt>内容</dt><dd>3ステージ</dd></div><div><dt>操作</dt><dd>方向キー・画面ボタン</dd></div></dl></div><IceBoard /></section><WorkGuide work={game} />{game.technology === "unity" && game.origin === "preserved-prototype" && <UnityPlayer />}<section className="rules-section" aria-labelledby="rules-title"><p className="eyebrow">HOW TO PLAY</p><h2 id="rules-title">届けるまでの、3つのルール。</h2><ol className="rules-grid"><li><span>01</span><h3>壁まで滑る</h3><p>方向を選ぶと、壁や障害物にぶつかるまで進みます。</p></li><li><span>02</span><h3>出発点が凍る</h3><p>移動できたとき、出発した1マスだけが凍って障害物になります。次の道も考えて進みましょう。</p></li><li><span>03</span><h3>荷物を届ける</h3><p>荷物をすべて拾って到着点へ。行き詰まったらUNDOで一手戻せます。</p></li></ol></section><section className="detail-support"><h2>気軽に試せるように。</h2><p>方向キー・WASD・画面ボタンで操作できます。Zは一手戻す、Rはこのルートを最初からやり直す操作です。</p><p>旧試作品の操作説明です。実端末のタッチ操作と公開版は未確認です。</p><a href="/contact/" className="text-link">作品について問い合わせる →</a></section></>;
 }
 
 function Info({ pathname, state }: { pathname: string; state: CatalogState }) {
