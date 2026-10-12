@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 106,
+  "revision": 111,
   "business_id": "game-site",
-  "fence": 16,
+  "fence": 17,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -1691,6 +1691,159 @@
         "全体刷新の本人の指示は達成を確認してSTATE保存後に再読照合する"
       ],
       "next_step": "Cross-page portal acceptance; no whole-site production replacement",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261013T0100-acceptance-a74d9c",
+          "fence": 17,
+          "artifacts": [
+            {
+              "path": "web/src/App.tsx",
+              "sha256": "9aa6e7b85a8a985b756af68c28d8349d1928376731f8893d69e6b581138fe8bc"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "92005663048eb425df3349af812dcc56a65eacb31de91fc6108a3bbbf813d762"
+            },
+            {
+              "path": "docs/web-acceptance-20261013.md",
+              "sha256": "8dad1af17d193655d3290ed5166ea6c99bc814e31ab62f52223dea7a07133f2c"
+            },
+            {
+              "path": "docs/images/acceptance-20261013-390.png",
+              "sha256": "99386b0d8c97e8135c2953eeddc9126b0401097512735d6e9d1f5b31f8234c7a"
+            },
+            {
+              "path": "docs/images/acceptance-20261013-1280.png",
+              "sha256": "3195dade24ed9cb3888af5bf0f5708ab40b59500536ed734de9ca186ee341c58"
+            },
+            {
+              "path": "business/unity/evidence/acceptance-20261013-0100.json",
+              "sha256": "89f805e23ac0b8e6bd65c5cfbc1f699af699628450c7171090781b1d52746a1c"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "03e1fd2037af2f3232fbbb614110c3f16eb0e5f297da751cc386e45ce6b4ab04"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "97103118051101eefbfd4a3eec84959ecbf9ceee8dcfac27b341f541fa028849"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "672c8710758eb073edbdce6fb6d418a1680c0d7a55346ec1d891b69886a4c0e5"
+            },
+            {
+              "path": "天啓.md",
+              "sha256": "7e6f37f19a651e7a4ddd7b36c8f0db4e6dc25fa92d6918853d2a28697b747683"
+            }
+          ],
+          "checks": [
+            "TypeScript/ESLint/Vite/5SSG",
+            "4 legacy URLs/19 GUIDs/36 artifact hashes",
+            "Navigation SSR and 8 guide cases",
+            "Actual browser390/1280 five pages/keyboard/history/reload/mainfocus/metadata/no fake start",
+            "Parent4 commits/recovery8 hashes",
+            "Owner completed directives reread after STATE saved"
+          ],
+          "next_step": "T-web-portal-release-package; verified-head CI PR delivery",
+          "at": 1791821351.7080014
+        },
+        {
+          "run_id": "unity-20261013T0100-acceptance-a74d9c",
+          "fence": 17,
+          "artifacts": [
+            {
+              "path": "web/src/App.tsx",
+              "sha256": "9aa6e7b85a8a985b756af68c28d8349d1928376731f8893d69e6b581138fe8bc"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "92005663048eb425df3349af812dcc56a65eacb31de91fc6108a3bbbf813d762"
+            },
+            {
+              "path": "docs/web-acceptance-20261013.md",
+              "sha256": "8dad1af17d193655d3290ed5166ea6c99bc814e31ab62f52223dea7a07133f2c"
+            },
+            {
+              "path": "docs/images/acceptance-20261013-390.png",
+              "sha256": "99386b0d8c97e8135c2953eeddc9126b0401097512735d6e9d1f5b31f8234c7a"
+            },
+            {
+              "path": "docs/images/acceptance-20261013-1280.png",
+              "sha256": "3195dade24ed9cb3888af5bf0f5708ab40b59500536ed734de9ca186ee341c58"
+            },
+            {
+              "path": "business/unity/evidence/acceptance-20261013-0100.json",
+              "sha256": "89f805e23ac0b8e6bd65c5cfbc1f699af699628450c7171090781b1d52746a1c"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "03e1fd2037af2f3232fbbb614110c3f16eb0e5f297da751cc386e45ce6b4ab04"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "97103118051101eefbfd4a3eec84959ecbf9ceee8dcfac27b341f541fa028849"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "672c8710758eb073edbdce6fb6d418a1680c0d7a55346ec1d891b69886a4c0e5"
+            },
+            {
+              "path": "天啓.md",
+              "sha256": "7e6f37f19a651e7a4ddd7b36c8f0db4e6dc25fa92d6918853d2a28697b747683"
+            }
+          ],
+          "checks": [
+            "TypeScript/ESLint/Vite/5SSG",
+            "4 legacy URLs/19 GUIDs/36 artifact hashes",
+            "Navigation SSR and 8 guide cases",
+            "Actual browser390/1280 five pages/keyboard/history/reload/mainfocus/metadata/no fake start",
+            "Parent4 commits/recovery8 hashes",
+            "Owner completed directives reread after STATE saved"
+          ],
+          "next_step": "T-web-portal-release-package; verified-head CI PR delivery",
+          "passed": true,
+          "at": 1791821351.7245
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261013T0100-acceptance-a74d9c",
+          "task_id": "T-web-portal-renovation-acceptance",
+          "fence": 17,
+          "expires_at": 1791822880.7168388
+        }
+      ]
+    },
+    "T-web-portal-release-package": {
+      "id": "T-web-portal-release-package",
+      "decision_id": "D-web-technology-policy-20261012",
+      "source": "user:Web-renovation:verified-delivery-followup",
+      "objective": "検証済みWeb成果物の版・ハッシュ・復元手順を配布準備へまとめる",
+      "hypothesis": "版と復元手順を同じ成果物に結び付けると配布時の取り違えを検出できる。需要は未観測。",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-web-portal-renovation-acceptance"
+      ],
+      "outputs": [
+        "Web配布準備manifest",
+        "版固定の復元・検証手順"
+      ],
+      "checks": [
+        "Clean checkout build/checksums",
+        "Archive extract/hash verification",
+        "No private/recovery/Unity local assets"
+      ],
+      "acceptance": [
+        "commitと成果物SHA-256を結び付ける",
+        "別復元先で展開し全チェックサムと5画面を照合",
+        "認証情報・非公開原稿・ローカルUnity/_recoveryを含めない",
+        "本番サイト全体置換は行わず未確認を記録"
+      ],
+      "next_step": "Prepare verified Web release package and recovery instructions without deployment",
       "status": "ready",
       "checkpoints": [],
       "claims": []
@@ -1919,6 +2072,13 @@
       "source": "user:current-thread:2026-10-12:autonomous-work",
       "status": "completed",
       "started_at": 1791816936.5718675
+    },
+    "unity-20261013T0100-acceptance-a74d9c": {
+      "scheduled_at": "2026-10-13T01:00:00+09:00",
+      "run_id": "unity-20261013T0100-acceptance-a74d9c",
+      "source": "scheduled:game-site:2026-10-13T01:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791821080.6461382
     }
   },
   "experiments": {
@@ -2051,7 +2211,8 @@
     "2026-10-12T01:00:00+09:00": "unity-20261012T0100-613a8862a2d4",
     "2026-10-12T07:00:00+09:00": "unity-20261012T0700-ffb98d9c5b5b",
     "2026-10-12T13:00:00+09:00": "unity-20261012T1300-4ec28b2cd023",
-    "2026-10-12T19:00:00+09:00": "unity-20261012T1900-d7205d33896f"
+    "2026-10-12T19:00:00+09:00": "unity-20261012T1900-d7205d33896f",
+    "2026-10-13T01:00:00+09:00": "unity-20261013T0100-acceptance-a74d9c"
   },
   "feedback": [
     {
@@ -5136,7 +5297,209 @@
       },
       "previous": "46df031914c6452fcc9351d9f16e467930e579c9be43e1407b59c29f240a3847",
       "sha256": "fe73f896cc0e73a4cb6dfbe85f950aa80f616f639a4ea6a8088cdae632455974"
+    },
+    {
+      "revision": 107,
+      "at": 1791821080.6461382,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-13T01:00:00+09:00",
+        "run_id": "unity-20261013T0100-acceptance-a74d9c"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "fe73f896cc0e73a4cb6dfbe85f950aa80f616f639a4ea6a8088cdae632455974",
+      "sha256": "58de129337b394a0fd921cd122afd6f10d3661eb1743c705dfa811ac8663cfb0"
+    },
+    {
+      "revision": 108,
+      "at": 1791821080.7168388,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261013T0100-acceptance-a74d9c",
+        "task_id": "T-web-portal-renovation-acceptance",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261013T0100-acceptance-a74d9c",
+        "task_id": "T-web-portal-renovation-acceptance",
+        "fence": 17,
+        "expires_at": 1791822880.7168388
+      },
+      "previous": "58de129337b394a0fd921cd122afd6f10d3661eb1743c705dfa811ac8663cfb0",
+      "sha256": "85132f9f21958a4ef40e1cddb72ab22916d825a762d2fe2d894b69acdfd7b46f"
+    },
+    {
+      "revision": 109,
+      "at": 1791821351.7080014,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261013T0100-acceptance-a74d9c",
+        "fence": 17,
+        "artifacts": [
+          {
+            "path": "web/src/App.tsx",
+            "sha256": "9aa6e7b85a8a985b756af68c28d8349d1928376731f8893d69e6b581138fe8bc"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "92005663048eb425df3349af812dcc56a65eacb31de91fc6108a3bbbf813d762"
+          },
+          {
+            "path": "docs/web-acceptance-20261013.md",
+            "sha256": "8dad1af17d193655d3290ed5166ea6c99bc814e31ab62f52223dea7a07133f2c"
+          },
+          {
+            "path": "docs/images/acceptance-20261013-390.png",
+            "sha256": "99386b0d8c97e8135c2953eeddc9126b0401097512735d6e9d1f5b31f8234c7a"
+          },
+          {
+            "path": "docs/images/acceptance-20261013-1280.png",
+            "sha256": "3195dade24ed9cb3888af5bf0f5708ab40b59500536ed734de9ca186ee341c58"
+          },
+          {
+            "path": "business/unity/evidence/acceptance-20261013-0100.json",
+            "sha256": "89f805e23ac0b8e6bd65c5cfbc1f699af699628450c7171090781b1d52746a1c"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "03e1fd2037af2f3232fbbb614110c3f16eb0e5f297da751cc386e45ce6b4ab04"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "97103118051101eefbfd4a3eec84959ecbf9ceee8dcfac27b341f541fa028849"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "672c8710758eb073edbdce6fb6d418a1680c0d7a55346ec1d891b69886a4c0e5"
+          },
+          {
+            "path": "天啓.md",
+            "sha256": "7e6f37f19a651e7a4ddd7b36c8f0db4e6dc25fa92d6918853d2a28697b747683"
+          }
+        ],
+        "checks": [
+          "TypeScript/ESLint/Vite/5SSG",
+          "4 legacy URLs/19 GUIDs/36 artifact hashes",
+          "Navigation SSR and 8 guide cases",
+          "Actual browser390/1280 five pages/keyboard/history/reload/mainfocus/metadata/no fake start",
+          "Parent4 commits/recovery8 hashes",
+          "Owner completed directives reread after STATE saved"
+        ],
+        "next_step": "T-web-portal-release-package; verified-head CI PR delivery"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "85132f9f21958a4ef40e1cddb72ab22916d825a762d2fe2d894b69acdfd7b46f",
+      "sha256": "1a5b7f6f9c6f2663459313f7bf70047dcee28cd7c35e56e535fed64103dd8f80"
+    },
+    {
+      "revision": 110,
+      "at": 1791821351.7245,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261013T0100-acceptance-a74d9c",
+        "fence": 17,
+        "artifacts": [
+          {
+            "path": "web/src/App.tsx",
+            "sha256": "9aa6e7b85a8a985b756af68c28d8349d1928376731f8893d69e6b581138fe8bc"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "92005663048eb425df3349af812dcc56a65eacb31de91fc6108a3bbbf813d762"
+          },
+          {
+            "path": "docs/web-acceptance-20261013.md",
+            "sha256": "8dad1af17d193655d3290ed5166ea6c99bc814e31ab62f52223dea7a07133f2c"
+          },
+          {
+            "path": "docs/images/acceptance-20261013-390.png",
+            "sha256": "99386b0d8c97e8135c2953eeddc9126b0401097512735d6e9d1f5b31f8234c7a"
+          },
+          {
+            "path": "docs/images/acceptance-20261013-1280.png",
+            "sha256": "3195dade24ed9cb3888af5bf0f5708ab40b59500536ed734de9ca186ee341c58"
+          },
+          {
+            "path": "business/unity/evidence/acceptance-20261013-0100.json",
+            "sha256": "89f805e23ac0b8e6bd65c5cfbc1f699af699628450c7171090781b1d52746a1c"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "03e1fd2037af2f3232fbbb614110c3f16eb0e5f297da751cc386e45ce6b4ab04"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "97103118051101eefbfd4a3eec84959ecbf9ceee8dcfac27b341f541fa028849"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "672c8710758eb073edbdce6fb6d418a1680c0d7a55346ec1d891b69886a4c0e5"
+          },
+          {
+            "path": "天啓.md",
+            "sha256": "7e6f37f19a651e7a4ddd7b36c8f0db4e6dc25fa92d6918853d2a28697b747683"
+          }
+        ],
+        "checks": [
+          "TypeScript/ESLint/Vite/5SSG",
+          "4 legacy URLs/19 GUIDs/36 artifact hashes",
+          "Navigation SSR and 8 guide cases",
+          "Actual browser390/1280 five pages/keyboard/history/reload/mainfocus/metadata/no fake start",
+          "Parent4 commits/recovery8 hashes",
+          "Owner completed directives reread after STATE saved"
+        ],
+        "next_step": "T-web-portal-release-package; verified-head CI PR delivery",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "1a5b7f6f9c6f2663459313f7bf70047dcee28cd7c35e56e535fed64103dd8f80",
+      "sha256": "6cc93ba1e3b9eaa75875f2558f3bbee4f8c1e884614d225bbd8976013741c329"
+    },
+    {
+      "revision": 111,
+      "at": 1791821351.7401206,
+      "action": "task",
+      "data": {
+        "id": "T-web-portal-release-package",
+        "decision_id": "D-web-technology-policy-20261012",
+        "source": "user:Web-renovation:verified-delivery-followup",
+        "objective": "検証済みWeb成果物の版・ハッシュ・復元手順を配布準備へまとめる",
+        "hypothesis": "版と復元手順を同じ成果物に結び付けると配布時の取り違えを検出できる。需要は未観測。",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-web-portal-renovation-acceptance"
+        ],
+        "outputs": [
+          "Web配布準備manifest",
+          "版固定の復元・検証手順"
+        ],
+        "checks": [
+          "Clean checkout build/checksums",
+          "Archive extract/hash verification",
+          "No private/recovery/Unity local assets"
+        ],
+        "acceptance": [
+          "commitと成果物SHA-256を結び付ける",
+          "別復元先で展開し全チェックサムと5画面を照合",
+          "認証情報・非公開原稿・ローカルUnity/_recoveryを含めない",
+          "本番サイト全体置換は行わず未確認を記録"
+        ],
+        "next_step": "Prepare verified Web release package and recovery instructions without deployment"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "6cc93ba1e3b9eaa75875f2558f3bbee4f8c1e884614d225bbd8976013741c329",
+      "sha256": "dd0672e89408b052612170404751da7507f6d613aae6c4e84512691b954d5ddc"
     }
   ],
-  "projection_sha256": "63e93d15b407b98b75b94c86bf938166c535cfe24bfff501c9aa5d40b4902a44"
+  "projection_sha256": "90b609acce04c565148e9b01bc292f83dd2d1ab6313edc4289ba4a8ae41a7ebe"
 }

@@ -102,3 +102,6 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 
 
 本人の自律継続指示により検索保持に続けて作品固有案内も実装。guideへ操作/記号/保存条件/確認済み環境/版付き実画面を保持し、未確認表示と証跡の版・ハッシュ照合を追加。8通りのインメモリWeb/持込Unity検査と390/1280の実ブラウザEnter展開・再読み込み・検索一覧戻りが成功。旧試作品の説明と公開版を区別し、実画像や完成品を架空登録していない。記録docs/web-work-guides-20261012.md。次は5画面の横断受入検査T-web-portal-renovation-acceptance。天啓.md全体刷新は未完了のまま保持。PR15はLinux/Windows CI38266219274成功後にhead125f4efだけをマージし、merge4fe57e288ce7020b7f4537980fec300cd0b91775をGitHubで確認した。本番配信なし。
+
+
+2026-10-13 01時枠でT-web-portal-renovation-acceptanceを実施。トップ/詳細/案内/問い合わせ/プライバシー5画面の390/1280px横断検査が成功。遷移後の本文フォーカスを修正し、静的canonical/OG/h1/本文リンクをビルド検査へ追加。検索往復・公開中0件・解除・Enter/Tab・戻る/進む・再読み込み、未公開開始リンク0/iframe0を確認した。TypeScript/ESLint/Vite/5SSG、旧4URL/GUID19/36チェックサム、検索SSR/案内8ケース、親4commit/復元8ハッシュが成功。記録docs/web-acceptance-20261013.mdとハッシュ付き台帳。本人の画面全体刷新指示はローカル実装と必要な横断検査まで完了したため、この結果保存後に天啓.mdを再読して完了済みの次作業2項目だけ削除する。継続的効率化と本人の方針原文は残す。本番全体置換なし、実タッチ/Safari/人間評価/持込完成品受領は未確認、指標null。次は検証済みWeb成果物の配布・復元準備。

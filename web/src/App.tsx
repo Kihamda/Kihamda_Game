@@ -112,6 +112,7 @@ function App() {
       document.getElementById(hash.slice(1))?.scrollIntoView();
     } else {
       window.scrollTo(0, 0);
+      if (page) document.getElementById("main")?.focus({ preventScroll: true });
     }
     if (hash) document.getElementById(hash.slice(1))?.focus({ preventScroll: true });
   }, [pathname, hash]);

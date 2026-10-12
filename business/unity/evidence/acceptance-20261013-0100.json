@@ -1,0 +1,552 @@
+{
+  "runId": "unity-20261013T0100-acceptance-a74d9c",
+  "scheduledAt": "2026-10-13T01:00:00+09:00",
+  "before": {
+    "focus": "",
+    "heading": "このスタジオについて"
+  },
+  "results": [
+    {
+      "label": "390 privacy Enter",
+      "canonical": "https://game.kihamda.net/privacy-policy/",
+      "focus": "main",
+      "h1": [
+        "プライバシーポリシー"
+      ],
+      "iframes": 0,
+      "ogTitle": "プライバシーポリシー | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/privacy-policy/",
+      "overflow": false,
+      "path": "/privacy-policy/",
+      "start": 0,
+      "title": "プライバシーポリシー | Kihamda.NET"
+    },
+    {
+      "label": "390 back contact",
+      "canonical": "https://game.kihamda.net/contact/",
+      "focus": "main",
+      "h1": [
+        "お問い合わせ"
+      ],
+      "iframes": 0,
+      "ogTitle": "お問い合わせ | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/contact/",
+      "overflow": false,
+      "path": "/contact/",
+      "start": 0,
+      "title": "お問い合わせ | Kihamda.NET"
+    },
+    {
+      "label": "390 forward privacy",
+      "canonical": "https://game.kihamda.net/privacy-policy/",
+      "focus": "main",
+      "h1": [
+        "プライバシーポリシー"
+      ],
+      "iframes": 0,
+      "ogTitle": "プライバシーポリシー | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/privacy-policy/",
+      "overflow": false,
+      "path": "/privacy-policy/",
+      "start": 0,
+      "title": "プライバシーポリシー | Kihamda.NET"
+    },
+    {
+      "label": "390 reload privacy",
+      "canonical": "https://game.kihamda.net/privacy-policy/",
+      "focus": "main",
+      "h1": [
+        "プライバシーポリシー"
+      ],
+      "iframes": 0,
+      "ogTitle": "プライバシーポリシー | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/privacy-policy/",
+      "overflow": false,
+      "path": "/privacy-policy/",
+      "start": 0,
+      "title": "プライバシーポリシー | Kihamda.NET"
+    },
+    {
+      "label": "390 home search",
+      "canonical": "https://game.kihamda.net/",
+      "focus": "",
+      "h1": [
+        "ひとつのルールで、遊びが変わる。"
+      ],
+      "iframes": 0,
+      "ogTitle": "小さな発見を楽しむゲーム | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/",
+      "overflow": false,
+      "path": "/",
+      "start": 0,
+      "title": "小さな発見を楽しむゲーム | Kihamda.NET"
+    },
+    {
+      "label": "390 detail Enter",
+      "canonical": "https://game.kihamda.net/games/ice-courier/",
+      "focus": "main",
+      "h1": [
+        "Ice Courier"
+      ],
+      "iframes": 0,
+      "ogTitle": "Ice Courier | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/games/ice-courier/",
+      "overflow": false,
+      "path": "/games/ice-courier/",
+      "start": 0,
+      "title": "Ice Courier | Kihamda.NET"
+    },
+    {
+      "label": "390 detail reload",
+      "canonical": "https://game.kihamda.net/games/ice-courier/",
+      "focus": "main",
+      "h1": [
+        "Ice Courier"
+      ],
+      "iframes": 0,
+      "ogTitle": "Ice Courier | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/games/ice-courier/",
+      "overflow": false,
+      "path": "/games/ice-courier/",
+      "start": 0,
+      "title": "Ice Courier | Kihamda.NET"
+    },
+    {
+      "label": "390 production skip",
+      "canonical": "https://game.kihamda.net/",
+      "focus": "main",
+      "h1": [
+        "ひとつのルールで、遊びが変わる。"
+      ],
+      "iframes": 0,
+      "ogTitle": "小さな発見を楽しむゲーム | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/",
+      "overflow": false,
+      "path": "/",
+      "start": 0,
+      "title": "小さな発見を楽しむゲーム | Kihamda.NET"
+    },
+    {
+      "label": "390 production detail",
+      "canonical": "https://game.kihamda.net/games/ice-courier/",
+      "focus": "main",
+      "h1": [
+        "Ice Courier"
+      ],
+      "iframes": 0,
+      "ogTitle": "Ice Courier | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/games/ice-courier/",
+      "overflow": false,
+      "path": "/games/ice-courier/",
+      "start": 0,
+      "title": "Ice Courier | Kihamda.NET"
+    },
+    {
+      "label": "390 production back",
+      "canonical": "https://game.kihamda.net/",
+      "focus": "main",
+      "h1": [
+        "ひとつのルールで、遊びが変わる。"
+      ],
+      "iframes": 0,
+      "ogTitle": "小さな発見を楽しむゲーム | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/",
+      "overflow": false,
+      "path": "/",
+      "start": 0,
+      "title": "小さな発見を楽しむゲーム | Kihamda.NET"
+    },
+    {
+      "label": "390 production forward",
+      "canonical": "https://game.kihamda.net/games/ice-courier/",
+      "focus": "main",
+      "h1": [
+        "Ice Courier"
+      ],
+      "iframes": 0,
+      "ogTitle": "Ice Courier | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/games/ice-courier/",
+      "overflow": false,
+      "path": "/games/ice-courier/",
+      "start": 0,
+      "title": "Ice Courier | Kihamda.NET"
+    },
+    {
+      "label": "390 production list",
+      "canonical": "https://game.kihamda.net/",
+      "focus": "works",
+      "h1": [
+        "ひとつのルールで、遊びが変わる。"
+      ],
+      "iframes": 0,
+      "ogTitle": "小さな発見を楽しむゲーム | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/",
+      "overflow": false,
+      "path": "/",
+      "start": 0,
+      "title": "小さな発見を楽しむゲーム | Kihamda.NET"
+    },
+    {
+      "label": "390 production reload",
+      "canonical": "https://game.kihamda.net/",
+      "focus": "works",
+      "h1": [
+        "ひとつのルールで、遊びが変わる。"
+      ],
+      "iframes": 0,
+      "ogTitle": "小さな発見を楽しむゲーム | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/",
+      "overflow": false,
+      "path": "/",
+      "start": 0,
+      "title": "小さな発見を楽しむゲーム | Kihamda.NET"
+    },
+    {
+      "label": "390 production about",
+      "canonical": "https://game.kihamda.net/about/",
+      "focus": "main",
+      "h1": [
+        "このスタジオについて"
+      ],
+      "iframes": 0,
+      "ogTitle": "このスタジオについて | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/about/",
+      "overflow": false,
+      "path": "/about/",
+      "start": 0,
+      "title": "このスタジオについて | Kihamda.NET"
+    },
+    {
+      "label": "390 production about reload",
+      "canonical": "https://game.kihamda.net/about/",
+      "focus": "main",
+      "h1": [
+        "このスタジオについて"
+      ],
+      "iframes": 0,
+      "ogTitle": "このスタジオについて | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/about/",
+      "overflow": false,
+      "path": "/about/",
+      "start": 0,
+      "title": "このスタジオについて | Kihamda.NET"
+    },
+    {
+      "label": "390 production contact",
+      "canonical": "https://game.kihamda.net/contact/",
+      "focus": "main",
+      "h1": [
+        "お問い合わせ"
+      ],
+      "iframes": 0,
+      "ogTitle": "お問い合わせ | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/contact/",
+      "overflow": false,
+      "path": "/contact/",
+      "start": 0,
+      "title": "お問い合わせ | Kihamda.NET"
+    },
+    {
+      "label": "390 production contact reload",
+      "canonical": "https://game.kihamda.net/contact/",
+      "focus": "main",
+      "h1": [
+        "お問い合わせ"
+      ],
+      "iframes": 0,
+      "ogTitle": "お問い合わせ | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/contact/",
+      "overflow": false,
+      "path": "/contact/",
+      "start": 0,
+      "title": "お問い合わせ | Kihamda.NET"
+    },
+    {
+      "label": "390 production privacy",
+      "canonical": "https://game.kihamda.net/privacy-policy/",
+      "focus": "main",
+      "h1": [
+        "プライバシーポリシー"
+      ],
+      "iframes": 0,
+      "ogTitle": "プライバシーポリシー | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/privacy-policy/",
+      "overflow": false,
+      "path": "/privacy-policy/",
+      "start": 0,
+      "title": "プライバシーポリシー | Kihamda.NET"
+    },
+    {
+      "label": "390 production contact back",
+      "canonical": "https://game.kihamda.net/contact/",
+      "focus": "main",
+      "h1": [
+        "お問い合わせ"
+      ],
+      "iframes": 0,
+      "ogTitle": "お問い合わせ | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/contact/",
+      "overflow": false,
+      "path": "/contact/",
+      "start": 0,
+      "title": "お問い合わせ | Kihamda.NET"
+    },
+    {
+      "label": "390 production privacy forward",
+      "canonical": "https://game.kihamda.net/privacy-policy/",
+      "focus": "main",
+      "h1": [
+        "プライバシーポリシー"
+      ],
+      "iframes": 0,
+      "ogTitle": "プライバシーポリシー | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/privacy-policy/",
+      "overflow": false,
+      "path": "/privacy-policy/",
+      "start": 0,
+      "title": "プライバシーポリシー | Kihamda.NET"
+    },
+    {
+      "label": "390 production privacy reload",
+      "canonical": "https://game.kihamda.net/privacy-policy/",
+      "focus": "main",
+      "h1": [
+        "プライバシーポリシー"
+      ],
+      "iframes": 0,
+      "ogTitle": "プライバシーポリシー | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/privacy-policy/",
+      "overflow": false,
+      "path": "/privacy-policy/",
+      "start": 0,
+      "title": "プライバシーポリシー | Kihamda.NET"
+    },
+    {
+      "label": "1280 home",
+      "canonical": "https://game.kihamda.net/",
+      "focus": "main",
+      "h1": [
+        "ひとつのルールで、遊びが変わる。"
+      ],
+      "iframes": 0,
+      "ogTitle": "小さな発見を楽しむゲーム | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/",
+      "overflow": false,
+      "path": "/",
+      "start": 0,
+      "title": "小さな発見を楽しむゲーム | Kihamda.NET"
+    },
+    {
+      "label": "1280 detail",
+      "canonical": "https://game.kihamda.net/games/ice-courier/",
+      "focus": "main",
+      "h1": [
+        "Ice Courier"
+      ],
+      "iframes": 0,
+      "ogTitle": "Ice Courier | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/games/ice-courier/",
+      "overflow": false,
+      "path": "/games/ice-courier/",
+      "start": 0,
+      "title": "Ice Courier | Kihamda.NET"
+    },
+    {
+      "label": "1280 detail reload",
+      "canonical": "https://game.kihamda.net/games/ice-courier/",
+      "focus": "main",
+      "h1": [
+        "Ice Courier"
+      ],
+      "iframes": 0,
+      "ogTitle": "Ice Courier | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/games/ice-courier/",
+      "overflow": false,
+      "path": "/games/ice-courier/",
+      "start": 0,
+      "title": "Ice Courier | Kihamda.NET"
+    },
+    {
+      "label": "1280 home back",
+      "canonical": "https://game.kihamda.net/",
+      "focus": "main",
+      "h1": [
+        "ひとつのルールで、遊びが変わる。"
+      ],
+      "iframes": 0,
+      "ogTitle": "小さな発見を楽しむゲーム | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/",
+      "overflow": false,
+      "path": "/",
+      "start": 0,
+      "title": "小さな発見を楽しむゲーム | Kihamda.NET"
+    },
+    {
+      "label": "1280 detail forward",
+      "canonical": "https://game.kihamda.net/games/ice-courier/",
+      "focus": "main",
+      "h1": [
+        "Ice Courier"
+      ],
+      "iframes": 0,
+      "ogTitle": "Ice Courier | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/games/ice-courier/",
+      "overflow": false,
+      "path": "/games/ice-courier/",
+      "start": 0,
+      "title": "Ice Courier | Kihamda.NET"
+    },
+    {
+      "label": "1280 about",
+      "canonical": "https://game.kihamda.net/about/",
+      "focus": "main",
+      "h1": [
+        "このスタジオについて"
+      ],
+      "iframes": 0,
+      "ogTitle": "このスタジオについて | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/about/",
+      "overflow": false,
+      "path": "/about/",
+      "start": 0,
+      "title": "このスタジオについて | Kihamda.NET"
+    },
+    {
+      "label": "1280 about reload",
+      "canonical": "https://game.kihamda.net/about/",
+      "focus": "main",
+      "h1": [
+        "このスタジオについて"
+      ],
+      "iframes": 0,
+      "ogTitle": "このスタジオについて | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/about/",
+      "overflow": false,
+      "path": "/about/",
+      "start": 0,
+      "title": "このスタジオについて | Kihamda.NET"
+    },
+    {
+      "label": "1280 contact",
+      "canonical": "https://game.kihamda.net/contact/",
+      "focus": "main",
+      "h1": [
+        "お問い合わせ"
+      ],
+      "iframes": 0,
+      "ogTitle": "お問い合わせ | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/contact/",
+      "overflow": false,
+      "path": "/contact/",
+      "start": 0,
+      "title": "お問い合わせ | Kihamda.NET"
+    },
+    {
+      "label": "1280 contact reload",
+      "canonical": "https://game.kihamda.net/contact/",
+      "focus": "main",
+      "h1": [
+        "お問い合わせ"
+      ],
+      "iframes": 0,
+      "ogTitle": "お問い合わせ | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/contact/",
+      "overflow": false,
+      "path": "/contact/",
+      "start": 0,
+      "title": "お問い合わせ | Kihamda.NET"
+    },
+    {
+      "label": "1280 privacy",
+      "canonical": "https://game.kihamda.net/privacy-policy/",
+      "focus": "main",
+      "h1": [
+        "プライバシーポリシー"
+      ],
+      "iframes": 0,
+      "ogTitle": "プライバシーポリシー | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/privacy-policy/",
+      "overflow": false,
+      "path": "/privacy-policy/",
+      "start": 0,
+      "title": "プライバシーポリシー | Kihamda.NET"
+    },
+    {
+      "label": "1280 privacy reload",
+      "canonical": "https://game.kihamda.net/privacy-policy/",
+      "focus": "main",
+      "h1": [
+        "プライバシーポリシー"
+      ],
+      "iframes": 0,
+      "ogTitle": "プライバシーポリシー | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/privacy-policy/",
+      "overflow": false,
+      "path": "/privacy-policy/",
+      "start": 0,
+      "title": "プライバシーポリシー | Kihamda.NET"
+    },
+    {
+      "label": "1280 contact back",
+      "canonical": "https://game.kihamda.net/contact/",
+      "focus": "main",
+      "h1": [
+        "お問い合わせ"
+      ],
+      "iframes": 0,
+      "ogTitle": "お問い合わせ | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/contact/",
+      "overflow": false,
+      "path": "/contact/",
+      "start": 0,
+      "title": "お問い合わせ | Kihamda.NET"
+    },
+    {
+      "label": "1280 privacy forward",
+      "canonical": "https://game.kihamda.net/privacy-policy/",
+      "focus": "main",
+      "h1": [
+        "プライバシーポリシー"
+      ],
+      "iframes": 0,
+      "ogTitle": "プライバシーポリシー | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/privacy-policy/",
+      "overflow": false,
+      "path": "/privacy-policy/",
+      "start": 0,
+      "title": "プライバシーポリシー | Kihamda.NET"
+    },
+    {
+      "label": "1280 skip",
+      "canonical": "https://game.kihamda.net/about/",
+      "focus": "main",
+      "h1": [
+        "このスタジオについて"
+      ],
+      "iframes": 0,
+      "ogTitle": "このスタジオについて | Kihamda.NET",
+      "ogUrl": "https://game.kihamda.net/about/",
+      "overflow": false,
+      "path": "/about/",
+      "start": 0,
+      "title": "このスタジオについて | Kihamda.NET"
+    }
+  ],
+  "build": "TypeScript/ESLint/Vite/5SSG + repository + web artifact + navigation SSR + 8 work guide cases passed",
+  "parentCommitMatches": 4,
+  "recoveryHashMatches": 8,
+  "unverified": [
+    "physical touch",
+    "Safari",
+    "human evaluation",
+    "owner finished Unity artifact receipt",
+    "production deployment"
+  ],
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "playStarts": null,
+    "completionRate": null,
+    "returnRate": null
+  }
+}
