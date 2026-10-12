@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 119,
+  "revision": 127,
   "business_id": "game-site",
-  "fence": 18,
+  "fence": 19,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -1986,6 +1986,146 @@
         "Record unresolved findings without claiming remediation"
       ],
       "next_step": "Inspect existing Web dependencies and compatible updates without deploying",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-continuation-20261013T0700-quality-48da7b",
+          "fence": 19,
+          "artifacts": [
+            {
+              "path": "web/package-lock.json",
+              "sha256": "4a9e667c13e6fc791f8c04c5614905fbf2b589278d1c48186f883825d2f288c7"
+            },
+            {
+              "path": "docs/web-dependency-quality-20261013.md",
+              "sha256": "596a162a28cdfe55de77cadd4a090729a9174413c4dc099ea76c8447dd7eb3f7"
+            },
+            {
+              "path": "docs/web-release-package-20261013.md",
+              "sha256": "a6e889872f5614e21f83e6c2068350ce9cfbee9a6f518d5341149ee2dc89c56a"
+            },
+            {
+              "path": "business/unity/evidence/web-dependency-quality-20261013.json",
+              "sha256": "c1156df5190eabf3d2e011deeaab7252845f672d8e0f62f5b2cfb51cb31d2d96"
+            },
+            {
+              "path": "business/unity/evidence/delivery-web-package-20261013.json",
+              "sha256": "81c4527752e27acf2979ea2d574397d181267c8bda2c26210fa491e8701f73ef"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-13-web-package-restoration.md",
+              "sha256": "9ce24f54d09da9292872da61c3a5a278f471e163320be00e8103b19afa9a9bba"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "224f85d1c82b7e7988046aa3e3e4015f9a51278f5b1ca91cc6b998411166423a"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "5f35b5a655f86734381868e6a595c7a5727fc8549fe540701b941515fc093959"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "15efee836522fbc148d12712ac3be937b46966392a0c69ddf36097aaf72a0440"
+            }
+          ],
+          "checks": [
+            "Audit all15to0/production2to0",
+            "TypeScript/ESLint/Vite/5SSG",
+            "NavigationSSR/8guide/release-package+5rejections",
+            "Actual390 portal input and1280 preserved4routes"
+          ],
+          "next_step": "CI verified-head quality delivery then T-web-release-retention",
+          "at": 1791843270.4476793
+        },
+        {
+          "run_id": "unity-continuation-20261013T0700-quality-48da7b",
+          "fence": 19,
+          "artifacts": [
+            {
+              "path": "web/package-lock.json",
+              "sha256": "4a9e667c13e6fc791f8c04c5614905fbf2b589278d1c48186f883825d2f288c7"
+            },
+            {
+              "path": "docs/web-dependency-quality-20261013.md",
+              "sha256": "596a162a28cdfe55de77cadd4a090729a9174413c4dc099ea76c8447dd7eb3f7"
+            },
+            {
+              "path": "docs/web-release-package-20261013.md",
+              "sha256": "a6e889872f5614e21f83e6c2068350ce9cfbee9a6f518d5341149ee2dc89c56a"
+            },
+            {
+              "path": "business/unity/evidence/web-dependency-quality-20261013.json",
+              "sha256": "c1156df5190eabf3d2e011deeaab7252845f672d8e0f62f5b2cfb51cb31d2d96"
+            },
+            {
+              "path": "business/unity/evidence/delivery-web-package-20261013.json",
+              "sha256": "81c4527752e27acf2979ea2d574397d181267c8bda2c26210fa491e8701f73ef"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-13-web-package-restoration.md",
+              "sha256": "9ce24f54d09da9292872da61c3a5a278f471e163320be00e8103b19afa9a9bba"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "224f85d1c82b7e7988046aa3e3e4015f9a51278f5b1ca91cc6b998411166423a"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "5f35b5a655f86734381868e6a595c7a5727fc8549fe540701b941515fc093959"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "15efee836522fbc148d12712ac3be937b46966392a0c69ddf36097aaf72a0440"
+            }
+          ],
+          "checks": [
+            "Audit all15to0/production2to0",
+            "TypeScript/ESLint/Vite/5SSG",
+            "NavigationSSR/8guide/release-package+5rejections",
+            "Actual390 portal input and1280 preserved4routes"
+          ],
+          "next_step": "CI verified-head quality delivery then T-web-release-retention",
+          "passed": true,
+          "at": 1791843270.4661937
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-continuation-20261013T0700-quality-48da7b",
+          "task_id": "T-web-dependency-quality",
+          "fence": 19,
+          "expires_at": 1791844121.6957562
+        }
+      ]
+    },
+    "T-web-release-retention": {
+      "id": "T-web-release-retention",
+      "decision_id": "D-web-technology-policy-20261012",
+      "source": "user:automation:Web-delivery:CI-retention-30days",
+      "objective": "Retain verified current-source artifact and distinguish restoration from historical rollback",
+      "hypothesis": "A retained source-bound artifact prevents lost restoration after CI retention expires; demand unobserved",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-web-dependency-quality"
+      ],
+      "outputs": [
+        "Current artifact receipt and local retention index",
+        "Restoration and historical rollback distinction"
+      ],
+      "checks": [
+        "Current exact-head CI artifact download/extract/hash",
+        "Source and archive inventory without private data"
+      ],
+      "acceptance": [
+        "Match new-source commit and archive SHA256",
+        "Retain artifact locally beyond CI30day expiry",
+        "Distinguish pre-update historical ZIP from current artifact",
+        "No production replacement or paid hosting"
+      ],
+      "next_step": "Retain current-source verified Web artifact and restoration index",
       "status": "ready",
       "checkpoints": [],
       "claims": []
@@ -2228,6 +2368,12 @@
       "source": "scheduled:game-site:2026-10-13T07:00:00+09:00",
       "status": "completed",
       "started_at": 1791842618.8898063
+    },
+    "unity-continuation-20261013T0700-quality-48da7b": {
+      "run_id": "unity-continuation-20261013T0700-quality-48da7b",
+      "source": "user:automation:2026-10-13:continue-sequential-work-within-original-30min",
+      "status": "completed",
+      "started_at": 1791843021.678058
     }
   },
   "experiments": {
@@ -2405,6 +2551,15 @@
       "status": "approved",
       "target": "Kihamda/Kihamda_Game",
       "head_commit": "6ec0ea1b8734ea3ad6645d0df6fc2dc55623eea4"
+    },
+    {
+      "source": "user:automation:2026-10-13:autonomous-repository",
+      "quote": "Repository editing, commit/push, PR and verified-head CI-gated merge explicitly authorized",
+      "action": "publish-reviewed-branch-and-merge-verified-pr",
+      "artifact_sha256": "be4e86ec2c8f922936d0b6ac2c4b18fc873cdbf228806239e11cd08cdaa51ec2",
+      "status": "approved",
+      "target": "Kihamda/Kihamda_Game",
+      "head_commit": "322c212a5a21199fade2ed888276b4a9ef670713"
     }
   ],
   "external": {
@@ -2455,6 +2610,25 @@
           {
             "path": "business/unity/evidence/delivery-acceptance-20261013.json",
             "sha256": "424127e22e42034c51132b675c6f9965f1f671b9bd5658d90eab9b9acdce6497"
+          }
+        ]
+      }
+    },
+    "OP-web-package-publish-20261013": {
+      "id": "OP-web-package-publish-20261013",
+      "action": "publish-reviewed-branch-and-merge-verified-pr",
+      "artifact_sha256": "be4e86ec2c8f922936d0b6ac2c4b18fc873cdbf228806239e11cd08cdaa51ec2",
+      "head_commit": "322c212a5a21199fade2ed888276b4a9ef670713",
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "OP-web-package-publish-20261013",
+        "status": "confirmed_success",
+        "source": "github:Kihamda/Kihamda_Game:pr19",
+        "evidence": "PR19 verifiedhead322c212 CI38314956092 success guardedmerge ec3f546; CI downloaded archive checksum and all37files/5pages verified; no deployment",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-package-20261013.json",
+            "sha256": "81c4527752e27acf2979ea2d574397d181267c8bda2c26210fa491e8701f73ef"
           }
         ]
       }
@@ -5925,7 +6099,253 @@
       },
       "previous": "32fdf778ed097fb3fbf71f867972591acce6f933890fa0177f7f123f06441623",
       "sha256": "c9e4021fdb15f0e711d8b6d68a614c67f76ebafe9d803238924f3053146f96c1"
+    },
+    {
+      "revision": 120,
+      "at": 1791842929.8558187,
+      "action": "approval",
+      "data": {
+        "source": "user:automation:2026-10-13:autonomous-repository",
+        "quote": "Repository editing, commit/push, PR and verified-head CI-gated merge explicitly authorized",
+        "action": "publish-reviewed-branch-and-merge-verified-pr",
+        "artifact_sha256": "be4e86ec2c8f922936d0b6ac2c4b18fc873cdbf228806239e11cd08cdaa51ec2",
+        "status": "approved",
+        "target": "Kihamda/Kihamda_Game",
+        "head_commit": "322c212a5a21199fade2ed888276b4a9ef670713"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "c9e4021fdb15f0e711d8b6d68a614c67f76ebafe9d803238924f3053146f96c1",
+      "sha256": "af7f7e99c374c1f45058f8b1a42480b04c97d2fa59aa25b3495e1cea7577feff"
+    },
+    {
+      "revision": 121,
+      "at": 1791842929.8714223,
+      "action": "prepare-external",
+      "data": {
+        "id": "OP-web-package-publish-20261013",
+        "action": "publish-reviewed-branch-and-merge-verified-pr",
+        "artifact_sha256": "be4e86ec2c8f922936d0b6ac2c4b18fc873cdbf228806239e11cd08cdaa51ec2",
+        "head_commit": "322c212a5a21199fade2ed888276b4a9ef670713"
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "af7f7e99c374c1f45058f8b1a42480b04c97d2fa59aa25b3495e1cea7577feff",
+      "sha256": "d2b323b91928b733becd006b271d77391de558da86590ec2e24ed0ea48282b58"
+    },
+    {
+      "revision": 122,
+      "at": 1791843021.660465,
+      "action": "reconcile-external",
+      "data": {
+        "id": "OP-web-package-publish-20261013",
+        "status": "confirmed_success",
+        "source": "github:Kihamda/Kihamda_Game:pr19",
+        "evidence": "PR19 verifiedhead322c212 CI38314956092 success guardedmerge ec3f546; CI downloaded archive checksum and all37files/5pages verified; no deployment",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-package-20261013.json",
+            "sha256": "81c4527752e27acf2979ea2d574397d181267c8bda2c26210fa491e8701f73ef"
+          }
+        ]
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "d2b323b91928b733becd006b271d77391de558da86590ec2e24ed0ea48282b58",
+      "sha256": "4d6ec7e6fd3c3c8ed3e1ea167f69b7ae77905602c86a7f12afbdf7fe57341ea3"
+    },
+    {
+      "revision": 123,
+      "at": 1791843021.678058,
+      "action": "start",
+      "data": {
+        "run_id": "unity-continuation-20261013T0700-quality-48da7b",
+        "source": "user:automation:2026-10-13:continue-sequential-work-within-original-30min"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "4d6ec7e6fd3c3c8ed3e1ea167f69b7ae77905602c86a7f12afbdf7fe57341ea3",
+      "sha256": "47b66b8f4c37f6830da115555011349fcba95cae7e2b3b656192299d034e4d4e"
+    },
+    {
+      "revision": 124,
+      "at": 1791843021.6957562,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-continuation-20261013T0700-quality-48da7b",
+        "task_id": "T-web-dependency-quality",
+        "ttl_seconds": 1100
+      },
+      "result": {
+        "run_id": "unity-continuation-20261013T0700-quality-48da7b",
+        "task_id": "T-web-dependency-quality",
+        "fence": 19,
+        "expires_at": 1791844121.6957562
+      },
+      "previous": "47b66b8f4c37f6830da115555011349fcba95cae7e2b3b656192299d034e4d4e",
+      "sha256": "0584689d38c80b501f5168237c4ef690e8e25e7d52fc55b6da4e9f58eb70c5e7"
+    },
+    {
+      "revision": 125,
+      "at": 1791843270.4476793,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-continuation-20261013T0700-quality-48da7b",
+        "fence": 19,
+        "artifacts": [
+          {
+            "path": "web/package-lock.json",
+            "sha256": "4a9e667c13e6fc791f8c04c5614905fbf2b589278d1c48186f883825d2f288c7"
+          },
+          {
+            "path": "docs/web-dependency-quality-20261013.md",
+            "sha256": "596a162a28cdfe55de77cadd4a090729a9174413c4dc099ea76c8447dd7eb3f7"
+          },
+          {
+            "path": "docs/web-release-package-20261013.md",
+            "sha256": "a6e889872f5614e21f83e6c2068350ce9cfbee9a6f518d5341149ee2dc89c56a"
+          },
+          {
+            "path": "business/unity/evidence/web-dependency-quality-20261013.json",
+            "sha256": "c1156df5190eabf3d2e011deeaab7252845f672d8e0f62f5b2cfb51cb31d2d96"
+          },
+          {
+            "path": "business/unity/evidence/delivery-web-package-20261013.json",
+            "sha256": "81c4527752e27acf2979ea2d574397d181267c8bda2c26210fa491e8701f73ef"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-13-web-package-restoration.md",
+            "sha256": "9ce24f54d09da9292872da61c3a5a278f471e163320be00e8103b19afa9a9bba"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "224f85d1c82b7e7988046aa3e3e4015f9a51278f5b1ca91cc6b998411166423a"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "5f35b5a655f86734381868e6a595c7a5727fc8549fe540701b941515fc093959"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "15efee836522fbc148d12712ac3be937b46966392a0c69ddf36097aaf72a0440"
+          }
+        ],
+        "checks": [
+          "Audit all15to0/production2to0",
+          "TypeScript/ESLint/Vite/5SSG",
+          "NavigationSSR/8guide/release-package+5rejections",
+          "Actual390 portal input and1280 preserved4routes"
+        ],
+        "next_step": "CI verified-head quality delivery then T-web-release-retention"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "0584689d38c80b501f5168237c4ef690e8e25e7d52fc55b6da4e9f58eb70c5e7",
+      "sha256": "e181180cf88f0343479b6eeb72370a622740824d6772c19b6882d6741452cc67"
+    },
+    {
+      "revision": 126,
+      "at": 1791843270.4661937,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-continuation-20261013T0700-quality-48da7b",
+        "fence": 19,
+        "artifacts": [
+          {
+            "path": "web/package-lock.json",
+            "sha256": "4a9e667c13e6fc791f8c04c5614905fbf2b589278d1c48186f883825d2f288c7"
+          },
+          {
+            "path": "docs/web-dependency-quality-20261013.md",
+            "sha256": "596a162a28cdfe55de77cadd4a090729a9174413c4dc099ea76c8447dd7eb3f7"
+          },
+          {
+            "path": "docs/web-release-package-20261013.md",
+            "sha256": "a6e889872f5614e21f83e6c2068350ce9cfbee9a6f518d5341149ee2dc89c56a"
+          },
+          {
+            "path": "business/unity/evidence/web-dependency-quality-20261013.json",
+            "sha256": "c1156df5190eabf3d2e011deeaab7252845f672d8e0f62f5b2cfb51cb31d2d96"
+          },
+          {
+            "path": "business/unity/evidence/delivery-web-package-20261013.json",
+            "sha256": "81c4527752e27acf2979ea2d574397d181267c8bda2c26210fa491e8701f73ef"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-13-web-package-restoration.md",
+            "sha256": "9ce24f54d09da9292872da61c3a5a278f471e163320be00e8103b19afa9a9bba"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "224f85d1c82b7e7988046aa3e3e4015f9a51278f5b1ca91cc6b998411166423a"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "5f35b5a655f86734381868e6a595c7a5727fc8549fe540701b941515fc093959"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "15efee836522fbc148d12712ac3be937b46966392a0c69ddf36097aaf72a0440"
+          }
+        ],
+        "checks": [
+          "Audit all15to0/production2to0",
+          "TypeScript/ESLint/Vite/5SSG",
+          "NavigationSSR/8guide/release-package+5rejections",
+          "Actual390 portal input and1280 preserved4routes"
+        ],
+        "next_step": "CI verified-head quality delivery then T-web-release-retention",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "e181180cf88f0343479b6eeb72370a622740824d6772c19b6882d6741452cc67",
+      "sha256": "7b45606b59663dbc724e47b577d0095db8670874e736a4642f1cdd7f5b766700"
+    },
+    {
+      "revision": 127,
+      "at": 1791843270.4835355,
+      "action": "task",
+      "data": {
+        "id": "T-web-release-retention",
+        "decision_id": "D-web-technology-policy-20261012",
+        "source": "user:automation:Web-delivery:CI-retention-30days",
+        "objective": "Retain verified current-source artifact and distinguish restoration from historical rollback",
+        "hypothesis": "A retained source-bound artifact prevents lost restoration after CI retention expires; demand unobserved",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-web-dependency-quality"
+        ],
+        "outputs": [
+          "Current artifact receipt and local retention index",
+          "Restoration and historical rollback distinction"
+        ],
+        "checks": [
+          "Current exact-head CI artifact download/extract/hash",
+          "Source and archive inventory without private data"
+        ],
+        "acceptance": [
+          "Match new-source commit and archive SHA256",
+          "Retain artifact locally beyond CI30day expiry",
+          "Distinguish pre-update historical ZIP from current artifact",
+          "No production replacement or paid hosting"
+        ],
+        "next_step": "Retain current-source verified Web artifact and restoration index"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "7b45606b59663dbc724e47b577d0095db8670874e736a4642f1cdd7f5b766700",
+      "sha256": "e3dd727974177f1dfb06f8e8cc6b285d75f4024efdd576c0300e56ae0b764bcc"
     }
   ],
-  "projection_sha256": "a3624b95f822353246cbec1b0d10053e21f189072d8d7fee631d5c93d65af74a"
+  "projection_sha256": "7e24b16ea697a19e526c67ae434301b85ecb820eec8645a79b9a62b290f93e52"
 }
