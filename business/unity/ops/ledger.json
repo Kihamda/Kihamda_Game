@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 90,
+  "revision": 93,
   "business_id": "game-site",
-  "fence": 14,
-  "lease": null,
+  "fence": 15,
+  "lease": {
+    "run_id": "unity-manual-20261012-13124ec01f6d",
+    "task_id": "T-web-portal-navigation-state",
+    "fence": 15,
+    "expires_at": 1791817943.7033687
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -1151,9 +1156,16 @@
         "実作品・配布許可・事業指標をテスト状態から作らない"
       ],
       "next_step": "Implement persistent catalog navigation state in existing Web portal; no new game",
-      "status": "ready",
+      "status": "running",
       "checkpoints": [],
-      "claims": []
+      "claims": [
+        {
+          "run_id": "unity-manual-20261012-13124ec01f6d",
+          "task_id": "T-web-portal-navigation-state",
+          "fence": 15,
+          "expires_at": 1791817943.7033687
+        }
+      ]
     },
     "T-web-portal-entry-research-20261012": {
       "id": "T-web-portal-entry-research-20261012",
@@ -1589,6 +1601,12 @@
       "source": "scheduled:game-site:2026-10-12T19:00:00+09:00",
       "status": "completed",
       "started_at": 1791799291.5214257
+    },
+    "unity-manual-20261012-13124ec01f6d": {
+      "run_id": "unity-manual-20261012-13124ec01f6d",
+      "source": "user:current-thread:2026-10-12:autonomous-work",
+      "status": "open",
+      "started_at": 1791816143.6908858
     }
   },
   "experiments": {
@@ -1729,6 +1747,12 @@
       "source": "user:current-thread:2026-10-12:web-technology-policy",
       "message": "WebアプリはWeb技術で制作する方針に戻します。そうでないと負荷が高すぎるからです。ただし、一部僕が他で開発したUnityアプリは、その完成品のデプロイを受け入れます。その余地は残してください。",
       "at": 1791735693.704843
+    },
+    {
+      "source": "user:current-thread:2026-10-12:autonomous-work",
+      "message": "毎回６分程度しか働いていませんね。なんでもアクセスできるのだからもっと自律的に仕事してください。このリポジトリなら何でもアクセスしてもらって構いません。(勝手にPR通したりも)",
+      "next_step": "Implement existing navigation task, validate and publish/merge checked PR",
+      "at": 1791816143.6773832
     }
   ],
   "approvals": [],
@@ -4216,7 +4240,54 @@
       },
       "previous": "37ef96d494f61492ae68f63c7be1931156d7a94f46664dbdb73cf819321779e5",
       "sha256": "cafe55153f105dee49ea5acde2dec856a76b3270c311e94e90f0ff6b85cd85e6"
+    },
+    {
+      "revision": 91,
+      "at": 1791816143.6773832,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-12:autonomous-work",
+        "message": "毎回６分程度しか働いていませんね。なんでもアクセスできるのだからもっと自律的に仕事してください。このリポジトリなら何でもアクセスしてもらって構いません。(勝手にPR通したりも)",
+        "next_step": "Implement existing navigation task, validate and publish/merge checked PR"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "cafe55153f105dee49ea5acde2dec856a76b3270c311e94e90f0ff6b85cd85e6",
+      "sha256": "94a27d6582430b93481f7aaba7cea7b5a6876edfd10ae72bed8cb68da8a76ffb"
+    },
+    {
+      "revision": 92,
+      "at": 1791816143.6908858,
+      "action": "start",
+      "data": {
+        "run_id": "unity-manual-20261012-13124ec01f6d",
+        "source": "user:current-thread:2026-10-12:autonomous-work"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "94a27d6582430b93481f7aaba7cea7b5a6876edfd10ae72bed8cb68da8a76ffb",
+      "sha256": "0a86755cc1b55ab35cab3d5abf28bf2d1f7712e4ba2b607e620f01c4ef7b8bb6"
+    },
+    {
+      "revision": 93,
+      "at": 1791816143.7033687,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-manual-20261012-13124ec01f6d",
+        "task_id": "T-web-portal-navigation-state",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-manual-20261012-13124ec01f6d",
+        "task_id": "T-web-portal-navigation-state",
+        "fence": 15,
+        "expires_at": 1791817943.7033687
+      },
+      "previous": "0a86755cc1b55ab35cab3d5abf28bf2d1f7712e4ba2b607e620f01c4ef7b8bb6",
+      "sha256": "2af3271c13f3aa91b23e93f20f47301ed09072f01bf79d7d20a4094b737718e4"
     }
   ],
-  "projection_sha256": "5f72a2ad277118272a4a1295dacb8345965d88a63db28389d3c81235f7ddbdb1"
+  "projection_sha256": "320cb02a6bc42fd1a9863ee378823021c0c91fb97f64c8ef66a6baa259922c96"
 }

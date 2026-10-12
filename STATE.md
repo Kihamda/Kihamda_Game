@@ -96,3 +96,6 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 
 
 2026-10-12の19時枠では現行Web入口を実ブラウザと技術検査で再確認した。ビルド・型・静的検査、旧4URL・36チェックサムが成功。詳細から戻る/明示一覧リンクと再読み込みで検索語が消え、公開中フィルターも再読み込みで戻ることを再確認。390×844一覧、1280×720一覧・詳細で横のはみ出しなし、未公開作品に開始リンク・iframeなし。Enterの詳細/一覧移動と一覧フォーカスも確認した。今回は実装変更せず、既存T-web-portal-navigation-stateを先に、T-web-portal-release-presentationを後続にする順序を維持。技術はimprove、事業はunobserved。指標はnull、14/28日観測は未開始。報告business/unity/research/2026-10-12-web-portal-strategy.md、証跡business/unity/evidence/strategy-20261012-1900.json。人間評価・実タッチ・Safari・ゲーム保存・持込完成品受入は未実行。天啓.mdの全体刷新は未完了として保持し、Unity制作・新作・外部配信は行っていない。
+
+
+2026-10-12の本人の追加指示により、既存Web検索条件保持を実装。URLのq/filter、詳細からの一覧リンク、戻る/進む・再読み込み、直接詳細を検査し、390/1280pxとTab/Enter・文字履歴・記号往復を確認。ビルド・SSR・旧4URL/GUID19・36チェックサム・台帳27テスト・既存Core3ルートが成功。記録docs/web-navigation-20261012.md。次はT-web-portal-release-presentation。調査だけで短く終了せず実装とPR反映まで進める方針、およびCI成功後の自律マージ許可をAGENTS・policy・定期実行unityへ保存した。旧Unityソースと検査履歴は保全し、Unity push追加ビルドを停止、手動設定は保持。天啓.md全体刷新は未完了のため原文保持。指標null、実タッチ/Safari/人間評価/完成品受入は未確認。本番全体置換はしない。

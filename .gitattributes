@@ -40,3 +40,7 @@ scripts/check-repository.mjs text eol=lf
 scripts/check-web-build.mjs text eol=lf
 web/scripts/prebuild.mjs text eol=lf
 web/src/portal/data/works.json -text whitespace=cr-at-eol
+web/src/App.tsx text eol=lf
+web/src/portal/navigation.ts text eol=lf
+scripts/check-portal-navigation.mjs text eol=lf
+docs/web-navigation-20261012.md text eol=lf

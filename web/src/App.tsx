@@ -4,6 +4,7 @@ import { isPortalPath, portalPages, canonicalPath } from "./portal/routes";
 import "./app/AppShell.css";
 import { getGameById } from "./games/metadata";
 import { gameComponents, hasGameComponent } from "./games/registry";
+import { catalogSearch, readCatalogState, type CatalogState } from "./portal/navigation";
 
 type Route =
   | { type: "home" }
@@ -40,11 +41,19 @@ function parseRoute(pathname: string): Route {
 }
 
 function App() {
-  const [pathname, setPathname] = useState(() => window.location.pathname);
+  const [location, setLocation] = useState(() => ({ pathname: window.location.pathname, search: window.location.search, hash: window.location.hash }));
+  const { pathname, search, hash } = location;
+  const catalogState = readCatalogState(search);
+  const onCatalogChange = (state: CatalogState) => {
+    const next = { ...location, search: catalogSearch(state) };
+    // Editing search/filter changes the current entry, not one history entry per keystroke.
+    window.history.replaceState(window.history.state, "", `${next.pathname}${next.search}${next.hash}`);
+    setLocation(next);
+  };
 
   useEffect(() => {
     const onPopState = () => {
-      setPathname(window.location.pathname);
+      setLocation({ pathname: window.location.pathname, search: window.location.search, hash: window.location.hash });
     };
 
     const onDocumentClick = (event: MouseEvent) => {
@@ -61,7 +70,7 @@ function App() {
 
       const url = new URL(anchor.href, window.location.origin);
       if (url.origin !== window.location.origin) return;
-      if (url.pathname === window.location.pathname && url.hash) return;
+      if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) return;
 
       const nextRoute = parseRoute(url.pathname);
       if (nextRoute.type === "notFound") return;
@@ -72,13 +81,15 @@ function App() {
         "",
         `${url.pathname}${url.search}${url.hash}`,
       );
-      setPathname(url.pathname);
+      setLocation({ pathname: url.pathname, search: url.search, hash: url.hash });
     };
 
     window.addEventListener("popstate", onPopState);
+    window.addEventListener("hashchange", onPopState);
     document.addEventListener("click", onDocumentClick);
     return () => {
       window.removeEventListener("popstate", onPopState);
+      window.removeEventListener("hashchange", onPopState);
       document.removeEventListener("click", onDocumentClick);
     };
   }, []);
@@ -97,13 +108,13 @@ function App() {
       document.querySelector('link[rel="canonical"]')?.setAttribute("href", url);
       document.querySelector('meta[property="og:url"]')?.setAttribute("content", url);
     }
-    if (window.location.hash) {
-      document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
+    if (hash) {
+      document.getElementById(hash.slice(1))?.scrollIntoView();
     } else {
       window.scrollTo(0, 0);
     }
-    if (window.location.hash) document.getElementById(window.location.hash.slice(1))?.focus({ preventScroll: true });
-  }, [pathname]);
+    if (hash) document.getElementById(hash.slice(1))?.focus({ preventScroll: true });
+  }, [pathname, hash]);
 
   useEffect(() => {
     const isGameRoute = route.type === "game";
@@ -115,10 +126,10 @@ function App() {
   }, [route.type]);
 
   if (route.type === "home") {
-    return <PortalApp />;
+    return <PortalApp catalogState={catalogState} onCatalogChange={onCatalogChange} />;
   }
   if (route.type === "portal") {
-    return <PortalApp pathname={route.pathname} />;
+    return <PortalApp pathname={route.pathname} catalogState={catalogState} onCatalogChange={onCatalogChange} />;
   }
 
   if (route.type === "game") {

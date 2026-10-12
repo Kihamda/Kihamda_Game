@@ -62,8 +62,21 @@
   "webApplicationTechnology": "web",
   "autonomousUnityDevelopment": false,
   "acceptOwnerProvidedUnityFinishedArtifacts": true,
-  "nextStep": "T-web-portal-navigation-state: preserve search/filter and list return during detail navigation",
+  "nextStep": "T-web-portal-release-presentation: work-specific controls/environments/version-bound screenshots",
   "unityFinishedArtifactPolicy": "本人が他で開発したUnityアプリの完成品デプロイを受け入れる。受領後に版・対象環境・ハッシュ・実動作・配布条件・復元方法を確認する。ソース提供・移植・再ビルドを一律必須にしない。",
   "ownerInstructionConflictPolicy": "最新の直接指示が天啓.mdの旧すべてUnity製方針に優先する。本人の原文を書き換えて整合させない。",
-  "catalogAcceptanceSource": "docs/web-catalog-20261012.md"
+  "catalogAcceptanceSource": "docs/web-catalog-20261012.md",
+  "autonomousRepositoryWork": {
+    "source": "user:current-thread:2026-10-12:autonomous-work",
+    "commitPushPullRequest": true,
+    "mergeAfterVerifiedHeadCi": true,
+    "earlyStopPolicy": "短い確認だけで終了せず時間内に既存工程を実装・検証・PR反映する。25分checkpointと30分保存を守る。",
+    "publicDisclosureExclusions": [
+      "credentials",
+      "private-manuscripts",
+      "raw-desktop-evidence",
+      "_recovery"
+    ]
+  },
+  "navigationAcceptanceSource": "docs/web-navigation-20261012.md"
 }
