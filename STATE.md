@@ -1,5 +1,11 @@
 # 現在の状態
 
+2026-10-13の07時枠でT-web-portal-release-packageを実施。元commit1cef2efce3e230d8b5dbcea579c47334f6db581bの追跡Webソースを別フォルダへ取得し、npm ci、TypeScript・ESLint・Vite・5SSG・36成果物ハッシュを検査した。manifest付きZIPを別復元先へ展開し、全37ファイル・5画面の版とハッシュを照合。改変・欠落・追加・版不一致・manifest改変の拒否検査も成功。復元版の実ブラウザ390×844/1280×720の5画面、検索条件保持・Enter案内・再読み込み・本文フォーカス・はみ出しなしを確認した。CIへtar.gzの作成・展開・再検査・ハッシュ保存を追加。
+
+ローカルZIPのSHA-256は234a50c1737a6b491f5a4a65f1afcb99d9dd2b2e255d57ecc1a09685cc0027e3。docs/web-release-package-20261013.mdとbusiness/unity/evidence/web-package-20261013-0700.jsonへ結果を保存。07時記事はbusiness/blog/drafts/2026-10-13-web-package-restoration.mdへの下書き保存のみ。持込Unity完成品未受領、実タッチ・Safari・人間評価・利益と公開指標は未観測。天啓.mdの継続指示と既存Unity・旧クラウド台帳・親4原本・復元8ファイル・Atohitoriを保持した。本番配信・全体置換はしていない。
+
+npm ciの監査指摘は15件で、今回の配布準備工程は依存関係修正を含まない。次の独立工程はWeb依存関係の監査範囲と互換性を確認し、無料で解消可能な更新を検証すること。詳細な監査原文はローカルで扱い、強制更新やUnity再開はしない。PRの最新headのCI成功を確認してからマージする。
+
 2026-10-12の13時枠は一次資料から既存Web入口の作品案内を比較した。報告はbusiness/unity/research/2026-10-12-web-entry-acceptance.md。制作技術・配布形式・公開状態の区別、作品固有の操作、版に紐付いた実画面、確認済み環境を受入条件にした。既存T-web-portal-navigation-stateは契約とready状態を保持し、これに依存するT-web-portal-release-presentationを追加した。新作やUnity試作品の再開は行っていない。
 
 13時slotを一度だけ取得。run unity-20261012T1300-4ec28b2cd023、fence13。前回checkpoint16件、親4元commit・復元8ハッシュ、元77イベントを照合。今回は制作コード変更・新ブラウザ検査・配布・外部投稿なし。需要・効果・人間評価は未観測で指標はnull、14/28日観測未開始。天啓.mdの全体刷新は未完了のため残す。次の一工程は検索条件と一覧への復帰を保持する実装。

@@ -48,6 +48,24 @@ jobs:
           node scripts/check-web-build.mjs
           node scripts/check-portal-navigation.mjs
           node scripts/check-portal-work-guides.mjs
+      - name: Prepare and verify Web release package
+        run: |
+          node scripts/web-release-package.mjs create web/dist artifacts/web-release ${{ github.sha }}
+          node scripts/web-release-package.mjs verify artifacts/web-release
+          node scripts/check-web-release-package.mjs artifacts/web-release
+          tar -czf artifacts/web-release.tar.gz -C artifacts/web-release .
+          mkdir -p artifacts/web-restored
+          tar -xzf artifacts/web-release.tar.gz -C artifacts/web-restored
+          node scripts/web-release-package.mjs verify artifacts/web-restored
+          sha256sum artifacts/web-release.tar.gz > artifacts/web-release.tar.gz.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-release-${{ github.sha }}
+          path: |
+            artifacts/web-release.tar.gz
+            artifacts/web-release.tar.gz.sha256
+          retention-days: 30
+          if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
           name: web-preview-${{ github.sha }}

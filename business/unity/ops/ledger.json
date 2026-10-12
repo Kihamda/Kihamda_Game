@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 114,
+  "revision": 119,
   "business_id": "game-site",
-  "fence": 17,
+  "fence": 18,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -1844,6 +1844,148 @@
         "本番サイト全体置換は行わず未確認を記録"
       ],
       "next_step": "Prepare verified Web release package and recovery instructions without deployment",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261013T0700-package-d34f19",
+          "fence": 18,
+          "artifacts": [
+            {
+              "path": "scripts/web-release-package.mjs",
+              "sha256": "f82cb73f7d5005cabf3129acfde1bc97b6066f59fd79455f63d77cb85e15eb7a"
+            },
+            {
+              "path": "scripts/check-web-release-package.mjs",
+              "sha256": "78a88ea4195f1d721a220c12d1d3fe6a3033738eae95c44e0802e12e636b1634"
+            },
+            {
+              "path": "docs/web-release-package-20261013.md",
+              "sha256": "1de9e3e7ea0374ab1a38c8691de78891566c9f7f0f453c1e20b41ea39fa202ad"
+            },
+            {
+              "path": "business/unity/evidence/web-package-20261013-0700.json",
+              "sha256": "f13d476e131b738183ee3b5cffb1c27b5c178b09f7511582e1c4ca3e1d7d9673"
+            },
+            {
+              "path": "business/unity/evidence/web-package-manifest-20261013.json",
+              "sha256": "bf55438bdbd78de99c1be58a9552602afb6647e5bdd255696257303f23764493"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-13-web-package-restoration.md",
+              "sha256": "1af5f54648fdf90819857fc6ab083a7db86e86bd13f2710bbf4f506dbc1c8118"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "0a603fe9054ac8f867344fe5b361f5e5ea34f4eb0098483ee7f2be4c6ea47436"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "e63c617e38316bb1eb634a391b5c8ab21ec4493954c8ccb7f19c8c8fb3b6f4e6"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "b7de333e2659c4e98f63108881064481a1ecfea4a53a168f89ffc4f085d8d2a3"
+            }
+          ],
+          "checks": [
+            "Clean tracked-source build/TypeScript/ESLint/5SSG",
+            "ZIP restore37files/5pages",
+            "Five invalid-package rejections",
+            "Actual390/1280 browser portal",
+            "Parent4/recovery8/latestcheckpoint10"
+          ],
+          "next_step": "CI verified-head package delivery; T-web-dependency-quality",
+          "at": 1791842889.8698037
+        },
+        {
+          "run_id": "unity-20261013T0700-package-d34f19",
+          "fence": 18,
+          "artifacts": [
+            {
+              "path": "scripts/web-release-package.mjs",
+              "sha256": "f82cb73f7d5005cabf3129acfde1bc97b6066f59fd79455f63d77cb85e15eb7a"
+            },
+            {
+              "path": "scripts/check-web-release-package.mjs",
+              "sha256": "78a88ea4195f1d721a220c12d1d3fe6a3033738eae95c44e0802e12e636b1634"
+            },
+            {
+              "path": "docs/web-release-package-20261013.md",
+              "sha256": "1de9e3e7ea0374ab1a38c8691de78891566c9f7f0f453c1e20b41ea39fa202ad"
+            },
+            {
+              "path": "business/unity/evidence/web-package-20261013-0700.json",
+              "sha256": "f13d476e131b738183ee3b5cffb1c27b5c178b09f7511582e1c4ca3e1d7d9673"
+            },
+            {
+              "path": "business/unity/evidence/web-package-manifest-20261013.json",
+              "sha256": "bf55438bdbd78de99c1be58a9552602afb6647e5bdd255696257303f23764493"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-13-web-package-restoration.md",
+              "sha256": "1af5f54648fdf90819857fc6ab083a7db86e86bd13f2710bbf4f506dbc1c8118"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "0a603fe9054ac8f867344fe5b361f5e5ea34f4eb0098483ee7f2be4c6ea47436"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "e63c617e38316bb1eb634a391b5c8ab21ec4493954c8ccb7f19c8c8fb3b6f4e6"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "b7de333e2659c4e98f63108881064481a1ecfea4a53a168f89ffc4f085d8d2a3"
+            }
+          ],
+          "checks": [
+            "Clean tracked-source build/TypeScript/ESLint/5SSG",
+            "ZIP restore37files/5pages",
+            "Five invalid-package rejections",
+            "Actual390/1280 browser portal",
+            "Parent4/recovery8/latestcheckpoint10"
+          ],
+          "next_step": "CI verified-head package delivery; T-web-dependency-quality",
+          "passed": true,
+          "at": 1791842889.8881598
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261013T0700-package-d34f19",
+          "task_id": "T-web-portal-release-package",
+          "fence": 18,
+          "expires_at": 1791844418.9543662
+        }
+      ]
+    },
+    "T-web-dependency-quality": {
+      "id": "T-web-dependency-quality",
+      "decision_id": "D-web-technology-policy-20261012",
+      "source": "user:automation:07-quality:npm-ci-result",
+      "objective": "Review existing Web dependency advisories and validate compatible updates",
+      "hypothesis": "Compatibility checks reduce known dependency problems in prepared artifacts; demand unobserved",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-web-portal-release-package"
+      ],
+      "outputs": [
+        "Validated compatible updates or evidenced unresolved findings"
+      ],
+      "checks": [
+        "npm audit and production subset",
+        "TypeScript/ESLint/Vite/portal and release-package checks",
+        "Actual browser affected routes"
+      ],
+      "acceptance": [
+        "Distinguish production and development dependency scope",
+        "No forced updates; validate compatible changes",
+        "Keep raw advisory details and credentials local",
+        "Record unresolved findings without claiming remediation"
+      ],
+      "next_step": "Inspect existing Web dependencies and compatible updates without deploying",
       "status": "ready",
       "checkpoints": [],
       "claims": []
@@ -2079,6 +2221,13 @@
       "source": "scheduled:game-site:2026-10-13T01:00:00+09:00",
       "status": "completed",
       "started_at": 1791821080.6461382
+    },
+    "unity-20261013T0700-package-d34f19": {
+      "scheduled_at": "2026-10-13T07:00:00+09:00",
+      "run_id": "unity-20261013T0700-package-d34f19",
+      "source": "scheduled:game-site:2026-10-13T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791842618.8898063
     }
   },
   "experiments": {
@@ -2212,7 +2361,8 @@
     "2026-10-12T07:00:00+09:00": "unity-20261012T0700-ffb98d9c5b5b",
     "2026-10-12T13:00:00+09:00": "unity-20261012T1300-4ec28b2cd023",
     "2026-10-12T19:00:00+09:00": "unity-20261012T1900-d7205d33896f",
-    "2026-10-13T01:00:00+09:00": "unity-20261013T0100-acceptance-a74d9c"
+    "2026-10-13T01:00:00+09:00": "unity-20261013T0100-acceptance-a74d9c",
+    "2026-10-13T07:00:00+09:00": "unity-20261013T0700-package-d34f19"
   },
   "feedback": [
     {
@@ -5584,7 +5734,198 @@
       },
       "previous": "040460dbb04f6ea20d12106ae3915717930182ec4eb852e8dfcf963763bbc387",
       "sha256": "83bb4e9270932eebc20ba2c3951e97c5649771fa9e0f5618cb7afbd404f2cbbe"
+    },
+    {
+      "revision": 115,
+      "at": 1791842618.8898063,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-13T07:00:00+09:00",
+        "run_id": "unity-20261013T0700-package-d34f19"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "83bb4e9270932eebc20ba2c3951e97c5649771fa9e0f5618cb7afbd404f2cbbe",
+      "sha256": "e9e7a950fafb7bc34978f1a3a4b05b8910560037f5edc30615fce61646ed3185"
+    },
+    {
+      "revision": 116,
+      "at": 1791842618.9543662,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261013T0700-package-d34f19",
+        "task_id": "T-web-portal-release-package",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261013T0700-package-d34f19",
+        "task_id": "T-web-portal-release-package",
+        "fence": 18,
+        "expires_at": 1791844418.9543662
+      },
+      "previous": "e9e7a950fafb7bc34978f1a3a4b05b8910560037f5edc30615fce61646ed3185",
+      "sha256": "4677eb61c1a0a6db22d156b87a11e3cbf376733bf7609eb1332bc1512752dfd9"
+    },
+    {
+      "revision": 117,
+      "at": 1791842889.8698037,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261013T0700-package-d34f19",
+        "fence": 18,
+        "artifacts": [
+          {
+            "path": "scripts/web-release-package.mjs",
+            "sha256": "f82cb73f7d5005cabf3129acfde1bc97b6066f59fd79455f63d77cb85e15eb7a"
+          },
+          {
+            "path": "scripts/check-web-release-package.mjs",
+            "sha256": "78a88ea4195f1d721a220c12d1d3fe6a3033738eae95c44e0802e12e636b1634"
+          },
+          {
+            "path": "docs/web-release-package-20261013.md",
+            "sha256": "1de9e3e7ea0374ab1a38c8691de78891566c9f7f0f453c1e20b41ea39fa202ad"
+          },
+          {
+            "path": "business/unity/evidence/web-package-20261013-0700.json",
+            "sha256": "f13d476e131b738183ee3b5cffb1c27b5c178b09f7511582e1c4ca3e1d7d9673"
+          },
+          {
+            "path": "business/unity/evidence/web-package-manifest-20261013.json",
+            "sha256": "bf55438bdbd78de99c1be58a9552602afb6647e5bdd255696257303f23764493"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-13-web-package-restoration.md",
+            "sha256": "1af5f54648fdf90819857fc6ab083a7db86e86bd13f2710bbf4f506dbc1c8118"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "0a603fe9054ac8f867344fe5b361f5e5ea34f4eb0098483ee7f2be4c6ea47436"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "e63c617e38316bb1eb634a391b5c8ab21ec4493954c8ccb7f19c8c8fb3b6f4e6"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "b7de333e2659c4e98f63108881064481a1ecfea4a53a168f89ffc4f085d8d2a3"
+          }
+        ],
+        "checks": [
+          "Clean tracked-source build/TypeScript/ESLint/5SSG",
+          "ZIP restore37files/5pages",
+          "Five invalid-package rejections",
+          "Actual390/1280 browser portal",
+          "Parent4/recovery8/latestcheckpoint10"
+        ],
+        "next_step": "CI verified-head package delivery; T-web-dependency-quality"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "4677eb61c1a0a6db22d156b87a11e3cbf376733bf7609eb1332bc1512752dfd9",
+      "sha256": "085b630d1e4a8e149fa77ee522bf8c875adb80afc148e1c47acd6e1752502ab6"
+    },
+    {
+      "revision": 118,
+      "at": 1791842889.8881598,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261013T0700-package-d34f19",
+        "fence": 18,
+        "artifacts": [
+          {
+            "path": "scripts/web-release-package.mjs",
+            "sha256": "f82cb73f7d5005cabf3129acfde1bc97b6066f59fd79455f63d77cb85e15eb7a"
+          },
+          {
+            "path": "scripts/check-web-release-package.mjs",
+            "sha256": "78a88ea4195f1d721a220c12d1d3fe6a3033738eae95c44e0802e12e636b1634"
+          },
+          {
+            "path": "docs/web-release-package-20261013.md",
+            "sha256": "1de9e3e7ea0374ab1a38c8691de78891566c9f7f0f453c1e20b41ea39fa202ad"
+          },
+          {
+            "path": "business/unity/evidence/web-package-20261013-0700.json",
+            "sha256": "f13d476e131b738183ee3b5cffb1c27b5c178b09f7511582e1c4ca3e1d7d9673"
+          },
+          {
+            "path": "business/unity/evidence/web-package-manifest-20261013.json",
+            "sha256": "bf55438bdbd78de99c1be58a9552602afb6647e5bdd255696257303f23764493"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-13-web-package-restoration.md",
+            "sha256": "1af5f54648fdf90819857fc6ab083a7db86e86bd13f2710bbf4f506dbc1c8118"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "0a603fe9054ac8f867344fe5b361f5e5ea34f4eb0098483ee7f2be4c6ea47436"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "e63c617e38316bb1eb634a391b5c8ab21ec4493954c8ccb7f19c8c8fb3b6f4e6"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "b7de333e2659c4e98f63108881064481a1ecfea4a53a168f89ffc4f085d8d2a3"
+          }
+        ],
+        "checks": [
+          "Clean tracked-source build/TypeScript/ESLint/5SSG",
+          "ZIP restore37files/5pages",
+          "Five invalid-package rejections",
+          "Actual390/1280 browser portal",
+          "Parent4/recovery8/latestcheckpoint10"
+        ],
+        "next_step": "CI verified-head package delivery; T-web-dependency-quality",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "085b630d1e4a8e149fa77ee522bf8c875adb80afc148e1c47acd6e1752502ab6",
+      "sha256": "32fdf778ed097fb3fbf71f867972591acce6f933890fa0177f7f123f06441623"
+    },
+    {
+      "revision": 119,
+      "at": 1791842889.9053345,
+      "action": "task",
+      "data": {
+        "id": "T-web-dependency-quality",
+        "decision_id": "D-web-technology-policy-20261012",
+        "source": "user:automation:07-quality:npm-ci-result",
+        "objective": "Review existing Web dependency advisories and validate compatible updates",
+        "hypothesis": "Compatibility checks reduce known dependency problems in prepared artifacts; demand unobserved",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-web-portal-release-package"
+        ],
+        "outputs": [
+          "Validated compatible updates or evidenced unresolved findings"
+        ],
+        "checks": [
+          "npm audit and production subset",
+          "TypeScript/ESLint/Vite/portal and release-package checks",
+          "Actual browser affected routes"
+        ],
+        "acceptance": [
+          "Distinguish production and development dependency scope",
+          "No forced updates; validate compatible changes",
+          "Keep raw advisory details and credentials local",
+          "Record unresolved findings without claiming remediation"
+        ],
+        "next_step": "Inspect existing Web dependencies and compatible updates without deploying"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "32fdf778ed097fb3fbf71f867972591acce6f933890fa0177f7f123f06441623",
+      "sha256": "c9e4021fdb15f0e711d8b6d68a614c67f76ebafe9d803238924f3053146f96c1"
     }
   ],
-  "projection_sha256": "5bca793be943f08c548f695d6047654eaaeb9e05fd8a9ccc9daa45f928cd4ab7"
+  "projection_sha256": "a3624b95f822353246cbec1b0d10053e21f189072d8d7fee631d5c93d65af74a"
 }

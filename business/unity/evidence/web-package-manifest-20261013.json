@@ -1,0 +1,226 @@
+{
+  "schema": 1,
+  "sourceCommit": "1cef2efce3e230d8b5dbcea579c47334f6db581b",
+  "publication": "prepared-not-deployed",
+  "files": [
+    {
+      "path": "SHA256SUMS",
+      "size": 3175,
+      "sha256": "de5c9d6f79ea716bbda22bcd51c8b7d7ce487dc3fefdb59a4f3a4711c1911b12"
+    },
+    {
+      "path": "_headers",
+      "size": 443,
+      "sha256": "3038340a456ae15ff549e7d1685bf6c404f9a8f4df702f7337a045ad7a055eeb"
+    },
+    {
+      "path": "_redirects",
+      "size": 476,
+      "sha256": "2e8ff0575bde1635f19121a9e2ffd2138a451b2b9aa72b29bc65069a7112bd0d"
+    },
+    {
+      "path": "about/index.html",
+      "size": 3582,
+      "sha256": "80a82948fcd095445e87b917c78b1c62fedd937580e8b59f3dfa1a9f5ccab53c"
+    },
+    {
+      "path": "adsense-readiness.html",
+      "size": 3257,
+      "sha256": "a99613344b0f97c28491cc9a49bec58e69c08222e5ac01765e5b4ec41a8c5a12"
+    },
+    {
+      "path": "assets/App-BmJxiuro.js",
+      "size": 15453,
+      "sha256": "27468b7b6305513b9415394be56fd269b6e4f2a7efa2cd75ec2d75326b3c04ec"
+    },
+    {
+      "path": "assets/App-D-aAth-b.css",
+      "size": 1868,
+      "sha256": "27c85bc61b5ade5e5be76d257d4bcc1247eac073d6fee0e0ff81f24b94dcb003"
+    },
+    {
+      "path": "assets/App-D73kXjTW.css",
+      "size": 4472,
+      "sha256": "f79b62c089b0d0b737ea46f4a4bac7e3f2ee2355f0c68c3730fed7accb10621d"
+    },
+    {
+      "path": "assets/App-DsKFAFNo.css",
+      "size": 171,
+      "sha256": "7c3cd717a26d5046bece354d92dc1b8d8984f46c57b0293cb24c39863811d764"
+    },
+    {
+      "path": "assets/App-DwI41Lw8.css",
+      "size": 4298,
+      "sha256": "749093ddfbe68bff178aaf9127641e19b3c483ae352b231a6634c77b8a28d728"
+    },
+    {
+      "path": "assets/App-Ltmw4FOt.js",
+      "size": 10695,
+      "sha256": "4681c572b4640a00be7e94332834a6f3301c3a0cde5a01eedf28fb45562a3a86"
+    },
+    {
+      "path": "assets/App-OLvp54ds.js",
+      "size": 10521,
+      "sha256": "30763bf76e15da40de1a61b1e14b8df70e6e37daccb1d052a588e574f28cc88f"
+    },
+    {
+      "path": "assets/App-X-UoFQHS.js",
+      "size": 7503,
+      "sha256": "79e60ccffe9caaadca5582967d38cba5e03bcca5664cb02cb6a8b1239ee4be71"
+    },
+    {
+      "path": "assets/ScreenShake-DPTyPQpI.css",
+      "size": 10924,
+      "sha256": "755d0c598db7a5b847934555e231c80e29184aa1bb9e06f8cb5ad42935c7c18e"
+    },
+    {
+      "path": "assets/ScreenShake-SGqmibnj.js",
+      "size": 11779,
+      "sha256": "2e0b8d60ce0bc5e6a403d622ed3437d3f3f8eaa8f3cdf672bbee2e8f5067ef85"
+    },
+    {
+      "path": "assets/ShareButton-B9g9CKhk.js",
+      "size": 2429,
+      "sha256": "bd46d17e665219d81a0783f421b93cd5dc5c02f8a4eafb119d961cc4f1604611"
+    },
+    {
+      "path": "assets/index-BYrn8wOA.js",
+      "size": 223794,
+      "sha256": "6c3f41781dee0824482fe150be3e19cd24ece02959c182b6f083b6b88d297d93"
+    },
+    {
+      "path": "assets/index-U9pQBW-E.css",
+      "size": 11283,
+      "sha256": "141d51be6e6da608697aa3ff98d7fedf3d01304e22bdb300538e2c57b362b048"
+    },
+    {
+      "path": "build-version.json",
+      "size": 166,
+      "sha256": "060b3f0b580f2b71de244fe40d2841a7c3d7dbab550cadfb37c57ec70e3ef360"
+    },
+    {
+      "path": "contact/index.html",
+      "size": 3196,
+      "sha256": "31a561f237acf194421ce6fad688840e207c14c5486a7371d580ce4780746cdb"
+    },
+    {
+      "path": "games/gravityball/index.html",
+      "size": 3104,
+      "sha256": "8b13ddc25b15782fa6edd0856c70ee313da5f710e7caf7146c4d8a4d86afefff"
+    },
+    {
+      "path": "games/ice-courier/index.html",
+      "size": 7490,
+      "sha256": "627e1c548e5d601cdccecc83f1ac1c10b2fe4934cac3ead3db9379bada24e1f0"
+    },
+    {
+      "path": "games/iceslide/index.html",
+      "size": 3125,
+      "sha256": "0c8e9f187b60a7170033a403191fa208b94e2d6d96eaa1ad1179ae73d52ede4b"
+    },
+    {
+      "path": "games/minerush/index.html",
+      "size": 3120,
+      "sha256": "3ea37ad4ec461f041bcdf2c397769f21fa2ac07441aca7fccb1db79253a6a90d"
+    },
+    {
+      "path": "games/ntiktaktoe/index.html",
+      "size": 2994,
+      "sha256": "104034cb7067f44f5d2624147c6f2c0f02105fa808f2ab13e8d1de57e3bead86"
+    },
+    {
+      "path": "icons/icon.svg",
+      "size": 1347,
+      "sha256": "2c8f5d1c0170572759e8d72c133ecafb9b0ff1182110c7f36328e07f00853ed1"
+    },
+    {
+      "path": "index.html",
+      "size": 7366,
+      "sha256": "efaa3577ed07aa6d7939f681d394bd1a62088464a58480969d6c535176f28489"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "size": 362,
+      "sha256": "8796035c828dbc87773f398818f7964517975cae98a04a15ada52d8fc1c48dea"
+    },
+    {
+      "path": "privacy-policy/index.html",
+      "size": 3692,
+      "sha256": "a8e953fb1cada6d81463291e6ae2073672f2a776c02c19722e80e4019b9a197b"
+    },
+    {
+      "path": "robots.txt",
+      "size": 72,
+      "sha256": "7a1eb5d016e2c70d23f21592235cb53dfc5d6da204a527a2e2b426a0a0eaf984"
+    },
+    {
+      "path": "sitemap.xml",
+      "size": 1276,
+      "sha256": "fdb7544c6352763d00c5d5c129bf1fd23c238b0aadcc52a21687dee9e810fd77"
+    },
+    {
+      "path": "sw.js",
+      "size": 189,
+      "sha256": "b928d0947627fdafdc5c9227fbd3aa3b26a67a1cfb18bb522b551db05d8b31ce"
+    },
+    {
+      "path": "thumbnails/gravityball.svg",
+      "size": 782,
+      "sha256": "0c5c58d5ab51b9b85bfaf26cd2cfb1765f9584ac39fbf5f2968c50d525987b5a"
+    },
+    {
+      "path": "thumbnails/iceslide.svg",
+      "size": 3518,
+      "sha256": "332b79622812097071d99ddbcfe40df217b2a8ebfc86a2c88b8c7601c18cd79c"
+    },
+    {
+      "path": "thumbnails/minerush.svg",
+      "size": 6769,
+      "sha256": "ea71667b5e7cf14939994b0025e91f218404ad3300ed32575a56027d70f88e9f"
+    },
+    {
+      "path": "thumbnails/ntiktaktoe.svg",
+      "size": 807,
+      "sha256": "96aad504951acf84337b67dd1f2c13716b057bd70e27fd731ecc7bf263212b7a"
+    },
+    {
+      "path": "thumbnails/ogp-default.svg",
+      "size": 1547,
+      "sha256": "d46eabf1047e546cc7ce164e77fea27e057f641ca6c28e1962d922bfbd54b88d"
+    }
+  ],
+  "pages": [
+    {
+      "path": "index.html",
+      "title": "小さな発見を楽しむゲーム | Kihamda.NET",
+      "canonical": "https://game.kihamda.net/"
+    },
+    {
+      "path": "about/index.html",
+      "title": "このスタジオについて | Kihamda.NET",
+      "canonical": "https://game.kihamda.net/about/"
+    },
+    {
+      "path": "contact/index.html",
+      "title": "お問い合わせ | Kihamda.NET",
+      "canonical": "https://game.kihamda.net/contact/"
+    },
+    {
+      "path": "privacy-policy/index.html",
+      "title": "プライバシーポリシー | Kihamda.NET",
+      "canonical": "https://game.kihamda.net/privacy-policy/"
+    },
+    {
+      "path": "games/ice-courier/index.html",
+      "title": "Ice Courier | Kihamda.NET",
+      "canonical": "https://game.kihamda.net/games/ice-courier/"
+    }
+  ],
+  "version": {
+    "commit": "1cef2efce3e230d8b5dbcea579c47334f6db581b",
+    "gameCount": 1,
+    "legacyRouteCount": 4,
+    "source": "web",
+    "generatedAt": "2026-10-12T22:04:44.338Z"
+  }
+}
