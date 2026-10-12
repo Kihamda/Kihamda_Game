@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "pullRequest": "https://github.com/Kihamda/Kihamda_Game/pull/20",
+  "verifiedHead": "4a0e1783ef22e147601799dcb698a116175628cc",
+  "ciRun": 38315562735,
+  "linuxSeconds": 38,
+  "windowsSeconds": 18,
+  "ciBuildMergeRef": "6b8ca36b409cdc81a7288d267f66352be5253329",
+  "ciWebSourceMatchesHead": true,
+  "ciArtifact": 11775679543,
+  "ciArchiveSha256": "dc59952d39255ee7b3a3471699d6459941ef0febcb7968abdc20d82d1e711fe9",
+  "ciDownloadedExtractVerified": true,
+  "auditAll": 0,
+  "auditProduction": 0,
+  "deployment": false,
+  "guardedMergeCommit": "42d9075bfd523482233606a84f203361eb89a61e"
+}
