@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 93,
+  "revision": 95,
   "business_id": "game-site",
   "fence": 15,
-  "lease": {
-    "run_id": "unity-manual-20261012-13124ec01f6d",
-    "task_id": "T-web-portal-navigation-state",
-    "fence": 15,
-    "expires_at": 1791817943.7033687
-  },
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -1156,8 +1151,132 @@
         "実作品・配布許可・事業指標をテスト状態から作らない"
       ],
       "next_step": "Implement persistent catalog navigation state in existing Web portal; no new game",
-      "status": "running",
-      "checkpoints": [],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-manual-20261012-13124ec01f6d",
+          "fence": 15,
+          "artifacts": [
+            {
+              "path": "web/src/App.tsx",
+              "sha256": "606bd51b2210a214a61459ec0308e57cdbeed7a35f1d42a0d08c17bf9c023c7d"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "e9c51559dbaad0472dc4a93beb1f366d697d78811d9f4b65bafd2fa887a7c5d8"
+            },
+            {
+              "path": "web/src/portal/navigation.ts",
+              "sha256": "c9d217b6d34ad53a668e7e4f75f6508f73deb83c859e8aaec3970a3e3b209ef2"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "49dcec7f0ed794439954e2ca4d4f2bd3007a7c6c7683a27d40fb8b42844990ef"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "c7250f7d80fd480cc785b2e5b7ef2a4f72449bbd2f5f3afc8b1b6c7203f1120b"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "d419911655c48a6da1fb05b2b08709e9254ae3557b5ddb0355902dc5be583aff"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "200760430637eb7247d0b104a6fee6593c8716d9191e7b56a6a83ed2837d13fc"
+            },
+            {
+              "path": "docs/web-navigation-20261012.md",
+              "sha256": "4c9210f70012932b0bb6b821b8760428ce81d01eedc85d8707aad91a7f14a538"
+            },
+            {
+              "path": "docs/images/navigation-20261012-390.jpg",
+              "sha256": "36fb654a45caf7847df9ab4d072f40ecf898c819970270e8a452a642097ee9ca"
+            },
+            {
+              "path": "docs/images/navigation-20261012-1280.jpg",
+              "sha256": "63fd9aa52132eab45f1f5b2e8518fa36ca3140bcec7f8729392a12f16c6bf3a7"
+            },
+            {
+              "path": "business/unity/evidence/navigation-20261012-manual.json",
+              "sha256": "5375c32cbfd6b4bf4b20865e04067e9b6f48b43f06f2da56f34f38c48caba748"
+            }
+          ],
+          "checks": [
+            "Build TypeScript/ESLint/Vite/5SSG",
+            "Repository4 legacy/19GUID/36 checksums",
+            "Portal SSR query/released/unknown/escaped/direct detail",
+            "Actual390/1280 Back/Forward/explicit list/reload/Tab/Enter",
+            "Per-character input does not add history entries: actual Back then Forward",
+            "Business27 tests/Core3 route acceptance",
+            "Source and committed14 receipt hashes match; workflow hashes verified through receipt"
+          ],
+          "next_step": "T-web-portal-release-presentation; verified-head PR delivery",
+          "at": 1791816705.3386266
+        },
+        {
+          "run_id": "unity-manual-20261012-13124ec01f6d",
+          "fence": 15,
+          "artifacts": [
+            {
+              "path": "web/src/App.tsx",
+              "sha256": "606bd51b2210a214a61459ec0308e57cdbeed7a35f1d42a0d08c17bf9c023c7d"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "e9c51559dbaad0472dc4a93beb1f366d697d78811d9f4b65bafd2fa887a7c5d8"
+            },
+            {
+              "path": "web/src/portal/navigation.ts",
+              "sha256": "c9d217b6d34ad53a668e7e4f75f6508f73deb83c859e8aaec3970a3e3b209ef2"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "49dcec7f0ed794439954e2ca4d4f2bd3007a7c6c7683a27d40fb8b42844990ef"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "c7250f7d80fd480cc785b2e5b7ef2a4f72449bbd2f5f3afc8b1b6c7203f1120b"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "d419911655c48a6da1fb05b2b08709e9254ae3557b5ddb0355902dc5be583aff"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "200760430637eb7247d0b104a6fee6593c8716d9191e7b56a6a83ed2837d13fc"
+            },
+            {
+              "path": "docs/web-navigation-20261012.md",
+              "sha256": "4c9210f70012932b0bb6b821b8760428ce81d01eedc85d8707aad91a7f14a538"
+            },
+            {
+              "path": "docs/images/navigation-20261012-390.jpg",
+              "sha256": "36fb654a45caf7847df9ab4d072f40ecf898c819970270e8a452a642097ee9ca"
+            },
+            {
+              "path": "docs/images/navigation-20261012-1280.jpg",
+              "sha256": "63fd9aa52132eab45f1f5b2e8518fa36ca3140bcec7f8729392a12f16c6bf3a7"
+            },
+            {
+              "path": "business/unity/evidence/navigation-20261012-manual.json",
+              "sha256": "5375c32cbfd6b4bf4b20865e04067e9b6f48b43f06f2da56f34f38c48caba748"
+            }
+          ],
+          "checks": [
+            "Build TypeScript/ESLint/Vite/5SSG",
+            "Repository4 legacy/19GUID/36 checksums",
+            "Portal SSR query/released/unknown/escaped/direct detail",
+            "Actual390/1280 Back/Forward/explicit list/reload/Tab/Enter",
+            "Per-character input does not add history entries: actual Back then Forward",
+            "Business27 tests/Core3 route acceptance",
+            "Source and committed14 receipt hashes match; workflow hashes verified through receipt"
+          ],
+          "next_step": "T-web-portal-release-presentation; verified-head PR delivery",
+          "passed": true,
+          "at": 1791816705.3543048
+        }
+      ],
       "claims": [
         {
           "run_id": "unity-manual-20261012-13124ec01f6d",
@@ -1605,7 +1724,7 @@
     "unity-manual-20261012-13124ec01f6d": {
       "run_id": "unity-manual-20261012-13124ec01f6d",
       "source": "user:current-thread:2026-10-12:autonomous-work",
-      "status": "open",
+      "status": "completed",
       "started_at": 1791816143.6908858
     }
   },
@@ -4287,7 +4406,148 @@
       },
       "previous": "0a86755cc1b55ab35cab3d5abf28bf2d1f7712e4ba2b607e620f01c4ef7b8bb6",
       "sha256": "2af3271c13f3aa91b23e93f20f47301ed09072f01bf79d7d20a4094b737718e4"
+    },
+    {
+      "revision": 94,
+      "at": 1791816705.3386266,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-manual-20261012-13124ec01f6d",
+        "fence": 15,
+        "artifacts": [
+          {
+            "path": "web/src/App.tsx",
+            "sha256": "606bd51b2210a214a61459ec0308e57cdbeed7a35f1d42a0d08c17bf9c023c7d"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "e9c51559dbaad0472dc4a93beb1f366d697d78811d9f4b65bafd2fa887a7c5d8"
+          },
+          {
+            "path": "web/src/portal/navigation.ts",
+            "sha256": "c9d217b6d34ad53a668e7e4f75f6508f73deb83c859e8aaec3970a3e3b209ef2"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "49dcec7f0ed794439954e2ca4d4f2bd3007a7c6c7683a27d40fb8b42844990ef"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "c7250f7d80fd480cc785b2e5b7ef2a4f72449bbd2f5f3afc8b1b6c7203f1120b"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "d419911655c48a6da1fb05b2b08709e9254ae3557b5ddb0355902dc5be583aff"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "200760430637eb7247d0b104a6fee6593c8716d9191e7b56a6a83ed2837d13fc"
+          },
+          {
+            "path": "docs/web-navigation-20261012.md",
+            "sha256": "4c9210f70012932b0bb6b821b8760428ce81d01eedc85d8707aad91a7f14a538"
+          },
+          {
+            "path": "docs/images/navigation-20261012-390.jpg",
+            "sha256": "36fb654a45caf7847df9ab4d072f40ecf898c819970270e8a452a642097ee9ca"
+          },
+          {
+            "path": "docs/images/navigation-20261012-1280.jpg",
+            "sha256": "63fd9aa52132eab45f1f5b2e8518fa36ca3140bcec7f8729392a12f16c6bf3a7"
+          },
+          {
+            "path": "business/unity/evidence/navigation-20261012-manual.json",
+            "sha256": "5375c32cbfd6b4bf4b20865e04067e9b6f48b43f06f2da56f34f38c48caba748"
+          }
+        ],
+        "checks": [
+          "Build TypeScript/ESLint/Vite/5SSG",
+          "Repository4 legacy/19GUID/36 checksums",
+          "Portal SSR query/released/unknown/escaped/direct detail",
+          "Actual390/1280 Back/Forward/explicit list/reload/Tab/Enter",
+          "Per-character input does not add history entries: actual Back then Forward",
+          "Business27 tests/Core3 route acceptance",
+          "Source and committed14 receipt hashes match; workflow hashes verified through receipt"
+        ],
+        "next_step": "T-web-portal-release-presentation; verified-head PR delivery"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "2af3271c13f3aa91b23e93f20f47301ed09072f01bf79d7d20a4094b737718e4",
+      "sha256": "5c2d80bcf70fa73f16356624c7bc0698eb9bc24d07a471bca9593b7da1314791"
+    },
+    {
+      "revision": 95,
+      "at": 1791816705.3543048,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-manual-20261012-13124ec01f6d",
+        "fence": 15,
+        "artifacts": [
+          {
+            "path": "web/src/App.tsx",
+            "sha256": "606bd51b2210a214a61459ec0308e57cdbeed7a35f1d42a0d08c17bf9c023c7d"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "e9c51559dbaad0472dc4a93beb1f366d697d78811d9f4b65bafd2fa887a7c5d8"
+          },
+          {
+            "path": "web/src/portal/navigation.ts",
+            "sha256": "c9d217b6d34ad53a668e7e4f75f6508f73deb83c859e8aaec3970a3e3b209ef2"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "49dcec7f0ed794439954e2ca4d4f2bd3007a7c6c7683a27d40fb8b42844990ef"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "c7250f7d80fd480cc785b2e5b7ef2a4f72449bbd2f5f3afc8b1b6c7203f1120b"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "d419911655c48a6da1fb05b2b08709e9254ae3557b5ddb0355902dc5be583aff"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "200760430637eb7247d0b104a6fee6593c8716d9191e7b56a6a83ed2837d13fc"
+          },
+          {
+            "path": "docs/web-navigation-20261012.md",
+            "sha256": "4c9210f70012932b0bb6b821b8760428ce81d01eedc85d8707aad91a7f14a538"
+          },
+          {
+            "path": "docs/images/navigation-20261012-390.jpg",
+            "sha256": "36fb654a45caf7847df9ab4d072f40ecf898c819970270e8a452a642097ee9ca"
+          },
+          {
+            "path": "docs/images/navigation-20261012-1280.jpg",
+            "sha256": "63fd9aa52132eab45f1f5b2e8518fa36ca3140bcec7f8729392a12f16c6bf3a7"
+          },
+          {
+            "path": "business/unity/evidence/navigation-20261012-manual.json",
+            "sha256": "5375c32cbfd6b4bf4b20865e04067e9b6f48b43f06f2da56f34f38c48caba748"
+          }
+        ],
+        "checks": [
+          "Build TypeScript/ESLint/Vite/5SSG",
+          "Repository4 legacy/19GUID/36 checksums",
+          "Portal SSR query/released/unknown/escaped/direct detail",
+          "Actual390/1280 Back/Forward/explicit list/reload/Tab/Enter",
+          "Per-character input does not add history entries: actual Back then Forward",
+          "Business27 tests/Core3 route acceptance",
+          "Source and committed14 receipt hashes match; workflow hashes verified through receipt"
+        ],
+        "next_step": "T-web-portal-release-presentation; verified-head PR delivery",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "5c2d80bcf70fa73f16356624c7bc0698eb9bc24d07a471bca9593b7da1314791",
+      "sha256": "ae9ffe15e23b946df5c0e867e3d7a4e1f54a2b175cae3d9ebc3588b4075cb4db"
     }
   ],
-  "projection_sha256": "320cb02a6bc42fd1a9863ee378823021c0c91fb97f64c8ef66a6baa259922c96"
+  "projection_sha256": "100d2c2c9a61edd1056395c7927d36c9226d4780fedc8ae3039c7bfa571d6c6b"
 }
