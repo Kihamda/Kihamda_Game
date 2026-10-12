@@ -1,0 +1,119 @@
+{
+  "runId": "unity-20261012T0700-ffb98d9c5b5b",
+  "fence": 12,
+  "recordedAt": "2026-10-12T07:11:41.680185+09:00",
+  "scheduledSlot": "2026-10-12T07:00:00+09:00",
+  "artifacts": [
+    {
+      "path": "docs/web-catalog-20261012.md",
+      "sha256": "ec4892b1ed707f605531f8ed060c4aedca4990fda8a476e3d3a52f71a92c9d82"
+    },
+    {
+      "path": "business/blog/drafts/2026-10-12-web-catalog.md",
+      "sha256": "43ac480dd676cba06d57d40b2048acf8db8266ebc9aa6c47253080772015aa8c"
+    },
+    {
+      "path": "docs/images/catalog-20261012-390.png",
+      "sha256": "bb654ee4423fa250ee749c5642f840f81dea4baa06e7a29e340c96f616eea589"
+    },
+    {
+      "path": "docs/images/catalog-20261012-1280.png",
+      "sha256": "5c704e0c9354846af459fd9764a6fc589b52c829902230aa2ba07adbde93d71d"
+    },
+    {
+      "path": "web/src/portal/catalog.ts",
+      "sha256": "841684b3835e241c7e39f3e10d6aef10c04b660595d4191f0950f45db48818ef"
+    },
+    {
+      "path": "web/src/portal/data/works.json",
+      "sha256": "819fe6821f77b25b2436ebf59ac7fb52baaacf7bf1f4ceb49304c3a8b690df1d"
+    },
+    {
+      "path": "web/src/portal/App.tsx",
+      "sha256": "35399229720a070b766ccffe15d23f609cec6858e91797f67826d6687963d10b"
+    },
+    {
+      "path": "web/src/portal/routes.ts",
+      "sha256": "1aa08b946c41348239166a372ab08b72225ccb8c1167b746061323e9f4872661"
+    },
+    {
+      "path": "web/src/portal/UnityPlayer.tsx",
+      "sha256": "ef6663f1d0e9a859a1888b099ca22ad393a4604559eb1a101365303655da91b8"
+    },
+    {
+      "path": "scripts/check-repository.mjs",
+      "sha256": "adf4f530e87bcf4e442fed2bd3c03e415bf0dca7ee9be6f307f4644c25ea48b8"
+    },
+    {
+      "path": "scripts/check-web-build.mjs",
+      "sha256": "8adc3bf78314bb9e3ef2a338dd39c3364c2c1d6639469bffe7bcbf401a5d3a03"
+    },
+    {
+      "path": "web/scripts/prebuild.mjs",
+      "sha256": "56f5406099ed00249c70ab1469094e55161cdc2467b05d01c1e54001f0b10ff7"
+    },
+    {
+      "path": "STATE.md",
+      "sha256": "1c3fc63943412dcac9ff0ef9cfbe0e48741936aea559573422e3c2e76b412981"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "d499c087d4602d7dbd6b0c1ac2ebf235e88faeb249f896548bb4e67c061a7406"
+    },
+    {
+      "path": "business/studio-policy.json",
+      "sha256": "4db2cbf52501e5230342d0d7ca0ddd8ca0c1750355df6ad1dc9d350f2c2e560a"
+    }
+  ],
+  "checks": [
+    "Final TypeScript/ESLint/Vite/5SSG passed",
+    "Repository4 legacy URLs/19 GUIDs and36 checksums/public artifact exclusion passed",
+    "In-memory Web/owner-finished Unity SSR released/unreleased and slash variants passed; no fixture registration",
+    "Release invalid/incomplete metadata and unsafe URLs rejected",
+    "Actual Chromium390/1280 catalog/detail/search/filter/back/list return/reload passed; no overflow/start/iframe",
+    "Observed search term resets after detail/browser back; next task, not fixed",
+    "Parent4 commits and recovery8 hashes matched; initial checkpoint14 verified",
+    "Original72 event prefix preserved; owner text/oldcloud ledger/Unity source/local manifest plugin unchanged",
+    "No received Unity finished artifact, physical touch/Safari/human feedback/save persistence validation; metrics null",
+    "No public push/PR/merge/deploy/post; own browser tabs closed and viewport reset"
+  ],
+  "browser": {
+    "engine": "IAB Chromium",
+    "viewports": [
+      {
+        "width": 390,
+        "height": 844,
+        "overflow": false,
+        "startLinks": 0,
+        "iframes": 0
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "overflow": false,
+        "startLinks": 0,
+        "iframes": 0
+      }
+    ],
+    "searchResults": {
+      "Unity": 1,
+      "Web": 0,
+      "配送": 1,
+      "released": 0
+    },
+    "backRestoresQuery": false
+  },
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "playStarts": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "failuresCorrected": [
+    "Initial Python read used cp932; no mutation, retried explicit UTF8",
+    "Initial detail route slash mismatch fixed and reverified",
+    "Vite SSR React module undefined; esbuild in-memory SSR passed instead"
+  ],
+  "nextStep": "T-web-portal-navigation-state"
+}

@@ -44,12 +44,12 @@ namespace Kihamda.Editor
             var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{ScenePath},target=target,
                 locationPathName=target==BuildTarget.WebGL?directory:Path.Combine(directory,"IceCourier.exe"),options=BuildOptions.StrictMode});
             if(report.summary.result!=BuildResult.Succeeded)throw new Exception("Build failed: "+report.summary.result);
-            File.WriteAllText(Path.Combine(directory,"build-version.json"),JsonUtility.ToJson(new Version{project="ice-courier",commit=commit,target=target.ToString(),unity=Application.unityVersion},true));
+            File.WriteAllText(Path.Combine(directory,"build-version.json"),JsonUtility.ToJson(new Version{project="ice-courier",commit=commit,target=target.ToString(),unity=Application.unityVersion,uiLayout="responsive-v1"},true));
             var sums=Directory.GetFiles(directory,"*",SearchOption.AllDirectories).Where(file=>Path.GetFileName(file)!="SHA256SUMS").OrderBy(file=>file,StringComparer.Ordinal).Select(file=>{
                 using(var sha=SHA256.Create())return BitConverter.ToString(sha.ComputeHash(File.ReadAllBytes(file))).Replace("-","").ToLowerInvariant()+"  "+Path.GetRelativePath(directory,file).Replace('\\','/');
             });
             File.WriteAllLines(Path.Combine(directory,"SHA256SUMS"),sums);
         }
-        [Serializable]sealed class Version{public string project,commit,target,unity;}
+        [Serializable]sealed class Version{public string project,commit,target,unity,uiLayout;}
     }
 }

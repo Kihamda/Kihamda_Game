@@ -100,6 +100,41 @@ class FlowTest(unittest.TestCase):
         with self.assertRaises(flow.Conflict):
             self.send("complete", passed=True, **self.evidence(lease))
 
+    def test_yield_preserves_task_and_fences_old_worker(self):
+        lease = self.claim()
+        before = copy.deepcopy(self.ledger.read()["events"])
+        self.send("yield", **self.evidence(lease))
+        state = self.ledger.read()
+        self.assertIsNone(state["lease"])
+        self.assertEqual(state["tasks"]["T"]["status"], "ready")
+        self.assertEqual(state["runs"]["R"]["status"], "checkpointed")
+        self.assertEqual(state["events"][:len(before)], before)
+        with self.assertRaises(flow.Conflict):
+            self.send("claim", run_id="R", task_id="T")
+        self.send("start", run_id="R2", source="user:test")
+        new = self.send("claim", run_id="R2", task_id="T")
+        self.assertGreater(new["fence"], lease["fence"])
+        with self.assertRaises(flow.Conflict):
+            self.send("checkpoint", **self.evidence(lease))
+
+    def test_yield_rejects_expired_or_changed_evidence(self):
+        lease = self.claim()
+        (self.path.parent / "evidence/review.json").write_bytes(b"changed")
+        with self.assertRaises(flow.Conflict):
+            self.send("yield", **self.evidence(lease))
+        (self.path.parent / "evidence/review.json").write_bytes(b"reviewed")
+        self.now += 10
+        with self.assertRaises(flow.Conflict):
+            self.send("yield", **self.evidence(lease))
+
+    def test_yield_rejects_unknown_external_result(self):
+        self.send("approval", source="user:test", quote="approve exact version", action="deploy",
+                  artifact_sha256="a" * 64, status="approved")
+        self.send("prepare-external", id="OP", action="deploy", artifact_sha256="a" * 64)
+        lease = self.claim()
+        with self.assertRaises(flow.Conflict):
+            self.send("yield", **self.evidence(lease))
+
     def test_recovery_cannot_overwrite_live_worker(self):
         self.claim()
         with self.assertRaises(flow.Conflict):

@@ -1,17 +1,15 @@
-# ローカルUnityスタジオの正本
+# ローカル制作台帳とUnity履歴
 
-`ops/ledger.json` がUnity制作・コンサルティングの正本です。古いクラウド運用のbusiness/ops/ledger.jsonは履歴として保持し、同じleaseや成果物保存領域を共有しません。更新は共通のflow.pyを使い、元のイベントを消しません。
+`ops/ledger.json`がローカル制作・コンサルティングの正本です。2026-10-12からWebアプリはWeb技術で制作し、本人が他で完成させたUnityアプリの配布を受け入れます。台帳のパス名は履歴保全のため残します。古いクラウド運用のbusiness/ops/ledger.jsonは履歴として保持し、同じleaseや成果物保存領域を共有しません。更新は共通のflow.pyを使い、元のイベントを消しません。
 
 CLIはUnity台帳があるcheckoutではそれを既定に使います。各更新で--ledger business/unity/ops/ledger.jsonを明示してください。旧履歴を検査するときだけ--ledger business/ops/ledger.jsonを指定します。
 
 ```powershell
 python business/ops/flow.py status --ledger business/unity/ops/ledger.json
 python business/ops/flow.py next --ledger business/unity/ops/ledger.json
-pwsh -File scripts/Invoke-Unity.ps1 -Operation Validate
-dotnet run --project tests/CourierCore/CourierCore.csproj
 ```
 
-通常制作はWindowsローカル。CIビルドはGitHubホスト型runner。Unity Personalを使い、有料ライセンスや新規課金を契約しません。CIやCDの障害だけを理由にコード制作と独立したルール検査を止めません。Unityライセンスがない場合はGUI検証・Unityビルドを未確認として残し、実行できる作業を進めます。
+通常のWeb制作・検査はWindowsローカル。CIやCDの障害だけを理由に独立した制作を止めません。Unityの自律制作と追加ビルドは継続せず、既存Personal設定と成果を保全します。本人持込Unity完成品の配布検査は受領後に行い、未実行を成功扱いにしません。有料ライセンスや新規課金は契約しません。
 
 天啓.mdを毎回読み、最新の直接指示を優先します。1作ずつ継続し、01/07時は実装、13時は一次資料の市場調査から具体的なタスク化、19時は実測・人間の反応と技術検査による方針調整を行います。新しい企画を毎回作り直しません。
 

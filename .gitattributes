@@ -5,4 +5,42 @@
 *.asmdef text eol=lf
 *.yml text eol=lf
 *.py text eol=lf
-business/unity/evidence/*.json text eol=lf
+# Evidence hashes bind exact bytes; preserve them on Windows and Linux.
+business/unity/evidence/*.json -text whitespace=cr-at-eol
+# Research checkpoints must retain their hashed bytes after Windows checkout.
+business/unity/research/*.md text eol=lf
+# Responsive-player source receipts retain identical bytes on Windows checkout.
+web/plugins/local-unity-player.ts text eol=lf
+web/src/portal/UnityPlayer.tsx text eol=lf
+web/src/portal/App.css -text whitespace=cr-at-eol
+docs/ice-courier-responsive-ui.md text eol=lf
+docs/ice-courier-editor-quality-20261011.md text eol=lf
+business/blog/drafts/2026-10-11-unity-portrait-editor-check.md text eol=lf
+scripts/Invoke-Unity.ps1 -text whitespace=cr-at-eol
+# Japanese portal guidance receipts bind the same bytes in Git and Windows.
+web/src/portal/App.tsx text eol=lf
+web/src/portal/data/works.json text eol=lf
+web/src/portal/routes.ts text eol=lf
+docs/ice-courier-save-notice-20261012.md text eol=lf
+docs/web-technology-policy-20261012.md text eol=lf
+AGENTS.md text eol=lf
+STATE.md text eol=lf
+# Policy checkpoint receipts bind the existing Windows bytes.
+README.md -text whitespace=cr-at-eol
+business/unity/README.md -text whitespace=cr-at-eol
+docs/workspace-handoff.md -text whitespace=cr-at-eol
+business/studio-policy.json -text whitespace=cr-at-eol
+
+web/src/portal/catalog.ts text eol=lf
+
+# Technology catalog checkpoint bytes.
+docs/web-catalog-20261012.md text eol=lf
+business/blog/drafts/2026-10-12-web-catalog.md text eol=lf
+scripts/check-repository.mjs text eol=lf
+scripts/check-web-build.mjs text eol=lf
+web/scripts/prebuild.mjs text eol=lf
+web/src/portal/data/works.json -text whitespace=cr-at-eol
+web/src/App.tsx text eol=lf
+web/src/portal/navigation.ts text eol=lf
+scripts/check-portal-navigation.mjs text eol=lf
+docs/web-navigation-20261012.md text eol=lf

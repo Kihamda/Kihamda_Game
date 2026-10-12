@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 10,
+  "revision": 95,
   "business_id": "game-site",
-  "fence": 1,
+  "fence": 15,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -106,9 +106,1407 @@
       "depends_on": [
         "T-ice-courier-unity-evaluation"
       ],
+      "status": "cancelled",
+      "checkpoints": [
+        {
+          "source": "user:automation:unity:20261011-0100",
+          "reconciliation": "UI app-approval and request waits exceeded lease. Original HEAD unchanged, no external operations or unknown results. Implementation hashes and partial checks saved; later untested additions removed to restore initially compiled/tested Unity source. No duplicate slot.",
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portrait-20261011-0100.json",
+              "sha256": "95d52c07b9308ec81883e1681cc9f5c12cdc8584529cee1618bf0072a1fb583e"
+            }
+          ],
+          "next_step": "Same T-ice-courier-touch-polish: verify new UI actual screen/input, then exact-source hosted artifacts and physical-device save/touch separately",
+          "at": 1791650205.345042,
+          "recovered_fence": 7
+        },
+        {
+          "run_id": "unity-20261011T0700-b1404a964998",
+          "fence": 8,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/quality-20261011-0700.json",
+              "sha256": "a83ee7f9844b1bfd31e1f2f5b389c58e96adf766e688148ae206beea0af09683"
+            },
+            {
+              "path": "docs/ice-courier-editor-quality-20261011.md",
+              "sha256": "bb2e45245120a2fc000fea05ddb74105d52f0bb3f7eb5887cdf806d16aba1d6a"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-11-unity-portrait-editor-check.md",
+              "sha256": "cfbbf753ab278aaf17aa082c3bd2b428ba882d88989e36c2f79f3126d0e4a523"
+            },
+            {
+              "path": "scripts/Invoke-Unity.ps1",
+              "sha256": "0d03bc82e9cb747657b7ea67ec2b28c36b799f29b5b7e906a8a4e2f9391e46fe"
+            }
+          ],
+          "checks": [
+            "Unity Validate passed; EditMode10/10 and PlayMode1/1 before and after helper change",
+            "Editor390x844 all3 routes and Undo/Play-cycle Resume passed;335/1280 route3 and mouse-drag checks passed",
+            "Same run operation refusal preserved existing XML",
+            "Web build/repository/GUID/36 checksums passed;4 parent HEADs/8 recovery hashes matched",
+            "Unverified Actions/new browser/device/human checks retained; old ledger and owner text unchanged"
+          ],
+          "next_step": "Same T-ice-courier-touch-polish: obtain exact-source responsive-v1 Actions artifacts, verify source/checksums and attach to local Web host; separately verify browser/device/human acceptance",
+          "at": 1791670448.4896421
+        },
+        {
+          "run_id": "unity-20261011T0700-b1404a964998",
+          "fence": 8,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/quality-20261011-0700.json",
+              "sha256": "a83ee7f9844b1bfd31e1f2f5b389c58e96adf766e688148ae206beea0af09683"
+            },
+            {
+              "path": "docs/ice-courier-editor-quality-20261011.md",
+              "sha256": "bb2e45245120a2fc000fea05ddb74105d52f0bb3f7eb5887cdf806d16aba1d6a"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-11-unity-portrait-editor-check.md",
+              "sha256": "cfbbf753ab278aaf17aa082c3bd2b428ba882d88989e36c2f79f3126d0e4a523"
+            },
+            {
+              "path": "scripts/Invoke-Unity.ps1",
+              "sha256": "0d03bc82e9cb747657b7ea67ec2b28c36b799f29b5b7e906a8a4e2f9391e46fe"
+            }
+          ],
+          "checks": [
+            "Unity Validate passed; EditMode10/10 and PlayMode1/1 before and after helper change",
+            "Editor390x844 all3 routes and Undo/Play-cycle Resume passed;335/1280 route3 and mouse-drag checks passed",
+            "Same run operation refusal preserved existing XML",
+            "Web build/repository/GUID/36 checksums passed;4 parent HEADs/8 recovery hashes matched",
+            "Unverified Actions/new browser/device/human checks retained; old ledger and owner text unchanged"
+          ],
+          "next_step": "Same T-ice-courier-touch-polish: obtain exact-source responsive-v1 Actions artifacts, verify source/checksums and attach to local Web host; separately verify browser/device/human acceptance",
+          "at": 1791670448.4991417
+        },
+        {
+          "run_id": "unity-20261011T1900-8b31b641b674",
+          "fence": 10,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-11-guidance-strategy.md",
+              "sha256": "c9cd734c715404571c922f898f0299a3c4860a8fcbc5b31711adb59f694408ac"
+            },
+            {
+              "path": "docs/images/guidance-20261011-390.jpg",
+              "sha256": "ea3f507c2c0349722349c49fa25a477c349bf4168f268c9354e7d9b29c681186"
+            },
+            {
+              "path": "docs/images/guidance-20261011-controls-390.jpg",
+              "sha256": "d457be371fe93fb68f9089be16d6489993fcfa44b32beb15f048b06a7732dddd"
+            },
+            {
+              "path": "docs/images/guidance-20261011-1280.jpg",
+              "sha256": "d0ee959709cb05ddc49885bc3322571b9774e238cd61374f9c5126ceb2d172c0"
+            },
+            {
+              "path": "business/unity/evidence/strategy-20261011-1900.json",
+              "sha256": "49dff95d9b8358e5758de62a5a1723934f9de1f271950f8dfe0d47cd854f5e81"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "4d09854c8eda82d913a079c9f92380f1c407433cd7e6aa29fdecc9e30b57153f"
+            },
+            {
+              "path": "web/src/portal/App.css",
+              "sha256": "5086ede81bc49889410ed71275bc6ca8a366efab8474bee17fe879095309974c"
+            },
+            {
+              "path": "web/src/portal/data/unity-games.json",
+              "sha256": "01d015cacdd9233703f3f312287cee86ad1964dfc84a114f696660e8253bc468"
+            },
+            {
+              "path": "web/src/portal/routes.ts",
+              "sha256": "032bc484fec43ebe8c9a34c1dd21aa257c5ad724f8e0d95d3d3999aa5ef2944e"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierBoard.cs",
+              "sha256": "24115037343d7dfe9923a807af8b7ccabddc1097fb1f806709ecb709a8a0bfbf"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+              "sha256": "66a179eff8ae6e8198a7933080e4e4f989be0896a677353531e900d4ede08c02"
+            }
+          ],
+          "checks": [
+            "Web TypeScript/ESLint/Vite/5 SSG passed; repository4 legacy/19 GUID and36 checksums/public-artifact exclusion passed",
+            "Unchanged CourierBoard compiled/executed with PowerShell Add-Type: initial/right/Undo, Restore clears old history, new move Undo passes; not Unity/PlayerPrefs",
+            "390/1280 Web guidance measured16px and no horizontal overflow; summary335x52.796875, Enter open/close; standard preview no start/iframe",
+            "Browser search frozen1; released0; clear/all/details/list return passed; screenshots game portal only",
+            "Latest checkpoint2, original55 ledger event prefix/task contract, protected owner/old ledger/Unity and parent4 HEAD/recovery8 hashes matched"
+          ],
+          "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+          "at": 1791713595.670249
+        },
+        {
+          "run_id": "unity-20261011T1900-8b31b641b674",
+          "fence": 10,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-11-guidance-strategy.md",
+              "sha256": "c9cd734c715404571c922f898f0299a3c4860a8fcbc5b31711adb59f694408ac"
+            },
+            {
+              "path": "docs/images/guidance-20261011-390.jpg",
+              "sha256": "ea3f507c2c0349722349c49fa25a477c349bf4168f268c9354e7d9b29c681186"
+            },
+            {
+              "path": "docs/images/guidance-20261011-controls-390.jpg",
+              "sha256": "d457be371fe93fb68f9089be16d6489993fcfa44b32beb15f048b06a7732dddd"
+            },
+            {
+              "path": "docs/images/guidance-20261011-1280.jpg",
+              "sha256": "d0ee959709cb05ddc49885bc3322571b9774e238cd61374f9c5126ceb2d172c0"
+            },
+            {
+              "path": "business/unity/evidence/strategy-20261011-1900.json",
+              "sha256": "49dff95d9b8358e5758de62a5a1723934f9de1f271950f8dfe0d47cd854f5e81"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "4d09854c8eda82d913a079c9f92380f1c407433cd7e6aa29fdecc9e30b57153f"
+            },
+            {
+              "path": "web/src/portal/App.css",
+              "sha256": "5086ede81bc49889410ed71275bc6ca8a366efab8474bee17fe879095309974c"
+            },
+            {
+              "path": "web/src/portal/data/unity-games.json",
+              "sha256": "01d015cacdd9233703f3f312287cee86ad1964dfc84a114f696660e8253bc468"
+            },
+            {
+              "path": "web/src/portal/routes.ts",
+              "sha256": "032bc484fec43ebe8c9a34c1dd21aa257c5ad724f8e0d95d3d3999aa5ef2944e"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierBoard.cs",
+              "sha256": "24115037343d7dfe9923a807af8b7ccabddc1097fb1f806709ecb709a8a0bfbf"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+              "sha256": "66a179eff8ae6e8198a7933080e4e4f989be0896a677353531e900d4ede08c02"
+            }
+          ],
+          "checks": [
+            "Web TypeScript/ESLint/Vite/5 SSG passed; repository4 legacy/19 GUID and36 checksums/public-artifact exclusion passed",
+            "Unchanged CourierBoard compiled/executed with PowerShell Add-Type: initial/right/Undo, Restore clears old history, new move Undo passes; not Unity/PlayerPrefs",
+            "390/1280 Web guidance measured16px and no horizontal overflow; summary335x52.796875, Enter open/close; standard preview no start/iframe",
+            "Browser search frozen1; released0; clear/all/details/list return passed; screenshots game portal only",
+            "Latest checkpoint2, original55 ledger event prefix/task contract, protected owner/old ledger/Unity and parent4 HEAD/recovery8 hashes matched"
+          ],
+          "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+          "at": 1791713595.682315
+        },
+        {
+          "fence": 11,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/save-notice-20261012-0100.json",
+              "sha256": "2a22b211f9221395bf9ad3b57023304dab6fdb7317a02f7db50692925840d6bc"
+            },
+            {
+              "path": "docs/ice-courier-save-notice-20261012.md",
+              "sha256": "3b830d4f416c5c2f12ce1aaf319957e13df0c0cbd71ec507a025c865f6993012"
+            },
+            {
+              "path": "docs/web-technology-policy-20261012.md",
+              "sha256": "07871ccbafc223e06d4bbb8d678432ddf74ade4dce0d1152fe119e71eca54e6e"
+            },
+            {
+              "path": "docs/images/save-notice-20261012-1280.png",
+              "sha256": "3fd14c850e4bb18ca819c746b2426e91e2045320c239b664b339e27df13fd651"
+            },
+            {
+              "path": "docs/images/save-notice-20261012-390.png",
+              "sha256": "59cc338a567c736b991e6bf0cc7e69280d731beae80cf02f41d11346f19aa99e"
+            },
+            {
+              "path": "docs/images/save-notice-20261012-335.png",
+              "sha256": "04cff41d7b0f8e02d3fcf84331333c69b0091bfb7b4754c3ce20649ce933ca26"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+              "sha256": "2fa4bc34a6b92e065d859da3be2982111659a38ed1c6d71f24b0f2a405558f5b"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Tests/PlayMode/MigrationLoadTests.cs",
+              "sha256": "12d971b6e43182acce69ea6a9d9f828e5d11a8ba59cb527d5b87ee936bd8777a"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "72a3d5ee894dd5a61bb627ad4514e1c9a0b9b2727358ad526f2c6d6ad621b11f"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "eebc62abe636c72deb179997840696a48121558356cc9064f295f76e528bc5a1"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "cf753941c03dd15ae548629732db0f516204fe60125180557b863a8033e03cc4"
+            },
+            {
+              "path": "README.md",
+              "sha256": "cf0457f3f91a835e42d3f1784e67716dcec4bc54b808db8e5f4e648da0601299"
+            },
+            {
+              "path": "business/unity/README.md",
+              "sha256": "04aac0d6aff306636b825d8e0644883a440761761903933badebae9273380cce"
+            },
+            {
+              "path": "docs/workspace-handoff.md",
+              "sha256": "eb4b3c716341c0c9791bca86a7a6dfa3dbd64bfd02d05494d0d523831b5f9719"
+            }
+          ],
+          "checks": [
+            "Before work latest checkpoint11 hashes verified",
+            "Parent4 HEADs/recovery8 hashes matched",
+            "Repository4 preserved catalog/19 GUID passed",
+            "No changes to owner text, old cloud ledger, board rules, layout or Web source",
+            "Raw logs/XML/screenshots local only; 3 game-only crops visually inspected",
+            "No external push/PR/merge/build/deploy/post or Atohitori access",
+            "Final Unity PlayMode3/3, prior EditMode10/10 and Validate passed; red1/3 reproduced2 regressions",
+            "Saved automation Web policy verified with original schedule/model/local target"
+          ],
+          "run_id": "unity-20261012T0100-613a8862a2d4",
+          "next_step": "Existing Web portal catalog/rendering supports Web apps and owner-provided finished Unity artifacts; no unverified start links",
+          "at": 1791735647.6306062
+        },
+        {
+          "fence": 11,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/save-notice-20261012-0100.json",
+              "sha256": "2a22b211f9221395bf9ad3b57023304dab6fdb7317a02f7db50692925840d6bc"
+            },
+            {
+              "path": "docs/ice-courier-save-notice-20261012.md",
+              "sha256": "3b830d4f416c5c2f12ce1aaf319957e13df0c0cbd71ec507a025c865f6993012"
+            },
+            {
+              "path": "docs/web-technology-policy-20261012.md",
+              "sha256": "07871ccbafc223e06d4bbb8d678432ddf74ade4dce0d1152fe119e71eca54e6e"
+            },
+            {
+              "path": "docs/images/save-notice-20261012-1280.png",
+              "sha256": "3fd14c850e4bb18ca819c746b2426e91e2045320c239b664b339e27df13fd651"
+            },
+            {
+              "path": "docs/images/save-notice-20261012-390.png",
+              "sha256": "59cc338a567c736b991e6bf0cc7e69280d731beae80cf02f41d11346f19aa99e"
+            },
+            {
+              "path": "docs/images/save-notice-20261012-335.png",
+              "sha256": "04cff41d7b0f8e02d3fcf84331333c69b0091bfb7b4754c3ce20649ce933ca26"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+              "sha256": "2fa4bc34a6b92e065d859da3be2982111659a38ed1c6d71f24b0f2a405558f5b"
+            },
+            {
+              "path": "unity/IceCourier/Assets/Kihamda/Tests/PlayMode/MigrationLoadTests.cs",
+              "sha256": "12d971b6e43182acce69ea6a9d9f828e5d11a8ba59cb527d5b87ee936bd8777a"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "72a3d5ee894dd5a61bb627ad4514e1c9a0b9b2727358ad526f2c6d6ad621b11f"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "eebc62abe636c72deb179997840696a48121558356cc9064f295f76e528bc5a1"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "cf753941c03dd15ae548629732db0f516204fe60125180557b863a8033e03cc4"
+            },
+            {
+              "path": "README.md",
+              "sha256": "cf0457f3f91a835e42d3f1784e67716dcec4bc54b808db8e5f4e648da0601299"
+            },
+            {
+              "path": "business/unity/README.md",
+              "sha256": "04aac0d6aff306636b825d8e0644883a440761761903933badebae9273380cce"
+            },
+            {
+              "path": "docs/workspace-handoff.md",
+              "sha256": "eb4b3c716341c0c9791bca86a7a6dfa3dbd64bfd02d05494d0d523831b5f9719"
+            }
+          ],
+          "checks": [
+            "Before work latest checkpoint11 hashes verified",
+            "Parent4 HEADs/recovery8 hashes matched",
+            "Repository4 preserved catalog/19 GUID passed",
+            "No changes to owner text, old cloud ledger, board rules, layout or Web source",
+            "Raw logs/XML/screenshots local only; 3 game-only crops visually inspected",
+            "No external push/PR/merge/build/deploy/post or Atohitori access",
+            "Final Unity PlayMode3/3, prior EditMode10/10 and Validate passed; red1/3 reproduced2 regressions",
+            "Saved automation Web policy verified with original schedule/model/local target"
+          ],
+          "run_id": "unity-20261012T0100-613a8862a2d4",
+          "next_step": "Existing Web portal catalog/rendering supports Web apps and owner-provided finished Unity artifacts; no unverified start links",
+          "at": 1791735647.8371303
+        },
+        {
+          "next_step": "T-web-portal-technology-catalog",
+          "task_id": "T-ice-courier-touch-polish",
+          "source": "user:current-thread:2026-10-12:web-technology-policy",
+          "reason": "Owner changed Web application production from mandatory Unity to Web technologies. Partial Unity evidence preserved in checkpoint67/yield68; acceptance remains unmet, not completed.",
+          "at": 1791735693.9894085
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261011T0100-3d0983464e72",
+          "task_id": "T-ice-courier-touch-polish",
+          "fence": 7,
+          "expires_at": 1791649820.0850632
+        },
+        {
+          "run_id": "unity-20261011T0700-b1404a964998",
+          "task_id": "T-ice-courier-touch-polish",
+          "fence": 8,
+          "expires_at": 1791671416.3817098
+        },
+        {
+          "run_id": "unity-20261011T1900-8b31b641b674",
+          "task_id": "T-ice-courier-touch-polish",
+          "fence": 10,
+          "expires_at": 1791714554.204556
+        },
+        {
+          "run_id": "unity-20261012T0100-613a8862a2d4",
+          "task_id": "T-ice-courier-touch-polish",
+          "fence": 11,
+          "expires_at": 1791735917.0193048
+        }
+      ]
+    },
+    "T-unity-portal-foundation": {
+      "id": "T-unity-portal-foundation",
+      "objective": "Unity作品のトップ・詳細・共通案内画面を刷新し、重複一覧と架空のプレイ数を除く",
+      "acceptance": [
+        "トップからIce Courierの詳細へ到達できる",
+        "検索の一致と空結果を表示できる",
+        "未配信作品に壊れたプレイリンクを出さない",
+        "about・contact・privacyに共通導線を設ける",
+        "デスクトップと390pxで表示・キーボード操作を検査する",
+        "静的ビルド・リンク・旧URL保持検査が成功する"
+      ],
+      "outputs": [
+        "web/src/portal",
+        "静的Webプレビュー",
+        "表示と操作の検査記録"
+      ],
+      "checks": [
+        "npm run build",
+        "npm run check",
+        "node scripts/check-web-build.mjs",
+        "ブラウザ表示と操作"
+      ],
+      "next_step": "Unity配布成果物を組み込む前段の共通画面を実装・検査する",
+      "decision_id": "D-web-renovation-20261010",
+      "hypothesis": "一覧を一つにし作品詳細でルールと公開状態を伝えれば、作品数を増やさず入口を改善できる",
+      "source": "user:天啓.md:2026-10-10:web-renovation",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261010T0100-9e5710806c84",
+          "fence": 2,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-20261010-0100.json",
+              "sha256": "895f5fdf490e90cb1a17cf2412b129f4d483041925748a3944bfa8486a34097e"
+            }
+          ],
+          "checks": [
+            "Build, repository, static links/checksums passed",
+            "Actual browser search/filter/navigation/keyboard and desktop/390x844 passed",
+            "24 ledger tests and 4 parent recovery comparisons passed"
+          ],
+          "next_step": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks",
+          "at": 1791562881.2569656
+        },
+        {
+          "run_id": "unity-20261010T0100-9e5710806c84",
+          "fence": 2,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-20261010-0100.json",
+              "sha256": "895f5fdf490e90cb1a17cf2412b129f4d483041925748a3944bfa8486a34097e"
+            }
+          ],
+          "checks": [
+            "Build, repository, static links/checksums passed",
+            "Actual browser search/filter/navigation/keyboard and desktop/390x844 passed",
+            "24 ledger tests and 4 parent recovery comparisons passed"
+          ],
+          "next_step": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks",
+          "passed": true,
+          "at": 1791562881.2708127
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261010T0100-9e5710806c84",
+          "task_id": "T-unity-portal-foundation",
+          "fence": 2,
+          "expires_at": 1791563370.6444685
+        }
+      ]
+    },
+    "T-unity-portal-player-integration": {
+      "id": "T-unity-portal-player-integration",
+      "objective": "検証済みIce Courier WebGL成果物を新しい作品詳細へローカル接続する",
+      "acceptance": [
+        "成果物のsourceCommitとSHA256を照合する",
+        "詳細から読み込み・開始・終了して一覧へ戻れる",
+        "読み込み失敗時に再試行と戻る導線を表示する",
+        "Unity内部入力とページ操作の干渉を検査する",
+        "デスクトップと390x844でプレイヤー枠を確認し実タッチ未実行を区別する",
+        "本番全体置換をせず未配信を公開中と扱わない"
+      ],
+      "outputs": [
+        "Unityプレイヤーの共通Web枠",
+        "同一版成果物との接続記録",
+        "表示と入力の検査記録"
+      ],
+      "checks": [
+        "ローカルWebGL実画面と入力",
+        "配布版照合",
+        "Web静的ビルドと内部リンク"
+      ],
+      "next_step": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks",
+      "decision_id": "D-web-renovation-20261010",
+      "hypothesis": "作品詳細のルール説明と開始後の戻り先を揃えれば、公開時に迷わずUnity作品へ移れる",
+      "source": "user:天啓.md:2026-10-10:web-renovation",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-unity-portal-foundation"
+      ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261010T0700-cc24abcda9c1",
+          "fence": 3,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/player-20261010-0700.json",
+              "sha256": "cb485571977a2699fa058c83789145041f05c25d41fc1545b4128d628460a2d1"
+            }
+          ],
+          "checks": [
+            "Build, repository, hashes and actual player load/input/return/failure checks passed",
+            "390x844 frame checked; real touch and human response unobserved",
+            "07 blog draft saved, no publication"
+          ],
+          "next_step": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately",
+          "at": 1791584704.5300887
+        },
+        {
+          "run_id": "unity-20261010T0700-cc24abcda9c1",
+          "fence": 3,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/player-20261010-0700.json",
+              "sha256": "cb485571977a2699fa058c83789145041f05c25d41fc1545b4128d628460a2d1"
+            }
+          ],
+          "checks": [
+            "Build, repository, hashes and actual player load/input/return/failure checks passed",
+            "390x844 frame checked; real touch and human response unobserved",
+            "07 blog draft saved, no publication"
+          ],
+          "next_step": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately",
+          "passed": true,
+          "at": 1791584704.5375438
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261010T0700-cc24abcda9c1",
+          "task_id": "T-unity-portal-player-integration",
+          "fence": 3,
+          "expires_at": 1791584859.5750847
+        }
+      ]
+    },
+    "T-ice-courier-portrait-research-20261010": {
+      "id": "T-ice-courier-portrait-research-20261010",
+      "objective": "一次資料と現行UIから既存の縦画面改善工程へ具体的な受入条件を補う",
+      "acceptance": [
+        "競合の販売者資料2件とUnity・W3Cの一次資料を確認する",
+        "現行ソースの縮小率とCSS寸法の推定を実測と区別する",
+        "既存T-ice-courier-touch-polishへ検査条件と次の一工程を紐付ける",
+        "未取得指標と人間評価をnullに保ち成果物ハッシュを保存する"
+      ],
+      "outputs": [
+        "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+        "business/unity/evidence/research-20261010-1300.json"
+      ],
+      "checks": [
+        "一次資料の本文と根拠リンク",
+        "現行ソースと寸法計算",
+        "親4件のcommitと復元ハッシュ",
+        "flowの履歴と成果物ハッシュ"
+      ],
+      "next_step": "既存T-ice-courier-touch-polishのUnity縦画面UIとWeb枠の寸法を改善する",
+      "decision_id": "D-web-renovation-20261010",
+      "hypothesis": "押せる操作部とルールを見分けられる導入を優先すれば、作品を増やさず開始体験の問題を検証できる",
+      "source": "research:business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+      "pdca": "plan",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-unity-portal-player-integration"
+      ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261010T1300-6f6e11091565",
+          "fence": 4,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/research-20261010-1300.json",
+              "sha256": "b20a5a11f32de8d29debe378c096e0cc3a38e6a1531bb18632c89bce69238b2a"
+            },
+            {
+              "path": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+              "sha256": "758b07473c08b11dd006f0e7518bc221ff95403995bdf62fa363ad5f08cd41f9"
+            }
+          ],
+          "checks": [
+            "6 primary sources read and linked; source-derived dimensions explicitly separated from measurements",
+            "8 acceptance details linked to existing implementation task; no replacement/new game",
+            "Repository contract and diff check passed; 4 parent HEADs and 8 recovery hashes verified",
+            "Owner instructions and old cloud ledger untouched; unobserved metrics remain null"
+          ],
+          "next_step": "Existing T-ice-courier-touch-polish: improve Unity portrait UI and local Web frame together; compile and verify actual display",
+          "at": 1791605017.6936588
+        },
+        {
+          "run_id": "unity-20261010T1300-6f6e11091565",
+          "fence": 4,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/research-20261010-1300.json",
+              "sha256": "b20a5a11f32de8d29debe378c096e0cc3a38e6a1531bb18632c89bce69238b2a"
+            },
+            {
+              "path": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+              "sha256": "758b07473c08b11dd006f0e7518bc221ff95403995bdf62fa363ad5f08cd41f9"
+            }
+          ],
+          "checks": [
+            "6 primary sources read and linked; source-derived dimensions explicitly separated from measurements",
+            "8 acceptance details linked to existing implementation task; no replacement/new game",
+            "Repository contract and diff check passed; 4 parent HEADs and 8 recovery hashes verified",
+            "Owner instructions and old cloud ledger untouched; unobserved metrics remain null"
+          ],
+          "next_step": "Existing T-ice-courier-touch-polish: improve Unity portrait UI and local Web frame together; compile and verify actual display",
+          "passed": true,
+          "at": 1791605017.7016575
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261010T1300-6f6e11091565",
+          "task_id": "T-ice-courier-portrait-research-20261010",
+          "fence": 4,
+          "expires_at": 1791606330.1653361
+        }
+      ]
+    },
+    "T-ice-courier-strategy-review-20261010": {
+      "id": "T-ice-courier-strategy-review-20261010",
+      "objective": "Measure the current portrait player and make a bounded strategy decision from technical evidence and unobserved human/business data",
+      "acceptance": [
+        "Measure desktop and 390x844 canvas/host geometry on the verified artifact",
+        "Separate DOM measurements from Unity coordinate calculations and physical touch/human observations",
+        "Preserve the existing implementation task and use improve for technical UX, unobserved for business",
+        "Record checkpoint hashes and check repository, legacy recovery and ledger history"
+      ],
+      "outputs": [
+        "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+        "business/unity/evidence/strategy-20261010-1900.json"
+      ],
+      "checks": [
+        "Real browser geometry and existing player exit regression",
+        "Source/artifact hashes and ledger prefix",
+        "Repository contracts and recovery checks"
+      ],
+      "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; then compile and verify actual display",
+      "decision_id": "D-ice-courier-portrait-acceptance-20261010",
+      "hypothesis": "Measured end-to-end display geometry identifies whether host resizing or Unity layout needs correction without inventing demand",
+      "source": "user:automation:unity:19-strategy",
+      "pdca": "check",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-unity-portal-player-integration",
+        "T-ice-courier-portrait-research-20261010"
+      ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "source": "user:current-thread:full-access-continue",
+          "reconciliation": "Original HEAD and no external operations; desktop partial evidence persisted; no unknown operations; viewport reset; screenshot tool delay exceeded lease; acceptance incomplete",
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/strategy-20261010-1900-interrupted.json",
+              "sha256": "733cb105485e8124bf36158aac2717dfb26ae8189e729abbeeb775119706cdd6"
+            }
+          ],
+          "next_step": "Owner authorized manual continuation; finish remaining geometry and strategy review without consuming the 19 slot again",
+          "at": 1791632712.9162526,
+          "recovered_fence": 5
+        },
+        {
+          "run_id": "unity-manual-20261010-cf7a96dccbb6",
+          "fence": 6,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/strategy-20261010-1900.json",
+              "sha256": "f51a812812171336dff8b6923c54dd11b9110fac04584258da57c15de734f9c6"
+            },
+            {
+              "path": "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+              "sha256": "82ab5221d35a5fe2c3f6416c114ebe221b952020fe4f4d6aa3b6d1ce86c8fe0d"
+            }
+          ],
+          "checks": [
+            "Desktop and390x844 DOM geometry and source-derived control sizes recorded; unsupported real-touch/human claims excluded",
+            "Existing player Tab/Enter exit and iframe removal passed; source/artifact18 hashes matched",
+            "Repository4 legacy/17 GUID contract, parent4 HEAD/8 recovery and report links passed",
+            "Original31 ledger events and existing implementation task preserved; owner/old cloud ledger unchanged",
+            "Interrupted scheduled run recovered with partial artifact; manual user continuation completed without another slot"
+          ],
+          "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+          "at": 1791632941.5115044
+        },
+        {
+          "run_id": "unity-manual-20261010-cf7a96dccbb6",
+          "fence": 6,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/strategy-20261010-1900.json",
+              "sha256": "f51a812812171336dff8b6923c54dd11b9110fac04584258da57c15de734f9c6"
+            },
+            {
+              "path": "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+              "sha256": "82ab5221d35a5fe2c3f6416c114ebe221b952020fe4f4d6aa3b6d1ce86c8fe0d"
+            }
+          ],
+          "checks": [
+            "Desktop and390x844 DOM geometry and source-derived control sizes recorded; unsupported real-touch/human claims excluded",
+            "Existing player Tab/Enter exit and iframe removal passed; source/artifact18 hashes matched",
+            "Repository4 legacy/17 GUID contract, parent4 HEAD/8 recovery and report links passed",
+            "Original31 ledger events and existing implementation task preserved; owner/old cloud ledger unchanged",
+            "Interrupted scheduled run recovered with partial artifact; manual user continuation completed without another slot"
+          ],
+          "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+          "passed": true,
+          "at": 1791632941.5210066
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261010T1900-e6047e8667b5",
+          "task_id": "T-ice-courier-strategy-review-20261010",
+          "fence": 5,
+          "expires_at": 1791627928.0944247
+        },
+        {
+          "run_id": "unity-manual-20261010-cf7a96dccbb6",
+          "task_id": "T-ice-courier-strategy-review-20261010",
+          "fence": 6,
+          "expires_at": 1791634223.0896156
+        }
+      ]
+    },
+    "T-ice-courier-first-play-research-20261011": {
+      "id": "T-ice-courier-first-play-research-20261011",
+      "objective": "一次資料と現行ソースから初回説明・保存案内の受入条件を既存工程に補う",
+      "acceptance": [
+        "作者・販売者の一次資料を複数作品で確認し提示方法と需要を分ける",
+        "現行ソースに結び付く検査項目・優先順・未確認事項を残す",
+        "既存T-ice-courier-touch-polishと前回検査条件を保持し新作を追加しない"
+      ],
+      "outputs": [
+        "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+        "business/unity/evidence/research-20261011-1300.json"
+      ],
+      "checks": [
+        "Primary-source provenance and source SHA256",
+        "Ledger event prefix and original task equality",
+        "Latest checkpoint, parent HEAD/recovery and repository contracts"
+      ],
+      "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+      "decision_id": "D-ice-courier-first-play-20261011",
+      "hypothesis": "Explicit departure-cell rule, Japanese symbol/control mapping and verified persistence disclosure make the first play easier to assess without adding stages",
+      "source": "user:automation:unity:20261011-1300",
+      "pdca": "check",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-ice-courier-portrait-research-20261010"
+      ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261011T1300-7f20ad59a424",
+          "fence": 9,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+              "sha256": "cf44307d6dcb212b62ac6eba3e89206e01035537f000e21ed7e9ab8a71021605"
+            },
+            {
+              "path": "business/unity/evidence/research-20261011-1300.json",
+              "sha256": "fd875af827b6a952f33bb6181d36dfe218f51132ef629fe8957f4d116b04e0c1"
+            }
+          ],
+          "checks": [
+            "7 creator/publisher/Unity primary sources verified; marketing, source-derived expectations and unobserved human results separated",
+            "Existing implementation task and portrait acceptance unchanged; original49 events preserved",
+            "Latest checkpoint4 hashes, parent4 HEADs/recovery8 hashes, repository4 legacy/19 GUID,3 local report links and JSON verified",
+            "Owner text and old cloud ledger unchanged; no new game/UI implementation, external operations or Atohitori access",
+            "Source receipt hashes matched and null metrics/14-28 unstarted retained"
+          ],
+          "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+          "at": 1791691342.6670527
+        },
+        {
+          "run_id": "unity-20261011T1300-7f20ad59a424",
+          "fence": 9,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+              "sha256": "cf44307d6dcb212b62ac6eba3e89206e01035537f000e21ed7e9ab8a71021605"
+            },
+            {
+              "path": "business/unity/evidence/research-20261011-1300.json",
+              "sha256": "fd875af827b6a952f33bb6181d36dfe218f51132ef629fe8957f4d116b04e0c1"
+            }
+          ],
+          "checks": [
+            "7 creator/publisher/Unity primary sources verified; marketing, source-derived expectations and unobserved human results separated",
+            "Existing implementation task and portrait acceptance unchanged; original49 events preserved",
+            "Latest checkpoint4 hashes, parent4 HEADs/recovery8 hashes, repository4 legacy/19 GUID,3 local report links and JSON verified",
+            "Owner text and old cloud ledger unchanged; no new game/UI implementation, external operations or Atohitori access",
+            "Source receipt hashes matched and null metrics/14-28 unstarted retained"
+          ],
+          "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+          "passed": true,
+          "at": 1791691342.6850042
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261011T1300-7f20ad59a424",
+          "task_id": "T-ice-courier-first-play-research-20261011",
+          "fence": 9,
+          "expires_at": 1791692756.828931
+        }
+      ]
+    },
+    "T-web-portal-technology-catalog": {
+      "hypothesis": "Web technologies reduce the production burden identified by the owner while a separate finished-Unity deployment path preserves compatibility",
+      "outputs": [
+        "Web作品データと表示の修正",
+        "受入れ・未公開状態の検査証跡"
+      ],
+      "acceptance": [
+        "制作技術web/unityと、制作中の既存試作品/本人持込完成品の扱いを区別し、実態を誤表示しない",
+        "一覧・検索・詳細で制作技術に依存した誤案内をなくし、release=nullに開始リンクを出さない",
+        "Unity完成品の受入れ口と既存ローカル検査入口を保全し、未受領の完成品や配信実績を作らない",
+        "型・静的検査・ビルドと390/1280px実ブラウザで一覧・詳細・公開状態・戻り先を確認する"
+      ],
+      "pdca": "plan",
+      "experiment_id": "E-unity-portal",
+      "next_step": "Implement technology-aware existing catalog and rendering while retaining owner-provided finished Unity deployment compatibility",
+      "priority": 0,
+      "id": "T-web-portal-technology-catalog",
+      "depends_on": [],
+      "source": "user:current-thread:2026-10-12:web-technology-policy",
+      "decision_id": "D-web-technology-policy-20261012",
+      "objective": "既存Webポータルの作品データと一覧・詳細をWeb製アプリと本人持込Unity完成品に対応させる",
+      "checks": [
+        "TypeScript/ESLint/Web build",
+        "Repository contract",
+        "Actual browser catalog/detail/unpublished navigation"
+      ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+          "fence": 12,
+          "artifacts": [
+            {
+              "path": "docs/web-catalog-20261012.md",
+              "sha256": "ec4892b1ed707f605531f8ed060c4aedca4990fda8a476e3d3a52f71a92c9d82"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-12-web-catalog.md",
+              "sha256": "43ac480dd676cba06d57d40b2048acf8db8266ebc9aa6c47253080772015aa8c"
+            },
+            {
+              "path": "docs/images/catalog-20261012-390.png",
+              "sha256": "bb654ee4423fa250ee749c5642f840f81dea4baa06e7a29e340c96f616eea589"
+            },
+            {
+              "path": "docs/images/catalog-20261012-1280.png",
+              "sha256": "5c704e0c9354846af459fd9764a6fc589b52c829902230aa2ba07adbde93d71d"
+            },
+            {
+              "path": "web/src/portal/catalog.ts",
+              "sha256": "841684b3835e241c7e39f3e10d6aef10c04b660595d4191f0950f45db48818ef"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "819fe6821f77b25b2436ebf59ac7fb52baaacf7bf1f4ceb49304c3a8b690df1d"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "35399229720a070b766ccffe15d23f609cec6858e91797f67826d6687963d10b"
+            },
+            {
+              "path": "web/src/portal/routes.ts",
+              "sha256": "1aa08b946c41348239166a372ab08b72225ccb8c1167b746061323e9f4872661"
+            },
+            {
+              "path": "web/src/portal/UnityPlayer.tsx",
+              "sha256": "ef6663f1d0e9a859a1888b099ca22ad393a4604559eb1a101365303655da91b8"
+            },
+            {
+              "path": "scripts/check-repository.mjs",
+              "sha256": "adf4f530e87bcf4e442fed2bd3c03e415bf0dca7ee9be6f307f4644c25ea48b8"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "8adc3bf78314bb9e3ef2a338dd39c3364c2c1d6639469bffe7bcbf401a5d3a03"
+            },
+            {
+              "path": "web/scripts/prebuild.mjs",
+              "sha256": "56f5406099ed00249c70ab1469094e55161cdc2467b05d01c1e54001f0b10ff7"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "1c3fc63943412dcac9ff0ef9cfbe0e48741936aea559573422e3c2e76b412981"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d499c087d4602d7dbd6b0c1ac2ebf235e88faeb249f896548bb4e67c061a7406"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "4db2cbf52501e5230342d0d7ca0ddd8ca0c1750355df6ad1dc9d350f2c2e560a"
+            },
+            {
+              "path": "business/unity/evidence/catalog-20261012-0700.json",
+              "sha256": "24940fd19d6a3f6d1e9d4b7960d0b9fa2c3406a4fe2fdbbd3842621929dabc46"
+            }
+          ],
+          "checks": [
+            "Final TypeScript/ESLint/Vite/5SSG passed",
+            "Repository4 legacy URLs/19 GUIDs and36 checksums/public artifact exclusion passed",
+            "In-memory Web/owner-finished Unity SSR released/unreleased and slash variants passed; no fixture registration",
+            "Release invalid/incomplete metadata and unsafe URLs rejected",
+            "Actual Chromium390/1280 catalog/detail/search/filter/back/list return/reload passed; no overflow/start/iframe",
+            "Observed search term resets after detail/browser back; next task, not fixed",
+            "Parent4 commits and recovery8 hashes matched; initial checkpoint14 verified",
+            "Original72 event prefix preserved; owner text/oldcloud ledger/Unity source/local manifest plugin unchanged",
+            "No received Unity finished artifact, physical touch/Safari/human feedback/save persistence validation; metrics null",
+            "No public push/PR/merge/deploy/post; own browser tabs closed and viewport reset"
+          ],
+          "next_step": "T-web-portal-navigation-state: preserve query/filter and accessible list return",
+          "at": 1791756701.7100863
+        },
+        {
+          "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+          "fence": 12,
+          "artifacts": [
+            {
+              "path": "docs/web-catalog-20261012.md",
+              "sha256": "ec4892b1ed707f605531f8ed060c4aedca4990fda8a476e3d3a52f71a92c9d82"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-12-web-catalog.md",
+              "sha256": "43ac480dd676cba06d57d40b2048acf8db8266ebc9aa6c47253080772015aa8c"
+            },
+            {
+              "path": "docs/images/catalog-20261012-390.png",
+              "sha256": "bb654ee4423fa250ee749c5642f840f81dea4baa06e7a29e340c96f616eea589"
+            },
+            {
+              "path": "docs/images/catalog-20261012-1280.png",
+              "sha256": "5c704e0c9354846af459fd9764a6fc589b52c829902230aa2ba07adbde93d71d"
+            },
+            {
+              "path": "web/src/portal/catalog.ts",
+              "sha256": "841684b3835e241c7e39f3e10d6aef10c04b660595d4191f0950f45db48818ef"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "819fe6821f77b25b2436ebf59ac7fb52baaacf7bf1f4ceb49304c3a8b690df1d"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "35399229720a070b766ccffe15d23f609cec6858e91797f67826d6687963d10b"
+            },
+            {
+              "path": "web/src/portal/routes.ts",
+              "sha256": "1aa08b946c41348239166a372ab08b72225ccb8c1167b746061323e9f4872661"
+            },
+            {
+              "path": "web/src/portal/UnityPlayer.tsx",
+              "sha256": "ef6663f1d0e9a859a1888b099ca22ad393a4604559eb1a101365303655da91b8"
+            },
+            {
+              "path": "scripts/check-repository.mjs",
+              "sha256": "adf4f530e87bcf4e442fed2bd3c03e415bf0dca7ee9be6f307f4644c25ea48b8"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "8adc3bf78314bb9e3ef2a338dd39c3364c2c1d6639469bffe7bcbf401a5d3a03"
+            },
+            {
+              "path": "web/scripts/prebuild.mjs",
+              "sha256": "56f5406099ed00249c70ab1469094e55161cdc2467b05d01c1e54001f0b10ff7"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "1c3fc63943412dcac9ff0ef9cfbe0e48741936aea559573422e3c2e76b412981"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d499c087d4602d7dbd6b0c1ac2ebf235e88faeb249f896548bb4e67c061a7406"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "4db2cbf52501e5230342d0d7ca0ddd8ca0c1750355df6ad1dc9d350f2c2e560a"
+            },
+            {
+              "path": "business/unity/evidence/catalog-20261012-0700.json",
+              "sha256": "24940fd19d6a3f6d1e9d4b7960d0b9fa2c3406a4fe2fdbbd3842621929dabc46"
+            }
+          ],
+          "checks": [
+            "Final TypeScript/ESLint/Vite/5SSG passed",
+            "Repository4 legacy URLs/19 GUIDs and36 checksums/public artifact exclusion passed",
+            "In-memory Web/owner-finished Unity SSR released/unreleased and slash variants passed; no fixture registration",
+            "Release invalid/incomplete metadata and unsafe URLs rejected",
+            "Actual Chromium390/1280 catalog/detail/search/filter/back/list return/reload passed; no overflow/start/iframe",
+            "Observed search term resets after detail/browser back; next task, not fixed",
+            "Parent4 commits and recovery8 hashes matched; initial checkpoint14 verified",
+            "Original72 event prefix preserved; owner text/oldcloud ledger/Unity source/local manifest plugin unchanged",
+            "No received Unity finished artifact, physical touch/Safari/human feedback/save persistence validation; metrics null",
+            "No public push/PR/merge/deploy/post; own browser tabs closed and viewport reset"
+          ],
+          "next_step": "T-web-portal-navigation-state: preserve query/filter and accessible list return",
+          "passed": true,
+          "at": 1791756701.7243314
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+          "task_id": "T-web-portal-technology-catalog",
+          "fence": 12,
+          "expires_at": 1791757773.3269246
+        }
+      ]
+    },
+    "T-web-portal-navigation-state": {
+      "id": "T-web-portal-navigation-state",
+      "decision_id": "D-web-technology-policy-20261012",
+      "source": "user:current-thread:2026-10-12:web-technology-policy",
+      "objective": "既存Web入口の一覧と詳細の往復で検索条件を保持する",
+      "hypothesis": "詳細を見て戻るたびに検索をやり直す操作を減らせる",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 0,
+      "depends_on": [
+        "T-web-portal-technology-catalog"
+      ],
+      "outputs": [
+        "検索語と公開状態を保持する導線",
+        "実ブラウザの戻る・進む・再読み込み証跡"
+      ],
+      "checks": [
+        "TypeScript/ESLint/Web build",
+        "Actual browser navigation and keyboard"
+      ],
+      "acceptance": [
+        "一覧の検索語・公開フィルターが詳細から戻る操作で復元する",
+        "明示の一覧リンクとブラウザ戻る・進むを区別し、作品一覧へ到達する",
+        "390/1280pxでキーボード操作と再読み込みを検査しrelease=nullの開始リンクなしを保つ",
+        "実作品・配布許可・事業指標をテスト状態から作らない"
+      ],
+      "next_step": "Implement persistent catalog navigation state in existing Web portal; no new game",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-manual-20261012-13124ec01f6d",
+          "fence": 15,
+          "artifacts": [
+            {
+              "path": "web/src/App.tsx",
+              "sha256": "606bd51b2210a214a61459ec0308e57cdbeed7a35f1d42a0d08c17bf9c023c7d"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "e9c51559dbaad0472dc4a93beb1f366d697d78811d9f4b65bafd2fa887a7c5d8"
+            },
+            {
+              "path": "web/src/portal/navigation.ts",
+              "sha256": "c9d217b6d34ad53a668e7e4f75f6508f73deb83c859e8aaec3970a3e3b209ef2"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "49dcec7f0ed794439954e2ca4d4f2bd3007a7c6c7683a27d40fb8b42844990ef"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "c7250f7d80fd480cc785b2e5b7ef2a4f72449bbd2f5f3afc8b1b6c7203f1120b"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "d419911655c48a6da1fb05b2b08709e9254ae3557b5ddb0355902dc5be583aff"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "200760430637eb7247d0b104a6fee6593c8716d9191e7b56a6a83ed2837d13fc"
+            },
+            {
+              "path": "docs/web-navigation-20261012.md",
+              "sha256": "4c9210f70012932b0bb6b821b8760428ce81d01eedc85d8707aad91a7f14a538"
+            },
+            {
+              "path": "docs/images/navigation-20261012-390.jpg",
+              "sha256": "36fb654a45caf7847df9ab4d072f40ecf898c819970270e8a452a642097ee9ca"
+            },
+            {
+              "path": "docs/images/navigation-20261012-1280.jpg",
+              "sha256": "63fd9aa52132eab45f1f5b2e8518fa36ca3140bcec7f8729392a12f16c6bf3a7"
+            },
+            {
+              "path": "business/unity/evidence/navigation-20261012-manual.json",
+              "sha256": "5375c32cbfd6b4bf4b20865e04067e9b6f48b43f06f2da56f34f38c48caba748"
+            }
+          ],
+          "checks": [
+            "Build TypeScript/ESLint/Vite/5SSG",
+            "Repository4 legacy/19GUID/36 checksums",
+            "Portal SSR query/released/unknown/escaped/direct detail",
+            "Actual390/1280 Back/Forward/explicit list/reload/Tab/Enter",
+            "Per-character input does not add history entries: actual Back then Forward",
+            "Business27 tests/Core3 route acceptance",
+            "Source and committed14 receipt hashes match; workflow hashes verified through receipt"
+          ],
+          "next_step": "T-web-portal-release-presentation; verified-head PR delivery",
+          "at": 1791816705.3386266
+        },
+        {
+          "run_id": "unity-manual-20261012-13124ec01f6d",
+          "fence": 15,
+          "artifacts": [
+            {
+              "path": "web/src/App.tsx",
+              "sha256": "606bd51b2210a214a61459ec0308e57cdbeed7a35f1d42a0d08c17bf9c023c7d"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "e9c51559dbaad0472dc4a93beb1f366d697d78811d9f4b65bafd2fa887a7c5d8"
+            },
+            {
+              "path": "web/src/portal/navigation.ts",
+              "sha256": "c9d217b6d34ad53a668e7e4f75f6508f73deb83c859e8aaec3970a3e3b209ef2"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "49dcec7f0ed794439954e2ca4d4f2bd3007a7c6c7683a27d40fb8b42844990ef"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "c7250f7d80fd480cc785b2e5b7ef2a4f72449bbd2f5f3afc8b1b6c7203f1120b"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "d419911655c48a6da1fb05b2b08709e9254ae3557b5ddb0355902dc5be583aff"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "200760430637eb7247d0b104a6fee6593c8716d9191e7b56a6a83ed2837d13fc"
+            },
+            {
+              "path": "docs/web-navigation-20261012.md",
+              "sha256": "4c9210f70012932b0bb6b821b8760428ce81d01eedc85d8707aad91a7f14a538"
+            },
+            {
+              "path": "docs/images/navigation-20261012-390.jpg",
+              "sha256": "36fb654a45caf7847df9ab4d072f40ecf898c819970270e8a452a642097ee9ca"
+            },
+            {
+              "path": "docs/images/navigation-20261012-1280.jpg",
+              "sha256": "63fd9aa52132eab45f1f5b2e8518fa36ca3140bcec7f8729392a12f16c6bf3a7"
+            },
+            {
+              "path": "business/unity/evidence/navigation-20261012-manual.json",
+              "sha256": "5375c32cbfd6b4bf4b20865e04067e9b6f48b43f06f2da56f34f38c48caba748"
+            }
+          ],
+          "checks": [
+            "Build TypeScript/ESLint/Vite/5SSG",
+            "Repository4 legacy/19GUID/36 checksums",
+            "Portal SSR query/released/unknown/escaped/direct detail",
+            "Actual390/1280 Back/Forward/explicit list/reload/Tab/Enter",
+            "Per-character input does not add history entries: actual Back then Forward",
+            "Business27 tests/Core3 route acceptance",
+            "Source and committed14 receipt hashes match; workflow hashes verified through receipt"
+          ],
+          "next_step": "T-web-portal-release-presentation; verified-head PR delivery",
+          "passed": true,
+          "at": 1791816705.3543048
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-manual-20261012-13124ec01f6d",
+          "task_id": "T-web-portal-navigation-state",
+          "fence": 15,
+          "expires_at": 1791817943.7033687
+        }
+      ]
+    },
+    "T-web-portal-entry-research-20261012": {
+      "id": "T-web-portal-entry-research-20261012",
+      "objective": "一次資料から既存Web入口の作品案内と公開前検査を具体化する",
+      "hypothesis": "作品固有の操作・実画面・確認済み環境を公開状態と別に示すと、遊ぶ前の判断と誤案内を減らせる。効果は未観測。",
+      "decision_id": "D-web-portal-release-presentation-20261012",
+      "source": "primary-source:2026-10-12:itch-html5-and-author-pages",
+      "pdca": "plan",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "depends_on": [],
+      "outputs": [
+        "一次資料の比較報告",
+        "受入条件付き後続タスク"
+      ],
+      "checks": [
+        "Source facts and assumptions separated",
+        "Protected files and prior checkpoint hashes",
+        "Ledger chain and preserved navigation task"
+      ],
+      "acceptance": [
+        "一次資料のURLと確認日、観察と推測を記録する",
+        "既存検索導線修正を保持し受入条件付き後続タスクを作成する",
+        "未受領完成品・配布・事業指標を実績にしない"
+      ],
+      "next_step": "T-web-portal-navigation-state remains next implementation",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261012T1300-4ec28b2cd023",
+          "fence": 13,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+              "sha256": "d9eb58370102aa94a4edaa3e06bec4d2f4e63d900c6cca995e4a5ac575f79659"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "872a5567a0105a5b82699ddb7a0507e6b301e2f01d2b74d830bee587f5065e57"
+            },
+            {
+              "path": "business/unity/evidence/research-20261012-1300.json",
+              "sha256": "3d39bb861abaaebe132f276ad2aa3ef3222fa54a6110f733e9a8340171203e81"
+            }
+          ],
+          "checks": [
+            "5 primary source URLs reviewed; report differentiates facts/inferences",
+            "Prior16 checkpoint hashes and parent4HEAD/recovery8 hashes matched",
+            "Repository4 legacy entries/19GUID and git diff check passed",
+            "Original77 events and exact navigation task preserved",
+            "No implementation/browser test/Unity resumption/new game/external publication; metrics null"
+          ],
+          "next_step": "T-web-portal-navigation-state remains next; dependent T-web-portal-release-presentation created",
+          "at": 1791777750.3083944
+        },
+        {
+          "run_id": "unity-20261012T1300-4ec28b2cd023",
+          "fence": 13,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+              "sha256": "d9eb58370102aa94a4edaa3e06bec4d2f4e63d900c6cca995e4a5ac575f79659"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "872a5567a0105a5b82699ddb7a0507e6b301e2f01d2b74d830bee587f5065e57"
+            },
+            {
+              "path": "business/unity/evidence/research-20261012-1300.json",
+              "sha256": "3d39bb861abaaebe132f276ad2aa3ef3222fa54a6110f733e9a8340171203e81"
+            }
+          ],
+          "checks": [
+            "5 primary source URLs reviewed; report differentiates facts/inferences",
+            "Prior16 checkpoint hashes and parent4HEAD/recovery8 hashes matched",
+            "Repository4 legacy entries/19GUID and git diff check passed",
+            "Original77 events and exact navigation task preserved",
+            "No implementation/browser test/Unity resumption/new game/external publication; metrics null"
+          ],
+          "next_step": "T-web-portal-navigation-state remains next; dependent T-web-portal-release-presentation created",
+          "passed": true,
+          "at": 1791777750.3284063
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261012T1300-4ec28b2cd023",
+          "task_id": "T-web-portal-entry-research-20261012",
+          "fence": 13,
+          "expires_at": 1791779127.9965627
+        }
+      ]
+    },
+    "T-web-portal-release-presentation": {
+      "id": "T-web-portal-release-presentation",
+      "objective": "既存Web入口で作品固有の操作・確認済み環境・実画面を案内する",
+      "hypothesis": "作品固有の操作・実画面・確認済み環境を公開状態と別に示すと、遊ぶ前の判断と誤案内を減らせる。効果は未観測。",
+      "decision_id": "D-web-portal-release-presentation-20261012",
+      "source": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 2,
+      "depends_on": [
+        "T-web-portal-navigation-state"
+      ],
+      "outputs": [
+        "作品ごとの操作・環境・実画面の表示",
+        "公開前後・案内欠落・静的生成の検査証跡"
+      ],
+      "checks": [
+        "TypeScript/ESLint/Web build",
+        "In-memory Web/owner-finished Unity cases",
+        "390/1280 actual browser keyboard/navigation"
+      ],
+      "acceptance": [
+        "作品固有の操作・保存・検査環境を扱い未確認を対応済みとしない",
+        "実画面を版・SHA-256・検査記録に紐付けイメージ図と区別する",
+        "架空作品を実登録せずWeb/持込Unityの公開前後と案内なしを検査する",
+        "release=nullの開始リンクなしと既存公開受入条件を維持する",
+        "一覧閲覧時にアプリを起動せず390/1280pxと型・静的・ビルドを検査する",
+        "Unity完成品は受領後に実物・配布条件を照合しソース・再ビルドを一律必須にしない"
+      ],
+      "next_step": "After navigation state completes, implement work-specific presentation within existing portal",
       "status": "ready",
       "checkpoints": [],
       "claims": []
+    },
+    "T-web-portal-strategy-20261012": {
+      "id": "T-web-portal-strategy-20261012",
+      "objective": "既存Web入口の導線と技術品質を再確認し優先順位を判断する",
+      "hypothesis": "検索条件保持を先に検証し、公開案内を後続にする。利用者効果は未観測。",
+      "decision_id": "D-web-portal-strategy-20261012",
+      "source": "technical-review:2026-10-12:19-slot",
+      "pdca": "check",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "depends_on": [],
+      "outputs": [
+        "戦略検査報告",
+        "ハッシュ付き証跡"
+      ],
+      "checks": [
+        "Web build and repository",
+        "Browser navigation",
+        "Protected evidence and task preservation"
+      ],
+      "acceptance": [
+        "現行導線と技術結果を実測・推測に分ける",
+        "人間反応と事業指標の未観測を保持する",
+        "既存次工程を保持し証跡を保存する"
+      ],
+      "next_step": "T-web-portal-navigation-state",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261012T1900-d7205d33896f",
+          "fence": 14,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-12-web-portal-strategy.md",
+              "sha256": "b96b398350e858c74e2ca70cb5eaeda5197ce4a2ab1e10d58786d757c9f960ef"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "782d231104aba407bfccfc346ec1eb3b5830270aa0fbab354c3849edf3474a4d"
+            },
+            {
+              "path": "business/unity/evidence/strategy-20261012-1900.json",
+              "sha256": "5d5db8bd0679744afae76b833b19ac015ef206bb7eb18209caaf50f6c8993371"
+            }
+          ],
+          "checks": [
+            "TypeScript/ESLint/Vite/5SSG passed",
+            "4 preserved catalog entries/19 GUIDs passed",
+            "4 legacy routes/36 checksums passed",
+            "Original84events and navigation task unchanged",
+            "Protected owner/oldcloud/Web hashes unchanged",
+            "Browser observed search/filter loss; not a fixed implementation",
+            "Human/business observations remain null"
+          ],
+          "next_step": "T-web-portal-navigation-state remains next; release presentation follows",
+          "at": 1791799510.8072398
+        },
+        {
+          "run_id": "unity-20261012T1900-d7205d33896f",
+          "fence": 14,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-12-web-portal-strategy.md",
+              "sha256": "b96b398350e858c74e2ca70cb5eaeda5197ce4a2ab1e10d58786d757c9f960ef"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "782d231104aba407bfccfc346ec1eb3b5830270aa0fbab354c3849edf3474a4d"
+            },
+            {
+              "path": "business/unity/evidence/strategy-20261012-1900.json",
+              "sha256": "5d5db8bd0679744afae76b833b19ac015ef206bb7eb18209caaf50f6c8993371"
+            }
+          ],
+          "checks": [
+            "TypeScript/ESLint/Vite/5SSG passed",
+            "4 preserved catalog entries/19 GUIDs passed",
+            "4 legacy routes/36 checksums passed",
+            "Original84events and navigation task unchanged",
+            "Protected owner/oldcloud/Web hashes unchanged",
+            "Browser observed search/filter loss; not a fixed implementation",
+            "Human/business observations remain null"
+          ],
+          "next_step": "T-web-portal-navigation-state remains next; release presentation follows",
+          "passed": true,
+          "at": 1791799510.8218672
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261012T1900-d7205d33896f",
+          "task_id": "T-web-portal-strategy-20261012",
+          "fence": 14,
+          "expires_at": 1791800791.6015558
+        }
+      ]
     }
   },
   "decisions": {
@@ -119,6 +1517,110 @@
       "hypothesis": "作品のルールを厳選し、通常制作をローカル、成果物ビルドをGitHubへ分ければ、CIの設定だけで制作が止まることを避けられる",
       "next_step": "Ice CourierのUnity実行と操作検査を終え、同じ作品を一作ずつ改善する。旧定期タスクを保全してローカル実行へ切り替える",
       "policy": "CI/CDは継続制作の前提条件にしない。採否・統合先・復元元を記録して旧Web実装を整理する"
+    },
+    "D-web-renovation-20261010": {
+      "id": "D-web-renovation-20261010",
+      "source": "user:天啓.md:2026-10-10:web-renovation",
+      "quote": "Webのトップ画面を含む画面全体の刷新を優先する。画面構成・導線・使い勝手から見直す。",
+      "hypothesis": "Unity作品の入口と作品詳細を共通の情報源から生成し、公開状態を正しく示せば、重複した一覧や古いゲーム導線を減らせる",
+      "next_step": "トップ・作品詳細・共通案内画面を刷新し、狭い画面と静的ビルドを検査する",
+      "policy": "Web刷新を先に進める。Ice Courierは唯一の制作中ゲームとして維持。本番全体置換は実施しない"
+    },
+    "D-portal-review-checkpoint-20261010": {
+      "id": "D-portal-review-checkpoint-20261010",
+      "source": "evidence:business/unity/evidence/portal-20261010-provenance.json",
+      "hypothesis": "Byte-preserved evidence and explicit Git text-normalization provenance allow acceptance to be reproduced on Windows and Linux",
+      "next_step": "Await approval for public branch push/PR; continue next portal player integration locally without repeating rejected transmission",
+      "artifact": {
+        "path": "business/unity/evidence/portal-20261010-provenance.json",
+        "sha256": "971f91db105fddab00d082ff80c54face57e2680f51cfff94be818deaabb9dc5"
+      },
+      "external_status": "push rejected by automatic approval review; not applied; no PR or production publication"
+    },
+    "D-player-image-provenance-20261010": {
+      "id": "D-player-image-provenance-20261010",
+      "source": "evidence:business/unity/evidence/player-20261010-provenance.json",
+      "hypothesis": "Verified Git source hashes and a corrected screenshot clip preserve reproducible acceptance without changing history",
+      "next_step": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately",
+      "artifact": {
+        "path": "business/unity/evidence/player-20261010-provenance.json",
+        "sha256": "78f655e1552cef4235249fab9fba19b211c886c84f8c79b14d6a3b1d1768f955"
+      }
+    },
+    "D-ice-courier-portrait-acceptance-20261010": {
+      "id": "D-ice-courier-portrait-acceptance-20261010",
+      "source": "research:business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+      "hypothesis": "最終CSS寸法と導入ルールの識別を検査すれば、二重縮小と入力の問題を作品追加なしで改善できる",
+      "next_step": "Existing T-ice-courier-touch-polish: improve Unity portrait UI and local Web frame together; compile and verify actual display",
+      "target_task_id": "T-ice-courier-touch-polish",
+      "supersedes_scope": "acceptance-details-only; existing task and owner priority preserved",
+      "acceptance_addendum": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+      "artifact": {
+        "path": "business/unity/evidence/research-20261010-1300.json",
+        "sha256": "b20a5a11f32de8d29debe378c096e0cc3a38e6a1531bb18632c89bce69238b2a"
+      },
+      "judgment": "unobserved",
+      "scope": "research-only; no implementation or demand claim"
+    },
+    "D-ice-courier-measured-strategy-20261010": {
+      "id": "D-ice-courier-measured-strategy-20261010",
+      "source": "evidence:business/unity/evidence/strategy-20261010-1900.json",
+      "hypothesis": "Measured 334.4px portrait canvas and Unity coordinates identify a concrete layout deficit without inferring business demand",
+      "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+      "artifact": {
+        "path": "business/unity/evidence/strategy-20261010-1900.json",
+        "sha256": "f51a812812171336dff8b6923c54dd11b9110fac04584258da57c15de734f9c6"
+      },
+      "target_task_id": "T-ice-courier-touch-polish",
+      "judgment": "unobserved",
+      "technical_disposition": "improve",
+      "business_evidence": "Human feedback, release and14/28-day metrics remain unobserved",
+      "acceptance_addendum": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+      "owner_continuation": "user:current-thread:full-access-continue"
+    },
+    "D-ice-courier-first-play-20261011": {
+      "id": "D-ice-courier-first-play-20261011",
+      "source": "user:automation:unity:13-research;primary-source:developer-storefronts-and-Unity-PlayerPrefs",
+      "hypothesis": "Explicit departure-cell rule, Japanese symbol/control mapping and verified persistence disclosure make the first play easier to assess without adding stages",
+      "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+      "target_task_id": "T-ice-courier-touch-polish",
+      "acceptance_addendum": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+      "judgment": "unobserved",
+      "technical_disposition": "improve"
+    },
+    "D-ice-courier-guidance-strategy-20261011": {
+      "id": "D-ice-courier-guidance-strategy-20261011",
+      "source": "user:automation:unity:20261011-1900;local:source-board-execution-and-browser-measurement",
+      "hypothesis": "Explicit departure-cell rule and Japanese symbol/control mapping with scoped save claims let first-play understanding be assessed without another game",
+      "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+      "target_task_id": "T-ice-courier-touch-polish",
+      "judgment": "unobserved",
+      "technical_disposition": "improve",
+      "evidence": "business/unity/research/2026-10-11-guidance-strategy.md"
+    },
+    "D-web-technology-policy-20261012": {
+      "id": "D-web-technology-policy-20261012",
+      "hypothesis": "Web technologies reduce the production burden identified by the owner while a separate finished-Unity deployment path preserves compatibility",
+      "evidence": "docs/web-technology-policy-20261012.md",
+      "judgment": "unobserved",
+      "target_task_id": "T-web-portal-technology-catalog",
+      "source": "user:current-thread:2026-10-12:web-technology-policy",
+      "next_step": "T-web-portal-technology-catalog"
+    },
+    "D-web-portal-release-presentation-20261012": {
+      "id": "D-web-portal-release-presentation-20261012",
+      "source": "primary-source:2026-10-12:itch-html5-and-author-pages",
+      "hypothesis": "作品固有の操作・実画面・確認済み環境を公開状態と別に示すと、遊ぶ前の判断と誤案内を減らせる。効果は未観測。",
+      "evidence": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+      "judgment": "unobserved",
+      "next_step": "Keep T-web-portal-navigation-state first, then T-web-portal-release-presentation"
+    },
+    "D-web-portal-strategy-20261012": {
+      "id": "D-web-portal-strategy-20261012",
+      "source": "technical-review:2026-10-12:19-slot",
+      "hypothesis": "検索条件保持を先に検証し、公開案内を後続にする。利用者効果は未観測。",
+      "next_step": "T-web-portal-navigation-state",
+      "judgment": "unobserved"
     }
   },
   "runs": {
@@ -127,6 +1629,103 @@
       "source": "user:current-thread:2026-10-09:autonomous-studio",
       "status": "completed",
       "started_at": 1791556448.9243035
+    },
+    "unity-20261010T0100-9e5710806c84": {
+      "run_id": "unity-20261010T0100-9e5710806c84",
+      "scheduled_at": "2026-10-10T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-10T01:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791561870.5733407
+    },
+    "unity-20261010T0700-cc24abcda9c1": {
+      "run_id": "unity-20261010T0700-cc24abcda9c1",
+      "scheduled_at": "2026-10-10T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-10T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791583359.509933
+    },
+    "unity-20261010T1300-6f6e11091565": {
+      "run_id": "unity-20261010T1300-6f6e11091565",
+      "scheduled_at": "2026-10-10T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-10T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791604830.0937312
+    },
+    "unity-20261010T1900-e6047e8667b5": {
+      "run_id": "unity-20261010T1900-e6047e8667b5",
+      "scheduled_at": "2026-10-10T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-10T19:00:00+09:00",
+      "status": "recovered",
+      "started_at": 1791626428.0277896
+    },
+    "unity-manual-20261010-cf7a96dccbb6": {
+      "run_id": "unity-manual-20261010-cf7a96dccbb6",
+      "source": "user:current-thread:full-access-continue",
+      "resumes_run": "unity-20261010T1900-e6047e8667b5",
+      "status": "completed",
+      "started_at": 1791632723.081074
+    },
+    "unity-20261011T0100-3d0983464e72": {
+      "run_id": "unity-20261011T0100-3d0983464e72",
+      "scheduled_at": "2026-10-11T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-11T01:00:00+09:00",
+      "status": "recovered",
+      "started_at": 1791648020.0336773
+    },
+    "unity-20261011T0700-b1404a964998": {
+      "run_id": "unity-20261011T0700-b1404a964998",
+      "scheduled_at": "2026-10-11T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-11T07:00:00+09:00",
+      "status": "checkpointed",
+      "started_at": 1791669616.3241487
+    },
+    "unity-20261011T1300-7f20ad59a424": {
+      "run_id": "unity-20261011T1300-7f20ad59a424",
+      "scheduled_at": "2026-10-11T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-11T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791691256.7592325
+    },
+    "unity-20261011T1900-8b31b641b674": {
+      "run_id": "unity-20261011T1900-8b31b641b674",
+      "scheduled_at": "2026-10-11T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-11T19:00:00+09:00",
+      "status": "checkpointed",
+      "started_at": 1791713054.1635542
+    },
+    "unity-20261012T0100-613a8862a2d4": {
+      "scheduled_at": "2026-10-12T01:00:00+09:00",
+      "run_id": "unity-20261012T0100-613a8862a2d4",
+      "source": "scheduled:game-site:2026-10-12T01:00:00+09:00",
+      "status": "checkpointed",
+      "started_at": 1791734416.8401327
+    },
+    "unity-20261012T0700-ffb98d9c5b5b": {
+      "scheduled_at": "2026-10-12T07:00:00+09:00",
+      "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+      "source": "scheduled:game-site:2026-10-12T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791756273.2688477
+    },
+    "unity-20261012T1300-4ec28b2cd023": {
+      "scheduled_at": "2026-10-12T13:00:00+09:00",
+      "run_id": "unity-20261012T1300-4ec28b2cd023",
+      "source": "scheduled:game-site:2026-10-12T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791777627.8783987
+    },
+    "unity-20261012T1900-d7205d33896f": {
+      "scheduled_at": "2026-10-12T19:00:00+09:00",
+      "run_id": "unity-20261012T1900-d7205d33896f",
+      "source": "scheduled:game-site:2026-10-12T19:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791799291.5214257
+    },
+    "unity-manual-20261012-13124ec01f6d": {
+      "run_id": "unity-manual-20261012-13124ec01f6d",
+      "source": "user:current-thread:2026-10-12:autonomous-work",
+      "status": "completed",
+      "started_at": 1791816143.6908858
     }
   },
   "experiments": {
@@ -159,10 +1758,122 @@
         }
       ],
       "release": null
+    },
+    "E-unity-portal": {
+      "id": "E-unity-portal",
+      "hypothesis": "一作品でもルールと遊び方を理解してから開始できる画面なら、将来の作品追加でも導線を一貫させられる",
+      "game_id": "ice-courier",
+      "primary_metric": "observed-play-start-rate",
+      "quality_acceptance": [
+        "トップから作品詳細へ移動できる",
+        "未公開を公開済みと表示しない",
+        "390pxとデスクトップで読める"
+      ],
+      "measurement_plan": "内部表示・操作検査と公開後の開始率を分離する。公開指標は未観測でnull",
+      "decision_id": "D-web-renovation-20261010",
+      "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+      "source": "user:天啓.md:2026-10-10:web-renovation",
+      "stage": "act",
+      "history": [
+        {
+          "id": "E-unity-portal",
+          "stage": "do",
+          "source": "evidence:business/unity/evidence/portal-20261010-0100.json",
+          "evidence": "Shared portal foundation implemented; static build and real browser search/navigation/portrait checks passed. Production and play-start-rate unobserved.",
+          "next_step": "Connect verified Ice Courier WebGL artifact to local detail shell and inspect load/start/return/failure",
+          "at": 1791562925.7279973,
+          "previous_stage": "plan"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "check",
+          "source": "evidence:business/unity/evidence/strategy-20261010-1900.json",
+          "evidence": "Verified old WebGL source and measured desktop/portrait host/canvas; focus exit passes; portrait targets fail coordinate-derived size; primary start-rate unobserved",
+          "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+          "at": 1791632941.493243,
+          "previous_stage": "do"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "act",
+          "source": "decision:D-ice-courier-measured-strategy-20261010",
+          "evidence": "Do not infer market value from synthetic geometry. Preserve existing UI implementation task; improve technical layout while business remains unobserved",
+          "judgment": "unobserved",
+          "technical_disposition": "improve",
+          "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+          "at": 1791632941.5025334,
+          "previous_stage": "check"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "plan",
+          "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+          "evidence": "Preserve existing WIP and portrait/F1-F6 acceptance; use independent Web guidance while exact-source hosted artifact remains absent",
+          "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+          "at": 1791713489.437415,
+          "previous_stage": "act"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "do",
+          "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+          "evidence": "Japanese symbol guide, expandable English control help and save scope implemented in existing portal; Unity source unchanged",
+          "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+          "at": 1791713489.446335,
+          "previous_stage": "plan"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "check",
+          "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+          "evidence": "Web build and 390/1280 measurements, keyboard help toggle, search/navigation and actual unchanged board .NET execution passed; new Unity/Web persistence and human metrics unobserved",
+          "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+          "at": 1791713489.4553587,
+          "previous_stage": "do"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "act",
+          "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+          "evidence": "Technical explanation improved; retain same task, null business metrics and pending source-bound artifact/device/human acceptance",
+          "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+          "judgment": "unobserved",
+          "technical_disposition": "improve",
+          "at": 1791713489.464152,
+          "previous_stage": "check"
+        }
+      ],
+      "release": null
     }
   },
-  "slots": {},
-  "feedback": [],
+  "slots": {
+    "2026-10-10T01:00:00+09:00": "unity-20261010T0100-9e5710806c84",
+    "2026-10-10T07:00:00+09:00": "unity-20261010T0700-cc24abcda9c1",
+    "2026-10-10T13:00:00+09:00": "unity-20261010T1300-6f6e11091565",
+    "2026-10-10T19:00:00+09:00": "unity-20261010T1900-e6047e8667b5",
+    "2026-10-11T01:00:00+09:00": "unity-20261011T0100-3d0983464e72",
+    "2026-10-11T07:00:00+09:00": "unity-20261011T0700-b1404a964998",
+    "2026-10-11T13:00:00+09:00": "unity-20261011T1300-7f20ad59a424",
+    "2026-10-11T19:00:00+09:00": "unity-20261011T1900-8b31b641b674",
+    "2026-10-12T01:00:00+09:00": "unity-20261012T0100-613a8862a2d4",
+    "2026-10-12T07:00:00+09:00": "unity-20261012T0700-ffb98d9c5b5b",
+    "2026-10-12T13:00:00+09:00": "unity-20261012T1300-4ec28b2cd023",
+    "2026-10-12T19:00:00+09:00": "unity-20261012T1900-d7205d33896f"
+  },
+  "feedback": [
+    {
+      "next_step": "Preserve Unity work; stop autonomous Unity development and support both Web apps and owner-provided finished Unity artifacts in the existing portal",
+      "source": "user:current-thread:2026-10-12:web-technology-policy",
+      "message": "WebアプリはWeb技術で制作する方針に戻します。そうでないと負荷が高すぎるからです。ただし、一部僕が他で開発したUnityアプリは、その完成品のデプロイを受け入れます。その余地は残してください。",
+      "at": 1791735693.704843
+    },
+    {
+      "source": "user:current-thread:2026-10-12:autonomous-work",
+      "message": "毎回６分程度しか働いていませんね。なんでもアクセスできるのだからもっと自律的に仕事してください。このリポジトリなら何でもアクセスしてもらって構いません。(勝手にPR通したりも)",
+      "next_step": "Implement existing navigation task, validate and publish/merge checked PR",
+      "at": 1791816143.6773832
+    }
+  ],
   "approvals": [],
   "external": {},
   "observations": [],
@@ -400,7 +2111,2443 @@
       },
       "previous": "643313793288787a80b595860c0e638c77018dc297838f779246b98a4b360c40",
       "sha256": "ce63ad3f0c34db322218a7583ba2b475c65b89af3c3371dd83f5a083e82217b8"
+    },
+    {
+      "revision": 11,
+      "at": 1791561870.5536256,
+      "action": "decision",
+      "data": {
+        "id": "D-web-renovation-20261010",
+        "source": "user:天啓.md:2026-10-10:web-renovation",
+        "quote": "Webのトップ画面を含む画面全体の刷新を優先する。画面構成・導線・使い勝手から見直す。",
+        "hypothesis": "Unity作品の入口と作品詳細を共通の情報源から生成し、公開状態を正しく示せば、重複した一覧や古いゲーム導線を減らせる",
+        "next_step": "トップ・作品詳細・共通案内画面を刷新し、狭い画面と静的ビルドを検査する",
+        "policy": "Web刷新を先に進める。Ice Courierは唯一の制作中ゲームとして維持。本番全体置換は実施しない"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "ce63ad3f0c34db322218a7583ba2b475c65b89af3c3371dd83f5a083e82217b8",
+      "sha256": "e45b0948beede6b6fd2e9611ed04c0e975a550c2cc17027bad44c2a9e70961d0"
+    },
+    {
+      "revision": 12,
+      "at": 1791561870.5601661,
+      "action": "experiment",
+      "data": {
+        "id": "E-unity-portal",
+        "hypothesis": "一作品でもルールと遊び方を理解してから開始できる画面なら、将来の作品追加でも導線を一貫させられる",
+        "game_id": "ice-courier",
+        "primary_metric": "observed-play-start-rate",
+        "quality_acceptance": [
+          "トップから作品詳細へ移動できる",
+          "未公開を公開済みと表示しない",
+          "390pxとデスクトップで読める"
+        ],
+        "measurement_plan": "内部表示・操作検査と公開後の開始率を分離する。公開指標は未観測でnull",
+        "decision_id": "D-web-renovation-20261010",
+        "next_step": "共通画面とUnityカタログを実装する",
+        "source": "user:天啓.md:2026-10-10:web-renovation"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "e45b0948beede6b6fd2e9611ed04c0e975a550c2cc17027bad44c2a9e70961d0",
+      "sha256": "345e97ad31927025ff1c6e469a1b9ca9b3231cec5ba17f44544b42902f55fbae"
+    },
+    {
+      "revision": 13,
+      "at": 1791561870.5665717,
+      "action": "task",
+      "data": {
+        "id": "T-unity-portal-foundation",
+        "objective": "Unity作品のトップ・詳細・共通案内画面を刷新し、重複一覧と架空のプレイ数を除く",
+        "acceptance": [
+          "トップからIce Courierの詳細へ到達できる",
+          "検索の一致と空結果を表示できる",
+          "未配信作品に壊れたプレイリンクを出さない",
+          "about・contact・privacyに共通導線を設ける",
+          "デスクトップと390pxで表示・キーボード操作を検査する",
+          "静的ビルド・リンク・旧URL保持検査が成功する"
+        ],
+        "outputs": [
+          "web/src/portal",
+          "静的Webプレビュー",
+          "表示と操作の検査記録"
+        ],
+        "checks": [
+          "npm run build",
+          "npm run check",
+          "node scripts/check-web-build.mjs",
+          "ブラウザ表示と操作"
+        ],
+        "next_step": "Unity配布成果物を組み込む前段の共通画面を実装・検査する",
+        "decision_id": "D-web-renovation-20261010",
+        "hypothesis": "一覧を一つにし作品詳細でルールと公開状態を伝えれば、作品数を増やさず入口を改善できる",
+        "source": "user:天啓.md:2026-10-10:web-renovation",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 0
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "345e97ad31927025ff1c6e469a1b9ca9b3231cec5ba17f44544b42902f55fbae",
+      "sha256": "44eb5fe837a68e12134973886f67128edad7c722de359994344af8430096c7c4"
+    },
+    {
+      "revision": 14,
+      "at": 1791561870.5733407,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261010T0100-9e5710806c84",
+        "scheduled_at": "2026-10-10T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "44eb5fe837a68e12134973886f67128edad7c722de359994344af8430096c7c4",
+      "sha256": "71d492b1a9f72571b85554264d03f7d5147bcbb47055a04240af3b6ef2f3bf4b"
+    },
+    {
+      "revision": 15,
+      "at": 1791561870.6444685,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261010T0100-9e5710806c84",
+        "task_id": "T-unity-portal-foundation",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261010T0100-9e5710806c84",
+        "task_id": "T-unity-portal-foundation",
+        "fence": 2,
+        "expires_at": 1791563370.6444685
+      },
+      "previous": "71d492b1a9f72571b85554264d03f7d5147bcbb47055a04240af3b6ef2f3bf4b",
+      "sha256": "cf6ab03cc76fae393942490e62b52352d358c263b558f15a1c1951fbaa32cf06"
+    },
+    {
+      "revision": 16,
+      "at": 1791562881.2569656,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261010T0100-9e5710806c84",
+        "fence": 2,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-20261010-0100.json",
+            "sha256": "895f5fdf490e90cb1a17cf2412b129f4d483041925748a3944bfa8486a34097e"
+          }
+        ],
+        "checks": [
+          "Build, repository, static links/checksums passed",
+          "Actual browser search/filter/navigation/keyboard and desktop/390x844 passed",
+          "24 ledger tests and 4 parent recovery comparisons passed"
+        ],
+        "next_step": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "cf6ab03cc76fae393942490e62b52352d358c263b558f15a1c1951fbaa32cf06",
+      "sha256": "6b2c1c9a68761cad2ae91c3c8bb23040257c727a4a4eee22feb814c3aacfe24a"
+    },
+    {
+      "revision": 17,
+      "at": 1791562881.2639525,
+      "action": "task",
+      "data": {
+        "id": "T-unity-portal-player-integration",
+        "objective": "検証済みIce Courier WebGL成果物を新しい作品詳細へローカル接続する",
+        "acceptance": [
+          "成果物のsourceCommitとSHA256を照合する",
+          "詳細から読み込み・開始・終了して一覧へ戻れる",
+          "読み込み失敗時に再試行と戻る導線を表示する",
+          "Unity内部入力とページ操作の干渉を検査する",
+          "デスクトップと390x844でプレイヤー枠を確認し実タッチ未実行を区別する",
+          "本番全体置換をせず未配信を公開中と扱わない"
+        ],
+        "outputs": [
+          "Unityプレイヤーの共通Web枠",
+          "同一版成果物との接続記録",
+          "表示と入力の検査記録"
+        ],
+        "checks": [
+          "ローカルWebGL実画面と入力",
+          "配布版照合",
+          "Web静的ビルドと内部リンク"
+        ],
+        "next_step": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks",
+        "decision_id": "D-web-renovation-20261010",
+        "hypothesis": "作品詳細のルール説明と開始後の戻り先を揃えれば、公開時に迷わずUnity作品へ移れる",
+        "source": "user:天啓.md:2026-10-10:web-renovation",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-unity-portal-foundation"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "6b2c1c9a68761cad2ae91c3c8bb23040257c727a4a4eee22feb814c3aacfe24a",
+      "sha256": "c71d366b095bd3b7daa4bba2994cd231465442b81605a722acb197cb64eb7863"
+    },
+    {
+      "revision": 18,
+      "at": 1791562881.2708127,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261010T0100-9e5710806c84",
+        "fence": 2,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-20261010-0100.json",
+            "sha256": "895f5fdf490e90cb1a17cf2412b129f4d483041925748a3944bfa8486a34097e"
+          }
+        ],
+        "checks": [
+          "Build, repository, static links/checksums passed",
+          "Actual browser search/filter/navigation/keyboard and desktop/390x844 passed",
+          "24 ledger tests and 4 parent recovery comparisons passed"
+        ],
+        "next_step": "Connect the previously verified WebGL artifact to the local detail page; inspect load/start/return/failure with exact version checks",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "c71d366b095bd3b7daa4bba2994cd231465442b81605a722acb197cb64eb7863",
+      "sha256": "a24e29f9b9fae864c94a520ef65d9671ac1788a00888b0234810671f944aeca6"
+    },
+    {
+      "revision": 19,
+      "at": 1791562925.7279973,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "do",
+        "source": "evidence:business/unity/evidence/portal-20261010-0100.json",
+        "evidence": "Shared portal foundation implemented; static build and real browser search/navigation/portrait checks passed. Production and play-start-rate unobserved.",
+        "next_step": "Connect verified Ice Courier WebGL artifact to local detail shell and inspect load/start/return/failure"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "a24e29f9b9fae864c94a520ef65d9671ac1788a00888b0234810671f944aeca6",
+      "sha256": "7e7c790d384dd25782ad0aca126fe15cfa30c1396c3dc311bc82db97c1a9d7a3"
+    },
+    {
+      "revision": 20,
+      "at": 1791563112.9407725,
+      "action": "decision",
+      "data": {
+        "id": "D-portal-review-checkpoint-20261010",
+        "source": "evidence:business/unity/evidence/portal-20261010-provenance.json",
+        "hypothesis": "Byte-preserved evidence and explicit Git text-normalization provenance allow acceptance to be reproduced on Windows and Linux",
+        "next_step": "Await approval for public branch push/PR; continue next portal player integration locally without repeating rejected transmission",
+        "artifact": {
+          "path": "business/unity/evidence/portal-20261010-provenance.json",
+          "sha256": "971f91db105fddab00d082ff80c54face57e2680f51cfff94be818deaabb9dc5"
+        },
+        "external_status": "push rejected by automatic approval review; not applied; no PR or production publication"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "7e7c790d384dd25782ad0aca126fe15cfa30c1396c3dc311bc82db97c1a9d7a3",
+      "sha256": "0d548e4e58deb31d57c822c0eeceb563fc68385396d0998c52b6b6075454a8b0"
+    },
+    {
+      "revision": 21,
+      "at": 1791583359.509933,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261010T0700-cc24abcda9c1",
+        "scheduled_at": "2026-10-10T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "0d548e4e58deb31d57c822c0eeceb563fc68385396d0998c52b6b6075454a8b0",
+      "sha256": "c53571171536fe39dacd180d08b3dce86dfee6ca678328d7d60462c34578ec9e"
+    },
+    {
+      "revision": 22,
+      "at": 1791583359.5750847,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261010T0700-cc24abcda9c1",
+        "task_id": "T-unity-portal-player-integration",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261010T0700-cc24abcda9c1",
+        "task_id": "T-unity-portal-player-integration",
+        "fence": 3,
+        "expires_at": 1791584859.5750847
+      },
+      "previous": "c53571171536fe39dacd180d08b3dce86dfee6ca678328d7d60462c34578ec9e",
+      "sha256": "b11d27c90f80ccc9bc973ec72385528b4dfcbca8550ab5ee75bb4dcba6cb28e6"
+    },
+    {
+      "revision": 23,
+      "at": 1791584704.5300887,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261010T0700-cc24abcda9c1",
+        "fence": 3,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/player-20261010-0700.json",
+            "sha256": "cb485571977a2699fa058c83789145041f05c25d41fc1545b4128d628460a2d1"
+          }
+        ],
+        "checks": [
+          "Build, repository, hashes and actual player load/input/return/failure checks passed",
+          "390x844 frame checked; real touch and human response unobserved",
+          "07 blog draft saved, no publication"
+        ],
+        "next_step": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "b11d27c90f80ccc9bc973ec72385528b4dfcbca8550ab5ee75bb4dcba6cb28e6",
+      "sha256": "cc23855f0ce71a409abff02772e4768b46fc61757e7ba669a87b43394710b7fa"
+    },
+    {
+      "revision": 24,
+      "at": 1791584704.5375438,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261010T0700-cc24abcda9c1",
+        "fence": 3,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/player-20261010-0700.json",
+            "sha256": "cb485571977a2699fa058c83789145041f05c25d41fc1545b4128d628460a2d1"
+          }
+        ],
+        "checks": [
+          "Build, repository, hashes and actual player load/input/return/failure checks passed",
+          "390x844 frame checked; real touch and human response unobserved",
+          "07 blog draft saved, no publication"
+        ],
+        "next_step": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "cc23855f0ce71a409abff02772e4768b46fc61757e7ba669a87b43394710b7fa",
+      "sha256": "668f63fb08c88c2dfeacf80aa5675e526ede87d70dc624d7806567182b0f8ca8"
+    },
+    {
+      "revision": 25,
+      "at": 1791584778.1413975,
+      "action": "decision",
+      "data": {
+        "id": "D-player-image-provenance-20261010",
+        "source": "evidence:business/unity/evidence/player-20261010-provenance.json",
+        "hypothesis": "Verified Git source hashes and a corrected screenshot clip preserve reproducible acceptance without changing history",
+        "next_step": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately",
+        "artifact": {
+          "path": "business/unity/evidence/player-20261010-provenance.json",
+          "sha256": "78f655e1552cef4235249fab9fba19b211c886c84f8c79b14d6a3b1d1768f955"
+        }
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "668f63fb08c88c2dfeacf80aa5675e526ede87d70dc624d7806567182b0f8ca8",
+      "sha256": "d9c5ed7f3e208c0451ce8691349272fe5592dfdb901be8a7f8697916c77ed78d"
+    },
+    {
+      "revision": 26,
+      "at": 1791604830.0937312,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261010T1300-6f6e11091565",
+        "scheduled_at": "2026-10-10T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "d9c5ed7f3e208c0451ce8691349272fe5592dfdb901be8a7f8697916c77ed78d",
+      "sha256": "be393d67eaf82cd09eea61ce95966f84d9814067f18f2383bdbf234c3104e5ce"
+    },
+    {
+      "revision": 27,
+      "at": 1791604830.1581254,
+      "action": "task",
+      "data": {
+        "id": "T-ice-courier-portrait-research-20261010",
+        "objective": "一次資料と現行UIから既存の縦画面改善工程へ具体的な受入条件を補う",
+        "acceptance": [
+          "競合の販売者資料2件とUnity・W3Cの一次資料を確認する",
+          "現行ソースの縮小率とCSS寸法の推定を実測と区別する",
+          "既存T-ice-courier-touch-polishへ検査条件と次の一工程を紐付ける",
+          "未取得指標と人間評価をnullに保ち成果物ハッシュを保存する"
+        ],
+        "outputs": [
+          "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+          "business/unity/evidence/research-20261010-1300.json"
+        ],
+        "checks": [
+          "一次資料の本文と根拠リンク",
+          "現行ソースと寸法計算",
+          "親4件のcommitと復元ハッシュ",
+          "flowの履歴と成果物ハッシュ"
+        ],
+        "next_step": "既存T-ice-courier-touch-polishのUnity縦画面UIとWeb枠の寸法を改善する",
+        "decision_id": "D-web-renovation-20261010",
+        "hypothesis": "押せる操作部とルールを見分けられる導入を優先すれば、作品を増やさず開始体験の問題を検証できる",
+        "source": "research:business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+        "pdca": "plan",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-unity-portal-player-integration"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "be393d67eaf82cd09eea61ce95966f84d9814067f18f2383bdbf234c3104e5ce",
+      "sha256": "518803432315148f47f32933c08da43b28544e74d03f88424297176471dd7225"
+    },
+    {
+      "revision": 28,
+      "at": 1791604830.1653361,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261010T1300-6f6e11091565",
+        "task_id": "T-ice-courier-portrait-research-20261010",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261010T1300-6f6e11091565",
+        "task_id": "T-ice-courier-portrait-research-20261010",
+        "fence": 4,
+        "expires_at": 1791606330.1653361
+      },
+      "previous": "518803432315148f47f32933c08da43b28544e74d03f88424297176471dd7225",
+      "sha256": "2cdd474e3c126d0ff66f7bb344d377579e6da2b16762b960de749d9af8aeb430"
+    },
+    {
+      "revision": 29,
+      "at": 1791605017.6855102,
+      "action": "decision",
+      "data": {
+        "id": "D-ice-courier-portrait-acceptance-20261010",
+        "source": "research:business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+        "hypothesis": "最終CSS寸法と導入ルールの識別を検査すれば、二重縮小と入力の問題を作品追加なしで改善できる",
+        "next_step": "Existing T-ice-courier-touch-polish: improve Unity portrait UI and local Web frame together; compile and verify actual display",
+        "target_task_id": "T-ice-courier-touch-polish",
+        "supersedes_scope": "acceptance-details-only; existing task and owner priority preserved",
+        "acceptance_addendum": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+        "artifact": {
+          "path": "business/unity/evidence/research-20261010-1300.json",
+          "sha256": "b20a5a11f32de8d29debe378c096e0cc3a38e6a1531bb18632c89bce69238b2a"
+        },
+        "judgment": "unobserved",
+        "scope": "research-only; no implementation or demand claim"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "2cdd474e3c126d0ff66f7bb344d377579e6da2b16762b960de749d9af8aeb430",
+      "sha256": "fcb99752419cb26ad9c270422d44f0691905aeb158a410b953298496a758c9ab"
+    },
+    {
+      "revision": 30,
+      "at": 1791605017.6936588,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261010T1300-6f6e11091565",
+        "fence": 4,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/research-20261010-1300.json",
+            "sha256": "b20a5a11f32de8d29debe378c096e0cc3a38e6a1531bb18632c89bce69238b2a"
+          },
+          {
+            "path": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+            "sha256": "758b07473c08b11dd006f0e7518bc221ff95403995bdf62fa363ad5f08cd41f9"
+          }
+        ],
+        "checks": [
+          "6 primary sources read and linked; source-derived dimensions explicitly separated from measurements",
+          "8 acceptance details linked to existing implementation task; no replacement/new game",
+          "Repository contract and diff check passed; 4 parent HEADs and 8 recovery hashes verified",
+          "Owner instructions and old cloud ledger untouched; unobserved metrics remain null"
+        ],
+        "next_step": "Existing T-ice-courier-touch-polish: improve Unity portrait UI and local Web frame together; compile and verify actual display"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "fcb99752419cb26ad9c270422d44f0691905aeb158a410b953298496a758c9ab",
+      "sha256": "55abb172f3f9920c95eec94a3d1e70bb14290177705399eb9e05ce980be2a49f"
+    },
+    {
+      "revision": 31,
+      "at": 1791605017.7016575,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261010T1300-6f6e11091565",
+        "fence": 4,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/research-20261010-1300.json",
+            "sha256": "b20a5a11f32de8d29debe378c096e0cc3a38e6a1531bb18632c89bce69238b2a"
+          },
+          {
+            "path": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+            "sha256": "758b07473c08b11dd006f0e7518bc221ff95403995bdf62fa363ad5f08cd41f9"
+          }
+        ],
+        "checks": [
+          "6 primary sources read and linked; source-derived dimensions explicitly separated from measurements",
+          "8 acceptance details linked to existing implementation task; no replacement/new game",
+          "Repository contract and diff check passed; 4 parent HEADs and 8 recovery hashes verified",
+          "Owner instructions and old cloud ledger untouched; unobserved metrics remain null"
+        ],
+        "next_step": "Existing T-ice-courier-touch-polish: improve Unity portrait UI and local Web frame together; compile and verify actual display",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "55abb172f3f9920c95eec94a3d1e70bb14290177705399eb9e05ce980be2a49f",
+      "sha256": "b8a1ccd7489d6b26569ee1d21d7292b069a3b0eb33b1b327431fc1a0212ecc83"
+    },
+    {
+      "revision": 32,
+      "at": 1791626428.0277896,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261010T1900-e6047e8667b5",
+        "scheduled_at": "2026-10-10T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "b8a1ccd7489d6b26569ee1d21d7292b069a3b0eb33b1b327431fc1a0212ecc83",
+      "sha256": "4915e319347c8a09f9a74705ce604496137a03c3d1ef7d55a013bb8a0f3613b3"
+    },
+    {
+      "revision": 33,
+      "at": 1791626428.0844312,
+      "action": "task",
+      "data": {
+        "id": "T-ice-courier-strategy-review-20261010",
+        "objective": "Measure the current portrait player and make a bounded strategy decision from technical evidence and unobserved human/business data",
+        "acceptance": [
+          "Measure desktop and 390x844 canvas/host geometry on the verified artifact",
+          "Separate DOM measurements from Unity coordinate calculations and physical touch/human observations",
+          "Preserve the existing implementation task and use improve for technical UX, unobserved for business",
+          "Record checkpoint hashes and check repository, legacy recovery and ledger history"
+        ],
+        "outputs": [
+          "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+          "business/unity/evidence/strategy-20261010-1900.json"
+        ],
+        "checks": [
+          "Real browser geometry and existing player exit regression",
+          "Source/artifact hashes and ledger prefix",
+          "Repository contracts and recovery checks"
+        ],
+        "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; then compile and verify actual display",
+        "decision_id": "D-ice-courier-portrait-acceptance-20261010",
+        "hypothesis": "Measured end-to-end display geometry identifies whether host resizing or Unity layout needs correction without inventing demand",
+        "source": "user:automation:unity:19-strategy",
+        "pdca": "check",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-unity-portal-player-integration",
+          "T-ice-courier-portrait-research-20261010"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "4915e319347c8a09f9a74705ce604496137a03c3d1ef7d55a013bb8a0f3613b3",
+      "sha256": "acbd0afce9cff4c75b405dcf3e4da68c7949249c91646011532aa87875e389f1"
+    },
+    {
+      "revision": 34,
+      "at": 1791626428.0944247,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261010T1900-e6047e8667b5",
+        "task_id": "T-ice-courier-strategy-review-20261010",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261010T1900-e6047e8667b5",
+        "task_id": "T-ice-courier-strategy-review-20261010",
+        "fence": 5,
+        "expires_at": 1791627928.0944247
+      },
+      "previous": "acbd0afce9cff4c75b405dcf3e4da68c7949249c91646011532aa87875e389f1",
+      "sha256": "09d1034e8ed641dcca5c3cbb6056f81f19465beca87665800b5aaf330526b79f"
+    },
+    {
+      "revision": 35,
+      "at": 1791632712.9162526,
+      "action": "recover",
+      "data": {
+        "source": "user:current-thread:full-access-continue",
+        "reconciliation": "Original HEAD and no external operations; desktop partial evidence persisted; no unknown operations; viewport reset; screenshot tool delay exceeded lease; acceptance incomplete",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/strategy-20261010-1900-interrupted.json",
+            "sha256": "733cb105485e8124bf36158aac2717dfb26ae8189e729abbeeb775119706cdd6"
+          }
+        ],
+        "next_step": "Owner authorized manual continuation; finish remaining geometry and strategy review without consuming the 19 slot again"
+      },
+      "result": {
+        "recorded": "recover"
+      },
+      "previous": "09d1034e8ed641dcca5c3cbb6056f81f19465beca87665800b5aaf330526b79f",
+      "sha256": "e915f3fe6851ba833e7d37175319e156618f4b716de56b936be48e175dddea2a"
+    },
+    {
+      "revision": 36,
+      "at": 1791632723.081074,
+      "action": "start",
+      "data": {
+        "run_id": "unity-manual-20261010-cf7a96dccbb6",
+        "source": "user:current-thread:full-access-continue",
+        "resumes_run": "unity-20261010T1900-e6047e8667b5"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "e915f3fe6851ba833e7d37175319e156618f4b716de56b936be48e175dddea2a",
+      "sha256": "30152f2821986cfd05224fe88f463abe6277569859886b4879318cef0de5065b"
+    },
+    {
+      "revision": 37,
+      "at": 1791632723.0896156,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-manual-20261010-cf7a96dccbb6",
+        "task_id": "T-ice-courier-strategy-review-20261010",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-manual-20261010-cf7a96dccbb6",
+        "task_id": "T-ice-courier-strategy-review-20261010",
+        "fence": 6,
+        "expires_at": 1791634223.0896156
+      },
+      "previous": "30152f2821986cfd05224fe88f463abe6277569859886b4879318cef0de5065b",
+      "sha256": "256d8d0b965e4c9afd5c3c300cf2d079294ed58999eb936e3afb2c9e60a1e598"
+    },
+    {
+      "revision": 38,
+      "at": 1791632941.4836397,
+      "action": "decision",
+      "data": {
+        "id": "D-ice-courier-measured-strategy-20261010",
+        "source": "evidence:business/unity/evidence/strategy-20261010-1900.json",
+        "hypothesis": "Measured 334.4px portrait canvas and Unity coordinates identify a concrete layout deficit without inferring business demand",
+        "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+        "artifact": {
+          "path": "business/unity/evidence/strategy-20261010-1900.json",
+          "sha256": "f51a812812171336dff8b6923c54dd11b9110fac04584258da57c15de734f9c6"
+        },
+        "target_task_id": "T-ice-courier-touch-polish",
+        "judgment": "unobserved",
+        "technical_disposition": "improve",
+        "business_evidence": "Human feedback, release and14/28-day metrics remain unobserved",
+        "acceptance_addendum": "business/unity/research/2026-10-10-portrait-entry-acceptance.md",
+        "owner_continuation": "user:current-thread:full-access-continue"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "256d8d0b965e4c9afd5c3c300cf2d079294ed58999eb936e3afb2c9e60a1e598",
+      "sha256": "4eaa43d19e45aade368fdf09139146a6d9442007810fb6640952cdcbf353edc6"
+    },
+    {
+      "revision": 39,
+      "at": 1791632941.493243,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "check",
+        "source": "evidence:business/unity/evidence/strategy-20261010-1900.json",
+        "evidence": "Verified old WebGL source and measured desktop/portrait host/canvas; focus exit passes; portrait targets fail coordinate-derived size; primary start-rate unobserved",
+        "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "4eaa43d19e45aade368fdf09139146a6d9442007810fb6640952cdcbf353edc6",
+      "sha256": "87b22ed07b317338a13cc15776e4cb26dd73a49b45423486f2928c9a1ef53707"
+    },
+    {
+      "revision": 40,
+      "at": 1791632941.5025334,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "act",
+        "source": "decision:D-ice-courier-measured-strategy-20261010",
+        "evidence": "Do not infer market value from synthetic geometry. Preserve existing UI implementation task; improve technical layout while business remains unobserved",
+        "judgment": "unobserved",
+        "technical_disposition": "improve",
+        "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "87b22ed07b317338a13cc15776e4cb26dd73a49b45423486f2928c9a1ef53707",
+      "sha256": "e672d964e7a204ad0141fc1d5cd22b6decdd93472e60dea9d8aceee4df6eef25"
+    },
+    {
+      "revision": 41,
+      "at": 1791632941.5115044,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-manual-20261010-cf7a96dccbb6",
+        "fence": 6,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/strategy-20261010-1900.json",
+            "sha256": "f51a812812171336dff8b6923c54dd11b9110fac04584258da57c15de734f9c6"
+          },
+          {
+            "path": "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+            "sha256": "82ab5221d35a5fe2c3f6416c114ebe221b952020fe4f4d6aa3b6d1ce86c8fe0d"
+          }
+        ],
+        "checks": [
+          "Desktop and390x844 DOM geometry and source-derived control sizes recorded; unsupported real-touch/human claims excluded",
+          "Existing player Tab/Enter exit and iframe removal passed; source/artifact18 hashes matched",
+          "Repository4 legacy/17 GUID contract, parent4 HEAD/8 recovery and report links passed",
+          "Original31 ledger events and existing implementation task preserved; owner/old cloud ledger unchanged",
+          "Interrupted scheduled run recovered with partial artifact; manual user continuation completed without another slot"
+        ],
+        "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "e672d964e7a204ad0141fc1d5cd22b6decdd93472e60dea9d8aceee4df6eef25",
+      "sha256": "336ce0f75a6b64ee1a5d0cffdc66686d0e7da35e20703a6d7d10c24edcd84d98"
+    },
+    {
+      "revision": 42,
+      "at": 1791632941.5210066,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-manual-20261010-cf7a96dccbb6",
+        "fence": 6,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/strategy-20261010-1900.json",
+            "sha256": "f51a812812171336dff8b6923c54dd11b9110fac04584258da57c15de734f9c6"
+          },
+          {
+            "path": "business/unity/research/2026-10-10-measured-portrait-strategy.md",
+            "sha256": "82ab5221d35a5fe2c3f6416c114ebe221b952020fe4f4d6aa3b6d1ce86c8fe0d"
+          }
+        ],
+        "checks": [
+          "Desktop and390x844 DOM geometry and source-derived control sizes recorded; unsupported real-touch/human claims excluded",
+          "Existing player Tab/Enter exit and iframe removal passed; source/artifact18 hashes matched",
+          "Repository4 legacy/17 GUID contract, parent4 HEAD/8 recovery and report links passed",
+          "Original31 ledger events and existing implementation task preserved; owner/old cloud ledger unchanged",
+          "Interrupted scheduled run recovered with partial artifact; manual user continuation completed without another slot"
+        ],
+        "next_step": "Existing T-ice-courier-touch-polish: implement portrait Unity layout and matching Web frame; compile and verify actual display before new hosted build/device checks",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "336ce0f75a6b64ee1a5d0cffdc66686d0e7da35e20703a6d7d10c24edcd84d98",
+      "sha256": "ec68b3c96bca45a78450dce4b82c0420ea1903e6faa8adb1e2a2b9d5d0505488"
+    },
+    {
+      "revision": 43,
+      "at": 1791648020.0336773,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261011T0100-3d0983464e72",
+        "scheduled_at": "2026-10-11T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "ec68b3c96bca45a78450dce4b82c0420ea1903e6faa8adb1e2a2b9d5d0505488",
+      "sha256": "1e6a9593f911da779afe9f4d1005b4c181502d9db1fbc28a7d65c1e24070b28d"
+    },
+    {
+      "revision": 44,
+      "at": 1791648020.0850632,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261011T0100-3d0983464e72",
+        "task_id": "T-ice-courier-touch-polish",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261011T0100-3d0983464e72",
+        "task_id": "T-ice-courier-touch-polish",
+        "fence": 7,
+        "expires_at": 1791649820.0850632
+      },
+      "previous": "1e6a9593f911da779afe9f4d1005b4c181502d9db1fbc28a7d65c1e24070b28d",
+      "sha256": "2e888f0f9a18fa274ea28d4c618e5d2c10f1b3b5478e69c98e8fa5215a4626dd"
+    },
+    {
+      "revision": 45,
+      "at": 1791650205.345042,
+      "action": "recover",
+      "data": {
+        "source": "user:automation:unity:20261011-0100",
+        "reconciliation": "UI app-approval and request waits exceeded lease. Original HEAD unchanged, no external operations or unknown results. Implementation hashes and partial checks saved; later untested additions removed to restore initially compiled/tested Unity source. No duplicate slot.",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portrait-20261011-0100.json",
+            "sha256": "95d52c07b9308ec81883e1681cc9f5c12cdc8584529cee1618bf0072a1fb583e"
+          }
+        ],
+        "next_step": "Same T-ice-courier-touch-polish: verify new UI actual screen/input, then exact-source hosted artifacts and physical-device save/touch separately"
+      },
+      "result": {
+        "recorded": "recover"
+      },
+      "previous": "2e888f0f9a18fa274ea28d4c618e5d2c10f1b3b5478e69c98e8fa5215a4626dd",
+      "sha256": "0527462a3bad392ed838fd5b590ec82226fdbae2ffe6b82280f31b312f3a3137"
+    },
+    {
+      "revision": 46,
+      "at": 1791669616.3241487,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261011T0700-b1404a964998",
+        "scheduled_at": "2026-10-11T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "0527462a3bad392ed838fd5b590ec82226fdbae2ffe6b82280f31b312f3a3137",
+      "sha256": "1a235c5e84ca8c52743b9d39d08738333bf6963bbdd563f0012081bc035a730c"
+    },
+    {
+      "revision": 47,
+      "at": 1791669616.3817098,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261011T0700-b1404a964998",
+        "task_id": "T-ice-courier-touch-polish",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261011T0700-b1404a964998",
+        "task_id": "T-ice-courier-touch-polish",
+        "fence": 8,
+        "expires_at": 1791671416.3817098
+      },
+      "previous": "1a235c5e84ca8c52743b9d39d08738333bf6963bbdd563f0012081bc035a730c",
+      "sha256": "f51e99acff7c29ea1722300c57016537f5b9de4a2c07c5b51f105fbc54607504"
+    },
+    {
+      "revision": 48,
+      "at": 1791670448.4896421,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261011T0700-b1404a964998",
+        "fence": 8,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/quality-20261011-0700.json",
+            "sha256": "a83ee7f9844b1bfd31e1f2f5b389c58e96adf766e688148ae206beea0af09683"
+          },
+          {
+            "path": "docs/ice-courier-editor-quality-20261011.md",
+            "sha256": "bb2e45245120a2fc000fea05ddb74105d52f0bb3f7eb5887cdf806d16aba1d6a"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-11-unity-portrait-editor-check.md",
+            "sha256": "cfbbf753ab278aaf17aa082c3bd2b428ba882d88989e36c2f79f3126d0e4a523"
+          },
+          {
+            "path": "scripts/Invoke-Unity.ps1",
+            "sha256": "0d03bc82e9cb747657b7ea67ec2b28c36b799f29b5b7e906a8a4e2f9391e46fe"
+          }
+        ],
+        "checks": [
+          "Unity Validate passed; EditMode10/10 and PlayMode1/1 before and after helper change",
+          "Editor390x844 all3 routes and Undo/Play-cycle Resume passed;335/1280 route3 and mouse-drag checks passed",
+          "Same run operation refusal preserved existing XML",
+          "Web build/repository/GUID/36 checksums passed;4 parent HEADs/8 recovery hashes matched",
+          "Unverified Actions/new browser/device/human checks retained; old ledger and owner text unchanged"
+        ],
+        "next_step": "Same T-ice-courier-touch-polish: obtain exact-source responsive-v1 Actions artifacts, verify source/checksums and attach to local Web host; separately verify browser/device/human acceptance"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "f51e99acff7c29ea1722300c57016537f5b9de4a2c07c5b51f105fbc54607504",
+      "sha256": "ee162ee4ba0bc04c11d32883f3d6ca2c007042e405e1283cbb56b2385f98b2d2"
+    },
+    {
+      "revision": 49,
+      "at": 1791670448.4991417,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261011T0700-b1404a964998",
+        "fence": 8,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/quality-20261011-0700.json",
+            "sha256": "a83ee7f9844b1bfd31e1f2f5b389c58e96adf766e688148ae206beea0af09683"
+          },
+          {
+            "path": "docs/ice-courier-editor-quality-20261011.md",
+            "sha256": "bb2e45245120a2fc000fea05ddb74105d52f0bb3f7eb5887cdf806d16aba1d6a"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-11-unity-portrait-editor-check.md",
+            "sha256": "cfbbf753ab278aaf17aa082c3bd2b428ba882d88989e36c2f79f3126d0e4a523"
+          },
+          {
+            "path": "scripts/Invoke-Unity.ps1",
+            "sha256": "0d03bc82e9cb747657b7ea67ec2b28c36b799f29b5b7e906a8a4e2f9391e46fe"
+          }
+        ],
+        "checks": [
+          "Unity Validate passed; EditMode10/10 and PlayMode1/1 before and after helper change",
+          "Editor390x844 all3 routes and Undo/Play-cycle Resume passed;335/1280 route3 and mouse-drag checks passed",
+          "Same run operation refusal preserved existing XML",
+          "Web build/repository/GUID/36 checksums passed;4 parent HEADs/8 recovery hashes matched",
+          "Unverified Actions/new browser/device/human checks retained; old ledger and owner text unchanged"
+        ],
+        "next_step": "Same T-ice-courier-touch-polish: obtain exact-source responsive-v1 Actions artifacts, verify source/checksums and attach to local Web host; separately verify browser/device/human acceptance"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "ee162ee4ba0bc04c11d32883f3d6ca2c007042e405e1283cbb56b2385f98b2d2",
+      "sha256": "c49c482691b55d6ff91a5816c07917ac817b7c1b0641b6a8c58049fadc1974f9"
+    },
+    {
+      "revision": 50,
+      "at": 1791691256.7420926,
+      "action": "decision",
+      "data": {
+        "id": "D-ice-courier-first-play-20261011",
+        "source": "user:automation:unity:13-research;primary-source:developer-storefronts-and-Unity-PlayerPrefs",
+        "hypothesis": "Explicit departure-cell rule, Japanese symbol/control mapping and verified persistence disclosure make the first play easier to assess without adding stages",
+        "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+        "target_task_id": "T-ice-courier-touch-polish",
+        "acceptance_addendum": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+        "judgment": "unobserved",
+        "technical_disposition": "improve"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "c49c482691b55d6ff91a5816c07917ac817b7c1b0641b6a8c58049fadc1974f9",
+      "sha256": "37c4024b74b57d488172f7ce09bf494e98904ccca4c6b88cce89fffe9b749fe4"
+    },
+    {
+      "revision": 51,
+      "at": 1791691256.7513058,
+      "action": "task",
+      "data": {
+        "id": "T-ice-courier-first-play-research-20261011",
+        "objective": "一次資料と現行ソースから初回説明・保存案内の受入条件を既存工程に補う",
+        "acceptance": [
+          "作者・販売者の一次資料を複数作品で確認し提示方法と需要を分ける",
+          "現行ソースに結び付く検査項目・優先順・未確認事項を残す",
+          "既存T-ice-courier-touch-polishと前回検査条件を保持し新作を追加しない"
+        ],
+        "outputs": [
+          "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+          "business/unity/evidence/research-20261011-1300.json"
+        ],
+        "checks": [
+          "Primary-source provenance and source SHA256",
+          "Ledger event prefix and original task equality",
+          "Latest checkpoint, parent HEAD/recovery and repository contracts"
+        ],
+        "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+        "decision_id": "D-ice-courier-first-play-20261011",
+        "hypothesis": "Explicit departure-cell rule, Japanese symbol/control mapping and verified persistence disclosure make the first play easier to assess without adding stages",
+        "source": "user:automation:unity:20261011-1300",
+        "pdca": "check",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-ice-courier-portrait-research-20261010"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "37c4024b74b57d488172f7ce09bf494e98904ccca4c6b88cce89fffe9b749fe4",
+      "sha256": "4726a3c73dc49e42360b8749af03ecbe51e5a10b823c1ace0db6d8ba24044607"
+    },
+    {
+      "revision": 52,
+      "at": 1791691256.7592325,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261011T1300-7f20ad59a424",
+        "scheduled_at": "2026-10-11T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "4726a3c73dc49e42360b8749af03ecbe51e5a10b823c1ace0db6d8ba24044607",
+      "sha256": "f9f51326a54e342f89a1fd95ed5597183a5b06dac6313272810702d1976995f8"
+    },
+    {
+      "revision": 53,
+      "at": 1791691256.828931,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261011T1300-7f20ad59a424",
+        "task_id": "T-ice-courier-first-play-research-20261011",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261011T1300-7f20ad59a424",
+        "task_id": "T-ice-courier-first-play-research-20261011",
+        "fence": 9,
+        "expires_at": 1791692756.828931
+      },
+      "previous": "f9f51326a54e342f89a1fd95ed5597183a5b06dac6313272810702d1976995f8",
+      "sha256": "2a1f12c627ee544dac547272a2c9cd5d7cdca1c9740f84641c9fa96a7f3b6cc5"
+    },
+    {
+      "revision": 54,
+      "at": 1791691342.6670527,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261011T1300-7f20ad59a424",
+        "fence": 9,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+            "sha256": "cf44307d6dcb212b62ac6eba3e89206e01035537f000e21ed7e9ab8a71021605"
+          },
+          {
+            "path": "business/unity/evidence/research-20261011-1300.json",
+            "sha256": "fd875af827b6a952f33bb6181d36dfe218f51132ef629fe8957f4d116b04e0c1"
+          }
+        ],
+        "checks": [
+          "7 creator/publisher/Unity primary sources verified; marketing, source-derived expectations and unobserved human results separated",
+          "Existing implementation task and portrait acceptance unchanged; original49 events preserved",
+          "Latest checkpoint4 hashes, parent4 HEADs/recovery8 hashes, repository4 legacy/19 GUID,3 local report links and JSON verified",
+          "Owner text and old cloud ledger unchanged; no new game/UI implementation, external operations or Atohitori access",
+          "Source receipt hashes matched and null metrics/14-28 unstarted retained"
+        ],
+        "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "2a1f12c627ee544dac547272a2c9cd5d7cdca1c9740f84641c9fa96a7f3b6cc5",
+      "sha256": "1389e73348d8366965bedb73deb935b08f9fb0c46999b19ba6f280ab2aba6126"
+    },
+    {
+      "revision": 55,
+      "at": 1791691342.6850042,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261011T1300-7f20ad59a424",
+        "fence": 9,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-11-first-play-and-save-acceptance.md",
+            "sha256": "cf44307d6dcb212b62ac6eba3e89206e01035537f000e21ed7e9ab8a71021605"
+          },
+          {
+            "path": "business/unity/evidence/research-20261011-1300.json",
+            "sha256": "fd875af827b6a952f33bb6181d36dfe218f51132ef629fe8957f4d116b04e0c1"
+          }
+        ],
+        "checks": [
+          "7 creator/publisher/Unity primary sources verified; marketing, source-derived expectations and unobserved human results separated",
+          "Existing implementation task and portrait acceptance unchanged; original49 events preserved",
+          "Latest checkpoint4 hashes, parent4 HEADs/recovery8 hashes, repository4 legacy/19 GUID,3 local report links and JSON verified",
+          "Owner text and old cloud ledger unchanged; no new game/UI implementation, external operations or Atohitori access",
+          "Source receipt hashes matched and null metrics/14-28 unstarted retained"
+        ],
+        "next_step": "Preserve T-ice-courier-touch-polish; obtain exact-source responsive-v1 artifacts and validate first-play/save disclosures; independent copy mapping can proceed while artifacts are unavailable",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "1389e73348d8366965bedb73deb935b08f9fb0c46999b19ba6f280ab2aba6126",
+      "sha256": "2dd26ce48faca2411ff3599a82c743542fce431a7f0c4650041fdab7aa65a40c"
+    },
+    {
+      "revision": 56,
+      "at": 1791713054.1635542,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261011T1900-8b31b641b674",
+        "scheduled_at": "2026-10-11T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "2dd26ce48faca2411ff3599a82c743542fce431a7f0c4650041fdab7aa65a40c",
+      "sha256": "9eb63bf3c4f518ff14bfc3c8fc938594ad4b374f793cbe568ad20c74b6be23cb"
+    },
+    {
+      "revision": 57,
+      "at": 1791713054.204556,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261011T1900-8b31b641b674",
+        "task_id": "T-ice-courier-touch-polish",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261011T1900-8b31b641b674",
+        "task_id": "T-ice-courier-touch-polish",
+        "fence": 10,
+        "expires_at": 1791714554.204556
+      },
+      "previous": "9eb63bf3c4f518ff14bfc3c8fc938594ad4b374f793cbe568ad20c74b6be23cb",
+      "sha256": "d60fe39e16721125833e2d922a732fac61718b4d81b3369dc0eb5e848972673d"
+    },
+    {
+      "revision": 58,
+      "at": 1791713489.4267364,
+      "action": "decision",
+      "data": {
+        "id": "D-ice-courier-guidance-strategy-20261011",
+        "source": "user:automation:unity:20261011-1900;local:source-board-execution-and-browser-measurement",
+        "hypothesis": "Explicit departure-cell rule and Japanese symbol/control mapping with scoped save claims let first-play understanding be assessed without another game",
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+        "target_task_id": "T-ice-courier-touch-polish",
+        "judgment": "unobserved",
+        "technical_disposition": "improve",
+        "evidence": "business/unity/research/2026-10-11-guidance-strategy.md"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "d60fe39e16721125833e2d922a732fac61718b4d81b3369dc0eb5e848972673d",
+      "sha256": "f40b3de9a6b02b70c1fa06b5d4002349113dbc95a4735afbc98475989471c4db"
+    },
+    {
+      "revision": 59,
+      "at": 1791713489.437415,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "plan",
+        "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+        "evidence": "Preserve existing WIP and portrait/F1-F6 acceptance; use independent Web guidance while exact-source hosted artifact remains absent",
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate."
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "f40b3de9a6b02b70c1fa06b5d4002349113dbc95a4735afbc98475989471c4db",
+      "sha256": "28fa8bea170464aede935d89318ee740e6cd019054578a2c12270878322b33ba"
+    },
+    {
+      "revision": 60,
+      "at": 1791713489.446335,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "do",
+        "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+        "evidence": "Japanese symbol guide, expandable English control help and save scope implemented in existing portal; Unity source unchanged",
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate."
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "28fa8bea170464aede935d89318ee740e6cd019054578a2c12270878322b33ba",
+      "sha256": "b3483061ac6a0818059151fd1e4edbd8d4cdb5abe71e5696ef0b36a9484bb947"
+    },
+    {
+      "revision": 61,
+      "at": 1791713489.4553587,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "check",
+        "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+        "evidence": "Web build and 390/1280 measurements, keyboard help toggle, search/navigation and actual unchanged board .NET execution passed; new Unity/Web persistence and human metrics unobserved",
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate."
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "b3483061ac6a0818059151fd1e4edbd8d4cdb5abe71e5696ef0b36a9484bb947",
+      "sha256": "d9f715e63b51336fe7af8d99e378e4e1756a802f0cf810fd2525eb2c8c5c2b23"
+    },
+    {
+      "revision": 62,
+      "at": 1791713489.464152,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "act",
+        "source": "evidence:business/unity/research/2026-10-11-guidance-strategy.md",
+        "evidence": "Technical explanation improved; retain same task, null business metrics and pending source-bound artifact/device/human acceptance",
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+        "judgment": "unobserved",
+        "technical_disposition": "improve"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "d9f715e63b51336fe7af8d99e378e4e1756a802f0cf810fd2525eb2c8c5c2b23",
+      "sha256": "32bfafad31e1d216f081fa54bb0fab3a178ca298c8f9e7835b3c36954255b248"
+    },
+    {
+      "revision": 63,
+      "at": 1791713595.670249,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261011T1900-8b31b641b674",
+        "fence": 10,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-11-guidance-strategy.md",
+            "sha256": "c9cd734c715404571c922f898f0299a3c4860a8fcbc5b31711adb59f694408ac"
+          },
+          {
+            "path": "docs/images/guidance-20261011-390.jpg",
+            "sha256": "ea3f507c2c0349722349c49fa25a477c349bf4168f268c9354e7d9b29c681186"
+          },
+          {
+            "path": "docs/images/guidance-20261011-controls-390.jpg",
+            "sha256": "d457be371fe93fb68f9089be16d6489993fcfa44b32beb15f048b06a7732dddd"
+          },
+          {
+            "path": "docs/images/guidance-20261011-1280.jpg",
+            "sha256": "d0ee959709cb05ddc49885bc3322571b9774e238cd61374f9c5126ceb2d172c0"
+          },
+          {
+            "path": "business/unity/evidence/strategy-20261011-1900.json",
+            "sha256": "49dff95d9b8358e5758de62a5a1723934f9de1f271950f8dfe0d47cd854f5e81"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "4d09854c8eda82d913a079c9f92380f1c407433cd7e6aa29fdecc9e30b57153f"
+          },
+          {
+            "path": "web/src/portal/App.css",
+            "sha256": "5086ede81bc49889410ed71275bc6ca8a366efab8474bee17fe879095309974c"
+          },
+          {
+            "path": "web/src/portal/data/unity-games.json",
+            "sha256": "01d015cacdd9233703f3f312287cee86ad1964dfc84a114f696660e8253bc468"
+          },
+          {
+            "path": "web/src/portal/routes.ts",
+            "sha256": "032bc484fec43ebe8c9a34c1dd21aa257c5ad724f8e0d95d3d3999aa5ef2944e"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierBoard.cs",
+            "sha256": "24115037343d7dfe9923a807af8b7ccabddc1097fb1f806709ecb709a8a0bfbf"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+            "sha256": "66a179eff8ae6e8198a7933080e4e4f989be0896a677353531e900d4ede08c02"
+          }
+        ],
+        "checks": [
+          "Web TypeScript/ESLint/Vite/5 SSG passed; repository4 legacy/19 GUID and36 checksums/public-artifact exclusion passed",
+          "Unchanged CourierBoard compiled/executed with PowerShell Add-Type: initial/right/Undo, Restore clears old history, new move Undo passes; not Unity/PlayerPrefs",
+          "390/1280 Web guidance measured16px and no horizontal overflow; summary335x52.796875, Enter open/close; standard preview no start/iframe",
+          "Browser search frozen1; released0; clear/all/details/list return passed; screenshots game portal only",
+          "Latest checkpoint2, original55 ledger event prefix/task contract, protected owner/old ledger/Unity and parent4 HEAD/recovery8 hashes matched"
+        ],
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate."
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "32bfafad31e1d216f081fa54bb0fab3a178ca298c8f9e7835b3c36954255b248",
+      "sha256": "419367650b933040c43d8725ab79c0354fe59ae7de986667fddc728150688a18"
+    },
+    {
+      "revision": 64,
+      "at": 1791713595.682315,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261011T1900-8b31b641b674",
+        "fence": 10,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-11-guidance-strategy.md",
+            "sha256": "c9cd734c715404571c922f898f0299a3c4860a8fcbc5b31711adb59f694408ac"
+          },
+          {
+            "path": "docs/images/guidance-20261011-390.jpg",
+            "sha256": "ea3f507c2c0349722349c49fa25a477c349bf4168f268c9354e7d9b29c681186"
+          },
+          {
+            "path": "docs/images/guidance-20261011-controls-390.jpg",
+            "sha256": "d457be371fe93fb68f9089be16d6489993fcfa44b32beb15f048b06a7732dddd"
+          },
+          {
+            "path": "docs/images/guidance-20261011-1280.jpg",
+            "sha256": "d0ee959709cb05ddc49885bc3322571b9774e238cd61374f9c5126ceb2d172c0"
+          },
+          {
+            "path": "business/unity/evidence/strategy-20261011-1900.json",
+            "sha256": "49dff95d9b8358e5758de62a5a1723934f9de1f271950f8dfe0d47cd854f5e81"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "4d09854c8eda82d913a079c9f92380f1c407433cd7e6aa29fdecc9e30b57153f"
+          },
+          {
+            "path": "web/src/portal/App.css",
+            "sha256": "5086ede81bc49889410ed71275bc6ca8a366efab8474bee17fe879095309974c"
+          },
+          {
+            "path": "web/src/portal/data/unity-games.json",
+            "sha256": "01d015cacdd9233703f3f312287cee86ad1964dfc84a114f696660e8253bc468"
+          },
+          {
+            "path": "web/src/portal/routes.ts",
+            "sha256": "032bc484fec43ebe8c9a34c1dd21aa257c5ad724f8e0d95d3d3999aa5ef2944e"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierBoard.cs",
+            "sha256": "24115037343d7dfe9923a807af8b7ccabddc1097fb1f806709ecb709a8a0bfbf"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+            "sha256": "66a179eff8ae6e8198a7933080e4e4f989be0896a677353531e900d4ede08c02"
+          }
+        ],
+        "checks": [
+          "Web TypeScript/ESLint/Vite/5 SSG passed; repository4 legacy/19 GUID and36 checksums/public-artifact exclusion passed",
+          "Unchanged CourierBoard compiled/executed with PowerShell Add-Type: initial/right/Undo, Restore clears old history, new move Undo passes; not Unity/PlayerPrefs",
+          "390/1280 Web guidance measured16px and no horizontal overflow; summary335x52.796875, Enter open/close; standard preview no start/iframe",
+          "Browser search frozen1; released0; clear/all/details/list return passed; screenshots game portal only",
+          "Latest checkpoint2, original55 ledger event prefix/task contract, protected owner/old ledger/Unity and parent4 HEAD/recovery8 hashes matched"
+        ],
+        "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate."
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "419367650b933040c43d8725ab79c0354fe59ae7de986667fddc728150688a18",
+      "sha256": "ff7fcabd1338396913ef9887218f811f298079bf87128983368d728631f64ec9"
+    },
+    {
+      "revision": 65,
+      "at": 1791734416.8401327,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-12T01:00:00+09:00",
+        "run_id": "unity-20261012T0100-613a8862a2d4"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "ff7fcabd1338396913ef9887218f811f298079bf87128983368d728631f64ec9",
+      "sha256": "963afd95fa00a5bfd9e2cbb089c9f9e5fab04626bd1ac75dc31db78d9ce7b03f"
+    },
+    {
+      "revision": 66,
+      "at": 1791734417.0193048,
+      "action": "claim",
+      "data": {
+        "ttl_seconds": 1500,
+        "task_id": "T-ice-courier-touch-polish",
+        "run_id": "unity-20261012T0100-613a8862a2d4"
+      },
+      "result": {
+        "run_id": "unity-20261012T0100-613a8862a2d4",
+        "task_id": "T-ice-courier-touch-polish",
+        "fence": 11,
+        "expires_at": 1791735917.0193048
+      },
+      "previous": "963afd95fa00a5bfd9e2cbb089c9f9e5fab04626bd1ac75dc31db78d9ce7b03f",
+      "sha256": "44c7a333cc2aa1d505e37d0c88cb1dc0290e45c376735f39eea9803383c41ca8"
+    },
+    {
+      "revision": 67,
+      "at": 1791735647.6306062,
+      "action": "checkpoint",
+      "data": {
+        "fence": 11,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/save-notice-20261012-0100.json",
+            "sha256": "2a22b211f9221395bf9ad3b57023304dab6fdb7317a02f7db50692925840d6bc"
+          },
+          {
+            "path": "docs/ice-courier-save-notice-20261012.md",
+            "sha256": "3b830d4f416c5c2f12ce1aaf319957e13df0c0cbd71ec507a025c865f6993012"
+          },
+          {
+            "path": "docs/web-technology-policy-20261012.md",
+            "sha256": "07871ccbafc223e06d4bbb8d678432ddf74ade4dce0d1152fe119e71eca54e6e"
+          },
+          {
+            "path": "docs/images/save-notice-20261012-1280.png",
+            "sha256": "3fd14c850e4bb18ca819c746b2426e91e2045320c239b664b339e27df13fd651"
+          },
+          {
+            "path": "docs/images/save-notice-20261012-390.png",
+            "sha256": "59cc338a567c736b991e6bf0cc7e69280d731beae80cf02f41d11346f19aa99e"
+          },
+          {
+            "path": "docs/images/save-notice-20261012-335.png",
+            "sha256": "04cff41d7b0f8e02d3fcf84331333c69b0091bfb7b4754c3ce20649ce933ca26"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+            "sha256": "2fa4bc34a6b92e065d859da3be2982111659a38ed1c6d71f24b0f2a405558f5b"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Tests/PlayMode/MigrationLoadTests.cs",
+            "sha256": "12d971b6e43182acce69ea6a9d9f828e5d11a8ba59cb527d5b87ee936bd8777a"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "72a3d5ee894dd5a61bb627ad4514e1c9a0b9b2727358ad526f2c6d6ad621b11f"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "eebc62abe636c72deb179997840696a48121558356cc9064f295f76e528bc5a1"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "cf753941c03dd15ae548629732db0f516204fe60125180557b863a8033e03cc4"
+          },
+          {
+            "path": "README.md",
+            "sha256": "cf0457f3f91a835e42d3f1784e67716dcec4bc54b808db8e5f4e648da0601299"
+          },
+          {
+            "path": "business/unity/README.md",
+            "sha256": "04aac0d6aff306636b825d8e0644883a440761761903933badebae9273380cce"
+          },
+          {
+            "path": "docs/workspace-handoff.md",
+            "sha256": "eb4b3c716341c0c9791bca86a7a6dfa3dbd64bfd02d05494d0d523831b5f9719"
+          }
+        ],
+        "checks": [
+          "Before work latest checkpoint11 hashes verified",
+          "Parent4 HEADs/recovery8 hashes matched",
+          "Repository4 preserved catalog/19 GUID passed",
+          "No changes to owner text, old cloud ledger, board rules, layout or Web source",
+          "Raw logs/XML/screenshots local only; 3 game-only crops visually inspected",
+          "No external push/PR/merge/build/deploy/post or Atohitori access",
+          "Final Unity PlayMode3/3, prior EditMode10/10 and Validate passed; red1/3 reproduced2 regressions",
+          "Saved automation Web policy verified with original schedule/model/local target"
+        ],
+        "run_id": "unity-20261012T0100-613a8862a2d4",
+        "next_step": "Existing Web portal catalog/rendering supports Web apps and owner-provided finished Unity artifacts; no unverified start links"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "44c7a333cc2aa1d505e37d0c88cb1dc0290e45c376735f39eea9803383c41ca8",
+      "sha256": "1cde3ee387799ad75a3bc1b095923ad4e386f1e18920ff7e61035053815abd0b"
+    },
+    {
+      "revision": 68,
+      "at": 1791735647.8371303,
+      "action": "yield",
+      "data": {
+        "fence": 11,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/save-notice-20261012-0100.json",
+            "sha256": "2a22b211f9221395bf9ad3b57023304dab6fdb7317a02f7db50692925840d6bc"
+          },
+          {
+            "path": "docs/ice-courier-save-notice-20261012.md",
+            "sha256": "3b830d4f416c5c2f12ce1aaf319957e13df0c0cbd71ec507a025c865f6993012"
+          },
+          {
+            "path": "docs/web-technology-policy-20261012.md",
+            "sha256": "07871ccbafc223e06d4bbb8d678432ddf74ade4dce0d1152fe119e71eca54e6e"
+          },
+          {
+            "path": "docs/images/save-notice-20261012-1280.png",
+            "sha256": "3fd14c850e4bb18ca819c746b2426e91e2045320c239b664b339e27df13fd651"
+          },
+          {
+            "path": "docs/images/save-notice-20261012-390.png",
+            "sha256": "59cc338a567c736b991e6bf0cc7e69280d731beae80cf02f41d11346f19aa99e"
+          },
+          {
+            "path": "docs/images/save-notice-20261012-335.png",
+            "sha256": "04cff41d7b0f8e02d3fcf84331333c69b0091bfb7b4754c3ce20649ce933ca26"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+            "sha256": "2fa4bc34a6b92e065d859da3be2982111659a38ed1c6d71f24b0f2a405558f5b"
+          },
+          {
+            "path": "unity/IceCourier/Assets/Kihamda/Tests/PlayMode/MigrationLoadTests.cs",
+            "sha256": "12d971b6e43182acce69ea6a9d9f828e5d11a8ba59cb527d5b87ee936bd8777a"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "72a3d5ee894dd5a61bb627ad4514e1c9a0b9b2727358ad526f2c6d6ad621b11f"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "eebc62abe636c72deb179997840696a48121558356cc9064f295f76e528bc5a1"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "cf753941c03dd15ae548629732db0f516204fe60125180557b863a8033e03cc4"
+          },
+          {
+            "path": "README.md",
+            "sha256": "cf0457f3f91a835e42d3f1784e67716dcec4bc54b808db8e5f4e648da0601299"
+          },
+          {
+            "path": "business/unity/README.md",
+            "sha256": "04aac0d6aff306636b825d8e0644883a440761761903933badebae9273380cce"
+          },
+          {
+            "path": "docs/workspace-handoff.md",
+            "sha256": "eb4b3c716341c0c9791bca86a7a6dfa3dbd64bfd02d05494d0d523831b5f9719"
+          }
+        ],
+        "checks": [
+          "Before work latest checkpoint11 hashes verified",
+          "Parent4 HEADs/recovery8 hashes matched",
+          "Repository4 preserved catalog/19 GUID passed",
+          "No changes to owner text, old cloud ledger, board rules, layout or Web source",
+          "Raw logs/XML/screenshots local only; 3 game-only crops visually inspected",
+          "No external push/PR/merge/build/deploy/post or Atohitori access",
+          "Final Unity PlayMode3/3, prior EditMode10/10 and Validate passed; red1/3 reproduced2 regressions",
+          "Saved automation Web policy verified with original schedule/model/local target"
+        ],
+        "run_id": "unity-20261012T0100-613a8862a2d4",
+        "next_step": "Existing Web portal catalog/rendering supports Web apps and owner-provided finished Unity artifacts; no unverified start links"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "1cde3ee387799ad75a3bc1b095923ad4e386f1e18920ff7e61035053815abd0b",
+      "sha256": "67455ebb2996c32efc207a3fbdc20fbf9f1c36ba18e96a8e50a088fdd2f30c4a"
+    },
+    {
+      "revision": 69,
+      "at": 1791735693.704843,
+      "action": "feedback",
+      "data": {
+        "next_step": "Preserve Unity work; stop autonomous Unity development and support both Web apps and owner-provided finished Unity artifacts in the existing portal",
+        "source": "user:current-thread:2026-10-12:web-technology-policy",
+        "message": "WebアプリはWeb技術で制作する方針に戻します。そうでないと負荷が高すぎるからです。ただし、一部僕が他で開発したUnityアプリは、その完成品のデプロイを受け入れます。その余地は残してください。"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "67455ebb2996c32efc207a3fbdc20fbf9f1c36ba18e96a8e50a088fdd2f30c4a",
+      "sha256": "f7f001455ce23efdf61f2ac8cec61f02eb8bb1c0b93391e4586abdfe4b30dff3"
+    },
+    {
+      "revision": 70,
+      "at": 1791735693.8480022,
+      "action": "decision",
+      "data": {
+        "id": "D-web-technology-policy-20261012",
+        "hypothesis": "Web technologies reduce the production burden identified by the owner while a separate finished-Unity deployment path preserves compatibility",
+        "evidence": "docs/web-technology-policy-20261012.md",
+        "judgment": "unobserved",
+        "target_task_id": "T-web-portal-technology-catalog",
+        "source": "user:current-thread:2026-10-12:web-technology-policy",
+        "next_step": "T-web-portal-technology-catalog"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "f7f001455ce23efdf61f2ac8cec61f02eb8bb1c0b93391e4586abdfe4b30dff3",
+      "sha256": "9d86ddaf41882f85ad069aa574f5e35edae3f87e75c955060c62b8184de0ac9c"
+    },
+    {
+      "revision": 71,
+      "at": 1791735693.9894085,
+      "action": "cancel",
+      "data": {
+        "next_step": "T-web-portal-technology-catalog",
+        "task_id": "T-ice-courier-touch-polish",
+        "source": "user:current-thread:2026-10-12:web-technology-policy",
+        "reason": "Owner changed Web application production from mandatory Unity to Web technologies. Partial Unity evidence preserved in checkpoint67/yield68; acceptance remains unmet, not completed."
+      },
+      "result": {
+        "recorded": "cancel"
+      },
+      "previous": "9d86ddaf41882f85ad069aa574f5e35edae3f87e75c955060c62b8184de0ac9c",
+      "sha256": "6d9e0939e43f1080ac34fb817e943711c9dfe7989c826623950452b6cbb68952"
+    },
+    {
+      "revision": 72,
+      "at": 1791735694.147532,
+      "action": "task",
+      "data": {
+        "hypothesis": "Web technologies reduce the production burden identified by the owner while a separate finished-Unity deployment path preserves compatibility",
+        "outputs": [
+          "Web作品データと表示の修正",
+          "受入れ・未公開状態の検査証跡"
+        ],
+        "acceptance": [
+          "制作技術web/unityと、制作中の既存試作品/本人持込完成品の扱いを区別し、実態を誤表示しない",
+          "一覧・検索・詳細で制作技術に依存した誤案内をなくし、release=nullに開始リンクを出さない",
+          "Unity完成品の受入れ口と既存ローカル検査入口を保全し、未受領の完成品や配信実績を作らない",
+          "型・静的検査・ビルドと390/1280px実ブラウザで一覧・詳細・公開状態・戻り先を確認する"
+        ],
+        "pdca": "plan",
+        "experiment_id": "E-unity-portal",
+        "next_step": "Implement technology-aware existing catalog and rendering while retaining owner-provided finished Unity deployment compatibility",
+        "priority": 0,
+        "id": "T-web-portal-technology-catalog",
+        "depends_on": [],
+        "source": "user:current-thread:2026-10-12:web-technology-policy",
+        "decision_id": "D-web-technology-policy-20261012",
+        "objective": "既存Webポータルの作品データと一覧・詳細をWeb製アプリと本人持込Unity完成品に対応させる",
+        "checks": [
+          "TypeScript/ESLint/Web build",
+          "Repository contract",
+          "Actual browser catalog/detail/unpublished navigation"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "6d9e0939e43f1080ac34fb817e943711c9dfe7989c826623950452b6cbb68952",
+      "sha256": "b1063c4535a6d2ae845e5e59617daa792365067a10c96ad7f36370802752c8f9"
+    },
+    {
+      "revision": 73,
+      "at": 1791756273.2688477,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-12T07:00:00+09:00",
+        "run_id": "unity-20261012T0700-ffb98d9c5b5b"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "b1063c4535a6d2ae845e5e59617daa792365067a10c96ad7f36370802752c8f9",
+      "sha256": "d32317a9fce83dfb35e3031efddfa0e3f278b579014a677fb42d37f5d28f3843"
+    },
+    {
+      "revision": 74,
+      "at": 1791756273.3269246,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+        "task_id": "T-web-portal-technology-catalog",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+        "task_id": "T-web-portal-technology-catalog",
+        "fence": 12,
+        "expires_at": 1791757773.3269246
+      },
+      "previous": "d32317a9fce83dfb35e3031efddfa0e3f278b579014a677fb42d37f5d28f3843",
+      "sha256": "6023c2411eebf090baaa1b6a54fde2c9808ad3128e60445d8f7320f47e7fc2eb"
+    },
+    {
+      "revision": 75,
+      "at": 1791756701.7100863,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+        "fence": 12,
+        "artifacts": [
+          {
+            "path": "docs/web-catalog-20261012.md",
+            "sha256": "ec4892b1ed707f605531f8ed060c4aedca4990fda8a476e3d3a52f71a92c9d82"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-12-web-catalog.md",
+            "sha256": "43ac480dd676cba06d57d40b2048acf8db8266ebc9aa6c47253080772015aa8c"
+          },
+          {
+            "path": "docs/images/catalog-20261012-390.png",
+            "sha256": "bb654ee4423fa250ee749c5642f840f81dea4baa06e7a29e340c96f616eea589"
+          },
+          {
+            "path": "docs/images/catalog-20261012-1280.png",
+            "sha256": "5c704e0c9354846af459fd9764a6fc589b52c829902230aa2ba07adbde93d71d"
+          },
+          {
+            "path": "web/src/portal/catalog.ts",
+            "sha256": "841684b3835e241c7e39f3e10d6aef10c04b660595d4191f0950f45db48818ef"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "819fe6821f77b25b2436ebf59ac7fb52baaacf7bf1f4ceb49304c3a8b690df1d"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "35399229720a070b766ccffe15d23f609cec6858e91797f67826d6687963d10b"
+          },
+          {
+            "path": "web/src/portal/routes.ts",
+            "sha256": "1aa08b946c41348239166a372ab08b72225ccb8c1167b746061323e9f4872661"
+          },
+          {
+            "path": "web/src/portal/UnityPlayer.tsx",
+            "sha256": "ef6663f1d0e9a859a1888b099ca22ad393a4604559eb1a101365303655da91b8"
+          },
+          {
+            "path": "scripts/check-repository.mjs",
+            "sha256": "adf4f530e87bcf4e442fed2bd3c03e415bf0dca7ee9be6f307f4644c25ea48b8"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "8adc3bf78314bb9e3ef2a338dd39c3364c2c1d6639469bffe7bcbf401a5d3a03"
+          },
+          {
+            "path": "web/scripts/prebuild.mjs",
+            "sha256": "56f5406099ed00249c70ab1469094e55161cdc2467b05d01c1e54001f0b10ff7"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "1c3fc63943412dcac9ff0ef9cfbe0e48741936aea559573422e3c2e76b412981"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d499c087d4602d7dbd6b0c1ac2ebf235e88faeb249f896548bb4e67c061a7406"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "4db2cbf52501e5230342d0d7ca0ddd8ca0c1750355df6ad1dc9d350f2c2e560a"
+          },
+          {
+            "path": "business/unity/evidence/catalog-20261012-0700.json",
+            "sha256": "24940fd19d6a3f6d1e9d4b7960d0b9fa2c3406a4fe2fdbbd3842621929dabc46"
+          }
+        ],
+        "checks": [
+          "Final TypeScript/ESLint/Vite/5SSG passed",
+          "Repository4 legacy URLs/19 GUIDs and36 checksums/public artifact exclusion passed",
+          "In-memory Web/owner-finished Unity SSR released/unreleased and slash variants passed; no fixture registration",
+          "Release invalid/incomplete metadata and unsafe URLs rejected",
+          "Actual Chromium390/1280 catalog/detail/search/filter/back/list return/reload passed; no overflow/start/iframe",
+          "Observed search term resets after detail/browser back; next task, not fixed",
+          "Parent4 commits and recovery8 hashes matched; initial checkpoint14 verified",
+          "Original72 event prefix preserved; owner text/oldcloud ledger/Unity source/local manifest plugin unchanged",
+          "No received Unity finished artifact, physical touch/Safari/human feedback/save persistence validation; metrics null",
+          "No public push/PR/merge/deploy/post; own browser tabs closed and viewport reset"
+        ],
+        "next_step": "T-web-portal-navigation-state: preserve query/filter and accessible list return"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "6023c2411eebf090baaa1b6a54fde2c9808ad3128e60445d8f7320f47e7fc2eb",
+      "sha256": "f2449c2af82726a2e35dc1b9eb19c9154628d72818d5e9a8818cae24fb261b97"
+    },
+    {
+      "revision": 76,
+      "at": 1791756701.7243314,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261012T0700-ffb98d9c5b5b",
+        "fence": 12,
+        "artifacts": [
+          {
+            "path": "docs/web-catalog-20261012.md",
+            "sha256": "ec4892b1ed707f605531f8ed060c4aedca4990fda8a476e3d3a52f71a92c9d82"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-12-web-catalog.md",
+            "sha256": "43ac480dd676cba06d57d40b2048acf8db8266ebc9aa6c47253080772015aa8c"
+          },
+          {
+            "path": "docs/images/catalog-20261012-390.png",
+            "sha256": "bb654ee4423fa250ee749c5642f840f81dea4baa06e7a29e340c96f616eea589"
+          },
+          {
+            "path": "docs/images/catalog-20261012-1280.png",
+            "sha256": "5c704e0c9354846af459fd9764a6fc589b52c829902230aa2ba07adbde93d71d"
+          },
+          {
+            "path": "web/src/portal/catalog.ts",
+            "sha256": "841684b3835e241c7e39f3e10d6aef10c04b660595d4191f0950f45db48818ef"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "819fe6821f77b25b2436ebf59ac7fb52baaacf7bf1f4ceb49304c3a8b690df1d"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "35399229720a070b766ccffe15d23f609cec6858e91797f67826d6687963d10b"
+          },
+          {
+            "path": "web/src/portal/routes.ts",
+            "sha256": "1aa08b946c41348239166a372ab08b72225ccb8c1167b746061323e9f4872661"
+          },
+          {
+            "path": "web/src/portal/UnityPlayer.tsx",
+            "sha256": "ef6663f1d0e9a859a1888b099ca22ad393a4604559eb1a101365303655da91b8"
+          },
+          {
+            "path": "scripts/check-repository.mjs",
+            "sha256": "adf4f530e87bcf4e442fed2bd3c03e415bf0dca7ee9be6f307f4644c25ea48b8"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "8adc3bf78314bb9e3ef2a338dd39c3364c2c1d6639469bffe7bcbf401a5d3a03"
+          },
+          {
+            "path": "web/scripts/prebuild.mjs",
+            "sha256": "56f5406099ed00249c70ab1469094e55161cdc2467b05d01c1e54001f0b10ff7"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "1c3fc63943412dcac9ff0ef9cfbe0e48741936aea559573422e3c2e76b412981"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d499c087d4602d7dbd6b0c1ac2ebf235e88faeb249f896548bb4e67c061a7406"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "4db2cbf52501e5230342d0d7ca0ddd8ca0c1750355df6ad1dc9d350f2c2e560a"
+          },
+          {
+            "path": "business/unity/evidence/catalog-20261012-0700.json",
+            "sha256": "24940fd19d6a3f6d1e9d4b7960d0b9fa2c3406a4fe2fdbbd3842621929dabc46"
+          }
+        ],
+        "checks": [
+          "Final TypeScript/ESLint/Vite/5SSG passed",
+          "Repository4 legacy URLs/19 GUIDs and36 checksums/public artifact exclusion passed",
+          "In-memory Web/owner-finished Unity SSR released/unreleased and slash variants passed; no fixture registration",
+          "Release invalid/incomplete metadata and unsafe URLs rejected",
+          "Actual Chromium390/1280 catalog/detail/search/filter/back/list return/reload passed; no overflow/start/iframe",
+          "Observed search term resets after detail/browser back; next task, not fixed",
+          "Parent4 commits and recovery8 hashes matched; initial checkpoint14 verified",
+          "Original72 event prefix preserved; owner text/oldcloud ledger/Unity source/local manifest plugin unchanged",
+          "No received Unity finished artifact, physical touch/Safari/human feedback/save persistence validation; metrics null",
+          "No public push/PR/merge/deploy/post; own browser tabs closed and viewport reset"
+        ],
+        "next_step": "T-web-portal-navigation-state: preserve query/filter and accessible list return",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "f2449c2af82726a2e35dc1b9eb19c9154628d72818d5e9a8818cae24fb261b97",
+      "sha256": "b6f21d4848728beca634c88321dc135f63ba3124e4066ac2abed4cd8bb723dba"
+    },
+    {
+      "revision": 77,
+      "at": 1791756701.738354,
+      "action": "task",
+      "data": {
+        "id": "T-web-portal-navigation-state",
+        "decision_id": "D-web-technology-policy-20261012",
+        "source": "user:current-thread:2026-10-12:web-technology-policy",
+        "objective": "既存Web入口の一覧と詳細の往復で検索条件を保持する",
+        "hypothesis": "詳細を見て戻るたびに検索をやり直す操作を減らせる",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 0,
+        "depends_on": [
+          "T-web-portal-technology-catalog"
+        ],
+        "outputs": [
+          "検索語と公開状態を保持する導線",
+          "実ブラウザの戻る・進む・再読み込み証跡"
+        ],
+        "checks": [
+          "TypeScript/ESLint/Web build",
+          "Actual browser navigation and keyboard"
+        ],
+        "acceptance": [
+          "一覧の検索語・公開フィルターが詳細から戻る操作で復元する",
+          "明示の一覧リンクとブラウザ戻る・進むを区別し、作品一覧へ到達する",
+          "390/1280pxでキーボード操作と再読み込みを検査しrelease=nullの開始リンクなしを保つ",
+          "実作品・配布許可・事業指標をテスト状態から作らない"
+        ],
+        "next_step": "Implement persistent catalog navigation state in existing Web portal; no new game"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "b6f21d4848728beca634c88321dc135f63ba3124e4066ac2abed4cd8bb723dba",
+      "sha256": "27b83da53f6089ca9a29ed1f56371a4fbcfb9765181f28ea7d97434149c062c3"
+    },
+    {
+      "revision": 78,
+      "at": 1791777627.8783987,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-12T13:00:00+09:00",
+        "run_id": "unity-20261012T1300-4ec28b2cd023"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "27b83da53f6089ca9a29ed1f56371a4fbcfb9765181f28ea7d97434149c062c3",
+      "sha256": "1fd1c11ceb2dc3dba4e4e2f7cb1f96640afac40f7b42160253ef92ee67811861"
+    },
+    {
+      "revision": 79,
+      "at": 1791777627.964428,
+      "action": "decision",
+      "data": {
+        "id": "D-web-portal-release-presentation-20261012",
+        "source": "primary-source:2026-10-12:itch-html5-and-author-pages",
+        "hypothesis": "作品固有の操作・実画面・確認済み環境を公開状態と別に示すと、遊ぶ前の判断と誤案内を減らせる。効果は未観測。",
+        "evidence": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+        "judgment": "unobserved",
+        "next_step": "Keep T-web-portal-navigation-state first, then T-web-portal-release-presentation"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "1fd1c11ceb2dc3dba4e4e2f7cb1f96640afac40f7b42160253ef92ee67811861",
+      "sha256": "707dff6143f14d75e15cc36d2d2f7f875b43954b813ed8b69000521246012ac4"
+    },
+    {
+      "revision": 80,
+      "at": 1791777627.9806037,
+      "action": "task",
+      "data": {
+        "id": "T-web-portal-entry-research-20261012",
+        "objective": "一次資料から既存Web入口の作品案内と公開前検査を具体化する",
+        "hypothesis": "作品固有の操作・実画面・確認済み環境を公開状態と別に示すと、遊ぶ前の判断と誤案内を減らせる。効果は未観測。",
+        "decision_id": "D-web-portal-release-presentation-20261012",
+        "source": "primary-source:2026-10-12:itch-html5-and-author-pages",
+        "pdca": "plan",
+        "experiment_id": "E-unity-portal",
+        "priority": 1,
+        "depends_on": [],
+        "outputs": [
+          "一次資料の比較報告",
+          "受入条件付き後続タスク"
+        ],
+        "checks": [
+          "Source facts and assumptions separated",
+          "Protected files and prior checkpoint hashes",
+          "Ledger chain and preserved navigation task"
+        ],
+        "acceptance": [
+          "一次資料のURLと確認日、観察と推測を記録する",
+          "既存検索導線修正を保持し受入条件付き後続タスクを作成する",
+          "未受領完成品・配布・事業指標を実績にしない"
+        ],
+        "next_step": "T-web-portal-navigation-state remains next implementation"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "707dff6143f14d75e15cc36d2d2f7f875b43954b813ed8b69000521246012ac4",
+      "sha256": "5b02a96b68bcee2b0489cba59c4e1e09c2a7e51837df50dc0d04f5504da88204"
+    },
+    {
+      "revision": 81,
+      "at": 1791777627.9965627,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261012T1300-4ec28b2cd023",
+        "task_id": "T-web-portal-entry-research-20261012",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261012T1300-4ec28b2cd023",
+        "task_id": "T-web-portal-entry-research-20261012",
+        "fence": 13,
+        "expires_at": 1791779127.9965627
+      },
+      "previous": "5b02a96b68bcee2b0489cba59c4e1e09c2a7e51837df50dc0d04f5504da88204",
+      "sha256": "af8ce9e8e7ec554ecc4ecdf50309b3774f72b5e24ee420904afdc4582d3a0ec0"
+    },
+    {
+      "revision": 82,
+      "at": 1791777732.1170385,
+      "action": "task",
+      "data": {
+        "id": "T-web-portal-release-presentation",
+        "objective": "既存Web入口で作品固有の操作・確認済み環境・実画面を案内する",
+        "hypothesis": "作品固有の操作・実画面・確認済み環境を公開状態と別に示すと、遊ぶ前の判断と誤案内を減らせる。効果は未観測。",
+        "decision_id": "D-web-portal-release-presentation-20261012",
+        "source": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 2,
+        "depends_on": [
+          "T-web-portal-navigation-state"
+        ],
+        "outputs": [
+          "作品ごとの操作・環境・実画面の表示",
+          "公開前後・案内欠落・静的生成の検査証跡"
+        ],
+        "checks": [
+          "TypeScript/ESLint/Web build",
+          "In-memory Web/owner-finished Unity cases",
+          "390/1280 actual browser keyboard/navigation"
+        ],
+        "acceptance": [
+          "作品固有の操作・保存・検査環境を扱い未確認を対応済みとしない",
+          "実画面を版・SHA-256・検査記録に紐付けイメージ図と区別する",
+          "架空作品を実登録せずWeb/持込Unityの公開前後と案内なしを検査する",
+          "release=nullの開始リンクなしと既存公開受入条件を維持する",
+          "一覧閲覧時にアプリを起動せず390/1280pxと型・静的・ビルドを検査する",
+          "Unity完成品は受領後に実物・配布条件を照合しソース・再ビルドを一律必須にしない"
+        ],
+        "next_step": "After navigation state completes, implement work-specific presentation within existing portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "af8ce9e8e7ec554ecc4ecdf50309b3774f72b5e24ee420904afdc4582d3a0ec0",
+      "sha256": "3e041a735d1c5eba64eaf29a2af75d7d55a492f3f3db5f562a34de201d3aa4ef"
+    },
+    {
+      "revision": 83,
+      "at": 1791777750.3083944,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261012T1300-4ec28b2cd023",
+        "fence": 13,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+            "sha256": "d9eb58370102aa94a4edaa3e06bec4d2f4e63d900c6cca995e4a5ac575f79659"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "872a5567a0105a5b82699ddb7a0507e6b301e2f01d2b74d830bee587f5065e57"
+          },
+          {
+            "path": "business/unity/evidence/research-20261012-1300.json",
+            "sha256": "3d39bb861abaaebe132f276ad2aa3ef3222fa54a6110f733e9a8340171203e81"
+          }
+        ],
+        "checks": [
+          "5 primary source URLs reviewed; report differentiates facts/inferences",
+          "Prior16 checkpoint hashes and parent4HEAD/recovery8 hashes matched",
+          "Repository4 legacy entries/19GUID and git diff check passed",
+          "Original77 events and exact navigation task preserved",
+          "No implementation/browser test/Unity resumption/new game/external publication; metrics null"
+        ],
+        "next_step": "T-web-portal-navigation-state remains next; dependent T-web-portal-release-presentation created"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "3e041a735d1c5eba64eaf29a2af75d7d55a492f3f3db5f562a34de201d3aa4ef",
+      "sha256": "30f9a882e5071a04f8266b2b0002f49951c797527f1f1154963fb828f7ecec82"
+    },
+    {
+      "revision": 84,
+      "at": 1791777750.3284063,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261012T1300-4ec28b2cd023",
+        "fence": 13,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+            "sha256": "d9eb58370102aa94a4edaa3e06bec4d2f4e63d900c6cca995e4a5ac575f79659"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "872a5567a0105a5b82699ddb7a0507e6b301e2f01d2b74d830bee587f5065e57"
+          },
+          {
+            "path": "business/unity/evidence/research-20261012-1300.json",
+            "sha256": "3d39bb861abaaebe132f276ad2aa3ef3222fa54a6110f733e9a8340171203e81"
+          }
+        ],
+        "checks": [
+          "5 primary source URLs reviewed; report differentiates facts/inferences",
+          "Prior16 checkpoint hashes and parent4HEAD/recovery8 hashes matched",
+          "Repository4 legacy entries/19GUID and git diff check passed",
+          "Original77 events and exact navigation task preserved",
+          "No implementation/browser test/Unity resumption/new game/external publication; metrics null"
+        ],
+        "next_step": "T-web-portal-navigation-state remains next; dependent T-web-portal-release-presentation created",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "30f9a882e5071a04f8266b2b0002f49951c797527f1f1154963fb828f7ecec82",
+      "sha256": "f8bc4bbf35599e10dd7d191ce5b67407793559d6f5c0a61bd348bc4cd649dec5"
+    },
+    {
+      "revision": 85,
+      "at": 1791799291.5214257,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-12T19:00:00+09:00",
+        "run_id": "unity-20261012T1900-d7205d33896f"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "f8bc4bbf35599e10dd7d191ce5b67407793559d6f5c0a61bd348bc4cd649dec5",
+      "sha256": "fdb95505035dd4d0a5ce1a630993a735705c17efebc01c035b2fc5ae82949fdd"
+    },
+    {
+      "revision": 86,
+      "at": 1791799291.5771778,
+      "action": "decision",
+      "data": {
+        "id": "D-web-portal-strategy-20261012",
+        "source": "technical-review:2026-10-12:19-slot",
+        "hypothesis": "検索条件保持を先に検証し、公開案内を後続にする。利用者効果は未観測。",
+        "next_step": "T-web-portal-navigation-state",
+        "judgment": "unobserved"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "fdb95505035dd4d0a5ce1a630993a735705c17efebc01c035b2fc5ae82949fdd",
+      "sha256": "6f4c102eb667e0915c379429511931f9ce440119905fb8d7c155a6356102b312"
+    },
+    {
+      "revision": 87,
+      "at": 1791799291.5895555,
+      "action": "task",
+      "data": {
+        "id": "T-web-portal-strategy-20261012",
+        "objective": "既存Web入口の導線と技術品質を再確認し優先順位を判断する",
+        "hypothesis": "検索条件保持を先に検証し、公開案内を後続にする。利用者効果は未観測。",
+        "decision_id": "D-web-portal-strategy-20261012",
+        "source": "technical-review:2026-10-12:19-slot",
+        "pdca": "check",
+        "experiment_id": "E-unity-portal",
+        "priority": 1,
+        "depends_on": [],
+        "outputs": [
+          "戦略検査報告",
+          "ハッシュ付き証跡"
+        ],
+        "checks": [
+          "Web build and repository",
+          "Browser navigation",
+          "Protected evidence and task preservation"
+        ],
+        "acceptance": [
+          "現行導線と技術結果を実測・推測に分ける",
+          "人間反応と事業指標の未観測を保持する",
+          "既存次工程を保持し証跡を保存する"
+        ],
+        "next_step": "T-web-portal-navigation-state"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "6f4c102eb667e0915c379429511931f9ce440119905fb8d7c155a6356102b312",
+      "sha256": "9b75731023defb7dc6d3c53e99c74a59735ca7152107d4ab2415e6d3e982a71d"
+    },
+    {
+      "revision": 88,
+      "at": 1791799291.6015558,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261012T1900-d7205d33896f",
+        "task_id": "T-web-portal-strategy-20261012",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261012T1900-d7205d33896f",
+        "task_id": "T-web-portal-strategy-20261012",
+        "fence": 14,
+        "expires_at": 1791800791.6015558
+      },
+      "previous": "9b75731023defb7dc6d3c53e99c74a59735ca7152107d4ab2415e6d3e982a71d",
+      "sha256": "b64970643a64c2dd41bcc237940248d687fb9625883a6a749f2dd15ebe4c5808"
+    },
+    {
+      "revision": 89,
+      "at": 1791799510.8072398,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261012T1900-d7205d33896f",
+        "fence": 14,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-12-web-portal-strategy.md",
+            "sha256": "b96b398350e858c74e2ca70cb5eaeda5197ce4a2ab1e10d58786d757c9f960ef"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "782d231104aba407bfccfc346ec1eb3b5830270aa0fbab354c3849edf3474a4d"
+          },
+          {
+            "path": "business/unity/evidence/strategy-20261012-1900.json",
+            "sha256": "5d5db8bd0679744afae76b833b19ac015ef206bb7eb18209caaf50f6c8993371"
+          }
+        ],
+        "checks": [
+          "TypeScript/ESLint/Vite/5SSG passed",
+          "4 preserved catalog entries/19 GUIDs passed",
+          "4 legacy routes/36 checksums passed",
+          "Original84events and navigation task unchanged",
+          "Protected owner/oldcloud/Web hashes unchanged",
+          "Browser observed search/filter loss; not a fixed implementation",
+          "Human/business observations remain null"
+        ],
+        "next_step": "T-web-portal-navigation-state remains next; release presentation follows"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "b64970643a64c2dd41bcc237940248d687fb9625883a6a749f2dd15ebe4c5808",
+      "sha256": "37ef96d494f61492ae68f63c7be1931156d7a94f46664dbdb73cf819321779e5"
+    },
+    {
+      "revision": 90,
+      "at": 1791799510.8218672,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261012T1900-d7205d33896f",
+        "fence": 14,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-12-web-portal-strategy.md",
+            "sha256": "b96b398350e858c74e2ca70cb5eaeda5197ce4a2ab1e10d58786d757c9f960ef"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "782d231104aba407bfccfc346ec1eb3b5830270aa0fbab354c3849edf3474a4d"
+          },
+          {
+            "path": "business/unity/evidence/strategy-20261012-1900.json",
+            "sha256": "5d5db8bd0679744afae76b833b19ac015ef206bb7eb18209caaf50f6c8993371"
+          }
+        ],
+        "checks": [
+          "TypeScript/ESLint/Vite/5SSG passed",
+          "4 preserved catalog entries/19 GUIDs passed",
+          "4 legacy routes/36 checksums passed",
+          "Original84events and navigation task unchanged",
+          "Protected owner/oldcloud/Web hashes unchanged",
+          "Browser observed search/filter loss; not a fixed implementation",
+          "Human/business observations remain null"
+        ],
+        "next_step": "T-web-portal-navigation-state remains next; release presentation follows",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "37ef96d494f61492ae68f63c7be1931156d7a94f46664dbdb73cf819321779e5",
+      "sha256": "cafe55153f105dee49ea5acde2dec856a76b3270c311e94e90f0ff6b85cd85e6"
+    },
+    {
+      "revision": 91,
+      "at": 1791816143.6773832,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-12:autonomous-work",
+        "message": "毎回６分程度しか働いていませんね。なんでもアクセスできるのだからもっと自律的に仕事してください。このリポジトリなら何でもアクセスしてもらって構いません。(勝手にPR通したりも)",
+        "next_step": "Implement existing navigation task, validate and publish/merge checked PR"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "cafe55153f105dee49ea5acde2dec856a76b3270c311e94e90f0ff6b85cd85e6",
+      "sha256": "94a27d6582430b93481f7aaba7cea7b5a6876edfd10ae72bed8cb68da8a76ffb"
+    },
+    {
+      "revision": 92,
+      "at": 1791816143.6908858,
+      "action": "start",
+      "data": {
+        "run_id": "unity-manual-20261012-13124ec01f6d",
+        "source": "user:current-thread:2026-10-12:autonomous-work"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "94a27d6582430b93481f7aaba7cea7b5a6876edfd10ae72bed8cb68da8a76ffb",
+      "sha256": "0a86755cc1b55ab35cab3d5abf28bf2d1f7712e4ba2b607e620f01c4ef7b8bb6"
+    },
+    {
+      "revision": 93,
+      "at": 1791816143.7033687,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-manual-20261012-13124ec01f6d",
+        "task_id": "T-web-portal-navigation-state",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-manual-20261012-13124ec01f6d",
+        "task_id": "T-web-portal-navigation-state",
+        "fence": 15,
+        "expires_at": 1791817943.7033687
+      },
+      "previous": "0a86755cc1b55ab35cab3d5abf28bf2d1f7712e4ba2b607e620f01c4ef7b8bb6",
+      "sha256": "2af3271c13f3aa91b23e93f20f47301ed09072f01bf79d7d20a4094b737718e4"
+    },
+    {
+      "revision": 94,
+      "at": 1791816705.3386266,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-manual-20261012-13124ec01f6d",
+        "fence": 15,
+        "artifacts": [
+          {
+            "path": "web/src/App.tsx",
+            "sha256": "606bd51b2210a214a61459ec0308e57cdbeed7a35f1d42a0d08c17bf9c023c7d"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "e9c51559dbaad0472dc4a93beb1f366d697d78811d9f4b65bafd2fa887a7c5d8"
+          },
+          {
+            "path": "web/src/portal/navigation.ts",
+            "sha256": "c9d217b6d34ad53a668e7e4f75f6508f73deb83c859e8aaec3970a3e3b209ef2"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "49dcec7f0ed794439954e2ca4d4f2bd3007a7c6c7683a27d40fb8b42844990ef"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "c7250f7d80fd480cc785b2e5b7ef2a4f72449bbd2f5f3afc8b1b6c7203f1120b"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "d419911655c48a6da1fb05b2b08709e9254ae3557b5ddb0355902dc5be583aff"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "200760430637eb7247d0b104a6fee6593c8716d9191e7b56a6a83ed2837d13fc"
+          },
+          {
+            "path": "docs/web-navigation-20261012.md",
+            "sha256": "4c9210f70012932b0bb6b821b8760428ce81d01eedc85d8707aad91a7f14a538"
+          },
+          {
+            "path": "docs/images/navigation-20261012-390.jpg",
+            "sha256": "36fb654a45caf7847df9ab4d072f40ecf898c819970270e8a452a642097ee9ca"
+          },
+          {
+            "path": "docs/images/navigation-20261012-1280.jpg",
+            "sha256": "63fd9aa52132eab45f1f5b2e8518fa36ca3140bcec7f8729392a12f16c6bf3a7"
+          },
+          {
+            "path": "business/unity/evidence/navigation-20261012-manual.json",
+            "sha256": "5375c32cbfd6b4bf4b20865e04067e9b6f48b43f06f2da56f34f38c48caba748"
+          }
+        ],
+        "checks": [
+          "Build TypeScript/ESLint/Vite/5SSG",
+          "Repository4 legacy/19GUID/36 checksums",
+          "Portal SSR query/released/unknown/escaped/direct detail",
+          "Actual390/1280 Back/Forward/explicit list/reload/Tab/Enter",
+          "Per-character input does not add history entries: actual Back then Forward",
+          "Business27 tests/Core3 route acceptance",
+          "Source and committed14 receipt hashes match; workflow hashes verified through receipt"
+        ],
+        "next_step": "T-web-portal-release-presentation; verified-head PR delivery"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "2af3271c13f3aa91b23e93f20f47301ed09072f01bf79d7d20a4094b737718e4",
+      "sha256": "5c2d80bcf70fa73f16356624c7bc0698eb9bc24d07a471bca9593b7da1314791"
+    },
+    {
+      "revision": 95,
+      "at": 1791816705.3543048,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-manual-20261012-13124ec01f6d",
+        "fence": 15,
+        "artifacts": [
+          {
+            "path": "web/src/App.tsx",
+            "sha256": "606bd51b2210a214a61459ec0308e57cdbeed7a35f1d42a0d08c17bf9c023c7d"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "e9c51559dbaad0472dc4a93beb1f366d697d78811d9f4b65bafd2fa887a7c5d8"
+          },
+          {
+            "path": "web/src/portal/navigation.ts",
+            "sha256": "c9d217b6d34ad53a668e7e4f75f6508f73deb83c859e8aaec3970a3e3b209ef2"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "49dcec7f0ed794439954e2ca4d4f2bd3007a7c6c7683a27d40fb8b42844990ef"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "c7250f7d80fd480cc785b2e5b7ef2a4f72449bbd2f5f3afc8b1b6c7203f1120b"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "d419911655c48a6da1fb05b2b08709e9254ae3557b5ddb0355902dc5be583aff"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "200760430637eb7247d0b104a6fee6593c8716d9191e7b56a6a83ed2837d13fc"
+          },
+          {
+            "path": "docs/web-navigation-20261012.md",
+            "sha256": "4c9210f70012932b0bb6b821b8760428ce81d01eedc85d8707aad91a7f14a538"
+          },
+          {
+            "path": "docs/images/navigation-20261012-390.jpg",
+            "sha256": "36fb654a45caf7847df9ab4d072f40ecf898c819970270e8a452a642097ee9ca"
+          },
+          {
+            "path": "docs/images/navigation-20261012-1280.jpg",
+            "sha256": "63fd9aa52132eab45f1f5b2e8518fa36ca3140bcec7f8729392a12f16c6bf3a7"
+          },
+          {
+            "path": "business/unity/evidence/navigation-20261012-manual.json",
+            "sha256": "5375c32cbfd6b4bf4b20865e04067e9b6f48b43f06f2da56f34f38c48caba748"
+          }
+        ],
+        "checks": [
+          "Build TypeScript/ESLint/Vite/5SSG",
+          "Repository4 legacy/19GUID/36 checksums",
+          "Portal SSR query/released/unknown/escaped/direct detail",
+          "Actual390/1280 Back/Forward/explicit list/reload/Tab/Enter",
+          "Per-character input does not add history entries: actual Back then Forward",
+          "Business27 tests/Core3 route acceptance",
+          "Source and committed14 receipt hashes match; workflow hashes verified through receipt"
+        ],
+        "next_step": "T-web-portal-release-presentation; verified-head PR delivery",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "5c2d80bcf70fa73f16356624c7bc0698eb9bc24d07a471bca9593b7da1314791",
+      "sha256": "ae9ffe15e23b946df5c0e867e3d7a4e1f54a2b175cae3d9ebc3588b4075cb4db"
     }
   ],
-  "projection_sha256": "cc35c115ada583c85a5d3d86db524779fbe0b59be914aae111173491d1cc7bb2"
+  "projection_sha256": "100d2c2c9a61edd1056395c7927d36c9226d4780fedc8ae3039c7bfa571d6c6b"
 }

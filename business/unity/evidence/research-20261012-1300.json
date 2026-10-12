@@ -1,0 +1,38 @@
+{
+  "runId": "unity-20261012T1300-4ec28b2cd023",
+  "fence": 13,
+  "recordedAt": "2026-10-12T13:02:12.423912+09:00",
+  "scheduledSlot": "2026-10-12T13:00:00+09:00",
+  "artifacts": [
+    {
+      "path": "business/unity/research/2026-10-12-web-entry-acceptance.md",
+      "sha256": "d9eb58370102aa94a4edaa3e06bec4d2f4e63d900c6cca995e4a5ac575f79659"
+    },
+    {
+      "path": "STATE.md",
+      "sha256": "872a5567a0105a5b82699ddb7a0507e6b301e2f01d2b74d830bee587f5065e57"
+    }
+  ],
+  "checks": [
+    "Primary sources 5 URLs reviewed; facts and hypotheses separated",
+    "Initial checkpoint16 hashes and parent4 HEAD/recovery8 hashes matched",
+    "Navigation task exact preservation; original77 event prefix intact",
+    "Repository4 legacy entries/19 GUID contract passed",
+    "Protected files unchanged; no new game/Unity/Atohitori work"
+  ],
+  "unverified": [
+    "New browser behavior",
+    "Physical touch/Safari/human evaluation",
+    "Finished Unity artifact acceptance",
+    "Business metrics and14/28 observations"
+  ],
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "startRate": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "nextStep": "T-web-portal-navigation-state",
+  "externalOperations": []
+}

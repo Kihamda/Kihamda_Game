@@ -1,0 +1,119 @@
+{
+  "recordedAt": "2026-10-10T07:25:04.522242+09:00",
+  "runId": "unity-20261010T0700-cc24abcda9c1",
+  "scheduledSlot": "2026-10-10T07:00:00+09:00",
+  "fence": 3,
+  "taskId": "T-unity-portal-player-integration",
+  "sourceCommit": "e393bd321dbca383f0fcb31f20219a27df5df6f2",
+  "artifactChecksumsSha256": "9665dfe00ad808adf6f449076674421c867810461ad4f74992d76332aba30b61",
+  "verifiedArtifactFiles": 18,
+  "unitySourceDiff": "none",
+  "sourceFiles": [
+    {
+      "path": "web/plugins/local-unity-player.ts",
+      "workingTreeSha256": "8fc6c224186c94a206b43a65049cfe38ec296a6439cc80a59ce528ff0697b8df",
+      "stagedGitBlobSha256": "8fc6c224186c94a206b43a65049cfe38ec296a6439cc80a59ce528ff0697b8df"
+    },
+    {
+      "path": "web/src/portal/UnityPlayer.tsx",
+      "workingTreeSha256": "771060f2597ed2e144b0e2c93873e2ba3f579e67415e68243dade87fcd093c95",
+      "stagedGitBlobSha256": "771060f2597ed2e144b0e2c93873e2ba3f579e67415e68243dade87fcd093c95"
+    },
+    {
+      "path": "web/src/portal/App.tsx",
+      "workingTreeSha256": "5f6621923c1944383d387a795efb80aa481431485d2c8faaac8b32b7518f8719",
+      "stagedGitBlobSha256": "5254ec41aa3fd0cb9eea5cf18e2e27644aaed830d46368d0f93e2a961c4ce6b8"
+    },
+    {
+      "path": "web/src/portal/App.css",
+      "workingTreeSha256": "1e2941164eaba0e6e2d87aebda49152af1f88468c9321eb6bcebf19213719272",
+      "stagedGitBlobSha256": "f0a4c022ee4528b4a8a90040de7be0c835da1a12b1b0748be71c55fe9a035a99"
+    },
+    {
+      "path": "web/vite.config.ts",
+      "workingTreeSha256": "8f48d5cbf7eba66a49e7dc3fea7d4de2ba7d17be7cec8c8fff763c17ee63792e",
+      "stagedGitBlobSha256": "04ed72795e31f55e15836bd2cddd284564eeabc7798654056ee82cadf21fcfd2"
+    },
+    {
+      "path": "scripts/check-web-build.mjs",
+      "workingTreeSha256": "6c49ebefff8dc8a4855c79abc5f4d000c38887cf9895403fad21cfbcc9770050",
+      "stagedGitBlobSha256": "9e4a08ed16d46876b80adf20fdfa449989510ea44d2dd9bc96e1f2b00c0579ec"
+    },
+    {
+      "path": "AGENTS.md",
+      "workingTreeSha256": "ba39558e3595d4ec9ccd96d247f6151287274bb3ca32b2279c659c0cd2ffda87",
+      "stagedGitBlobSha256": "1cafae25cf56ece3a582dd48d6c3f42b31bee9a02103b3914f0d1e9292bf233b"
+    },
+    {
+      "path": "STATE.md",
+      "workingTreeSha256": "2be3d190552652cd717eee5b5c0bb4f1ee823a31dc449e21bb589dd4f54c7ed2",
+      "stagedGitBlobSha256": "a1db1d0a59ee7d75be948cca7365e569a12d0477921315772965d76dc417f170"
+    },
+    {
+      "path": "business/studio-policy.json",
+      "workingTreeSha256": "6fa0f4452eda1334c11a7c069ce2331eea60432b406886c13ee42bfecdd8108a",
+      "stagedGitBlobSha256": "609319cb589f2e9055bf5d97160621f3808fffce23cc7f19d9988c01f21b818c"
+    },
+    {
+      "path": "business/blog/drafts/2026-10-10-unity-player-shell.md",
+      "workingTreeSha256": "ac0e8597e29541dd4ddde1345747310fe6b108e2fbe43f40e548cfd990f484b3",
+      "stagedGitBlobSha256": "ac0e8597e29541dd4ddde1345747310fe6b108e2fbe43f40e548cfd990f484b3"
+    },
+    {
+      "path": "docs/portal-player-integration.md",
+      "workingTreeSha256": "1936b87c2801c0a9f868a3922715b21265b80ded9666c86e8520b5ab3df6c24f",
+      "stagedGitBlobSha256": "1936b87c2801c0a9f868a3922715b21265b80ded9666c86e8520b5ab3df6c24f"
+    },
+    {
+      "path": "docs/images/player-20261010-victory.png",
+      "workingTreeSha256": "8b9bcb0e8b9d7408a570cc9ba67ab308eff2db58ab64a61231b007a63903fc1f",
+      "stagedGitBlobSha256": "8b9bcb0e8b9d7408a570cc9ba67ab308eff2db58ab64a61231b007a63903fc1f"
+    },
+    {
+      "path": "docs/images/player-20261010-390.png",
+      "workingTreeSha256": "2351c4b4b4c821d61def819a64a33e8a1b067fb1dc61c20ad07ce03513a8c7e3",
+      "stagedGitBlobSha256": "2351c4b4b4c821d61def819a64a33e8a1b067fb1dc61c20ad07ce03513a8c7e3"
+    },
+    {
+      "path": "docs/images/player-20261010-desktop.png",
+      "workingTreeSha256": "31319a3bf440fbe29a73574fe0edd4bd0c79cebdd38c27edd93168fc49ad3d1f",
+      "stagedGitBlobSha256": "31319a3bf440fbe29a73574fe0edd4bd0c79cebdd38c27edd93168fc49ad3d1f"
+    }
+  ],
+  "hashRepresentation": "Working-tree raw bytes and staged Git blob bytes are recorded separately to account for Windows CRLF normalization. Evidence itself uses -text.",
+  "checks": [
+    "TypeScript/ESLint/Vite build and five shared pages passed",
+    "Repository contract, four legacy routes, GUIDs, local links, final Web SHA256 and git diff --check passed",
+    "Actual browser load/start/ready passed on final immutable-buffer server 4178",
+    "Right/Down delivery, Z Undo, stop/restart/Resume restoring parcel and move, screen Down delivery passed",
+    "Tab returns to page End button; Enter stop returns focus to Start; iframe removed",
+    "Loader request deliberately blocked: error/retry displayed; block removed: retry reached ready",
+    "Back to /#works: focus works, zero iframes",
+    "1280x720 and measured 390x844: no horizontal document overflow; narrow player frame fits",
+    "Normal preview without flag: zero player buttons, no player section and no iframe",
+    "Four parent repository HEADs and eight recovery hashes matched workspace-projects.json"
+  ],
+  "notExecuted": [
+    "New Unity compile",
+    "New EditMode/PlayMode",
+    "New Windows/Web distribution build",
+    "Real touch input",
+    "Human fun evaluation",
+    "PR/push/main merge/production publication"
+  ],
+  "limits": [
+    "390px Unity internal labels/buttons remain small; existing touch-polish task remains",
+    "Public transmission review blocker unchanged; no retry or repeated alert"
+  ],
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "playStarts": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "nextStep": "T-ice-courier-touch-polish: improve portrait explanation, board and controls inside Unity; then compile and test actual touch separately",
+  "draft": "business/blog/drafts/2026-10-10-unity-player-shell.md",
+  "ownerInstructionsRetained": true,
+  "atohitoriWorkedOn": false
+}

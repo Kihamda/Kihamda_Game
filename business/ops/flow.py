@@ -273,15 +273,23 @@ class Ledger:
             require(t["status"] != "cancelled", "cancelled history immutable")
             t["checkpoints"].append(dict(d, at=now))
             t["status"] = {"block": "blocked", "cancel": "cancelled", "unblock": "ready"}[action]
-        elif action in ("checkpoint", "complete"):
+        elif action in ("checkpoint", "complete", "yield"):
             t, lease = self.worker(s, d, now)
             self.verify_artifacts(d.get("artifacts"))
             require(d.get("checks") and d.get("next_step"), "checks/next_step required")
+            if action == "yield":
+                require(not any(x["status"] == "unknown" for x in s["external"].values()),
+                        "unknown external result: reconcile before yielding")
             t["checkpoints"].append(dict(d, at=now))
             if action == "complete":
                 require(d.get("passed") is True, "completion requires passing acceptance checks")
                 t["status"] = "done"
                 s["runs"][lease["run_id"]]["status"] = "completed"
+                s["lease"] = None
+            elif action == "yield":
+                # A verified partial result is resumable, never passing acceptance.
+                t["status"] = "ready"
+                s["runs"][lease["run_id"]]["status"] = "checkpointed"
                 s["lease"] = None
         elif action == "publish":
             return self.publish(s, d, now)
@@ -361,7 +369,7 @@ def main():
             stream.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser()
     parser.add_argument("action", choices=["status", "next", "init", "decision", "task", "start", "claim",
-                        "checkpoint", "complete", "recover", "approval", "prepare-external",
+                        "checkpoint", "complete", "yield", "recover", "approval", "prepare-external",
                         "reconcile-external", "observe", "experiment", "experiment-stage",
                         "feedback", "slot", "block", "cancel", "unblock", "publish"])
     unity_ledger = Path(__file__).resolve().parents[1] / "unity/ops/ledger.json"

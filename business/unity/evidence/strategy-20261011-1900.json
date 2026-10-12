@@ -1,0 +1,228 @@
+{
+  "schema": 1,
+  "runId": "unity-20261011T1900-8b31b641b674",
+  "scheduledAt": "2026-10-11T19:00:00+09:00",
+  "fence": 10,
+  "recordedAt": "2026-10-11T19:12:21.625579+09:00",
+  "sourceHeadBefore": "a4d005423f4cf91cbc8ea3db64ebf04370c44b02",
+  "task": "T-ice-courier-touch-polish",
+  "taskComplete": false,
+  "scope": "19 strategy adjustment and independent Web guidance within existing WIP1",
+  "judgment": "unobserved",
+  "technicalDisposition": "improve",
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "playStartRate": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "observationWindows": {
+    "14day": null,
+    "28day": null
+  },
+  "humanFirstPlay": null,
+  "sourceReceipts": [
+    {
+      "path": "web/src/portal/App.tsx",
+      "sha256": "4d09854c8eda82d913a079c9f92380f1c407433cd7e6aa29fdecc9e30b57153f",
+      "priorSha256": "5f6621923c1944383d387a795efb80aa481431485d2c8faaac8b32b7518f8719"
+    },
+    {
+      "path": "web/src/portal/App.css",
+      "sha256": "5086ede81bc49889410ed71275bc6ca8a366efab8474bee17fe879095309974c",
+      "priorSha256": null
+    },
+    {
+      "path": "web/src/portal/data/unity-games.json",
+      "sha256": "01d015cacdd9233703f3f312287cee86ad1964dfc84a114f696660e8253bc468",
+      "priorSha256": "dccc1a13c0217e8d09628c7b5c501d5504e8e1e5eccf8979c9fbe9cdf1aaed89"
+    },
+    {
+      "path": "web/src/portal/routes.ts",
+      "sha256": "032bc484fec43ebe8c9a34c1dd21aa257c5ad724f8e0d95d3d3999aa5ef2944e",
+      "priorSha256": "e0aaeab1f50e35c90fec570414bd8a1bed1b1d7247482a7f82123b96e37390d8"
+    },
+    {
+      "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierBoard.cs",
+      "sha256": "24115037343d7dfe9923a807af8b7ccabddc1097fb1f806709ecb709a8a0bfbf",
+      "priorSha256": "24115037343d7dfe9923a807af8b7ccabddc1097fb1f806709ecb709a8a0bfbf"
+    },
+    {
+      "path": "unity/IceCourier/Assets/Kihamda/Runtime/CourierGame.cs",
+      "sha256": "66a179eff8ae6e8198a7933080e4e4f989be0896a677353531e900d4ede08c02",
+      "priorSha256": "66a179eff8ae6e8198a7933080e4e4f989be0896a677353531e900d4ede08c02"
+    }
+  ],
+  "browser": {
+    "portraitClosed": {
+      "guideFont": "16px",
+      "guideWidth": 335,
+      "helpOpen": false,
+      "iframeCount": 0,
+      "overflow": false,
+      "startButton": false,
+      "summary": {
+        "font": "16px",
+        "height": 52.796875,
+        "width": 335
+      },
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    "portraitOpen": {
+      "controlFonts": [
+        "16px",
+        "16px",
+        "16px",
+        "16px",
+        "16px"
+      ],
+      "controlTexts": [
+        "UP / LEFT / DOWN / RIGHT",
+        "UNDO",
+        "RESTART",
+        "RESUME",
+        "NEXT"
+      ],
+      "helpOpen": true,
+      "overflow": false,
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    "desktopClosed": {
+      "guideFont": "16px",
+      "guideWidth": 1152,
+      "helpOpen": false,
+      "iframeCount": 0,
+      "overflow": false,
+      "summary": {
+        "font": "16px",
+        "height": 52.796875,
+        "width": 1152
+      },
+      "viewport": [
+        1280,
+        720
+      ]
+    },
+    "keyboardOpenClose": true,
+    "priorNavigationChecks": {
+      "searchFrozenCount": 1,
+      "releaseFilterCount": 0,
+      "clearAndAllRestores": true,
+      "detailReturnAndReentry": true
+    },
+    "environment": "Codex IAB Chromium desktop viewport overrides; not physical touch or human feedback"
+  },
+  "boardExecution": {
+    "environment": "PowerShell Add-Type .NET, actual unchanged CourierBoard source; not Unity or Web PlayerPrefs",
+    "initial": "1|1|0|False||",
+    "right": "5|1|1|False|8|12",
+    "undo": "1|1|0|False||",
+    "restoredUndo": false,
+    "newMoveUndo": true
+  },
+  "actionsReadOnly": {
+    "workflow": "unity-ci.yml",
+    "runs": [
+      {
+        "conclusion": "success",
+        "createdAt": "2026-10-09T15:06:43Z",
+        "databaseId": 37949250206,
+        "headSha": "6b673b86155271de12c22c5f0460ece2b2c2f2fd",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "createdAt": "2026-10-09T14:36:02Z",
+        "databaseId": 37945379221,
+        "headSha": "e393bd321dbca383f0fcb31f20219a27df5df6f2",
+        "status": "completed"
+      },
+      {
+        "conclusion": "cancelled",
+        "createdAt": "2026-10-09T14:31:15Z",
+        "databaseId": 37944786802,
+        "headSha": "ce20d383ead95e7533227d9cabb1664884ab5573",
+        "status": "completed"
+      }
+    ],
+    "newResponsiveArtifactAvailable": false,
+    "noDispatch": true
+  },
+  "outputs": [
+    {
+      "path": "business/unity/research/2026-10-11-guidance-strategy.md",
+      "sha256": "c9cd734c715404571c922f898f0299a3c4860a8fcbc5b31711adb59f694408ac"
+    },
+    {
+      "path": "docs/images/guidance-20261011-390.jpg",
+      "sha256": "ea3f507c2c0349722349c49fa25a477c349bf4168f268c9354e7d9b29c681186"
+    },
+    {
+      "path": "docs/images/guidance-20261011-controls-390.jpg",
+      "sha256": "d457be371fe93fb68f9089be16d6489993fcfa44b32beb15f048b06a7732dddd"
+    },
+    {
+      "path": "docs/images/guidance-20261011-1280.jpg",
+      "sha256": "d0ee959709cb05ddc49885bc3322571b9774e238cd61374f9c5126ceb2d172c0"
+    }
+  ],
+  "protectedSourceReceipts": [
+    {
+      "path": "天啓.md",
+      "sha256": "822695f70fae8c9ae8bc3d5169dda4c0b85240f8012b53b4ad2bd6835b47f223"
+    },
+    {
+      "path": "business/ops/ledger.json",
+      "sha256": "5b206aa5596459db59f88ad1bab31ab31b618e7ede58fc72d6ce3f4fd9e73b41"
+    },
+    {
+      "path": "business/workspace-projects.json",
+      "sha256": "2a87731cb7e1b3fa13c037d490dcc6a944a4f2235b01092d834ae0ba5908d016"
+    },
+    {
+      "path": "docs/workspace-handoff.md",
+      "sha256": "c034f41ddc346f0acb4a05d19f24d5f7c9730dd7f3fae320f60f1badcb4ab73e"
+    }
+  ],
+  "localOnlyEvidence": [
+    {
+      "path": "artifacts/strategy-20261011-1900/board-check.json",
+      "sha256": "521a5e7f3aedf838b67d67edf741714cc64102c6428c4344b4b02172bb15f496"
+    },
+    {
+      "path": "artifacts/strategy-20261011-1900/browser-measure.json",
+      "sha256": "6c4e03afd0eff0cc6764073daf4f88b430ef324797dde7f848f0d0cf2a8d102f"
+    },
+    {
+      "path": "artifacts/strategy-20261011-1900/actions-runs.json",
+      "sha256": "919669f09246a73923c7f7ba02575fc7ab4d022f62aab58d689a133c6ab08c92"
+    }
+  ],
+  "checks": [
+    "Web TypeScript/ESLint/Vite/5 SSG passed; repository4 legacy/19 GUID and36 checksums/public-artifact exclusion passed",
+    "Unchanged CourierBoard compiled/executed with PowerShell Add-Type: initial/right/Undo, Restore clears old history, new move Undo passes; not Unity/PlayerPrefs",
+    "390/1280 Web guidance measured16px and no horizontal overflow; summary335x52.796875, Enter open/close; standard preview no start/iframe",
+    "Browser search frozen1; released0; clear/all/details/list return passed; screenshots game portal only",
+    "Latest checkpoint2, original55 ledger event prefix/task contract, protected owner/old ledger/Unity and parent4 HEAD/recovery8 hashes matched"
+  ],
+  "notRun": [
+    "New Unity compile/EditMode/PlayMode or real Editor input this slot",
+    "New Windows/Web distribution build and responsive canvas acceptance",
+    "New Web PlayerPrefs reload/failure and Windows distribution persistence",
+    "Physical touch/multitouch/Safari",
+    "Human first-play understanding/fun or public metrics",
+    "Save-error notice failure reproduction"
+  ],
+  "limitations": [
+    "Initial preview omitted Web config and showed old root dist; own process stopped and explicit web config used for all accepted checks",
+    "Initial guessed workflow file returned404; local workflow file verified and correct read-only query succeeded"
+  ],
+  "nextStep": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate."
+}

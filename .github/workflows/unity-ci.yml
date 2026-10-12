@@ -1,8 +1,6 @@
 name: Unity GitHub builds
 on:
-  push:
-    branches: [main]
-    paths: ['unity/**', 'unity-projects.json', '.github/workflows/unity-ci.yml']
+  # Preserved Unity sources are no longer built autonomously under the Web policy.
   workflow_dispatch:
 permissions:
   contents: read

@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-10-10T07:26:18.022678+09:00",
+  "acceptanceCommit": "3793ad909da6a3454fd56b9f546a286e98b66340",
+  "originalAcceptanceSha256": "cb485571977a2699fa058c83789145041f05c25d41fc1545b4128d628460a2d1",
+  "originalCommittedSourceHashes": "all 14 matched",
+  "reason": "Correct screenshot clip uses document scroll position; original evidence and original source bytes remain in acceptanceCommit. CRLF byte-preserved evidence is correctly treated by whitespace=cr-at-eol.",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "documentOverflow": false,
+    "screenshotWidth": 390,
+    "screenshotHeight": 720,
+    "screenshotScrollY": 882
+  },
+  "replacementSourceBlobs": [
+    {
+      "path": ".gitattributes",
+      "sha256": "73548217658d608806a73690cd328b008938abc08168cf5a2e661bd4a0e0b248"
+    },
+    {
+      "path": "STATE.md",
+      "sha256": "a2d44a1607e7f71e6863b02100983f00b0638e6072803554143bbd7b76f0cf51"
+    },
+    {
+      "path": "docs/portal-player-integration.md",
+      "sha256": "a7ab0eb50e428ea7ec67945a9e5f7790e2039f19be31a7c5cbf1d07f4ee5d120"
+    },
+    {
+      "path": "docs/images/player-20261010-390.png",
+      "sha256": "f77eb8e8c1760b1ef38abc5e3cdc54d23ef998cf76f42218a247ce6ab60bb170"
+    }
+  ]
+}

@@ -46,6 +46,7 @@ jobs:
         run: |
           npm run build
           node scripts/check-web-build.mjs
+          node scripts/check-portal-navigation.mjs
       - uses: actions/upload-artifact@v4
         with:
           name: web-preview-${{ github.sha }}
