@@ -18,6 +18,9 @@ interface Props {
   minScale?: number;
   /** 枠内レイアウトモード */
   layout?: "default" | "immersive";
+  /** 作品固有の操作と保存条件 */
+  controlHints?: string[];
+  statusMessage?: string;
 }
 
 function buildControlHints(tags: string[] | undefined): string[] {
@@ -51,6 +54,8 @@ export function GameShell({
   gameId,
   minScale = 0.3,
   layout = "default",
+  controlHints: providedControlHints,
+  statusMessage,
 }: Props) {
   const frameRef = useRef<HTMLDivElement>(null);
   const scaledContentRef = useRef<HTMLDivElement>(null);
@@ -60,7 +65,7 @@ export function GameShell({
   const resolvedTitle = title ?? metadata?.title ?? "Game";
   const resolvedDescription =
     description ?? metadata?.description ?? "ゲームを楽しんでいってね";
-  const controlHints = buildControlHints(metadata?.tags);
+  const controlHints = providedControlHints ?? buildControlHints(metadata?.tags);
 
   const handleBack = () => {
     if (window.history.length > 1) {
@@ -82,8 +87,10 @@ export function GameShell({
     let rafId = 0;
 
     const updateScale = () => {
-      const frameWidth = frameElement.clientWidth;
-      const frameHeight = frameElement.clientHeight;
+      const viewport = scaledContentElement.parentElement;
+      const frameRect = (viewport ?? frameElement).getBoundingClientRect();
+      const frameWidth = frameRect.width;
+      const frameHeight = frameRect.height;
       const contentWidth = scaledContentElement.scrollWidth;
       const contentHeight = scaledContentElement.scrollHeight;
 
@@ -102,9 +109,9 @@ export function GameShell({
         frameWidth / contentWidth,
         frameHeight / contentHeight,
       );
-      const clampedScale = Math.max(minScale, Number(nextScale.toFixed(3)));
+      const clampedScale = Math.max(minScale, Math.floor(nextScale * 1000) / 1000);
       setScale((previousScale) =>
-        Math.abs(previousScale - clampedScale) > 0.001
+        Math.abs(previousScale - clampedScale) > 0.0001
           ? clampedScale
           : previousScale,
       );
@@ -160,6 +167,8 @@ export function GameShell({
                 ))}
               </ul>
             </section>
+
+            {statusMessage && <p role="status">{statusMessage}</p>}
 
             <div className="game-shell-actions">
               <a href={portalUrl} className="game-shell-link-button">

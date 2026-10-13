@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { GameShell } from "@shared/components/GameShell";
 import { ParticleLayer, ScorePopup, useAudio, useParticles } from "@shared";
 
@@ -19,12 +19,21 @@ import type { Progress } from "./lib/storage";
 import "./App.css";
 
 export default function App() {
+  const rootRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<Phase>("menu");
   const [currentStageId, setCurrentStageId] = useState(1);
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [progress, setProgress] = useState<Progress>(loadProgress);
+  const [saveFailed, setSaveFailed] = useState(false);
   const [popupText, setPopupText] = useState<string | null>(null);
   const [popupKey, setPopupKey] = useState(0);
+
+  useEffect(() => {
+    const selector = phase === "playing" ? ".is-board-container"
+      : phase === "stageSelect" ? `.is-stage-btn:nth-of-type(${currentStageId})`
+      : "button:not(:disabled)";
+    rootRef.current?.querySelector<HTMLElement>(selector)?.focus();
+  }, [phase, currentStageId]);
 
   const currentStage = STAGES.find((s) => s.id === currentStageId) ?? STAGES[0];
 
@@ -52,6 +61,7 @@ export default function App() {
     const stage = STAGES.find((s) => s.id === stageId) ?? STAGES[0];
     setCurrentStageId(stage.id);
     setGameState(createInitialState(stage));
+    setSaveFailed(false);
     setPhase("playing");
   }, []);
 
@@ -83,8 +93,9 @@ export default function App() {
 
         // クリア判定
         if (isCleared(currentStage, newState.player)) {
-          const newProgress = updateProgress(currentStage.id, newState.moves);
-          setProgress(newProgress);
+          const result = updateProgress(currentStage.id, newState.moves);
+          setProgress(result.progress);
+          setSaveFailed(!result.saved);
           playSuccess();
           confetti();
           // ScorePopup for stage clear
@@ -123,8 +134,8 @@ export default function App() {
   }, [currentStageId, startGame]);
 
   return (
-    <GameShell gameId="iceslide" layout="default">
-      <div className="is-root">
+    <GameShell gameId="iceslide" layout="default" controlHints={["矢印キー・WASD・方向ボタン・スワイプで移動", "Ctrl+Zで戻す、Rでリセット", "クリア情報だけを保存。途中の盤面は保存しません"]}>
+      <div className="is-root" ref={rootRef}>
         {phase === "menu" && (
           <StartScreen
             onStart={startFromProgress}
@@ -161,6 +172,7 @@ export default function App() {
             onRetry={() => startGame(currentStageId)}
             onStageSelect={goToStageSelect}
             hasNextStage={currentStageId < TOTAL_STAGES}
+            saveFailed={saveFailed}
           />
         )}
         <ScorePopup

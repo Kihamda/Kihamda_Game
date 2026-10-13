@@ -8,6 +8,7 @@ interface Props {
   onRetry: () => void;
   onStageSelect: () => void;
   hasNextStage: boolean;
+  saveFailed: boolean;
 }
 
 export function ResultScreen({
@@ -17,6 +18,7 @@ export function ResultScreen({
   onRetry,
   onStageSelect,
   hasNextStage,
+  saveFailed,
 }: Props) {
   const stars = getRating(moves, stage.par);
 
@@ -37,6 +39,12 @@ export function ResultScreen({
         {stars === 2 && "すばらしい！👏"}
         {stars === 1 && "クリアおめでとう！"}
       </div>
+      {saveFailed && (
+        <p role="status" className="is-desc">
+          クリア情報を保存できませんでした。<br />
+          再読み込みすると今回の記録は残りません。
+        </p>
+      )}
       <div className="is-buttons">
         {hasNextStage && (
           <button className="is-btn is-btn--next" onClick={onNext}>

@@ -1,6 +1,6 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { GameShell } from "@shared/components/GameShell";
-import { ParticleLayer, useAudio, useParticles, ScorePopup, ShareButton, GameRecommendations } from "@shared";
+import { ParticleLayer, useAudio, useParticles, ScorePopup } from "@shared";
 import type { PopupVariant } from "@shared";
 import {
   createGame,
@@ -22,7 +22,17 @@ export default function App() {
   );
 
   const longPressTimer = useRef<number | null>(null);
-  const longPressTriggered = useRef(false);
+  const suppressedTouchCell = useRef<string | null>(null);
+  const [flagMode, setFlagMode] = useState(false);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  const cancelLongPress = useCallback(() => {
+    if (longPressTimer.current !== null) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  }, []);
+  useEffect(() => cancelLongPress, [cancelLongPress]);
 
   // ScorePopup state
   const [popupText, setPopupText] = useState<string | null>(null);
@@ -60,15 +70,13 @@ export default function App() {
   }, [playTone]);
 
   const handleReset = useCallback(() => {
+    cancelLongPress();
+    suppressedTouchCell.current = null;
     setGame(createGame(ROWS, COLS, MINE_COUNT));
-  }, []);
+  }, [cancelLongPress]);
 
   const handleCellClick = useCallback(
     (row: number, col: number) => {
-      if (longPressTriggered.current) {
-        longPressTriggered.current = false;
-        return;
-      }
       const prevRevealedCount = game.revealedCount;
       const newGame = revealCell(game, row, col);
       setGame(newGame);
@@ -103,10 +111,11 @@ export default function App() {
   );
 
   const handleContextMenu = useCallback(
-    (e: React.MouseEvent, row: number, col: number) => {
+    (e: React.SyntheticEvent, row: number, col: number) => {
       e.preventDefault();
+      cancelLongPress();
       const cell = game.grid[row][col];
-      if (!cell.isRevealed) {
+      if (game.status === "playing" && !cell.isRevealed) {
         setGame((prev) => toggleFlag(prev, row, col));
         playFlag();
         if (!cell.isFlagged) {
@@ -114,16 +123,17 @@ export default function App() {
         }
       }
     },
-    [game.grid, playFlag, showPopup]
+    [game.grid, game.status, cancelLongPress, playFlag, showPopup]
   );
 
   const handleTouchStart = useCallback(
     (row: number, col: number) => {
-      longPressTriggered.current = false;
+      cancelLongPress();
+      suppressedTouchCell.current = null;
       longPressTimer.current = window.setTimeout(() => {
-        longPressTriggered.current = true;
+        suppressedTouchCell.current = `${row}-${col}`;
         const cell = game.grid[row][col];
-        if (!cell.isRevealed) {
+        if (game.status === "playing" && !cell.isRevealed) {
           setGame((prev) => toggleFlag(prev, row, col));
           playFlag();
           if (!cell.isFlagged) {
@@ -132,15 +142,8 @@ export default function App() {
         }
       }, LONG_PRESS_DURATION);
     },
-    [game.grid, playFlag, showPopup]
+    [game.grid, game.status, cancelLongPress, playFlag, showPopup]
   );
-
-  const handleTouchEnd = useCallback(() => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
-  }, []);
 
   const renderCell = (cell: Cell, row: number, col: number) => {
     let content: React.ReactNode = null;
@@ -171,13 +174,50 @@ export default function App() {
       <button
         key={`${row}-${col}`}
         className={className}
-        onClick={() => handleCellClick(row, col)}
+        onClick={(e) => {
+          if (e.detail !== 0 && suppressedTouchCell.current === `${row}-${col}`) {
+            suppressedTouchCell.current = null;
+            return;
+          }
+          suppressedTouchCell.current = null;
+          if (flagMode) handleContextMenu(e, row, col);
+          else handleCellClick(row, col);
+        }}
+        onKeyDown={(e) => {
+          if (e.key.toLowerCase() === "f") {
+            e.preventDefault();
+            if (!e.repeat) handleContextMenu(e, row, col);
+          }
+          const delta: Record<string, number> = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -COLS, ArrowDown: COLS };
+          if (e.key in delta) {
+            e.preventDefault();
+            const index = row * COLS + col;
+            const next = index + delta[e.key];
+            if (next >= 0 && next < ROWS * COLS &&
+                (!(e.key === "ArrowLeft" || e.key === "ArrowRight") || Math.floor(next / COLS) === row)) {
+              gridRef.current?.querySelectorAll<HTMLButtonElement>("button")[next]?.focus();
+            }
+          }
+        }}
         onContextMenu={(e) => handleContextMenu(e, row, col)}
-        onTouchStart={() => handleTouchStart(row, col)}
-        onTouchEnd={handleTouchEnd}
-        onTouchCancel={handleTouchEnd}
+        onTouchStart={(e) => {
+          if (e.touches.length === 1) handleTouchStart(row, col);
+          else {
+            cancelLongPress();
+            suppressedTouchCell.current = `${row}-${col}`;
+          }
+        }}
+        onTouchMove={() => {
+          cancelLongPress();
+          suppressedTouchCell.current = `${row}-${col}`;
+        }}
+        onTouchEnd={cancelLongPress}
+        onTouchCancel={() => {
+          cancelLongPress();
+          suppressedTouchCell.current = `${row}-${col}`;
+        }}
         disabled={game.status !== "playing" && !cell.isRevealed}
-        aria-label={`セル ${row + 1}-${col + 1}`}
+        aria-label={`セル ${row + 1}-${col + 1} ${cell.isRevealed ? cell.isMine ? "地雷" : `開いたマス ${cell.adjacentMines}` : cell.isFlagged ? "旗あり" : "未開封"}`}
       >
         {content}
       </button>
@@ -193,11 +233,11 @@ export default function App() {
   const remainingMines = game.mineCount - game.flaggedCount;
 
   return (
-    <GameShell gameId="minerush" layout="default">
+    <GameShell gameId="minerush" layout="default" controlHints={["矢印キーで移動、クリック・Enterで開く", "F・右クリック・長押しで旗。旗モードならタップで切替", "途中の盤面は保存しません。再読み込みで最初から始まります。"]}>
       <div className="minerush-container">
         <header className="minerush-header">
           <div className="minerush-info">
-            💣 <span>{remainingMines}</span>
+            {game.status === "playing" ? <>💣 <span>{remainingMines}</span></> : <span role="status">{game.status === "won" ? "クリア！" : "ゲームオーバー"}</span>}
           </div>
           <button
             className="minerush-reset-btn"
@@ -211,8 +251,13 @@ export default function App() {
           </div>
         </header>
 
+        <button className="minerush-mode-btn" aria-pressed={flagMode} onClick={() => setFlagMode((value) => !value)}>
+          {flagMode ? "旗モード：マスを押して旗を切替" : "開くモード：押すと開く"}
+        </button>
+
         <div
           className="minerush-grid"
+          ref={gridRef}
           style={{
             gridTemplateColumns: `repeat(${COLS}, 36px)`,
             gridTemplateRows: `repeat(${ROWS}, 36px)`,
@@ -223,32 +268,6 @@ export default function App() {
           )}
         </div>
 
-        {game.status !== "playing" && (
-          <div
-            className={`minerush-status minerush-status--${game.status}`}
-          >
-            {game.status === "won" ? "🎉 クリア！" : "💥 ゲームオーバー"}
-            {game.status === "lost" && (
-              <div style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                backgroundColor: "rgba(0, 0, 0, 0.9)",
-                padding: "15px",
-                borderRadius: "8px",
-                textAlign: "center",
-                zIndex: 10,
-                color: "#fff",
-                minWidth: "150px"
-              }}>
-                <p style={{ marginBottom: "10px" }}>Revealed: {game.revealedCount}</p>
-                <ShareButton score={game.revealedCount} gameTitle="Mine Rush" gameId="minerush" />
-                <GameRecommendations currentGameId="minerush" />
-              </div>
-            )}
-          </div>
-        )}
         <ParticleLayer particles={particles} />
         <ScorePopup
           text={popupText}

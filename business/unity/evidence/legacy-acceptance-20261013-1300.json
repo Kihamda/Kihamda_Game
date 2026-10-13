@@ -1,0 +1,159 @@
+{
+  "runId": "unity-20261013T1300-iceslide-8f42c1",
+  "slot": "2026-10-13T13:00:00+09:00",
+  "fence": 21,
+  "baselineCommit": "f7899d774f1058ec221935ecc95e504641b1de5e",
+  "partial": true,
+  "checked": [
+    "Ice Slide20 solutions/undo/normal browser20clears/reload",
+    "390/1280 all20 board/HUD/control rectangles",
+    "Ice malformed storage/write denial/notice/nonpersistence/restoration",
+    "MineRush first-safe/flag/win/loss/reset/reload; fixed RNG distinct from normal",
+    "nTicTacToe Enter/current-turn reload/win/draw/confirmation/gravity3players",
+    "TS/ESLint/Vite/5SSG/4legacyURLs/36checksums/19GUID/navigationSSR/8guides",
+    "Business27tests",
+    "Initialcheckpoint6/parent4HEAD/recovery8hashes"
+  ],
+  "unchecked": [
+    "GravityBall5stagecompletion/lossretry/highscorepersistence",
+    "Physicaltouch/Safari/orientation/humanacceptance",
+    "nTicTacToe30x30/allplayers/allwinconditions/write-denial/dialogfocus/switchduringanimations"
+  ],
+  "nextStep": "Same task: GravityBall full stages/loss-retry/high-score persistence",
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "playStarts": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "judgment": {
+    "technical": "improve",
+    "business": "unobserved"
+  },
+  "publication": {
+    "push": false,
+    "pullRequest": false,
+    "merge": false,
+    "deployment": false
+  },
+  "artifacts": [
+    {
+      "path": ".gitattributes",
+      "sha256": "07dc7741ea5917b9d88dce0c237afed728ef85b3131b721d97736c39678a3ac5"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "3f2c3d1b906e08fbb5982ccac0e0a5c151486eb5ead0e8bd187410bd5dd37ece"
+    },
+    {
+      "path": "scripts/check-repository.mjs",
+      "sha256": "94fd7abe3ed6415ecb0dd50bffcc0b5cf0d922a840892d79213067fa1d6bb6ed"
+    },
+    {
+      "path": "scripts/check-iceslide.mjs",
+      "sha256": "6771c3ef105ba63c34a248ca5e27e23d7cddafdec9ef9414e56bf84065c40dbc"
+    },
+    {
+      "path": "docs/web-legacy-acceptance-20261013.md",
+      "sha256": "f1b37a1bae455abed49528e91d6b7d33c65b634bd79becf7dddf942c37aac622"
+    },
+    {
+      "path": "business/unity/research/2026-10-13-web-mobile-acceptance.md",
+      "sha256": "1ade75b6e37a1fecba25c9a5b7e3c61465cbeabc06d3d3ee6df59b67a502497e"
+    },
+    {
+      "path": "STATE.md",
+      "sha256": "9343d3b1f77cbd495e7aba0fd1082784a6d14541fef82b6d861e82c791b05764"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "d875f62698ea73c928e335e803adcb9c08e1affb5928a5bf703cb54a9c64ee37"
+    },
+    {
+      "path": "business/studio-policy.json",
+      "sha256": "dd1150c1b3f207340ef3d7e13fbc16039a0d278c046c20b946ea57a3f314e7af"
+    },
+    {
+      "path": "web/src/portal/data/games.json",
+      "sha256": "3235d5c725d2e0f3034f03cc4e114659720386fbc917084cfde9e293619122d5"
+    },
+    {
+      "path": "web/src/shared/components/GameShell.tsx",
+      "sha256": "30a81ba18319ab848e0904cfeb092c810d182ec960cf1fbeca873c2596c389b0"
+    },
+    {
+      "path": "web/src/shared/components/GameShell.css",
+      "sha256": "0034fe71b37e21f5f5b21226999cc39ae9841ab82a0c221ca6ab5c7c4a8c0827"
+    },
+    {
+      "path": "web/games/iceslide/src/App.tsx",
+      "sha256": "9671e58359eb5ea1b9b91570faa66e3a09342a20b42a8156e3f2e9ca14c920bc"
+    },
+    {
+      "path": "web/games/iceslide/src/components/GameView.tsx",
+      "sha256": "daa1fc6efda6697eeffef6dbc0df2cefcb62a63fa027040a6a9504b425ecea37"
+    },
+    {
+      "path": "web/games/iceslide/src/components/ResultScreen.tsx",
+      "sha256": "01728bea61b66096824b1cb97919d0ee19c682d2d253c56dc6abcbf9d7023fd9"
+    },
+    {
+      "path": "web/games/iceslide/src/components/StartScreen.tsx",
+      "sha256": "361e6f9ecd54b709967c7b2a82a1564590812de41fe15476c5780503c79efe16"
+    },
+    {
+      "path": "web/games/iceslide/src/lib/constants.ts",
+      "sha256": "5bb99221428e358723fb473023ca5a7bfd1d29a7506e4406f1a1be8c61379f48"
+    },
+    {
+      "path": "web/games/iceslide/src/lib/storage.ts",
+      "sha256": "fd60d6a7c0c1d70da4449e6f69164210d09a9b920a4905fb5fbfbafcbc8d92df"
+    },
+    {
+      "path": "web/games/minerush/src/App.tsx",
+      "sha256": "c76f112b7b531d38d599f3b05ff4b7ae6bc3caaa68525c3dca7b3cdcde742b89"
+    },
+    {
+      "path": "web/games/ntiktaktoe/src/App.tsx",
+      "sha256": "043f13e9f53ae3aa5047c7a21e9c5ba503a413d2f82bec1f75a26a4be4955480"
+    },
+    {
+      "path": "web/games/ntiktaktoe/src/App.css",
+      "sha256": "2c50aa635d4d19cd274b0b7c537cc0f4039bdbc6edfc4e9be96875f88e1e30c8"
+    },
+    {
+      "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+      "sha256": "46c7fddf381a84cd23212353547fa4ee4431d3580447cbb76a8d5757c480e26f"
+    },
+    {
+      "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+      "sha256": "cea612a55b50bb2683dc313265b3700863a636abda73d80a1b891d1b595dd690"
+    },
+    {
+      "path": "web/games/ntiktaktoe/src/components/ResultScreen.tsx",
+      "sha256": "4910e12798a4ad2cd16d8a2a44efcea77f7754b43003fd35616d97976df10386"
+    },
+    {
+      "path": "docs/images/iceslide-20261013-1280.png",
+      "sha256": "3a89253923c40dc4b650a160f17a1c2fc758915e03f94e16faf032d6472d5d38"
+    },
+    {
+      "path": "docs/images/iceslide-20261013-390.png",
+      "sha256": "a1c74e3663d9a3c99f336cb7a8eb7cb02b9d08a206abff7bbd60d188a0184ba7"
+    },
+    {
+      "path": "docs/images/iceslide-save-failure-20261013-390.png",
+      "sha256": "00bb795e54102fd201e5cc74e646254a1db465667710e5a5576bf813cefec4dd"
+    },
+    {
+      "path": "docs/images/ntiktaktoe-20261013-1280.png",
+      "sha256": "b16ec6d5d52ebf3846a5ff910bd5b288ebfcdf699f3676e24e2eb057548d970b"
+    },
+    {
+      "path": "docs/images/ntiktaktoe-20261013-390.png",
+      "sha256": "c428253bba37fc53aa973dd3ab5977d0e6cabea3159cdab2ceb0dc5318f73141"
+    }
+  ],
+  "checkpointNote": "Dot-prefixed paths are bound by this receipt, not passed directly to flow.py; rejected checkpoint made no ledger mutation."
+}

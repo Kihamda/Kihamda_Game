@@ -98,8 +98,10 @@ export function GameView({
     [onMove]
   );
 
-  const boardWidth = stage.width * CELL_SIZE;
-  const boardHeight = stage.height * CELL_SIZE;
+  // Keep the tallest boards inside the game frame with all controls visible.
+  const cellSize = Math.min(CELL_SIZE, 350 / stage.height);
+  const boardWidth = stage.width * cellSize;
+  const boardHeight = stage.height * cellSize;
 
   return (
     <div className="is-game">
@@ -115,6 +117,9 @@ export function GameView({
       <div
         ref={containerRef}
         className="is-board-container"
+        tabIndex={-1}
+        role="group"
+        aria-label={`ステージ${stage.id}の盤面`}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -132,10 +137,10 @@ export function GameView({
                 key={`${x}-${y}`}
                 className={`is-cell is-cell--${cell}`}
                 style={{
-                  left: x * CELL_SIZE,
-                  top: y * CELL_SIZE,
-                  width: CELL_SIZE,
-                  height: CELL_SIZE,
+                  left: x * cellSize,
+                  top: y * cellSize,
+                  width: cellSize,
+                  height: cellSize,
                 }}
               >
                 {cell === "goal" && <span className="is-goal">🚩</span>}
@@ -147,10 +152,10 @@ export function GameView({
           <div
             className="is-player"
             style={{
-              left: gameState.player.x * CELL_SIZE,
-              top: gameState.player.y * CELL_SIZE,
-              width: CELL_SIZE,
-              height: CELL_SIZE,
+              left: gameState.player.x * cellSize,
+              top: gameState.player.y * cellSize,
+              width: cellSize,
+              height: cellSize,
             }}
           >
             🐧
@@ -173,6 +178,7 @@ export function GameView({
       <div className="is-direction-buttons">
         <button
           className="is-dir-btn is-dir-btn--up"
+          aria-label="上へ移動"
           onClick={() => onMove("up")}
         >
           ▲
@@ -180,18 +186,21 @@ export function GameView({
         <div className="is-dir-row">
           <button
             className="is-dir-btn is-dir-btn--left"
+            aria-label="左へ移動"
             onClick={() => onMove("left")}
           >
             ◀
           </button>
           <button
             className="is-dir-btn is-dir-btn--down"
+            aria-label="下へ移動"
             onClick={() => onMove("down")}
           >
             ▼
           </button>
           <button
             className="is-dir-btn is-dir-btn--right"
+            aria-label="右へ移動"
             onClick={() => onMove("right")}
           >
             ▶
