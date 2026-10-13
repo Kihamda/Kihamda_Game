@@ -1,3 +1,5 @@
+19時枠の最終保管版はコードcommit9e41260d3ca0174aa211be331e04fb2e15925f0c、artifacts/releases/web-20261013-local-9e41260。37ファイル/5案内ページ・圧縮/展開・元コード8ファイルを照合した。索引はbusiness/unity/evidence/web-local-retention-20261013-1900.json。25分checkpointを保存し、30分以内に同じモバイル入力タスクをyieldで引き継ぐ。次はMineRush。追加PR/リモートCI/配信は実行せず、旧保管版・Unity・本人の意思表明を保持した。
+
 2026-10-13の19時枠の続行でIce Slideの操作ボタンを拡大し、読み上げ名・フォーカス移動・操作案内を追加した。390/1280の全20盤面40ケースで最小ボタン高さ28.66px、枠内配置・盤面フォーカスを確認。Enter/方向キー/Ctrl+Z/R、結果・選択・再挑戦と保存の再読み込みも確認。物理タッチは未検査で、同じT-web-legacy-mobile-input-acceptanceをyieldして次はMineRushの盤面と旗操作を検査する。記録はdocs/web-ice-mobile-20261013.md。日次ブランチへのローカルcommitのみで追加PR・配信はしない。
 
 2026-10-13の19時枠でGravityBallの到達不能な第4ステージ、最終クリアで最高スコアを保存しない不具合、遷移待ちの再スタートを修正した。本番用ビルドで位置等を書き換えない自動ポインタ操作による全5ステージ通過、失敗後再挑戦、10,458点の保存と再読み込みを確認。390px第1ステージと保存拒否案内も確認した。注入した最終状態は保存拒否検査だけに使用し、通常クリアと区別した。技術判断improve、事業判断unobservedで指標はnull。詳細はdocs/web-gravityball-acceptance-20261013.md。

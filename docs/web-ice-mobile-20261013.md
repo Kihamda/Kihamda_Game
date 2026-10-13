@@ -11,3 +11,7 @@
 TypeScript/ESLint/Vite/静的5ページ、旧4URL/36チェックサム/19GUID、検索SSR、作品案内8ケース、Ice Slide20解法/保存、GravityBallの回帰検査、business27テストが成功した。リモートCIは本日未実行。ブラウザの自動操作・寸法検査は実タッチ、スワイプの物理操作性、Safari、人間評価と区別する。
 
 同じモバイル入力タスクは未完了のためyieldで引き継ぐ。次の一工程はMineRushの9×9盤面・旗操作・キーボード代替の寸法と操作を確認すること。n目並べ確認ダイアログ、GravityBallの実タッチ/傾きも残る。新作とUnity自律制作は再開せず、release=null、事業指標nullを維持する。
+
+## ローカル保管版
+
+コード版9e41260d3ca0174aa211be331e04fb2e15925f0cをartifacts/releases/web-20261013-local-9e41260へ保存した。37ファイル/5案内ページとZIPの別フォルダ展開を検査し、source.zipの変更した8ファイルをGitと照合。コードはブラウザ検査版から末尾空行だけを整理したもので、配信アセット名と内容は同じ。CI承認済み/配信済みと扱わず、前回07時CI版と13時ローカル版を保持する。ディスク故障に備えたPC外復元は未確認。索引はbusiness/unity/evidence/web-local-retention-20261013-1900.json。
