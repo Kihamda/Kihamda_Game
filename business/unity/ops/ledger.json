@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 141,
+  "revision": 150,
   "business_id": "game-site",
-  "fence": 21,
+  "fence": 23,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -2242,7 +2242,7 @@
         "No new game or work in old parent repositories; no production replacement"
       ],
       "next_step": "Inspect preserved iceslide Web route rules/input/state/reload as first work",
-      "status": "ready",
+      "status": "done",
       "checkpoints": [
         {
           "run_id": "unity-20261013T1300-iceslide-8f42c1",
@@ -2635,6 +2635,153 @@
           ],
           "next_step": "Same task: GravityBall full stages/loss-retry/high-score persistence",
           "at": 1791865517.5672617
+        },
+        {
+          "run_id": "unity-20261013T1900-gravity-7d192a",
+          "fence": 22,
+          "artifacts": [
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "b096cd9523ea59256a7a8df6b50f11f6c0ae63d571d2edc1af7fb6de2465d7be"
+            },
+            {
+              "path": "web/games/gravityball/src/stages.ts",
+              "sha256": "b56886f693c70f4c36c7f74256c311f96e402c7f591d276a9401f9718788ec5a"
+            },
+            {
+              "path": "web/src/shared/hooks/useHighScore.ts",
+              "sha256": "2641d6bc96391da9034c3f61114a5e2323e0bd368662d43865cda55326dd3391"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "790357458ac712b9c75fe13b0c17361d49d19ef32102245fbdf03d3c1bf8ea35"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "95c61dc78c49027ba037d6ae5452d40d8f44893c048b36d1adad9cf221aaaffa"
+            },
+            {
+              "path": "docs/web-gravityball-acceptance-20261013.md",
+              "sha256": "3c030596c9a5342025daafeb8ceb8624962eac44c9be757e686a735caa03338e"
+            },
+            {
+              "path": "docs/web-legacy-acceptance-20261013.md",
+              "sha256": "f48ec87470993b124cf4b3ebe363b86c97221a1accdff875346d6f798a778ace"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "11ebd1097b77cf46247935a0adffbe99c127746c592393d6b93628909c821709"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "697549f91ed5debec6a97882bf9cf374a211e6ff94545a3380171719bb1af789"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "177c2048ad53cc6df014b67aa95e54fef4739fb67a533829687bf71a3c915d2d"
+            },
+            {
+              "path": "docs/images/gravityball-20261013-1280.png",
+              "sha256": "606d347089aae183b93df3cfae8d3ed5405c3b965ee051a2d04157f125805ed7"
+            },
+            {
+              "path": "docs/images/gravityball-20261013-390.png",
+              "sha256": "1a689c76782d017d7821107b5d9ba38ca1aca0b01378c9c0ec1f4af876b233bd"
+            },
+            {
+              "path": "docs/images/gravityball-save-failure-20261013-390.png",
+              "sha256": "30f0b48cf0093e3e663eb9bac42dfc4e024acbe1d3c84b669b41c328463aa751"
+            },
+            {
+              "path": "business/unity/evidence/gravityball-acceptance-20261013-1900.json",
+              "sha256": "d4496a2e78af4abb5cf8c023817649ee8a248cddc021ee1b1768b93a7296a6a7"
+            }
+          ],
+          "checks": [
+            "5stage pointer automation without gameplay state mutation",
+            "stage5 loss/Enter retry",
+            "production highscore10458 reload",
+            "390 stage1 keyboard/pointer",
+            "test-only save denial/NaN/reset",
+            "TS ESLint Vite 5SSG 4routes 36checksums 19GUID navigationSSR 8guides Ice20 business27",
+            "initial checkpoint28 parent4 recovery8"
+          ],
+          "next_step": "T-web-legacy-mobile-input-acceptance: measure Ice Slide mobile controls first",
+          "at": 1791886470.2081027
+        },
+        {
+          "run_id": "unity-20261013T1900-gravity-7d192a",
+          "fence": 22,
+          "artifacts": [
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "b096cd9523ea59256a7a8df6b50f11f6c0ae63d571d2edc1af7fb6de2465d7be"
+            },
+            {
+              "path": "web/games/gravityball/src/stages.ts",
+              "sha256": "b56886f693c70f4c36c7f74256c311f96e402c7f591d276a9401f9718788ec5a"
+            },
+            {
+              "path": "web/src/shared/hooks/useHighScore.ts",
+              "sha256": "2641d6bc96391da9034c3f61114a5e2323e0bd368662d43865cda55326dd3391"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "790357458ac712b9c75fe13b0c17361d49d19ef32102245fbdf03d3c1bf8ea35"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "95c61dc78c49027ba037d6ae5452d40d8f44893c048b36d1adad9cf221aaaffa"
+            },
+            {
+              "path": "docs/web-gravityball-acceptance-20261013.md",
+              "sha256": "3c030596c9a5342025daafeb8ceb8624962eac44c9be757e686a735caa03338e"
+            },
+            {
+              "path": "docs/web-legacy-acceptance-20261013.md",
+              "sha256": "f48ec87470993b124cf4b3ebe363b86c97221a1accdff875346d6f798a778ace"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "11ebd1097b77cf46247935a0adffbe99c127746c592393d6b93628909c821709"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "697549f91ed5debec6a97882bf9cf374a211e6ff94545a3380171719bb1af789"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "177c2048ad53cc6df014b67aa95e54fef4739fb67a533829687bf71a3c915d2d"
+            },
+            {
+              "path": "docs/images/gravityball-20261013-1280.png",
+              "sha256": "606d347089aae183b93df3cfae8d3ed5405c3b965ee051a2d04157f125805ed7"
+            },
+            {
+              "path": "docs/images/gravityball-20261013-390.png",
+              "sha256": "1a689c76782d017d7821107b5d9ba38ca1aca0b01378c9c0ec1f4af876b233bd"
+            },
+            {
+              "path": "docs/images/gravityball-save-failure-20261013-390.png",
+              "sha256": "30f0b48cf0093e3e663eb9bac42dfc4e024acbe1d3c84b669b41c328463aa751"
+            },
+            {
+              "path": "business/unity/evidence/gravityball-acceptance-20261013-1900.json",
+              "sha256": "d4496a2e78af4abb5cf8c023817649ee8a248cddc021ee1b1768b93a7296a6a7"
+            }
+          ],
+          "checks": [
+            "5stage pointer automation without gameplay state mutation",
+            "stage5 loss/Enter retry",
+            "production highscore10458 reload",
+            "390 stage1 keyboard/pointer",
+            "test-only save denial/NaN/reset",
+            "TS ESLint Vite 5SSG 4routes 36checksums 19GUID navigationSSR 8guides Ice20 business27",
+            "initial checkpoint28 parent4 recovery8"
+          ],
+          "next_step": "T-web-legacy-mobile-input-acceptance: measure Ice Slide mobile controls first",
+          "passed": true,
+          "at": 1791886470.2308767
         }
       ],
       "claims": [
@@ -2643,6 +2790,12 @@
           "task_id": "T-web-legacy-browser-acceptance",
           "fence": 21,
           "expires_at": 1791865759.8496187
+        },
+        {
+          "run_id": "unity-20261013T1900-gravity-7d192a",
+          "task_id": "T-web-legacy-browser-acceptance",
+          "fence": 22,
+          "expires_at": 1791887452.6901135
         }
       ]
     },
@@ -2676,8 +2829,222 @@
       ],
       "next_step": "After base legacy acceptance, measure Ice Slide mobile controls first",
       "status": "ready",
-      "checkpoints": [],
-      "claims": []
+      "checkpoints": [
+        {
+          "run_id": "unity-20261013T1900-mobile-a9513c",
+          "fence": 23,
+          "artifacts": [
+            {
+              "path": "web/games/iceslide/src/App.tsx",
+              "sha256": "b73bc1923bc6aeb25ae5b8a53fbfd405f750f6e3741c86c94531e150db1f7078"
+            },
+            {
+              "path": "web/games/iceslide/src/App.css",
+              "sha256": "e086163491bf14027a71b676a62820231b00cd6192455d32c09e31825971e041"
+            },
+            {
+              "path": "web/games/iceslide/src/components/GameView.tsx",
+              "sha256": "f3d3e13fc0bccc2ca3760356fa3db184d559d13d4bb112794f83d3a5bd4f8d9f"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "b096cd9523ea59256a7a8df6b50f11f6c0ae63d571d2edc1af7fb6de2465d7be"
+            },
+            {
+              "path": "web/games/gravityball/src/stages.ts",
+              "sha256": "b56886f693c70f4c36c7f74256c311f96e402c7f591d276a9401f9718788ec5a"
+            },
+            {
+              "path": "web/src/shared/hooks/useHighScore.ts",
+              "sha256": "2641d6bc96391da9034c3f61114a5e2323e0bd368662d43865cda55326dd3391"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "790357458ac712b9c75fe13b0c17361d49d19ef32102245fbdf03d3c1bf8ea35"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "95c61dc78c49027ba037d6ae5452d40d8f44893c048b36d1adad9cf221aaaffa"
+            },
+            {
+              "path": "docs/web-ice-mobile-20261013.md",
+              "sha256": "e0543be2befb9efcf9c5e18e382c22edd9804a0aea076155a055689c8c3240c8"
+            },
+            {
+              "path": "docs/web-gravityball-acceptance-20261013.md",
+              "sha256": "3c030596c9a5342025daafeb8ceb8624962eac44c9be757e686a735caa03338e"
+            },
+            {
+              "path": "docs/web-legacy-acceptance-20261013.md",
+              "sha256": "f48ec87470993b124cf4b3ebe363b86c97221a1accdff875346d6f798a778ace"
+            },
+            {
+              "path": "business/unity/evidence/gravityball-acceptance-20261013-1900.json",
+              "sha256": "d4496a2e78af4abb5cf8c023817649ee8a248cddc021ee1b1768b93a7296a6a7"
+            },
+            {
+              "path": "business/unity/evidence/ice-mobile-targets-20261013-1900.json",
+              "sha256": "5b1facb8f9ef7733887fe29109fd328e62b20544dac33a448b14d360f265951a"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "21c3508a708d397e925417cb34398d6d46205e395bb35e873915628223da0836"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "8826c6faea7e29c94896ce4d5d8a45b4c66d39ba93428b61c5b440941d76fcbe"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "a1c1c7e94d1a9df8eea2087a785cbd34fa96d8563d33daba7209942ebcfd38d8"
+            },
+            {
+              "path": "docs/images/gravityball-20261013-1280.png",
+              "sha256": "606d347089aae183b93df3cfae8d3ed5405c3b965ee051a2d04157f125805ed7"
+            },
+            {
+              "path": "docs/images/gravityball-20261013-390.png",
+              "sha256": "1a689c76782d017d7821107b5d9ba38ca1aca0b01378c9c0ec1f4af876b233bd"
+            },
+            {
+              "path": "docs/images/gravityball-save-failure-20261013-390.png",
+              "sha256": "30f0b48cf0093e3e663eb9bac42dfc4e024acbe1d3c84b669b41c328463aa751"
+            },
+            {
+              "path": "docs/images/iceslide-mobile-20261013-390.png",
+              "sha256": "0ffaee8c0a6b082ca887a639abceacb15859d90301a76b6cc1b38adc1223ebcc"
+            },
+            {
+              "path": "docs/images/iceslide-mobile-20261013-1280.png",
+              "sha256": "b0c1223f92a39c5e7626d29f746e55567d53f337b642d4969dbb490f81f6996e"
+            },
+            {
+              "path": "business/unity/evidence/ice-mobile-acceptance-20261013-1900.json",
+              "sha256": "3dbdc10689df511ba758fb87f4963aa15fc71a40144ba5245bfd2ec4085c7902"
+            }
+          ],
+          "checks": [
+            "Ice Slide 390/1280 40 stage layouts >=24px, minheight28.6559",
+            "Enter ArrowDown CtrlZ R retry/result/select focus; 3px outline",
+            "Layout fixture restored to actual test clear1/2 progress before reload",
+            "TS ESLint Vite 5SSG 4legacy 36checksums 19GUID navigationSSR 8guides Ice20 Gravity regression Business27",
+            "protected file hashes and original141 event prefix preserved"
+          ],
+          "next_step": "Same mobile task: MineRush board/flag targets and equivalent keyboard controls",
+          "at": 1791886922.8931122
+        },
+        {
+          "run_id": "unity-20261013T1900-mobile-a9513c",
+          "fence": 23,
+          "artifacts": [
+            {
+              "path": "web/games/iceslide/src/App.tsx",
+              "sha256": "b73bc1923bc6aeb25ae5b8a53fbfd405f750f6e3741c86c94531e150db1f7078"
+            },
+            {
+              "path": "web/games/iceslide/src/App.css",
+              "sha256": "e086163491bf14027a71b676a62820231b00cd6192455d32c09e31825971e041"
+            },
+            {
+              "path": "web/games/iceslide/src/components/GameView.tsx",
+              "sha256": "f3d3e13fc0bccc2ca3760356fa3db184d559d13d4bb112794f83d3a5bd4f8d9f"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "b096cd9523ea59256a7a8df6b50f11f6c0ae63d571d2edc1af7fb6de2465d7be"
+            },
+            {
+              "path": "web/games/gravityball/src/stages.ts",
+              "sha256": "b56886f693c70f4c36c7f74256c311f96e402c7f591d276a9401f9718788ec5a"
+            },
+            {
+              "path": "web/src/shared/hooks/useHighScore.ts",
+              "sha256": "2641d6bc96391da9034c3f61114a5e2323e0bd368662d43865cda55326dd3391"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "790357458ac712b9c75fe13b0c17361d49d19ef32102245fbdf03d3c1bf8ea35"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "95c61dc78c49027ba037d6ae5452d40d8f44893c048b36d1adad9cf221aaaffa"
+            },
+            {
+              "path": "docs/web-ice-mobile-20261013.md",
+              "sha256": "e0543be2befb9efcf9c5e18e382c22edd9804a0aea076155a055689c8c3240c8"
+            },
+            {
+              "path": "docs/web-gravityball-acceptance-20261013.md",
+              "sha256": "3c030596c9a5342025daafeb8ceb8624962eac44c9be757e686a735caa03338e"
+            },
+            {
+              "path": "docs/web-legacy-acceptance-20261013.md",
+              "sha256": "f48ec87470993b124cf4b3ebe363b86c97221a1accdff875346d6f798a778ace"
+            },
+            {
+              "path": "business/unity/evidence/gravityball-acceptance-20261013-1900.json",
+              "sha256": "d4496a2e78af4abb5cf8c023817649ee8a248cddc021ee1b1768b93a7296a6a7"
+            },
+            {
+              "path": "business/unity/evidence/ice-mobile-targets-20261013-1900.json",
+              "sha256": "5b1facb8f9ef7733887fe29109fd328e62b20544dac33a448b14d360f265951a"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "21c3508a708d397e925417cb34398d6d46205e395bb35e873915628223da0836"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "8826c6faea7e29c94896ce4d5d8a45b4c66d39ba93428b61c5b440941d76fcbe"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "a1c1c7e94d1a9df8eea2087a785cbd34fa96d8563d33daba7209942ebcfd38d8"
+            },
+            {
+              "path": "docs/images/gravityball-20261013-1280.png",
+              "sha256": "606d347089aae183b93df3cfae8d3ed5405c3b965ee051a2d04157f125805ed7"
+            },
+            {
+              "path": "docs/images/gravityball-20261013-390.png",
+              "sha256": "1a689c76782d017d7821107b5d9ba38ca1aca0b01378c9c0ec1f4af876b233bd"
+            },
+            {
+              "path": "docs/images/gravityball-save-failure-20261013-390.png",
+              "sha256": "30f0b48cf0093e3e663eb9bac42dfc4e024acbe1d3c84b669b41c328463aa751"
+            },
+            {
+              "path": "docs/images/iceslide-mobile-20261013-390.png",
+              "sha256": "0ffaee8c0a6b082ca887a639abceacb15859d90301a76b6cc1b38adc1223ebcc"
+            },
+            {
+              "path": "docs/images/iceslide-mobile-20261013-1280.png",
+              "sha256": "b0c1223f92a39c5e7626d29f746e55567d53f337b642d4969dbb490f81f6996e"
+            },
+            {
+              "path": "business/unity/evidence/ice-mobile-acceptance-20261013-1900.json",
+              "sha256": "3dbdc10689df511ba758fb87f4963aa15fc71a40144ba5245bfd2ec4085c7902"
+            }
+          ],
+          "checks": [
+            "Ice Slide 390/1280 40 stage layouts >=24px, minheight28.6559",
+            "Enter ArrowDown CtrlZ R retry/result/select focus; 3px outline",
+            "Layout fixture restored to actual test clear1/2 progress before reload",
+            "TS ESLint Vite 5SSG 4legacy 36checksums 19GUID navigationSSR 8guides Ice20 Gravity regression Business27",
+            "protected file hashes and original141 event prefix preserved"
+          ],
+          "next_step": "Same mobile task: MineRush board/flag targets and equivalent keyboard controls",
+          "at": 1791886922.9166641
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261013T1900-mobile-a9513c",
+          "task_id": "T-web-legacy-mobile-input-acceptance",
+          "fence": 23,
+          "expires_at": 1791887270.2893307
+        }
+      ]
     }
   },
   "decisions": {
@@ -2792,6 +3159,12 @@
       "hypothesis": "検索条件保持を先に検証し、公開案内を後続にする。利用者効果は未観測。",
       "next_step": "T-web-portal-navigation-state",
       "judgment": "unobserved"
+    },
+    "D-web-quality-20261013-1900": {
+      "id": "D-web-quality-20261013-1900",
+      "source": "business/unity/evidence/gravityball-acceptance-20261013-1900.json",
+      "hypothesis": "Observed defects justify improve; technical checks do not establish demand; metrics null and 14/28-day business unobserved",
+      "next_step": "T-web-legacy-mobile-input-acceptance: measure Ice Slide mobile controls first"
     }
   },
   "runs": {
@@ -2936,6 +3309,19 @@
       "source": "scheduled:game-site:2026-10-13T13:00:00+09:00",
       "status": "checkpointed",
       "started_at": 1791864009.7919848
+    },
+    "unity-20261013T1900-gravity-7d192a": {
+      "run_id": "unity-20261013T1900-gravity-7d192a",
+      "scheduled_at": "2026-10-13T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-13T19:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791885652.639407
+    },
+    "unity-20261013T1900-mobile-a9513c": {
+      "run_id": "unity-20261013T1900-mobile-a9513c",
+      "source": "continuation:original-19slot:deadline-19:30",
+      "status": "checkpointed",
+      "started_at": 1791886470.2708256
     }
   },
   "experiments": {
@@ -3071,7 +3457,8 @@
     "2026-10-12T19:00:00+09:00": "unity-20261012T1900-d7205d33896f",
     "2026-10-13T01:00:00+09:00": "unity-20261013T0100-acceptance-a74d9c",
     "2026-10-13T07:00:00+09:00": "unity-20261013T0700-package-d34f19",
-    "2026-10-13T13:00:00+09:00": "unity-20261013T1300-iceslide-8f42c1"
+    "2026-10-13T13:00:00+09:00": "unity-20261013T1300-iceslide-8f42c1",
+    "2026-10-13T19:00:00+09:00": "unity-20261013T1900-gravity-7d192a"
   },
   "feedback": [
     {
@@ -7649,7 +8036,476 @@
       },
       "previous": "cca60e05b03c689d035f95c701b2ac8028f3959e4eec73ebdc7fbc172a9a95c4",
       "sha256": "f1d67be99eedfd451d70495beca79eda9210d251eebc8f1f38ca18f86b0ca20c"
+    },
+    {
+      "revision": 142,
+      "at": 1791885652.639407,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261013T1900-gravity-7d192a",
+        "scheduled_at": "2026-10-13T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "f1d67be99eedfd451d70495beca79eda9210d251eebc8f1f38ca18f86b0ca20c",
+      "sha256": "368db9222f3891bc37ee9a99d65313b6c1e5fce74450c07932c8b61d76550d14"
+    },
+    {
+      "revision": 143,
+      "at": 1791885652.6901135,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261013T1900-gravity-7d192a",
+        "task_id": "T-web-legacy-browser-acceptance",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261013T1900-gravity-7d192a",
+        "task_id": "T-web-legacy-browser-acceptance",
+        "fence": 22,
+        "expires_at": 1791887452.6901135
+      },
+      "previous": "368db9222f3891bc37ee9a99d65313b6c1e5fce74450c07932c8b61d76550d14",
+      "sha256": "319e2b685b84be5c24582abb75100113b9c749407b787f67637d6ce2e71b188c"
+    },
+    {
+      "revision": 144,
+      "at": 1791886470.2081027,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261013T1900-gravity-7d192a",
+        "fence": 22,
+        "artifacts": [
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "b096cd9523ea59256a7a8df6b50f11f6c0ae63d571d2edc1af7fb6de2465d7be"
+          },
+          {
+            "path": "web/games/gravityball/src/stages.ts",
+            "sha256": "b56886f693c70f4c36c7f74256c311f96e402c7f591d276a9401f9718788ec5a"
+          },
+          {
+            "path": "web/src/shared/hooks/useHighScore.ts",
+            "sha256": "2641d6bc96391da9034c3f61114a5e2323e0bd368662d43865cda55326dd3391"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "790357458ac712b9c75fe13b0c17361d49d19ef32102245fbdf03d3c1bf8ea35"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "95c61dc78c49027ba037d6ae5452d40d8f44893c048b36d1adad9cf221aaaffa"
+          },
+          {
+            "path": "docs/web-gravityball-acceptance-20261013.md",
+            "sha256": "3c030596c9a5342025daafeb8ceb8624962eac44c9be757e686a735caa03338e"
+          },
+          {
+            "path": "docs/web-legacy-acceptance-20261013.md",
+            "sha256": "f48ec87470993b124cf4b3ebe363b86c97221a1accdff875346d6f798a778ace"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "11ebd1097b77cf46247935a0adffbe99c127746c592393d6b93628909c821709"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "697549f91ed5debec6a97882bf9cf374a211e6ff94545a3380171719bb1af789"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "177c2048ad53cc6df014b67aa95e54fef4739fb67a533829687bf71a3c915d2d"
+          },
+          {
+            "path": "docs/images/gravityball-20261013-1280.png",
+            "sha256": "606d347089aae183b93df3cfae8d3ed5405c3b965ee051a2d04157f125805ed7"
+          },
+          {
+            "path": "docs/images/gravityball-20261013-390.png",
+            "sha256": "1a689c76782d017d7821107b5d9ba38ca1aca0b01378c9c0ec1f4af876b233bd"
+          },
+          {
+            "path": "docs/images/gravityball-save-failure-20261013-390.png",
+            "sha256": "30f0b48cf0093e3e663eb9bac42dfc4e024acbe1d3c84b669b41c328463aa751"
+          },
+          {
+            "path": "business/unity/evidence/gravityball-acceptance-20261013-1900.json",
+            "sha256": "d4496a2e78af4abb5cf8c023817649ee8a248cddc021ee1b1768b93a7296a6a7"
+          }
+        ],
+        "checks": [
+          "5stage pointer automation without gameplay state mutation",
+          "stage5 loss/Enter retry",
+          "production highscore10458 reload",
+          "390 stage1 keyboard/pointer",
+          "test-only save denial/NaN/reset",
+          "TS ESLint Vite 5SSG 4routes 36checksums 19GUID navigationSSR 8guides Ice20 business27",
+          "initial checkpoint28 parent4 recovery8"
+        ],
+        "next_step": "T-web-legacy-mobile-input-acceptance: measure Ice Slide mobile controls first"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "319e2b685b84be5c24582abb75100113b9c749407b787f67637d6ce2e71b188c",
+      "sha256": "0c1bac14bdadd5d5be5352e381a24d331ae94ebd4d17270b5ba654ecfccf02c4"
+    },
+    {
+      "revision": 145,
+      "at": 1791886470.2308767,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261013T1900-gravity-7d192a",
+        "fence": 22,
+        "artifacts": [
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "b096cd9523ea59256a7a8df6b50f11f6c0ae63d571d2edc1af7fb6de2465d7be"
+          },
+          {
+            "path": "web/games/gravityball/src/stages.ts",
+            "sha256": "b56886f693c70f4c36c7f74256c311f96e402c7f591d276a9401f9718788ec5a"
+          },
+          {
+            "path": "web/src/shared/hooks/useHighScore.ts",
+            "sha256": "2641d6bc96391da9034c3f61114a5e2323e0bd368662d43865cda55326dd3391"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "790357458ac712b9c75fe13b0c17361d49d19ef32102245fbdf03d3c1bf8ea35"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "95c61dc78c49027ba037d6ae5452d40d8f44893c048b36d1adad9cf221aaaffa"
+          },
+          {
+            "path": "docs/web-gravityball-acceptance-20261013.md",
+            "sha256": "3c030596c9a5342025daafeb8ceb8624962eac44c9be757e686a735caa03338e"
+          },
+          {
+            "path": "docs/web-legacy-acceptance-20261013.md",
+            "sha256": "f48ec87470993b124cf4b3ebe363b86c97221a1accdff875346d6f798a778ace"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "11ebd1097b77cf46247935a0adffbe99c127746c592393d6b93628909c821709"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "697549f91ed5debec6a97882bf9cf374a211e6ff94545a3380171719bb1af789"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "177c2048ad53cc6df014b67aa95e54fef4739fb67a533829687bf71a3c915d2d"
+          },
+          {
+            "path": "docs/images/gravityball-20261013-1280.png",
+            "sha256": "606d347089aae183b93df3cfae8d3ed5405c3b965ee051a2d04157f125805ed7"
+          },
+          {
+            "path": "docs/images/gravityball-20261013-390.png",
+            "sha256": "1a689c76782d017d7821107b5d9ba38ca1aca0b01378c9c0ec1f4af876b233bd"
+          },
+          {
+            "path": "docs/images/gravityball-save-failure-20261013-390.png",
+            "sha256": "30f0b48cf0093e3e663eb9bac42dfc4e024acbe1d3c84b669b41c328463aa751"
+          },
+          {
+            "path": "business/unity/evidence/gravityball-acceptance-20261013-1900.json",
+            "sha256": "d4496a2e78af4abb5cf8c023817649ee8a248cddc021ee1b1768b93a7296a6a7"
+          }
+        ],
+        "checks": [
+          "5stage pointer automation without gameplay state mutation",
+          "stage5 loss/Enter retry",
+          "production highscore10458 reload",
+          "390 stage1 keyboard/pointer",
+          "test-only save denial/NaN/reset",
+          "TS ESLint Vite 5SSG 4routes 36checksums 19GUID navigationSSR 8guides Ice20 business27",
+          "initial checkpoint28 parent4 recovery8"
+        ],
+        "next_step": "T-web-legacy-mobile-input-acceptance: measure Ice Slide mobile controls first",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "0c1bac14bdadd5d5be5352e381a24d331ae94ebd4d17270b5ba654ecfccf02c4",
+      "sha256": "d724b58f34873a3e3865a29a78d4107d784c9b6acb50d45fa13c22d8f8403137"
+    },
+    {
+      "revision": 146,
+      "at": 1791886470.2521696,
+      "action": "decision",
+      "data": {
+        "id": "D-web-quality-20261013-1900",
+        "source": "business/unity/evidence/gravityball-acceptance-20261013-1900.json",
+        "hypothesis": "Observed defects justify improve; technical checks do not establish demand; metrics null and 14/28-day business unobserved",
+        "next_step": "T-web-legacy-mobile-input-acceptance: measure Ice Slide mobile controls first"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "d724b58f34873a3e3865a29a78d4107d784c9b6acb50d45fa13c22d8f8403137",
+      "sha256": "d0ccecfd50182f6d1c9f2f0e99f9e0dc90ba68da7a1512673881484b073fc441"
+    },
+    {
+      "revision": 147,
+      "at": 1791886470.2708256,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261013T1900-mobile-a9513c",
+        "source": "continuation:original-19slot:deadline-19:30"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "d0ccecfd50182f6d1c9f2f0e99f9e0dc90ba68da7a1512673881484b073fc441",
+      "sha256": "01f623a9d704f867512b636a754c056dbaf4060a27576d72f8ee9ce01394f5c5"
+    },
+    {
+      "revision": 148,
+      "at": 1791886470.2893307,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261013T1900-mobile-a9513c",
+        "task_id": "T-web-legacy-mobile-input-acceptance",
+        "ttl_seconds": 800
+      },
+      "result": {
+        "run_id": "unity-20261013T1900-mobile-a9513c",
+        "task_id": "T-web-legacy-mobile-input-acceptance",
+        "fence": 23,
+        "expires_at": 1791887270.2893307
+      },
+      "previous": "01f623a9d704f867512b636a754c056dbaf4060a27576d72f8ee9ce01394f5c5",
+      "sha256": "8890a7c55b24184a621f493208c21c6a9d8ede44d65197cb76ee887c1e58aff6"
+    },
+    {
+      "revision": 149,
+      "at": 1791886922.8931122,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261013T1900-mobile-a9513c",
+        "fence": 23,
+        "artifacts": [
+          {
+            "path": "web/games/iceslide/src/App.tsx",
+            "sha256": "b73bc1923bc6aeb25ae5b8a53fbfd405f750f6e3741c86c94531e150db1f7078"
+          },
+          {
+            "path": "web/games/iceslide/src/App.css",
+            "sha256": "e086163491bf14027a71b676a62820231b00cd6192455d32c09e31825971e041"
+          },
+          {
+            "path": "web/games/iceslide/src/components/GameView.tsx",
+            "sha256": "f3d3e13fc0bccc2ca3760356fa3db184d559d13d4bb112794f83d3a5bd4f8d9f"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "b096cd9523ea59256a7a8df6b50f11f6c0ae63d571d2edc1af7fb6de2465d7be"
+          },
+          {
+            "path": "web/games/gravityball/src/stages.ts",
+            "sha256": "b56886f693c70f4c36c7f74256c311f96e402c7f591d276a9401f9718788ec5a"
+          },
+          {
+            "path": "web/src/shared/hooks/useHighScore.ts",
+            "sha256": "2641d6bc96391da9034c3f61114a5e2323e0bd368662d43865cda55326dd3391"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "790357458ac712b9c75fe13b0c17361d49d19ef32102245fbdf03d3c1bf8ea35"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "95c61dc78c49027ba037d6ae5452d40d8f44893c048b36d1adad9cf221aaaffa"
+          },
+          {
+            "path": "docs/web-ice-mobile-20261013.md",
+            "sha256": "e0543be2befb9efcf9c5e18e382c22edd9804a0aea076155a055689c8c3240c8"
+          },
+          {
+            "path": "docs/web-gravityball-acceptance-20261013.md",
+            "sha256": "3c030596c9a5342025daafeb8ceb8624962eac44c9be757e686a735caa03338e"
+          },
+          {
+            "path": "docs/web-legacy-acceptance-20261013.md",
+            "sha256": "f48ec87470993b124cf4b3ebe363b86c97221a1accdff875346d6f798a778ace"
+          },
+          {
+            "path": "business/unity/evidence/gravityball-acceptance-20261013-1900.json",
+            "sha256": "d4496a2e78af4abb5cf8c023817649ee8a248cddc021ee1b1768b93a7296a6a7"
+          },
+          {
+            "path": "business/unity/evidence/ice-mobile-targets-20261013-1900.json",
+            "sha256": "5b1facb8f9ef7733887fe29109fd328e62b20544dac33a448b14d360f265951a"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "21c3508a708d397e925417cb34398d6d46205e395bb35e873915628223da0836"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "8826c6faea7e29c94896ce4d5d8a45b4c66d39ba93428b61c5b440941d76fcbe"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "a1c1c7e94d1a9df8eea2087a785cbd34fa96d8563d33daba7209942ebcfd38d8"
+          },
+          {
+            "path": "docs/images/gravityball-20261013-1280.png",
+            "sha256": "606d347089aae183b93df3cfae8d3ed5405c3b965ee051a2d04157f125805ed7"
+          },
+          {
+            "path": "docs/images/gravityball-20261013-390.png",
+            "sha256": "1a689c76782d017d7821107b5d9ba38ca1aca0b01378c9c0ec1f4af876b233bd"
+          },
+          {
+            "path": "docs/images/gravityball-save-failure-20261013-390.png",
+            "sha256": "30f0b48cf0093e3e663eb9bac42dfc4e024acbe1d3c84b669b41c328463aa751"
+          },
+          {
+            "path": "docs/images/iceslide-mobile-20261013-390.png",
+            "sha256": "0ffaee8c0a6b082ca887a639abceacb15859d90301a76b6cc1b38adc1223ebcc"
+          },
+          {
+            "path": "docs/images/iceslide-mobile-20261013-1280.png",
+            "sha256": "b0c1223f92a39c5e7626d29f746e55567d53f337b642d4969dbb490f81f6996e"
+          },
+          {
+            "path": "business/unity/evidence/ice-mobile-acceptance-20261013-1900.json",
+            "sha256": "3dbdc10689df511ba758fb87f4963aa15fc71a40144ba5245bfd2ec4085c7902"
+          }
+        ],
+        "checks": [
+          "Ice Slide 390/1280 40 stage layouts >=24px, minheight28.6559",
+          "Enter ArrowDown CtrlZ R retry/result/select focus; 3px outline",
+          "Layout fixture restored to actual test clear1/2 progress before reload",
+          "TS ESLint Vite 5SSG 4legacy 36checksums 19GUID navigationSSR 8guides Ice20 Gravity regression Business27",
+          "protected file hashes and original141 event prefix preserved"
+        ],
+        "next_step": "Same mobile task: MineRush board/flag targets and equivalent keyboard controls"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "8890a7c55b24184a621f493208c21c6a9d8ede44d65197cb76ee887c1e58aff6",
+      "sha256": "55226cb55d7c57c7be9f026cc1ec94b6c85f7669487979de076553dd63955876"
+    },
+    {
+      "revision": 150,
+      "at": 1791886922.9166641,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261013T1900-mobile-a9513c",
+        "fence": 23,
+        "artifacts": [
+          {
+            "path": "web/games/iceslide/src/App.tsx",
+            "sha256": "b73bc1923bc6aeb25ae5b8a53fbfd405f750f6e3741c86c94531e150db1f7078"
+          },
+          {
+            "path": "web/games/iceslide/src/App.css",
+            "sha256": "e086163491bf14027a71b676a62820231b00cd6192455d32c09e31825971e041"
+          },
+          {
+            "path": "web/games/iceslide/src/components/GameView.tsx",
+            "sha256": "f3d3e13fc0bccc2ca3760356fa3db184d559d13d4bb112794f83d3a5bd4f8d9f"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "b096cd9523ea59256a7a8df6b50f11f6c0ae63d571d2edc1af7fb6de2465d7be"
+          },
+          {
+            "path": "web/games/gravityball/src/stages.ts",
+            "sha256": "b56886f693c70f4c36c7f74256c311f96e402c7f591d276a9401f9718788ec5a"
+          },
+          {
+            "path": "web/src/shared/hooks/useHighScore.ts",
+            "sha256": "2641d6bc96391da9034c3f61114a5e2323e0bd368662d43865cda55326dd3391"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "790357458ac712b9c75fe13b0c17361d49d19ef32102245fbdf03d3c1bf8ea35"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "95c61dc78c49027ba037d6ae5452d40d8f44893c048b36d1adad9cf221aaaffa"
+          },
+          {
+            "path": "docs/web-ice-mobile-20261013.md",
+            "sha256": "e0543be2befb9efcf9c5e18e382c22edd9804a0aea076155a055689c8c3240c8"
+          },
+          {
+            "path": "docs/web-gravityball-acceptance-20261013.md",
+            "sha256": "3c030596c9a5342025daafeb8ceb8624962eac44c9be757e686a735caa03338e"
+          },
+          {
+            "path": "docs/web-legacy-acceptance-20261013.md",
+            "sha256": "f48ec87470993b124cf4b3ebe363b86c97221a1accdff875346d6f798a778ace"
+          },
+          {
+            "path": "business/unity/evidence/gravityball-acceptance-20261013-1900.json",
+            "sha256": "d4496a2e78af4abb5cf8c023817649ee8a248cddc021ee1b1768b93a7296a6a7"
+          },
+          {
+            "path": "business/unity/evidence/ice-mobile-targets-20261013-1900.json",
+            "sha256": "5b1facb8f9ef7733887fe29109fd328e62b20544dac33a448b14d360f265951a"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "21c3508a708d397e925417cb34398d6d46205e395bb35e873915628223da0836"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "8826c6faea7e29c94896ce4d5d8a45b4c66d39ba93428b61c5b440941d76fcbe"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "a1c1c7e94d1a9df8eea2087a785cbd34fa96d8563d33daba7209942ebcfd38d8"
+          },
+          {
+            "path": "docs/images/gravityball-20261013-1280.png",
+            "sha256": "606d347089aae183b93df3cfae8d3ed5405c3b965ee051a2d04157f125805ed7"
+          },
+          {
+            "path": "docs/images/gravityball-20261013-390.png",
+            "sha256": "1a689c76782d017d7821107b5d9ba38ca1aca0b01378c9c0ec1f4af876b233bd"
+          },
+          {
+            "path": "docs/images/gravityball-save-failure-20261013-390.png",
+            "sha256": "30f0b48cf0093e3e663eb9bac42dfc4e024acbe1d3c84b669b41c328463aa751"
+          },
+          {
+            "path": "docs/images/iceslide-mobile-20261013-390.png",
+            "sha256": "0ffaee8c0a6b082ca887a639abceacb15859d90301a76b6cc1b38adc1223ebcc"
+          },
+          {
+            "path": "docs/images/iceslide-mobile-20261013-1280.png",
+            "sha256": "b0c1223f92a39c5e7626d29f746e55567d53f337b642d4969dbb490f81f6996e"
+          },
+          {
+            "path": "business/unity/evidence/ice-mobile-acceptance-20261013-1900.json",
+            "sha256": "3dbdc10689df511ba758fb87f4963aa15fc71a40144ba5245bfd2ec4085c7902"
+          }
+        ],
+        "checks": [
+          "Ice Slide 390/1280 40 stage layouts >=24px, minheight28.6559",
+          "Enter ArrowDown CtrlZ R retry/result/select focus; 3px outline",
+          "Layout fixture restored to actual test clear1/2 progress before reload",
+          "TS ESLint Vite 5SSG 4legacy 36checksums 19GUID navigationSSR 8guides Ice20 Gravity regression Business27",
+          "protected file hashes and original141 event prefix preserved"
+        ],
+        "next_step": "Same mobile task: MineRush board/flag targets and equivalent keyboard controls"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "55226cb55d7c57c7be9f026cc1ec94b6c85f7669487979de076553dd63955876",
+      "sha256": "5664540d81ab1c3638fab52108aa78d675c911ee7fa29d09c4f8f5062cc0be1b"
     }
   ],
-  "projection_sha256": "b3535588281c7c6dba3c779f1a2238082166fe5ec543b060775e85a4d8da557c"
+  "projection_sha256": "7aba8b7debe5193a240377af00dce6411421a18903d7023c14fd580d284fc03f"
 }

@@ -1,0 +1,488 @@
+{
+  "runId": "unity-20261013T1900-mobile-a9513c",
+  "fence": 23,
+  "layoutFixtureOnly": true,
+  "physicalTouch": false,
+  "measurements": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ1の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 1: はじめの一歩"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ2の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 2: 曲がり角"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ3の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 3: 回り道"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ4の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 4: 迷路の入口"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ5の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 5: 壁を使え"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ6の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 6: ジグザグ"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ7の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 7: 中央突破"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ8の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 8: 螺旋"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ9の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 9: 交差点"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ10の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 10: 難関"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ11の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 11: 氷の城"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ12の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 12: 滑走路"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ13の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 13: 障害物"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ14の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 14: くねくね"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ15の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 15: 氷山"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ16の盤面",
+      "inside": true,
+      "minHeight": 28.65594482421875,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 16: 迷宮入口"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ17の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 17: 氷の道"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ18の盤面",
+      "inside": true,
+      "minHeight": 28.65594482421875,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 18: 回転"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ19の盤面",
+      "inside": true,
+      "minHeight": 28.65594482421875,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 19: 分岐"
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focus": "ステージ20の盤面",
+      "inside": true,
+      "minHeight": 28.656005859375,
+      "minWidth": 33.43199157714844,
+      "overflow": false,
+      "stage": "Stage 20: 決戦"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ1の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 1: はじめの一歩"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ2の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 2: 曲がり角"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ3の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 3: 回り道"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ4の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 4: 迷路の入口"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ5の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 5: 壁を使え"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ6の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 6: ジグザグ"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ7の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 7: 中央突破"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ8の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 8: 螺旋"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ9の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 9: 交差点"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ10の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 10: 難関"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ11の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 11: 氷の城"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ12の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 12: 滑走路"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ13の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 13: 障害物"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ14の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 14: くねくね"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ15の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 15: 氷山"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ16の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 16: 迷宮入口"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ17の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 17: 氷の道"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ18の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 18: 回転"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ19の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 19: 分岐"
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "focus": "ステージ20の盤面",
+      "inside": true,
+      "minHeight": 48,
+      "minWidth": 56,
+      "overflow": false,
+      "stage": "Stage 20: 決戦"
+    }
+  ]
+}

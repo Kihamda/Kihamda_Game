@@ -45,3 +45,7 @@ Web配布準備はdocs/web-release-package-20261013.md。manifestとsiteのみ�
 
 2026-10-13の本人の最新指示によりPRは日本時間で原則1日1件程度とし、同じ日次ブランチ/既存PRへ実装・依存更新・検査・台帳・完了記録をまとめる。当日のPRがマージ済みならローカルcommitで保存し翌日分へまとめる。記録だけの追送PRを作らない。2026-10-13は追加PRを作らない。
 現在の次工程は同じT-web-legacy-browser-acceptanceのGravityBallの全ステージ・失敗再開・最高スコア保存。Ice Slide/MineRush/n目並べの検査範囲と未確認事項はdocs/web-legacy-acceptance-20261013.md。全体完了後にT-web-legacy-mobile-input-acceptanceを行い、枠内配置と物理タッチの操作性を区別する。
+
+2026-10-13の19時枠でGravityBallの基本検査を追加しT-web-legacy-browser-acceptanceを完了。検査範囲と注入の区別はdocs/web-gravityball-acceptance-20261013.md。次はT-web-legacy-mobile-input-acceptanceでIce Slideから操作部を実測する。実タッチ・Safari・傾き・人間評価を完了扱いにしない。
+
+Ice Slideのモバイル操作部はdocs/web-ice-mobile-20261013.mdで24px以上と盤面/操作部の枠内配置を確認した。現在の次工程は同じT-web-legacy-mobile-input-acceptanceのMineRush盤面・旗操作・キーボード代替。実タッチ・Safari・人間評価は別に未確認として残す。

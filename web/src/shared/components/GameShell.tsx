@@ -20,6 +20,7 @@ interface Props {
   layout?: "default" | "immersive";
   /** 作品固有の操作と保存条件 */
   controlHints?: string[];
+  statusMessage?: string;
 }
 
 function buildControlHints(tags: string[] | undefined): string[] {
@@ -54,6 +55,7 @@ export function GameShell({
   minScale = 0.3,
   layout = "default",
   controlHints: providedControlHints,
+  statusMessage,
 }: Props) {
   const frameRef = useRef<HTMLDivElement>(null);
   const scaledContentRef = useRef<HTMLDivElement>(null);
@@ -164,6 +166,8 @@ export function GameShell({
                 ))}
               </ul>
             </section>
+
+            {statusMessage && <p role="status">{statusMessage}</p>}
 
             <div className="game-shell-actions">
               <a href={portalUrl} className="game-shell-link-button">

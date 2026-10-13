@@ -117,6 +117,9 @@ export function GameView({
       <div
         ref={containerRef}
         className="is-board-container"
+        tabIndex={-1}
+        role="group"
+        aria-label={`ステージ${stage.id}の盤面`}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -175,6 +178,7 @@ export function GameView({
       <div className="is-direction-buttons">
         <button
           className="is-dir-btn is-dir-btn--up"
+          aria-label="上へ移動"
           onClick={() => onMove("up")}
         >
           ▲
@@ -182,18 +186,21 @@ export function GameView({
         <div className="is-dir-row">
           <button
             className="is-dir-btn is-dir-btn--left"
+            aria-label="左へ移動"
             onClick={() => onMove("left")}
           >
             ◀
           </button>
           <button
             className="is-dir-btn is-dir-btn--down"
+            aria-label="下へ移動"
             onClick={() => onMove("down")}
           >
             ▼
           </button>
           <button
             className="is-dir-btn is-dir-btn--right"
+            aria-label="右へ移動"
             onClick={() => onMove("right")}
           >
             ▶

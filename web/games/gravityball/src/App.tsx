@@ -5,6 +5,8 @@ import type { PopupVariant } from "@shared";
 import { ParticleLayer } from "@shared";
 
 import "./App.css";
+import { STAGES } from "./stages";
+import type { Vector, Obstacle } from "./stages";
 
 // ゲーム定数
 const CANVAS_WIDTH = 500;
@@ -23,7 +25,7 @@ const PERFECT_STAGE_THRESHOLD = 3; // 3秒以内でクリア
 const PERFECT_BONUS = 500;
 const SCORE_MILESTONES = [1000, 2500, 5000, 10000, 20000];
 
-type GamePhase = "start" | "playing" | "cleared" | "gameover";
+type GamePhase = "start" | "playing" | "transition" | "cleared" | "gameover";
 
 interface PopupState {
   text: string | null;
@@ -33,83 +35,6 @@ interface PopupState {
   y?: string;
   size?: "sm" | "md" | "lg" | "xl";
 }
-
-interface Vector {
-  x: number;
-  y: number;
-}
-
-interface Obstacle {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  type: "wall" | "spike";
-}
-
-interface Stage {
-  ball: Vector;
-  goal: Vector;
-  obstacles: Obstacle[];
-}
-
-// ステージデータ
-const STAGES: Stage[] = [
-  // Stage 1: 簡単な導入
-  {
-    ball: { x: 80, y: 100 },
-    goal: { x: 420, y: 500 },
-    obstacles: [
-      { x: 150, y: 250, width: 200, height: 20, type: "wall" },
-    ],
-  },
-  // Stage 2: 障害物を避ける
-  {
-    ball: { x: 250, y: 80 },
-    goal: { x: 250, y: 520 },
-    obstacles: [
-      { x: 0, y: 200, width: 200, height: 20, type: "wall" },
-      { x: 300, y: 200, width: 200, height: 20, type: "wall" },
-      { x: 100, y: 350, width: 300, height: 20, type: "wall" },
-    ],
-  },
-  // Stage 3: スパイク登場
-  {
-    ball: { x: 60, y: 540 },
-    goal: { x: 440, y: 540 },
-    obstacles: [
-      { x: 150, y: 400, width: 200, height: 20, type: "wall" },
-      { x: 200, y: 500, width: 100, height: 20, type: "spike" },
-    ],
-  },
-  // Stage 4: 迷路風
-  {
-    ball: { x: 60, y: 60 },
-    goal: { x: 440, y: 540 },
-    obstacles: [
-      { x: 100, y: 0, width: 20, height: 180, type: "wall" },
-      { x: 100, y: 180, width: 300, height: 20, type: "wall" },
-      { x: 380, y: 180, width: 20, height: 200, type: "wall" },
-      { x: 100, y: 380, width: 300, height: 20, type: "wall" },
-      { x: 100, y: 380, width: 20, height: 220, type: "wall" },
-      { x: 200, y: 280, width: 80, height: 20, type: "spike" },
-    ],
-  },
-  // Stage 5: 最終ステージ
-  {
-    ball: { x: 250, y: 50 },
-    goal: { x: 250, y: 550 },
-    obstacles: [
-      { x: 0, y: 120, width: 180, height: 20, type: "wall" },
-      { x: 320, y: 120, width: 180, height: 20, type: "wall" },
-      { x: 200, y: 200, width: 100, height: 20, type: "spike" },
-      { x: 100, y: 300, width: 300, height: 20, type: "wall" },
-      { x: 0, y: 400, width: 150, height: 20, type: "wall" },
-      { x: 350, y: 400, width: 150, height: 20, type: "wall" },
-      { x: 180, y: 480, width: 140, height: 20, type: "spike" },
-    ],
-  },
-];
 
 interface GameState {
   phase: GamePhase;
@@ -144,6 +69,11 @@ export default function App() {
   const gameStateRef = useRef<GameState>(createInitialState());
   const animationFrameRef = useRef<number>(0);
   const mousePositionRef = useRef<Vector | null>(null);
+  const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (transitionTimerRef.current !== null) clearTimeout(transitionTimerRef.current);
+  }, []);
 
   const [, setTick] = useState(0);
   
@@ -152,7 +82,7 @@ export default function App() {
   const popupQueueRef = useRef<PopupState[]>([]);
   
   // High score
-  const { best: highScore, update: updateHighScore } = useHighScore("gravityball");
+  const { best: highScore, update: updateHighScore, saveError } = useHighScore("gravityball");
   
   // Dopamine hooks
   const { particles, sparkle, confetti, explosion } = useParticles();
@@ -227,31 +157,22 @@ export default function App() {
     }
   }, []);
 
-  // デバイス傾きによる重力変更
-  useEffect(() => {
-    const handleOrientation = (e: DeviceOrientationEvent) => {
-      const gamma = e.gamma ?? 0; // 左右傾き (-90 to 90)
-      const beta = e.beta ?? 0;   // 前後傾き (-180 to 180)
-
-      // 傾きを正規化して重力に変換
-      const gx = Math.max(-1, Math.min(1, gamma / 45)) * GRAVITY_STRENGTH;
-      const gy = Math.max(-1, Math.min(1, (beta - 45) / 45)) * GRAVITY_STRENGTH;
-
-      gameStateRef.current.gravity = { x: gx, y: gy };
-    };
-
-    // デバイスオリエンテーションをリクエスト（iOS対応）
-    if (typeof DeviceOrientationEvent !== "undefined" && 
-        "requestPermission" in DeviceOrientationEvent) {
-      // iOS 13+: ユーザーアクションで許可を求める
-    } else {
-      window.addEventListener("deviceorientation", handleOrientation);
-    }
-
-    return () => {
-      window.removeEventListener("deviceorientation", handleOrientation);
+  // 同じ関数を登録・解除し、許可を繰り返しても重複させない。
+  const handleOrientation = useCallback((event: DeviceOrientationEvent) => {
+    if (event.gamma === null || event.beta === null) return;
+    gameStateRef.current.gravity = {
+      x: Math.max(-1, Math.min(1, event.gamma / 45)) * GRAVITY_STRENGTH,
+      y: Math.max(-1, Math.min(1, (event.beta - 45) / 45)) * GRAVITY_STRENGTH,
     };
   }, []);
+
+  useEffect(() => {
+    if (typeof DeviceOrientationEvent !== "undefined" &&
+        !("requestPermission" in DeviceOrientationEvent)) {
+      window.addEventListener("deviceorientation", handleOrientation);
+    }
+    return () => window.removeEventListener("deviceorientation", handleOrientation);
+  }, [handleOrientation]);
 
   // ゲーム開始
   const startGame = useCallback(() => {
@@ -320,7 +241,9 @@ export default function App() {
 
   // 次のステージへ
   const nextStage = useCallback(() => {
+    transitionTimerRef.current = null;
     const state = gameStateRef.current;
+    if (state.phase !== "transition") return;
     const currentScore = state.score;
     const currentMilestone = state.lastMilestoneIndex;
     const currentPerfect = state.perfectStages;
@@ -352,6 +275,8 @@ export default function App() {
 
   // リスタート
   const restartGame = useCallback(() => {
+    if (transitionTimerRef.current !== null) clearTimeout(transitionTimerRef.current);
+    transitionTimerRef.current = null;
     gameStateRef.current = createInitialState(0);
     popupQueueRef.current = [];
     setPopup({ text: null, key: 0, variant: "default" });
@@ -553,13 +478,14 @@ export default function App() {
         const dx = state.ballPos.x - stage.goal.x;
         const dy = state.ballPos.y - stage.goal.y;
         const distToGoal = Math.sqrt(dx * dx + dy * dy);
-        if (distToGoal < GOAL_RADIUS + BALL_RADIUS) {
+        if (state.phase === "playing" && distToGoal < GOAL_RADIUS + BALL_RADIUS) {
           // Calculate clear time and score
           const clearTimeSeconds = (Date.now() - state.stageStartTime) / 1000;
           calculateStageScore(state.stageIndex, clearTimeSeconds);
           
           if (state.stageIndex + 1 >= STAGES.length) {
             state.phase = "cleared";
+            updateHighScore(state.score);
             playClearRef.current();
             confettiRef.current();
             // Check for all clear achievements
@@ -572,8 +498,8 @@ export default function App() {
             // 次ステージへの遷移をスケジュール
             playGoalRef.current();
             sparkleRef.current(stage.goal.x, stage.goal.y);
-            setTimeout(() => nextStage(), 1500);
-            state.phase = "start"; // 一時停止
+            state.phase = "transition";
+            transitionTimerRef.current = setTimeout(() => nextStage(), 1500);
           }
           setTick((t) => t + 1);
         }
@@ -590,7 +516,14 @@ export default function App() {
         ctx.fillText(`Stage ${state.stageIndex + 1}`, centerX, centerY - 50);
         ctx.font = "18px sans-serif";
         ctx.fillText("タップ/クリックでスタート", centerX, centerY + 10);
-        ctx.fillText("マウス or 傾きで重力操作", centerX, centerY + 40);
+        ctx.fillText("マウス移動 / 指のドラッグで重力操作", centerX, centerY + 40);
+      }
+
+      if (state.phase === "transition") {
+        ctx.fillStyle = "#fff";
+        ctx.font = "bold 24px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("次のステージへ…", centerX, centerY);
       }
 
       // ゲームオーバー画面
@@ -637,7 +570,7 @@ export default function App() {
     return () => {
       cancelAnimationFrame(animationFrameRef.current);
     };
-  }, [calculateStageScore, highScore, nextStage, showPopup]);
+  }, [calculateStageScore, highScore, nextStage, showPopup, updateHighScore]);
 
   // クリックハンドラー
   const handleClick = useCallback(() => {
@@ -680,28 +613,30 @@ export default function App() {
           }
         ).requestPermission();
         if (permission === "granted") {
-          window.addEventListener("deviceorientation", (e) => {
-            const gamma = e.gamma ?? 0;
-            const beta = e.beta ?? 0;
-            const gx =
-              Math.max(-1, Math.min(1, gamma / 45)) * GRAVITY_STRENGTH;
-            const gy =
-              Math.max(-1, Math.min(1, (beta - 45) / 45)) * GRAVITY_STRENGTH;
-            gameStateRef.current.gravity = { x: gx, y: gy };
-          });
+          window.addEventListener("deviceorientation", handleOrientation);
         }
       } catch {
         // 許可されなかった
       }
     }
     handleClick();
-  }, [handleClick]);
+  }, [handleClick, handleOrientation]);
 
   return (
-    <GameShell gameId="gravityball" layout="default">
+    <GameShell gameId="gravityball" layout="default" controlHints={["クリック・タップで開始。マウス移動・指のドラッグで重力方向を変更", "赤い障害物で失敗。同じステージから再挑戦", "全5ステージ完了時の最高スコアだけをこのブラウザに保存。途中経過は保存しません"]}
+      statusMessage={saveError ? "最高スコアを保存できませんでした。再読み込みすると今回の記録は失われます。" : undefined}>
       <div
         ref={containerRef}
         className="gravityball-container"
+        role="button"
+        tabIndex={0}
+        aria-label="重力ボールを開始・再挑戦"
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            handleClick();
+          }
+        }}
         style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}
         onClick={requestOrientationPermission}
         onMouseMove={handleMouseMove}

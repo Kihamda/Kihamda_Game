@@ -69,3 +69,10 @@ scripts/check-iceslide.mjs text eol=lf
 docs/web-legacy-acceptance-20261013.md text eol=lf
 
 .gitattributes text eol=lf
+
+# GravityBall acceptance receipts retain source bytes.
+web/games/gravityball/src/** text eol=lf
+web/src/shared/hooks/useHighScore.ts text eol=lf
+scripts/check-gravityball.mjs text eol=lf
+docs/web-gravityball-acceptance-20261013.md text eol=lf
+docs/web-ice-mobile-20261013.md text eol=lf
