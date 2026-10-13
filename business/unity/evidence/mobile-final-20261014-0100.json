@@ -8,7 +8,8 @@
     "nTic turn reset/new-game waits >1.5sec retained Player1 empty board; headless turn/win/unmount regression passed",
     "Shared scale production390 Ice stage1 min28.608/frame/2move clear; Gravity canvas269.5x323.4/frame/Enter start",
     "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed",
-    "LF checkout normalization corrected before publication; final checkpoint supersedes earlier source byte receipts"
+    "LF checkout normalization corrected before publication; final checkpoint supersedes earlier source byte receipts",
+    "Current static build output: 35 checksummed files; historical 36-file and final yield count corrected here"
   ],
   "artifacts": [
     {
