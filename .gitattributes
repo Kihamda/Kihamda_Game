@@ -57,3 +57,15 @@ business/blog/drafts/2026-10-13-web-package-restoration.md text eol=lf
 docs/web-dependency-quality-20261013.md text eol=lf
 web/package-lock.json text eol=lf
 docs/web-current-retention-20261013.md text eol=lf
+
+# Browser acceptance receipts use identical source bytes across platforms.
+web/games/iceslide/src/** text eol=lf
+web/games/minerush/src/App.tsx text eol=lf
+web/games/ntiktaktoe/src/** text eol=lf
+web/src/shared/components/GameShell.tsx text eol=lf
+web/src/shared/components/GameShell.css text eol=lf
+web/src/portal/data/games.json text eol=lf
+scripts/check-iceslide.mjs text eol=lf
+docs/web-legacy-acceptance-20261013.md text eol=lf
+
+.gitattributes text eol=lf

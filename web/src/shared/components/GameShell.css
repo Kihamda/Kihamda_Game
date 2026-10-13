@@ -141,7 +141,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  transform-origin: top left;
+  transform-origin: center center;
   will-change: transform;
 }
 

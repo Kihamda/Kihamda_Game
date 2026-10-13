@@ -43,8 +43,8 @@ function parseStage(id: number, name: string, par: number, map: string[]): Stage
 }
 
 export const STAGES: Stage[] = [
-  // Stage 1: 超簡単 - 直進
-  parseStage(1, "はじめの一歩", 1, [
+  // Stage 1: 超簡単 - 2手
+  parseStage(1, "はじめの一歩", 2, [
     "WWWWW",
     "WP  W",
     "W  GW",
@@ -58,8 +58,8 @@ export const STAGES: Stage[] = [
     "W   GW",
     "WWWWWW",
   ]),
-  // Stage 3: 3手
-  parseStage(3, "回り道", 3, [
+  // Stage 3: 5手
+  parseStage(3, "回り道", 5, [
     "WWWWWWW",
     "WP    W",
     "WWW W W",
@@ -111,7 +111,7 @@ export const STAGES: Stage[] = [
   parseStage(8, "螺旋", 6, [
     "WWWWWWWW",
     "WP     W",
-    "W WWWW W",
+    "W WWWWWW",
     "W W    W",
     "W W WW W",
     "W W  G W",
@@ -153,7 +153,7 @@ export const STAGES: Stage[] = [
     "WWWWWWWW",
   ]),
   // Stage 12
-  parseStage(12, "滑走路", 4, [
+  parseStage(12, "滑走路", 5, [
     "WWWWWWWWW",
     "WP      W",
     "WWWWWWW W",
@@ -167,7 +167,7 @@ export const STAGES: Stage[] = [
     "WWWWWWWW",
     "W P    W",
     "W W W WW",
-    "W   W  W",
+    "W  WW  W",
     "WW W   W",
     "W    W W",
     "W  G   W",
@@ -191,7 +191,7 @@ export const STAGES: Stage[] = [
     "W  P  W",
     "W WWW W",
     "W W W W",
-    "W     W",
+    "W W   W",
     "WWW WWW",
     "W  G  W",
     "WWWWWWW",

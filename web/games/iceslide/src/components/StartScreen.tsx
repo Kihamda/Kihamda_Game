@@ -27,6 +27,7 @@ export function StartScreen({ onStart, onStageSelect, clearedCount, totalStages 
       </div>
       <div className="is-controls-hint">
         <p>操作: 矢印キー or WASD or スワイプ</p>
+        <p>クリア情報はこのブラウザに保存します。<br />途中の盤面は保存しません。</p>
       </div>
     </div>
   );

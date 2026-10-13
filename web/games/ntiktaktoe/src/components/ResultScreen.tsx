@@ -6,7 +6,7 @@ interface ResultScreenProps {
 }
 
 const ResultScreen = ({ winner, onReset }: ResultScreenProps) => (
-  <div className="result">
+  <div className="result ntiktaktoe-result">
     <h1>ゲーム終了</h1>
     {winner ? (
       <h2>{winner} の勝利</h2>

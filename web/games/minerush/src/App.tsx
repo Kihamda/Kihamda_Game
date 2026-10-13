@@ -193,7 +193,7 @@ export default function App() {
   const remainingMines = game.mineCount - game.flaggedCount;
 
   return (
-    <GameShell gameId="minerush" layout="default">
+    <GameShell gameId="minerush" layout="default" controlHints={["クリック・Enterでマスを開く", "右クリック・長押しで旗を切り替える", "途中の盤面は保存しません。再読み込みで最初から始まります。"]}>
       <div className="minerush-container">
         <header className="minerush-header">
           <div className="minerush-info">

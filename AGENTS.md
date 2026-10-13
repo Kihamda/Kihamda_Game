@@ -41,3 +41,7 @@ Web配布準備はdocs/web-release-package-20261013.md。manifestとsiteのみ�
 2026-10-13のWeb依存関係更新後は全体/本番の監査指摘0件。結果はdocs/web-dependency-quality-20261013.md。次はT-web-release-retentionで現行CI成果物の版と復元元を保持し、更新前ZIPと区別する。本番サイト全体置換は行わない。
 
 現行Web配布準備版はartifacts/releases/web-20261013-qualityに保存し、索引はbusiness/unity/evidence/web-current-retention-20261013.json。通常の検査整理でartifacts/releasesを削除せず、別保存先と照合してから扱う。次はT-web-legacy-browser-acceptanceで既存4ルートのルール・入力・保存を一作ずつ検査する。
+
+
+2026-10-13の本人の最新指示によりPRは日本時間で原則1日1件程度とし、同じ日次ブランチ/既存PRへ実装・依存更新・検査・台帳・完了記録をまとめる。当日のPRがマージ済みならローカルcommitで保存し翌日分へまとめる。記録だけの追送PRを作らない。2026-10-13は追加PRを作らない。
+現在の次工程は同じT-web-legacy-browser-acceptanceのGravityBallの全ステージ・失敗再開・最高スコア保存。Ice Slide/MineRush/n目並べの検査範囲と未確認事項はdocs/web-legacy-acceptance-20261013.md。全体完了後にT-web-legacy-mobile-input-acceptanceを行い、枠内配置と物理タッチの操作性を区別する。

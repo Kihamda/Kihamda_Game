@@ -18,6 +18,8 @@ interface Props {
   minScale?: number;
   /** 枠内レイアウトモード */
   layout?: "default" | "immersive";
+  /** 作品固有の操作と保存条件 */
+  controlHints?: string[];
 }
 
 function buildControlHints(tags: string[] | undefined): string[] {
@@ -51,6 +53,7 @@ export function GameShell({
   gameId,
   minScale = 0.3,
   layout = "default",
+  controlHints: providedControlHints,
 }: Props) {
   const frameRef = useRef<HTMLDivElement>(null);
   const scaledContentRef = useRef<HTMLDivElement>(null);
@@ -60,7 +63,7 @@ export function GameShell({
   const resolvedTitle = title ?? metadata?.title ?? "Game";
   const resolvedDescription =
     description ?? metadata?.description ?? "ゲームを楽しんでいってね";
-  const controlHints = buildControlHints(metadata?.tags);
+  const controlHints = providedControlHints ?? buildControlHints(metadata?.tags);
 
   const handleBack = () => {
     if (window.history.length > 1) {
@@ -82,8 +85,9 @@ export function GameShell({
     let rafId = 0;
 
     const updateScale = () => {
-      const frameWidth = frameElement.clientWidth;
-      const frameHeight = frameElement.clientHeight;
+      const viewport = scaledContentElement.parentElement;
+      const frameWidth = viewport?.clientWidth ?? frameElement.clientWidth;
+      const frameHeight = viewport?.clientHeight ?? frameElement.clientHeight;
       const contentWidth = scaledContentElement.scrollWidth;
       const contentHeight = scaledContentElement.scrollHeight;
 

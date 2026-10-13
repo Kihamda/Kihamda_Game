@@ -136,14 +136,14 @@ function App() {
   useEffect(() => {
     if (appState === "before") return;
     const snapshot: PersistedState = {
-      appState,
+      appState: isWinAnimation || isDraw ? "after" : appState,
       gameSettings: currentGameSettings,
       board,
-      currentPlayerIndex,
-      winner,
+      currentPlayerIndex: nextPlayerIndex ?? currentPlayerIndex,
+      winner: isWinAnimation ? currentGameSettings.players[currentPlayerIndex]?.name ?? null : winner,
     };
     saveGameState(snapshot);
-  }, [appState, currentGameSettings, board, currentPlayerIndex, winner]);
+  }, [appState, currentGameSettings, board, currentPlayerIndex, winner, nextPlayerIndex, isWinAnimation, isDraw]);
 
   useEffect(() => {
     saveDevicePreferences({
@@ -173,7 +173,7 @@ function App() {
   };
 
   const handleCellClick = (row: number, col: number) => {
-    if (winner !== null || isTransitioning) return;
+    if (winner !== null || isTransitioning || isWinAnimation || isDraw) return;
 
     const resolvedMove = resolveMovePosition(
       board,
@@ -313,7 +313,7 @@ function App() {
       layout="immersive"
       minScale={0.34}
     >
-      <div className="app">
+      <div className="ntiktaktoe-root">
         {appState === "before" && (
           <StartScreen
             savedState={savedSnapshot}

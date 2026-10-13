@@ -48,6 +48,7 @@ jobs:
           node scripts/check-web-build.mjs
           node scripts/check-portal-navigation.mjs
           node scripts/check-portal-work-guides.mjs
+          node scripts/check-iceslide.mjs
       - name: Prepare and verify Web release package
         run: |
           node scripts/web-release-package.mjs create web/dist artifacts/web-release ${{ github.sha }}

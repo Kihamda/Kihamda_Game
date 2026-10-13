@@ -23,6 +23,7 @@ export default function App() {
   const [currentStageId, setCurrentStageId] = useState(1);
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [progress, setProgress] = useState<Progress>(loadProgress);
+  const [saveFailed, setSaveFailed] = useState(false);
   const [popupText, setPopupText] = useState<string | null>(null);
   const [popupKey, setPopupKey] = useState(0);
 
@@ -52,6 +53,7 @@ export default function App() {
     const stage = STAGES.find((s) => s.id === stageId) ?? STAGES[0];
     setCurrentStageId(stage.id);
     setGameState(createInitialState(stage));
+    setSaveFailed(false);
     setPhase("playing");
   }, []);
 
@@ -83,8 +85,9 @@ export default function App() {
 
         // クリア判定
         if (isCleared(currentStage, newState.player)) {
-          const newProgress = updateProgress(currentStage.id, newState.moves);
-          setProgress(newProgress);
+          const result = updateProgress(currentStage.id, newState.moves);
+          setProgress(result.progress);
+          setSaveFailed(!result.saved);
           playSuccess();
           confetti();
           // ScorePopup for stage clear
@@ -161,6 +164,7 @@ export default function App() {
             onRetry={() => startGame(currentStageId)}
             onStageSelect={goToStageSelect}
             hasNextStage={currentStageId < TOTAL_STAGES}
+            saveFailed={saveFailed}
           />
         )}
         <ScorePopup

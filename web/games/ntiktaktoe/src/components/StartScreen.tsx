@@ -79,12 +79,12 @@ const StartScreen = ({
   };
 
   return (
-    <div className="start-screen">
+    <div className="start-screen ntiktaktoe-settings">
       <h1 className="game-title">エクストリーム○×ゲーム</h1>
 
-      <div className="start-layout">
+      <div className="start-layout ntiktaktoe-settings-grid">
         <div className="left-column">
-          <div className="start-card resume-card">
+          <div className="ntiktaktoe-settings-section start-card resume-card">
             <h2>続行</h2>
             {hasSavedGame ? (
               <>
@@ -116,7 +116,7 @@ const StartScreen = ({
             )}
           </div>
 
-          <div className="start-card settings-card">
+          <div className="ntiktaktoe-settings-section start-card settings-card">
             <h2>設定</h2>
             <div className="settings-options">
               <div className="setting-row mode-row">
@@ -141,7 +141,7 @@ const StartScreen = ({
           </div>
         </div>
 
-        <div className="start-card new-game-card">
+        <div className="ntiktaktoe-settings-section start-card new-game-card">
           <h2>新規ゲーム</h2>
 
           <div className="new-game-section">

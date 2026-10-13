@@ -93,7 +93,7 @@ const GameView = ({
   };
 
   return (
-    <div className={`game${isWinAnimation ? " game--shake" : ""}`}>
+    <div className={`ntiktaktoe-game game${isWinAnimation ? " game--shake" : ""}`}>
       {/* Victory / Draw popup */}
       {victoryMessage && (
         <div className={`victory-popup${isDraw ? " victory-popup--draw" : ""}`}>
@@ -199,10 +199,12 @@ const GameView = ({
       </div>
 
       <div
-        className="board"
+        className="ntiktaktoe-board board"
         style={{
-          gridTemplateColumns: `repeat(${gameSettings.board.width}, 1fr)`,
-          gridTemplateRows: `repeat(${gameSettings.board.height}, 1fr)`,
+          width: Math.min(540, 480 * gameSettings.board.width / gameSettings.board.height),
+          height: Math.min(480, 540 * gameSettings.board.height / gameSettings.board.width),
+          gridTemplateColumns: `repeat(${gameSettings.board.width}, minmax(0, 1fr))`,
+          gridTemplateRows: `repeat(${gameSettings.board.height}, minmax(0, 1fr))`,
         }}
       >
         {board.map((row, rowIndex) =>
@@ -222,9 +224,12 @@ const GameView = ({
             const isWinCell = isWinningCell(rowIndex, colIndex);
 
             return (
-              <div
+              <button
+                type="button"
+                aria-label={`セル ${rowIndex + 1}-${colIndex + 1}${cell ? ` ${cell}` : ""}`}
+                disabled={cell !== null || isTransitioning || isWinAnimation || isDraw}
                 key={`${rowIndex}-${colIndex}`}
-                className={`cell ${cell ? "filled" : ""} ${
+                className={`ntiktaktoe-cell cell ${cell ? "filled" : ""} ${
                   isPending ? "pending" : ""
                 } ${isLastPlaced ? "cell--placed" : ""} ${isWinCell ? "cell--winning" : ""}`}
                 style={{
@@ -254,7 +259,7 @@ const GameView = ({
                     animKey={moveCount}
                   />
                 )}
-              </div>
+              </button>
             );
           }),
         )}

@@ -16,7 +16,7 @@
     {
       "id": "minerush",
       "title": "MineRush",
-      "description": "マインスイーパーをタイムアタック形式にリメイク。ステージが進むほど盤面が広がり地雷が増える",
+      "description": "9×9の盤面にある10個の地雷を避け、すべての安全なマスを開くパズル",
       "path": "/games/minerush/",
       "thumbnail": "/thumbnails/minerush.svg",
       "tags": [

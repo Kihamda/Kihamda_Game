@@ -20,7 +20,13 @@ const previousSources = JSON.parse(read('docs/legacy-recovery/game-source-paths-
 const dispositionPath=resolve(root,'business/legacy-dispositions.json');
 const dispositions=existsSync(dispositionPath)?JSON.parse(readFileSync(dispositionPath,'utf8')).records:null;
 const accepted=dispositions?previous.filter(game=>dispositions.find(r=>r.id===game.id)?.decision==='retain'):previous;
-assert.deepEqual(games, accepted, 'Catalog differs from recorded disposition');
+// Recovery metadata preserves the original description; current copy may be corrected.
+const preservedIdentity = ({ description, ...game }) => {
+  assert.equal(typeof description, 'string');
+  assert(description.trim(), 'Missing current description');
+  return game;
+};
+assert.deepEqual(games.map(preservedIdentity), accepted.map(preservedIdentity), 'Catalog identity differs from recorded disposition');
 if(dispositions){assert.equal(dispositions.length,previous.length);assert.equal(new Set(dispositions.map(r=>r.id)).size,previous.length);}
 assert.equal(new Set(games.map(g => g.id)).size, games.length, 'Duplicate IDs');
 for (const game of games) {
