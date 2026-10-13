@@ -51,3 +51,5 @@ Web配布準備はdocs/web-release-package-20261013.md。manifestとsiteのみ�
 Ice Slideのモバイル操作部はdocs/web-ice-mobile-20261013.mdで24px以上と盤面/操作部の枠内配置を確認した。現在の次工程は同じT-web-legacy-mobile-input-acceptanceのMineRush盤面・旗操作・キーボード代替。実タッチ・Safari・人間評価は別に未確認として残す。
 
 2026-10-14のMineRush操作部とn目並べの確認dialog・タイマー取消はdocs/web-minerush-mobile-20261014.md、docs/web-ntik-dialog-20261014.md。現在の次工程は同じT-web-legacy-mobile-input-acceptanceのn目並べの大盤面・設定対象と代替操作。実タッチ/Safari/人間評価を成功扱いにしない。
+
+2026-10-14の07時枠でT-web-legacy-mobile-input-acceptanceの技術的受入条件を完了。n目並べに行・列指定の同等操作、重力着地点表示、設定入力名・縦スクロール・操作対象拡大を追加。390/1280の大小・縦長・横長8盤面が枠内、対象最小28.8/77.76px、操作文字390で15.84px。確認・取消・末端着手・保存再読み込み・3人重力満杯列の無効化を確認。GravityBallに矢印キーとフォーカス説明、複数指で向きを変えない処理を追加。Chromeの模擬単指/複数指/取消と4方向の実行値、App回帰を確認。物理タッチ・Safari・傾き・人間評価は未確認で、検査成功へ含めない。小さいセルは同等の座標操作を用意した例外として記録した。記録docs/web-ntik-coordinate-20261014.md、docs/web-gravity-keyboard-20261014.md。07時記事はbusiness/blog/drafts/2026-10-14-small-target-alternatives.mdへ下書きのみ。本日PR22はマージ済みのため追加PR/push/配信はせず、日次ブランチにローカル保存する。Unity/天啓/旧クラウド台帳/親資産は変更しない。releaseと事業指標nullを保持。次はT-web-ntik-storage-resilienceで、ソース上の無言の保存失敗と未検証の保存形式を再現してから修正する。旧工程の置き換えではなく、操作受入完了後の既存作品の保存品質工程。

@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 169,
+  "revision": 175,
   "business_id": "game-site",
-  "fence": 26,
+  "fence": 27,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -2828,7 +2828,7 @@
         "Unverified release remains null; metrics remain null"
       ],
       "next_step": "After base legacy acceptance, measure Ice Slide mobile controls first",
-      "status": "ready",
+      "status": "done",
       "checkpoints": [
         {
           "run_id": "unity-20261013T1900-mobile-a9513c",
@@ -4017,6 +4017,225 @@
           ],
           "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls",
           "at": 1791908704.7003167
+        },
+        {
+          "run_id": "unity-20261014T0700-ntik-42b719",
+          "fence": 27,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.css",
+              "sha256": "bd1e415b2d06819836bcc33270cf81a9f4bdce3df745867bcfc0bdb7930651b4"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+              "sha256": "f8014ef7931e2b1b86cc7c6133cff427ac79bfe7e9cb808257901b6ed451cdd0"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "c5728b5f1c6565b11bc2e6e0908c42f43dfa2a4ab44d9a932e5e4a90019c2b2f"
+            },
+            {
+              "path": "docs/web-ntik-coordinate-20261014.md",
+              "sha256": "5f75132ac8c9fc8f0fb066934e43087fc01f1533d56b9de94ddeccd9eeb6dda7"
+            },
+            {
+              "path": "docs/images/ntik-coordinate-20261014-390.png",
+              "sha256": "9639867e57fb4289ed08b64a23d423f5d6f5a660873bf6644854e86f3d58c41b"
+            },
+            {
+              "path": "business/unity/evidence/ntik-layout-20261014-0700.json",
+              "sha256": "10e973141a8e7adea26de03315a0f9fb2101d34b718303ba87b86b79a20c5efe"
+            }
+          ],
+          "checks": [
+            "nTic final build/8 viewport-board cases/coordinate Enter/modal/save/gravity-full-column passed",
+            "Physical touch Safari human acceptance unverified; no extra daily PR"
+          ],
+          "next_step": "Same mobile task: GravityBall keyboard steering and input measurement",
+          "at": 1791929354.4791734
+        },
+        {
+          "run_id": "unity-20261014T0700-ntik-42b719",
+          "fence": 27,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.css",
+              "sha256": "0ab8fd7d10ae8ba477bd01976a929b9f0e808e163c93d04f0e3dc3f3d023ff45"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+              "sha256": "f8014ef7931e2b1b86cc7c6133cff427ac79bfe7e9cb808257901b6ed451cdd0"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "c5728b5f1c6565b11bc2e6e0908c42f43dfa2a4ab44d9a932e5e4a90019c2b2f"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "69b8836c9390762f1cee322df3638139ddbce957a4b6a9c7ede28b730c8fc51e"
+            },
+            {
+              "path": "web/games/gravityball/src/App.css",
+              "sha256": "eea9f3d5367e3c97aa2f23aab531676a86c879eb4239c3e7a3b25afb777f891f"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "ea820d3053f9a9e32f81aa255328b86e748b5978ec874588dd18f1f8b09b8fee"
+            },
+            {
+              "path": "docs/web-ntik-coordinate-20261014.md",
+              "sha256": "a0e068e74b5fc00075cc78d99a99ac3c30bfc5bd7ac1a23f8f074b9c083159ae"
+            },
+            {
+              "path": "docs/web-gravity-keyboard-20261014.md",
+              "sha256": "cd1a5e342ad8bbbbb2583f49d830cb4aa4753922bf3ce57d977963660a86a04d"
+            },
+            {
+              "path": "docs/images/ntik-coordinate-20261014-390.png",
+              "sha256": "cb060a443dcd65a09e3e594413461f6b399d33471114e8a73e08b8ea0cb146f5"
+            },
+            {
+              "path": "docs/images/gravity-keyboard-20261014-390.png",
+              "sha256": "359b033c2a2af5ab4e1731d3117803e83cb6e1a6f9e0c87826286dbc68c2260b"
+            },
+            {
+              "path": "docs/images/gravity-keyboard-20261014-1280.png",
+              "sha256": "36bbf5f7c89cb7bc149ac209cabf46a0862118a08c39727208ba8ccb9cb6ea4e"
+            },
+            {
+              "path": "business/unity/evidence/ntik-layout-20261014-0700.json",
+              "sha256": "12140e53f618aa3a2ae4ab602f7f0b44bcedbb62374ec5fe391c8fdfa3816a1b"
+            },
+            {
+              "path": "business/unity/evidence/gravity-input-20261014-0700.json",
+              "sha256": "b4b9dc35d5c333e334a42cf38cc108096f15a6ddec4ad9e3106795e968f46ba2"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-14-small-target-alternatives.md",
+              "sha256": "b27c60473f95b7b377014040848edc9c03a517b0b60b068b5bdb8a2da9c1e931"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "ea0bbda9a5764c210f92339457fd58f2fee9f4384ec98b2fa9825b212f724d04"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "b3e041e603cbdc9d8bb5940819926e5b63185c66cd6d98ba52d017d4afdc0086"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "bf5b957c00faa56588f362f523e38ce0f032c0e3f29c4b315b1381ecd6c1b379"
+            },
+            {
+              "path": "business/unity/evidence/mobile-20261014-0700.json",
+              "sha256": "abe5cb511d8f89fa2d2497516a2cd36c158203f63d35167d7765c6aaea8c1648"
+            }
+          ],
+          "checks": [
+            "Final TypeScript/ESLint/Vite/5SSG/35 checksums passed",
+            "nTic8 final viewport/layout cases, targets >=24, coordinate/modal/Enter/save-reload/full gravity column passed",
+            "Chrome simulated nTic touch coordinate/confirmation44px/reloadPlayer2 passed",
+            "Gravity actual App four vectors/strength/transition/Space/single-vs-multi plus original regressions passed",
+            "Chrome simulated single/multi/cancel and observed four exact vectors; state never injected",
+            "Original169 events/latest26 baseline receipts/parent4commits/recovery8 hashes verified",
+            "PR22 already merged today; no additional PR/push/deployment",
+            "Physicaltouch Safari orientation human unverified; metrics and release null",
+            "Initial transient390 measurement preserved and corrected with settled rect and repeated touch events"
+          ],
+          "next_step": "T-web-ntik-storage-resilience: reproduce silent write denial and malformed saved board, then validate and report status",
+          "at": 1791929932.4754617
+        },
+        {
+          "run_id": "unity-20261014T0700-ntik-42b719",
+          "fence": 27,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.css",
+              "sha256": "0ab8fd7d10ae8ba477bd01976a929b9f0e808e163c93d04f0e3dc3f3d023ff45"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+              "sha256": "f8014ef7931e2b1b86cc7c6133cff427ac79bfe7e9cb808257901b6ed451cdd0"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "c5728b5f1c6565b11bc2e6e0908c42f43dfa2a4ab44d9a932e5e4a90019c2b2f"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "69b8836c9390762f1cee322df3638139ddbce957a4b6a9c7ede28b730c8fc51e"
+            },
+            {
+              "path": "web/games/gravityball/src/App.css",
+              "sha256": "eea9f3d5367e3c97aa2f23aab531676a86c879eb4239c3e7a3b25afb777f891f"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "ea820d3053f9a9e32f81aa255328b86e748b5978ec874588dd18f1f8b09b8fee"
+            },
+            {
+              "path": "docs/web-ntik-coordinate-20261014.md",
+              "sha256": "a0e068e74b5fc00075cc78d99a99ac3c30bfc5bd7ac1a23f8f074b9c083159ae"
+            },
+            {
+              "path": "docs/web-gravity-keyboard-20261014.md",
+              "sha256": "cd1a5e342ad8bbbbb2583f49d830cb4aa4753922bf3ce57d977963660a86a04d"
+            },
+            {
+              "path": "docs/images/ntik-coordinate-20261014-390.png",
+              "sha256": "cb060a443dcd65a09e3e594413461f6b399d33471114e8a73e08b8ea0cb146f5"
+            },
+            {
+              "path": "docs/images/gravity-keyboard-20261014-390.png",
+              "sha256": "359b033c2a2af5ab4e1731d3117803e83cb6e1a6f9e0c87826286dbc68c2260b"
+            },
+            {
+              "path": "docs/images/gravity-keyboard-20261014-1280.png",
+              "sha256": "36bbf5f7c89cb7bc149ac209cabf46a0862118a08c39727208ba8ccb9cb6ea4e"
+            },
+            {
+              "path": "business/unity/evidence/ntik-layout-20261014-0700.json",
+              "sha256": "12140e53f618aa3a2ae4ab602f7f0b44bcedbb62374ec5fe391c8fdfa3816a1b"
+            },
+            {
+              "path": "business/unity/evidence/gravity-input-20261014-0700.json",
+              "sha256": "b4b9dc35d5c333e334a42cf38cc108096f15a6ddec4ad9e3106795e968f46ba2"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-14-small-target-alternatives.md",
+              "sha256": "b27c60473f95b7b377014040848edc9c03a517b0b60b068b5bdb8a2da9c1e931"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "ea0bbda9a5764c210f92339457fd58f2fee9f4384ec98b2fa9825b212f724d04"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "b3e041e603cbdc9d8bb5940819926e5b63185c66cd6d98ba52d017d4afdc0086"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "bf5b957c00faa56588f362f523e38ce0f032c0e3f29c4b315b1381ecd6c1b379"
+            },
+            {
+              "path": "business/unity/evidence/mobile-20261014-0700.json",
+              "sha256": "abe5cb511d8f89fa2d2497516a2cd36c158203f63d35167d7765c6aaea8c1648"
+            }
+          ],
+          "checks": [
+            "Final TypeScript/ESLint/Vite/5SSG/35 checksums passed",
+            "nTic8 final viewport/layout cases, targets >=24, coordinate/modal/Enter/save-reload/full gravity column passed",
+            "Chrome simulated nTic touch coordinate/confirmation44px/reloadPlayer2 passed",
+            "Gravity actual App four vectors/strength/transition/Space/single-vs-multi plus original regressions passed",
+            "Chrome simulated single/multi/cancel and observed four exact vectors; state never injected",
+            "Original169 events/latest26 baseline receipts/parent4commits/recovery8 hashes verified",
+            "PR22 already merged today; no additional PR/push/deployment",
+            "Physicaltouch Safari orientation human unverified; metrics and release null",
+            "Initial transient390 measurement preserved and corrected with settled rect and repeated touch events"
+          ],
+          "next_step": "T-web-ntik-storage-resilience: reproduce silent write denial and malformed saved board, then validate and report status",
+          "passed": true,
+          "at": 1791929932.502282
         }
       ],
       "claims": [
@@ -4043,8 +4262,45 @@
           "task_id": "T-web-legacy-mobile-input-acceptance",
           "fence": 26,
           "expires_at": 1791908973.7562737
+        },
+        {
+          "run_id": "unity-20261014T0700-ntik-42b719",
+          "task_id": "T-web-legacy-mobile-input-acceptance",
+          "fence": 27,
+          "expires_at": 1791930470.5974855
         }
       ]
+    },
+    "T-web-ntik-storage-resilience": {
+      "id": "T-web-ntik-storage-resilience",
+      "objective": "n目並べの保存失敗と不正な保存データを画面停止や無言の消失にしない",
+      "acceptance": [
+        "Reject malformed appState, board dimensions and player indexes before resume; preserve valid old saves",
+        "Write/delete denial reports visible status and leaves the current game usable",
+        "Verify normal move/save/reload and existing timer/modal/coordinate regressions",
+        "Record injected failures separately from physical device and human acceptance"
+      ],
+      "outputs": [
+        "nTic storage validation and status",
+        "Tests and browser evidence"
+      ],
+      "checks": [
+        "Actual App/storage denial and malformed fixtures",
+        "Production browser reload and visible status"
+      ],
+      "next_step": "Reproduce silent write failure and malformed board against current storage.ts before implementing validation/status",
+      "decision_id": "D-web-technology-policy-20261012",
+      "experiment_id": "E-unity-portal",
+      "hypothesis": "入力代替に続けて保存可否を画面に返せば、再読み込みで失う条件を操作中に判断できる",
+      "source": "code:web/games/ntiktaktoe/src/lib/storage.ts:saveGameState,clearSavedGame,loadGameState;user:automation:unity:2026-10-14",
+      "pdca": "do",
+      "priority": 1,
+      "depends_on": [
+        "T-web-legacy-mobile-input-acceptance"
+      ],
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -4341,6 +4597,13 @@
       "source": "continuation:original-01slot:CI-artifact-retention:deadline01:30",
       "status": "checkpointed",
       "started_at": 1791908253.730227
+    },
+    "unity-20261014T0700-ntik-42b719": {
+      "run_id": "unity-20261014T0700-ntik-42b719",
+      "scheduled_at": "2026-10-14T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-14T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791929030.5229821
     }
   },
   "experiments": {
@@ -4478,7 +4741,8 @@
     "2026-10-13T07:00:00+09:00": "unity-20261013T0700-package-d34f19",
     "2026-10-13T13:00:00+09:00": "unity-20261013T1300-iceslide-8f42c1",
     "2026-10-13T19:00:00+09:00": "unity-20261013T1900-gravity-7d192a",
-    "2026-10-14T01:00:00+09:00": "unity-20261014T0100-minerush-62ed35"
+    "2026-10-14T01:00:00+09:00": "unity-20261014T0100-minerush-62ed35",
+    "2026-10-14T07:00:00+09:00": "unity-20261014T0700-ntik-42b719"
   },
   "feedback": [
     {
@@ -10782,7 +11046,323 @@
       },
       "previous": "06e2e3b97573297e2cacbc390a8b839358cdc7bdd3ce45b475b93b33c0a16add",
       "sha256": "cfe637350c1da72f1a659fe7c4d1729952ed891924ab8802cf76a679be260050"
+    },
+    {
+      "revision": 170,
+      "at": 1791929030.5229821,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261014T0700-ntik-42b719",
+        "scheduled_at": "2026-10-14T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "cfe637350c1da72f1a659fe7c4d1729952ed891924ab8802cf76a679be260050",
+      "sha256": "3caaed53e3f226b48a2c64f12e8cd0919d94b8cb1b4b68dcfcdfe964d5642257"
+    },
+    {
+      "revision": 171,
+      "at": 1791929030.5974855,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261014T0700-ntik-42b719",
+        "task_id": "T-web-legacy-mobile-input-acceptance",
+        "ttl_seconds": 1440
+      },
+      "result": {
+        "run_id": "unity-20261014T0700-ntik-42b719",
+        "task_id": "T-web-legacy-mobile-input-acceptance",
+        "fence": 27,
+        "expires_at": 1791930470.5974855
+      },
+      "previous": "3caaed53e3f226b48a2c64f12e8cd0919d94b8cb1b4b68dcfcdfe964d5642257",
+      "sha256": "44a825e2b241963dd94bb39b3270d428e64af9290a309aa7e4a9378b9a9ed0cf"
+    },
+    {
+      "revision": 172,
+      "at": 1791929354.4791734,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261014T0700-ntik-42b719",
+        "fence": 27,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.css",
+            "sha256": "bd1e415b2d06819836bcc33270cf81a9f4bdce3df745867bcfc0bdb7930651b4"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+            "sha256": "f8014ef7931e2b1b86cc7c6133cff427ac79bfe7e9cb808257901b6ed451cdd0"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "c5728b5f1c6565b11bc2e6e0908c42f43dfa2a4ab44d9a932e5e4a90019c2b2f"
+          },
+          {
+            "path": "docs/web-ntik-coordinate-20261014.md",
+            "sha256": "5f75132ac8c9fc8f0fb066934e43087fc01f1533d56b9de94ddeccd9eeb6dda7"
+          },
+          {
+            "path": "docs/images/ntik-coordinate-20261014-390.png",
+            "sha256": "9639867e57fb4289ed08b64a23d423f5d6f5a660873bf6644854e86f3d58c41b"
+          },
+          {
+            "path": "business/unity/evidence/ntik-layout-20261014-0700.json",
+            "sha256": "10e973141a8e7adea26de03315a0f9fb2101d34b718303ba87b86b79a20c5efe"
+          }
+        ],
+        "checks": [
+          "nTic final build/8 viewport-board cases/coordinate Enter/modal/save/gravity-full-column passed",
+          "Physical touch Safari human acceptance unverified; no extra daily PR"
+        ],
+        "next_step": "Same mobile task: GravityBall keyboard steering and input measurement"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "44a825e2b241963dd94bb39b3270d428e64af9290a309aa7e4a9378b9a9ed0cf",
+      "sha256": "234cde253803e91dd32537838d77c44bedf33af72f4692ac3fc684ec64a58b61"
+    },
+    {
+      "revision": 173,
+      "at": 1791929932.398102,
+      "action": "task",
+      "data": {
+        "id": "T-web-ntik-storage-resilience",
+        "objective": "n目並べの保存失敗と不正な保存データを画面停止や無言の消失にしない",
+        "acceptance": [
+          "Reject malformed appState, board dimensions and player indexes before resume; preserve valid old saves",
+          "Write/delete denial reports visible status and leaves the current game usable",
+          "Verify normal move/save/reload and existing timer/modal/coordinate regressions",
+          "Record injected failures separately from physical device and human acceptance"
+        ],
+        "outputs": [
+          "nTic storage validation and status",
+          "Tests and browser evidence"
+        ],
+        "checks": [
+          "Actual App/storage denial and malformed fixtures",
+          "Production browser reload and visible status"
+        ],
+        "next_step": "Reproduce silent write failure and malformed board against current storage.ts before implementing validation/status",
+        "decision_id": "D-web-technology-policy-20261012",
+        "experiment_id": "E-unity-portal",
+        "hypothesis": "入力代替に続けて保存可否を画面に返せば、再読み込みで失う条件を操作中に判断できる",
+        "source": "code:web/games/ntiktaktoe/src/lib/storage.ts:saveGameState,clearSavedGame,loadGameState;user:automation:unity:2026-10-14",
+        "pdca": "do",
+        "priority": 1,
+        "depends_on": [
+          "T-web-legacy-mobile-input-acceptance"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "234cde253803e91dd32537838d77c44bedf33af72f4692ac3fc684ec64a58b61",
+      "sha256": "3bbc918cb8884a8122fae6fa2436a297b804afe45e6f55145956c0ce2b10c364"
+    },
+    {
+      "revision": 174,
+      "at": 1791929932.4754617,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261014T0700-ntik-42b719",
+        "fence": 27,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.css",
+            "sha256": "0ab8fd7d10ae8ba477bd01976a929b9f0e808e163c93d04f0e3dc3f3d023ff45"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+            "sha256": "f8014ef7931e2b1b86cc7c6133cff427ac79bfe7e9cb808257901b6ed451cdd0"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "c5728b5f1c6565b11bc2e6e0908c42f43dfa2a4ab44d9a932e5e4a90019c2b2f"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "69b8836c9390762f1cee322df3638139ddbce957a4b6a9c7ede28b730c8fc51e"
+          },
+          {
+            "path": "web/games/gravityball/src/App.css",
+            "sha256": "eea9f3d5367e3c97aa2f23aab531676a86c879eb4239c3e7a3b25afb777f891f"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "ea820d3053f9a9e32f81aa255328b86e748b5978ec874588dd18f1f8b09b8fee"
+          },
+          {
+            "path": "docs/web-ntik-coordinate-20261014.md",
+            "sha256": "a0e068e74b5fc00075cc78d99a99ac3c30bfc5bd7ac1a23f8f074b9c083159ae"
+          },
+          {
+            "path": "docs/web-gravity-keyboard-20261014.md",
+            "sha256": "cd1a5e342ad8bbbbb2583f49d830cb4aa4753922bf3ce57d977963660a86a04d"
+          },
+          {
+            "path": "docs/images/ntik-coordinate-20261014-390.png",
+            "sha256": "cb060a443dcd65a09e3e594413461f6b399d33471114e8a73e08b8ea0cb146f5"
+          },
+          {
+            "path": "docs/images/gravity-keyboard-20261014-390.png",
+            "sha256": "359b033c2a2af5ab4e1731d3117803e83cb6e1a6f9e0c87826286dbc68c2260b"
+          },
+          {
+            "path": "docs/images/gravity-keyboard-20261014-1280.png",
+            "sha256": "36bbf5f7c89cb7bc149ac209cabf46a0862118a08c39727208ba8ccb9cb6ea4e"
+          },
+          {
+            "path": "business/unity/evidence/ntik-layout-20261014-0700.json",
+            "sha256": "12140e53f618aa3a2ae4ab602f7f0b44bcedbb62374ec5fe391c8fdfa3816a1b"
+          },
+          {
+            "path": "business/unity/evidence/gravity-input-20261014-0700.json",
+            "sha256": "b4b9dc35d5c333e334a42cf38cc108096f15a6ddec4ad9e3106795e968f46ba2"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-14-small-target-alternatives.md",
+            "sha256": "b27c60473f95b7b377014040848edc9c03a517b0b60b068b5bdb8a2da9c1e931"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "ea0bbda9a5764c210f92339457fd58f2fee9f4384ec98b2fa9825b212f724d04"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "b3e041e603cbdc9d8bb5940819926e5b63185c66cd6d98ba52d017d4afdc0086"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "bf5b957c00faa56588f362f523e38ce0f032c0e3f29c4b315b1381ecd6c1b379"
+          },
+          {
+            "path": "business/unity/evidence/mobile-20261014-0700.json",
+            "sha256": "abe5cb511d8f89fa2d2497516a2cd36c158203f63d35167d7765c6aaea8c1648"
+          }
+        ],
+        "checks": [
+          "Final TypeScript/ESLint/Vite/5SSG/35 checksums passed",
+          "nTic8 final viewport/layout cases, targets >=24, coordinate/modal/Enter/save-reload/full gravity column passed",
+          "Chrome simulated nTic touch coordinate/confirmation44px/reloadPlayer2 passed",
+          "Gravity actual App four vectors/strength/transition/Space/single-vs-multi plus original regressions passed",
+          "Chrome simulated single/multi/cancel and observed four exact vectors; state never injected",
+          "Original169 events/latest26 baseline receipts/parent4commits/recovery8 hashes verified",
+          "PR22 already merged today; no additional PR/push/deployment",
+          "Physicaltouch Safari orientation human unverified; metrics and release null",
+          "Initial transient390 measurement preserved and corrected with settled rect and repeated touch events"
+        ],
+        "next_step": "T-web-ntik-storage-resilience: reproduce silent write denial and malformed saved board, then validate and report status"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "3bbc918cb8884a8122fae6fa2436a297b804afe45e6f55145956c0ce2b10c364",
+      "sha256": "86f374945fec18e67f641a682198b37c23969f8a5e0a6bc0c99745b3ac3e80bd"
+    },
+    {
+      "revision": 175,
+      "at": 1791929932.502282,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261014T0700-ntik-42b719",
+        "fence": 27,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.css",
+            "sha256": "0ab8fd7d10ae8ba477bd01976a929b9f0e808e163c93d04f0e3dc3f3d023ff45"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+            "sha256": "f8014ef7931e2b1b86cc7c6133cff427ac79bfe7e9cb808257901b6ed451cdd0"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "c5728b5f1c6565b11bc2e6e0908c42f43dfa2a4ab44d9a932e5e4a90019c2b2f"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "69b8836c9390762f1cee322df3638139ddbce957a4b6a9c7ede28b730c8fc51e"
+          },
+          {
+            "path": "web/games/gravityball/src/App.css",
+            "sha256": "eea9f3d5367e3c97aa2f23aab531676a86c879eb4239c3e7a3b25afb777f891f"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "ea820d3053f9a9e32f81aa255328b86e748b5978ec874588dd18f1f8b09b8fee"
+          },
+          {
+            "path": "docs/web-ntik-coordinate-20261014.md",
+            "sha256": "a0e068e74b5fc00075cc78d99a99ac3c30bfc5bd7ac1a23f8f074b9c083159ae"
+          },
+          {
+            "path": "docs/web-gravity-keyboard-20261014.md",
+            "sha256": "cd1a5e342ad8bbbbb2583f49d830cb4aa4753922bf3ce57d977963660a86a04d"
+          },
+          {
+            "path": "docs/images/ntik-coordinate-20261014-390.png",
+            "sha256": "cb060a443dcd65a09e3e594413461f6b399d33471114e8a73e08b8ea0cb146f5"
+          },
+          {
+            "path": "docs/images/gravity-keyboard-20261014-390.png",
+            "sha256": "359b033c2a2af5ab4e1731d3117803e83cb6e1a6f9e0c87826286dbc68c2260b"
+          },
+          {
+            "path": "docs/images/gravity-keyboard-20261014-1280.png",
+            "sha256": "36bbf5f7c89cb7bc149ac209cabf46a0862118a08c39727208ba8ccb9cb6ea4e"
+          },
+          {
+            "path": "business/unity/evidence/ntik-layout-20261014-0700.json",
+            "sha256": "12140e53f618aa3a2ae4ab602f7f0b44bcedbb62374ec5fe391c8fdfa3816a1b"
+          },
+          {
+            "path": "business/unity/evidence/gravity-input-20261014-0700.json",
+            "sha256": "b4b9dc35d5c333e334a42cf38cc108096f15a6ddec4ad9e3106795e968f46ba2"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-14-small-target-alternatives.md",
+            "sha256": "b27c60473f95b7b377014040848edc9c03a517b0b60b068b5bdb8a2da9c1e931"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "ea0bbda9a5764c210f92339457fd58f2fee9f4384ec98b2fa9825b212f724d04"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "b3e041e603cbdc9d8bb5940819926e5b63185c66cd6d98ba52d017d4afdc0086"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "bf5b957c00faa56588f362f523e38ce0f032c0e3f29c4b315b1381ecd6c1b379"
+          },
+          {
+            "path": "business/unity/evidence/mobile-20261014-0700.json",
+            "sha256": "abe5cb511d8f89fa2d2497516a2cd36c158203f63d35167d7765c6aaea8c1648"
+          }
+        ],
+        "checks": [
+          "Final TypeScript/ESLint/Vite/5SSG/35 checksums passed",
+          "nTic8 final viewport/layout cases, targets >=24, coordinate/modal/Enter/save-reload/full gravity column passed",
+          "Chrome simulated nTic touch coordinate/confirmation44px/reloadPlayer2 passed",
+          "Gravity actual App four vectors/strength/transition/Space/single-vs-multi plus original regressions passed",
+          "Chrome simulated single/multi/cancel and observed four exact vectors; state never injected",
+          "Original169 events/latest26 baseline receipts/parent4commits/recovery8 hashes verified",
+          "PR22 already merged today; no additional PR/push/deployment",
+          "Physicaltouch Safari orientation human unverified; metrics and release null",
+          "Initial transient390 measurement preserved and corrected with settled rect and repeated touch events"
+        ],
+        "next_step": "T-web-ntik-storage-resilience: reproduce silent write denial and malformed saved board, then validate and report status",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "86f374945fec18e67f641a682198b37c23969f8a5e0a6bc0c99745b3ac3e80bd",
+      "sha256": "bff587523abcf00c7aaa0fdba5bfe154ee2292de07af8d04de974abf108656b2"
     }
   ],
-  "projection_sha256": "3cf8653347121a3136b37acbc24af35d832f051499871966e7de1129816a4d0d"
+  "projection_sha256": "50427a26cd86e4c8580573282153853534afbf89f9896c3d4dd32620b926beb5"
 }

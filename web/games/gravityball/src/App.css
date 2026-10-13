@@ -9,3 +9,5 @@
 .gravityball-canvas {
   display: block;
 }
+.gravityball-container:focus-visible { outline: 4px solid #f8b500; outline-offset: -4px; }
+.gravityball-keyboard-help { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); }
