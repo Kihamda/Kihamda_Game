@@ -7,7 +7,8 @@
     "nTic production390/1280 dialog340x136 buttons142x44; cancel autofocus Tab/ShiftTab cycle Escape restores cell; Enter confirm/reload nextPlayer2",
     "nTic turn reset/new-game waits >1.5sec retained Player1 empty board; headless turn/win/unmount regression passed",
     "Shared scale production390 Ice stage1 min28.608/frame/2move clear; Gravity canvas269.5x323.4/frame/Enter start",
-    "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed"
+    "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed",
+    "LF checkout normalization corrected before publication; final checkpoint supersedes earlier source byte receipts"
   ],
   "artifacts": [
     {
@@ -16,7 +17,7 @@
     },
     {
       "path": "web/games/minerush/src/App.css",
-      "sha256": "64ed6532790715f59b579c383a6bdf93d700e6c804cb14fd38101125668bb6c2"
+      "sha256": "a62f311839f78e3a8b71fd43a556f021c8a22e890d810c0c88f20586e325e0bb"
     },
     {
       "path": "web/src/shared/components/GameShell.tsx",
@@ -44,11 +45,11 @@
     },
     {
       "path": "docs/web-minerush-mobile-20261014.md",
-      "sha256": "7d6db201a7ee951e123d75dbad25fd4f121b7bdc523085e4a87ece78a069818f"
+      "sha256": "aa27a4bb0129f51cbb17aa4b44918195bcf861118d4b1d0ad74f0609ae3a03cb"
     },
     {
       "path": "docs/web-ntik-dialog-20261014.md",
-      "sha256": "74fb3883c6198217a4f005c76a50eee7e6e136a9c606764c94de8ec51cc749db"
+      "sha256": "d031733f29358f2a02b5341f0b5225764f1b28f5334a3c1b9f6e1462bfe8c490"
     },
     {
       "path": "docs/images/minerush-loss-20261014-390.jpg",
