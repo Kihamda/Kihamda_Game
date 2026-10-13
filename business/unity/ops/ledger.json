@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 164,
+  "revision": 169,
   "business_id": "game-site",
   "fence": 26,
-  "lease": {
-    "run_id": "unity-20261014T0100-retain-6e026a",
-    "task_id": "T-web-legacy-mobile-input-acceptance",
-    "fence": 26,
-    "expires_at": 1791908973.7562737
-  },
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -2833,7 +2828,7 @@
         "Unverified release remains null; metrics remain null"
       ],
       "next_step": "After base legacy acceptance, measure Ice Slide mobile controls first",
-      "status": "running",
+      "status": "ready",
       "checkpoints": [
         {
           "run_id": "unity-20261013T1900-mobile-a9513c",
@@ -3780,6 +3775,248 @@
           ],
           "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls",
           "at": 1791908253.7884388
+        },
+        {
+          "run_id": "unity-20261014T0100-retain-6e026a",
+          "fence": 26,
+          "artifacts": [
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "a62f311839f78e3a8b71fd43a556f021c8a22e890d810c0c88f20586e325e0bb"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "9d2d273f39c42ab0742c4c9f19b75ef91351745efeed3a1ce3ef80a700d00f3e"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/App.css",
+              "sha256": "0f6e52d25a692b683c6a51271032feba0f11986632ef28d4a4da1e709dc91887"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+              "sha256": "dadc7a699fad3c5689118df88571f62859039b2b7d80d7a535ecdd5453ae18a1"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "32e709f93a002b1363e2c5b08d80121b349efb9e28c7bb84416d1431aaaebe74"
+            },
+            {
+              "path": "docs/web-minerush-mobile-20261014.md",
+              "sha256": "aa27a4bb0129f51cbb17aa4b44918195bcf861118d4b1d0ad74f0609ae3a03cb"
+            },
+            {
+              "path": "docs/web-ntik-dialog-20261014.md",
+              "sha256": "d031733f29358f2a02b5341f0b5225764f1b28f5334a3c1b9f6e1462bfe8c490"
+            },
+            {
+              "path": "docs/images/minerush-loss-20261014-390.jpg",
+              "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+            },
+            {
+              "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+              "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+            },
+            {
+              "path": "docs/images/minerush-mobile-20261014-390.jpg",
+              "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+            },
+            {
+              "path": "docs/images/ntik-dialog-20261014-1280.jpg",
+              "sha256": "fd31e30e972dda5efd72953903eec5ee581dc79c97e5fc68c691f7b4e9895982"
+            },
+            {
+              "path": "docs/images/ntik-dialog-20261014-390.jpg",
+              "sha256": "c25c85415db40391c417da5b765c59ebdf37cd28a3bf993d88b5a7c515366f54"
+            },
+            {
+              "path": "business/unity/evidence/mobile-final-20261014-0100.json",
+              "sha256": "3b5819368fff1393aacc513e57f28ca521aea3a4d85c8a8e9f8019bdc154f352"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "2510b524c238f4a70e372fc402bd237cc846a77a56cf5f636e2fe72d63ae4a39"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "9f03841fbd33ca48f22b99bde2c9438a50b5ce45b50048e0b88ce48212097406"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "c64c280245bebccb47c4ad4dee2e5a7989f4f6f1929ca9b0f903b0c94bb18269"
+            },
+            {
+              "path": "business/unity/evidence/delivery-web-daily-20261014.json",
+              "sha256": "492ee039a902fffd63f9196ffc92519c6a72741497a6b7a1d037e144318cbbae"
+            },
+            {
+              "path": "docs/web-current-retention-20261014.md",
+              "sha256": "cc6e7a1af43ed99946892d94fa21af6016e58c8f5eee2a811ec7aaf75215728f"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/web-release.tar.gz",
+              "sha256": "d222c9556369c554d373fd2fb7e724b3ea841f7dd15799909c62a1e201017d92"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/source-web-lf.zip",
+              "sha256": "be6fd9e61d6ba0cb5a510836a55511354a011541694a6647dfb21f96efe1eaf0"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/restored/manifest.json",
+              "sha256": "b79e9d17176c280e52a114a424de14d9930021dbcc570b88cd63f744f00b37a8"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/verification.json",
+              "sha256": "9720cdd52c40dc780ceabc486a3842cafe954f293079c1ca2961c75c31a66635"
+            }
+          ],
+          "checks": [
+            "Final TS/ESLint/Vite/5SSG passed",
+            "MineRush production390 initial/loss min24.516 reset/mode32.688;1280 min36",
+            "nTic production390/1280 dialog340x136 buttons142x44; cancel autofocus Tab/ShiftTab cycle Escape restores cell; Enter confirm/reload nextPlayer2",
+            "nTic turn reset/new-game waits >1.5sec retained Player1 empty board; headless turn/win/unmount regression passed",
+            "Shared scale production390 Ice stage1 min28.608/frame/2move clear; Gravity canvas269.5x323.4/frame/Enter start",
+            "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed",
+            "LF checkout normalization corrected before publication; final checkpoint supersedes earlier source byte receipts",
+            "Current static build output: 35 checksummed files; historical 36-file and final yield count corrected here",
+            "PR22 latest head CI success and guardedmerge verified; one dailyPR only",
+            "CI36files/5pages/35checksum/archiveZIP95blob/restored390 browser passed; original155events and protected files preserved",
+            "Final save within original01:30; no duplicate slot; mobile acceptance partial, next stage unchanged"
+          ],
+          "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls",
+          "at": 1791908704.666094
+        },
+        {
+          "run_id": "unity-20261014T0100-retain-6e026a",
+          "fence": 26,
+          "artifacts": [
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "a62f311839f78e3a8b71fd43a556f021c8a22e890d810c0c88f20586e325e0bb"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "9d2d273f39c42ab0742c4c9f19b75ef91351745efeed3a1ce3ef80a700d00f3e"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/App.css",
+              "sha256": "0f6e52d25a692b683c6a51271032feba0f11986632ef28d4a4da1e709dc91887"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+              "sha256": "dadc7a699fad3c5689118df88571f62859039b2b7d80d7a535ecdd5453ae18a1"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "32e709f93a002b1363e2c5b08d80121b349efb9e28c7bb84416d1431aaaebe74"
+            },
+            {
+              "path": "docs/web-minerush-mobile-20261014.md",
+              "sha256": "aa27a4bb0129f51cbb17aa4b44918195bcf861118d4b1d0ad74f0609ae3a03cb"
+            },
+            {
+              "path": "docs/web-ntik-dialog-20261014.md",
+              "sha256": "d031733f29358f2a02b5341f0b5225764f1b28f5334a3c1b9f6e1462bfe8c490"
+            },
+            {
+              "path": "docs/images/minerush-loss-20261014-390.jpg",
+              "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+            },
+            {
+              "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+              "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+            },
+            {
+              "path": "docs/images/minerush-mobile-20261014-390.jpg",
+              "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+            },
+            {
+              "path": "docs/images/ntik-dialog-20261014-1280.jpg",
+              "sha256": "fd31e30e972dda5efd72953903eec5ee581dc79c97e5fc68c691f7b4e9895982"
+            },
+            {
+              "path": "docs/images/ntik-dialog-20261014-390.jpg",
+              "sha256": "c25c85415db40391c417da5b765c59ebdf37cd28a3bf993d88b5a7c515366f54"
+            },
+            {
+              "path": "business/unity/evidence/mobile-final-20261014-0100.json",
+              "sha256": "3b5819368fff1393aacc513e57f28ca521aea3a4d85c8a8e9f8019bdc154f352"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "2510b524c238f4a70e372fc402bd237cc846a77a56cf5f636e2fe72d63ae4a39"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "9f03841fbd33ca48f22b99bde2c9438a50b5ce45b50048e0b88ce48212097406"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "c64c280245bebccb47c4ad4dee2e5a7989f4f6f1929ca9b0f903b0c94bb18269"
+            },
+            {
+              "path": "business/unity/evidence/delivery-web-daily-20261014.json",
+              "sha256": "492ee039a902fffd63f9196ffc92519c6a72741497a6b7a1d037e144318cbbae"
+            },
+            {
+              "path": "docs/web-current-retention-20261014.md",
+              "sha256": "cc6e7a1af43ed99946892d94fa21af6016e58c8f5eee2a811ec7aaf75215728f"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/web-release.tar.gz",
+              "sha256": "d222c9556369c554d373fd2fb7e724b3ea841f7dd15799909c62a1e201017d92"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/source-web-lf.zip",
+              "sha256": "be6fd9e61d6ba0cb5a510836a55511354a011541694a6647dfb21f96efe1eaf0"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/restored/manifest.json",
+              "sha256": "b79e9d17176c280e52a114a424de14d9930021dbcc570b88cd63f744f00b37a8"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/verification.json",
+              "sha256": "9720cdd52c40dc780ceabc486a3842cafe954f293079c1ca2961c75c31a66635"
+            }
+          ],
+          "checks": [
+            "Final TS/ESLint/Vite/5SSG passed",
+            "MineRush production390 initial/loss min24.516 reset/mode32.688;1280 min36",
+            "nTic production390/1280 dialog340x136 buttons142x44; cancel autofocus Tab/ShiftTab cycle Escape restores cell; Enter confirm/reload nextPlayer2",
+            "nTic turn reset/new-game waits >1.5sec retained Player1 empty board; headless turn/win/unmount regression passed",
+            "Shared scale production390 Ice stage1 min28.608/frame/2move clear; Gravity canvas269.5x323.4/frame/Enter start",
+            "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed",
+            "LF checkout normalization corrected before publication; final checkpoint supersedes earlier source byte receipts",
+            "Current static build output: 35 checksummed files; historical 36-file and final yield count corrected here",
+            "PR22 latest head CI success and guardedmerge verified; one dailyPR only",
+            "CI36files/5pages/35checksum/archiveZIP95blob/restored390 browser passed; original155events and protected files preserved",
+            "Final save within original01:30; no duplicate slot; mobile acceptance partial, next stage unchanged"
+          ],
+          "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls",
+          "at": 1791908704.7003167
         }
       ],
       "claims": [
@@ -4102,7 +4339,7 @@
     "unity-20261014T0100-retain-6e026a": {
       "run_id": "unity-20261014T0100-retain-6e026a",
       "source": "continuation:original-01slot:CI-artifact-retention:deadline01:30",
-      "status": "open",
+      "status": "checkpointed",
       "started_at": 1791908253.730227
     }
   },
@@ -4302,6 +4539,15 @@
       "status": "approved",
       "target": "Kihamda/Kihamda_Game",
       "head_commit": "4a0e1783ef22e147601799dcb698a116175628cc"
+    },
+    {
+      "source": "user:automation:2026-10-14:autonomous-repository",
+      "quote": "必要な調査・編集・検査・commit/push・PR作成と、検証済み変更のCI成功後のPRマージを自律的に進めます",
+      "action": "publish-reviewed-branch-and-merge-verified-pr",
+      "artifact_sha256": "f9663d346da70aa8ac3fca1c34813af1d1c6cdee0e3e028ae985fb334acabfa1",
+      "status": "approved",
+      "target": "Kihamda/Kihamda_Game",
+      "head_commit": "71f6f01a5debdb58786504f9d2c074b64923ccb9"
     }
   ],
   "external": {
@@ -4390,6 +4636,27 @@
           {
             "path": "business/unity/evidence/delivery-web-quality-20261013.json",
             "sha256": "bab185ff06f141ef7e657da7f485afc550e4ed8d3a7c80491ac41e4925187f57"
+          }
+        ]
+      }
+    },
+    "OP-web-daily-publish-20261014": {
+      "run_id": "unity-20261014T0100-retain-6e026a",
+      "fence": 26,
+      "id": "OP-web-daily-publish-20261014",
+      "action": "publish-reviewed-branch-and-merge-verified-pr",
+      "artifact_sha256": "f9663d346da70aa8ac3fca1c34813af1d1c6cdee0e3e028ae985fb334acabfa1",
+      "head_commit": "71f6f01a5debdb58786504f9d2c074b64923ccb9",
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "OP-web-daily-publish-20261014",
+        "status": "confirmed_success",
+        "source": "github:Kihamda/Kihamda_Game:pr22",
+        "evidence": "PR22 head71f6f01 CI38429375076 Linux39sec Windows25sec success; guarded merge d1e1096 verified by GitHub; downloaded tar checksum/36files/5pages95source blobs/restored browser passed; no deploy",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261014.json",
+            "sha256": "492ee039a902fffd63f9196ffc92519c6a72741497a6b7a1d037e144318cbbae"
           }
         ]
       }
@@ -10196,7 +10463,326 @@
       },
       "previous": "74d84e1f704e41d4ac8372b3294a77965efb0411bee256c47e7fc90cdbf2e8e7",
       "sha256": "5b054c8d691b67ad699454a2162a7249adef9f282f1914feba953d912af8aba9"
+    },
+    {
+      "revision": 165,
+      "at": 1791908254.1285944,
+      "action": "approval",
+      "data": {
+        "source": "user:automation:2026-10-14:autonomous-repository",
+        "quote": "必要な調査・編集・検査・commit/push・PR作成と、検証済み変更のCI成功後のPRマージを自律的に進めます",
+        "action": "publish-reviewed-branch-and-merge-verified-pr",
+        "artifact_sha256": "f9663d346da70aa8ac3fca1c34813af1d1c6cdee0e3e028ae985fb334acabfa1",
+        "status": "approved",
+        "target": "Kihamda/Kihamda_Game",
+        "head_commit": "71f6f01a5debdb58786504f9d2c074b64923ccb9"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "5b054c8d691b67ad699454a2162a7249adef9f282f1914feba953d912af8aba9",
+      "sha256": "707e9c5db3ca3078e2d1fb3dce3e31945b584c956a3f4399f7c2a66699cfae3d"
+    },
+    {
+      "revision": 166,
+      "at": 1791908254.165048,
+      "action": "prepare-external",
+      "data": {
+        "run_id": "unity-20261014T0100-retain-6e026a",
+        "fence": 26,
+        "id": "OP-web-daily-publish-20261014",
+        "action": "publish-reviewed-branch-and-merge-verified-pr",
+        "artifact_sha256": "f9663d346da70aa8ac3fca1c34813af1d1c6cdee0e3e028ae985fb334acabfa1",
+        "head_commit": "71f6f01a5debdb58786504f9d2c074b64923ccb9"
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "707e9c5db3ca3078e2d1fb3dce3e31945b584c956a3f4399f7c2a66699cfae3d",
+      "sha256": "03a69160f4be51f96276e89d11be263a9ee203b9ff949a71a3824006492aa370"
+    },
+    {
+      "revision": 167,
+      "at": 1791908704.6266453,
+      "action": "reconcile-external",
+      "data": {
+        "id": "OP-web-daily-publish-20261014",
+        "status": "confirmed_success",
+        "source": "github:Kihamda/Kihamda_Game:pr22",
+        "evidence": "PR22 head71f6f01 CI38429375076 Linux39sec Windows25sec success; guarded merge d1e1096 verified by GitHub; downloaded tar checksum/36files/5pages95source blobs/restored browser passed; no deploy",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261014.json",
+            "sha256": "492ee039a902fffd63f9196ffc92519c6a72741497a6b7a1d037e144318cbbae"
+          }
+        ]
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "03a69160f4be51f96276e89d11be263a9ee203b9ff949a71a3824006492aa370",
+      "sha256": "d9c50c80fea49334f27748a2dc7f03432ddf575501fc0382c443f501e6ee45ae"
+    },
+    {
+      "revision": 168,
+      "at": 1791908704.666094,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261014T0100-retain-6e026a",
+        "fence": 26,
+        "artifacts": [
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "a62f311839f78e3a8b71fd43a556f021c8a22e890d810c0c88f20586e325e0bb"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "9d2d273f39c42ab0742c4c9f19b75ef91351745efeed3a1ce3ef80a700d00f3e"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/App.css",
+            "sha256": "0f6e52d25a692b683c6a51271032feba0f11986632ef28d4a4da1e709dc91887"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+            "sha256": "dadc7a699fad3c5689118df88571f62859039b2b7d80d7a535ecdd5453ae18a1"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "32e709f93a002b1363e2c5b08d80121b349efb9e28c7bb84416d1431aaaebe74"
+          },
+          {
+            "path": "docs/web-minerush-mobile-20261014.md",
+            "sha256": "aa27a4bb0129f51cbb17aa4b44918195bcf861118d4b1d0ad74f0609ae3a03cb"
+          },
+          {
+            "path": "docs/web-ntik-dialog-20261014.md",
+            "sha256": "d031733f29358f2a02b5341f0b5225764f1b28f5334a3c1b9f6e1462bfe8c490"
+          },
+          {
+            "path": "docs/images/minerush-loss-20261014-390.jpg",
+            "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+          },
+          {
+            "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+            "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+          },
+          {
+            "path": "docs/images/minerush-mobile-20261014-390.jpg",
+            "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+          },
+          {
+            "path": "docs/images/ntik-dialog-20261014-1280.jpg",
+            "sha256": "fd31e30e972dda5efd72953903eec5ee581dc79c97e5fc68c691f7b4e9895982"
+          },
+          {
+            "path": "docs/images/ntik-dialog-20261014-390.jpg",
+            "sha256": "c25c85415db40391c417da5b765c59ebdf37cd28a3bf993d88b5a7c515366f54"
+          },
+          {
+            "path": "business/unity/evidence/mobile-final-20261014-0100.json",
+            "sha256": "3b5819368fff1393aacc513e57f28ca521aea3a4d85c8a8e9f8019bdc154f352"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "2510b524c238f4a70e372fc402bd237cc846a77a56cf5f636e2fe72d63ae4a39"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "9f03841fbd33ca48f22b99bde2c9438a50b5ce45b50048e0b88ce48212097406"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "c64c280245bebccb47c4ad4dee2e5a7989f4f6f1929ca9b0f903b0c94bb18269"
+          },
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261014.json",
+            "sha256": "492ee039a902fffd63f9196ffc92519c6a72741497a6b7a1d037e144318cbbae"
+          },
+          {
+            "path": "docs/web-current-retention-20261014.md",
+            "sha256": "cc6e7a1af43ed99946892d94fa21af6016e58c8f5eee2a811ec7aaf75215728f"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/web-release.tar.gz",
+            "sha256": "d222c9556369c554d373fd2fb7e724b3ea841f7dd15799909c62a1e201017d92"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/source-web-lf.zip",
+            "sha256": "be6fd9e61d6ba0cb5a510836a55511354a011541694a6647dfb21f96efe1eaf0"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/restored/manifest.json",
+            "sha256": "b79e9d17176c280e52a114a424de14d9930021dbcc570b88cd63f744f00b37a8"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/verification.json",
+            "sha256": "9720cdd52c40dc780ceabc486a3842cafe954f293079c1ca2961c75c31a66635"
+          }
+        ],
+        "checks": [
+          "Final TS/ESLint/Vite/5SSG passed",
+          "MineRush production390 initial/loss min24.516 reset/mode32.688;1280 min36",
+          "nTic production390/1280 dialog340x136 buttons142x44; cancel autofocus Tab/ShiftTab cycle Escape restores cell; Enter confirm/reload nextPlayer2",
+          "nTic turn reset/new-game waits >1.5sec retained Player1 empty board; headless turn/win/unmount regression passed",
+          "Shared scale production390 Ice stage1 min28.608/frame/2move clear; Gravity canvas269.5x323.4/frame/Enter start",
+          "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed",
+          "LF checkout normalization corrected before publication; final checkpoint supersedes earlier source byte receipts",
+          "Current static build output: 35 checksummed files; historical 36-file and final yield count corrected here",
+          "PR22 latest head CI success and guardedmerge verified; one dailyPR only",
+          "CI36files/5pages/35checksum/archiveZIP95blob/restored390 browser passed; original155events and protected files preserved",
+          "Final save within original01:30; no duplicate slot; mobile acceptance partial, next stage unchanged"
+        ],
+        "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "d9c50c80fea49334f27748a2dc7f03432ddf575501fc0382c443f501e6ee45ae",
+      "sha256": "06e2e3b97573297e2cacbc390a8b839358cdc7bdd3ce45b475b93b33c0a16add"
+    },
+    {
+      "revision": 169,
+      "at": 1791908704.7003167,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261014T0100-retain-6e026a",
+        "fence": 26,
+        "artifacts": [
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "a62f311839f78e3a8b71fd43a556f021c8a22e890d810c0c88f20586e325e0bb"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "9d2d273f39c42ab0742c4c9f19b75ef91351745efeed3a1ce3ef80a700d00f3e"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/App.css",
+            "sha256": "0f6e52d25a692b683c6a51271032feba0f11986632ef28d4a4da1e709dc91887"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+            "sha256": "dadc7a699fad3c5689118df88571f62859039b2b7d80d7a535ecdd5453ae18a1"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "32e709f93a002b1363e2c5b08d80121b349efb9e28c7bb84416d1431aaaebe74"
+          },
+          {
+            "path": "docs/web-minerush-mobile-20261014.md",
+            "sha256": "aa27a4bb0129f51cbb17aa4b44918195bcf861118d4b1d0ad74f0609ae3a03cb"
+          },
+          {
+            "path": "docs/web-ntik-dialog-20261014.md",
+            "sha256": "d031733f29358f2a02b5341f0b5225764f1b28f5334a3c1b9f6e1462bfe8c490"
+          },
+          {
+            "path": "docs/images/minerush-loss-20261014-390.jpg",
+            "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+          },
+          {
+            "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+            "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+          },
+          {
+            "path": "docs/images/minerush-mobile-20261014-390.jpg",
+            "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+          },
+          {
+            "path": "docs/images/ntik-dialog-20261014-1280.jpg",
+            "sha256": "fd31e30e972dda5efd72953903eec5ee581dc79c97e5fc68c691f7b4e9895982"
+          },
+          {
+            "path": "docs/images/ntik-dialog-20261014-390.jpg",
+            "sha256": "c25c85415db40391c417da5b765c59ebdf37cd28a3bf993d88b5a7c515366f54"
+          },
+          {
+            "path": "business/unity/evidence/mobile-final-20261014-0100.json",
+            "sha256": "3b5819368fff1393aacc513e57f28ca521aea3a4d85c8a8e9f8019bdc154f352"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "2510b524c238f4a70e372fc402bd237cc846a77a56cf5f636e2fe72d63ae4a39"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "9f03841fbd33ca48f22b99bde2c9438a50b5ce45b50048e0b88ce48212097406"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "c64c280245bebccb47c4ad4dee2e5a7989f4f6f1929ca9b0f903b0c94bb18269"
+          },
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261014.json",
+            "sha256": "492ee039a902fffd63f9196ffc92519c6a72741497a6b7a1d037e144318cbbae"
+          },
+          {
+            "path": "docs/web-current-retention-20261014.md",
+            "sha256": "cc6e7a1af43ed99946892d94fa21af6016e58c8f5eee2a811ec7aaf75215728f"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/web-release.tar.gz",
+            "sha256": "d222c9556369c554d373fd2fb7e724b3ea841f7dd15799909c62a1e201017d92"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/source-web-lf.zip",
+            "sha256": "be6fd9e61d6ba0cb5a510836a55511354a011541694a6647dfb21f96efe1eaf0"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/restored/manifest.json",
+            "sha256": "b79e9d17176c280e52a114a424de14d9930021dbcc570b88cd63f744f00b37a8"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/verification.json",
+            "sha256": "9720cdd52c40dc780ceabc486a3842cafe954f293079c1ca2961c75c31a66635"
+          }
+        ],
+        "checks": [
+          "Final TS/ESLint/Vite/5SSG passed",
+          "MineRush production390 initial/loss min24.516 reset/mode32.688;1280 min36",
+          "nTic production390/1280 dialog340x136 buttons142x44; cancel autofocus Tab/ShiftTab cycle Escape restores cell; Enter confirm/reload nextPlayer2",
+          "nTic turn reset/new-game waits >1.5sec retained Player1 empty board; headless turn/win/unmount regression passed",
+          "Shared scale production390 Ice stage1 min28.608/frame/2move clear; Gravity canvas269.5x323.4/frame/Enter start",
+          "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed",
+          "LF checkout normalization corrected before publication; final checkpoint supersedes earlier source byte receipts",
+          "Current static build output: 35 checksummed files; historical 36-file and final yield count corrected here",
+          "PR22 latest head CI success and guardedmerge verified; one dailyPR only",
+          "CI36files/5pages/35checksum/archiveZIP95blob/restored390 browser passed; original155events and protected files preserved",
+          "Final save within original01:30; no duplicate slot; mobile acceptance partial, next stage unchanged"
+        ],
+        "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "06e2e3b97573297e2cacbc390a8b839358cdc7bdd3ce45b475b93b33c0a16add",
+      "sha256": "cfe637350c1da72f1a659fe7c4d1729952ed891924ab8802cf76a679be260050"
     }
   ],
-  "projection_sha256": "7f0a274d75a770896a4c2291801fa1863c4d2616f9f719f90bdb98e0cb503a3e"
+  "projection_sha256": "3cf8653347121a3136b37acbc24af35d832f051499871966e7de1129816a4d0d"
 }

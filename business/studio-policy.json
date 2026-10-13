@@ -83,7 +83,7 @@
   "portalRenovationAcceptanceSource": "docs/web-acceptance-20261013.md",
   "webReleasePackageSource": "docs/web-release-package-20261013.md",
   "webDependencyQualitySource": "docs/web-dependency-quality-20261013.md",
-  "currentWebRetentionSource": "docs/web-current-retention-20261013.md",
+  "currentWebRetentionSource": "docs/web-current-retention-20261014.md",
   "dailyPullRequestPolicy": {
     "source": "user:automation:2026-10-13:daily-batching",
     "targetPerDay": 1,
