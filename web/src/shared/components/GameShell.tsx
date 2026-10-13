@@ -88,8 +88,9 @@ export function GameShell({
 
     const updateScale = () => {
       const viewport = scaledContentElement.parentElement;
-      const frameWidth = viewport?.clientWidth ?? frameElement.clientWidth;
-      const frameHeight = viewport?.clientHeight ?? frameElement.clientHeight;
+      const frameRect = (viewport ?? frameElement).getBoundingClientRect();
+      const frameWidth = frameRect.width;
+      const frameHeight = frameRect.height;
       const contentWidth = scaledContentElement.scrollWidth;
       const contentHeight = scaledContentElement.scrollHeight;
 
@@ -108,9 +109,9 @@ export function GameShell({
         frameWidth / contentWidth,
         frameHeight / contentHeight,
       );
-      const clampedScale = Math.max(minScale, Number(nextScale.toFixed(3)));
+      const clampedScale = Math.max(minScale, Math.floor(nextScale * 1000) / 1000);
       setScale((previousScale) =>
-        Math.abs(previousScale - clampedScale) > 0.001
+        Math.abs(previousScale - clampedScale) > 0.0001
           ? clampedScale
           : previousScale,
       );

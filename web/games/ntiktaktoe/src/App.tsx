@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 
 import StartScreen from "./components/StartScreen";
@@ -67,6 +67,19 @@ const saveStreak = (count: number, configHash: string): void => {
 // ---------------------------------------------------------------------------
 
 function App() {
+  const timers = useRef(new Set<ReturnType<typeof setTimeout>>());
+  const clearTimers = useCallback(() => {
+    timers.current.forEach(clearTimeout);
+    timers.current.clear();
+  }, []);
+  useEffect(() => clearTimers, [clearTimers]);
+  const schedule = (action: () => void, delay: number) => {
+    const timer = setTimeout(() => {
+      timers.current.delete(timer);
+      action();
+    }, delay);
+    timers.current.add(timer);
+  };
   const initialSavedState = useMemo(() => loadGameState(), []);
   const initialDevicePrefs = useMemo(() => loadDevicePreferences(), []);
 
@@ -153,6 +166,9 @@ function App() {
   }, [confirmationMode, newGameSettings]);
 
   const initializeGame = () => {
+    clearTimers();
+    setIsTransitioning(false);
+    setNextPlayerIndex(null);
     const clonedSettings = cloneGameSettings(newGameSettings);
     const configHash = computeConfigHash(clonedSettings);
     setCurrentGameSettings(clonedSettings);
@@ -219,8 +235,8 @@ function App() {
       playFanfare();
       // 派手な confetti パーティクル
       confetti(60);
-      setTimeout(() => confetti(40), 300);
-      setTimeout(() => {
+      schedule(() => confetti(40), 300);
+      schedule(() => {
         setWinner(currentPlayer.name);
         setAppState("after");
         setIsWinAnimation(false);
@@ -237,7 +253,7 @@ function App() {
       setScorePopup({ text: "DRAW", key: Date.now() });
       playArpeggio([330, 294], 0.22, "square", 0.15, 0.28);
       burst(window.innerWidth / 2, window.innerHeight / 2, 20);
-      setTimeout(() => {
+      schedule(() => {
         setWinner(null);
         setAppState("after");
         setIsDraw(false);
@@ -249,7 +265,7 @@ function App() {
         (currentPlayerIndex + 1) % currentGameSettings.players.length;
       setNextPlayerIndex(nextIndex);
       setIsTransitioning(true);
-      setTimeout(() => {
+      schedule(() => {
         setCurrentPlayerIndex(nextIndex);
         setNextPlayerIndex(null);
         setIsTransitioning(false);
@@ -282,6 +298,7 @@ function App() {
   };
 
   const resetGame = () => {
+    clearTimers();
     setAppState("before");
     setPendingMove(null);
     setIsTransitioning(false);

@@ -49,3 +49,5 @@ Web配布準備はdocs/web-release-package-20261013.md。manifestとsiteのみ�
 2026-10-13の19時枠でGravityBallの基本検査を追加しT-web-legacy-browser-acceptanceを完了。検査範囲と注入の区別はdocs/web-gravityball-acceptance-20261013.md。次はT-web-legacy-mobile-input-acceptanceでIce Slideから操作部を実測する。実タッチ・Safari・傾き・人間評価を完了扱いにしない。
 
 Ice Slideのモバイル操作部はdocs/web-ice-mobile-20261013.mdで24px以上と盤面/操作部の枠内配置を確認した。現在の次工程は同じT-web-legacy-mobile-input-acceptanceのMineRush盤面・旗操作・キーボード代替。実タッチ・Safari・人間評価は別に未確認として残す。
+
+2026-10-14のMineRush操作部とn目並べの確認dialog・タイマー取消はdocs/web-minerush-mobile-20261014.md、docs/web-ntik-dialog-20261014.md。現在の次工程は同じT-web-legacy-mobile-input-acceptanceのn目並べの大盤面・設定対象と代替操作。実タッチ/Safari/人間評価を成功扱いにしない。

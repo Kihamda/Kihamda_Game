@@ -302,6 +302,21 @@
 .ntiktaktoe-root .board-controls { margin-bottom: 12px; }
 .ntiktaktoe-root .ntiktaktoe-cell { min-width: 0; min-height: 0; padding: 0; font-size: clamp(10px, 1.5vw, 24px); }
 .ntiktaktoe-root .start-screen { overflow-y: auto; }
-.ntiktaktoe-root .confirmation-popup { position: absolute; z-index: 20; inset: 0; display: grid; place-items: center; background: #080d20cc; }
-.ntiktaktoe-root .popup-content { padding: 24px; border-radius: 12px; background: #16213e; }
 .ntiktaktoe-root .game { position: relative; }
+
+.move-confirm-dialog {
+  margin: auto;
+  width: min(340px, calc(100vw - 32px));
+  padding: 20px;
+  border: 2px solid #f8b500;
+  border-radius: 12px;
+  background: #16213e;
+  color: white;
+  font-size: 16px;
+}
+.move-confirm-dialog::backdrop { background: #080d20cc; }
+.move-confirm-dialog h2 { font-size: 20px; }
+.move-confirm-actions { display: flex; gap: 12px; }
+.move-confirm-actions button { min-height: 44px; flex: 1; font-size: 16px; }
+.move-confirm-actions button:focus-visible,
+.ntiktaktoe-cell:focus-visible { outline: 3px solid #f8b500; outline-offset: 2px; }

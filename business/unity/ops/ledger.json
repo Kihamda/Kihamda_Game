@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 155,
+  "revision": 159,
   "business_id": "game-site",
-  "fence": 24,
-  "lease": null,
+  "fence": 25,
+  "lease": {
+    "run_id": "unity-20261014T0100-minerush-62ed35",
+    "task_id": "T-web-legacy-mobile-input-acceptance",
+    "fence": 25,
+    "expires_at": 1791908963.2362545
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -2828,7 +2833,7 @@
         "Unverified release remains null; metrics remain null"
       ],
       "next_step": "After base legacy acceptance, measure Ice Slide mobile controls first",
-      "status": "ready",
+      "status": "running",
       "checkpoints": [
         {
           "run_id": "unity-20261013T1900-mobile-a9513c",
@@ -3348,6 +3353,152 @@
           ],
           "next_step": "Same mobile task: MineRush board/flag targets and equivalent keyboard controls",
           "at": 1791887167.7481925
+        },
+        {
+          "run_id": "unity-20261014T0100-minerush-62ed35",
+          "fence": 25,
+          "artifacts": [
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "64ed6532790715f59b579c383a6bdf93d700e6c804cb14fd38101125668bb6c2"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+            },
+            {
+              "path": "docs/images/minerush-mobile-20261014-390.jpg",
+              "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+            },
+            {
+              "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+              "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+            },
+            {
+              "path": "docs/images/minerush-loss-20261014-390.jpg",
+              "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+            },
+            {
+              "path": "business/unity/evidence/minerush-mobile-20261014-0100.json",
+              "sha256": "0b8f3b72e5605c5776f0e6538aebab56c4b0fc04b7dbc517b3c5e5f720dc20da"
+            },
+            {
+              "path": "docs/web-minerush-mobile-20261014.md",
+              "sha256": "7d6db201a7ee951e123d75dbad25fd4f121b7bdc523085e4a87ece78a069818f"
+            }
+          ],
+          "checks": [
+            "Build TypeScript ESLint Vite 5SSG passed",
+            "Actual production Chromium390x844 cells24.516 reset32.688 mode32.688 all targets/frame/no overflow",
+            "Actual production1280x720 cells36; screenshots after layout settled",
+            "F flag/right-click unflag/ArrowRight focus/Enter safe first open/modeEnter flag/resetEnter/reload81 hidden passed",
+            "Actual loss390 cells24.516 reset32.688 preserved",
+            "Headless actual App handler regression: longpress compatibility click, drag/cancel, multitouch, cross-cell click, keyboard, reset and unmount passed",
+            "Ice20/Gravity/navigation/guide8/business27 passed",
+            "Dotfile hashes bound in receipt; rejected checkpoint made no mutation"
+          ],
+          "next_step": "Same mobile task: nTicTacToe confirmation focus and settings during animation; large-board alternative controls",
+          "at": 1791907712.3601718
+        },
+        {
+          "run_id": "unity-20261014T0100-minerush-62ed35",
+          "fence": 25,
+          "artifacts": [
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "64ed6532790715f59b579c383a6bdf93d700e6c804cb14fd38101125668bb6c2"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "9d2d273f39c42ab0742c4c9f19b75ef91351745efeed3a1ce3ef80a700d00f3e"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/App.css",
+              "sha256": "0f6e52d25a692b683c6a51271032feba0f11986632ef28d4a4da1e709dc91887"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+              "sha256": "dadc7a699fad3c5689118df88571f62859039b2b7d80d7a535ecdd5453ae18a1"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "32e709f93a002b1363e2c5b08d80121b349efb9e28c7bb84416d1431aaaebe74"
+            },
+            {
+              "path": "docs/web-minerush-mobile-20261014.md",
+              "sha256": "7d6db201a7ee951e123d75dbad25fd4f121b7bdc523085e4a87ece78a069818f"
+            },
+            {
+              "path": "docs/web-ntik-dialog-20261014.md",
+              "sha256": "74fb3883c6198217a4f005c76a50eee7e6e136a9c606764c94de8ec51cc749db"
+            },
+            {
+              "path": "docs/images/minerush-loss-20261014-390.jpg",
+              "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+            },
+            {
+              "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+              "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+            },
+            {
+              "path": "docs/images/minerush-mobile-20261014-390.jpg",
+              "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+            },
+            {
+              "path": "docs/images/ntik-dialog-20261014-1280.jpg",
+              "sha256": "fd31e30e972dda5efd72953903eec5ee581dc79c97e5fc68c691f7b4e9895982"
+            },
+            {
+              "path": "docs/images/ntik-dialog-20261014-390.jpg",
+              "sha256": "c25c85415db40391c417da5b765c59ebdf37cd28a3bf993d88b5a7c515366f54"
+            },
+            {
+              "path": "business/unity/evidence/mobile-final-20261014-0100.json",
+              "sha256": "5392a53d4d17a5c13bac44c40a5eb3bbbbf6f31e190f1b22fa86c303f4c3c859"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "eb6463f1902ba907bd6a2f6150f6a6f7f81c97a1dde30254c246abeea080962e"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "e8ff7ced19d93f25a6461956cf015194bc6b531c2af87c2ceeb997274c8816bb"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "2a90c262b66067cfd60550a82f1d0ef264db3fe802ed57b467db63d42baf3176"
+            }
+          ],
+          "checks": [
+            "Final TS/ESLint/Vite/5SSG passed",
+            "MineRush production390 initial/loss min24.516 reset/mode32.688;1280 min36",
+            "nTic production390/1280 dialog340x136 buttons142x44; cancel autofocus Tab/ShiftTab cycle Escape restores cell; Enter confirm/reload nextPlayer2",
+            "nTic turn reset/new-game waits >1.5sec retained Player1 empty board; headless turn/win/unmount regression passed",
+            "Shared scale production390 Ice stage1 min28.608/frame/2move clear; Gravity canvas269.5x323.4/frame/Enter start",
+            "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed"
+          ],
+          "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls",
+          "at": 1791908138.5304844
         }
       ],
       "claims": [
@@ -3362,6 +3513,12 @@
           "task_id": "T-web-legacy-mobile-input-acceptance",
           "fence": 24,
           "expires_at": 1791887367.7989209
+        },
+        {
+          "run_id": "unity-20261014T0100-minerush-62ed35",
+          "task_id": "T-web-legacy-mobile-input-acceptance",
+          "fence": 25,
+          "expires_at": 1791908963.2362545
         }
       ]
     }
@@ -3647,6 +3804,13 @@
       "source": "continuation:original-19slot:source-provenance:deadline-19:30",
       "status": "checkpointed",
       "started_at": 1791887007.7791991
+    },
+    "unity-20261014T0100-minerush-62ed35": {
+      "scheduled_at": "2026-10-14T01:00:00+09:00",
+      "run_id": "unity-20261014T0100-minerush-62ed35",
+      "source": "scheduled:game-site:2026-10-14T01:00:00+09:00",
+      "status": "open",
+      "started_at": 1791907223.1710265
     }
   },
   "experiments": {
@@ -3783,7 +3947,8 @@
     "2026-10-13T01:00:00+09:00": "unity-20261013T0100-acceptance-a74d9c",
     "2026-10-13T07:00:00+09:00": "unity-20261013T0700-package-d34f19",
     "2026-10-13T13:00:00+09:00": "unity-20261013T1300-iceslide-8f42c1",
-    "2026-10-13T19:00:00+09:00": "unity-20261013T1900-gravity-7d192a"
+    "2026-10-13T19:00:00+09:00": "unity-20261013T1900-gravity-7d192a",
+    "2026-10-14T01:00:00+09:00": "unity-20261014T0100-minerush-62ed35"
   },
   "feedback": [
     {
@@ -9202,7 +9367,203 @@
       },
       "previous": "306a1f501ed0f59eb20c505a8404bb65e9ea6a7ce43614d8af34929fa19dcd1a",
       "sha256": "845e8cee9f90bf71bfdddabae16c0f6b516c2d191c656efb282a73a53860023f"
+    },
+    {
+      "revision": 156,
+      "at": 1791907223.1710265,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-14T01:00:00+09:00",
+        "run_id": "unity-20261014T0100-minerush-62ed35"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "845e8cee9f90bf71bfdddabae16c0f6b516c2d191c656efb282a73a53860023f",
+      "sha256": "dc1416960a9c16b5af6eb87213315630d2bb9b2f2d898092bceacb7766518f6f"
+    },
+    {
+      "revision": 157,
+      "at": 1791907223.2362545,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261014T0100-minerush-62ed35",
+        "task_id": "T-web-legacy-mobile-input-acceptance",
+        "ttl_seconds": 1740
+      },
+      "result": {
+        "run_id": "unity-20261014T0100-minerush-62ed35",
+        "task_id": "T-web-legacy-mobile-input-acceptance",
+        "fence": 25,
+        "expires_at": 1791908963.2362545
+      },
+      "previous": "dc1416960a9c16b5af6eb87213315630d2bb9b2f2d898092bceacb7766518f6f",
+      "sha256": "bc76e8c215a2595a5fe6c271d2e64675dc5dbf7fc17521c0ce5055c13bdde74f"
+    },
+    {
+      "revision": 158,
+      "at": 1791907712.3601718,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261014T0100-minerush-62ed35",
+        "fence": 25,
+        "artifacts": [
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "64ed6532790715f59b579c383a6bdf93d700e6c804cb14fd38101125668bb6c2"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+          },
+          {
+            "path": "docs/images/minerush-mobile-20261014-390.jpg",
+            "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+          },
+          {
+            "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+            "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+          },
+          {
+            "path": "docs/images/minerush-loss-20261014-390.jpg",
+            "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+          },
+          {
+            "path": "business/unity/evidence/minerush-mobile-20261014-0100.json",
+            "sha256": "0b8f3b72e5605c5776f0e6538aebab56c4b0fc04b7dbc517b3c5e5f720dc20da"
+          },
+          {
+            "path": "docs/web-minerush-mobile-20261014.md",
+            "sha256": "7d6db201a7ee951e123d75dbad25fd4f121b7bdc523085e4a87ece78a069818f"
+          }
+        ],
+        "checks": [
+          "Build TypeScript ESLint Vite 5SSG passed",
+          "Actual production Chromium390x844 cells24.516 reset32.688 mode32.688 all targets/frame/no overflow",
+          "Actual production1280x720 cells36; screenshots after layout settled",
+          "F flag/right-click unflag/ArrowRight focus/Enter safe first open/modeEnter flag/resetEnter/reload81 hidden passed",
+          "Actual loss390 cells24.516 reset32.688 preserved",
+          "Headless actual App handler regression: longpress compatibility click, drag/cancel, multitouch, cross-cell click, keyboard, reset and unmount passed",
+          "Ice20/Gravity/navigation/guide8/business27 passed",
+          "Dotfile hashes bound in receipt; rejected checkpoint made no mutation"
+        ],
+        "next_step": "Same mobile task: nTicTacToe confirmation focus and settings during animation; large-board alternative controls"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "bc76e8c215a2595a5fe6c271d2e64675dc5dbf7fc17521c0ce5055c13bdde74f",
+      "sha256": "3ccd5ac5ba2e385c2eea2083c8dddbb965bc6f41b62790954806dbb6a8cf88a2"
+    },
+    {
+      "revision": 159,
+      "at": 1791908138.5304844,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261014T0100-minerush-62ed35",
+        "fence": 25,
+        "artifacts": [
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "64ed6532790715f59b579c383a6bdf93d700e6c804cb14fd38101125668bb6c2"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "9d2d273f39c42ab0742c4c9f19b75ef91351745efeed3a1ce3ef80a700d00f3e"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/App.css",
+            "sha256": "0f6e52d25a692b683c6a51271032feba0f11986632ef28d4a4da1e709dc91887"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+            "sha256": "dadc7a699fad3c5689118df88571f62859039b2b7d80d7a535ecdd5453ae18a1"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "32e709f93a002b1363e2c5b08d80121b349efb9e28c7bb84416d1431aaaebe74"
+          },
+          {
+            "path": "docs/web-minerush-mobile-20261014.md",
+            "sha256": "7d6db201a7ee951e123d75dbad25fd4f121b7bdc523085e4a87ece78a069818f"
+          },
+          {
+            "path": "docs/web-ntik-dialog-20261014.md",
+            "sha256": "74fb3883c6198217a4f005c76a50eee7e6e136a9c606764c94de8ec51cc749db"
+          },
+          {
+            "path": "docs/images/minerush-loss-20261014-390.jpg",
+            "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+          },
+          {
+            "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+            "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+          },
+          {
+            "path": "docs/images/minerush-mobile-20261014-390.jpg",
+            "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+          },
+          {
+            "path": "docs/images/ntik-dialog-20261014-1280.jpg",
+            "sha256": "fd31e30e972dda5efd72953903eec5ee581dc79c97e5fc68c691f7b4e9895982"
+          },
+          {
+            "path": "docs/images/ntik-dialog-20261014-390.jpg",
+            "sha256": "c25c85415db40391c417da5b765c59ebdf37cd28a3bf993d88b5a7c515366f54"
+          },
+          {
+            "path": "business/unity/evidence/mobile-final-20261014-0100.json",
+            "sha256": "5392a53d4d17a5c13bac44c40a5eb3bbbbf6f31e190f1b22fa86c303f4c3c859"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "eb6463f1902ba907bd6a2f6150f6a6f7f81c97a1dde30254c246abeea080962e"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "e8ff7ced19d93f25a6461956cf015194bc6b531c2af87c2ceeb997274c8816bb"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "2a90c262b66067cfd60550a82f1d0ef264db3fe802ed57b467db63d42baf3176"
+          }
+        ],
+        "checks": [
+          "Final TS/ESLint/Vite/5SSG passed",
+          "MineRush production390 initial/loss min24.516 reset/mode32.688;1280 min36",
+          "nTic production390/1280 dialog340x136 buttons142x44; cancel autofocus Tab/ShiftTab cycle Escape restores cell; Enter confirm/reload nextPlayer2",
+          "nTic turn reset/new-game waits >1.5sec retained Player1 empty board; headless turn/win/unmount regression passed",
+          "Shared scale production390 Ice stage1 min28.608/frame/2move clear; Gravity canvas269.5x323.4/frame/Enter start",
+          "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed"
+        ],
+        "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "3ccd5ac5ba2e385c2eea2083c8dddbb965bc6f41b62790954806dbb6a8cf88a2",
+      "sha256": "01f9accb48d2f4d05d856abe654ba7ba34014649eb37760ba9c726091cc083b8"
     }
   ],
-  "projection_sha256": "f447971c983d191587ca24bbcefc46d26594c306e4b40e3da316d60808e7ecf9"
+  "projection_sha256": "cd1b33ce8cff33bc010e54043297178eddadb798ae88218bee91ad5b024e0ec8"
 }

@@ -1,0 +1,59 @@
+{
+  "run_id": "unity-20261014T0100-minerush-62ed35",
+  "fence": 25,
+  "implementation": "MineRush input and compact terminal header; frame sizing uses exact fractional bounds and floors scale",
+  "checks": [
+    "Build TypeScript ESLint Vite 5SSG passed",
+    "Actual production Chromium390x844 cells24.516 reset32.688 mode32.688 all targets/frame/no overflow",
+    "Actual production1280x720 cells36; screenshots after layout settled",
+    "F flag/right-click unflag/ArrowRight focus/Enter safe first open/modeEnter flag/resetEnter/reload81 hidden passed",
+    "Actual loss390 cells24.516 reset32.688 preserved",
+    "Headless actual App handler regression: longpress compatibility click, drag/cancel, multitouch, cross-cell click, keyboard, reset and unmount passed",
+    "Ice20/Gravity/navigation/guide8/business27 passed"
+  ],
+  "unverified": [
+    "physical touch",
+    "Safari",
+    "human evaluation",
+    "MineRush win screen in current run; prior rules acceptance retained"
+  ],
+  "artifacts": [
+    {
+      "path": "web/games/minerush/src/App.tsx",
+      "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+    },
+    {
+      "path": "web/games/minerush/src/App.css",
+      "sha256": "64ed6532790715f59b579c383a6bdf93d700e6c804cb14fd38101125668bb6c2"
+    },
+    {
+      "path": "web/src/shared/components/GameShell.tsx",
+      "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+    },
+    {
+      "path": "scripts/check-minerush.mjs",
+      "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "7d25759dce2b5fa65cc7c1d1c0f0eecee8e89c04662772c320b7f9651e3dc152"
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "db65247972a2c5dc903caa9b6ff3bee1329c9af414e019a15fee7329fb8b6847"
+    },
+    {
+      "path": "docs/images/minerush-mobile-20261014-390.jpg",
+      "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+    },
+    {
+      "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+      "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+    },
+    {
+      "path": "docs/images/minerush-loss-20261014-390.jpg",
+      "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+    }
+  ],
+  "next_step": "Same mobile task: nTicTacToe confirmation focus and settings during animation; large-board alternative controls"
+}

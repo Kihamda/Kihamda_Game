@@ -50,6 +50,8 @@ jobs:
           node scripts/check-portal-work-guides.mjs
           node scripts/check-iceslide.mjs
           node scripts/check-gravityball.mjs
+          node scripts/check-minerush.mjs
+          node scripts/check-ntiktaktoe.mjs
       - name: Prepare and verify Web release package
         run: |
           node scripts/web-release-package.mjs create web/dist artifacts/web-release ${{ github.sha }}
