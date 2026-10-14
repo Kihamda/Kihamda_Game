@@ -74,6 +74,23 @@ try {
   assert.equal(hook.update(NaN), false); denied = true; assert.equal(hook.update(300), true); assert.equal(renderHook().saveError, true); assert.equal(stored, '200');
   denied = false; hook = renderHook(); hook.update(400); assert.equal(renderHook().saveError, false); assert.equal(stored, '400');
   setup(); const app = startApp(); const state = app.state.current;
+  let prevented = 0;
+  app.container.props.onKeyDown({key:'Enter',preventDefault(){prevented++;}});
+  assert.equal(state.phase,'playing');
+  const strength = Math.hypot(state.gravity.x,state.gravity.y);
+  for (const [key, x, y] of [['ArrowLeft',-1,0],['ArrowRight',1,0],['ArrowUp',0,-1],['ArrowDown',0,1]]) {
+    app.container.props.onKeyDown({key,preventDefault(){prevented++;}});
+    assert.equal(Math.sign(state.gravity.x),x); assert.equal(Math.sign(state.gravity.y),y);
+    assert.equal(Math.hypot(state.gravity.x,state.gravity.y),strength);
+  }
+  assert.equal(prevented,5,'keyboard controls prevent page scroll');
+  app.container.props.onTouchMove({touches:[{clientX:500,clientY:300}]});
+  assert.equal(state.gravity.x,strength); assert.equal(state.gravity.y,0);
+  app.container.props.onTouchMove({touches:[{clientX:0,clientY:300},{clientX:500,clientY:300}]});
+  assert.equal(state.gravity.x,strength,'multi-touch must not steer using arbitrary first finger');
+  state.phase='transition'; const priorGravity={...state.gravity};
+  app.container.props.onKeyDown({key:'ArrowUp',preventDefault(){}}); assert.deepEqual(state.gravity,priorGravity,'transition ignores steering');
+  state.phase='gameover'; app.container.props.onKeyDown({key:' ',preventDefault(){}}); assert.equal(state.phase,'playing');
   state.phase = 'playing'; state.ballPos = { ...STAGES[0].goal }; state.gravity = { x: 0, y: 0 }; state.stageStartTime = Date.now();
   frame(); assert.equal(state.phase, 'transition'); const score = state.score; frame(); assert.equal(state.score, score);
   await app.container.props.onClick(); assert.equal(state.phase, 'transition', 'Click during transition must not restart cleared stage');

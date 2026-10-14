@@ -21,13 +21,16 @@ const react={
   useMemo:fn=>fn(),useCallback:fn=>fn,useEffect:fn=>{cleanups.push(fn());},
 };
 globalThis.window={innerWidth:390,innerHeight:844};
-globalThis.localStorage={getItem:k=>stored.get(k)??null,setItem:(k,v)=>stored.set(k,v)};
+let denyWrite=false,denyDelete=false,reloads=0;
+globalThis.localStorage={getItem:k=>stored.get(k)??null,setItem:(k,v)=>{if(denyWrite)throw new Error('injected write denial');stored.set(k,v);},removeItem:k=>{if(denyDelete)throw new Error('injected delete denial');stored.delete(k);}};
+globalThis.window.location={reload:()=>reloads++};
 globalThis.setTimeout=fn=>{timers.set(++id,fn);return id;};
 globalThis.clearTimeout=i=>timers.delete(i);
 const module={exports:{}};
 new Function('require','module','exports',compiled.outputFiles[0].text)(name=>name==='react'?react:name==='react/jsx-runtime'?{jsx:(type,props)=>({type,props}),jsxs:(type,props)=>({type,props})}:require(name),module,module.exports);
 function render(){cursor=0;return module.exports.App();}
 function view(){return render().props.children.props.children.find(x=>x&&x.props?.onReset||x&&x.props?.onStartNewGame)?.props;}
+function deletion(){return render().props.children.props.children.find(x=>x&&x.props?.onConfirm&&x.props?.onCancel)?.props;}
 function fire(){const callbacks=[...timers.values()];timers.clear();callbacks.forEach(fn=>fn());}
 let start=view();start.onNewGameSettingsChange({...start.newGameSettings,board:{width:3,height:3},winLength:3});view().onStartNewGame();
 view().onCellClick(0,0);assert.equal(view().isTransitioning,true);assert.equal(timers.size,1);
@@ -41,3 +44,50 @@ assert.equal(view().isWinAnimation,false);assert.equal(view().board[0][0],null);
 assert.equal(view().currentPlayerIndex,0,'old victory must not finish new game');
 view().onCellClick(0,0);cleanups.forEach(fn=>fn?.());assert.equal(timers.size,0,'unmount clears transition');
 console.log('nTicTacToe actual App: turn/victory reset-new-game and unmount stale timers passed; dialog needs browser acceptance');
+
+// Exercise actual App callbacks with storage failures, not a mirrored reducer.
+slots=[];cleanups.length=0;stored.clear();denyWrite=true;
+view().onStartNewGame();view().onCellClick(0,0);fire();view();
+assert.match(render().props.statusMessage,/進行を保存できません/);
+assert.match(render().props.statusMessage,/設定を保存できません/);
+assert.equal(view().board[0][0],'X');assert.equal(view().currentPlayerIndex,1);
+denyWrite=false;view().onCellClick(0,1);fire();view();
+assert.equal(render().props.statusMessage,undefined,'successful subsequent writes clear both failure notices');
+view().onReset();
+const prefsBeforeDelete=stored.get('extreme_tik_tok_toe_device_prefs');
+stored.set('ntiktaktoe_streak_v1',JSON.stringify({count:1,configHash:'Player 1|Player 2'}));
+const streakBeforeDelete=stored.get('ntiktaktoe_streak_v1');
+denyDelete=true;view().onClearSave();
+assert.equal(reloads,0,'opening confirmation never deletes progress');
+assert.ok(stored.has('extreme_tik_tok_toe_save'));
+deletion().onCancel();assert.equal(deletion(),undefined,'cancellation closes without deleting');
+view().onClearSave();deletion().onConfirm();
+assert.match(render().props.statusMessage,/削除できません/);assert.equal(reloads,0);
+assert.ok(stored.has('extreme_tik_tok_toe_save'),'denied deletion keeps the save');
+denyDelete=false;view().onClearSave();deletion().onConfirm();assert.equal(reloads,1);assert.equal(stored.has('extreme_tik_tok_toe_save'),false);
+assert.equal(stored.get('extreme_tik_tok_toe_device_prefs'),prefsBeforeDelete,'progress deletion keeps preferences');
+assert.equal(stored.get('ntiktaktoe_streak_v1'),streakBeforeDelete,'progress deletion keeps streak history');
+
+const storageBuild=await build({entryPoints:[`${web}games/ntiktaktoe/src/lib/storage.ts`],bundle:true,write:false,platform:'node',format:'cjs'});
+const storageModule={exports:{}};
+new Function('module','exports',storageBuild.outputFiles[0].text)(storageModule,storageModule.exports);
+const storage=storageModule.exports;
+const valid={appState:'in_progress',gameSettings:{board:{width:3,height:3},winLength:3,players:[{name:'A',mark:'X',color:'red'},{name:'B',mark:'O',color:'blue'}]},board:[['X',null,null],[null,null,null],[null,null,null]],currentPlayerIndex:1,winner:null};
+assert.equal(storage.validateGameState(valid).gameSettings.gameMode,'classic','legacy saves missing gameMode survive');
+for(const change of [
+  s=>{s.appState='unknown'},s=>{s.appState=['in_progress']},s=>{s.board=[[null]]},
+  s=>{s.board[0][0]='unknown'},s=>{s.currentPlayerIndex=-1},s=>{s.currentPlayerIndex=2},
+  s=>{s.currentPlayerIndex=0.5},s=>{s.gameSettings.board.width=31},s=>{s.gameSettings.winLength=null},
+  s=>{s.gameSettings.players=[null,null]},s=>{s.winner='unknown'},s=>{s.gameSettings.gameMode='unknown'},
+]){const fixture=structuredClone(valid);change(fixture);assert.equal(storage.validateGameState(fixture),null);}
+for(const fixture of [null,[],{},'text'])assert.equal(storage.validateGameState(fixture),null);
+stored.set('extreme_tik_tok_toe_save',JSON.stringify({...valid,board:[[null]]}));
+assert.equal(storage.readGameState().state,null);assert.match(storage.readGameState().message,/形式/);
+assert.ok(stored.has('extreme_tik_tok_toe_save'),'invalid data is not silently deleted');
+slots=[];cleanups.length=0;view();assert.match(render().props.statusMessage,/形式/);
+assert.equal(view().savedState,null);view().onStartNewGame();view();assert.equal(render().props.statusMessage,undefined);
+stored.set('extreme_tik_tok_toe_save','{');assert.equal(storage.loadGameState(),null);
+globalThis.localStorage={getItem:()=>{throw new Error('injected read denial')},setItem:()=>{throw new Error('injected write denial')},removeItem:()=>{throw new Error('injected delete denial')}};
+assert.match(storage.readGameState().message,/読み込めません/);assert.equal(storage.saveGameState(valid),false);assert.equal(storage.clearSavedGame(),false);
+assert.equal(storage.saveDevicePreferences({}),false);assert.equal(storage.loadDevicePreferences().confirmationMode,false);
+console.log('nTic storage: 16 malformed fixtures, legacy format, read/write/delete denial, actual App continued moves/recovery/deletion and invalid-save warning passed');

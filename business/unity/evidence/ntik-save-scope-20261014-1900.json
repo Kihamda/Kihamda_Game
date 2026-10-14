@@ -1,0 +1,75 @@
+{
+  "run": "unity-20261014T1900-scope-6d828f91",
+  "fence": 29,
+  "at": "2026-10-14T19:14:50.567275+09:00",
+  "status": "partial-final-browser-acceptance-unverified",
+  "initialBrowser": {
+    "version": "guidance-only-before-page-dialog",
+    "viewport": [
+      390,
+      844
+    ],
+    "guidanceFontCssPx": 15.84,
+    "horizontalOverflow": false,
+    "screenWidth": 360,
+    "scrollWidth": 985,
+    "clientWidth": 985,
+    "scrollHeight": 1850,
+    "passed": [
+      "3x3 settings/start",
+      "cell1-1 X",
+      "reload Player2",
+      "Chrome1280 normal five-move win; three stored keys read-only"
+    ]
+  },
+  "finalChecks": [
+    "TS/ESLint/Vite/5SSG",
+    "35 artifact checksums",
+    "actual App opening/cancel/delete denial/progress-only deletion",
+    "16 malformed/legacy/storage denial and timer regressions",
+    "parent4HEAD/recovery8hashes/baseline13checkpoint verified"
+  ],
+  "unverified": [
+    "final page-dialog browser input/focus/layout",
+    "native confirm cancellation/confirmation",
+    "old modal tabs cleanup",
+    "physical touch",
+    "Safari",
+    "human feedback",
+    "whole-browser restart"
+  ],
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "playStarts": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "nextStep": "same T-web-ntik-save-scope-guidance: final browser acceptance",
+  "artifacts": [
+    {
+      "path": "web/games/ntiktaktoe/src/App.tsx",
+      "sha256": "b698a230a710f64ca451a724496e7e0fd1732818638f789a12e0554bacd357e7"
+    },
+    {
+      "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+      "sha256": "23669f8f366c30ef994b601a3f0a93732f433c3cea8c76118af44046916c1c7f"
+    },
+    {
+      "path": "web/games/ntiktaktoe/src/components/SaveDeletionConfirmation.tsx",
+      "sha256": "fddadaaa7911e11e2d0896329ece12bd834350dff1aaa952f24ea69b90c99fd8"
+    },
+    {
+      "path": "scripts/check-ntiktaktoe.mjs",
+      "sha256": "dc8285820c47f1dde249db56b8c5a83ab15c5d7102ea1d49564f3ababba76b77"
+    },
+    {
+      "path": "docs/web-ntik-save-scope-20261014.md",
+      "sha256": "29cafcf6fde907d9f74a3e11909df5d6bef9fea7e4854f645ab73f90e6f9b6cc"
+    },
+    {
+      "path": "docs/images/ntik-save-scope-20261014-390.png",
+      "sha256": "fca1be68ca589aa4627b7c6df96e96340f7cf62ef57f63f10a61a9a84feca4da"
+    }
+  ]
+}

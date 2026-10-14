@@ -320,3 +320,27 @@
 .move-confirm-actions button { min-height: 44px; flex: 1; font-size: 16px; }
 .move-confirm-actions button:focus-visible,
 .ntiktaktoe-cell:focus-visible { outline: 3px solid #f8b500; outline-offset: 2px; }
+
+.ntiktaktoe-root .coordinate-controls { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; font-size: 44px; }
+.ntiktaktoe-root .coordinate-controls label { display: flex; align-items: center; gap: 8px; }
+.ntiktaktoe-root .coordinate-controls input { width: 100px; }
+.ntiktaktoe-root .coordinate-target { outline: 4px solid #f8b500; outline-offset: -4px; z-index: 1; }
+.ntiktaktoe-root .coordinate-controls input,
+.ntiktaktoe-root .coordinate-controls button,
+.ntiktaktoe-root .reset-button { min-width: 80px; min-height: 80px; font-size: 44px; }
+.ntiktaktoe-root .start-screen { justify-content: flex-start; font-size: 44px; }
+.ntiktaktoe-root .start-layout { grid-template-columns: 1fr; max-width: 880px; }
+.ntiktaktoe-root .start-card { margin-bottom: 24px; }
+.ntiktaktoe-root .setting-row,
+.ntiktaktoe-root .size-inputs,
+.ntiktaktoe-root .player-config-item { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.ntiktaktoe-root .start-screen input,
+.ntiktaktoe-root .start-screen select,
+.ntiktaktoe-root .start-screen button { min-width: 80px; min-height: 80px; font-size: 44px; max-width: 100%; }
+.ntiktaktoe-root .start-screen input[type="number"] { width: 140px; }
+.ntiktaktoe-root .start-screen input[type="text"] { width: 260px; }
+.ntiktaktoe-root .start-screen input[type="color"] { width: 100px; }
+.ntiktaktoe-root .checkbox-label-inline { display: flex; align-items: center; gap: 16px; }
+.ntiktaktoe-root .start-screen :focus-visible,
+.ntiktaktoe-root .coordinate-controls :focus-visible,
+.ntiktaktoe-root .reset-button:focus-visible { outline: 4px solid #f8b500; outline-offset: 4px; }

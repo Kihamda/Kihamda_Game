@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 164,
+  "revision": 192,
   "business_id": "game-site",
-  "fence": 26,
-  "lease": {
-    "run_id": "unity-20261014T0100-retain-6e026a",
-    "task_id": "T-web-legacy-mobile-input-acceptance",
-    "fence": 26,
-    "expires_at": 1791908973.7562737
-  },
+  "fence": 30,
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -2833,7 +2828,7 @@
         "Unverified release remains null; metrics remain null"
       ],
       "next_step": "After base legacy acceptance, measure Ice Slide mobile controls first",
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "run_id": "unity-20261013T1900-mobile-a9513c",
@@ -3780,6 +3775,467 @@
           ],
           "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls",
           "at": 1791908253.7884388
+        },
+        {
+          "run_id": "unity-20261014T0100-retain-6e026a",
+          "fence": 26,
+          "artifacts": [
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "a62f311839f78e3a8b71fd43a556f021c8a22e890d810c0c88f20586e325e0bb"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "9d2d273f39c42ab0742c4c9f19b75ef91351745efeed3a1ce3ef80a700d00f3e"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/App.css",
+              "sha256": "0f6e52d25a692b683c6a51271032feba0f11986632ef28d4a4da1e709dc91887"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+              "sha256": "dadc7a699fad3c5689118df88571f62859039b2b7d80d7a535ecdd5453ae18a1"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "32e709f93a002b1363e2c5b08d80121b349efb9e28c7bb84416d1431aaaebe74"
+            },
+            {
+              "path": "docs/web-minerush-mobile-20261014.md",
+              "sha256": "aa27a4bb0129f51cbb17aa4b44918195bcf861118d4b1d0ad74f0609ae3a03cb"
+            },
+            {
+              "path": "docs/web-ntik-dialog-20261014.md",
+              "sha256": "d031733f29358f2a02b5341f0b5225764f1b28f5334a3c1b9f6e1462bfe8c490"
+            },
+            {
+              "path": "docs/images/minerush-loss-20261014-390.jpg",
+              "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+            },
+            {
+              "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+              "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+            },
+            {
+              "path": "docs/images/minerush-mobile-20261014-390.jpg",
+              "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+            },
+            {
+              "path": "docs/images/ntik-dialog-20261014-1280.jpg",
+              "sha256": "fd31e30e972dda5efd72953903eec5ee581dc79c97e5fc68c691f7b4e9895982"
+            },
+            {
+              "path": "docs/images/ntik-dialog-20261014-390.jpg",
+              "sha256": "c25c85415db40391c417da5b765c59ebdf37cd28a3bf993d88b5a7c515366f54"
+            },
+            {
+              "path": "business/unity/evidence/mobile-final-20261014-0100.json",
+              "sha256": "3b5819368fff1393aacc513e57f28ca521aea3a4d85c8a8e9f8019bdc154f352"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "2510b524c238f4a70e372fc402bd237cc846a77a56cf5f636e2fe72d63ae4a39"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "9f03841fbd33ca48f22b99bde2c9438a50b5ce45b50048e0b88ce48212097406"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "c64c280245bebccb47c4ad4dee2e5a7989f4f6f1929ca9b0f903b0c94bb18269"
+            },
+            {
+              "path": "business/unity/evidence/delivery-web-daily-20261014.json",
+              "sha256": "492ee039a902fffd63f9196ffc92519c6a72741497a6b7a1d037e144318cbbae"
+            },
+            {
+              "path": "docs/web-current-retention-20261014.md",
+              "sha256": "cc6e7a1af43ed99946892d94fa21af6016e58c8f5eee2a811ec7aaf75215728f"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/web-release.tar.gz",
+              "sha256": "d222c9556369c554d373fd2fb7e724b3ea841f7dd15799909c62a1e201017d92"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/source-web-lf.zip",
+              "sha256": "be6fd9e61d6ba0cb5a510836a55511354a011541694a6647dfb21f96efe1eaf0"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/restored/manifest.json",
+              "sha256": "b79e9d17176c280e52a114a424de14d9930021dbcc570b88cd63f744f00b37a8"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/verification.json",
+              "sha256": "9720cdd52c40dc780ceabc486a3842cafe954f293079c1ca2961c75c31a66635"
+            }
+          ],
+          "checks": [
+            "Final TS/ESLint/Vite/5SSG passed",
+            "MineRush production390 initial/loss min24.516 reset/mode32.688;1280 min36",
+            "nTic production390/1280 dialog340x136 buttons142x44; cancel autofocus Tab/ShiftTab cycle Escape restores cell; Enter confirm/reload nextPlayer2",
+            "nTic turn reset/new-game waits >1.5sec retained Player1 empty board; headless turn/win/unmount regression passed",
+            "Shared scale production390 Ice stage1 min28.608/frame/2move clear; Gravity canvas269.5x323.4/frame/Enter start",
+            "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed",
+            "LF checkout normalization corrected before publication; final checkpoint supersedes earlier source byte receipts",
+            "Current static build output: 35 checksummed files; historical 36-file and final yield count corrected here",
+            "PR22 latest head CI success and guardedmerge verified; one dailyPR only",
+            "CI36files/5pages/35checksum/archiveZIP95blob/restored390 browser passed; original155events and protected files preserved",
+            "Final save within original01:30; no duplicate slot; mobile acceptance partial, next stage unchanged"
+          ],
+          "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls",
+          "at": 1791908704.666094
+        },
+        {
+          "run_id": "unity-20261014T0100-retain-6e026a",
+          "fence": 26,
+          "artifacts": [
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "a62f311839f78e3a8b71fd43a556f021c8a22e890d810c0c88f20586e325e0bb"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "9d2d273f39c42ab0742c4c9f19b75ef91351745efeed3a1ce3ef80a700d00f3e"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/App.css",
+              "sha256": "0f6e52d25a692b683c6a51271032feba0f11986632ef28d4a4da1e709dc91887"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+              "sha256": "dadc7a699fad3c5689118df88571f62859039b2b7d80d7a535ecdd5453ae18a1"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "32e709f93a002b1363e2c5b08d80121b349efb9e28c7bb84416d1431aaaebe74"
+            },
+            {
+              "path": "docs/web-minerush-mobile-20261014.md",
+              "sha256": "aa27a4bb0129f51cbb17aa4b44918195bcf861118d4b1d0ad74f0609ae3a03cb"
+            },
+            {
+              "path": "docs/web-ntik-dialog-20261014.md",
+              "sha256": "d031733f29358f2a02b5341f0b5225764f1b28f5334a3c1b9f6e1462bfe8c490"
+            },
+            {
+              "path": "docs/images/minerush-loss-20261014-390.jpg",
+              "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+            },
+            {
+              "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+              "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+            },
+            {
+              "path": "docs/images/minerush-mobile-20261014-390.jpg",
+              "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+            },
+            {
+              "path": "docs/images/ntik-dialog-20261014-1280.jpg",
+              "sha256": "fd31e30e972dda5efd72953903eec5ee581dc79c97e5fc68c691f7b4e9895982"
+            },
+            {
+              "path": "docs/images/ntik-dialog-20261014-390.jpg",
+              "sha256": "c25c85415db40391c417da5b765c59ebdf37cd28a3bf993d88b5a7c515366f54"
+            },
+            {
+              "path": "business/unity/evidence/mobile-final-20261014-0100.json",
+              "sha256": "3b5819368fff1393aacc513e57f28ca521aea3a4d85c8a8e9f8019bdc154f352"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "2510b524c238f4a70e372fc402bd237cc846a77a56cf5f636e2fe72d63ae4a39"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "9f03841fbd33ca48f22b99bde2c9438a50b5ce45b50048e0b88ce48212097406"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "c64c280245bebccb47c4ad4dee2e5a7989f4f6f1929ca9b0f903b0c94bb18269"
+            },
+            {
+              "path": "business/unity/evidence/delivery-web-daily-20261014.json",
+              "sha256": "492ee039a902fffd63f9196ffc92519c6a72741497a6b7a1d037e144318cbbae"
+            },
+            {
+              "path": "docs/web-current-retention-20261014.md",
+              "sha256": "cc6e7a1af43ed99946892d94fa21af6016e58c8f5eee2a811ec7aaf75215728f"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/web-release.tar.gz",
+              "sha256": "d222c9556369c554d373fd2fb7e724b3ea841f7dd15799909c62a1e201017d92"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/source-web-lf.zip",
+              "sha256": "be6fd9e61d6ba0cb5a510836a55511354a011541694a6647dfb21f96efe1eaf0"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/restored/manifest.json",
+              "sha256": "b79e9d17176c280e52a114a424de14d9930021dbcc570b88cd63f744f00b37a8"
+            },
+            {
+              "path": "artifacts/releases/web-20261014-ci-38429375076/verification.json",
+              "sha256": "9720cdd52c40dc780ceabc486a3842cafe954f293079c1ca2961c75c31a66635"
+            }
+          ],
+          "checks": [
+            "Final TS/ESLint/Vite/5SSG passed",
+            "MineRush production390 initial/loss min24.516 reset/mode32.688;1280 min36",
+            "nTic production390/1280 dialog340x136 buttons142x44; cancel autofocus Tab/ShiftTab cycle Escape restores cell; Enter confirm/reload nextPlayer2",
+            "nTic turn reset/new-game waits >1.5sec retained Player1 empty board; headless turn/win/unmount regression passed",
+            "Shared scale production390 Ice stage1 min28.608/frame/2move clear; Gravity canvas269.5x323.4/frame/Enter start",
+            "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed",
+            "LF checkout normalization corrected before publication; final checkpoint supersedes earlier source byte receipts",
+            "Current static build output: 35 checksummed files; historical 36-file and final yield count corrected here",
+            "PR22 latest head CI success and guardedmerge verified; one dailyPR only",
+            "CI36files/5pages/35checksum/archiveZIP95blob/restored390 browser passed; original155events and protected files preserved",
+            "Final save within original01:30; no duplicate slot; mobile acceptance partial, next stage unchanged"
+          ],
+          "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls",
+          "at": 1791908704.7003167
+        },
+        {
+          "run_id": "unity-20261014T0700-ntik-42b719",
+          "fence": 27,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.css",
+              "sha256": "bd1e415b2d06819836bcc33270cf81a9f4bdce3df745867bcfc0bdb7930651b4"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+              "sha256": "f8014ef7931e2b1b86cc7c6133cff427ac79bfe7e9cb808257901b6ed451cdd0"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "c5728b5f1c6565b11bc2e6e0908c42f43dfa2a4ab44d9a932e5e4a90019c2b2f"
+            },
+            {
+              "path": "docs/web-ntik-coordinate-20261014.md",
+              "sha256": "5f75132ac8c9fc8f0fb066934e43087fc01f1533d56b9de94ddeccd9eeb6dda7"
+            },
+            {
+              "path": "docs/images/ntik-coordinate-20261014-390.png",
+              "sha256": "9639867e57fb4289ed08b64a23d423f5d6f5a660873bf6644854e86f3d58c41b"
+            },
+            {
+              "path": "business/unity/evidence/ntik-layout-20261014-0700.json",
+              "sha256": "10e973141a8e7adea26de03315a0f9fb2101d34b718303ba87b86b79a20c5efe"
+            }
+          ],
+          "checks": [
+            "nTic final build/8 viewport-board cases/coordinate Enter/modal/save/gravity-full-column passed",
+            "Physical touch Safari human acceptance unverified; no extra daily PR"
+          ],
+          "next_step": "Same mobile task: GravityBall keyboard steering and input measurement",
+          "at": 1791929354.4791734
+        },
+        {
+          "run_id": "unity-20261014T0700-ntik-42b719",
+          "fence": 27,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.css",
+              "sha256": "0ab8fd7d10ae8ba477bd01976a929b9f0e808e163c93d04f0e3dc3f3d023ff45"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+              "sha256": "f8014ef7931e2b1b86cc7c6133cff427ac79bfe7e9cb808257901b6ed451cdd0"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "c5728b5f1c6565b11bc2e6e0908c42f43dfa2a4ab44d9a932e5e4a90019c2b2f"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "69b8836c9390762f1cee322df3638139ddbce957a4b6a9c7ede28b730c8fc51e"
+            },
+            {
+              "path": "web/games/gravityball/src/App.css",
+              "sha256": "eea9f3d5367e3c97aa2f23aab531676a86c879eb4239c3e7a3b25afb777f891f"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "ea820d3053f9a9e32f81aa255328b86e748b5978ec874588dd18f1f8b09b8fee"
+            },
+            {
+              "path": "docs/web-ntik-coordinate-20261014.md",
+              "sha256": "a0e068e74b5fc00075cc78d99a99ac3c30bfc5bd7ac1a23f8f074b9c083159ae"
+            },
+            {
+              "path": "docs/web-gravity-keyboard-20261014.md",
+              "sha256": "cd1a5e342ad8bbbbb2583f49d830cb4aa4753922bf3ce57d977963660a86a04d"
+            },
+            {
+              "path": "docs/images/ntik-coordinate-20261014-390.png",
+              "sha256": "cb060a443dcd65a09e3e594413461f6b399d33471114e8a73e08b8ea0cb146f5"
+            },
+            {
+              "path": "docs/images/gravity-keyboard-20261014-390.png",
+              "sha256": "359b033c2a2af5ab4e1731d3117803e83cb6e1a6f9e0c87826286dbc68c2260b"
+            },
+            {
+              "path": "docs/images/gravity-keyboard-20261014-1280.png",
+              "sha256": "36bbf5f7c89cb7bc149ac209cabf46a0862118a08c39727208ba8ccb9cb6ea4e"
+            },
+            {
+              "path": "business/unity/evidence/ntik-layout-20261014-0700.json",
+              "sha256": "12140e53f618aa3a2ae4ab602f7f0b44bcedbb62374ec5fe391c8fdfa3816a1b"
+            },
+            {
+              "path": "business/unity/evidence/gravity-input-20261014-0700.json",
+              "sha256": "b4b9dc35d5c333e334a42cf38cc108096f15a6ddec4ad9e3106795e968f46ba2"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-14-small-target-alternatives.md",
+              "sha256": "b27c60473f95b7b377014040848edc9c03a517b0b60b068b5bdb8a2da9c1e931"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "ea0bbda9a5764c210f92339457fd58f2fee9f4384ec98b2fa9825b212f724d04"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "b3e041e603cbdc9d8bb5940819926e5b63185c66cd6d98ba52d017d4afdc0086"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "bf5b957c00faa56588f362f523e38ce0f032c0e3f29c4b315b1381ecd6c1b379"
+            },
+            {
+              "path": "business/unity/evidence/mobile-20261014-0700.json",
+              "sha256": "abe5cb511d8f89fa2d2497516a2cd36c158203f63d35167d7765c6aaea8c1648"
+            }
+          ],
+          "checks": [
+            "Final TypeScript/ESLint/Vite/5SSG/35 checksums passed",
+            "nTic8 final viewport/layout cases, targets >=24, coordinate/modal/Enter/save-reload/full gravity column passed",
+            "Chrome simulated nTic touch coordinate/confirmation44px/reloadPlayer2 passed",
+            "Gravity actual App four vectors/strength/transition/Space/single-vs-multi plus original regressions passed",
+            "Chrome simulated single/multi/cancel and observed four exact vectors; state never injected",
+            "Original169 events/latest26 baseline receipts/parent4commits/recovery8 hashes verified",
+            "PR22 already merged today; no additional PR/push/deployment",
+            "Physicaltouch Safari orientation human unverified; metrics and release null",
+            "Initial transient390 measurement preserved and corrected with settled rect and repeated touch events"
+          ],
+          "next_step": "T-web-ntik-storage-resilience: reproduce silent write denial and malformed saved board, then validate and report status",
+          "at": 1791929932.4754617
+        },
+        {
+          "run_id": "unity-20261014T0700-ntik-42b719",
+          "fence": 27,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.css",
+              "sha256": "0ab8fd7d10ae8ba477bd01976a929b9f0e808e163c93d04f0e3dc3f3d023ff45"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+              "sha256": "f8014ef7931e2b1b86cc7c6133cff427ac79bfe7e9cb808257901b6ed451cdd0"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "c5728b5f1c6565b11bc2e6e0908c42f43dfa2a4ab44d9a932e5e4a90019c2b2f"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "69b8836c9390762f1cee322df3638139ddbce957a4b6a9c7ede28b730c8fc51e"
+            },
+            {
+              "path": "web/games/gravityball/src/App.css",
+              "sha256": "eea9f3d5367e3c97aa2f23aab531676a86c879eb4239c3e7a3b25afb777f891f"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "ea820d3053f9a9e32f81aa255328b86e748b5978ec874588dd18f1f8b09b8fee"
+            },
+            {
+              "path": "docs/web-ntik-coordinate-20261014.md",
+              "sha256": "a0e068e74b5fc00075cc78d99a99ac3c30bfc5bd7ac1a23f8f074b9c083159ae"
+            },
+            {
+              "path": "docs/web-gravity-keyboard-20261014.md",
+              "sha256": "cd1a5e342ad8bbbbb2583f49d830cb4aa4753922bf3ce57d977963660a86a04d"
+            },
+            {
+              "path": "docs/images/ntik-coordinate-20261014-390.png",
+              "sha256": "cb060a443dcd65a09e3e594413461f6b399d33471114e8a73e08b8ea0cb146f5"
+            },
+            {
+              "path": "docs/images/gravity-keyboard-20261014-390.png",
+              "sha256": "359b033c2a2af5ab4e1731d3117803e83cb6e1a6f9e0c87826286dbc68c2260b"
+            },
+            {
+              "path": "docs/images/gravity-keyboard-20261014-1280.png",
+              "sha256": "36bbf5f7c89cb7bc149ac209cabf46a0862118a08c39727208ba8ccb9cb6ea4e"
+            },
+            {
+              "path": "business/unity/evidence/ntik-layout-20261014-0700.json",
+              "sha256": "12140e53f618aa3a2ae4ab602f7f0b44bcedbb62374ec5fe391c8fdfa3816a1b"
+            },
+            {
+              "path": "business/unity/evidence/gravity-input-20261014-0700.json",
+              "sha256": "b4b9dc35d5c333e334a42cf38cc108096f15a6ddec4ad9e3106795e968f46ba2"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-14-small-target-alternatives.md",
+              "sha256": "b27c60473f95b7b377014040848edc9c03a517b0b60b068b5bdb8a2da9c1e931"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "ea0bbda9a5764c210f92339457fd58f2fee9f4384ec98b2fa9825b212f724d04"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "b3e041e603cbdc9d8bb5940819926e5b63185c66cd6d98ba52d017d4afdc0086"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "bf5b957c00faa56588f362f523e38ce0f032c0e3f29c4b315b1381ecd6c1b379"
+            },
+            {
+              "path": "business/unity/evidence/mobile-20261014-0700.json",
+              "sha256": "abe5cb511d8f89fa2d2497516a2cd36c158203f63d35167d7765c6aaea8c1648"
+            }
+          ],
+          "checks": [
+            "Final TypeScript/ESLint/Vite/5SSG/35 checksums passed",
+            "nTic8 final viewport/layout cases, targets >=24, coordinate/modal/Enter/save-reload/full gravity column passed",
+            "Chrome simulated nTic touch coordinate/confirmation44px/reloadPlayer2 passed",
+            "Gravity actual App four vectors/strength/transition/Space/single-vs-multi plus original regressions passed",
+            "Chrome simulated single/multi/cancel and observed four exact vectors; state never injected",
+            "Original169 events/latest26 baseline receipts/parent4commits/recovery8 hashes verified",
+            "PR22 already merged today; no additional PR/push/deployment",
+            "Physicaltouch Safari orientation human unverified; metrics and release null",
+            "Initial transient390 measurement preserved and corrected with settled rect and repeated touch events"
+          ],
+          "next_step": "T-web-ntik-storage-resilience: reproduce silent write denial and malformed saved board, then validate and report status",
+          "passed": true,
+          "at": 1791929932.502282
         }
       ],
       "claims": [
@@ -3806,8 +4262,561 @@
           "task_id": "T-web-legacy-mobile-input-acceptance",
           "fence": 26,
           "expires_at": 1791908973.7562737
+        },
+        {
+          "run_id": "unity-20261014T0700-ntik-42b719",
+          "task_id": "T-web-legacy-mobile-input-acceptance",
+          "fence": 27,
+          "expires_at": 1791930470.5974855
         }
       ]
+    },
+    "T-web-ntik-storage-resilience": {
+      "id": "T-web-ntik-storage-resilience",
+      "objective": "n目並べの保存失敗と不正な保存データを画面停止や無言の消失にしない",
+      "acceptance": [
+        "Reject malformed appState, board dimensions and player indexes before resume; preserve valid old saves",
+        "Write/delete denial reports visible status and leaves the current game usable",
+        "Verify normal move/save/reload and existing timer/modal/coordinate regressions",
+        "Record injected failures separately from physical device and human acceptance"
+      ],
+      "outputs": [
+        "nTic storage validation and status",
+        "Tests and browser evidence"
+      ],
+      "checks": [
+        "Actual App/storage denial and malformed fixtures",
+        "Production browser reload and visible status"
+      ],
+      "next_step": "Reproduce silent write failure and malformed board against current storage.ts before implementing validation/status",
+      "decision_id": "D-web-technology-policy-20261012",
+      "experiment_id": "E-unity-portal",
+      "hypothesis": "入力代替に続けて保存可否を画面に返せば、再読み込みで失う条件を操作中に判断できる",
+      "source": "code:web/games/ntiktaktoe/src/lib/storage.ts:saveGameState,clearSavedGame,loadGameState;user:automation:unity:2026-10-14",
+      "pdca": "do",
+      "priority": 1,
+      "depends_on": [
+        "T-web-legacy-mobile-input-acceptance"
+      ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261014T1300-storage-7a1517e6",
+          "fence": 28,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "793aafb718f2b30d85ee23d18c85af91179ec1f864501858b14f4732c83846f3"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/lib/storage.ts",
+              "sha256": "b74aadaaa80d6c5c5ae8cafe81a67d96f4226389f39e0d61228cfdc02d4c973f"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "751e5cd3cbe58deda66641079b8d720936184ec5266177ce0d5c2b8f10f1304e"
+            },
+            {
+              "path": "docs/web-ntik-storage-20261014.md",
+              "sha256": "bc1ec894555c78b83f6be6800a7e5361af53abb08404f0c5bd22d69c586551f3"
+            },
+            {
+              "path": "business/unity/research/2026-10-14-browser-save-contract.md",
+              "sha256": "2edb7f6ece50cd6b0e10601ab8f543bc490a412b6afe939e6f070ae57f3d53c1"
+            },
+            {
+              "path": "docs/images/ntik-save-warning-20261014-390.png",
+              "sha256": "8ddbf863cddd45efb6bd06e6768c8e58fe2145188b2ade57ddac76aaae5eff9c"
+            },
+            {
+              "path": "docs/images/ntik-save-combined-20261014-390.png",
+              "sha256": "ebd4b1aaf7ee0cf33daea4c29521ae2dddb64b9587c4329ee4b4ba289e9f7849"
+            },
+            {
+              "path": "docs/images/ntik-invalid-save-20261014-1280.png",
+              "sha256": "76fa70fa310c308ac2f896f85d0a3622bb103a5ccbe289fe91106f36e5c5da9d"
+            },
+            {
+              "path": "docs/images/ntik-save-warning-20261014-1280.png",
+              "sha256": "ac96bbd0892911f022b0ce0a150633034c3a3763546359f1e7ab29089ccefe37"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "1c61dcb6a5d150b6d1838df6bec493f44c8bab391af159b74c105ffaff4b6b6d"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "cce1451fa14a9483c28439f0362f1b687507d8cf51d881dc02f0b84a60921449"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "1c4a11a2ee4d19d517692ee6213429c2c3eb17df0ef81a302c01841d939d5501"
+            },
+            {
+              "path": "business/unity/evidence/ntik-storage-20261014-1300.json",
+              "sha256": "e3fe302fcf44ac91f925cdc11a6385c92e98792d83672587a61ffd8412cd360f"
+            }
+          ],
+          "checks": [
+            "Final TS/ESLint/Vite/5SSG passed",
+            "16 malformed/legacy/read-write-delete denial and actual App/timer regressions passed",
+            "Production browser normal coordinate/modal/Enter/reload and quota warning/recovery passed",
+            "Final390 combined status120px and root252px inside frame270.625;1280 settled root680.4 inside704",
+            "Deletion confirm and events mocked; native confirm unverified; initial modal tab cleanup unverified",
+            "Prior18 checkpoint hashes and parent4 commits/recovery8 hashes matched",
+            "PR22 already merged today; local commit only; metrics/release null"
+          ],
+          "next_step": "T-web-ntik-save-scope-guidance: 進行・設定・連勝の保存先と削除範囲を開始画面へ示し、標準削除確認の実操作は未確認として分ける",
+          "at": 1791951624.2232196
+        },
+        {
+          "run_id": "unity-20261014T1300-storage-7a1517e6",
+          "fence": 28,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "793aafb718f2b30d85ee23d18c85af91179ec1f864501858b14f4732c83846f3"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/lib/storage.ts",
+              "sha256": "b74aadaaa80d6c5c5ae8cafe81a67d96f4226389f39e0d61228cfdc02d4c973f"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "751e5cd3cbe58deda66641079b8d720936184ec5266177ce0d5c2b8f10f1304e"
+            },
+            {
+              "path": "docs/web-ntik-storage-20261014.md",
+              "sha256": "bc1ec894555c78b83f6be6800a7e5361af53abb08404f0c5bd22d69c586551f3"
+            },
+            {
+              "path": "business/unity/research/2026-10-14-browser-save-contract.md",
+              "sha256": "2edb7f6ece50cd6b0e10601ab8f543bc490a412b6afe939e6f070ae57f3d53c1"
+            },
+            {
+              "path": "docs/images/ntik-save-warning-20261014-390.png",
+              "sha256": "8ddbf863cddd45efb6bd06e6768c8e58fe2145188b2ade57ddac76aaae5eff9c"
+            },
+            {
+              "path": "docs/images/ntik-save-combined-20261014-390.png",
+              "sha256": "ebd4b1aaf7ee0cf33daea4c29521ae2dddb64b9587c4329ee4b4ba289e9f7849"
+            },
+            {
+              "path": "docs/images/ntik-invalid-save-20261014-1280.png",
+              "sha256": "76fa70fa310c308ac2f896f85d0a3622bb103a5ccbe289fe91106f36e5c5da9d"
+            },
+            {
+              "path": "docs/images/ntik-save-warning-20261014-1280.png",
+              "sha256": "ac96bbd0892911f022b0ce0a150633034c3a3763546359f1e7ab29089ccefe37"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "1c61dcb6a5d150b6d1838df6bec493f44c8bab391af159b74c105ffaff4b6b6d"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "cce1451fa14a9483c28439f0362f1b687507d8cf51d881dc02f0b84a60921449"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "1c4a11a2ee4d19d517692ee6213429c2c3eb17df0ef81a302c01841d939d5501"
+            },
+            {
+              "path": "business/unity/evidence/ntik-storage-20261014-1300.json",
+              "sha256": "e3fe302fcf44ac91f925cdc11a6385c92e98792d83672587a61ffd8412cd360f"
+            }
+          ],
+          "checks": [
+            "Final TS/ESLint/Vite/5SSG passed",
+            "16 malformed/legacy/read-write-delete denial and actual App/timer regressions passed",
+            "Production browser normal coordinate/modal/Enter/reload and quota warning/recovery passed",
+            "Final390 combined status120px and root252px inside frame270.625;1280 settled root680.4 inside704",
+            "Deletion confirm and events mocked; native confirm unverified; initial modal tab cleanup unverified",
+            "Prior18 checkpoint hashes and parent4 commits/recovery8 hashes matched",
+            "PR22 already merged today; local commit only; metrics/release null"
+          ],
+          "next_step": "T-web-ntik-save-scope-guidance: 進行・設定・連勝の保存先と削除範囲を開始画面へ示し、標準削除確認の実操作は未確認として分ける",
+          "passed": true,
+          "at": 1791951693.0029743
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261014T1300-storage-7a1517e6",
+          "task_id": "T-web-ntik-storage-resilience",
+          "fence": 28,
+          "expires_at": 1791952093.498581
+        }
+      ]
+    },
+    "T-web-ntik-save-scope-guidance": {
+      "id": "T-web-ntik-save-scope-guidance",
+      "objective": "n目並べの保存先・新ゲーム上書き・進行削除の範囲を開始画面に示す",
+      "acceptance": [
+        "Explain same-origin browser storage and no cross-device restoration",
+        "Explain new-game progress overwrite and that deleting progress keeps preferences/streak",
+        "Match the three storage keys and verify normal save/reload; preserve legacy format",
+        "390/1280 settings remain usable; separate native confirm from mocked confirmation and physical/human checks"
+      ],
+      "outputs": [
+        "nTic start-screen save guidance",
+        "Source-matched browser evidence"
+      ],
+      "checks": [
+        "Three-key storage contract",
+        "Production browser save/reload and settings layout"
+      ],
+      "next_step": "T-web-ntik-save-scope-guidance: 進行・設定・連勝の保存先と削除範囲を開始画面へ示し、標準削除確認の実操作は未確認として分ける",
+      "decision_id": "D-web-save-scope-20261014",
+      "experiment_id": "E-unity-portal",
+      "hypothesis": "保存先と削除範囲の明示により失う操作を事前に判断できる",
+      "source": "business/unity/research/2026-10-14-browser-save-contract.md",
+      "pdca": "do",
+      "priority": 1,
+      "depends_on": [
+        "T-web-ntik-storage-resilience"
+      ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261014T1900-scope-6d828f91",
+          "fence": 29,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "b698a230a710f64ca451a724496e7e0fd1732818638f789a12e0554bacd357e7"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "23669f8f366c30ef994b601a3f0a93732f433c3cea8c76118af44046916c1c7f"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/SaveDeletionConfirmation.tsx",
+              "sha256": "fddadaaa7911e11e2d0896329ece12bd834350dff1aaa952f24ea69b90c99fd8"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "dc8285820c47f1dde249db56b8c5a83ab15c5d7102ea1d49564f3ababba76b77"
+            },
+            {
+              "path": "docs/web-ntik-save-scope-20261014.md",
+              "sha256": "29cafcf6fde907d9f74a3e11909df5d6bef9fea7e4854f645ab73f90e6f9b6cc"
+            },
+            {
+              "path": "docs/images/ntik-save-scope-20261014-390.png",
+              "sha256": "fca1be68ca589aa4627b7c6df96e96340f7cf62ef57f63f10a61a9a84feca4da"
+            },
+            {
+              "path": "business/unity/evidence/ntik-save-scope-20261014-1900.json",
+              "sha256": "b6fd48977bc2c2cce8fbb2f189a312505c245a0944c01de7cf7c002441bb182a"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "5cee698b64050d2509ee02de173a54aee680e2aa2f81a922b974aff7883ed8ed"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "72b51a40d130ebe85db38a4c6f448b74619738df43b9c9ac263176d02fe55f68"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "b1d20a035a620e0de4e9e6acccd86c85707ed5e5bdb72f56e01ea951748b9798"
+            }
+          ],
+          "checks": [
+            "TS/ESLint/Vite/5SSG",
+            "35 artifact checksums",
+            "actual App opening/cancel/delete denial/progress-only deletion",
+            "16 malformed/legacy/storage denial and timer regressions",
+            "parent4HEAD/recovery8hashes/baseline13checkpoint verified",
+            "Final browser acceptance unverified; NOT complete"
+          ],
+          "next_step": "T-web-ntik-save-scope-guidance: 最終ページ内削除確認の390/1280実入力・配置・フォーカスと保存三キーを検査",
+          "at": 1791972906.9674938
+        },
+        {
+          "run_id": "unity-20261014T1900-scope-6d828f91",
+          "fence": 29,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "b698a230a710f64ca451a724496e7e0fd1732818638f789a12e0554bacd357e7"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "23669f8f366c30ef994b601a3f0a93732f433c3cea8c76118af44046916c1c7f"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/SaveDeletionConfirmation.tsx",
+              "sha256": "fddadaaa7911e11e2d0896329ece12bd834350dff1aaa952f24ea69b90c99fd8"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "dc8285820c47f1dde249db56b8c5a83ab15c5d7102ea1d49564f3ababba76b77"
+            },
+            {
+              "path": "docs/web-ntik-save-scope-20261014.md",
+              "sha256": "e33fe10ea84a32bf97660ca61e86125ee5559157730322d82e39ccdd14c69056"
+            },
+            {
+              "path": "docs/images/ntik-save-scope-20261014-390.png",
+              "sha256": "fca1be68ca589aa4627b7c6df96e96340f7cf62ef57f63f10a61a9a84feca4da"
+            },
+            {
+              "path": "business/unity/evidence/ntik-save-scope-20261014-1900.json",
+              "sha256": "b6fd48977bc2c2cce8fbb2f189a312505c245a0944c01de7cf7c002441bb182a"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "f5b99a5f9a3e4ae8d97a5f426ba0581b8fd6899d76c88c62b30491d5d106a0fc"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "72b51a40d130ebe85db38a4c6f448b74619738df43b9c9ac263176d02fe55f68"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "b1d20a035a620e0de4e9e6acccd86c85707ed5e5bdb72f56e01ea951748b9798"
+            },
+            {
+              "path": "business/unity/evidence/ntik-scope-partial-retention-20261014-1900.json",
+              "sha256": "e98e8effff4683b7cb4c5e364d096b1ea4beea8f8e9de3eff564f3728a00075a"
+            }
+          ],
+          "checks": [
+            "TS/ESLint/Vite/5SSG",
+            "35 artifact checksums",
+            "actual App opening/cancel/delete denial/progress-only deletion",
+            "16 malformed/legacy/storage denial and timer regressions",
+            "parent4HEAD/recovery8hashes/baseline13checkpoint verified",
+            "Final browser acceptance unverified; NOT complete",
+            "Source commit4d14c98 package36files/5pages ZIP restore and negative cases passed",
+            "Final browser input unverified; native modal tab cleanup unverified; preview processes stopped"
+          ],
+          "next_step": "Same T-web-ntik-save-scope-guidance: final390/1280 page-dialog keyboard/cancel/confirm/focus and three-key save/reload acceptance; NOT complete",
+          "at": 1791973154.3766148
+        },
+        {
+          "run_id": "unity-20261014T1900-scope-6d828f91",
+          "fence": 29,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "b698a230a710f64ca451a724496e7e0fd1732818638f789a12e0554bacd357e7"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "23669f8f366c30ef994b601a3f0a93732f433c3cea8c76118af44046916c1c7f"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/SaveDeletionConfirmation.tsx",
+              "sha256": "fddadaaa7911e11e2d0896329ece12bd834350dff1aaa952f24ea69b90c99fd8"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "dc8285820c47f1dde249db56b8c5a83ab15c5d7102ea1d49564f3ababba76b77"
+            },
+            {
+              "path": "docs/web-ntik-save-scope-20261014.md",
+              "sha256": "e33fe10ea84a32bf97660ca61e86125ee5559157730322d82e39ccdd14c69056"
+            },
+            {
+              "path": "docs/images/ntik-save-scope-20261014-390.png",
+              "sha256": "fca1be68ca589aa4627b7c6df96e96340f7cf62ef57f63f10a61a9a84feca4da"
+            },
+            {
+              "path": "business/unity/evidence/ntik-save-scope-20261014-1900.json",
+              "sha256": "b6fd48977bc2c2cce8fbb2f189a312505c245a0944c01de7cf7c002441bb182a"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "f5b99a5f9a3e4ae8d97a5f426ba0581b8fd6899d76c88c62b30491d5d106a0fc"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "72b51a40d130ebe85db38a4c6f448b74619738df43b9c9ac263176d02fe55f68"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "b1d20a035a620e0de4e9e6acccd86c85707ed5e5bdb72f56e01ea951748b9798"
+            },
+            {
+              "path": "business/unity/evidence/ntik-scope-partial-retention-20261014-1900.json",
+              "sha256": "e98e8effff4683b7cb4c5e364d096b1ea4beea8f8e9de3eff564f3728a00075a"
+            }
+          ],
+          "checks": [
+            "TS/ESLint/Vite/5SSG",
+            "35 artifact checksums",
+            "actual App opening/cancel/delete denial/progress-only deletion",
+            "16 malformed/legacy/storage denial and timer regressions",
+            "parent4HEAD/recovery8hashes/baseline13checkpoint verified",
+            "Final browser acceptance unverified; NOT complete",
+            "Source commit4d14c98 package36files/5pages ZIP restore and negative cases passed",
+            "Final browser input unverified; native modal tab cleanup unverified; preview processes stopped"
+          ],
+          "next_step": "Same T-web-ntik-save-scope-guidance: final390/1280 page-dialog keyboard/cancel/confirm/focus and three-key save/reload acceptance; NOT complete",
+          "at": 1791973154.4038851
+        },
+        {
+          "run_id": "unity-20261015T0100-scope-a631",
+          "fence": 30,
+          "artifacts": [
+            {
+              "path": "docs/web-ntik-save-acceptance-20261015.md",
+              "sha256": "1f5e7fecf0862b1230c3d2bb6cea1dc9e118902e6bcd58627086d8e49bb42f85"
+            },
+            {
+              "path": "docs/images/ntik-delete-20261015-390.png",
+              "sha256": "f51f306927afa1e01956721e6a3bf7fffe48bd2764b400ca0631204141fd9613"
+            },
+            {
+              "path": "docs/images/ntik-delete-20261015-1280.png",
+              "sha256": "ec77100c812a30639c9002e5155626fc9d68ae5a674a85d9c5c26ad071522fd1"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "b698a230a710f64ca451a724496e7e0fd1732818638f789a12e0554bacd357e7"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "23669f8f366c30ef994b601a3f0a93732f433c3cea8c76118af44046916c1c7f"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/SaveDeletionConfirmation.tsx",
+              "sha256": "fddadaaa7911e11e2d0896329ece12bd834350dff1aaa952f24ea69b90c99fd8"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "8b4685e91df3f7194e8245ae8504d559c862eba338a06ea132cdc0f9944ec5fe"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d586ea7d9bd5896588d3814f7effcd7cc9d4e3bfb07c4e04e5bceb9553b2828f"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "0c33b96ea4344c582ca8ca2a810999ac2b63145198fa87a5639bebb4e72af2f2"
+            },
+            {
+              "path": "business/unity/evidence/ntik-save-acceptance-20261015-0100.json",
+              "sha256": "2fb2b79e0ceaff8dc244808615a08f4a8999b1f505b822d04709e5eab8edd164"
+            }
+          ],
+          "checks": [
+            "normal save/reload X and Player2",
+            "cancel Enter/Escape/click and opener focus",
+            "Tab and reverse Tab cycle",
+            "normal five-move win and three-key progress-only deletion; prefs/streak byte-identical",
+            "TS ESLint Vite5SSG35hashes; actual App16fixture storage and timer regressions"
+          ],
+          "next_step": "T-web-ntik-streak-storage-notice: 連勝履歴の保存失敗を再現し、画面案内と回復を検査する",
+          "at": 1791994283.0285606
+        },
+        {
+          "run_id": "unity-20261015T0100-scope-a631",
+          "fence": 30,
+          "artifacts": [
+            {
+              "path": "docs/web-ntik-save-acceptance-20261015.md",
+              "sha256": "1f5e7fecf0862b1230c3d2bb6cea1dc9e118902e6bcd58627086d8e49bb42f85"
+            },
+            {
+              "path": "docs/images/ntik-delete-20261015-390.png",
+              "sha256": "f51f306927afa1e01956721e6a3bf7fffe48bd2764b400ca0631204141fd9613"
+            },
+            {
+              "path": "docs/images/ntik-delete-20261015-1280.png",
+              "sha256": "ec77100c812a30639c9002e5155626fc9d68ae5a674a85d9c5c26ad071522fd1"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "b698a230a710f64ca451a724496e7e0fd1732818638f789a12e0554bacd357e7"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "23669f8f366c30ef994b601a3f0a93732f433c3cea8c76118af44046916c1c7f"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/SaveDeletionConfirmation.tsx",
+              "sha256": "fddadaaa7911e11e2d0896329ece12bd834350dff1aaa952f24ea69b90c99fd8"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "8b4685e91df3f7194e8245ae8504d559c862eba338a06ea132cdc0f9944ec5fe"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d586ea7d9bd5896588d3814f7effcd7cc9d4e3bfb07c4e04e5bceb9553b2828f"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "0c33b96ea4344c582ca8ca2a810999ac2b63145198fa87a5639bebb4e72af2f2"
+            },
+            {
+              "path": "business/unity/evidence/ntik-save-acceptance-20261015-0100.json",
+              "sha256": "2fb2b79e0ceaff8dc244808615a08f4a8999b1f505b822d04709e5eab8edd164"
+            }
+          ],
+          "checks": [
+            "normal save/reload X and Player2",
+            "cancel Enter/Escape/click and opener focus",
+            "Tab and reverse Tab cycle",
+            "normal five-move win and three-key progress-only deletion; prefs/streak byte-identical",
+            "TS ESLint Vite5SSG35hashes; actual App16fixture storage and timer regressions"
+          ],
+          "next_step": "T-web-ntik-streak-storage-notice: 連勝履歴の保存失敗を再現し、画面案内と回復を検査する",
+          "passed": true,
+          "at": 1791994283.0554113
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261014T1900-scope-6d828f91",
+          "task_id": "T-web-ntik-save-scope-guidance",
+          "fence": 29,
+          "expires_at": 1791973597.388085
+        },
+        {
+          "run_id": "unity-20261015T0100-scope-a631",
+          "task_id": "T-web-ntik-save-scope-guidance",
+          "fence": 30,
+          "expires_at": 1791995183.9028134
+        }
+      ]
+    },
+    "T-web-ntik-streak-storage-notice": {
+      "id": "T-web-ntik-streak-storage-notice",
+      "objective": "連勝履歴の保存失敗を画面へ案内する",
+      "acceptance": [
+        "連勝キーだけの読み書き拒否と不正形式を再現",
+        "連勝保存失敗を案内し進行保存成功で消さない",
+        "正常履歴と進行削除時の保持を維持",
+        "390/1280で画面と回復を確認"
+      ],
+      "outputs": [
+        "Web実装",
+        "回帰検査",
+        "ブラウザ証跡"
+      ],
+      "checks": [
+        "actual App storage denial",
+        "TypeScript ESLint build",
+        "production browser"
+      ],
+      "next_step": "loadStreak/saveStreakの無言の失敗を再現",
+      "decision_id": "D-web-save-scope-20261014",
+      "hypothesis": "記録ごとの保存可否を示すと連勝履歴だけの消失を見落とさない",
+      "source": "docs/web-ntik-save-acceptance-20261015.md",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "depends_on": [
+        "T-web-ntik-save-scope-guidance"
+      ],
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -3928,6 +4937,12 @@
       "source": "business/unity/evidence/gravityball-acceptance-20261013-1900.json",
       "hypothesis": "Observed defects justify improve; technical checks do not establish demand; metrics null and 14/28-day business unobserved",
       "next_step": "T-web-legacy-mobile-input-acceptance: measure Ice Slide mobile controls first"
+    },
+    "D-web-save-scope-20261014": {
+      "id": "D-web-save-scope-20261014",
+      "source": "business/unity/research/2026-10-14-browser-save-contract.md",
+      "hypothesis": "保存先と削除範囲の案内があれば、再読み込みや進行削除の結果を操作前に判断できる",
+      "next_step": "T-web-ntik-save-scope-guidance: 進行・設定・連勝の保存先と削除範囲を開始画面へ示し、標準削除確認の実操作は未確認として分ける"
     }
   },
   "runs": {
@@ -4102,8 +5117,36 @@
     "unity-20261014T0100-retain-6e026a": {
       "run_id": "unity-20261014T0100-retain-6e026a",
       "source": "continuation:original-01slot:CI-artifact-retention:deadline01:30",
-      "status": "open",
+      "status": "checkpointed",
       "started_at": 1791908253.730227
+    },
+    "unity-20261014T0700-ntik-42b719": {
+      "run_id": "unity-20261014T0700-ntik-42b719",
+      "scheduled_at": "2026-10-14T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-14T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791929030.5229821
+    },
+    "unity-20261014T1300-storage-7a1517e6": {
+      "run_id": "unity-20261014T1300-storage-7a1517e6",
+      "scheduled_at": "2026-10-14T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-14T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791950653.432607
+    },
+    "unity-20261014T1900-scope-6d828f91": {
+      "run_id": "unity-20261014T1900-scope-6d828f91",
+      "scheduled_at": "2026-10-14T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-14T19:00:00+09:00",
+      "status": "checkpointed",
+      "started_at": 1791972157.311184
+    },
+    "unity-20261015T0100-scope-a631": {
+      "run_id": "unity-20261015T0100-scope-a631",
+      "scheduled_at": "2026-10-15T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-15T01:00:00+09:00",
+      "status": "completed",
+      "started_at": 1791993743.8206797
     }
   },
   "experiments": {
@@ -4149,9 +5192,9 @@
       ],
       "measurement_plan": "内部表示・操作検査と公開後の開始率を分離する。公開指標は未観測でnull",
       "decision_id": "D-web-renovation-20261010",
-      "next_step": "Same T-ice-courier-touch-polish: verify exact-source responsive-v1 Actions Windows/Web artifacts and local host; if unavailable reproduce/fix F3 save-unavailable notice being masked by delivery completion. Device/Safari/human acceptance remains separate.",
+      "next_step": "Same T-web-ntik-save-scope-guidance: final390/1280 page-dialog keyboard/cancel/confirm/focus and three-key save/reload acceptance; NOT complete",
       "source": "user:天啓.md:2026-10-10:web-renovation",
-      "stage": "act",
+      "stage": "plan",
       "history": [
         {
           "id": "E-unity-portal",
@@ -4219,6 +5262,15 @@
           "technical_disposition": "improve",
           "at": 1791713489.464152,
           "previous_stage": "check"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "plan",
+          "source": "docs/web-ntik-save-scope-20261014.md",
+          "evidence": "2026-10-12 owner Web policy overrides preserved Unity stage text. Continue existing partial Web task; technical improve, primary metrics/human reaction unobserved. No replacement game or task.",
+          "next_step": "Same T-web-ntik-save-scope-guidance: final390/1280 page-dialog keyboard/cancel/confirm/focus and three-key save/reload acceptance; NOT complete",
+          "at": 1791973154.3370245,
+          "previous_stage": "act"
         }
       ],
       "release": null
@@ -4241,7 +5293,11 @@
     "2026-10-13T07:00:00+09:00": "unity-20261013T0700-package-d34f19",
     "2026-10-13T13:00:00+09:00": "unity-20261013T1300-iceslide-8f42c1",
     "2026-10-13T19:00:00+09:00": "unity-20261013T1900-gravity-7d192a",
-    "2026-10-14T01:00:00+09:00": "unity-20261014T0100-minerush-62ed35"
+    "2026-10-14T01:00:00+09:00": "unity-20261014T0100-minerush-62ed35",
+    "2026-10-14T07:00:00+09:00": "unity-20261014T0700-ntik-42b719",
+    "2026-10-14T13:00:00+09:00": "unity-20261014T1300-storage-7a1517e6",
+    "2026-10-14T19:00:00+09:00": "unity-20261014T1900-scope-6d828f91",
+    "2026-10-15T01:00:00+09:00": "unity-20261015T0100-scope-a631"
   },
   "feedback": [
     {
@@ -4302,6 +5358,15 @@
       "status": "approved",
       "target": "Kihamda/Kihamda_Game",
       "head_commit": "4a0e1783ef22e147601799dcb698a116175628cc"
+    },
+    {
+      "source": "user:automation:2026-10-14:autonomous-repository",
+      "quote": "必要な調査・編集・検査・commit/push・PR作成と、検証済み変更のCI成功後のPRマージを自律的に進めます",
+      "action": "publish-reviewed-branch-and-merge-verified-pr",
+      "artifact_sha256": "f9663d346da70aa8ac3fca1c34813af1d1c6cdee0e3e028ae985fb334acabfa1",
+      "status": "approved",
+      "target": "Kihamda/Kihamda_Game",
+      "head_commit": "71f6f01a5debdb58786504f9d2c074b64923ccb9"
     }
   ],
   "external": {
@@ -4390,6 +5455,27 @@
           {
             "path": "business/unity/evidence/delivery-web-quality-20261013.json",
             "sha256": "bab185ff06f141ef7e657da7f485afc550e4ed8d3a7c80491ac41e4925187f57"
+          }
+        ]
+      }
+    },
+    "OP-web-daily-publish-20261014": {
+      "run_id": "unity-20261014T0100-retain-6e026a",
+      "fence": 26,
+      "id": "OP-web-daily-publish-20261014",
+      "action": "publish-reviewed-branch-and-merge-verified-pr",
+      "artifact_sha256": "f9663d346da70aa8ac3fca1c34813af1d1c6cdee0e3e028ae985fb334acabfa1",
+      "head_commit": "71f6f01a5debdb58786504f9d2c074b64923ccb9",
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "OP-web-daily-publish-20261014",
+        "status": "confirmed_success",
+        "source": "github:Kihamda/Kihamda_Game:pr22",
+        "evidence": "PR22 head71f6f01 CI38429375076 Linux39sec Windows25sec success; guarded merge d1e1096 verified by GitHub; downloaded tar checksum/36files/5pages95source blobs/restored browser passed; no deploy",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261014.json",
+            "sha256": "492ee039a902fffd63f9196ffc92519c6a72741497a6b7a1d037e144318cbbae"
           }
         ]
       }
@@ -10196,7 +11282,1342 @@
       },
       "previous": "74d84e1f704e41d4ac8372b3294a77965efb0411bee256c47e7fc90cdbf2e8e7",
       "sha256": "5b054c8d691b67ad699454a2162a7249adef9f282f1914feba953d912af8aba9"
+    },
+    {
+      "revision": 165,
+      "at": 1791908254.1285944,
+      "action": "approval",
+      "data": {
+        "source": "user:automation:2026-10-14:autonomous-repository",
+        "quote": "必要な調査・編集・検査・commit/push・PR作成と、検証済み変更のCI成功後のPRマージを自律的に進めます",
+        "action": "publish-reviewed-branch-and-merge-verified-pr",
+        "artifact_sha256": "f9663d346da70aa8ac3fca1c34813af1d1c6cdee0e3e028ae985fb334acabfa1",
+        "status": "approved",
+        "target": "Kihamda/Kihamda_Game",
+        "head_commit": "71f6f01a5debdb58786504f9d2c074b64923ccb9"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "5b054c8d691b67ad699454a2162a7249adef9f282f1914feba953d912af8aba9",
+      "sha256": "707e9c5db3ca3078e2d1fb3dce3e31945b584c956a3f4399f7c2a66699cfae3d"
+    },
+    {
+      "revision": 166,
+      "at": 1791908254.165048,
+      "action": "prepare-external",
+      "data": {
+        "run_id": "unity-20261014T0100-retain-6e026a",
+        "fence": 26,
+        "id": "OP-web-daily-publish-20261014",
+        "action": "publish-reviewed-branch-and-merge-verified-pr",
+        "artifact_sha256": "f9663d346da70aa8ac3fca1c34813af1d1c6cdee0e3e028ae985fb334acabfa1",
+        "head_commit": "71f6f01a5debdb58786504f9d2c074b64923ccb9"
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "707e9c5db3ca3078e2d1fb3dce3e31945b584c956a3f4399f7c2a66699cfae3d",
+      "sha256": "03a69160f4be51f96276e89d11be263a9ee203b9ff949a71a3824006492aa370"
+    },
+    {
+      "revision": 167,
+      "at": 1791908704.6266453,
+      "action": "reconcile-external",
+      "data": {
+        "id": "OP-web-daily-publish-20261014",
+        "status": "confirmed_success",
+        "source": "github:Kihamda/Kihamda_Game:pr22",
+        "evidence": "PR22 head71f6f01 CI38429375076 Linux39sec Windows25sec success; guarded merge d1e1096 verified by GitHub; downloaded tar checksum/36files/5pages95source blobs/restored browser passed; no deploy",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261014.json",
+            "sha256": "492ee039a902fffd63f9196ffc92519c6a72741497a6b7a1d037e144318cbbae"
+          }
+        ]
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "03a69160f4be51f96276e89d11be263a9ee203b9ff949a71a3824006492aa370",
+      "sha256": "d9c50c80fea49334f27748a2dc7f03432ddf575501fc0382c443f501e6ee45ae"
+    },
+    {
+      "revision": 168,
+      "at": 1791908704.666094,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261014T0100-retain-6e026a",
+        "fence": 26,
+        "artifacts": [
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "a62f311839f78e3a8b71fd43a556f021c8a22e890d810c0c88f20586e325e0bb"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "9d2d273f39c42ab0742c4c9f19b75ef91351745efeed3a1ce3ef80a700d00f3e"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/App.css",
+            "sha256": "0f6e52d25a692b683c6a51271032feba0f11986632ef28d4a4da1e709dc91887"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+            "sha256": "dadc7a699fad3c5689118df88571f62859039b2b7d80d7a535ecdd5453ae18a1"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "32e709f93a002b1363e2c5b08d80121b349efb9e28c7bb84416d1431aaaebe74"
+          },
+          {
+            "path": "docs/web-minerush-mobile-20261014.md",
+            "sha256": "aa27a4bb0129f51cbb17aa4b44918195bcf861118d4b1d0ad74f0609ae3a03cb"
+          },
+          {
+            "path": "docs/web-ntik-dialog-20261014.md",
+            "sha256": "d031733f29358f2a02b5341f0b5225764f1b28f5334a3c1b9f6e1462bfe8c490"
+          },
+          {
+            "path": "docs/images/minerush-loss-20261014-390.jpg",
+            "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+          },
+          {
+            "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+            "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+          },
+          {
+            "path": "docs/images/minerush-mobile-20261014-390.jpg",
+            "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+          },
+          {
+            "path": "docs/images/ntik-dialog-20261014-1280.jpg",
+            "sha256": "fd31e30e972dda5efd72953903eec5ee581dc79c97e5fc68c691f7b4e9895982"
+          },
+          {
+            "path": "docs/images/ntik-dialog-20261014-390.jpg",
+            "sha256": "c25c85415db40391c417da5b765c59ebdf37cd28a3bf993d88b5a7c515366f54"
+          },
+          {
+            "path": "business/unity/evidence/mobile-final-20261014-0100.json",
+            "sha256": "3b5819368fff1393aacc513e57f28ca521aea3a4d85c8a8e9f8019bdc154f352"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "2510b524c238f4a70e372fc402bd237cc846a77a56cf5f636e2fe72d63ae4a39"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "9f03841fbd33ca48f22b99bde2c9438a50b5ce45b50048e0b88ce48212097406"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "c64c280245bebccb47c4ad4dee2e5a7989f4f6f1929ca9b0f903b0c94bb18269"
+          },
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261014.json",
+            "sha256": "492ee039a902fffd63f9196ffc92519c6a72741497a6b7a1d037e144318cbbae"
+          },
+          {
+            "path": "docs/web-current-retention-20261014.md",
+            "sha256": "cc6e7a1af43ed99946892d94fa21af6016e58c8f5eee2a811ec7aaf75215728f"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/web-release.tar.gz",
+            "sha256": "d222c9556369c554d373fd2fb7e724b3ea841f7dd15799909c62a1e201017d92"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/source-web-lf.zip",
+            "sha256": "be6fd9e61d6ba0cb5a510836a55511354a011541694a6647dfb21f96efe1eaf0"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/restored/manifest.json",
+            "sha256": "b79e9d17176c280e52a114a424de14d9930021dbcc570b88cd63f744f00b37a8"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/verification.json",
+            "sha256": "9720cdd52c40dc780ceabc486a3842cafe954f293079c1ca2961c75c31a66635"
+          }
+        ],
+        "checks": [
+          "Final TS/ESLint/Vite/5SSG passed",
+          "MineRush production390 initial/loss min24.516 reset/mode32.688;1280 min36",
+          "nTic production390/1280 dialog340x136 buttons142x44; cancel autofocus Tab/ShiftTab cycle Escape restores cell; Enter confirm/reload nextPlayer2",
+          "nTic turn reset/new-game waits >1.5sec retained Player1 empty board; headless turn/win/unmount regression passed",
+          "Shared scale production390 Ice stage1 min28.608/frame/2move clear; Gravity canvas269.5x323.4/frame/Enter start",
+          "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed",
+          "LF checkout normalization corrected before publication; final checkpoint supersedes earlier source byte receipts",
+          "Current static build output: 35 checksummed files; historical 36-file and final yield count corrected here",
+          "PR22 latest head CI success and guardedmerge verified; one dailyPR only",
+          "CI36files/5pages/35checksum/archiveZIP95blob/restored390 browser passed; original155events and protected files preserved",
+          "Final save within original01:30; no duplicate slot; mobile acceptance partial, next stage unchanged"
+        ],
+        "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "d9c50c80fea49334f27748a2dc7f03432ddf575501fc0382c443f501e6ee45ae",
+      "sha256": "06e2e3b97573297e2cacbc390a8b839358cdc7bdd3ce45b475b93b33c0a16add"
+    },
+    {
+      "revision": 169,
+      "at": 1791908704.7003167,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261014T0100-retain-6e026a",
+        "fence": 26,
+        "artifacts": [
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "2fe7334cb252d1f81cdc37b4bcd869acf841e9cb9f610627cd8c57cd185058c8"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "a62f311839f78e3a8b71fd43a556f021c8a22e890d810c0c88f20586e325e0bb"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "2918d084f9c7d5256e0ba970b4b499ce85bf4ad81ca471349e9f1302738bcbda"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "62353871066eae6dc05e589a3caaa7aa1c96b55829d273e067aebce911510461"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "9d2d273f39c42ab0742c4c9f19b75ef91351745efeed3a1ce3ef80a700d00f3e"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/App.css",
+            "sha256": "0f6e52d25a692b683c6a51271032feba0f11986632ef28d4a4da1e709dc91887"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+            "sha256": "dadc7a699fad3c5689118df88571f62859039b2b7d80d7a535ecdd5453ae18a1"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "32e709f93a002b1363e2c5b08d80121b349efb9e28c7bb84416d1431aaaebe74"
+          },
+          {
+            "path": "docs/web-minerush-mobile-20261014.md",
+            "sha256": "aa27a4bb0129f51cbb17aa4b44918195bcf861118d4b1d0ad74f0609ae3a03cb"
+          },
+          {
+            "path": "docs/web-ntik-dialog-20261014.md",
+            "sha256": "d031733f29358f2a02b5341f0b5225764f1b28f5334a3c1b9f6e1462bfe8c490"
+          },
+          {
+            "path": "docs/images/minerush-loss-20261014-390.jpg",
+            "sha256": "14fb3ea1276241222dd030462775617244956401e2018d0316ff70299896304c"
+          },
+          {
+            "path": "docs/images/minerush-mobile-20261014-1280.jpg",
+            "sha256": "1db927d613a6c4d01550638c6fd9f4390eb0334d16914d53187f693ac054ec3b"
+          },
+          {
+            "path": "docs/images/minerush-mobile-20261014-390.jpg",
+            "sha256": "55fbb28c425255dd74a99c4bfd058f86b57c519e12de42abbd6376c2bd8073fa"
+          },
+          {
+            "path": "docs/images/ntik-dialog-20261014-1280.jpg",
+            "sha256": "fd31e30e972dda5efd72953903eec5ee581dc79c97e5fc68c691f7b4e9895982"
+          },
+          {
+            "path": "docs/images/ntik-dialog-20261014-390.jpg",
+            "sha256": "c25c85415db40391c417da5b765c59ebdf37cd28a3bf993d88b5a7c515366f54"
+          },
+          {
+            "path": "business/unity/evidence/mobile-final-20261014-0100.json",
+            "sha256": "3b5819368fff1393aacc513e57f28ca521aea3a4d85c8a8e9f8019bdc154f352"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "2510b524c238f4a70e372fc402bd237cc846a77a56cf5f636e2fe72d63ae4a39"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "9f03841fbd33ca48f22b99bde2c9438a50b5ce45b50048e0b88ce48212097406"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "c64c280245bebccb47c4ad4dee2e5a7989f4f6f1929ca9b0f903b0c94bb18269"
+          },
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261014.json",
+            "sha256": "492ee039a902fffd63f9196ffc92519c6a72741497a6b7a1d037e144318cbbae"
+          },
+          {
+            "path": "docs/web-current-retention-20261014.md",
+            "sha256": "cc6e7a1af43ed99946892d94fa21af6016e58c8f5eee2a811ec7aaf75215728f"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/web-release.tar.gz",
+            "sha256": "d222c9556369c554d373fd2fb7e724b3ea841f7dd15799909c62a1e201017d92"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/source-web-lf.zip",
+            "sha256": "be6fd9e61d6ba0cb5a510836a55511354a011541694a6647dfb21f96efe1eaf0"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/restored/manifest.json",
+            "sha256": "b79e9d17176c280e52a114a424de14d9930021dbcc570b88cd63f744f00b37a8"
+          },
+          {
+            "path": "artifacts/releases/web-20261014-ci-38429375076/verification.json",
+            "sha256": "9720cdd52c40dc780ceabc486a3842cafe954f293079c1ca2961c75c31a66635"
+          }
+        ],
+        "checks": [
+          "Final TS/ESLint/Vite/5SSG passed",
+          "MineRush production390 initial/loss min24.516 reset/mode32.688;1280 min36",
+          "nTic production390/1280 dialog340x136 buttons142x44; cancel autofocus Tab/ShiftTab cycle Escape restores cell; Enter confirm/reload nextPlayer2",
+          "nTic turn reset/new-game waits >1.5sec retained Player1 empty board; headless turn/win/unmount regression passed",
+          "Shared scale production390 Ice stage1 min28.608/frame/2move clear; Gravity canvas269.5x323.4/frame/Enter start",
+          "All4game regressions/navigation/8guides/business27/repository4entries19GUID passed",
+          "LF checkout normalization corrected before publication; final checkpoint supersedes earlier source byte receipts",
+          "Current static build output: 35 checksummed files; historical 36-file and final yield count corrected here",
+          "PR22 latest head CI success and guardedmerge verified; one dailyPR only",
+          "CI36files/5pages/35checksum/archiveZIP95blob/restored390 browser passed; original155events and protected files preserved",
+          "Final save within original01:30; no duplicate slot; mobile acceptance partial, next stage unchanged"
+        ],
+        "next_step": "Same T-web-legacy-mobile-input-acceptance: nTic large-board and settings targets/equivalent controls"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "06e2e3b97573297e2cacbc390a8b839358cdc7bdd3ce45b475b93b33c0a16add",
+      "sha256": "cfe637350c1da72f1a659fe7c4d1729952ed891924ab8802cf76a679be260050"
+    },
+    {
+      "revision": 170,
+      "at": 1791929030.5229821,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261014T0700-ntik-42b719",
+        "scheduled_at": "2026-10-14T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "cfe637350c1da72f1a659fe7c4d1729952ed891924ab8802cf76a679be260050",
+      "sha256": "3caaed53e3f226b48a2c64f12e8cd0919d94b8cb1b4b68dcfcdfe964d5642257"
+    },
+    {
+      "revision": 171,
+      "at": 1791929030.5974855,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261014T0700-ntik-42b719",
+        "task_id": "T-web-legacy-mobile-input-acceptance",
+        "ttl_seconds": 1440
+      },
+      "result": {
+        "run_id": "unity-20261014T0700-ntik-42b719",
+        "task_id": "T-web-legacy-mobile-input-acceptance",
+        "fence": 27,
+        "expires_at": 1791930470.5974855
+      },
+      "previous": "3caaed53e3f226b48a2c64f12e8cd0919d94b8cb1b4b68dcfcdfe964d5642257",
+      "sha256": "44a825e2b241963dd94bb39b3270d428e64af9290a309aa7e4a9378b9a9ed0cf"
+    },
+    {
+      "revision": 172,
+      "at": 1791929354.4791734,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261014T0700-ntik-42b719",
+        "fence": 27,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.css",
+            "sha256": "bd1e415b2d06819836bcc33270cf81a9f4bdce3df745867bcfc0bdb7930651b4"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+            "sha256": "f8014ef7931e2b1b86cc7c6133cff427ac79bfe7e9cb808257901b6ed451cdd0"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "c5728b5f1c6565b11bc2e6e0908c42f43dfa2a4ab44d9a932e5e4a90019c2b2f"
+          },
+          {
+            "path": "docs/web-ntik-coordinate-20261014.md",
+            "sha256": "5f75132ac8c9fc8f0fb066934e43087fc01f1533d56b9de94ddeccd9eeb6dda7"
+          },
+          {
+            "path": "docs/images/ntik-coordinate-20261014-390.png",
+            "sha256": "9639867e57fb4289ed08b64a23d423f5d6f5a660873bf6644854e86f3d58c41b"
+          },
+          {
+            "path": "business/unity/evidence/ntik-layout-20261014-0700.json",
+            "sha256": "10e973141a8e7adea26de03315a0f9fb2101d34b718303ba87b86b79a20c5efe"
+          }
+        ],
+        "checks": [
+          "nTic final build/8 viewport-board cases/coordinate Enter/modal/save/gravity-full-column passed",
+          "Physical touch Safari human acceptance unverified; no extra daily PR"
+        ],
+        "next_step": "Same mobile task: GravityBall keyboard steering and input measurement"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "44a825e2b241963dd94bb39b3270d428e64af9290a309aa7e4a9378b9a9ed0cf",
+      "sha256": "234cde253803e91dd32537838d77c44bedf33af72f4692ac3fc684ec64a58b61"
+    },
+    {
+      "revision": 173,
+      "at": 1791929932.398102,
+      "action": "task",
+      "data": {
+        "id": "T-web-ntik-storage-resilience",
+        "objective": "n目並べの保存失敗と不正な保存データを画面停止や無言の消失にしない",
+        "acceptance": [
+          "Reject malformed appState, board dimensions and player indexes before resume; preserve valid old saves",
+          "Write/delete denial reports visible status and leaves the current game usable",
+          "Verify normal move/save/reload and existing timer/modal/coordinate regressions",
+          "Record injected failures separately from physical device and human acceptance"
+        ],
+        "outputs": [
+          "nTic storage validation and status",
+          "Tests and browser evidence"
+        ],
+        "checks": [
+          "Actual App/storage denial and malformed fixtures",
+          "Production browser reload and visible status"
+        ],
+        "next_step": "Reproduce silent write failure and malformed board against current storage.ts before implementing validation/status",
+        "decision_id": "D-web-technology-policy-20261012",
+        "experiment_id": "E-unity-portal",
+        "hypothesis": "入力代替に続けて保存可否を画面に返せば、再読み込みで失う条件を操作中に判断できる",
+        "source": "code:web/games/ntiktaktoe/src/lib/storage.ts:saveGameState,clearSavedGame,loadGameState;user:automation:unity:2026-10-14",
+        "pdca": "do",
+        "priority": 1,
+        "depends_on": [
+          "T-web-legacy-mobile-input-acceptance"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "234cde253803e91dd32537838d77c44bedf33af72f4692ac3fc684ec64a58b61",
+      "sha256": "3bbc918cb8884a8122fae6fa2436a297b804afe45e6f55145956c0ce2b10c364"
+    },
+    {
+      "revision": 174,
+      "at": 1791929932.4754617,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261014T0700-ntik-42b719",
+        "fence": 27,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.css",
+            "sha256": "0ab8fd7d10ae8ba477bd01976a929b9f0e808e163c93d04f0e3dc3f3d023ff45"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+            "sha256": "f8014ef7931e2b1b86cc7c6133cff427ac79bfe7e9cb808257901b6ed451cdd0"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "c5728b5f1c6565b11bc2e6e0908c42f43dfa2a4ab44d9a932e5e4a90019c2b2f"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "69b8836c9390762f1cee322df3638139ddbce957a4b6a9c7ede28b730c8fc51e"
+          },
+          {
+            "path": "web/games/gravityball/src/App.css",
+            "sha256": "eea9f3d5367e3c97aa2f23aab531676a86c879eb4239c3e7a3b25afb777f891f"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "ea820d3053f9a9e32f81aa255328b86e748b5978ec874588dd18f1f8b09b8fee"
+          },
+          {
+            "path": "docs/web-ntik-coordinate-20261014.md",
+            "sha256": "a0e068e74b5fc00075cc78d99a99ac3c30bfc5bd7ac1a23f8f074b9c083159ae"
+          },
+          {
+            "path": "docs/web-gravity-keyboard-20261014.md",
+            "sha256": "cd1a5e342ad8bbbbb2583f49d830cb4aa4753922bf3ce57d977963660a86a04d"
+          },
+          {
+            "path": "docs/images/ntik-coordinate-20261014-390.png",
+            "sha256": "cb060a443dcd65a09e3e594413461f6b399d33471114e8a73e08b8ea0cb146f5"
+          },
+          {
+            "path": "docs/images/gravity-keyboard-20261014-390.png",
+            "sha256": "359b033c2a2af5ab4e1731d3117803e83cb6e1a6f9e0c87826286dbc68c2260b"
+          },
+          {
+            "path": "docs/images/gravity-keyboard-20261014-1280.png",
+            "sha256": "36bbf5f7c89cb7bc149ac209cabf46a0862118a08c39727208ba8ccb9cb6ea4e"
+          },
+          {
+            "path": "business/unity/evidence/ntik-layout-20261014-0700.json",
+            "sha256": "12140e53f618aa3a2ae4ab602f7f0b44bcedbb62374ec5fe391c8fdfa3816a1b"
+          },
+          {
+            "path": "business/unity/evidence/gravity-input-20261014-0700.json",
+            "sha256": "b4b9dc35d5c333e334a42cf38cc108096f15a6ddec4ad9e3106795e968f46ba2"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-14-small-target-alternatives.md",
+            "sha256": "b27c60473f95b7b377014040848edc9c03a517b0b60b068b5bdb8a2da9c1e931"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "ea0bbda9a5764c210f92339457fd58f2fee9f4384ec98b2fa9825b212f724d04"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "b3e041e603cbdc9d8bb5940819926e5b63185c66cd6d98ba52d017d4afdc0086"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "bf5b957c00faa56588f362f523e38ce0f032c0e3f29c4b315b1381ecd6c1b379"
+          },
+          {
+            "path": "business/unity/evidence/mobile-20261014-0700.json",
+            "sha256": "abe5cb511d8f89fa2d2497516a2cd36c158203f63d35167d7765c6aaea8c1648"
+          }
+        ],
+        "checks": [
+          "Final TypeScript/ESLint/Vite/5SSG/35 checksums passed",
+          "nTic8 final viewport/layout cases, targets >=24, coordinate/modal/Enter/save-reload/full gravity column passed",
+          "Chrome simulated nTic touch coordinate/confirmation44px/reloadPlayer2 passed",
+          "Gravity actual App four vectors/strength/transition/Space/single-vs-multi plus original regressions passed",
+          "Chrome simulated single/multi/cancel and observed four exact vectors; state never injected",
+          "Original169 events/latest26 baseline receipts/parent4commits/recovery8 hashes verified",
+          "PR22 already merged today; no additional PR/push/deployment",
+          "Physicaltouch Safari orientation human unverified; metrics and release null",
+          "Initial transient390 measurement preserved and corrected with settled rect and repeated touch events"
+        ],
+        "next_step": "T-web-ntik-storage-resilience: reproduce silent write denial and malformed saved board, then validate and report status"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "3bbc918cb8884a8122fae6fa2436a297b804afe45e6f55145956c0ce2b10c364",
+      "sha256": "86f374945fec18e67f641a682198b37c23969f8a5e0a6bc0c99745b3ac3e80bd"
+    },
+    {
+      "revision": 175,
+      "at": 1791929932.502282,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261014T0700-ntik-42b719",
+        "fence": 27,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.css",
+            "sha256": "0ab8fd7d10ae8ba477bd01976a929b9f0e808e163c93d04f0e3dc3f3d023ff45"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/GameView.tsx",
+            "sha256": "f8014ef7931e2b1b86cc7c6133cff427ac79bfe7e9cb808257901b6ed451cdd0"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "c5728b5f1c6565b11bc2e6e0908c42f43dfa2a4ab44d9a932e5e4a90019c2b2f"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "69b8836c9390762f1cee322df3638139ddbce957a4b6a9c7ede28b730c8fc51e"
+          },
+          {
+            "path": "web/games/gravityball/src/App.css",
+            "sha256": "eea9f3d5367e3c97aa2f23aab531676a86c879eb4239c3e7a3b25afb777f891f"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "ea820d3053f9a9e32f81aa255328b86e748b5978ec874588dd18f1f8b09b8fee"
+          },
+          {
+            "path": "docs/web-ntik-coordinate-20261014.md",
+            "sha256": "a0e068e74b5fc00075cc78d99a99ac3c30bfc5bd7ac1a23f8f074b9c083159ae"
+          },
+          {
+            "path": "docs/web-gravity-keyboard-20261014.md",
+            "sha256": "cd1a5e342ad8bbbbb2583f49d830cb4aa4753922bf3ce57d977963660a86a04d"
+          },
+          {
+            "path": "docs/images/ntik-coordinate-20261014-390.png",
+            "sha256": "cb060a443dcd65a09e3e594413461f6b399d33471114e8a73e08b8ea0cb146f5"
+          },
+          {
+            "path": "docs/images/gravity-keyboard-20261014-390.png",
+            "sha256": "359b033c2a2af5ab4e1731d3117803e83cb6e1a6f9e0c87826286dbc68c2260b"
+          },
+          {
+            "path": "docs/images/gravity-keyboard-20261014-1280.png",
+            "sha256": "36bbf5f7c89cb7bc149ac209cabf46a0862118a08c39727208ba8ccb9cb6ea4e"
+          },
+          {
+            "path": "business/unity/evidence/ntik-layout-20261014-0700.json",
+            "sha256": "12140e53f618aa3a2ae4ab602f7f0b44bcedbb62374ec5fe391c8fdfa3816a1b"
+          },
+          {
+            "path": "business/unity/evidence/gravity-input-20261014-0700.json",
+            "sha256": "b4b9dc35d5c333e334a42cf38cc108096f15a6ddec4ad9e3106795e968f46ba2"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-14-small-target-alternatives.md",
+            "sha256": "b27c60473f95b7b377014040848edc9c03a517b0b60b068b5bdb8a2da9c1e931"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "ea0bbda9a5764c210f92339457fd58f2fee9f4384ec98b2fa9825b212f724d04"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "b3e041e603cbdc9d8bb5940819926e5b63185c66cd6d98ba52d017d4afdc0086"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "bf5b957c00faa56588f362f523e38ce0f032c0e3f29c4b315b1381ecd6c1b379"
+          },
+          {
+            "path": "business/unity/evidence/mobile-20261014-0700.json",
+            "sha256": "abe5cb511d8f89fa2d2497516a2cd36c158203f63d35167d7765c6aaea8c1648"
+          }
+        ],
+        "checks": [
+          "Final TypeScript/ESLint/Vite/5SSG/35 checksums passed",
+          "nTic8 final viewport/layout cases, targets >=24, coordinate/modal/Enter/save-reload/full gravity column passed",
+          "Chrome simulated nTic touch coordinate/confirmation44px/reloadPlayer2 passed",
+          "Gravity actual App four vectors/strength/transition/Space/single-vs-multi plus original regressions passed",
+          "Chrome simulated single/multi/cancel and observed four exact vectors; state never injected",
+          "Original169 events/latest26 baseline receipts/parent4commits/recovery8 hashes verified",
+          "PR22 already merged today; no additional PR/push/deployment",
+          "Physicaltouch Safari orientation human unverified; metrics and release null",
+          "Initial transient390 measurement preserved and corrected with settled rect and repeated touch events"
+        ],
+        "next_step": "T-web-ntik-storage-resilience: reproduce silent write denial and malformed saved board, then validate and report status",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "86f374945fec18e67f641a682198b37c23969f8a5e0a6bc0c99745b3ac3e80bd",
+      "sha256": "bff587523abcf00c7aaa0fdba5bfe154ee2292de07af8d04de974abf108656b2"
+    },
+    {
+      "revision": 176,
+      "at": 1791950653.432607,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261014T1300-storage-7a1517e6",
+        "scheduled_at": "2026-10-14T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "bff587523abcf00c7aaa0fdba5bfe154ee2292de07af8d04de974abf108656b2",
+      "sha256": "14243573ebf0ba8d71847b406e80370f742ae0ebe281f71ef156335aeed841d1"
+    },
+    {
+      "revision": 177,
+      "at": 1791950653.498581,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261014T1300-storage-7a1517e6",
+        "task_id": "T-web-ntik-storage-resilience",
+        "ttl_seconds": 1440
+      },
+      "result": {
+        "run_id": "unity-20261014T1300-storage-7a1517e6",
+        "task_id": "T-web-ntik-storage-resilience",
+        "fence": 28,
+        "expires_at": 1791952093.498581
+      },
+      "previous": "14243573ebf0ba8d71847b406e80370f742ae0ebe281f71ef156335aeed841d1",
+      "sha256": "55c966acf8227dd81cdc959c03fdb026baa361e41fd0284e42234acf4c09b584"
+    },
+    {
+      "revision": 178,
+      "at": 1791951624.137942,
+      "action": "decision",
+      "data": {
+        "id": "D-web-save-scope-20261014",
+        "source": "business/unity/research/2026-10-14-browser-save-contract.md",
+        "hypothesis": "保存先と削除範囲の案内があれば、再読み込みや進行削除の結果を操作前に判断できる",
+        "next_step": "T-web-ntik-save-scope-guidance: 進行・設定・連勝の保存先と削除範囲を開始画面へ示し、標準削除確認の実操作は未確認として分ける"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "55c966acf8227dd81cdc959c03fdb026baa361e41fd0284e42234acf4c09b584",
+      "sha256": "9c70de21104cfc30c4f2453c4bafc4ccc17df615bd8e704aa8561dccd2be0a73"
+    },
+    {
+      "revision": 179,
+      "at": 1791951624.1670835,
+      "action": "task",
+      "data": {
+        "id": "T-web-ntik-save-scope-guidance",
+        "objective": "n目並べの保存先・新ゲーム上書き・進行削除の範囲を開始画面に示す",
+        "acceptance": [
+          "Explain same-origin browser storage and no cross-device restoration",
+          "Explain new-game progress overwrite and that deleting progress keeps preferences/streak",
+          "Match the three storage keys and verify normal save/reload; preserve legacy format",
+          "390/1280 settings remain usable; separate native confirm from mocked confirmation and physical/human checks"
+        ],
+        "outputs": [
+          "nTic start-screen save guidance",
+          "Source-matched browser evidence"
+        ],
+        "checks": [
+          "Three-key storage contract",
+          "Production browser save/reload and settings layout"
+        ],
+        "next_step": "T-web-ntik-save-scope-guidance: 進行・設定・連勝の保存先と削除範囲を開始画面へ示し、標準削除確認の実操作は未確認として分ける",
+        "decision_id": "D-web-save-scope-20261014",
+        "experiment_id": "E-unity-portal",
+        "hypothesis": "保存先と削除範囲の明示により失う操作を事前に判断できる",
+        "source": "business/unity/research/2026-10-14-browser-save-contract.md",
+        "pdca": "do",
+        "priority": 1,
+        "depends_on": [
+          "T-web-ntik-storage-resilience"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "9c70de21104cfc30c4f2453c4bafc4ccc17df615bd8e704aa8561dccd2be0a73",
+      "sha256": "8d23dbf77828410591ceb52569f1d64bf28055a9c9414e23bb31c937fbd2cb11"
+    },
+    {
+      "revision": 180,
+      "at": 1791951624.2232196,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261014T1300-storage-7a1517e6",
+        "fence": 28,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "793aafb718f2b30d85ee23d18c85af91179ec1f864501858b14f4732c83846f3"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/lib/storage.ts",
+            "sha256": "b74aadaaa80d6c5c5ae8cafe81a67d96f4226389f39e0d61228cfdc02d4c973f"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "751e5cd3cbe58deda66641079b8d720936184ec5266177ce0d5c2b8f10f1304e"
+          },
+          {
+            "path": "docs/web-ntik-storage-20261014.md",
+            "sha256": "bc1ec894555c78b83f6be6800a7e5361af53abb08404f0c5bd22d69c586551f3"
+          },
+          {
+            "path": "business/unity/research/2026-10-14-browser-save-contract.md",
+            "sha256": "2edb7f6ece50cd6b0e10601ab8f543bc490a412b6afe939e6f070ae57f3d53c1"
+          },
+          {
+            "path": "docs/images/ntik-save-warning-20261014-390.png",
+            "sha256": "8ddbf863cddd45efb6bd06e6768c8e58fe2145188b2ade57ddac76aaae5eff9c"
+          },
+          {
+            "path": "docs/images/ntik-save-combined-20261014-390.png",
+            "sha256": "ebd4b1aaf7ee0cf33daea4c29521ae2dddb64b9587c4329ee4b4ba289e9f7849"
+          },
+          {
+            "path": "docs/images/ntik-invalid-save-20261014-1280.png",
+            "sha256": "76fa70fa310c308ac2f896f85d0a3622bb103a5ccbe289fe91106f36e5c5da9d"
+          },
+          {
+            "path": "docs/images/ntik-save-warning-20261014-1280.png",
+            "sha256": "ac96bbd0892911f022b0ce0a150633034c3a3763546359f1e7ab29089ccefe37"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "1c61dcb6a5d150b6d1838df6bec493f44c8bab391af159b74c105ffaff4b6b6d"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "cce1451fa14a9483c28439f0362f1b687507d8cf51d881dc02f0b84a60921449"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "1c4a11a2ee4d19d517692ee6213429c2c3eb17df0ef81a302c01841d939d5501"
+          },
+          {
+            "path": "business/unity/evidence/ntik-storage-20261014-1300.json",
+            "sha256": "e3fe302fcf44ac91f925cdc11a6385c92e98792d83672587a61ffd8412cd360f"
+          }
+        ],
+        "checks": [
+          "Final TS/ESLint/Vite/5SSG passed",
+          "16 malformed/legacy/read-write-delete denial and actual App/timer regressions passed",
+          "Production browser normal coordinate/modal/Enter/reload and quota warning/recovery passed",
+          "Final390 combined status120px and root252px inside frame270.625;1280 settled root680.4 inside704",
+          "Deletion confirm and events mocked; native confirm unverified; initial modal tab cleanup unverified",
+          "Prior18 checkpoint hashes and parent4 commits/recovery8 hashes matched",
+          "PR22 already merged today; local commit only; metrics/release null"
+        ],
+        "next_step": "T-web-ntik-save-scope-guidance: 進行・設定・連勝の保存先と削除範囲を開始画面へ示し、標準削除確認の実操作は未確認として分ける"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "8d23dbf77828410591ceb52569f1d64bf28055a9c9414e23bb31c937fbd2cb11",
+      "sha256": "e7c03ca1cfdf456d9b26fefc7db55b09c4b9c3b60a9623d11a1f6aa50c0ec27a"
+    },
+    {
+      "revision": 181,
+      "at": 1791951693.0029743,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261014T1300-storage-7a1517e6",
+        "fence": 28,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "793aafb718f2b30d85ee23d18c85af91179ec1f864501858b14f4732c83846f3"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/lib/storage.ts",
+            "sha256": "b74aadaaa80d6c5c5ae8cafe81a67d96f4226389f39e0d61228cfdc02d4c973f"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "751e5cd3cbe58deda66641079b8d720936184ec5266177ce0d5c2b8f10f1304e"
+          },
+          {
+            "path": "docs/web-ntik-storage-20261014.md",
+            "sha256": "bc1ec894555c78b83f6be6800a7e5361af53abb08404f0c5bd22d69c586551f3"
+          },
+          {
+            "path": "business/unity/research/2026-10-14-browser-save-contract.md",
+            "sha256": "2edb7f6ece50cd6b0e10601ab8f543bc490a412b6afe939e6f070ae57f3d53c1"
+          },
+          {
+            "path": "docs/images/ntik-save-warning-20261014-390.png",
+            "sha256": "8ddbf863cddd45efb6bd06e6768c8e58fe2145188b2ade57ddac76aaae5eff9c"
+          },
+          {
+            "path": "docs/images/ntik-save-combined-20261014-390.png",
+            "sha256": "ebd4b1aaf7ee0cf33daea4c29521ae2dddb64b9587c4329ee4b4ba289e9f7849"
+          },
+          {
+            "path": "docs/images/ntik-invalid-save-20261014-1280.png",
+            "sha256": "76fa70fa310c308ac2f896f85d0a3622bb103a5ccbe289fe91106f36e5c5da9d"
+          },
+          {
+            "path": "docs/images/ntik-save-warning-20261014-1280.png",
+            "sha256": "ac96bbd0892911f022b0ce0a150633034c3a3763546359f1e7ab29089ccefe37"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "1c61dcb6a5d150b6d1838df6bec493f44c8bab391af159b74c105ffaff4b6b6d"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "cce1451fa14a9483c28439f0362f1b687507d8cf51d881dc02f0b84a60921449"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "1c4a11a2ee4d19d517692ee6213429c2c3eb17df0ef81a302c01841d939d5501"
+          },
+          {
+            "path": "business/unity/evidence/ntik-storage-20261014-1300.json",
+            "sha256": "e3fe302fcf44ac91f925cdc11a6385c92e98792d83672587a61ffd8412cd360f"
+          }
+        ],
+        "checks": [
+          "Final TS/ESLint/Vite/5SSG passed",
+          "16 malformed/legacy/read-write-delete denial and actual App/timer regressions passed",
+          "Production browser normal coordinate/modal/Enter/reload and quota warning/recovery passed",
+          "Final390 combined status120px and root252px inside frame270.625;1280 settled root680.4 inside704",
+          "Deletion confirm and events mocked; native confirm unverified; initial modal tab cleanup unverified",
+          "Prior18 checkpoint hashes and parent4 commits/recovery8 hashes matched",
+          "PR22 already merged today; local commit only; metrics/release null"
+        ],
+        "next_step": "T-web-ntik-save-scope-guidance: 進行・設定・連勝の保存先と削除範囲を開始画面へ示し、標準削除確認の実操作は未確認として分ける",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "e7c03ca1cfdf456d9b26fefc7db55b09c4b9c3b60a9623d11a1f6aa50c0ec27a",
+      "sha256": "a5624e36a57564f9cd2c8a9a84b84fcc5342a73e2f6279fde281d088b12cc2ca"
+    },
+    {
+      "revision": 182,
+      "at": 1791972157.311184,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261014T1900-scope-6d828f91",
+        "scheduled_at": "2026-10-14T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "a5624e36a57564f9cd2c8a9a84b84fcc5342a73e2f6279fde281d088b12cc2ca",
+      "sha256": "3a8959bd274881db8e743741ef5b2e53ad073688f5e2b913e617e97f3df76d53"
+    },
+    {
+      "revision": 183,
+      "at": 1791972157.388085,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261014T1900-scope-6d828f91",
+        "task_id": "T-web-ntik-save-scope-guidance",
+        "ttl_seconds": 1440
+      },
+      "result": {
+        "run_id": "unity-20261014T1900-scope-6d828f91",
+        "task_id": "T-web-ntik-save-scope-guidance",
+        "fence": 29,
+        "expires_at": 1791973597.388085
+      },
+      "previous": "3a8959bd274881db8e743741ef5b2e53ad073688f5e2b913e617e97f3df76d53",
+      "sha256": "57aad5df94d51c79ef732290f400469f5859e113262cb6138b3c13d52fc4f3ad"
+    },
+    {
+      "revision": 184,
+      "at": 1791972906.9674938,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261014T1900-scope-6d828f91",
+        "fence": 29,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "b698a230a710f64ca451a724496e7e0fd1732818638f789a12e0554bacd357e7"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "23669f8f366c30ef994b601a3f0a93732f433c3cea8c76118af44046916c1c7f"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/SaveDeletionConfirmation.tsx",
+            "sha256": "fddadaaa7911e11e2d0896329ece12bd834350dff1aaa952f24ea69b90c99fd8"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "dc8285820c47f1dde249db56b8c5a83ab15c5d7102ea1d49564f3ababba76b77"
+          },
+          {
+            "path": "docs/web-ntik-save-scope-20261014.md",
+            "sha256": "29cafcf6fde907d9f74a3e11909df5d6bef9fea7e4854f645ab73f90e6f9b6cc"
+          },
+          {
+            "path": "docs/images/ntik-save-scope-20261014-390.png",
+            "sha256": "fca1be68ca589aa4627b7c6df96e96340f7cf62ef57f63f10a61a9a84feca4da"
+          },
+          {
+            "path": "business/unity/evidence/ntik-save-scope-20261014-1900.json",
+            "sha256": "b6fd48977bc2c2cce8fbb2f189a312505c245a0944c01de7cf7c002441bb182a"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "5cee698b64050d2509ee02de173a54aee680e2aa2f81a922b974aff7883ed8ed"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "72b51a40d130ebe85db38a4c6f448b74619738df43b9c9ac263176d02fe55f68"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "b1d20a035a620e0de4e9e6acccd86c85707ed5e5bdb72f56e01ea951748b9798"
+          }
+        ],
+        "checks": [
+          "TS/ESLint/Vite/5SSG",
+          "35 artifact checksums",
+          "actual App opening/cancel/delete denial/progress-only deletion",
+          "16 malformed/legacy/storage denial and timer regressions",
+          "parent4HEAD/recovery8hashes/baseline13checkpoint verified",
+          "Final browser acceptance unverified; NOT complete"
+        ],
+        "next_step": "T-web-ntik-save-scope-guidance: 最終ページ内削除確認の390/1280実入力・配置・フォーカスと保存三キーを検査"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "57aad5df94d51c79ef732290f400469f5859e113262cb6138b3c13d52fc4f3ad",
+      "sha256": "58d28c0f916e35d47f702c1bb33d4b5e8a53a62ecba30760d49f95f4f32c666a"
+    },
+    {
+      "revision": 185,
+      "at": 1791973154.3370245,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "plan",
+        "source": "docs/web-ntik-save-scope-20261014.md",
+        "evidence": "2026-10-12 owner Web policy overrides preserved Unity stage text. Continue existing partial Web task; technical improve, primary metrics/human reaction unobserved. No replacement game or task.",
+        "next_step": "Same T-web-ntik-save-scope-guidance: final390/1280 page-dialog keyboard/cancel/confirm/focus and three-key save/reload acceptance; NOT complete"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "58d28c0f916e35d47f702c1bb33d4b5e8a53a62ecba30760d49f95f4f32c666a",
+      "sha256": "af51d3e7697dd70ee590e19b4758dd1248c3567c884b83a8d46c0ad512971bea"
+    },
+    {
+      "revision": 186,
+      "at": 1791973154.3766148,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261014T1900-scope-6d828f91",
+        "fence": 29,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "b698a230a710f64ca451a724496e7e0fd1732818638f789a12e0554bacd357e7"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "23669f8f366c30ef994b601a3f0a93732f433c3cea8c76118af44046916c1c7f"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/SaveDeletionConfirmation.tsx",
+            "sha256": "fddadaaa7911e11e2d0896329ece12bd834350dff1aaa952f24ea69b90c99fd8"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "dc8285820c47f1dde249db56b8c5a83ab15c5d7102ea1d49564f3ababba76b77"
+          },
+          {
+            "path": "docs/web-ntik-save-scope-20261014.md",
+            "sha256": "e33fe10ea84a32bf97660ca61e86125ee5559157730322d82e39ccdd14c69056"
+          },
+          {
+            "path": "docs/images/ntik-save-scope-20261014-390.png",
+            "sha256": "fca1be68ca589aa4627b7c6df96e96340f7cf62ef57f63f10a61a9a84feca4da"
+          },
+          {
+            "path": "business/unity/evidence/ntik-save-scope-20261014-1900.json",
+            "sha256": "b6fd48977bc2c2cce8fbb2f189a312505c245a0944c01de7cf7c002441bb182a"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "f5b99a5f9a3e4ae8d97a5f426ba0581b8fd6899d76c88c62b30491d5d106a0fc"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "72b51a40d130ebe85db38a4c6f448b74619738df43b9c9ac263176d02fe55f68"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "b1d20a035a620e0de4e9e6acccd86c85707ed5e5bdb72f56e01ea951748b9798"
+          },
+          {
+            "path": "business/unity/evidence/ntik-scope-partial-retention-20261014-1900.json",
+            "sha256": "e98e8effff4683b7cb4c5e364d096b1ea4beea8f8e9de3eff564f3728a00075a"
+          }
+        ],
+        "checks": [
+          "TS/ESLint/Vite/5SSG",
+          "35 artifact checksums",
+          "actual App opening/cancel/delete denial/progress-only deletion",
+          "16 malformed/legacy/storage denial and timer regressions",
+          "parent4HEAD/recovery8hashes/baseline13checkpoint verified",
+          "Final browser acceptance unverified; NOT complete",
+          "Source commit4d14c98 package36files/5pages ZIP restore and negative cases passed",
+          "Final browser input unverified; native modal tab cleanup unverified; preview processes stopped"
+        ],
+        "next_step": "Same T-web-ntik-save-scope-guidance: final390/1280 page-dialog keyboard/cancel/confirm/focus and three-key save/reload acceptance; NOT complete"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "af51d3e7697dd70ee590e19b4758dd1248c3567c884b83a8d46c0ad512971bea",
+      "sha256": "6452e899e33841258b7ee96406f20c00ef954b1ec3d29590edd5979461d21d02"
+    },
+    {
+      "revision": 187,
+      "at": 1791973154.4038851,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261014T1900-scope-6d828f91",
+        "fence": 29,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "b698a230a710f64ca451a724496e7e0fd1732818638f789a12e0554bacd357e7"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "23669f8f366c30ef994b601a3f0a93732f433c3cea8c76118af44046916c1c7f"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/SaveDeletionConfirmation.tsx",
+            "sha256": "fddadaaa7911e11e2d0896329ece12bd834350dff1aaa952f24ea69b90c99fd8"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "dc8285820c47f1dde249db56b8c5a83ab15c5d7102ea1d49564f3ababba76b77"
+          },
+          {
+            "path": "docs/web-ntik-save-scope-20261014.md",
+            "sha256": "e33fe10ea84a32bf97660ca61e86125ee5559157730322d82e39ccdd14c69056"
+          },
+          {
+            "path": "docs/images/ntik-save-scope-20261014-390.png",
+            "sha256": "fca1be68ca589aa4627b7c6df96e96340f7cf62ef57f63f10a61a9a84feca4da"
+          },
+          {
+            "path": "business/unity/evidence/ntik-save-scope-20261014-1900.json",
+            "sha256": "b6fd48977bc2c2cce8fbb2f189a312505c245a0944c01de7cf7c002441bb182a"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "f5b99a5f9a3e4ae8d97a5f426ba0581b8fd6899d76c88c62b30491d5d106a0fc"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "72b51a40d130ebe85db38a4c6f448b74619738df43b9c9ac263176d02fe55f68"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "b1d20a035a620e0de4e9e6acccd86c85707ed5e5bdb72f56e01ea951748b9798"
+          },
+          {
+            "path": "business/unity/evidence/ntik-scope-partial-retention-20261014-1900.json",
+            "sha256": "e98e8effff4683b7cb4c5e364d096b1ea4beea8f8e9de3eff564f3728a00075a"
+          }
+        ],
+        "checks": [
+          "TS/ESLint/Vite/5SSG",
+          "35 artifact checksums",
+          "actual App opening/cancel/delete denial/progress-only deletion",
+          "16 malformed/legacy/storage denial and timer regressions",
+          "parent4HEAD/recovery8hashes/baseline13checkpoint verified",
+          "Final browser acceptance unverified; NOT complete",
+          "Source commit4d14c98 package36files/5pages ZIP restore and negative cases passed",
+          "Final browser input unverified; native modal tab cleanup unverified; preview processes stopped"
+        ],
+        "next_step": "Same T-web-ntik-save-scope-guidance: final390/1280 page-dialog keyboard/cancel/confirm/focus and three-key save/reload acceptance; NOT complete"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "6452e899e33841258b7ee96406f20c00ef954b1ec3d29590edd5979461d21d02",
+      "sha256": "6c6c9e3a01f615ce6bab20bc1b22ae641a3bdf87f60910a976844c7578b79c1e"
+    },
+    {
+      "revision": 188,
+      "at": 1791993743.8206797,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261015T0100-scope-a631",
+        "scheduled_at": "2026-10-15T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "6c6c9e3a01f615ce6bab20bc1b22ae641a3bdf87f60910a976844c7578b79c1e",
+      "sha256": "7a87782b55c3afa82dc48237b815cdf2e5269d54acb096b04a049a85592b9edf"
+    },
+    {
+      "revision": 189,
+      "at": 1791993743.9028134,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261015T0100-scope-a631",
+        "task_id": "T-web-ntik-save-scope-guidance",
+        "ttl_seconds": 1440
+      },
+      "result": {
+        "run_id": "unity-20261015T0100-scope-a631",
+        "task_id": "T-web-ntik-save-scope-guidance",
+        "fence": 30,
+        "expires_at": 1791995183.9028134
+      },
+      "previous": "7a87782b55c3afa82dc48237b815cdf2e5269d54acb096b04a049a85592b9edf",
+      "sha256": "0d5f27ea48f95cf47eb0494e895e5ab4103b443001e78f2b7179871182f55e5b"
+    },
+    {
+      "revision": 190,
+      "at": 1791994283.0285606,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261015T0100-scope-a631",
+        "fence": 30,
+        "artifacts": [
+          {
+            "path": "docs/web-ntik-save-acceptance-20261015.md",
+            "sha256": "1f5e7fecf0862b1230c3d2bb6cea1dc9e118902e6bcd58627086d8e49bb42f85"
+          },
+          {
+            "path": "docs/images/ntik-delete-20261015-390.png",
+            "sha256": "f51f306927afa1e01956721e6a3bf7fffe48bd2764b400ca0631204141fd9613"
+          },
+          {
+            "path": "docs/images/ntik-delete-20261015-1280.png",
+            "sha256": "ec77100c812a30639c9002e5155626fc9d68ae5a674a85d9c5c26ad071522fd1"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "b698a230a710f64ca451a724496e7e0fd1732818638f789a12e0554bacd357e7"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "23669f8f366c30ef994b601a3f0a93732f433c3cea8c76118af44046916c1c7f"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/SaveDeletionConfirmation.tsx",
+            "sha256": "fddadaaa7911e11e2d0896329ece12bd834350dff1aaa952f24ea69b90c99fd8"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "8b4685e91df3f7194e8245ae8504d559c862eba338a06ea132cdc0f9944ec5fe"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d586ea7d9bd5896588d3814f7effcd7cc9d4e3bfb07c4e04e5bceb9553b2828f"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "0c33b96ea4344c582ca8ca2a810999ac2b63145198fa87a5639bebb4e72af2f2"
+          },
+          {
+            "path": "business/unity/evidence/ntik-save-acceptance-20261015-0100.json",
+            "sha256": "2fb2b79e0ceaff8dc244808615a08f4a8999b1f505b822d04709e5eab8edd164"
+          }
+        ],
+        "checks": [
+          "normal save/reload X and Player2",
+          "cancel Enter/Escape/click and opener focus",
+          "Tab and reverse Tab cycle",
+          "normal five-move win and three-key progress-only deletion; prefs/streak byte-identical",
+          "TS ESLint Vite5SSG35hashes; actual App16fixture storage and timer regressions"
+        ],
+        "next_step": "T-web-ntik-streak-storage-notice: 連勝履歴の保存失敗を再現し、画面案内と回復を検査する"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "0d5f27ea48f95cf47eb0494e895e5ab4103b443001e78f2b7179871182f55e5b",
+      "sha256": "7efed7aeaa470060ff1ac6acbeb32c6db772a4edd7e8242852fca7db111e6fe9"
+    },
+    {
+      "revision": 191,
+      "at": 1791994283.0554113,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261015T0100-scope-a631",
+        "fence": 30,
+        "artifacts": [
+          {
+            "path": "docs/web-ntik-save-acceptance-20261015.md",
+            "sha256": "1f5e7fecf0862b1230c3d2bb6cea1dc9e118902e6bcd58627086d8e49bb42f85"
+          },
+          {
+            "path": "docs/images/ntik-delete-20261015-390.png",
+            "sha256": "f51f306927afa1e01956721e6a3bf7fffe48bd2764b400ca0631204141fd9613"
+          },
+          {
+            "path": "docs/images/ntik-delete-20261015-1280.png",
+            "sha256": "ec77100c812a30639c9002e5155626fc9d68ae5a674a85d9c5c26ad071522fd1"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "b698a230a710f64ca451a724496e7e0fd1732818638f789a12e0554bacd357e7"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "23669f8f366c30ef994b601a3f0a93732f433c3cea8c76118af44046916c1c7f"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/SaveDeletionConfirmation.tsx",
+            "sha256": "fddadaaa7911e11e2d0896329ece12bd834350dff1aaa952f24ea69b90c99fd8"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "8b4685e91df3f7194e8245ae8504d559c862eba338a06ea132cdc0f9944ec5fe"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d586ea7d9bd5896588d3814f7effcd7cc9d4e3bfb07c4e04e5bceb9553b2828f"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "0c33b96ea4344c582ca8ca2a810999ac2b63145198fa87a5639bebb4e72af2f2"
+          },
+          {
+            "path": "business/unity/evidence/ntik-save-acceptance-20261015-0100.json",
+            "sha256": "2fb2b79e0ceaff8dc244808615a08f4a8999b1f505b822d04709e5eab8edd164"
+          }
+        ],
+        "checks": [
+          "normal save/reload X and Player2",
+          "cancel Enter/Escape/click and opener focus",
+          "Tab and reverse Tab cycle",
+          "normal five-move win and three-key progress-only deletion; prefs/streak byte-identical",
+          "TS ESLint Vite5SSG35hashes; actual App16fixture storage and timer regressions"
+        ],
+        "next_step": "T-web-ntik-streak-storage-notice: 連勝履歴の保存失敗を再現し、画面案内と回復を検査する",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "7efed7aeaa470060ff1ac6acbeb32c6db772a4edd7e8242852fca7db111e6fe9",
+      "sha256": "b1771ab8ec839ed1e874490c8991ce58ac1723d0205e1bea604d035650c876e1"
+    },
+    {
+      "revision": 192,
+      "at": 1791994345.6129067,
+      "action": "task",
+      "data": {
+        "id": "T-web-ntik-streak-storage-notice",
+        "objective": "連勝履歴の保存失敗を画面へ案内する",
+        "acceptance": [
+          "連勝キーだけの読み書き拒否と不正形式を再現",
+          "連勝保存失敗を案内し進行保存成功で消さない",
+          "正常履歴と進行削除時の保持を維持",
+          "390/1280で画面と回復を確認"
+        ],
+        "outputs": [
+          "Web実装",
+          "回帰検査",
+          "ブラウザ証跡"
+        ],
+        "checks": [
+          "actual App storage denial",
+          "TypeScript ESLint build",
+          "production browser"
+        ],
+        "next_step": "loadStreak/saveStreakの無言の失敗を再現",
+        "decision_id": "D-web-save-scope-20261014",
+        "hypothesis": "記録ごとの保存可否を示すと連勝履歴だけの消失を見落とさない",
+        "source": "docs/web-ntik-save-acceptance-20261015.md",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 1,
+        "depends_on": [
+          "T-web-ntik-save-scope-guidance"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "b1771ab8ec839ed1e874490c8991ce58ac1723d0205e1bea604d035650c876e1",
+      "sha256": "85b13b8c39225ab59a147412269ad96c7388f07832d8df4e94ff583c6fd0b969"
     }
   ],
-  "projection_sha256": "7f0a274d75a770896a4c2291801fa1863c4d2616f9f719f90bdb98e0cb503a3e"
+  "projection_sha256": "c97ceb87ad69a4bd8e655b499ca251835fddeb8d6ccf3231777671a5ffa711bc"
 }

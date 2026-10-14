@@ -86,6 +86,10 @@ const StartScreen = ({
         <div className="left-column">
           <div className="ntiktaktoe-settings-section start-card resume-card">
             <h2>続行</h2>
+            <div className="save-scope-guidance">
+              <p>進行・設定・連勝履歴は、この端末のこのブラウザに保存します。同じサイトのURLで再開できます。別の端末やブラウザには引き継げません。</p>
+              <p>ブラウザのデータ削除などで記録が消える場合があります。進行や設定を保存できないときは画面に案内します。</p>
+            </div>
             {hasSavedGame ? (
               <>
                 <div className="resume-info">
@@ -106,8 +110,9 @@ const StartScreen = ({
                   ゲームを再開
                 </button>
                 <button className="card-button secondary" onClick={onClearSave}>
-                  保存データを削除
+                  進行データを削除
                 </button>
+                <p>削除するのは進行だけです。設定と連勝履歴は残ります。</p>
               </>
             ) : (
               <div className="no-save-data">
@@ -121,7 +126,7 @@ const StartScreen = ({
             <div className="settings-options">
               <div className="setting-row mode-row">
                 <label>ゲームモード</label>
-                <select
+                <select aria-label="ゲームモード"
                   value={newGameSettings.gameMode}
                   onChange={(e) => updateGameMode(e.target.value as GameMode)}
                 >
@@ -143,6 +148,7 @@ const StartScreen = ({
 
         <div className="ntiktaktoe-settings-section start-card new-game-card">
           <h2>新規ゲーム</h2>
+          <p>ゲーム開始で、保存済みの進行を新しいゲームに置き換えます。</p>
 
           <div className="new-game-section">
             <h3>盤面設定</h3>
@@ -153,6 +159,7 @@ const StartScreen = ({
                   type="number"
                   min="3"
                   max="30"
+                  aria-label="盤面の列数"
                   value={newGameSettings.board.width}
                   onChange={(e) =>
                     updateBoard("width", parseInt(e.target.value, 10))
@@ -163,6 +170,7 @@ const StartScreen = ({
                   type="number"
                   min="3"
                   max="30"
+                  aria-label="盤面の行数"
                   value={newGameSettings.board.height}
                   onChange={(e) =>
                     updateBoard("height", parseInt(e.target.value, 10))
@@ -180,6 +188,7 @@ const StartScreen = ({
                   newGameSettings.board.width,
                   newGameSettings.board.height,
                 )}
+                aria-label="勝利に必要な連続数"
                 value={newGameSettings.winLength}
                 onChange={(e) => updateWinLength(parseInt(e.target.value, 10))}
               />
@@ -193,6 +202,7 @@ const StartScreen = ({
                 <div key={index} className="player-config-item">
                   <input
                     type="text"
+                    aria-label={`プレイヤー${index + 1}の名前`}
                     value={player.name}
                     onChange={(e) => onUpdatePlayerName(index, e.target.value)}
                     placeholder="プレイヤー名"
@@ -200,18 +210,21 @@ const StartScreen = ({
                   <input
                     type="text"
                     maxLength={2}
+                    aria-label={`プレイヤー${index + 1}の記号`}
                     value={player.mark}
                     onChange={(e) => onUpdatePlayerMark(index, e.target.value)}
                     placeholder="記号"
                   />
                   <input
                     type="color"
+                    aria-label={`プレイヤー${index + 1}の色`}
                     value={player.color}
                     onChange={(e) => onUpdatePlayerColor(index, e.target.value)}
                     title="テーマカラー"
                   />
                   {newGameSettings.players.length > 2 && (
                     <button
+                      aria-label={`プレイヤー${index + 1}を削除`}
                       className="remove-player-btn"
                       onClick={() => onRemovePlayer(index)}
                     >

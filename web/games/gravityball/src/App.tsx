@@ -593,7 +593,7 @@ export default function App() {
 
   const handleTouchMove = useCallback(
     (e: React.TouchEvent) => {
-      if (e.touches.length > 0) {
+      if (e.touches.length === 1) {
         handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
       }
     },
@@ -623,7 +623,7 @@ export default function App() {
   }, [handleClick, handleOrientation]);
 
   return (
-    <GameShell gameId="gravityball" layout="default" controlHints={["クリック・タップで開始。マウス移動・指のドラッグで重力方向を変更", "赤い障害物で失敗。同じステージから再挑戦", "全5ステージ完了時の最高スコアだけをこのブラウザに保存。途中経過は保存しません"]}
+    <GameShell gameId="gravityball" layout="default" controlHints={["クリック・タップ・Enterで開始。マウス移動・指のドラッグ・矢印キーで重力方向を変更", "赤い障害物で失敗。同じステージから再挑戦", "全5ステージ完了時の最高スコアだけをこのブラウザに保存。途中経過は保存しません"]}
       statusMessage={saveError ? "最高スコアを保存できませんでした。再読み込みすると今回の記録は失われます。" : undefined}>
       <div
         ref={containerRef}
@@ -631,7 +631,18 @@ export default function App() {
         role="button"
         tabIndex={0}
         aria-label="重力ボールを開始・再挑戦"
+        aria-describedby="gravityball-keyboard-help"
         onKeyDown={(event) => {
+          const direction: Record<string, Vector> = {
+            ArrowLeft: { x: -GRAVITY_STRENGTH, y: 0 },
+            ArrowRight: { x: GRAVITY_STRENGTH, y: 0 },
+            ArrowUp: { x: 0, y: -GRAVITY_STRENGTH },
+            ArrowDown: { x: 0, y: GRAVITY_STRENGTH },
+          };
+          if (direction[event.key]) {
+            event.preventDefault();
+            if (gameStateRef.current.phase === "playing") gameStateRef.current.gravity = direction[event.key];
+          }
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
             handleClick();
@@ -658,6 +669,7 @@ export default function App() {
           y={popup.y}
         />
       </div>
+      <span id="gravityball-keyboard-help" className="gravityball-keyboard-help">Enter・Spaceで開始と再挑戦。矢印キーで重力の向きを変えます。</span>
     </GameShell>
   );
 }

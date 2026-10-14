@@ -1,5 +1,5 @@
 import { ScorePopup } from "@shared";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Board, GameSettings, PendingMove } from "../lib/types";
 
 interface CellPosition {
@@ -125,6 +125,12 @@ const GameView = ({
 }: GameViewProps) => {
   const currentPlayer = gameSettings.players[currentPlayerIndex];
   const pendingMark = currentPlayer?.mark;
+  const [targetRow, setTargetRow] = useState(1);
+  const [targetCol, setTargetCol] = useState(1);
+  const landingRow = gameSettings.gameMode === "gravity"
+    ? board.reduce((last, row, index) => row[targetCol - 1] === null ? index : last, -1)
+    : targetRow - 1;
+  const targetOccupied = landingRow < 0 || board[landingRow]?.[targetCol - 1] !== null;
 
   // 勝利セルかどうかを判定するヘルパー
   const isWinningCell = (row: number, col: number): boolean => {
@@ -213,11 +219,24 @@ const GameView = ({
         </button>
       </div>
 
+      <form className="coordinate-controls" onSubmit={(event) => {
+        event.preventDefault();
+        onCellClick(targetRow - 1, targetCol - 1);
+      }}>
+        {gameSettings.gameMode !== "gravity" && <label>行<input aria-label="置く行" type="number" min="1" max={board.length}
+          value={targetRow} onChange={(event) => setTargetRow(Math.max(1, Math.min(board.length, Number(event.target.value) || 1)))} /></label>}
+        <label>列<input aria-label="置く列" type="number" min="1" max={board[0].length}
+          value={targetCol} onChange={(event) => setTargetCol(Math.max(1, Math.min(board[0].length, Number(event.target.value) || 1)))} /></label>
+        <button disabled={isTransitioning || isWinAnimation || isDraw || pendingMove !== null || targetOccupied}>
+          {gameSettings.gameMode === "gravity" ? "この列に置く" : "指定セルに置く"}
+        </button>
+      </form>
+
       <div
         className="ntiktaktoe-board board"
         style={{
-          width: Math.min(540, 480 * gameSettings.board.width / gameSettings.board.height),
-          height: Math.min(480, 540 * gameSettings.board.height / gameSettings.board.width),
+          width: Math.min(540, 400 * gameSettings.board.width / gameSettings.board.height),
+          height: Math.min(400, 540 * gameSettings.board.height / gameSettings.board.width),
           gridTemplateColumns: `repeat(${gameSettings.board.width}, minmax(0, 1fr))`,
           gridTemplateRows: `repeat(${gameSettings.board.height}, minmax(0, 1fr))`,
         }}
@@ -246,7 +265,7 @@ const GameView = ({
                 key={`${rowIndex}-${colIndex}`}
                 className={`ntiktaktoe-cell cell ${cell ? "filled" : ""} ${
                   isPending ? "pending" : ""
-                } ${isLastPlaced ? "cell--placed" : ""} ${isWinCell ? "cell--winning" : ""}`}
+                } ${isLastPlaced ? "cell--placed" : ""} ${isWinCell ? "cell--winning" : ""} ${rowIndex === landingRow && colIndex === targetCol - 1 ? "coordinate-target" : ""}`}
                 style={{
                   background: cell
                     ? cellColor
