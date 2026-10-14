@@ -1,3 +1,5 @@
+2026-10-15の07時枠でn目並べの連勝履歴の形式検査と読み書き失敗案内を実装。進行保存成功で連勝警告を消さず、正常履歴と進行削除時の保持を維持した。実Appの拒否・不正8件・勝利/引き分け回復とChrome390/1280の通常操作・保存・再読み込みを確認。詳細docs/web-ntik-streak-20261015.md。記事は下書きのみ。PR23は本日マージ済みのため今回の成果はローカル保存、リモートCI承認・本番配置なし。物理タッチ/Safari/人間評価は未確認、指標null。次はGravityBall最高スコアの保存再試行を再現する。
+
 2026-10-15の日次PR23はheadabe528cのLinux42秒/Windows19秒CI成功後、head指定で7eeab64へマージ。CI仮merge ref f98a5e8の親が元mainとPR headに一致。36ファイル/5画面の展開・拒否検査と12実行assetのブラウザ検査版との完全一致、マージ後Web tree一致を確認。保管artifacts/releases/web-20261015-ci-38596206716、索引business/unity/evidence/delivery-web-daily-20261015.json。checkpointのWindowsバイトとGitのLF正規化差を分けて記録。本日追加PRは作らず、次は連勝保存失敗案内。指標null、本番配置なし。
 
 2026-10-15の01時枠でn目並べ保存範囲工程を完了。最終Chrome390/1280の削除dialog44px、取消/Tab/Enter/Escape/フォーカス復帰、通常着手の再読み込み、通常勝利後の進行のみ削除と設定・連勝JSON一致を確認。型/静的/ビルドと保存/タイマー回帰成功。詳細docs/web-ntik-save-acceptance-20261015.md。次は連勝履歴の保存失敗案内。物理タッチ/Safari/人間評価/指標は未確認・null。天啓の継続指示は保持し、本番配置なし。昨日のローカル成果を本日日次PRへまとめる。

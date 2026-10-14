@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 192,
+  "revision": 196,
   "business_id": "game-site",
-  "fence": 30,
+  "fence": 31,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -4814,9 +4814,126 @@
       "depends_on": [
         "T-web-ntik-save-scope-guidance"
       ],
-      "status": "ready",
-      "checkpoints": [],
-      "claims": []
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261015T0700-streak-013ac59e",
+          "fence": 31,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "e19f594206e3869e817a14a3f35dfb9149f8249f63ab51e813564f81421f42f3"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "18b7cf499e6cb842b4bd5c33f3e7a5b4b826bce60a126c7d987393bacc4c1403"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "6e6c6d463f02e29efae9e9aa1bcd99d69037b11c9c28e215ce0c68c017d86f1d"
+            },
+            {
+              "path": "docs/web-ntik-streak-20261015.md",
+              "sha256": "d0a16e57f993f9da11f6ea2d531e7cc125798a15c065f2af99a96978246f09db"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-15-separate-save-results.md",
+              "sha256": "778611339e5398371a831ae547dd388f9aa3739741dcc980f3ab9adbbbf0dc62"
+            },
+            {
+              "path": "docs/images/ntik-streak-read-20261015-390.png",
+              "sha256": "7bf31091009cf95f54b5c6c86a8549df2469a5101e7fa3007c940ace7fef0b14"
+            },
+            {
+              "path": "docs/images/ntik-streak-write-20261015-390.png",
+              "sha256": "1aacc8e87ce5a7e934c3eccc6397426abf5b9a84b002019f4ead04d07719f025"
+            },
+            {
+              "path": "docs/images/ntik-streak-write-20261015-1280.png",
+              "sha256": "a75c7d06b0254ab8d2e8b55305656e32ec2ea13ec73e5fa5c937baf4f123c26f"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "864b49cf03b7f4a34bd04b2bf88011d8540f54dec5679bfc795c39d9231db22a"
+            },
+            {
+              "path": "business/unity/evidence/ntik-streak-20261015-0700.json",
+              "sha256": "dc00ab703ee596a60109ee294ce37ae1ad5bc7866915ed1256fc6fdac88fcbb4"
+            }
+          ],
+          "checks": [
+            "TS/ESLint/Vite5SSG35hashes",
+            "actual App key-specific read/write denial, 8 invalid forms, win/draw recovery",
+            "Chrome390/1280 normal moves, progress save, deletion retention, reload",
+            "final browser screenshots; API restored/viewport reset/tab closed"
+          ],
+          "next_step": "T-web-gravity-score-retry: reproduce failed write then equal score after API recovery",
+          "at": 1792015661.7555068
+        },
+        {
+          "run_id": "unity-20261015T0700-streak-013ac59e",
+          "fence": 31,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "e19f594206e3869e817a14a3f35dfb9149f8249f63ab51e813564f81421f42f3"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "18b7cf499e6cb842b4bd5c33f3e7a5b4b826bce60a126c7d987393bacc4c1403"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "6e6c6d463f02e29efae9e9aa1bcd99d69037b11c9c28e215ce0c68c017d86f1d"
+            },
+            {
+              "path": "docs/web-ntik-streak-20261015.md",
+              "sha256": "d0a16e57f993f9da11f6ea2d531e7cc125798a15c065f2af99a96978246f09db"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-15-separate-save-results.md",
+              "sha256": "778611339e5398371a831ae547dd388f9aa3739741dcc980f3ab9adbbbf0dc62"
+            },
+            {
+              "path": "docs/images/ntik-streak-read-20261015-390.png",
+              "sha256": "7bf31091009cf95f54b5c6c86a8549df2469a5101e7fa3007c940ace7fef0b14"
+            },
+            {
+              "path": "docs/images/ntik-streak-write-20261015-390.png",
+              "sha256": "1aacc8e87ce5a7e934c3eccc6397426abf5b9a84b002019f4ead04d07719f025"
+            },
+            {
+              "path": "docs/images/ntik-streak-write-20261015-1280.png",
+              "sha256": "a75c7d06b0254ab8d2e8b55305656e32ec2ea13ec73e5fa5c937baf4f123c26f"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "864b49cf03b7f4a34bd04b2bf88011d8540f54dec5679bfc795c39d9231db22a"
+            },
+            {
+              "path": "business/unity/evidence/ntik-streak-20261015-0700.json",
+              "sha256": "dc00ab703ee596a60109ee294ce37ae1ad5bc7866915ed1256fc6fdac88fcbb4"
+            }
+          ],
+          "checks": [
+            "TS/ESLint/Vite5SSG35hashes",
+            "actual App key-specific read/write denial, 8 invalid forms, win/draw recovery",
+            "Chrome390/1280 normal moves, progress save, deletion retention, reload",
+            "final browser screenshots; API restored/viewport reset/tab closed"
+          ],
+          "next_step": "T-web-gravity-score-retry: reproduce failed write then equal score after API recovery",
+          "passed": true,
+          "at": 1792015661.7839293
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261015T0700-streak-013ac59e",
+          "task_id": "T-web-ntik-streak-storage-notice",
+          "fence": 31,
+          "expires_at": 1792016713.0200315
+        }
+      ]
     }
   },
   "decisions": {
@@ -5147,6 +5264,13 @@
       "source": "scheduled:game-site:2026-10-15T01:00:00+09:00",
       "status": "completed",
       "started_at": 1791993743.8206797
+    },
+    "unity-20261015T0700-streak-013ac59e": {
+      "run_id": "unity-20261015T0700-streak-013ac59e",
+      "scheduled_at": "2026-10-15T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-15T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792015212.9287093
     }
   },
   "experiments": {
@@ -5297,7 +5421,8 @@
     "2026-10-14T07:00:00+09:00": "unity-20261014T0700-ntik-42b719",
     "2026-10-14T13:00:00+09:00": "unity-20261014T1300-storage-7a1517e6",
     "2026-10-14T19:00:00+09:00": "unity-20261014T1900-scope-6d828f91",
-    "2026-10-15T01:00:00+09:00": "unity-20261015T0100-scope-a631"
+    "2026-10-15T01:00:00+09:00": "unity-20261015T0100-scope-a631",
+    "2026-10-15T07:00:00+09:00": "unity-20261015T0700-streak-013ac59e"
   },
   "feedback": [
     {
@@ -12617,7 +12742,166 @@
       },
       "previous": "b1771ab8ec839ed1e874490c8991ce58ac1723d0205e1bea604d035650c876e1",
       "sha256": "85b13b8c39225ab59a147412269ad96c7388f07832d8df4e94ff583c6fd0b969"
+    },
+    {
+      "revision": 193,
+      "at": 1792015212.9287093,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261015T0700-streak-013ac59e",
+        "scheduled_at": "2026-10-15T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "85b13b8c39225ab59a147412269ad96c7388f07832d8df4e94ff583c6fd0b969",
+      "sha256": "4c9f13bdd7338e22453c4f1bcbd748f54f664da858bc0a22a4a05e75819fb2de"
+    },
+    {
+      "revision": 194,
+      "at": 1792015213.0200315,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261015T0700-streak-013ac59e",
+        "task_id": "T-web-ntik-streak-storage-notice",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261015T0700-streak-013ac59e",
+        "task_id": "T-web-ntik-streak-storage-notice",
+        "fence": 31,
+        "expires_at": 1792016713.0200315
+      },
+      "previous": "4c9f13bdd7338e22453c4f1bcbd748f54f664da858bc0a22a4a05e75819fb2de",
+      "sha256": "7d4f669856a60212945f14e1cd53cdca04481cd4e153231d16822b345a171d58"
+    },
+    {
+      "revision": 195,
+      "at": 1792015661.7555068,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261015T0700-streak-013ac59e",
+        "fence": 31,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "e19f594206e3869e817a14a3f35dfb9149f8249f63ab51e813564f81421f42f3"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "18b7cf499e6cb842b4bd5c33f3e7a5b4b826bce60a126c7d987393bacc4c1403"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "6e6c6d463f02e29efae9e9aa1bcd99d69037b11c9c28e215ce0c68c017d86f1d"
+          },
+          {
+            "path": "docs/web-ntik-streak-20261015.md",
+            "sha256": "d0a16e57f993f9da11f6ea2d531e7cc125798a15c065f2af99a96978246f09db"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-15-separate-save-results.md",
+            "sha256": "778611339e5398371a831ae547dd388f9aa3739741dcc980f3ab9adbbbf0dc62"
+          },
+          {
+            "path": "docs/images/ntik-streak-read-20261015-390.png",
+            "sha256": "7bf31091009cf95f54b5c6c86a8549df2469a5101e7fa3007c940ace7fef0b14"
+          },
+          {
+            "path": "docs/images/ntik-streak-write-20261015-390.png",
+            "sha256": "1aacc8e87ce5a7e934c3eccc6397426abf5b9a84b002019f4ead04d07719f025"
+          },
+          {
+            "path": "docs/images/ntik-streak-write-20261015-1280.png",
+            "sha256": "a75c7d06b0254ab8d2e8b55305656e32ec2ea13ec73e5fa5c937baf4f123c26f"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "864b49cf03b7f4a34bd04b2bf88011d8540f54dec5679bfc795c39d9231db22a"
+          },
+          {
+            "path": "business/unity/evidence/ntik-streak-20261015-0700.json",
+            "sha256": "dc00ab703ee596a60109ee294ce37ae1ad5bc7866915ed1256fc6fdac88fcbb4"
+          }
+        ],
+        "checks": [
+          "TS/ESLint/Vite5SSG35hashes",
+          "actual App key-specific read/write denial, 8 invalid forms, win/draw recovery",
+          "Chrome390/1280 normal moves, progress save, deletion retention, reload",
+          "final browser screenshots; API restored/viewport reset/tab closed"
+        ],
+        "next_step": "T-web-gravity-score-retry: reproduce failed write then equal score after API recovery"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "7d4f669856a60212945f14e1cd53cdca04481cd4e153231d16822b345a171d58",
+      "sha256": "db5e3f0d41d48387c173414a0da2d80630620afa2a0493d70639f4ef1bbbf8d6"
+    },
+    {
+      "revision": 196,
+      "at": 1792015661.7839293,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261015T0700-streak-013ac59e",
+        "fence": 31,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "e19f594206e3869e817a14a3f35dfb9149f8249f63ab51e813564f81421f42f3"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "18b7cf499e6cb842b4bd5c33f3e7a5b4b826bce60a126c7d987393bacc4c1403"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "6e6c6d463f02e29efae9e9aa1bcd99d69037b11c9c28e215ce0c68c017d86f1d"
+          },
+          {
+            "path": "docs/web-ntik-streak-20261015.md",
+            "sha256": "d0a16e57f993f9da11f6ea2d531e7cc125798a15c065f2af99a96978246f09db"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-15-separate-save-results.md",
+            "sha256": "778611339e5398371a831ae547dd388f9aa3739741dcc980f3ab9adbbbf0dc62"
+          },
+          {
+            "path": "docs/images/ntik-streak-read-20261015-390.png",
+            "sha256": "7bf31091009cf95f54b5c6c86a8549df2469a5101e7fa3007c940ace7fef0b14"
+          },
+          {
+            "path": "docs/images/ntik-streak-write-20261015-390.png",
+            "sha256": "1aacc8e87ce5a7e934c3eccc6397426abf5b9a84b002019f4ead04d07719f025"
+          },
+          {
+            "path": "docs/images/ntik-streak-write-20261015-1280.png",
+            "sha256": "a75c7d06b0254ab8d2e8b55305656e32ec2ea13ec73e5fa5c937baf4f123c26f"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "864b49cf03b7f4a34bd04b2bf88011d8540f54dec5679bfc795c39d9231db22a"
+          },
+          {
+            "path": "business/unity/evidence/ntik-streak-20261015-0700.json",
+            "sha256": "dc00ab703ee596a60109ee294ce37ae1ad5bc7866915ed1256fc6fdac88fcbb4"
+          }
+        ],
+        "checks": [
+          "TS/ESLint/Vite5SSG35hashes",
+          "actual App key-specific read/write denial, 8 invalid forms, win/draw recovery",
+          "Chrome390/1280 normal moves, progress save, deletion retention, reload",
+          "final browser screenshots; API restored/viewport reset/tab closed"
+        ],
+        "next_step": "T-web-gravity-score-retry: reproduce failed write then equal score after API recovery",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "db5e3f0d41d48387c173414a0da2d80630620afa2a0493d70639f4ef1bbbf8d6",
+      "sha256": "5a66c17861af29f2a422093a7b96f1a2402a899dd4411822a304610e625cc0c4"
     }
   ],
-  "projection_sha256": "c97ceb87ad69a4bd8e655b499ca251835fddeb8d6ccf3231777671a5ffa711bc"
+  "projection_sha256": "e4a3841ce6900bf10a6fe908f1dfce101c5ed425290ecd8b51e0d945ea770120"
 }
