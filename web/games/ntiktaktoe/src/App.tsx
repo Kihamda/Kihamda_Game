@@ -7,6 +7,7 @@ import ResultScreen from "./components/ResultScreen";
 import { cloneGameSettings, normalizeGameSettings } from "./lib/settings";
 import {
   loadGameState,
+  readGameState,
   saveGameState,
   clearSavedGame,
   loadDevicePreferences,
@@ -80,8 +81,12 @@ function App() {
     }, delay);
     timers.current.add(timer);
   };
-  const initialSavedState = useMemo(() => loadGameState(), []);
+  const initialSave = useMemo(() => readGameState(), []);
+  const initialSavedState = initialSave.state;
   const initialDevicePrefs = useMemo(() => loadDevicePreferences(), []);
+  const [saveMessage, setSaveMessage] = useState<string | null>(initialSave.message);
+  const [prefsMessage, setPrefsMessage] = useState<string | null>(null);
+  const [deleteMessage, setDeleteMessage] = useState<string | null>(null);
 
   const { playClick, playFanfare, playArpeggio } = useAudio();
   const { particles, confetti, burst, sparkle, clear: clearParticles } = useParticles();
@@ -155,17 +160,23 @@ function App() {
       currentPlayerIndex: nextPlayerIndex ?? currentPlayerIndex,
       winner: isWinAnimation ? currentGameSettings.players[currentPlayerIndex]?.name ?? null : winner,
     };
-    saveGameState(snapshot);
+    // Report the result of synchronizing with the browser storage API.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSaveMessage(saveGameState(snapshot) ? null : "この進行を保存できませんでした。遊び続けられますが、再読み込みすると最後に保存できた状態へ戻るか、進行を失います。");
   }, [appState, currentGameSettings, board, currentPlayerIndex, winner, nextPlayerIndex, isWinAnimation, isDraw]);
 
   useEffect(() => {
-    saveDevicePreferences({
+    const saved = saveDevicePreferences({
       confirmationMode,
       lastGameSettings: newGameSettings,
     });
+    // Preferences and game progress have separate write outcomes.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPrefsMessage(saved ? null : "設定を保存できませんでした。再読み込みすると設定が元に戻る場合があります。");
   }, [confirmationMode, newGameSettings]);
 
   const initializeGame = () => {
+    setDeleteMessage(null);
     clearTimers();
     setIsTransitioning(false);
     setNextPlayerIndex(null);
@@ -313,13 +324,14 @@ function App() {
   };
 
   const handleResumeGame = () => {
+    setDeleteMessage(null);
     setAppState("in_progress");
   };
 
   const handleClearSave = () => {
     if (confirm("保存データを削除してリセットしますか？")) {
-      clearSavedGame();
-      window.location.reload();
+      if (clearSavedGame()) window.location.reload();
+      else setDeleteMessage("保存データを削除できませんでした。現在のゲームと保存データはそのままです。");
     }
   };
 
@@ -329,6 +341,7 @@ function App() {
       gameId="ntiktaktoe"
       layout="immersive"
       minScale={0.34}
+      statusMessage={[saveMessage, prefsMessage, deleteMessage].filter(Boolean).join(" ") || undefined}
     >
       <div className="ntiktaktoe-root">
         {appState === "before" && (
