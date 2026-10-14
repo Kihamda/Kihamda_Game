@@ -21,6 +21,7 @@ interface Props {
   /** 作品固有の操作と保存条件 */
   controlHints?: string[];
   statusMessage?: string;
+  statusAction?: { label: string; onClick: () => void };
 }
 
 function buildControlHints(tags: string[] | undefined): string[] {
@@ -56,6 +57,7 @@ export function GameShell({
   layout = "default",
   controlHints: providedControlHints,
   statusMessage,
+  statusAction,
 }: Props) {
   const frameRef = useRef<HTMLDivElement>(null);
   const scaledContentRef = useRef<HTMLDivElement>(null);
@@ -169,6 +171,10 @@ export function GameShell({
             </section>
 
             {statusMessage && <p role="status">{statusMessage}</p>}
+            {statusMessage && statusAction && <button type="button"
+              className="game-shell-link-button" onClick={statusAction.onClick}>
+              {statusAction.label}
+            </button>}
 
             <div className="game-shell-actions">
               <a href={portalUrl} className="game-shell-link-button">

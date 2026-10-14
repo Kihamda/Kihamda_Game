@@ -82,7 +82,7 @@ export default function App() {
   const popupQueueRef = useRef<PopupState[]>([]);
   
   // High score
-  const { best: highScore, update: updateHighScore, saveError } = useHighScore("gravityball");
+  const { best: highScore, update: updateHighScore, saveError, retry: retryHighScore } = useHighScore("gravityball");
   
   // Dopamine hooks
   const { particles, sparkle, confetti, explosion } = useParticles();
@@ -624,7 +624,10 @@ export default function App() {
 
   return (
     <GameShell gameId="gravityball" layout="default" controlHints={["クリック・タップ・Enterで開始。マウス移動・指のドラッグ・矢印キーで重力方向を変更", "赤い障害物で失敗。同じステージから再挑戦", "全5ステージ完了時の最高スコアだけをこのブラウザに保存。途中経過は保存しません"]}
-      statusMessage={saveError ? "最高スコアを保存できませんでした。再読み込みすると今回の記録は失われます。" : undefined}>
+      statusMessage={saveError ? "最高スコアを保存できませんでした。再読み込みすると今回の記録は失われます。保存を再試行できます。" : undefined}
+      statusAction={saveError ? { label: "最高スコアの保存を再試行", onClick: () => {
+        if (retryHighScore()) containerRef.current?.focus();
+      } } : undefined}>
       <div
         ref={containerRef}
         className="gravityball-container"

@@ -18,34 +18,45 @@ export function useHighScore(gameId: string) {
   });
 
   const bestRef = useRef(best);
+  const pendingOperation = useRef<"write" | "delete" | null>(null);
   const [saveError, setSaveError] = useState(false);
+
+  const retry = useCallback((): boolean => {
+    if (pendingOperation.current === null) return true;
+    try {
+      if (pendingOperation.current === "delete") localStorage.removeItem(key);
+      else localStorage.setItem(key, String(bestRef.current));
+      pendingOperation.current = null;
+      setSaveError(false);
+      return true;
+    } catch {
+      setSaveError(true);
+      return false;
+    }
+  }, [key]);
 
   const update = useCallback(
     (score: number): boolean => {
-      if (!Number.isSafeInteger(score) || score < 0 || score <= bestRef.current) return false;
+      if (!Number.isSafeInteger(score) || score < 0) return false;
+      if (score <= bestRef.current) {
+        if (pendingOperation.current === "write") retry();
+        return false;
+      }
       bestRef.current = score;
       setBest(score);
-      try {
-        localStorage.setItem(key, String(score));
-        setSaveError(false);
-      } catch {
-        setSaveError(true);
-      }
+      pendingOperation.current = "write";
+      retry();
       return true;
     },
-    [key],
+    [retry],
   );
 
   const reset = useCallback(() => {
     bestRef.current = 0;
     setBest(0);
-    try {
-      localStorage.removeItem(key);
-      setSaveError(false);
-    } catch {
-      setSaveError(true);
-    }
-  }, [key]);
+    pendingOperation.current = "delete";
+    retry();
+  }, [retry]);
 
-  return { best, update, reset, saveError };
+  return { best, update, reset, saveError, retry };
 }

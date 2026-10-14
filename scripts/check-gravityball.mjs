@@ -50,7 +50,7 @@ for (const [index, stage] of STAGES.entries()) assert(hasRoute(stage), `Stage ${
 
 function setup(value = null) {
   slots = []; cursor = 0; effects = []; refs = []; stored = value; denied = false; timers = new Map(); frame = null;
-  globalThis.localStorage = { getItem: () => stored, setItem: (_key, value) => { if (denied) throw Error('denied'); stored = value; }, removeItem: () => { stored = null; } };
+  globalThis.localStorage = { getItem: () => stored, setItem: (_key, value) => { if (denied) throw Error('denied'); stored = value; }, removeItem: () => { if (denied) throw Error('denied'); stored = null; } };
   globalThis.window = { addEventListener() {}, removeEventListener() {} };
   globalThis.requestAnimationFrame = fn => { frame = fn; return 1; };
   globalThis.cancelAnimationFrame = () => { frame = null; };
@@ -72,6 +72,14 @@ try {
   setup('100'); let hook = renderHook(); assert.equal(hook.best, 100);
   assert.equal(hook.update(200), true); assert.equal(hook.update(150), false); assert.equal(stored, '200');
   assert.equal(hook.update(NaN), false); denied = true; assert.equal(hook.update(300), true); assert.equal(renderHook().saveError, true); assert.equal(stored, '200');
+  assert.equal(renderHook().retry(),false);assert.equal(stored,'200');
+  denied=false;assert.equal(renderHook().update(300),false,'equal score retry is not a new record');
+  assert.equal(stored,'300');assert.equal(renderHook().saveError,false);
+  denied=true;renderHook().update(350);assert.equal(renderHook().best,350);
+  denied=false;assert.equal(renderHook().retry(),true);assert.equal(stored,'350');
+  assert.equal(renderHook().best,350);assert.equal(renderHook().saveError,false);
+  denied=true;renderHook().reset();assert.equal(stored,'350');assert.equal(renderHook().saveError,true);
+  denied=false;renderHook().retry();assert.equal(stored,null,'failed reset retries deletion rather than writing zero');
   denied = false; hook = renderHook(); hook.update(400); assert.equal(renderHook().saveError, false); assert.equal(stored, '400');
   setup(); const app = startApp(); const state = app.state.current;
   let prevented = 0;
