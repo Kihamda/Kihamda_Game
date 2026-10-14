@@ -23,3 +23,6 @@ Chrome1280で通常の5着手によるPlayer 1勝利と三つの保存キーを�
 技術判断はimprove。利益・訪問・開始率・完了率・再訪と人間の反応はnull/unobserved。14/28日観測は未開始。本日PR22はマージ済みで、追加PR/push/配信をせず日次ブランチへローカル保存する。Unity・天啓・旧クラウド台帳・親原本・復元資産を保持した。
 
 次の一工程は同じT-web-ntik-save-scope-guidanceの最終版実ブラウザ受入。390/1280で設定・保存再読込、削除確認のキャンセル/Escape/Tab/Enter/確定と三キー保持を確認する。物理タッチ・Safari・人間評価は別に未確認として残す。新しい計画や別作品へ置き換えない。
+
+
+部分成果の復元保管はartifacts/releases/web-20261014-scope-partial.zip。元commit 4d14c98f94e076a09f14fc1faf60ca370d446e1a、SHA-256 a3d16b63db444f8950305ea3f0516d73095161de73adad11283af1ad51b5df0c。36ファイル・5案内ページと別フォルダ展開を照合し、改変/欠落/追加/版/manifest不一致の拒否検査が成功した。最終dialogのブラウザ受入未完了のため配信版にはしない。既存の現行CI保管版は変更していない。初回はSHA256SUMS未生成、次はlocal-uncommitted版が拒否され、実commitを指定して生成後に成功した。初期の空復元先は保持し、別の復元先で検証した。索引はbusiness/unity/evidence/ntik-scope-partial-retention-20261014-1900.json。検査用preview4196/4207の自分のプロセスは終了した。標準確認が残る旧タブの終了は未確認。

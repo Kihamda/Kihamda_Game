@@ -1,0 +1,28 @@
+{
+  "run": "unity-20261014T1900-scope-6d828f91",
+  "fence": 29,
+  "at": "2026-10-14T19:19:14.153253+09:00",
+  "status": "partial-not-browser-accepted-do-not-deploy",
+  "sourceCommit": "4d14c98f94e076a09f14fc1faf60ca370d446e1a",
+  "archivePath": "artifacts/releases/web-20261014-scope-partial.zip",
+  "archiveSha256": "a3d16b63db444f8950305ea3f0516d73095161de73adad11283af1ad51b5df0c",
+  "fileCount": 36,
+  "portalPageCount": 5,
+  "restorePath": "artifacts/releases/web-20261014-scope-partial-restored-final",
+  "checks": [
+    "archive extract and all36 file hashes/5page contracts passed",
+    "modified/missing/extra/version/manifest rejection passed",
+    "source App/StartScreen/dialog/stored test bytes equal commit"
+  ],
+  "initialFailures": [
+    "package attempted before check-web-build generated SHA256SUMS",
+    "default local-uncommitted version rejected; regenerated version bound to exact Git source commit",
+    "empty initial restore directory preserved; final restoration uses different directory"
+  ],
+  "unverified": [
+    "final dialog/browser input and focus/layout",
+    "off-PC disaster recovery",
+    "native-confirm old test tabs cleanup"
+  ],
+  "publication": false
+}
