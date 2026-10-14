@@ -4,6 +4,7 @@ import "./App.css";
 import StartScreen from "./components/StartScreen";
 import GameView from "./components/GameView";
 import ResultScreen from "./components/ResultScreen";
+import SaveDeletionConfirmation from "./components/SaveDeletionConfirmation";
 import { cloneGameSettings, normalizeGameSettings } from "./lib/settings";
 import {
   loadGameState,
@@ -87,6 +88,7 @@ function App() {
   const [saveMessage, setSaveMessage] = useState<string | null>(initialSave.message);
   const [prefsMessage, setPrefsMessage] = useState<string | null>(null);
   const [deleteMessage, setDeleteMessage] = useState<string | null>(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
 
   const { playClick, playFanfare, playArpeggio } = useAudio();
   const { particles, confetti, burst, sparkle, clear: clearParticles } = useParticles();
@@ -329,10 +331,13 @@ function App() {
   };
 
   const handleClearSave = () => {
-    if (confirm("保存データを削除してリセットしますか？")) {
-      if (clearSavedGame()) window.location.reload();
-      else setDeleteMessage("保存データを削除できませんでした。現在のゲームと保存データはそのままです。");
-    }
+    setDeleteConfirmation(true);
+  };
+
+  const confirmClearSave = () => {
+    setDeleteConfirmation(false);
+    if (clearSavedGame()) window.location.reload();
+    else setDeleteMessage("保存データを削除できませんでした。現在のゲームと保存データはそのままです。");
   };
 
   return (
@@ -390,6 +395,8 @@ function App() {
         )}
 
         {/* 共通パーティクルレイヤー */}
+        {deleteConfirmation && <SaveDeletionConfirmation
+          onConfirm={confirmClearSave} onCancel={() => setDeleteConfirmation(false)} />}
         <ParticleLayer particles={particles} />
       </div>
     </GameShell>

@@ -86,6 +86,10 @@ const StartScreen = ({
         <div className="left-column">
           <div className="ntiktaktoe-settings-section start-card resume-card">
             <h2>続行</h2>
+            <div className="save-scope-guidance">
+              <p>進行・設定・連勝履歴は、この端末のこのブラウザに保存します。同じサイトのURLで再開できます。別の端末やブラウザには引き継げません。</p>
+              <p>ブラウザのデータ削除などで記録が消える場合があります。進行や設定を保存できないときは画面に案内します。</p>
+            </div>
             {hasSavedGame ? (
               <>
                 <div className="resume-info">
@@ -106,8 +110,9 @@ const StartScreen = ({
                   ゲームを再開
                 </button>
                 <button className="card-button secondary" onClick={onClearSave}>
-                  保存データを削除
+                  進行データを削除
                 </button>
+                <p>削除するのは進行だけです。設定と連勝履歴は残ります。</p>
               </>
             ) : (
               <div className="no-save-data">
@@ -143,6 +148,7 @@ const StartScreen = ({
 
         <div className="ntiktaktoe-settings-section start-card new-game-card">
           <h2>新規ゲーム</h2>
+          <p>ゲーム開始で、保存済みの進行を新しいゲームに置き換えます。</p>
 
           <div className="new-game-section">
             <h3>盤面設定</h3>

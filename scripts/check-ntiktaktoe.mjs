@@ -23,7 +23,6 @@ const react={
 globalThis.window={innerWidth:390,innerHeight:844};
 let denyWrite=false,denyDelete=false,reloads=0;
 globalThis.localStorage={getItem:k=>stored.get(k)??null,setItem:(k,v)=>{if(denyWrite)throw new Error('injected write denial');stored.set(k,v);},removeItem:k=>{if(denyDelete)throw new Error('injected delete denial');stored.delete(k);}};
-globalThis.confirm=()=>true;
 globalThis.window.location={reload:()=>reloads++};
 globalThis.setTimeout=fn=>{timers.set(++id,fn);return id;};
 globalThis.clearTimeout=i=>timers.delete(i);
@@ -31,6 +30,7 @@ const module={exports:{}};
 new Function('require','module','exports',compiled.outputFiles[0].text)(name=>name==='react'?react:name==='react/jsx-runtime'?{jsx:(type,props)=>({type,props}),jsxs:(type,props)=>({type,props})}:require(name),module,module.exports);
 function render(){cursor=0;return module.exports.App();}
 function view(){return render().props.children.props.children.find(x=>x&&x.props?.onReset||x&&x.props?.onStartNewGame)?.props;}
+function deletion(){return render().props.children.props.children.find(x=>x&&x.props?.onConfirm&&x.props?.onCancel)?.props;}
 function fire(){const callbacks=[...timers.values()];timers.clear();callbacks.forEach(fn=>fn());}
 let start=view();start.onNewGameSettingsChange({...start.newGameSettings,board:{width:3,height:3},winLength:3});view().onStartNewGame();
 view().onCellClick(0,0);assert.equal(view().isTransitioning,true);assert.equal(timers.size,1);
@@ -53,10 +53,20 @@ assert.match(render().props.statusMessage,/設定を保存できません/);
 assert.equal(view().board[0][0],'X');assert.equal(view().currentPlayerIndex,1);
 denyWrite=false;view().onCellClick(0,1);fire();view();
 assert.equal(render().props.statusMessage,undefined,'successful subsequent writes clear both failure notices');
-view().onReset();denyDelete=true;view().onClearSave();
+view().onReset();
+const prefsBeforeDelete=stored.get('extreme_tik_tok_toe_device_prefs');
+stored.set('ntiktaktoe_streak_v1',JSON.stringify({count:1,configHash:'Player 1|Player 2'}));
+const streakBeforeDelete=stored.get('ntiktaktoe_streak_v1');
+denyDelete=true;view().onClearSave();
+assert.equal(reloads,0,'opening confirmation never deletes progress');
+assert.ok(stored.has('extreme_tik_tok_toe_save'));
+deletion().onCancel();assert.equal(deletion(),undefined,'cancellation closes without deleting');
+view().onClearSave();deletion().onConfirm();
 assert.match(render().props.statusMessage,/削除できません/);assert.equal(reloads,0);
 assert.ok(stored.has('extreme_tik_tok_toe_save'),'denied deletion keeps the save');
-denyDelete=false;view().onClearSave();assert.equal(reloads,1);assert.equal(stored.has('extreme_tik_tok_toe_save'),false);
+denyDelete=false;view().onClearSave();deletion().onConfirm();assert.equal(reloads,1);assert.equal(stored.has('extreme_tik_tok_toe_save'),false);
+assert.equal(stored.get('extreme_tik_tok_toe_device_prefs'),prefsBeforeDelete,'progress deletion keeps preferences');
+assert.equal(stored.get('ntiktaktoe_streak_v1'),streakBeforeDelete,'progress deletion keeps streak history');
 
 const storageBuild=await build({entryPoints:[`${web}games/ntiktaktoe/src/lib/storage.ts`],bundle:true,write:false,platform:'node',format:'cjs'});
 const storageModule={exports:{}};
