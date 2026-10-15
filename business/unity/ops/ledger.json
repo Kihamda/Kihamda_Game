@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": 223,
+  "revision": 224,
   "business_id": "game-site",
   "fence": 36,
   "lease": null,
@@ -5901,6 +5901,34 @@
       "source": "business/unity/research/2026-10-14-browser-save-contract.md",
       "hypothesis": "保存先と削除範囲の案内があれば、再読み込みや進行削除の結果を操作前に判断できる",
       "next_step": "T-web-ntik-save-scope-guidance: 進行・設定・連勝の保存先と削除範囲を開始画面へ示し、標準削除確認の実操作は未確認として分ける"
+    },
+    "D-web-quality-retention-20261015-1300": {
+      "id": "D-web-quality-retention-20261015-1300",
+      "source": "business/unity/evidence/web-local-retention-20261015-1300.json",
+      "hypothesis": "検証したソース版と復元済み成果物を結び翌日日次統合で旧CI版との取り違えを防ぐ",
+      "next_step": "10月16日以降の同じ日次PRにローカル成果と記録をまとめ最新head CI成功後に反映",
+      "artifacts": [
+        {
+          "path": "business/unity/evidence/web-local-retention-20261015-1300.json",
+          "sha256": "316f559f71a5c96327c82b77122abaf7165596e1c593a8354e28ac2bdd6d3f56"
+        },
+        {
+          "path": "docs/web-gravity-retention-20261015-1300.md",
+          "sha256": "9a2c558b79eb0dc5de595ed352bf569e8f1be1008a493f0580bbeb3fe5d085ba"
+        },
+        {
+          "path": "docs/images/gravity-restored-20261015-390.png",
+          "sha256": "0aee27ea04b041d3a45ef917f51269fb66af8db3733b784953e4aad3464d172c"
+        }
+      ],
+      "checks": [
+        "package original/ZIP restored all36files and5pages",
+        "modified/missing/extra/version/manifest rejection",
+        "110sourceZIP blobs byte-identical to source Git commit",
+        "restored4218Chrome390canvas359 Enter-playing/ArrowRight gravity0.3,0",
+        "injected321 test record read after reload, no warning",
+        "test APIs restored;2tabs closed;viewport reset;4217/4218 own previews stopped"
+      ]
     }
   },
   "runs": {
@@ -14883,7 +14911,45 @@
       },
       "previous": "c70a717d556165c5c49166c32dec32e556198af33ccdb02e44e12853f4cfc82c",
       "sha256": "12a19a6b47228a9fa8b380437cce454ab77f3e9261f552a7038ec2073d021ebf"
+    },
+    {
+      "revision": 224,
+      "at": 1792037856.3736908,
+      "action": "decision",
+      "data": {
+        "id": "D-web-quality-retention-20261015-1300",
+        "source": "business/unity/evidence/web-local-retention-20261015-1300.json",
+        "hypothesis": "検証したソース版と復元済み成果物を結び翌日日次統合で旧CI版との取り違えを防ぐ",
+        "next_step": "10月16日以降の同じ日次PRにローカル成果と記録をまとめ最新head CI成功後に反映",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/web-local-retention-20261015-1300.json",
+            "sha256": "316f559f71a5c96327c82b77122abaf7165596e1c593a8354e28ac2bdd6d3f56"
+          },
+          {
+            "path": "docs/web-gravity-retention-20261015-1300.md",
+            "sha256": "9a2c558b79eb0dc5de595ed352bf569e8f1be1008a493f0580bbeb3fe5d085ba"
+          },
+          {
+            "path": "docs/images/gravity-restored-20261015-390.png",
+            "sha256": "0aee27ea04b041d3a45ef917f51269fb66af8db3733b784953e4aad3464d172c"
+          }
+        ],
+        "checks": [
+          "package original/ZIP restored all36files and5pages",
+          "modified/missing/extra/version/manifest rejection",
+          "110sourceZIP blobs byte-identical to source Git commit",
+          "restored4218Chrome390canvas359 Enter-playing/ArrowRight gravity0.3,0",
+          "injected321 test record read after reload, no warning",
+          "test APIs restored;2tabs closed;viewport reset;4217/4218 own previews stopped"
+        ]
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "12a19a6b47228a9fa8b380437cce454ab77f3e9261f552a7038ec2073d021ebf",
+      "sha256": "126384a677eb4bfca7160d92b80f84050e000422ca285fe7dfdf8ca517f58058"
     }
   ],
-  "projection_sha256": "849495c4ade2014f6f38db3e951bd43a1805bf4050b5e5dc57fe2fec2e0191d1"
+  "projection_sha256": "134736cd5d3e288b3061a7e38bdf1b36a187cd44cb3dfc046358230382f383b3"
 }
