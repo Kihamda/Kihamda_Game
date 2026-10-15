@@ -42,6 +42,10 @@ const mineDetail = readFileSync(resolve(dist, 'works/minerush/index.html'), 'utf
 assert(mineDetail.includes('9×9マス') && mineDetail.includes('途中の盤面と旗を保存しません') && !mineDetail.includes('作品を開始'));
 const minePlay = readFileSync(resolve(dist, 'games/minerush/index.html'), 'utf8');
 assert(!minePlay.includes('id="guide-title"'), 'MineRush introduction must not replace play route');
+const gravityDetail = readFileSync(resolve(dist, 'works/gravityball/index.html'), 'utf8');
+assert(gravityDetail.includes('全5ステージ') && gravityDetail.includes('途中のステージや得点は保存しません') && !gravityDetail.includes('作品を開始'));
+const gravityPlay = readFileSync(resolve(dist, 'games/gravityball/index.html'), 'utf8');
+assert(!gravityPlay.includes('id="guide-title"'), 'GravityBall introduction must not replace play route');
 const icePlay = readFileSync(resolve(dist, 'games/iceslide/index.html'), 'utf8');
 assert(!icePlay.includes('id="guide-title"'), 'Ice Slide introduction must not replace play route');
 const legacyPlay = readFileSync(resolve(dist, 'games/ntiktaktoe/index.html'), 'utf8');

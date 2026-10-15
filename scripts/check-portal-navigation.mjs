@@ -64,3 +64,11 @@ assert(!mineDetail.includes('作品を開始') && !mineDetail.includes('<iframe'
 assert(mineDetail.includes('href="/?q=MineRush#works"'));
 assert(render('/', '?q=MineRush').includes('href="/works/minerush/?q=MineRush"'));
 assert(!render('/', '?q=MineRush&filter=released').includes('class="work-card"'));
+
+const gravityDetail = render('/works/gravityball/', '?q=GravityBall');
+assert(gravityDetail.includes('全5ステージ') && gravityDetail.includes('途中のステージや得点は保存しません'));
+assert(gravityDetail.includes('ゲーム画面にフォーカス') && gravityDetail.includes('読み込みや保存に失敗'));
+assert(!gravityDetail.includes('作品を開始') && !gravityDetail.includes('<iframe'));
+assert(gravityDetail.includes('href="/?q=GravityBall#works"'));
+assert(render('/', '?q=GravityBall').includes('href="/works/gravityball/?q=GravityBall"'));
+assert(!render('/', '?q=GravityBall&filter=released').includes('class="work-card"'));
