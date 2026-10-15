@@ -55,3 +55,12 @@ assert(iceDetail.includes('Command+Z') && iceDetail.includes('実端末での操
 assert(!iceDetail.includes('作品を開始') && !iceDetail.includes('<iframe'));
 assert(render('/', '?q=アイス').includes('href="/works/iceslide/?q='));
 assert(!render('/', '?q=アイス&filter=released').includes('class="work-card"'));
+
+const mineDetail = render('/works/minerush/', '?q=MineRush');
+assert(mineDetail.includes('9×9マス') && mineDetail.includes('地雷は10個'));
+assert(mineDetail.includes('途中の盤面と旗を保存しません') && mineDetail.includes('周囲8マス'));
+assert(mineDetail.includes('F / 右クリック / 旗モード') && mineDetail.includes('実端末での操作性は未確認'));
+assert(!mineDetail.includes('作品を開始') && !mineDetail.includes('<iframe'));
+assert(mineDetail.includes('href="/?q=MineRush#works"'));
+assert(render('/', '?q=MineRush').includes('href="/works/minerush/?q=MineRush"'));
+assert(!render('/', '?q=MineRush&filter=released').includes('class="work-card"'));
