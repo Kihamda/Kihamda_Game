@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 233,
+  "revision": 237,
   "business_id": "game-site",
-  "fence": 37,
-  "lease": null,
+  "fence": 38,
+  "lease": {
+    "run_id": "unity-20261016T0100-integration-45f5794c",
+    "task_id": "T-web-daily-ci-integration-20261016",
+    "fence": 38,
+    "expires_at": 1792081727.2408962
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -5764,7 +5769,7 @@
       "hypothesis": "日次一括でレビューと記録の重複を抑え検証済み成果を保持する",
       "pdca": "check",
       "experiment_id": "E-unity-portal",
-      "status": "blocked",
+      "status": "running",
       "checkpoints": [
         {
           "task_id": "T-web-daily-ci-integration-20261016",
@@ -5772,9 +5777,44 @@
           "reason": "本日2026-10-15のPR23はマージ済み。本人の1日1件程度の指示に従い追加PRは翌日まで保留。今回の内部実装工程は完了。",
           "next_step": "翌日日次枠でPR件数を確認してunblockする",
           "at": 1792037731.9992857
+        },
+        {
+          "task_id": "T-web-daily-ci-integration-20261016",
+          "source": "github:daily-pr-list:2026-10-16",
+          "reason": "JST10月16日に到達し当日PRなし、既存open PRなしを照合",
+          "next_step": "既存ローカル成果を同じ日次PRでCI検証",
+          "at": 1792080227.2006555
+        },
+        {
+          "run_id": "unity-20261016T0100-integration-45f5794c",
+          "fence": 38,
+          "artifacts": [
+            {
+              "path": "docs/web-daily-integration-20261016.md",
+              "sha256": "eabbf0ac5e00bf9f4eb40dd4fc0fc53b99525efbf23cba23f9d69c8d0c732926"
+            }
+          ],
+          "checks": [
+            "build/TS/ESLint/6SSG",
+            "4 games/navigation/8 guides",
+            "27 business tests",
+            "17 previous artifact hashes and192 main events preserved",
+            "parent4HEAD protected paths unchanged",
+            "dailyPR none; entire code diff reviewed"
+          ],
+          "next_step": "同日日次PRで最新head CIを確認し版指定マージ、CI成果物を復元",
+          "passed": true,
+          "at": 1792080292.96912
         }
       ],
-      "claims": []
+      "claims": [
+        {
+          "run_id": "unity-20261016T0100-integration-45f5794c",
+          "task_id": "T-web-daily-ci-integration-20261016",
+          "fence": 38,
+          "expires_at": 1792081727.2408962
+        }
+      ]
     },
     "T-web-ntik-catalog-discovery": {
       "id": "T-web-ntik-catalog-discovery",
@@ -6417,6 +6457,13 @@
       "source": "scheduled:game-site:2026-10-15T19:00:00+09:00",
       "status": "completed",
       "started_at": 1792058423.1564944
+    },
+    "unity-20261016T0100-integration-45f5794c": {
+      "run_id": "unity-20261016T0100-integration-45f5794c",
+      "scheduled_at": "2026-10-16T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-16T01:00:00+09:00",
+      "status": "open",
+      "started_at": 1792080227.1239328
     }
   },
   "experiments": {
@@ -6598,7 +6645,8 @@
     "2026-10-15T01:00:00+09:00": "unity-20261015T0100-scope-a631",
     "2026-10-15T07:00:00+09:00": "unity-20261015T0700-streak-013ac59e",
     "2026-10-15T13:00:00+09:00": "unity-20261015T1300-score-read-6bc28a",
-    "2026-10-15T19:00:00+09:00": "unity-20261015T1900-catalog-8e392a"
+    "2026-10-15T19:00:00+09:00": "unity-20261015T1900-catalog-8e392a",
+    "2026-10-16T01:00:00+09:00": "unity-20261016T0100-integration-45f5794c"
   },
   "feedback": [
     {
@@ -15566,7 +15614,85 @@
       },
       "previous": "c11a8f3749344e481da1daca86c5a7ccf6b7fb9c34b000897f9c83b8406ecbf8",
       "sha256": "d0e598d55ca4c9f876c16d3f4addd7f7246c9c8e972abda453ec4203debade68"
+    },
+    {
+      "revision": 234,
+      "at": 1792080227.1239328,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261016T0100-integration-45f5794c",
+        "scheduled_at": "2026-10-16T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "d0e598d55ca4c9f876c16d3f4addd7f7246c9c8e972abda453ec4203debade68",
+      "sha256": "64c65c23aa63ecfde0623068f7d3d910bde15d0fd9c053e4dc0c7ce791c9cf26"
+    },
+    {
+      "revision": 235,
+      "at": 1792080227.2006555,
+      "action": "unblock",
+      "data": {
+        "task_id": "T-web-daily-ci-integration-20261016",
+        "source": "github:daily-pr-list:2026-10-16",
+        "reason": "JST10月16日に到達し当日PRなし、既存open PRなしを照合",
+        "next_step": "既存ローカル成果を同じ日次PRでCI検証"
+      },
+      "result": {
+        "recorded": "unblock"
+      },
+      "previous": "64c65c23aa63ecfde0623068f7d3d910bde15d0fd9c053e4dc0c7ce791c9cf26",
+      "sha256": "d66dbf085eb443410ebe8f84b2cfa4cec044c0ea3ce2b9b3cd27d0a156072745"
+    },
+    {
+      "revision": 236,
+      "at": 1792080227.2408962,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261016T0100-integration-45f5794c",
+        "task_id": "T-web-daily-ci-integration-20261016",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261016T0100-integration-45f5794c",
+        "task_id": "T-web-daily-ci-integration-20261016",
+        "fence": 38,
+        "expires_at": 1792081727.2408962
+      },
+      "previous": "d66dbf085eb443410ebe8f84b2cfa4cec044c0ea3ce2b9b3cd27d0a156072745",
+      "sha256": "af0eeed120db7f506f5cff5cb3685d48d0f75db90e121e646ff199edf76b0174"
+    },
+    {
+      "revision": 237,
+      "at": 1792080292.96912,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T0100-integration-45f5794c",
+        "fence": 38,
+        "artifacts": [
+          {
+            "path": "docs/web-daily-integration-20261016.md",
+            "sha256": "eabbf0ac5e00bf9f4eb40dd4fc0fc53b99525efbf23cba23f9d69c8d0c732926"
+          }
+        ],
+        "checks": [
+          "build/TS/ESLint/6SSG",
+          "4 games/navigation/8 guides",
+          "27 business tests",
+          "17 previous artifact hashes and192 main events preserved",
+          "parent4HEAD protected paths unchanged",
+          "dailyPR none; entire code diff reviewed"
+        ],
+        "next_step": "同日日次PRで最新head CIを確認し版指定マージ、CI成果物を復元",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "af0eeed120db7f506f5cff5cb3685d48d0f75db90e121e646ff199edf76b0174",
+      "sha256": "48f121cc515e472eb9f74d346512a7a05c80ce87eede57038990eac47c2d911d"
     }
   ],
-  "projection_sha256": "f8b7ac538f1102335873b34f76d5bfa58f2a43995e77bb888d1af439d757d79e"
+  "projection_sha256": "b19aaf9c0fd88b50a51111296a8f4c6c19fce68e68163c59489f87066011a68f"
 }
