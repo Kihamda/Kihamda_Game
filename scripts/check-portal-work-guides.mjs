@@ -12,7 +12,7 @@ const guide = {
   screenshots: [{ ...proof, url: '/media/test-only.png', alt: '検査データの実画面', imageSha256: 'b'.repeat(64) }],
 };
 for (const technology of ['web', 'unity']) for (const released of [false, true]) for (const withGuide of [false, true]) {
-  const work = { id: 'test-only', title: 'インメモリ検査作品', path: '/games/test-only/', description: '登録しない検査データ',
+  const work = { id: 'test-only', title: 'インメモリ検査作品', path: technology === 'web' ? '/works/test-only/' : '/games/test-only/', description: '登録しない検査データ',
     tags: [], facts: [], technology, origin: technology === 'web' ? 'studio-web' : 'owner-finished', status: 'verification',
     release: released ? { url: '/play/test-only/', version: proof.version, platform: 'Test', sha256: proof.artifactSha256,
       verification: 'test-only', distributionPermission: 'test-only', recovery: 'test-only' } : null,

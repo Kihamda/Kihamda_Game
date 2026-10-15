@@ -1,0 +1,61 @@
+{
+  "pr": 23,
+  "head": "abe528c03afad4e419a6e647becbc16f6f52fee9",
+  "merge": "7eeab6499419e90583719f58f9df4f81d4232f2e",
+  "ciRun": 38596206716,
+  "ciSource": "f98a5e801ed6fc8ad8f9e7d080f68966318aa29a",
+  "ciParents": [
+    "d1e10965332b19a3a920eb1067e5b0dd3a1b1b00",
+    "abe528c03afad4e419a6e647becbc16f6f52fee9"
+  ],
+  "ci": {
+    "linux": "success42s",
+    "windows": "success19s"
+  },
+  "archiveSha256": "50733d1a2339ff53b7b2bd223c46e940e45d22defbadcebb1da9704dfd6fc334",
+  "runtimeExactMatchCount": 12,
+  "restoration": "36files5pages and negative tests passed",
+  "productionDeployment": false,
+  "labels": "codex and codex-automation absent from repository; no label creation",
+  "artifactLookup": "Initial head-based name absent; queried artifacts and selected verified merge-ref f98a5e8 package",
+  "nextTask": "T-web-ntik-streak-storage-notice",
+  "gitSourceHashes": [
+    {
+      "path": "docs/web-ntik-save-acceptance-20261015.md",
+      "sha256": "eca754a59c5d1ec8b60642e89b98695ae6a4784ce44345cc93a2b01740d8ba5c"
+    },
+    {
+      "path": "docs/images/ntik-delete-20261015-390.png",
+      "sha256": "f51f306927afa1e01956721e6a3bf7fffe48bd2764b400ca0631204141fd9613"
+    },
+    {
+      "path": "docs/images/ntik-delete-20261015-1280.png",
+      "sha256": "ec77100c812a30639c9002e5155626fc9d68ae5a674a85d9c5c26ad071522fd1"
+    },
+    {
+      "path": "web/games/ntiktaktoe/src/App.tsx",
+      "sha256": "b698a230a710f64ca451a724496e7e0fd1732818638f789a12e0554bacd357e7"
+    },
+    {
+      "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+      "sha256": "23669f8f366c30ef994b601a3f0a93732f433c3cea8c76118af44046916c1c7f"
+    },
+    {
+      "path": "web/games/ntiktaktoe/src/components/SaveDeletionConfirmation.tsx",
+      "sha256": "fddadaaa7911e11e2d0896329ece12bd834350dff1aaa952f24ea69b90c99fd8"
+    },
+    {
+      "path": "STATE.md",
+      "sha256": "fae60043b5e278d3de581aa35f41b4c6e6726992cb2be003efca5b0323a2d46d"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "a1720f0e0b34f8c89529189277e666a17a6a73c6dec8affca9473a093cb911d7"
+    },
+    {
+      "path": "business/studio-policy.json",
+      "sha256": "0c33b96ea4344c582ca8ca2a810999ac2b63145198fa87a5639bebb4e72af2f2"
+    }
+  ],
+  "worktreeCheckpointNote": "checkpoint190/complete191 captured pre-Git Windows bytes; report/STATE/AGENTS then normalized to LF; event history and original evidence retained"
+}

@@ -44,4 +44,8 @@
     <loc>https://game.kihamda.net/games/ice-courier/</loc>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://game.kihamda.net/works/ntiktaktoe/</loc>
+    <priority>0.7</priority>
+  </url>
 </urlset>

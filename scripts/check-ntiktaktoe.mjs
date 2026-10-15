@@ -21,8 +21,8 @@ const react={
   useMemo:fn=>fn(),useCallback:fn=>fn,useEffect:fn=>{cleanups.push(fn());},
 };
 globalThis.window={innerWidth:390,innerHeight:844};
-let denyWrite=false,denyDelete=false,reloads=0;
-globalThis.localStorage={getItem:k=>stored.get(k)??null,setItem:(k,v)=>{if(denyWrite)throw new Error('injected write denial');stored.set(k,v);},removeItem:k=>{if(denyDelete)throw new Error('injected delete denial');stored.delete(k);}};
+let denyWrite=false,denyDelete=false,denyStreakRead=false,denyStreakWrite=false,reloads=0;
+globalThis.localStorage={getItem:k=>{if(denyStreakRead&&k==='ntiktaktoe_streak_v1')throw new Error('streak read denial');return stored.get(k)??null;},setItem:(k,v)=>{if(denyWrite||(denyStreakWrite&&k==='ntiktaktoe_streak_v1'))throw new Error('injected write denial');stored.set(k,v);},removeItem:k=>{if(denyDelete)throw new Error('injected delete denial');stored.delete(k);}};
 globalThis.window.location={reload:()=>reloads++};
 globalThis.setTimeout=fn=>{timers.set(++id,fn);return id;};
 globalThis.clearTimeout=i=>timers.delete(i);
@@ -67,6 +67,40 @@ assert.ok(stored.has('extreme_tik_tok_toe_save'),'denied deletion keeps the save
 denyDelete=false;view().onClearSave();deletion().onConfirm();assert.equal(reloads,1);assert.equal(stored.has('extreme_tik_tok_toe_save'),false);
 assert.equal(stored.get('extreme_tik_tok_toe_device_prefs'),prefsBeforeDelete,'progress deletion keeps preferences');
 assert.equal(stored.get('ntiktaktoe_streak_v1'),streakBeforeDelete,'progress deletion keeps streak history');
+
+// Streak failures must survive independent successful progress writes.
+slots=[];cleanups.length=0;stored.clear();denyStreakRead=true;
+assert.match(render().props.statusMessage,/連勝履歴を読み込めません/);
+view().onStartNewGame();view().onCellClick(0,0);fire();view();
+assert.match(render().props.statusMessage,/連勝履歴を読み込めません/);
+assert.ok(stored.has('extreme_tik_tok_toe_save'));
+denyStreakRead=false;
+view().onReset();view().onNewGameSettingsChange({...view().newGameSettings,board:{width:3,height:3},winLength:3});view().onStartNewGame();
+denyStreakWrite=true;
+for(const [r,c] of [[0,0],[1,0],[0,1],[1,1]]){view().onCellClick(r,c);fire();}
+view().onCellClick(0,2);fire();view();
+assert.match(render().props.statusMessage,/連勝履歴を保存できません/);
+assert.equal(JSON.parse(stored.get('extreme_tik_tok_toe_save')).appState,'after');
+denyStreakWrite=false;view().onReset();view().onStartNewGame();
+for(const [r,c] of [[0,0],[1,0],[0,1],[1,1]]){view().onCellClick(r,c);fire();}
+view().onCellClick(0,2);fire();view();
+assert.equal(render().props.statusMessage,undefined);
+assert.equal(JSON.parse(stored.get('ntiktaktoe_streak_v1')).count,1);
+slots=[];cleanups.length=0;view().onReset();view().onResumeGame();assert.equal(view().streak,1,'reloaded game restores valid streak');
+view().onReset();view().onStartNewGame();denyStreakWrite=true;
+for(const [r,c] of [[0,0],[0,1],[0,2],[1,1],[1,0],[1,2],[2,1],[2,0],[2,2]]){view().onCellClick(r,c);fire();}
+assert.match(render().props.statusMessage,/連勝履歴を保存できません/);
+assert.equal(JSON.parse(stored.get('ntiktaktoe_streak_v1')).count,1,'denied draw update leaves the old persisted count');
+denyStreakWrite=false;view().onReset();view().onStartNewGame();
+for(const [r,c] of [[0,0],[0,1],[0,2],[1,1],[1,0],[1,2],[2,1],[2,0],[2,2]]){view().onCellClick(r,c);fire();}
+assert.equal(JSON.parse(stored.get('ntiktaktoe_streak_v1')).count,0,'successful draw resets history');
+assert.equal(render().props.statusMessage,undefined);
+for(const data of ['{','null','[]',JSON.stringify({count:-1,configHash:'Player 1|Player 2'}),JSON.stringify({count:1.5,configHash:'Player 1|Player 2'}),JSON.stringify({count:'2',configHash:'Player 1|Player 2'}),JSON.stringify({count:2,configHash:42}),JSON.stringify({count:1e30,configHash:'Player 1|Player 2'})]){
+  stored.set('ntiktaktoe_streak_v1',data);slots=[];cleanups.length=0;
+  assert.match(render().props.statusMessage,/連勝履歴の形式/);assert.equal(stored.get('ntiktaktoe_streak_v1'),data,'invalid history preserved until an explicit game outcome');
+}
+stored.set('ntiktaktoe_streak_v1',JSON.stringify({count:2,configHash:'other'}));slots=[];cleanups.length=0;view().onReset();view().onStartNewGame();assert.equal(view().streak,0);assert.equal(render().props.statusMessage,undefined);
+console.log('nTic streak: key-specific read/write denial, independent progress success, successful recovery, reload, 8 invalid forms and mismatched configuration passed');
 
 const storageBuild=await build({entryPoints:[`${web}games/ntiktaktoe/src/lib/storage.ts`],bundle:true,write:false,platform:'node',format:'cjs'});
 const storageModule={exports:{}};

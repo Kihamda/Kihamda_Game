@@ -31,7 +31,7 @@ export function parseCatalog(data: unknown): Work[] {
   const ids = new Set<string>();
   return data.games.map((game: Work) => {
     const text = (value: unknown) => typeof value === "string" && value.trim().length > 0;
-    if (!game || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(game.id) || ids.has(game.id) || game.path !== `/games/${game.id}/` || !text(game.title) || !text(game.description)
+    if (!game || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(game.id) || ids.has(game.id) || ![`/games/${game.id}/`, `/works/${game.id}/`].includes(game.path) || !text(game.title) || !text(game.description)
       || !Array.isArray(game.tags) || !game.tags.every(text) || !Array.isArray(game.facts) || !game.facts.every(text)
       || !["web", "unity"].includes(game.technology) || !["development", "paused", "verification"].includes(game.status)
       || !(game.technology === "web" ? game.origin === "studio-web" : ["owner-finished", "preserved-prototype"].includes(game.origin))) throw new Error("Invalid work metadata");

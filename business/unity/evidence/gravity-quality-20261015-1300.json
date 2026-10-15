@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "run": "unity-20261015T1300-score-read-6bc28a",
+  "scheduledAt": "2026-10-15T13:00:00+09:00",
+  "recordedAt": "2026-10-15T13:15:31.864784+09:00",
+  "sourceBaseline": "1f89f13",
+  "artifacts": [
+    {
+      "path": "web/src/shared/hooks/useHighScore.ts",
+      "sha256": "e7ba96adff219fb405df85b17d375bfede976066acee45426e6b4fdd24bcf473"
+    },
+    {
+      "path": "web/src/shared/components/GameShell.tsx",
+      "sha256": "a0f965be7d243ccc8ee64ed6e67ddddd1abf8fdc14a6a56183bebd34e1657c08"
+    },
+    {
+      "path": "web/src/shared/components/GameShell.css",
+      "sha256": "ede9c43adb6bb3e123a52522b44f3bd0d3a3044d599359cabc154a7b0741dff4"
+    },
+    {
+      "path": "web/games/gravityball/src/App.tsx",
+      "sha256": "b4795d3711047df824826b7e8b2811dd83db28f0f133133e007da96d794f6152"
+    },
+    {
+      "path": "scripts/check-gravityball.mjs",
+      "sha256": "f474320d5944f5ce61b48e0456a7a510f29abf47ca7b7e9379da62dc250bdb1d"
+    },
+    {
+      "path": "docs/web-gravity-score-read-20261015.md",
+      "sha256": "c0612ac9f4b99b3eee59515daaae1f8759edb7e71757b4e513af8852d7e34bd2"
+    },
+    {
+      "path": "docs/web-gravity-mobile-layout-20261015.md",
+      "sha256": "84cf6286deadd17a5633f1e9176b876fb4857d32306c7235c83188a2be453ea8"
+    },
+    {
+      "path": "docs/web-gravity-stale-score-20261015.md",
+      "sha256": "0e580512d40373560ee79acb6fa98b98e095efa520821881c137b30dcdb9b44a"
+    },
+    {
+      "path": "docs/web-gravity-popup-timers-20261015.md",
+      "sha256": "8831e0908575914d2e8aa82d2ae1a580a2359b5ec322b939147eea749c67787d"
+    },
+    {
+      "path": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+      "sha256": "82a5015a90d46051f949ec996fc80425711b555e638ae0a3d9071bde8be8efda"
+    },
+    {
+      "path": "STATE.md",
+      "sha256": "6f6deb1faf098c4a20080412cacf43165a54dc5bbb40590378b2021d8226ee6b"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "573c61c37c84c3f0baf474c722cd93787a026a0e721416562364f8688f158b71"
+    },
+    {
+      "path": "business/studio-policy.json",
+      "sha256": "373f1eb89c92f4b95d42cc57eab182db94c2c4c1ed5a6d4e8449f5e2b83daef9"
+    },
+    {
+      "path": "docs/images/gravity-final-read-write-20261015-1280.png",
+      "sha256": "dc0c484bcd30a0a144caeab36afc6b1865e97f4561aa19b63767915f00951004"
+    },
+    {
+      "path": "docs/images/gravity-final-read-write-20261015-390.png",
+      "sha256": "a1852ceb7cc0d677832b6b56550fc553120fbd2f95f2439e354ae2e16ef0d7ed"
+    },
+    {
+      "path": "docs/images/gravity-mobile-read-20261015-1280.png",
+      "sha256": "0b98579a3e553cf92ace8f23542fac63a5a4f39ddfb271a36b9f628fab0eb9c2"
+    },
+    {
+      "path": "docs/images/gravity-mobile-read-20261015-390.png",
+      "sha256": "0a69e004abf6ea93362ea7e1cccbb3e5a1583115d0341c202160c3ad2972a3d9"
+    },
+    {
+      "path": "docs/images/gravity-mobile-write-20261015-390.png",
+      "sha256": "6305bf484c1ec2d4e91bf145358f52a5c88b1cdebdc2e96d258b5e9b7e17a63e"
+    },
+    {
+      "path": "docs/images/gravity-popup-reset-20261015-1280.png",
+      "sha256": "8beadbd0940eccf8deb6dfe37fab3017c9e91e04d6774f44f54958323ec81766"
+    },
+    {
+      "path": "docs/images/gravity-popup-reset-20261015-390.png",
+      "sha256": "d71c4a203a4caf1900a715491d8c8ffe264203408b4d554c173fa608dfc8fcf2"
+    },
+    {
+      "path": "docs/images/gravity-score-read-20261015-1280.png",
+      "sha256": "86499bb90ab31b0e4821ed68cd72167f560b5fa04422ab0be793e1809cb9067e"
+    },
+    {
+      "path": "docs/images/gravity-score-read-20261015-390.png",
+      "sha256": "1df0217d31d8efed52480da40fb7efcd18534e91767c58b73e5c3a867f35b8cc"
+    },
+    {
+      "path": "docs/images/gravity-stale-20261015-1280.png",
+      "sha256": "11a245265d32f9b2393eb13085487d30eeb51fdd280bd7fb57bb9ef3f1b928c4"
+    }
+  ],
+  "checks": [
+    "TS/ESLint/Vite5SSG35hashes",
+    "4game actualApp/hook regressions including new stale/read/timer cases",
+    "navigation SSR/8guides/19GUID/27ledger tests",
+    "Chrome390/1280 read denial/invalid recovery",
+    "390normal/read/write notice canvas359x430.8/retry348x44;1280canvas500x600",
+    "Chrome2tabs sequential50000/80000 preservation and reload",
+    "delayed celebrations pending4desktop/3mobile ->UIEnter restart0; no later popup",
+    "final combined read+pending-write notice both sizes; API restored",
+    "parent4HEAD/recovery8hashes/original202events/protected files unchanged"
+  ],
+  "fixtures": [
+    "All goal/score/perfect browser injections are storage/effect fixtures, not normal game completions",
+    "getItem/setItem exceptions are target-key-only test doubles on4217; restored",
+    "2tabs are sequential; atomic simultaneous writes not guaranteed",
+    "viewport applied second tab: first actual1280, second390; image names corrected"
+  ],
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "startRate": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "unverified": [
+    "physical touch",
+    "Safari",
+    "sensors",
+    "human reactions",
+    "simultaneous writer isolation",
+    "remote CI for these local changes"
+  ],
+  "external": {
+    "pr23AlreadyMerged": true,
+    "newPullRequest": false,
+    "push": false,
+    "deploy": false,
+    "paidContract": false,
+    "posts": false,
+    "contacts": false
+  },
+  "nextStep": "翌日の日次PRへローカル成果をまとめ最新head CI成功後に反映する"
+}

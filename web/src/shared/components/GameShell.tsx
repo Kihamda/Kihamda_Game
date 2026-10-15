@@ -20,7 +20,9 @@ interface Props {
   layout?: "default" | "immersive";
   /** 作品固有の操作と保存条件 */
   controlHints?: string[];
+  mobileScroll?: boolean;
   statusMessage?: string;
+  statusAction?: { label: string; onClick: () => void };
 }
 
 function buildControlHints(tags: string[] | undefined): string[] {
@@ -55,7 +57,9 @@ export function GameShell({
   minScale = 0.3,
   layout = "default",
   controlHints: providedControlHints,
+  mobileScroll = false,
   statusMessage,
+  statusAction,
 }: Props) {
   const frameRef = useRef<HTMLDivElement>(null);
   const scaledContentRef = useRef<HTMLDivElement>(null);
@@ -144,7 +148,7 @@ export function GameShell({
   }, [children, minScale]);
 
   return (
-    <div className={`game-shell-root game-shell-root--${layout}`}>
+    <div className={`game-shell-root game-shell-root--${layout}${mobileScroll ? " game-shell-root--scroll-mobile" : ""}`}>
       <div className={`game-shell-main game-shell-main--${layout}`}>
         <aside className="game-shell-panel" aria-label="ゲーム操作パネル">
           <div className="game-shell-panel-inner">
@@ -169,6 +173,10 @@ export function GameShell({
             </section>
 
             {statusMessage && <p role="status">{statusMessage}</p>}
+            {statusMessage && statusAction && <button type="button"
+              className="game-shell-link-button" onClick={statusAction.onClick}>
+              {statusAction.label}
+            </button>}
 
             <div className="game-shell-actions">
               <a href={portalUrl} className="game-shell-link-button">

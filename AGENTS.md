@@ -1,4 +1,8 @@
+2026-10-15の19時枠で既存n目並べを公開前のWeb作品として一覧と紹介へ追加。紹介/works/ntiktaktoe/と従来の実行/games/ntiktaktoe/を分け、release=nullの開始リンクを抑止。390/1280の検索・往復・保存範囲案内・再読み込みと既存ゲームの通常着手保存を確認。型/静的/6SSG/4URL/36ハッシュ、Webと持込Unityの案内、台帳27テスト成功。詳細docs/web-ntik-catalog-20261015.md。事業unobserved・指標null。本日PR23はマージ済みのためローカル保存し、翌日日次統合を継続する。実タッチ/Safari/人間評価は未確認、天啓の継続指示は保持。
+
 # Kihamda.NET制作スタジオ
+
+2026-10-15の13時枠でGravityBallの読込異常案内、未知/別タブの最高値保護、保存案内中のモバイル盤面拡大、再開始/unmount時の演出取消を検証した。390の通常/警告時canvas359×430.8px、1280は500×600px。実hook/AppとChrome2タブのfixture検査を通常プレイと区別し、APIを復元した。一次資料調査business/unity/research/2026-10-15-browser-save-and-layout.md。4作品/導線/型/静的/ビルドと台帳27テスト成功。本日PR23はマージ済みなので追加PR/push/リモートCI/配信なし。実タッチ/Safari/人間評価/同時書込排他は未確認、指標null。次の一工程は翌日日次PRへローカル成果と復元索引をまとめ最新headのCIを確認すること。天啓の継続指示は保持する。
 
 毎回、天啓.md、STATE.md、business/studio-policy.json、business/unity/ops/ledger.json、最新checkpointとGit状態を読む。本人の最新の直接指示を優先する。天啓.mdは本人の指示入力用で、未完了の指示と作業中の追記・変更は消さない。取り組みと必要な検証が完了した指示だけ、STATE.mdへ結果を記録してから削除する。継続方針はこのファイルとbusiness/studio-policy.jsonへ保存する。天啓.md自体と追記欄は残す。
 

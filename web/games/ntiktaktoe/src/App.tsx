@@ -46,24 +46,33 @@ interface StreakData {
 const computeConfigHash = (settings: GameSettings): string =>
   settings.players.map((p) => p.name).join("|");
 
-const loadStreak = (configHash: string): number => {
+const loadStreak = (configHash: string): { count: number; message: string | null } => {
   try {
     const saved = localStorage.getItem(STREAK_KEY);
-    if (saved) {
-      const data = JSON.parse(saved) as StreakData;
-      if (data.configHash === configHash) return data.count;
+    if (saved !== null) {
+      let data: unknown;
+      try { data = JSON.parse(saved); } catch {
+        return { count: 0, message: "連勝履歴の形式を確認できませんでした。今回は0から数えます。勝利・引き分け時に履歴を更新します。" };
+      }
+      if (typeof data !== "object" || data === null || Array.isArray(data) ||
+          !Number.isSafeInteger((data as StreakData).count) || (data as StreakData).count < 0 ||
+          typeof (data as StreakData).configHash !== "string") {
+        return { count: 0, message: "連勝履歴の形式を確認できませんでした。今回は0から数えます。勝利・引き分け時に履歴を更新します。" };
+      }
+      if ((data as StreakData).configHash === configHash) return { count: (data as StreakData).count, message: null };
     }
   } catch {
-    // ignore
+    return { count: 0, message: "連勝履歴を読み込めませんでした。今回は0から数えます。勝利・引き分け時に保存を再試行します。" };
   }
-  return 0;
+  return { count: 0, message: null };
 };
 
-const saveStreak = (count: number, configHash: string): void => {
+const saveStreak = (count: number, configHash: string): boolean => {
   try {
     localStorage.setItem(STREAK_KEY, JSON.stringify({ count, configHash }));
+    return true;
   } catch {
-    // ignore
+    return false;
   }
 };
 // ---------------------------------------------------------------------------
@@ -85,9 +94,12 @@ function App() {
   const initialSave = useMemo(() => readGameState(), []);
   const initialSavedState = initialSave.state;
   const initialDevicePrefs = useMemo(() => loadDevicePreferences(), []);
+  const initialStreak = useMemo(() => loadStreak(computeConfigHash(
+    initialSavedState?.gameSettings ?? initialDevicePrefs.lastGameSettings)), [initialSavedState, initialDevicePrefs]);
   const [saveMessage, setSaveMessage] = useState<string | null>(initialSave.message);
   const [prefsMessage, setPrefsMessage] = useState<string | null>(null);
   const [deleteMessage, setDeleteMessage] = useState<string | null>(null);
+  const [streakMessage, setStreakMessage] = useState<string | null>(initialStreak.message);
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
 
   const { playClick, playFanfare, playArpeggio } = useAudio();
@@ -127,7 +139,7 @@ function App() {
   const [victoryMessage, setVictoryMessage] = useState<string | null>(null);
   const [isDraw, setIsDraw] = useState(false);
   const [moveCount, setMoveCount] = useState(0);
-  const [streak, setStreak] = useState(0);
+  const [streak, setStreak] = useState(initialStreak.count);
   const [winningCells, setWinningCells] = useState<Array<{ row: number; col: number }>>([]);
   const [scorePopup, setScorePopup] = useState<{ text: string; key: number } | null>(null);
   // --------------------------------------------------------------------------
@@ -194,7 +206,9 @@ function App() {
     setVictoryMessage(null);
     setIsDraw(false);
     setMoveCount(0);
-    setStreak(loadStreak(configHash));
+    const history = loadStreak(configHash);
+    setStreak(history.count);
+    setStreakMessage(history.message);
     setWinningCells([]);
     setScorePopup(null);
     clearParticles();
@@ -240,7 +254,7 @@ function App() {
       const configHash = computeConfigHash(currentGameSettings);
       const newStreak = streak + 1;
       setStreak(newStreak);
-      saveStreak(newStreak, configHash);
+      setStreakMessage(saveStreak(newStreak, configHash) ? null : "連勝履歴を保存できませんでした。今回の連勝数は画面内だけに残り、再読み込みすると以前の履歴に戻る場合があります。");
       setIsWinAnimation(true);
       setWinningCells(winCells);
       setVictoryMessage(`🎉 ${currentPlayer.name} の勝利！`);
@@ -259,7 +273,7 @@ function App() {
       }, 2500);
     } else if (isBoardFull(newBoard)) {
       const configHash = computeConfigHash(currentGameSettings);
-      saveStreak(0, configHash);
+      setStreakMessage(saveStreak(0, configHash) ? null : "連勝履歴を保存できませんでした。今回の連勝数は画面内だけに残り、再読み込みすると以前の履歴に戻る場合があります。");
       setStreak(0);
       setIsDraw(true);
       setVictoryMessage("引き分け！");
@@ -346,7 +360,7 @@ function App() {
       gameId="ntiktaktoe"
       layout="immersive"
       minScale={0.34}
-      statusMessage={[saveMessage, prefsMessage, deleteMessage].filter(Boolean).join(" ") || undefined}
+      statusMessage={[saveMessage, prefsMessage, deleteMessage, streakMessage].filter(Boolean).join(" ") || undefined}
     >
       <div className="ntiktaktoe-root">
         {appState === "before" && (

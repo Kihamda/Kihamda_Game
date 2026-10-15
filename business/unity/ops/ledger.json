@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 192,
+  "revision": 237,
   "business_id": "game-site",
-  "fence": 30,
-  "lease": null,
+  "fence": 38,
+  "lease": {
+    "run_id": "unity-20261016T0100-integration-45f5794c",
+    "task_id": "T-web-daily-ci-integration-20261016",
+    "fence": 38,
+    "expires_at": 1792081727.2408962
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -4814,9 +4819,1229 @@
       "depends_on": [
         "T-web-ntik-save-scope-guidance"
       ],
-      "status": "ready",
-      "checkpoints": [],
-      "claims": []
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261015T0700-streak-013ac59e",
+          "fence": 31,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "e19f594206e3869e817a14a3f35dfb9149f8249f63ab51e813564f81421f42f3"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "18b7cf499e6cb842b4bd5c33f3e7a5b4b826bce60a126c7d987393bacc4c1403"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "6e6c6d463f02e29efae9e9aa1bcd99d69037b11c9c28e215ce0c68c017d86f1d"
+            },
+            {
+              "path": "docs/web-ntik-streak-20261015.md",
+              "sha256": "d0a16e57f993f9da11f6ea2d531e7cc125798a15c065f2af99a96978246f09db"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-15-separate-save-results.md",
+              "sha256": "778611339e5398371a831ae547dd388f9aa3739741dcc980f3ab9adbbbf0dc62"
+            },
+            {
+              "path": "docs/images/ntik-streak-read-20261015-390.png",
+              "sha256": "7bf31091009cf95f54b5c6c86a8549df2469a5101e7fa3007c940ace7fef0b14"
+            },
+            {
+              "path": "docs/images/ntik-streak-write-20261015-390.png",
+              "sha256": "1aacc8e87ce5a7e934c3eccc6397426abf5b9a84b002019f4ead04d07719f025"
+            },
+            {
+              "path": "docs/images/ntik-streak-write-20261015-1280.png",
+              "sha256": "a75c7d06b0254ab8d2e8b55305656e32ec2ea13ec73e5fa5c937baf4f123c26f"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "864b49cf03b7f4a34bd04b2bf88011d8540f54dec5679bfc795c39d9231db22a"
+            },
+            {
+              "path": "business/unity/evidence/ntik-streak-20261015-0700.json",
+              "sha256": "dc00ab703ee596a60109ee294ce37ae1ad5bc7866915ed1256fc6fdac88fcbb4"
+            }
+          ],
+          "checks": [
+            "TS/ESLint/Vite5SSG35hashes",
+            "actual App key-specific read/write denial, 8 invalid forms, win/draw recovery",
+            "Chrome390/1280 normal moves, progress save, deletion retention, reload",
+            "final browser screenshots; API restored/viewport reset/tab closed"
+          ],
+          "next_step": "T-web-gravity-score-retry: reproduce failed write then equal score after API recovery",
+          "at": 1792015661.7555068
+        },
+        {
+          "run_id": "unity-20261015T0700-streak-013ac59e",
+          "fence": 31,
+          "artifacts": [
+            {
+              "path": "web/games/ntiktaktoe/src/App.tsx",
+              "sha256": "e19f594206e3869e817a14a3f35dfb9149f8249f63ab51e813564f81421f42f3"
+            },
+            {
+              "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+              "sha256": "18b7cf499e6cb842b4bd5c33f3e7a5b4b826bce60a126c7d987393bacc4c1403"
+            },
+            {
+              "path": "scripts/check-ntiktaktoe.mjs",
+              "sha256": "6e6c6d463f02e29efae9e9aa1bcd99d69037b11c9c28e215ce0c68c017d86f1d"
+            },
+            {
+              "path": "docs/web-ntik-streak-20261015.md",
+              "sha256": "d0a16e57f993f9da11f6ea2d531e7cc125798a15c065f2af99a96978246f09db"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-15-separate-save-results.md",
+              "sha256": "778611339e5398371a831ae547dd388f9aa3739741dcc980f3ab9adbbbf0dc62"
+            },
+            {
+              "path": "docs/images/ntik-streak-read-20261015-390.png",
+              "sha256": "7bf31091009cf95f54b5c6c86a8549df2469a5101e7fa3007c940ace7fef0b14"
+            },
+            {
+              "path": "docs/images/ntik-streak-write-20261015-390.png",
+              "sha256": "1aacc8e87ce5a7e934c3eccc6397426abf5b9a84b002019f4ead04d07719f025"
+            },
+            {
+              "path": "docs/images/ntik-streak-write-20261015-1280.png",
+              "sha256": "a75c7d06b0254ab8d2e8b55305656e32ec2ea13ec73e5fa5c937baf4f123c26f"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "864b49cf03b7f4a34bd04b2bf88011d8540f54dec5679bfc795c39d9231db22a"
+            },
+            {
+              "path": "business/unity/evidence/ntik-streak-20261015-0700.json",
+              "sha256": "dc00ab703ee596a60109ee294ce37ae1ad5bc7866915ed1256fc6fdac88fcbb4"
+            }
+          ],
+          "checks": [
+            "TS/ESLint/Vite5SSG35hashes",
+            "actual App key-specific read/write denial, 8 invalid forms, win/draw recovery",
+            "Chrome390/1280 normal moves, progress save, deletion retention, reload",
+            "final browser screenshots; API restored/viewport reset/tab closed"
+          ],
+          "next_step": "T-web-gravity-score-retry: reproduce failed write then equal score after API recovery",
+          "passed": true,
+          "at": 1792015661.7839293
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261015T0700-streak-013ac59e",
+          "task_id": "T-web-ntik-streak-storage-notice",
+          "fence": 31,
+          "expires_at": 1792016713.0200315
+        }
+      ]
+    },
+    "T-web-gravity-score-retry": {
+      "id": "T-web-gravity-score-retry",
+      "objective": "GravityBallで最高スコア保存失敗後の再試行を可能にする",
+      "acceptance": [
+        "書き込み拒否後に同点でAPI復旧しても旧値が残る問題を実コードで再現",
+        "最高スコアを下げず失敗した現在の最高値を再試行する",
+        "失敗表示を成功した再保存でだけ解除する",
+        "390/1280の実ブラウザで専用の再試行操作と保存再読み込みを確認"
+      ],
+      "outputs": [
+        "Web実装",
+        "実hook/App回帰",
+        "ブラウザ証跡"
+      ],
+      "checks": [
+        "actual hook storage denial",
+        "TypeScript ESLint build",
+        "production browser"
+      ],
+      "next_step": "最高スコア保存拒否と同点での復帰を再現し、再試行操作を追加する",
+      "source": "docs/web-ntik-streak-20261015.md",
+      "priority": 1,
+      "depends_on": [
+        "T-web-ntik-streak-storage-notice"
+      ],
+      "decision_id": "D-web-save-scope-20261014",
+      "hypothesis": "再試行入口があれば再プレイで記録更新を待たず現在の記録を保存できる",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261015T0700-continuation-d0263a7f",
+          "fence": 32,
+          "artifacts": [
+            {
+              "path": "web/src/shared/hooks/useHighScore.ts",
+              "sha256": "7b962266d3ac48d808d63a634bf2e27ba9420d999b1c31e70aa9876022ef06b7"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "4732d1a41512019a0eff01f216101d81ac2b1b1374af53049c3b0b0bce79962c"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "e0c3ec2e1ad49776fa89b07a72bca5e526c4f13dba0529ad3910879a5af7eda9"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "00b681d3470eaa178cafb5f91fdb41ae053975d4dbda1e07ad625940979ef5d8"
+            },
+            {
+              "path": "docs/web-gravity-score-retry-20261015.md",
+              "sha256": "3ce98918d5bd947a6f21a846dbe0ee1c1f1ef447d88cfe04eab9206cb8865cd4"
+            },
+            {
+              "path": "docs/images/gravity-score-retry-20261015-390.png",
+              "sha256": "c6c190937b42f478ae1dc0dc4df8bdc4d11ee176bc6ee97832d85dc9d69babdb"
+            },
+            {
+              "path": "docs/images/gravity-score-retry-20261015-1280.png",
+              "sha256": "bfeaf51282459720f188f8d7759b119a9e5d48b07d20c22f0de383a5888f5134"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "ad40fe552a44574a42b84210ddcc97c38fb7073dcf85cf82d3eb86169e9ee64a"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "166854a68827cf4c2caea44bb9d014dce93b25b55d0cc3c08f11f0a5959d0891"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "bb11885cf3c74b8e437efafb086452a7681b666ee6ed688d8711a437b86aee64"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-15-separate-save-results.md",
+              "sha256": "73fbe9f3f2338a8d47bbf2f553d3be5622d9ad6c4db4184fe0c471c4c3aca821"
+            },
+            {
+              "path": "business/unity/evidence/gravity-score-retry-20261015-0700.json",
+              "sha256": "8278d2c98f2e38313765edcb84619ece70a0932c8bd6860fd41ab14b80816156"
+            }
+          ],
+          "checks": [
+            "actual old hook reproduced equal score no retry",
+            "actual hook denied/equal/manual/delete retries and retained maximum",
+            "TS ESLint build 5SSG35hashes",
+            "Chrome390 click/1280Enter denied/recovered save, game focus, reload",
+            "4games/navigation/guide regressions and27ledger tests",
+            "original192event prefix unchanged; no external operations"
+          ],
+          "next_step": "T-web-gravity-score-read-notice: reproduce read denial and invalid score separately",
+          "at": 1792015994.241712
+        },
+        {
+          "run_id": "unity-20261015T0700-continuation-d0263a7f",
+          "fence": 32,
+          "artifacts": [
+            {
+              "path": "web/src/shared/hooks/useHighScore.ts",
+              "sha256": "7b962266d3ac48d808d63a634bf2e27ba9420d999b1c31e70aa9876022ef06b7"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "4732d1a41512019a0eff01f216101d81ac2b1b1374af53049c3b0b0bce79962c"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "e0c3ec2e1ad49776fa89b07a72bca5e526c4f13dba0529ad3910879a5af7eda9"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "00b681d3470eaa178cafb5f91fdb41ae053975d4dbda1e07ad625940979ef5d8"
+            },
+            {
+              "path": "docs/web-gravity-score-retry-20261015.md",
+              "sha256": "3ce98918d5bd947a6f21a846dbe0ee1c1f1ef447d88cfe04eab9206cb8865cd4"
+            },
+            {
+              "path": "docs/images/gravity-score-retry-20261015-390.png",
+              "sha256": "c6c190937b42f478ae1dc0dc4df8bdc4d11ee176bc6ee97832d85dc9d69babdb"
+            },
+            {
+              "path": "docs/images/gravity-score-retry-20261015-1280.png",
+              "sha256": "bfeaf51282459720f188f8d7759b119a9e5d48b07d20c22f0de383a5888f5134"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "ad40fe552a44574a42b84210ddcc97c38fb7073dcf85cf82d3eb86169e9ee64a"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "166854a68827cf4c2caea44bb9d014dce93b25b55d0cc3c08f11f0a5959d0891"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "bb11885cf3c74b8e437efafb086452a7681b666ee6ed688d8711a437b86aee64"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-15-separate-save-results.md",
+              "sha256": "73fbe9f3f2338a8d47bbf2f553d3be5622d9ad6c4db4184fe0c471c4c3aca821"
+            },
+            {
+              "path": "business/unity/evidence/gravity-score-retry-20261015-0700.json",
+              "sha256": "8278d2c98f2e38313765edcb84619ece70a0932c8bd6860fd41ab14b80816156"
+            }
+          ],
+          "checks": [
+            "actual old hook reproduced equal score no retry",
+            "actual hook denied/equal/manual/delete retries and retained maximum",
+            "TS ESLint build 5SSG35hashes",
+            "Chrome390 click/1280Enter denied/recovered save, game focus, reload",
+            "4games/navigation/guide regressions and27ledger tests",
+            "original192event prefix unchanged; no external operations"
+          ],
+          "next_step": "T-web-gravity-score-read-notice: reproduce read denial and invalid score separately",
+          "passed": true,
+          "at": 1792015994.2710876
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261015T0700-continuation-d0263a7f",
+          "task_id": "T-web-gravity-score-retry",
+          "fence": 32,
+          "expires_at": 1792016603.9165943
+        }
+      ]
+    },
+    "T-web-gravity-score-read-notice": {
+      "id": "T-web-gravity-score-read-notice",
+      "objective": "最高スコアの読込拒否と不正形式を0と区別して案内する",
+      "acceptance": [
+        "読込拒否/不正値の無言の0化を実コードで再現",
+        "読込結果と書込結果の案内を分け正常値と再試行を維持",
+        "元履歴を読込だけで削除しない",
+        "390/1280で案内・復旧・正常再読込を確認"
+      ],
+      "outputs": [
+        "Web実装",
+        "実hook回帰",
+        "ブラウザ証跡"
+      ],
+      "checks": [
+        "actual hook read denial",
+        "TypeScript ESLint build",
+        "production browser"
+      ],
+      "next_step": "useHighScore初期読込の拒否/不正値を再現",
+      "source": "docs/web-gravity-score-retry-20261015.md",
+      "priority": 1,
+      "depends_on": [
+        "T-web-gravity-score-retry"
+      ],
+      "decision_id": "D-web-save-scope-20261014",
+      "hypothesis": "履歴の未読込と記録0を区別すると保存された最高値を確認できない状態が分かる",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261015T1300-score-read-6bc28a",
+          "fence": 33,
+          "artifacts": [
+            {
+              "path": "web/src/shared/hooks/useHighScore.ts",
+              "sha256": "e27b7be5e27124152f4ac1654246a9994f1f0dab5af7ddd48311298ce3595253"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "0285dcc12013070b822afddc6f03ae38249bfa6a59227d61eb037170d95157f3"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "d060a36043d1e42cc21ba465a906c161d6d796589155463d09f49a31ba59bebf"
+            },
+            {
+              "path": "docs/web-gravity-score-read-20261015.md",
+              "sha256": "c0612ac9f4b99b3eee59515daaae1f8759edb7e71757b4e513af8852d7e34bd2"
+            },
+            {
+              "path": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+              "sha256": "bcf94e4a759919d2290e5fe0e3a4846f51510acbe31fe98808b1b223f966af98"
+            },
+            {
+              "path": "docs/images/gravity-score-read-20261015-390.png",
+              "sha256": "1df0217d31d8efed52480da40fb7efcd18534e91767c58b73e5c3a867f35b8cc"
+            },
+            {
+              "path": "docs/images/gravity-score-read-20261015-1280.png",
+              "sha256": "86499bb90ab31b0e4821ed68cd72167f560b5fa04422ab0be793e1809cb9067e"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "df4a9f2fc43fb00020ef31c8977c7ba91d0120305931d64ea8e691019d6b5de8"
+            }
+          ],
+          "checks": [
+            "TypeScript ESLint Vite5SSG",
+            "actual hook read denial/invalid/preserve unknown maximum/retry regression",
+            "Chrome390/1280 read denial and invalid value recovery; storage fixtures separate from normal play"
+          ],
+          "next_step": "T-web-gravity-mobile-notice-layout: canvas width>=300 at390 with notice",
+          "passed": true,
+          "at": 1792037155.1378524
+        },
+        {
+          "run_id": "unity-20261015T1300-score-read-6bc28a",
+          "fence": 33,
+          "artifacts": [
+            {
+              "path": "web/src/shared/hooks/useHighScore.ts",
+              "sha256": "e27b7be5e27124152f4ac1654246a9994f1f0dab5af7ddd48311298ce3595253"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "0285dcc12013070b822afddc6f03ae38249bfa6a59227d61eb037170d95157f3"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "d060a36043d1e42cc21ba465a906c161d6d796589155463d09f49a31ba59bebf"
+            },
+            {
+              "path": "docs/web-gravity-score-read-20261015.md",
+              "sha256": "c0612ac9f4b99b3eee59515daaae1f8759edb7e71757b4e513af8852d7e34bd2"
+            },
+            {
+              "path": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+              "sha256": "bcf94e4a759919d2290e5fe0e3a4846f51510acbe31fe98808b1b223f966af98"
+            },
+            {
+              "path": "docs/images/gravity-score-read-20261015-390.png",
+              "sha256": "1df0217d31d8efed52480da40fb7efcd18534e91767c58b73e5c3a867f35b8cc"
+            },
+            {
+              "path": "docs/images/gravity-score-read-20261015-1280.png",
+              "sha256": "86499bb90ab31b0e4821ed68cd72167f560b5fa04422ab0be793e1809cb9067e"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "df4a9f2fc43fb00020ef31c8977c7ba91d0120305931d64ea8e691019d6b5de8"
+            }
+          ],
+          "checks": [
+            "TypeScript ESLint Vite5SSG",
+            "actual hook read denial/invalid/preserve unknown maximum/retry regression",
+            "Chrome390/1280 read denial and invalid value recovery; storage fixtures separate from normal play"
+          ],
+          "next_step": "T-web-gravity-mobile-notice-layout: canvas width>=300 at390 with notice",
+          "passed": true,
+          "at": 1792037155.167514
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261015T1300-score-read-6bc28a",
+          "task_id": "T-web-gravity-score-read-notice",
+          "fence": 33,
+          "expires_at": 1792038461.6949537
+        }
+      ]
+    },
+    "T-web-gravity-mobile-notice-layout": {
+      "id": "T-web-gravity-mobile-notice-layout",
+      "objective": "GravityBallの保存案内中もモバイル盤面を読みやすくする",
+      "acceptance": [
+        "390x844通常/読込/書込案内でcanvas幅300px以上",
+        "警告/主要操作/44px再試行へスクロールで到達でき横はみ出しなし",
+        "1280x720でcanvas500x600を維持",
+        "Enter/矢印入力と復旧フォーカスを維持"
+      ],
+      "outputs": [
+        "Web実装",
+        "ブラウザ計測",
+        "検査記録"
+      ],
+      "checks": [
+        "TypeScript ESLint build",
+        "production browser3901280"
+      ],
+      "next_step": "GravityBallだけに適用するスクロール可能なモバイル配置を実装",
+      "source": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+      "priority": 1,
+      "depends_on": [
+        "T-web-gravity-score-read-notice"
+      ],
+      "decision_id": "D-web-save-scope-20261014",
+      "hypothesis": "案内が盤面の高さを圧迫しなければ警告中も操作対象を保てる",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261015T1300-layout-c84e29",
+          "fence": 34,
+          "artifacts": [
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "dad09419960c44af100f9a3406794506c85a1695b17fd921a0a8b4861effd49e"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.css",
+              "sha256": "d1d616e877cb46669259f9218947b495901c84251acbccec0d56b3e42a0c255c"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "10b1553fa5b08cb2756abef73fa1d0f7abe35ea34012014cfefd365d96a4ecb0"
+            },
+            {
+              "path": "docs/web-gravity-mobile-layout-20261015.md",
+              "sha256": "ff2c16bd2c164d0da43e540d149a1463b4a234f42d454088d1d9bbe7cdaff2b4"
+            },
+            {
+              "path": "docs/images/gravity-mobile-read-20261015-390.png",
+              "sha256": "0a69e004abf6ea93362ea7e1cccbb3e5a1583115d0341c202160c3ad2972a3d9"
+            },
+            {
+              "path": "docs/images/gravity-mobile-write-20261015-390.png",
+              "sha256": "6305bf484c1ec2d4e91bf145358f52a5c88b1cdebdc2e96d258b5e9b7e17a63e"
+            },
+            {
+              "path": "docs/images/gravity-mobile-read-20261015-1280.png",
+              "sha256": "0b98579a3e553cf92ace8f23542fac63a5a4f39ddfb271a36b9f628fab0eb9c2"
+            }
+          ],
+          "checks": [
+            "390normal/read/write canvas359x430.8; retry348x44;1280canvas500x600",
+            "Chrome keyboard phase/gravity reads; API recovery/focus",
+            "4game regressions/TS/ESLint/build/35hashes/27ledger tests"
+          ],
+          "next_step": "最高スコアの別タブ更新が古い画面から上書きされないか再現する",
+          "passed": true,
+          "at": 1792037337.404074
+        },
+        {
+          "run_id": "unity-20261015T1300-layout-c84e29",
+          "fence": 34,
+          "artifacts": [
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "dad09419960c44af100f9a3406794506c85a1695b17fd921a0a8b4861effd49e"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.css",
+              "sha256": "d1d616e877cb46669259f9218947b495901c84251acbccec0d56b3e42a0c255c"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "10b1553fa5b08cb2756abef73fa1d0f7abe35ea34012014cfefd365d96a4ecb0"
+            },
+            {
+              "path": "docs/web-gravity-mobile-layout-20261015.md",
+              "sha256": "ff2c16bd2c164d0da43e540d149a1463b4a234f42d454088d1d9bbe7cdaff2b4"
+            },
+            {
+              "path": "docs/images/gravity-mobile-read-20261015-390.png",
+              "sha256": "0a69e004abf6ea93362ea7e1cccbb3e5a1583115d0341c202160c3ad2972a3d9"
+            },
+            {
+              "path": "docs/images/gravity-mobile-write-20261015-390.png",
+              "sha256": "6305bf484c1ec2d4e91bf145358f52a5c88b1cdebdc2e96d258b5e9b7e17a63e"
+            },
+            {
+              "path": "docs/images/gravity-mobile-read-20261015-1280.png",
+              "sha256": "0b98579a3e553cf92ace8f23542fac63a5a4f39ddfb271a36b9f628fab0eb9c2"
+            }
+          ],
+          "checks": [
+            "390normal/read/write canvas359x430.8; retry348x44;1280canvas500x600",
+            "Chrome keyboard phase/gravity reads; API recovery/focus",
+            "4game regressions/TS/ESLint/build/35hashes/27ledger tests"
+          ],
+          "next_step": "最高スコアの別タブ更新が古い画面から上書きされないか再現する",
+          "passed": true,
+          "at": 1792037337.4336255
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261015T1300-layout-c84e29",
+          "task_id": "T-web-gravity-mobile-notice-layout",
+          "fence": 34,
+          "expires_at": 1792038217.367122
+        }
+      ]
+    },
+    "T-web-gravity-score-stale-tab": {
+      "id": "T-web-gravity-score-stale-tab",
+      "objective": "古いタブから別タブの最高スコアを下げない",
+      "acceptance": [
+        "20読込→別タブ500保存→100更新の旧上書きを実hookで再現",
+        "保存と失敗再試行の直前に正常な最高値を保持",
+        "途中の読込拒否は無通知で上書きせず復旧できる",
+        "実ブラウザ2タブで順次更新と再読込を確認、同時排他の保証と区別"
+      ],
+      "outputs": [
+        "実hook回帰",
+        "Web実装",
+        "2タブ検査記録"
+      ],
+      "checks": [
+        "actual hook stale storage",
+        "production browser2tabs",
+        "TS ESLint build"
+      ],
+      "next_step": "保存直前の別タブ値を再現して最高値を保持する",
+      "source": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+      "priority": 1,
+      "depends_on": [
+        "T-web-gravity-mobile-notice-layout"
+      ],
+      "decision_id": "D-web-save-scope-20261014",
+      "hypothesis": "保存直前に読める最高値を採用すれば古い画面による低値への上書きを防げる",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261015T1300-stale-1da240",
+          "fence": 35,
+          "artifacts": [
+            {
+              "path": "web/src/shared/hooks/useHighScore.ts",
+              "sha256": "82f18e3f1ca4a4af79eb754293912cf50834fd53223980ed40d85ad6fdc6754e"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "41f7ed93e3399a08a1cc3fa0b215eae7be4eedc7dd2685ab370c3ff9efd159af"
+            },
+            {
+              "path": "docs/web-gravity-stale-score-20261015.md",
+              "sha256": "57baf7d1771796f1160ab47b837e9c67b3769f7bd4eaa3d1cea55f6a6c530286"
+            },
+            {
+              "path": "docs/images/gravity-stale-20261015-1280.png",
+              "sha256": "11a245265d32f9b2393eb13085487d30eeb51fdd280bd7fb57bb9ef3f1b928c4"
+            }
+          ],
+          "checks": [
+            "old500->100 reproduced; actual hook stale/read/write failures passed",
+            "TS ESLint build",
+            "Chrome2tabs retained50000/80000; recovery focus and both reloads"
+          ],
+          "next_step": "GravityBallの遅延演出が再開始とunmount後に残らないか検査",
+          "passed": true,
+          "at": 1792037484.4452152
+        },
+        {
+          "run_id": "unity-20261015T1300-stale-1da240",
+          "fence": 35,
+          "artifacts": [
+            {
+              "path": "web/src/shared/hooks/useHighScore.ts",
+              "sha256": "82f18e3f1ca4a4af79eb754293912cf50834fd53223980ed40d85ad6fdc6754e"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "41f7ed93e3399a08a1cc3fa0b215eae7be4eedc7dd2685ab370c3ff9efd159af"
+            },
+            {
+              "path": "docs/web-gravity-stale-score-20261015.md",
+              "sha256": "57baf7d1771796f1160ab47b837e9c67b3769f7bd4eaa3d1cea55f6a6c530286"
+            },
+            {
+              "path": "docs/images/gravity-stale-20261015-1280.png",
+              "sha256": "11a245265d32f9b2393eb13085487d30eeb51fdd280bd7fb57bb9ef3f1b928c4"
+            }
+          ],
+          "checks": [
+            "old500->100 reproduced; actual hook stale/read/write failures passed",
+            "TS ESLint build",
+            "Chrome2tabs retained50000/80000; recovery focus and both reloads"
+          ],
+          "next_step": "GravityBallの遅延演出が再開始とunmount後に残らないか検査",
+          "passed": true,
+          "at": 1792037484.4749098
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261015T1300-stale-1da240",
+          "task_id": "T-web-gravity-score-stale-tab",
+          "fence": 35,
+          "expires_at": 1792038165.9185965
+        }
+      ]
+    },
+    "T-web-gravity-popup-timer-cleanup": {
+      "id": "T-web-gravity-popup-timer-cleanup",
+      "objective": "GravityBallの前ゲームの遅延演出を再開始後に出さない",
+      "acceptance": [
+        "得点演出の遅延timerが再開始/unmountで残ることを実Appで再現",
+        "遅延演出timerを再開始/unmountで解除し進行遷移を維持",
+        "ブラウザで最終状態から即再開始し遅延演出が再出現しないことを確認"
+      ],
+      "outputs": [
+        "Web実装",
+        "実App回帰",
+        "ブラウザ検査記録"
+      ],
+      "checks": [
+        "actual App timers",
+        "TS ESLint build",
+        "production browser"
+      ],
+      "next_step": "得点演出setTimeoutの残留を実Appで再現",
+      "source": "web/games/gravityball/src/App.tsx",
+      "priority": 1,
+      "depends_on": [
+        "T-web-gravity-score-stale-tab"
+      ],
+      "decision_id": "D-web-save-scope-20261014",
+      "hypothesis": "前ゲームの演出を取り消せば新しいゲームへの古い結果表示を防げる",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261015T1300-popup-591cdf",
+          "fence": 36,
+          "artifacts": [
+            {
+              "path": "web/src/shared/hooks/useHighScore.ts",
+              "sha256": "e7ba96adff219fb405df85b17d375bfede976066acee45426e6b4fdd24bcf473"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "a0f965be7d243ccc8ee64ed6e67ddddd1abf8fdc14a6a56183bebd34e1657c08"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.css",
+              "sha256": "ede9c43adb6bb3e123a52522b44f3bd0d3a3044d599359cabc154a7b0741dff4"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "b4795d3711047df824826b7e8b2811dd83db28f0f133133e007da96d794f6152"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "f474320d5944f5ce61b48e0456a7a510f29abf47ca7b7e9379da62dc250bdb1d"
+            },
+            {
+              "path": "docs/web-gravity-score-read-20261015.md",
+              "sha256": "c0612ac9f4b99b3eee59515daaae1f8759edb7e71757b4e513af8852d7e34bd2"
+            },
+            {
+              "path": "docs/web-gravity-mobile-layout-20261015.md",
+              "sha256": "84cf6286deadd17a5633f1e9176b876fb4857d32306c7235c83188a2be453ea8"
+            },
+            {
+              "path": "docs/web-gravity-stale-score-20261015.md",
+              "sha256": "0e580512d40373560ee79acb6fa98b98e095efa520821881c137b30dcdb9b44a"
+            },
+            {
+              "path": "docs/web-gravity-popup-timers-20261015.md",
+              "sha256": "8831e0908575914d2e8aa82d2ae1a580a2359b5ec322b939147eea749c67787d"
+            },
+            {
+              "path": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+              "sha256": "82a5015a90d46051f949ec996fc80425711b555e638ae0a3d9071bde8be8efda"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "6f6deb1faf098c4a20080412cacf43165a54dc5bbb40590378b2021d8226ee6b"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "573c61c37c84c3f0baf474c722cd93787a026a0e721416562364f8688f158b71"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "373f1eb89c92f4b95d42cc57eab182db94c2c4c1ed5a6d4e8449f5e2b83daef9"
+            },
+            {
+              "path": "docs/images/gravity-final-read-write-20261015-1280.png",
+              "sha256": "dc0c484bcd30a0a144caeab36afc6b1865e97f4561aa19b63767915f00951004"
+            },
+            {
+              "path": "docs/images/gravity-final-read-write-20261015-390.png",
+              "sha256": "a1852ceb7cc0d677832b6b56550fc553120fbd2f95f2439e354ae2e16ef0d7ed"
+            },
+            {
+              "path": "docs/images/gravity-mobile-read-20261015-1280.png",
+              "sha256": "0b98579a3e553cf92ace8f23542fac63a5a4f39ddfb271a36b9f628fab0eb9c2"
+            },
+            {
+              "path": "docs/images/gravity-mobile-read-20261015-390.png",
+              "sha256": "0a69e004abf6ea93362ea7e1cccbb3e5a1583115d0341c202160c3ad2972a3d9"
+            },
+            {
+              "path": "docs/images/gravity-mobile-write-20261015-390.png",
+              "sha256": "6305bf484c1ec2d4e91bf145358f52a5c88b1cdebdc2e96d258b5e9b7e17a63e"
+            },
+            {
+              "path": "docs/images/gravity-popup-reset-20261015-1280.png",
+              "sha256": "8beadbd0940eccf8deb6dfe37fab3017c9e91e04d6774f44f54958323ec81766"
+            },
+            {
+              "path": "docs/images/gravity-popup-reset-20261015-390.png",
+              "sha256": "d71c4a203a4caf1900a715491d8c8ffe264203408b4d554c173fa608dfc8fcf2"
+            },
+            {
+              "path": "docs/images/gravity-score-read-20261015-1280.png",
+              "sha256": "86499bb90ab31b0e4821ed68cd72167f560b5fa04422ab0be793e1809cb9067e"
+            },
+            {
+              "path": "docs/images/gravity-score-read-20261015-390.png",
+              "sha256": "1df0217d31d8efed52480da40fb7efcd18534e91767c58b73e5c3a867f35b8cc"
+            },
+            {
+              "path": "docs/images/gravity-stale-20261015-1280.png",
+              "sha256": "11a245265d32f9b2393eb13085487d30eeb51fdd280bd7fb57bb9ef3f1b928c4"
+            },
+            {
+              "path": "business/unity/evidence/gravity-quality-20261015-1300.json",
+              "sha256": "3fa7efc8c9039e8e6061abd293071572648b85208285feeef3405924c08d678d"
+            }
+          ],
+          "checks": [
+            "TS/ESLint/Vite5SSG35hashes",
+            "4game actualApp/hook regressions including new stale/read/timer cases",
+            "navigation SSR/8guides/19GUID/27ledger tests",
+            "Chrome390/1280 read denial/invalid recovery",
+            "390normal/read/write notice canvas359x430.8/retry348x44;1280canvas500x600",
+            "Chrome2tabs sequential50000/80000 preservation and reload",
+            "delayed celebrations pending4desktop/3mobile ->UIEnter restart0; no later popup",
+            "final combined read+pending-write notice both sizes; API restored",
+            "parent4HEAD/recovery8hashes/original202events/protected files unchanged"
+          ],
+          "next_step": "翌日の日次PRへローカル成果をまとめ最新head CI成功後に反映する",
+          "passed": true,
+          "at": 1792037731.9033926
+        },
+        {
+          "run_id": "unity-20261015T1300-popup-591cdf",
+          "fence": 36,
+          "artifacts": [
+            {
+              "path": "web/src/shared/hooks/useHighScore.ts",
+              "sha256": "e7ba96adff219fb405df85b17d375bfede976066acee45426e6b4fdd24bcf473"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "a0f965be7d243ccc8ee64ed6e67ddddd1abf8fdc14a6a56183bebd34e1657c08"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.css",
+              "sha256": "ede9c43adb6bb3e123a52522b44f3bd0d3a3044d599359cabc154a7b0741dff4"
+            },
+            {
+              "path": "web/games/gravityball/src/App.tsx",
+              "sha256": "b4795d3711047df824826b7e8b2811dd83db28f0f133133e007da96d794f6152"
+            },
+            {
+              "path": "scripts/check-gravityball.mjs",
+              "sha256": "f474320d5944f5ce61b48e0456a7a510f29abf47ca7b7e9379da62dc250bdb1d"
+            },
+            {
+              "path": "docs/web-gravity-score-read-20261015.md",
+              "sha256": "c0612ac9f4b99b3eee59515daaae1f8759edb7e71757b4e513af8852d7e34bd2"
+            },
+            {
+              "path": "docs/web-gravity-mobile-layout-20261015.md",
+              "sha256": "84cf6286deadd17a5633f1e9176b876fb4857d32306c7235c83188a2be453ea8"
+            },
+            {
+              "path": "docs/web-gravity-stale-score-20261015.md",
+              "sha256": "0e580512d40373560ee79acb6fa98b98e095efa520821881c137b30dcdb9b44a"
+            },
+            {
+              "path": "docs/web-gravity-popup-timers-20261015.md",
+              "sha256": "8831e0908575914d2e8aa82d2ae1a580a2359b5ec322b939147eea749c67787d"
+            },
+            {
+              "path": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+              "sha256": "82a5015a90d46051f949ec996fc80425711b555e638ae0a3d9071bde8be8efda"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "6f6deb1faf098c4a20080412cacf43165a54dc5bbb40590378b2021d8226ee6b"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "573c61c37c84c3f0baf474c722cd93787a026a0e721416562364f8688f158b71"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "373f1eb89c92f4b95d42cc57eab182db94c2c4c1ed5a6d4e8449f5e2b83daef9"
+            },
+            {
+              "path": "docs/images/gravity-final-read-write-20261015-1280.png",
+              "sha256": "dc0c484bcd30a0a144caeab36afc6b1865e97f4561aa19b63767915f00951004"
+            },
+            {
+              "path": "docs/images/gravity-final-read-write-20261015-390.png",
+              "sha256": "a1852ceb7cc0d677832b6b56550fc553120fbd2f95f2439e354ae2e16ef0d7ed"
+            },
+            {
+              "path": "docs/images/gravity-mobile-read-20261015-1280.png",
+              "sha256": "0b98579a3e553cf92ace8f23542fac63a5a4f39ddfb271a36b9f628fab0eb9c2"
+            },
+            {
+              "path": "docs/images/gravity-mobile-read-20261015-390.png",
+              "sha256": "0a69e004abf6ea93362ea7e1cccbb3e5a1583115d0341c202160c3ad2972a3d9"
+            },
+            {
+              "path": "docs/images/gravity-mobile-write-20261015-390.png",
+              "sha256": "6305bf484c1ec2d4e91bf145358f52a5c88b1cdebdc2e96d258b5e9b7e17a63e"
+            },
+            {
+              "path": "docs/images/gravity-popup-reset-20261015-1280.png",
+              "sha256": "8beadbd0940eccf8deb6dfe37fab3017c9e91e04d6774f44f54958323ec81766"
+            },
+            {
+              "path": "docs/images/gravity-popup-reset-20261015-390.png",
+              "sha256": "d71c4a203a4caf1900a715491d8c8ffe264203408b4d554c173fa608dfc8fcf2"
+            },
+            {
+              "path": "docs/images/gravity-score-read-20261015-1280.png",
+              "sha256": "86499bb90ab31b0e4821ed68cd72167f560b5fa04422ab0be793e1809cb9067e"
+            },
+            {
+              "path": "docs/images/gravity-score-read-20261015-390.png",
+              "sha256": "1df0217d31d8efed52480da40fb7efcd18534e91767c58b73e5c3a867f35b8cc"
+            },
+            {
+              "path": "docs/images/gravity-stale-20261015-1280.png",
+              "sha256": "11a245265d32f9b2393eb13085487d30eeb51fdd280bd7fb57bb9ef3f1b928c4"
+            },
+            {
+              "path": "business/unity/evidence/gravity-quality-20261015-1300.json",
+              "sha256": "3fa7efc8c9039e8e6061abd293071572648b85208285feeef3405924c08d678d"
+            }
+          ],
+          "checks": [
+            "TS/ESLint/Vite5SSG35hashes",
+            "4game actualApp/hook regressions including new stale/read/timer cases",
+            "navigation SSR/8guides/19GUID/27ledger tests",
+            "Chrome390/1280 read denial/invalid recovery",
+            "390normal/read/write notice canvas359x430.8/retry348x44;1280canvas500x600",
+            "Chrome2tabs sequential50000/80000 preservation and reload",
+            "delayed celebrations pending4desktop/3mobile ->UIEnter restart0; no later popup",
+            "final combined read+pending-write notice both sizes; API restored",
+            "parent4HEAD/recovery8hashes/original202events/protected files unchanged"
+          ],
+          "next_step": "翌日の日次PRへローカル成果をまとめ最新head CI成功後に反映する",
+          "passed": true,
+          "at": 1792037731.937702
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261015T1300-popup-591cdf",
+          "task_id": "T-web-gravity-popup-timer-cleanup",
+          "fence": 36,
+          "expires_at": 1792038084.5607471
+        }
+      ]
+    },
+    "T-web-daily-ci-integration-20261016": {
+      "id": "T-web-daily-ci-integration-20261016",
+      "objective": "10月15日の検証済みローカル成果を翌日日次PRへ統合する",
+      "acceptance": [
+        "日本時間10月16日以降の日次PR件数と既存PRを照合",
+        "ローカル成果と復元索引を同じ日次PRへまとめ非公開物を含めない",
+        "最新headの全CI成功を確認しそのheadだけをマージ",
+        "CI成果物の版と復元元を保持し本番全体置換をしない"
+      ],
+      "outputs": [
+        "日次PR",
+        "CI結果",
+        "復元索引"
+      ],
+      "checks": [
+        "verified diff",
+        "exact head CI",
+        "package restore"
+      ],
+      "next_step": "翌日日次枠でPR件数を確認してunblockする",
+      "source": "user:automation:2026-10-13:daily-batching",
+      "priority": 1,
+      "depends_on": [
+        "T-web-gravity-popup-timer-cleanup"
+      ],
+      "decision_id": "D-web-save-scope-20261014",
+      "hypothesis": "日次一括でレビューと記録の重複を抑え検証済み成果を保持する",
+      "pdca": "check",
+      "experiment_id": "E-unity-portal",
+      "status": "running",
+      "checkpoints": [
+        {
+          "task_id": "T-web-daily-ci-integration-20261016",
+          "source": "user:automation:2026-10-13:daily-batching",
+          "reason": "本日2026-10-15のPR23はマージ済み。本人の1日1件程度の指示に従い追加PRは翌日まで保留。今回の内部実装工程は完了。",
+          "next_step": "翌日日次枠でPR件数を確認してunblockする",
+          "at": 1792037731.9992857
+        },
+        {
+          "task_id": "T-web-daily-ci-integration-20261016",
+          "source": "github:daily-pr-list:2026-10-16",
+          "reason": "JST10月16日に到達し当日PRなし、既存open PRなしを照合",
+          "next_step": "既存ローカル成果を同じ日次PRでCI検証",
+          "at": 1792080227.2006555
+        },
+        {
+          "run_id": "unity-20261016T0100-integration-45f5794c",
+          "fence": 38,
+          "artifacts": [
+            {
+              "path": "docs/web-daily-integration-20261016.md",
+              "sha256": "eabbf0ac5e00bf9f4eb40dd4fc0fc53b99525efbf23cba23f9d69c8d0c732926"
+            }
+          ],
+          "checks": [
+            "build/TS/ESLint/6SSG",
+            "4 games/navigation/8 guides",
+            "27 business tests",
+            "17 previous artifact hashes and192 main events preserved",
+            "parent4HEAD protected paths unchanged",
+            "dailyPR none; entire code diff reviewed"
+          ],
+          "next_step": "同日日次PRで最新head CIを確認し版指定マージ、CI成果物を復元",
+          "passed": true,
+          "at": 1792080292.96912
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261016T0100-integration-45f5794c",
+          "task_id": "T-web-daily-ci-integration-20261016",
+          "fence": 38,
+          "expires_at": 1792081727.2408962
+        }
+      ]
+    },
+    "T-web-ntik-catalog-discovery": {
+      "id": "T-web-ntik-catalog-discovery",
+      "objective": "既存n目並べを公開前のWeb作品として一覧と詳細へ案内する",
+      "acceptance": [
+        "既存/games/ntiktaktoe/の実行を保ち/works/ntiktaktoe/を紹介に使う",
+        "release=nullで開始リンクを出さずWebと公開状態を区別",
+        "操作と同じブラウザ内の保存範囲を表示し未確認環境を確認済みにしない",
+        "390/1280で検索・詳細・一覧復帰・再読込・公開中絞込を実ブラウザ検査",
+        "SSGと配布準備検査が紹介ページを含み既存4URLを維持"
+      ],
+      "outputs": [
+        "作品紹介",
+        "検査記録",
+        "戦略判断"
+      ],
+      "checks": [
+        "TS ESLint build",
+        "navigation guide route regressions",
+        "production browser",
+        "package restore"
+      ],
+      "next_step": "紹介とプレイの経路衝突を回避してn目並べ1作品を登録",
+      "source": "user:automation:19-strategy-and-existing-web",
+      "priority": 1,
+      "depends_on": [
+        "T-web-ntik-streak-storage-notice"
+      ],
+      "decision_id": "D-web-catalog-discovery-20261015",
+      "hypothesis": "検査済み既存作品の案内を追加し公開条件と制作技術を分離する",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261015T1900-catalog-8e392a",
+          "fence": 37,
+          "artifacts": [
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "09e3da94e40ad29387af4e7ea44667a2946f04a3c467cf3439a9985fe71b226b"
+            },
+            {
+              "path": "scripts/check-portal-work-guides.mjs",
+              "sha256": "cdcf06c74e108d4eaf51e866a469343beba4d9796ace9fa4f0db551ed0e0ab49"
+            },
+            {
+              "path": "scripts/check-repository.mjs",
+              "sha256": "89b4c9fed8144fb47419b0584f1cdf04f311f9dc2fde52b0c0b546ff2f1d885a"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "89bb2c53c16e5fb79358a0974a9912c2c20dc80550c8b1f28f699a80d543b4c7"
+            },
+            {
+              "path": "scripts/web-release-package.mjs",
+              "sha256": "902254ff2a964c43fc4265da95b147a46c262ecc302b9aa73f87a9ff97f48814"
+            },
+            {
+              "path": "web/scripts/prebuild.mjs",
+              "sha256": "1596b3d89b9f7d4d5fa28fa9e2094fcd2159965c9582011ffe634948966c8c35"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "c09e3a4f858a39b4b36b26472fa79bedfe187bdec0af4e4fc00cdeb48f4bceaa"
+            },
+            {
+              "path": "web/src/portal/catalog.ts",
+              "sha256": "1e52e50a53c9ebf8922ad7e67a2596d8fe1fbf66a38a5ceba5db1fb6cce6f313"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "65872166ccb78fa71230dd50864a380ecdd1293c889c3af732d26db4f2ec4e59"
+            },
+            {
+              "path": "docs/web-ntik-catalog-20261015.md",
+              "sha256": "b168ac1cc6a5ae5a044d898584380f64afbfb760357f8ee07a3e5e64ae130ceb"
+            },
+            {
+              "path": "docs/images/ntik-catalog-20261015-390.png",
+              "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+            },
+            {
+              "path": "docs/images/ntik-catalog-20261015-1280.png",
+              "sha256": "ebebda05c88226817f1ba7b02b050adae90a043e1a0193343b75f83d5afc9ecc"
+            },
+            {
+              "path": "docs/images/ntik-catalog-restored-20261015-390.png",
+              "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "bc0205950d6275e057c1fed6f910292b72f86aece54914a52d1a149841e67246"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "a2690c18004f3bd7b25e11b31f4699e02eb3e056a3c7b460f5d91436cc575de9"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "63b26615cb5d7dece01dff7e911d0a00c67dd23d009f594dcd53b8c691ddcadf"
+            },
+            {
+              "path": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+              "sha256": "1c74e747d152e8cbb8d190a90be1f18421bd4c34534c69b20442be5b87ac2e42"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite6SSG 4legacy 36checksums",
+            "navigation SSR and Web/ownerUnity8 guide evidence cases",
+            "business27tests",
+            "390/1280 search detail return reload no-start no-overflow",
+            "legacyURL3x3 coordinate move reload X and Player2; no state injection",
+            "package37sitefiles6pages and all38files ZIP restoration",
+            "sourceZIP110exactGitblobs",
+            "modified missing extra version manifest rejection",
+            "old5pagepackage backward compatibility",
+            "restored390 guide Enter no-start return Web query works focus",
+            "original224events parent4HEAD recovery8hashes protectedpaths unchanged",
+            "dailyPR23 merged checked; no additionalPR push merge deployment",
+            "own4219/4220 previews stopped; tabclosed viewportreset"
+          ],
+          "next_step": "10月16日以降の日次PRへローカル成果と復元索引をまとめ最新head CI成功後に反映",
+          "passed": true,
+          "at": 1792058948.1593
+        },
+        {
+          "run_id": "unity-20261015T1900-catalog-8e392a",
+          "fence": 37,
+          "artifacts": [
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "09e3da94e40ad29387af4e7ea44667a2946f04a3c467cf3439a9985fe71b226b"
+            },
+            {
+              "path": "scripts/check-portal-work-guides.mjs",
+              "sha256": "cdcf06c74e108d4eaf51e866a469343beba4d9796ace9fa4f0db551ed0e0ab49"
+            },
+            {
+              "path": "scripts/check-repository.mjs",
+              "sha256": "89b4c9fed8144fb47419b0584f1cdf04f311f9dc2fde52b0c0b546ff2f1d885a"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "89bb2c53c16e5fb79358a0974a9912c2c20dc80550c8b1f28f699a80d543b4c7"
+            },
+            {
+              "path": "scripts/web-release-package.mjs",
+              "sha256": "902254ff2a964c43fc4265da95b147a46c262ecc302b9aa73f87a9ff97f48814"
+            },
+            {
+              "path": "web/scripts/prebuild.mjs",
+              "sha256": "1596b3d89b9f7d4d5fa28fa9e2094fcd2159965c9582011ffe634948966c8c35"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "c09e3a4f858a39b4b36b26472fa79bedfe187bdec0af4e4fc00cdeb48f4bceaa"
+            },
+            {
+              "path": "web/src/portal/catalog.ts",
+              "sha256": "1e52e50a53c9ebf8922ad7e67a2596d8fe1fbf66a38a5ceba5db1fb6cce6f313"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "65872166ccb78fa71230dd50864a380ecdd1293c889c3af732d26db4f2ec4e59"
+            },
+            {
+              "path": "docs/web-ntik-catalog-20261015.md",
+              "sha256": "b168ac1cc6a5ae5a044d898584380f64afbfb760357f8ee07a3e5e64ae130ceb"
+            },
+            {
+              "path": "docs/images/ntik-catalog-20261015-390.png",
+              "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+            },
+            {
+              "path": "docs/images/ntik-catalog-20261015-1280.png",
+              "sha256": "ebebda05c88226817f1ba7b02b050adae90a043e1a0193343b75f83d5afc9ecc"
+            },
+            {
+              "path": "docs/images/ntik-catalog-restored-20261015-390.png",
+              "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "bc0205950d6275e057c1fed6f910292b72f86aece54914a52d1a149841e67246"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "a2690c18004f3bd7b25e11b31f4699e02eb3e056a3c7b460f5d91436cc575de9"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "63b26615cb5d7dece01dff7e911d0a00c67dd23d009f594dcd53b8c691ddcadf"
+            },
+            {
+              "path": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+              "sha256": "1c74e747d152e8cbb8d190a90be1f18421bd4c34534c69b20442be5b87ac2e42"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite6SSG 4legacy 36checksums",
+            "navigation SSR and Web/ownerUnity8 guide evidence cases",
+            "business27tests",
+            "390/1280 search detail return reload no-start no-overflow",
+            "legacyURL3x3 coordinate move reload X and Player2; no state injection",
+            "package37sitefiles6pages and all38files ZIP restoration",
+            "sourceZIP110exactGitblobs",
+            "modified missing extra version manifest rejection",
+            "old5pagepackage backward compatibility",
+            "restored390 guide Enter no-start return Web query works focus",
+            "original224events parent4HEAD recovery8hashes protectedpaths unchanged",
+            "dailyPR23 merged checked; no additionalPR push merge deployment",
+            "own4219/4220 previews stopped; tabclosed viewportreset"
+          ],
+          "next_step": "10月16日以降の日次PRへローカル成果と復元索引をまとめ最新head CI成功後に反映",
+          "passed": true,
+          "at": 1792058948.1947107
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261015T1900-catalog-8e392a",
+          "task_id": "T-web-ntik-catalog-discovery",
+          "fence": 37,
+          "expires_at": 1792059923.2976089
+        }
+      ]
     }
   },
   "decisions": {
@@ -4943,6 +6168,42 @@
       "source": "business/unity/research/2026-10-14-browser-save-contract.md",
       "hypothesis": "保存先と削除範囲の案内があれば、再読み込みや進行削除の結果を操作前に判断できる",
       "next_step": "T-web-ntik-save-scope-guidance: 進行・設定・連勝の保存先と削除範囲を開始画面へ示し、標準削除確認の実操作は未確認として分ける"
+    },
+    "D-web-quality-retention-20261015-1300": {
+      "id": "D-web-quality-retention-20261015-1300",
+      "source": "business/unity/evidence/web-local-retention-20261015-1300.json",
+      "hypothesis": "検証したソース版と復元済み成果物を結び翌日日次統合で旧CI版との取り違えを防ぐ",
+      "next_step": "10月16日以降の同じ日次PRにローカル成果と記録をまとめ最新head CI成功後に反映",
+      "artifacts": [
+        {
+          "path": "business/unity/evidence/web-local-retention-20261015-1300.json",
+          "sha256": "316f559f71a5c96327c82b77122abaf7165596e1c593a8354e28ac2bdd6d3f56"
+        },
+        {
+          "path": "docs/web-gravity-retention-20261015-1300.md",
+          "sha256": "9a2c558b79eb0dc5de595ed352bf569e8f1be1008a493f0580bbeb3fe5d085ba"
+        },
+        {
+          "path": "docs/images/gravity-restored-20261015-390.png",
+          "sha256": "0aee27ea04b041d3a45ef917f51269fb66af8db3733b784953e4aad3464d172c"
+        }
+      ],
+      "checks": [
+        "package original/ZIP restored all36files and5pages",
+        "modified/missing/extra/version/manifest rejection",
+        "110sourceZIP blobs byte-identical to source Git commit",
+        "restored4218Chrome390canvas359 Enter-playing/ArrowRight gravity0.3,0",
+        "injected321 test record read after reload, no warning",
+        "test APIs restored;2tabs closed;viewport reset;4217/4218 own previews stopped"
+      ]
+    },
+    "D-web-catalog-discovery-20261015": {
+      "id": "D-web-catalog-discovery-20261015",
+      "source": "local:926118d:catalog-and-acceptance-records",
+      "hypothesis": "既存Web作品の操作と保存条件を一覧から確認できれば公開前の検査成果と案内を結び付けられる。需要は未観測。",
+      "next_step": "n目並べの紹介を独立したworks経路へ追加し既存play経路を保つ",
+      "business_judgment": "unobserved",
+      "technical_judgment": "improve"
     }
   },
   "runs": {
@@ -5147,6 +6408,62 @@
       "source": "scheduled:game-site:2026-10-15T01:00:00+09:00",
       "status": "completed",
       "started_at": 1791993743.8206797
+    },
+    "unity-20261015T0700-streak-013ac59e": {
+      "run_id": "unity-20261015T0700-streak-013ac59e",
+      "scheduled_at": "2026-10-15T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-15T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792015212.9287093
+    },
+    "unity-20261015T0700-continuation-d0263a7f": {
+      "run_id": "unity-20261015T0700-continuation-d0263a7f",
+      "source": "scheduled-continuation:unity-20261015T0700-streak-013ac59e:2026-10-15T07:00:00+09:00",
+      "deadline": "2026-10-15T07:25:00+09:00",
+      "status": "completed",
+      "started_at": 1792015703.8907008
+    },
+    "unity-20261015T1300-score-read-6bc28a": {
+      "run_id": "unity-20261015T1300-score-read-6bc28a",
+      "scheduled_at": "2026-10-15T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-15T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792036961.6343694
+    },
+    "unity-20261015T1300-layout-c84e29": {
+      "run_id": "unity-20261015T1300-layout-c84e29",
+      "source": "scheduled-continuation:unity-20261015T1300-score-read-6bc28a:2026-10-15T13:00:00+09:00",
+      "deadline": "2026-10-15T13:25:00+09:00",
+      "status": "completed",
+      "started_at": 1792037167.338249
+    },
+    "unity-20261015T1300-stale-1da240": {
+      "run_id": "unity-20261015T1300-stale-1da240",
+      "source": "scheduled-continuation:unity-20261015T1300-score-read-6bc28a:2026-10-15T13:00:00+09:00",
+      "deadline": "2026-10-15T13:25:00+09:00",
+      "status": "completed",
+      "started_at": 1792037365.8909266
+    },
+    "unity-20261015T1300-popup-591cdf": {
+      "run_id": "unity-20261015T1300-popup-591cdf",
+      "source": "scheduled-continuation:unity-20261015T1300-score-read-6bc28a:2026-10-15T13:00:00+09:00",
+      "deadline": "2026-10-15T13:25:00+09:00",
+      "status": "completed",
+      "started_at": 1792037484.531898
+    },
+    "unity-20261015T1900-catalog-8e392a": {
+      "run_id": "unity-20261015T1900-catalog-8e392a",
+      "scheduled_at": "2026-10-15T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-15T19:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792058423.1564944
+    },
+    "unity-20261016T0100-integration-45f5794c": {
+      "run_id": "unity-20261016T0100-integration-45f5794c",
+      "scheduled_at": "2026-10-16T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-16T01:00:00+09:00",
+      "status": "open",
+      "started_at": 1792080227.1239328
     }
   },
   "experiments": {
@@ -5192,9 +6509,9 @@
       ],
       "measurement_plan": "内部表示・操作検査と公開後の開始率を分離する。公開指標は未観測でnull",
       "decision_id": "D-web-renovation-20261010",
-      "next_step": "Same T-web-ntik-save-scope-guidance: final390/1280 page-dialog keyboard/cancel/confirm/focus and three-key save/reload acceptance; NOT complete",
+      "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
       "source": "user:天啓.md:2026-10-10:web-renovation",
-      "stage": "plan",
+      "stage": "act",
       "history": [
         {
           "id": "E-unity-portal",
@@ -5271,6 +6588,34 @@
           "next_step": "Same T-web-ntik-save-scope-guidance: final390/1280 page-dialog keyboard/cancel/confirm/focus and three-key save/reload acceptance; NOT complete",
           "at": 1791973154.3370245,
           "previous_stage": "act"
+        },
+        {
+          "id": "E-unity-portal",
+          "source": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+          "evidence": "既存n目並べの紹介と実行URLを分け6SSG/実ブラウザ/ZIP復元を検査。需要の実観測0件。",
+          "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+          "stage": "do",
+          "at": 1792058932.9693866,
+          "previous_stage": "plan"
+        },
+        {
+          "id": "E-unity-portal",
+          "source": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+          "evidence": "既存n目並べの紹介と実行URLを分け6SSG/実ブラウザ/ZIP復元を検査。需要の実観測0件。",
+          "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+          "stage": "check",
+          "at": 1792058932.9997227,
+          "previous_stage": "do"
+        },
+        {
+          "id": "E-unity-portal",
+          "source": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+          "evidence": "既存n目並べの紹介と実行URLを分け6SSG/実ブラウザ/ZIP復元を検査。需要の実観測0件。",
+          "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+          "stage": "act",
+          "judgment": "unobserved",
+          "at": 1792058933.0307484,
+          "previous_stage": "check"
         }
       ],
       "release": null
@@ -5297,7 +6642,11 @@
     "2026-10-14T07:00:00+09:00": "unity-20261014T0700-ntik-42b719",
     "2026-10-14T13:00:00+09:00": "unity-20261014T1300-storage-7a1517e6",
     "2026-10-14T19:00:00+09:00": "unity-20261014T1900-scope-6d828f91",
-    "2026-10-15T01:00:00+09:00": "unity-20261015T0100-scope-a631"
+    "2026-10-15T01:00:00+09:00": "unity-20261015T0100-scope-a631",
+    "2026-10-15T07:00:00+09:00": "unity-20261015T0700-streak-013ac59e",
+    "2026-10-15T13:00:00+09:00": "unity-20261015T1300-score-read-6bc28a",
+    "2026-10-15T19:00:00+09:00": "unity-20261015T1900-catalog-8e392a",
+    "2026-10-16T01:00:00+09:00": "unity-20261016T0100-integration-45f5794c"
   },
   "feedback": [
     {
@@ -12617,7 +13966,1733 @@
       },
       "previous": "b1771ab8ec839ed1e874490c8991ce58ac1723d0205e1bea604d035650c876e1",
       "sha256": "85b13b8c39225ab59a147412269ad96c7388f07832d8df4e94ff583c6fd0b969"
+    },
+    {
+      "revision": 193,
+      "at": 1792015212.9287093,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261015T0700-streak-013ac59e",
+        "scheduled_at": "2026-10-15T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "85b13b8c39225ab59a147412269ad96c7388f07832d8df4e94ff583c6fd0b969",
+      "sha256": "4c9f13bdd7338e22453c4f1bcbd748f54f664da858bc0a22a4a05e75819fb2de"
+    },
+    {
+      "revision": 194,
+      "at": 1792015213.0200315,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261015T0700-streak-013ac59e",
+        "task_id": "T-web-ntik-streak-storage-notice",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261015T0700-streak-013ac59e",
+        "task_id": "T-web-ntik-streak-storage-notice",
+        "fence": 31,
+        "expires_at": 1792016713.0200315
+      },
+      "previous": "4c9f13bdd7338e22453c4f1bcbd748f54f664da858bc0a22a4a05e75819fb2de",
+      "sha256": "7d4f669856a60212945f14e1cd53cdca04481cd4e153231d16822b345a171d58"
+    },
+    {
+      "revision": 195,
+      "at": 1792015661.7555068,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261015T0700-streak-013ac59e",
+        "fence": 31,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "e19f594206e3869e817a14a3f35dfb9149f8249f63ab51e813564f81421f42f3"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "18b7cf499e6cb842b4bd5c33f3e7a5b4b826bce60a126c7d987393bacc4c1403"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "6e6c6d463f02e29efae9e9aa1bcd99d69037b11c9c28e215ce0c68c017d86f1d"
+          },
+          {
+            "path": "docs/web-ntik-streak-20261015.md",
+            "sha256": "d0a16e57f993f9da11f6ea2d531e7cc125798a15c065f2af99a96978246f09db"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-15-separate-save-results.md",
+            "sha256": "778611339e5398371a831ae547dd388f9aa3739741dcc980f3ab9adbbbf0dc62"
+          },
+          {
+            "path": "docs/images/ntik-streak-read-20261015-390.png",
+            "sha256": "7bf31091009cf95f54b5c6c86a8549df2469a5101e7fa3007c940ace7fef0b14"
+          },
+          {
+            "path": "docs/images/ntik-streak-write-20261015-390.png",
+            "sha256": "1aacc8e87ce5a7e934c3eccc6397426abf5b9a84b002019f4ead04d07719f025"
+          },
+          {
+            "path": "docs/images/ntik-streak-write-20261015-1280.png",
+            "sha256": "a75c7d06b0254ab8d2e8b55305656e32ec2ea13ec73e5fa5c937baf4f123c26f"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "864b49cf03b7f4a34bd04b2bf88011d8540f54dec5679bfc795c39d9231db22a"
+          },
+          {
+            "path": "business/unity/evidence/ntik-streak-20261015-0700.json",
+            "sha256": "dc00ab703ee596a60109ee294ce37ae1ad5bc7866915ed1256fc6fdac88fcbb4"
+          }
+        ],
+        "checks": [
+          "TS/ESLint/Vite5SSG35hashes",
+          "actual App key-specific read/write denial, 8 invalid forms, win/draw recovery",
+          "Chrome390/1280 normal moves, progress save, deletion retention, reload",
+          "final browser screenshots; API restored/viewport reset/tab closed"
+        ],
+        "next_step": "T-web-gravity-score-retry: reproduce failed write then equal score after API recovery"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "7d4f669856a60212945f14e1cd53cdca04481cd4e153231d16822b345a171d58",
+      "sha256": "db5e3f0d41d48387c173414a0da2d80630620afa2a0493d70639f4ef1bbbf8d6"
+    },
+    {
+      "revision": 196,
+      "at": 1792015661.7839293,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261015T0700-streak-013ac59e",
+        "fence": 31,
+        "artifacts": [
+          {
+            "path": "web/games/ntiktaktoe/src/App.tsx",
+            "sha256": "e19f594206e3869e817a14a3f35dfb9149f8249f63ab51e813564f81421f42f3"
+          },
+          {
+            "path": "web/games/ntiktaktoe/src/components/StartScreen.tsx",
+            "sha256": "18b7cf499e6cb842b4bd5c33f3e7a5b4b826bce60a126c7d987393bacc4c1403"
+          },
+          {
+            "path": "scripts/check-ntiktaktoe.mjs",
+            "sha256": "6e6c6d463f02e29efae9e9aa1bcd99d69037b11c9c28e215ce0c68c017d86f1d"
+          },
+          {
+            "path": "docs/web-ntik-streak-20261015.md",
+            "sha256": "d0a16e57f993f9da11f6ea2d531e7cc125798a15c065f2af99a96978246f09db"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-15-separate-save-results.md",
+            "sha256": "778611339e5398371a831ae547dd388f9aa3739741dcc980f3ab9adbbbf0dc62"
+          },
+          {
+            "path": "docs/images/ntik-streak-read-20261015-390.png",
+            "sha256": "7bf31091009cf95f54b5c6c86a8549df2469a5101e7fa3007c940ace7fef0b14"
+          },
+          {
+            "path": "docs/images/ntik-streak-write-20261015-390.png",
+            "sha256": "1aacc8e87ce5a7e934c3eccc6397426abf5b9a84b002019f4ead04d07719f025"
+          },
+          {
+            "path": "docs/images/ntik-streak-write-20261015-1280.png",
+            "sha256": "a75c7d06b0254ab8d2e8b55305656e32ec2ea13ec73e5fa5c937baf4f123c26f"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "864b49cf03b7f4a34bd04b2bf88011d8540f54dec5679bfc795c39d9231db22a"
+          },
+          {
+            "path": "business/unity/evidence/ntik-streak-20261015-0700.json",
+            "sha256": "dc00ab703ee596a60109ee294ce37ae1ad5bc7866915ed1256fc6fdac88fcbb4"
+          }
+        ],
+        "checks": [
+          "TS/ESLint/Vite5SSG35hashes",
+          "actual App key-specific read/write denial, 8 invalid forms, win/draw recovery",
+          "Chrome390/1280 normal moves, progress save, deletion retention, reload",
+          "final browser screenshots; API restored/viewport reset/tab closed"
+        ],
+        "next_step": "T-web-gravity-score-retry: reproduce failed write then equal score after API recovery",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "db5e3f0d41d48387c173414a0da2d80630620afa2a0493d70639f4ef1bbbf8d6",
+      "sha256": "5a66c17861af29f2a422093a7b96f1a2402a899dd4411822a304610e625cc0c4"
+    },
+    {
+      "revision": 197,
+      "at": 1792015703.8573496,
+      "action": "task",
+      "data": {
+        "id": "T-web-gravity-score-retry",
+        "objective": "GravityBallで最高スコア保存失敗後の再試行を可能にする",
+        "acceptance": [
+          "書き込み拒否後に同点でAPI復旧しても旧値が残る問題を実コードで再現",
+          "最高スコアを下げず失敗した現在の最高値を再試行する",
+          "失敗表示を成功した再保存でだけ解除する",
+          "390/1280の実ブラウザで専用の再試行操作と保存再読み込みを確認"
+        ],
+        "outputs": [
+          "Web実装",
+          "実hook/App回帰",
+          "ブラウザ証跡"
+        ],
+        "checks": [
+          "actual hook storage denial",
+          "TypeScript ESLint build",
+          "production browser"
+        ],
+        "next_step": "最高スコア保存拒否と同点での復帰を再現し、再試行操作を追加する",
+        "source": "docs/web-ntik-streak-20261015.md",
+        "priority": 1,
+        "depends_on": [
+          "T-web-ntik-streak-storage-notice"
+        ],
+        "decision_id": "D-web-save-scope-20261014",
+        "hypothesis": "再試行入口があれば再プレイで記録更新を待たず現在の記録を保存できる",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "5a66c17861af29f2a422093a7b96f1a2402a899dd4411822a304610e625cc0c4",
+      "sha256": "4d6a5c369b980301b077524bbee5532eff476195158179d6b5fc758226b4716b"
+    },
+    {
+      "revision": 198,
+      "at": 1792015703.8907008,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261015T0700-continuation-d0263a7f",
+        "source": "scheduled-continuation:unity-20261015T0700-streak-013ac59e:2026-10-15T07:00:00+09:00",
+        "deadline": "2026-10-15T07:25:00+09:00"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "4d6a5c369b980301b077524bbee5532eff476195158179d6b5fc758226b4716b",
+      "sha256": "317a221bc1afe1f06d141126715849e840876ea45c126602ce76f90007637716"
+    },
+    {
+      "revision": 199,
+      "at": 1792015703.9165943,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261015T0700-continuation-d0263a7f",
+        "task_id": "T-web-gravity-score-retry",
+        "ttl_seconds": 900
+      },
+      "result": {
+        "run_id": "unity-20261015T0700-continuation-d0263a7f",
+        "task_id": "T-web-gravity-score-retry",
+        "fence": 32,
+        "expires_at": 1792016603.9165943
+      },
+      "previous": "317a221bc1afe1f06d141126715849e840876ea45c126602ce76f90007637716",
+      "sha256": "94068cb18da52930f79e97312f46a689c099abc3c722839f03e6a3acf8cda065"
+    },
+    {
+      "revision": 200,
+      "at": 1792015994.241712,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261015T0700-continuation-d0263a7f",
+        "fence": 32,
+        "artifacts": [
+          {
+            "path": "web/src/shared/hooks/useHighScore.ts",
+            "sha256": "7b962266d3ac48d808d63a634bf2e27ba9420d999b1c31e70aa9876022ef06b7"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "4732d1a41512019a0eff01f216101d81ac2b1b1374af53049c3b0b0bce79962c"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "e0c3ec2e1ad49776fa89b07a72bca5e526c4f13dba0529ad3910879a5af7eda9"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "00b681d3470eaa178cafb5f91fdb41ae053975d4dbda1e07ad625940979ef5d8"
+          },
+          {
+            "path": "docs/web-gravity-score-retry-20261015.md",
+            "sha256": "3ce98918d5bd947a6f21a846dbe0ee1c1f1ef447d88cfe04eab9206cb8865cd4"
+          },
+          {
+            "path": "docs/images/gravity-score-retry-20261015-390.png",
+            "sha256": "c6c190937b42f478ae1dc0dc4df8bdc4d11ee176bc6ee97832d85dc9d69babdb"
+          },
+          {
+            "path": "docs/images/gravity-score-retry-20261015-1280.png",
+            "sha256": "bfeaf51282459720f188f8d7759b119a9e5d48b07d20c22f0de383a5888f5134"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "ad40fe552a44574a42b84210ddcc97c38fb7073dcf85cf82d3eb86169e9ee64a"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "166854a68827cf4c2caea44bb9d014dce93b25b55d0cc3c08f11f0a5959d0891"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "bb11885cf3c74b8e437efafb086452a7681b666ee6ed688d8711a437b86aee64"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-15-separate-save-results.md",
+            "sha256": "73fbe9f3f2338a8d47bbf2f553d3be5622d9ad6c4db4184fe0c471c4c3aca821"
+          },
+          {
+            "path": "business/unity/evidence/gravity-score-retry-20261015-0700.json",
+            "sha256": "8278d2c98f2e38313765edcb84619ece70a0932c8bd6860fd41ab14b80816156"
+          }
+        ],
+        "checks": [
+          "actual old hook reproduced equal score no retry",
+          "actual hook denied/equal/manual/delete retries and retained maximum",
+          "TS ESLint build 5SSG35hashes",
+          "Chrome390 click/1280Enter denied/recovered save, game focus, reload",
+          "4games/navigation/guide regressions and27ledger tests",
+          "original192event prefix unchanged; no external operations"
+        ],
+        "next_step": "T-web-gravity-score-read-notice: reproduce read denial and invalid score separately"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "94068cb18da52930f79e97312f46a689c099abc3c722839f03e6a3acf8cda065",
+      "sha256": "34a67ae9635382da93c93770c504f84a3530a583908c7d696333bfdf9c1df689"
+    },
+    {
+      "revision": 201,
+      "at": 1792015994.2710876,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261015T0700-continuation-d0263a7f",
+        "fence": 32,
+        "artifacts": [
+          {
+            "path": "web/src/shared/hooks/useHighScore.ts",
+            "sha256": "7b962266d3ac48d808d63a634bf2e27ba9420d999b1c31e70aa9876022ef06b7"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "4732d1a41512019a0eff01f216101d81ac2b1b1374af53049c3b0b0bce79962c"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "e0c3ec2e1ad49776fa89b07a72bca5e526c4f13dba0529ad3910879a5af7eda9"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "00b681d3470eaa178cafb5f91fdb41ae053975d4dbda1e07ad625940979ef5d8"
+          },
+          {
+            "path": "docs/web-gravity-score-retry-20261015.md",
+            "sha256": "3ce98918d5bd947a6f21a846dbe0ee1c1f1ef447d88cfe04eab9206cb8865cd4"
+          },
+          {
+            "path": "docs/images/gravity-score-retry-20261015-390.png",
+            "sha256": "c6c190937b42f478ae1dc0dc4df8bdc4d11ee176bc6ee97832d85dc9d69babdb"
+          },
+          {
+            "path": "docs/images/gravity-score-retry-20261015-1280.png",
+            "sha256": "bfeaf51282459720f188f8d7759b119a9e5d48b07d20c22f0de383a5888f5134"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "ad40fe552a44574a42b84210ddcc97c38fb7073dcf85cf82d3eb86169e9ee64a"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "166854a68827cf4c2caea44bb9d014dce93b25b55d0cc3c08f11f0a5959d0891"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "bb11885cf3c74b8e437efafb086452a7681b666ee6ed688d8711a437b86aee64"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-15-separate-save-results.md",
+            "sha256": "73fbe9f3f2338a8d47bbf2f553d3be5622d9ad6c4db4184fe0c471c4c3aca821"
+          },
+          {
+            "path": "business/unity/evidence/gravity-score-retry-20261015-0700.json",
+            "sha256": "8278d2c98f2e38313765edcb84619ece70a0932c8bd6860fd41ab14b80816156"
+          }
+        ],
+        "checks": [
+          "actual old hook reproduced equal score no retry",
+          "actual hook denied/equal/manual/delete retries and retained maximum",
+          "TS ESLint build 5SSG35hashes",
+          "Chrome390 click/1280Enter denied/recovered save, game focus, reload",
+          "4games/navigation/guide regressions and27ledger tests",
+          "original192event prefix unchanged; no external operations"
+        ],
+        "next_step": "T-web-gravity-score-read-notice: reproduce read denial and invalid score separately",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "34a67ae9635382da93c93770c504f84a3530a583908c7d696333bfdf9c1df689",
+      "sha256": "b114abdc5abca4c95ec5e617b0309a4bab10f03bd5689047fbeaac7a6b62bf97"
+    },
+    {
+      "revision": 202,
+      "at": 1792015994.3035626,
+      "action": "task",
+      "data": {
+        "id": "T-web-gravity-score-read-notice",
+        "objective": "最高スコアの読込拒否と不正形式を0と区別して案内する",
+        "acceptance": [
+          "読込拒否/不正値の無言の0化を実コードで再現",
+          "読込結果と書込結果の案内を分け正常値と再試行を維持",
+          "元履歴を読込だけで削除しない",
+          "390/1280で案内・復旧・正常再読込を確認"
+        ],
+        "outputs": [
+          "Web実装",
+          "実hook回帰",
+          "ブラウザ証跡"
+        ],
+        "checks": [
+          "actual hook read denial",
+          "TypeScript ESLint build",
+          "production browser"
+        ],
+        "next_step": "useHighScore初期読込の拒否/不正値を再現",
+        "source": "docs/web-gravity-score-retry-20261015.md",
+        "priority": 1,
+        "depends_on": [
+          "T-web-gravity-score-retry"
+        ],
+        "decision_id": "D-web-save-scope-20261014",
+        "hypothesis": "履歴の未読込と記録0を区別すると保存された最高値を確認できない状態が分かる",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "b114abdc5abca4c95ec5e617b0309a4bab10f03bd5689047fbeaac7a6b62bf97",
+      "sha256": "219c3475f31d281ae31054f47878c0d3a37f917357b77feff583a73123601dd5"
+    },
+    {
+      "revision": 203,
+      "at": 1792036961.6343694,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261015T1300-score-read-6bc28a",
+        "scheduled_at": "2026-10-15T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "219c3475f31d281ae31054f47878c0d3a37f917357b77feff583a73123601dd5",
+      "sha256": "4bdd1ed11566560565b19d71991ed7cd482e1dd8447e69bd175e13dc58b13d03"
+    },
+    {
+      "revision": 204,
+      "at": 1792036961.6949537,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261015T1300-score-read-6bc28a",
+        "task_id": "T-web-gravity-score-read-notice",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261015T1300-score-read-6bc28a",
+        "task_id": "T-web-gravity-score-read-notice",
+        "fence": 33,
+        "expires_at": 1792038461.6949537
+      },
+      "previous": "4bdd1ed11566560565b19d71991ed7cd482e1dd8447e69bd175e13dc58b13d03",
+      "sha256": "61caa510df272c3fe35d964894fe23f4409adfe27a74a18e4d9ee09eb1715029"
+    },
+    {
+      "revision": 205,
+      "at": 1792037155.1378524,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261015T1300-score-read-6bc28a",
+        "fence": 33,
+        "artifacts": [
+          {
+            "path": "web/src/shared/hooks/useHighScore.ts",
+            "sha256": "e27b7be5e27124152f4ac1654246a9994f1f0dab5af7ddd48311298ce3595253"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "0285dcc12013070b822afddc6f03ae38249bfa6a59227d61eb037170d95157f3"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "d060a36043d1e42cc21ba465a906c161d6d796589155463d09f49a31ba59bebf"
+          },
+          {
+            "path": "docs/web-gravity-score-read-20261015.md",
+            "sha256": "c0612ac9f4b99b3eee59515daaae1f8759edb7e71757b4e513af8852d7e34bd2"
+          },
+          {
+            "path": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+            "sha256": "bcf94e4a759919d2290e5fe0e3a4846f51510acbe31fe98808b1b223f966af98"
+          },
+          {
+            "path": "docs/images/gravity-score-read-20261015-390.png",
+            "sha256": "1df0217d31d8efed52480da40fb7efcd18534e91767c58b73e5c3a867f35b8cc"
+          },
+          {
+            "path": "docs/images/gravity-score-read-20261015-1280.png",
+            "sha256": "86499bb90ab31b0e4821ed68cd72167f560b5fa04422ab0be793e1809cb9067e"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "df4a9f2fc43fb00020ef31c8977c7ba91d0120305931d64ea8e691019d6b5de8"
+          }
+        ],
+        "checks": [
+          "TypeScript ESLint Vite5SSG",
+          "actual hook read denial/invalid/preserve unknown maximum/retry regression",
+          "Chrome390/1280 read denial and invalid value recovery; storage fixtures separate from normal play"
+        ],
+        "next_step": "T-web-gravity-mobile-notice-layout: canvas width>=300 at390 with notice",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "61caa510df272c3fe35d964894fe23f4409adfe27a74a18e4d9ee09eb1715029",
+      "sha256": "7348c54c4a1d7f65b13f28104f8b71d4676b4f6c6521230a911ca07696ef758b"
+    },
+    {
+      "revision": 206,
+      "at": 1792037155.167514,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261015T1300-score-read-6bc28a",
+        "fence": 33,
+        "artifacts": [
+          {
+            "path": "web/src/shared/hooks/useHighScore.ts",
+            "sha256": "e27b7be5e27124152f4ac1654246a9994f1f0dab5af7ddd48311298ce3595253"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "0285dcc12013070b822afddc6f03ae38249bfa6a59227d61eb037170d95157f3"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "d060a36043d1e42cc21ba465a906c161d6d796589155463d09f49a31ba59bebf"
+          },
+          {
+            "path": "docs/web-gravity-score-read-20261015.md",
+            "sha256": "c0612ac9f4b99b3eee59515daaae1f8759edb7e71757b4e513af8852d7e34bd2"
+          },
+          {
+            "path": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+            "sha256": "bcf94e4a759919d2290e5fe0e3a4846f51510acbe31fe98808b1b223f966af98"
+          },
+          {
+            "path": "docs/images/gravity-score-read-20261015-390.png",
+            "sha256": "1df0217d31d8efed52480da40fb7efcd18534e91767c58b73e5c3a867f35b8cc"
+          },
+          {
+            "path": "docs/images/gravity-score-read-20261015-1280.png",
+            "sha256": "86499bb90ab31b0e4821ed68cd72167f560b5fa04422ab0be793e1809cb9067e"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "df4a9f2fc43fb00020ef31c8977c7ba91d0120305931d64ea8e691019d6b5de8"
+          }
+        ],
+        "checks": [
+          "TypeScript ESLint Vite5SSG",
+          "actual hook read denial/invalid/preserve unknown maximum/retry regression",
+          "Chrome390/1280 read denial and invalid value recovery; storage fixtures separate from normal play"
+        ],
+        "next_step": "T-web-gravity-mobile-notice-layout: canvas width>=300 at390 with notice",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "7348c54c4a1d7f65b13f28104f8b71d4676b4f6c6521230a911ca07696ef758b",
+      "sha256": "3a6c84f3016cc2385e54267615b1a04c4ca9f0336560c024b58bed9302d33b8b"
+    },
+    {
+      "revision": 207,
+      "at": 1792037155.1962135,
+      "action": "task",
+      "data": {
+        "id": "T-web-gravity-mobile-notice-layout",
+        "objective": "GravityBallの保存案内中もモバイル盤面を読みやすくする",
+        "acceptance": [
+          "390x844通常/読込/書込案内でcanvas幅300px以上",
+          "警告/主要操作/44px再試行へスクロールで到達でき横はみ出しなし",
+          "1280x720でcanvas500x600を維持",
+          "Enter/矢印入力と復旧フォーカスを維持"
+        ],
+        "outputs": [
+          "Web実装",
+          "ブラウザ計測",
+          "検査記録"
+        ],
+        "checks": [
+          "TypeScript ESLint build",
+          "production browser3901280"
+        ],
+        "next_step": "GravityBallだけに適用するスクロール可能なモバイル配置を実装",
+        "source": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+        "priority": 1,
+        "depends_on": [
+          "T-web-gravity-score-read-notice"
+        ],
+        "decision_id": "D-web-save-scope-20261014",
+        "hypothesis": "案内が盤面の高さを圧迫しなければ警告中も操作対象を保てる",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "3a6c84f3016cc2385e54267615b1a04c4ca9f0336560c024b58bed9302d33b8b",
+      "sha256": "33f3845dc2492e24f61c132071dbef68eb47d9585b187e0cfcec93dda3f15a38"
+    },
+    {
+      "revision": 208,
+      "at": 1792037167.338249,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261015T1300-layout-c84e29",
+        "source": "scheduled-continuation:unity-20261015T1300-score-read-6bc28a:2026-10-15T13:00:00+09:00",
+        "deadline": "2026-10-15T13:25:00+09:00"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "33f3845dc2492e24f61c132071dbef68eb47d9585b187e0cfcec93dda3f15a38",
+      "sha256": "638ed9beaa3c22c9093fd7a3417379aeae2c62fdcb6c0c718eeb49131201886a"
+    },
+    {
+      "revision": 209,
+      "at": 1792037167.367122,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261015T1300-layout-c84e29",
+        "task_id": "T-web-gravity-mobile-notice-layout",
+        "ttl_seconds": 1050
+      },
+      "result": {
+        "run_id": "unity-20261015T1300-layout-c84e29",
+        "task_id": "T-web-gravity-mobile-notice-layout",
+        "fence": 34,
+        "expires_at": 1792038217.367122
+      },
+      "previous": "638ed9beaa3c22c9093fd7a3417379aeae2c62fdcb6c0c718eeb49131201886a",
+      "sha256": "f788798594d826c1038e554992bad5ed42b7504e4b7782c18bfeb53bd66539c8"
+    },
+    {
+      "revision": 210,
+      "at": 1792037337.404074,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261015T1300-layout-c84e29",
+        "fence": 34,
+        "artifacts": [
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "dad09419960c44af100f9a3406794506c85a1695b17fd921a0a8b4861effd49e"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.css",
+            "sha256": "d1d616e877cb46669259f9218947b495901c84251acbccec0d56b3e42a0c255c"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "10b1553fa5b08cb2756abef73fa1d0f7abe35ea34012014cfefd365d96a4ecb0"
+          },
+          {
+            "path": "docs/web-gravity-mobile-layout-20261015.md",
+            "sha256": "ff2c16bd2c164d0da43e540d149a1463b4a234f42d454088d1d9bbe7cdaff2b4"
+          },
+          {
+            "path": "docs/images/gravity-mobile-read-20261015-390.png",
+            "sha256": "0a69e004abf6ea93362ea7e1cccbb3e5a1583115d0341c202160c3ad2972a3d9"
+          },
+          {
+            "path": "docs/images/gravity-mobile-write-20261015-390.png",
+            "sha256": "6305bf484c1ec2d4e91bf145358f52a5c88b1cdebdc2e96d258b5e9b7e17a63e"
+          },
+          {
+            "path": "docs/images/gravity-mobile-read-20261015-1280.png",
+            "sha256": "0b98579a3e553cf92ace8f23542fac63a5a4f39ddfb271a36b9f628fab0eb9c2"
+          }
+        ],
+        "checks": [
+          "390normal/read/write canvas359x430.8; retry348x44;1280canvas500x600",
+          "Chrome keyboard phase/gravity reads; API recovery/focus",
+          "4game regressions/TS/ESLint/build/35hashes/27ledger tests"
+        ],
+        "next_step": "最高スコアの別タブ更新が古い画面から上書きされないか再現する",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "f788798594d826c1038e554992bad5ed42b7504e4b7782c18bfeb53bd66539c8",
+      "sha256": "c86e4e69521329ed3aeb12b51a7313ad81287965bab0b19258facf67212caf74"
+    },
+    {
+      "revision": 211,
+      "at": 1792037337.4336255,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261015T1300-layout-c84e29",
+        "fence": 34,
+        "artifacts": [
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "dad09419960c44af100f9a3406794506c85a1695b17fd921a0a8b4861effd49e"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.css",
+            "sha256": "d1d616e877cb46669259f9218947b495901c84251acbccec0d56b3e42a0c255c"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "10b1553fa5b08cb2756abef73fa1d0f7abe35ea34012014cfefd365d96a4ecb0"
+          },
+          {
+            "path": "docs/web-gravity-mobile-layout-20261015.md",
+            "sha256": "ff2c16bd2c164d0da43e540d149a1463b4a234f42d454088d1d9bbe7cdaff2b4"
+          },
+          {
+            "path": "docs/images/gravity-mobile-read-20261015-390.png",
+            "sha256": "0a69e004abf6ea93362ea7e1cccbb3e5a1583115d0341c202160c3ad2972a3d9"
+          },
+          {
+            "path": "docs/images/gravity-mobile-write-20261015-390.png",
+            "sha256": "6305bf484c1ec2d4e91bf145358f52a5c88b1cdebdc2e96d258b5e9b7e17a63e"
+          },
+          {
+            "path": "docs/images/gravity-mobile-read-20261015-1280.png",
+            "sha256": "0b98579a3e553cf92ace8f23542fac63a5a4f39ddfb271a36b9f628fab0eb9c2"
+          }
+        ],
+        "checks": [
+          "390normal/read/write canvas359x430.8; retry348x44;1280canvas500x600",
+          "Chrome keyboard phase/gravity reads; API recovery/focus",
+          "4game regressions/TS/ESLint/build/35hashes/27ledger tests"
+        ],
+        "next_step": "最高スコアの別タブ更新が古い画面から上書きされないか再現する",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "c86e4e69521329ed3aeb12b51a7313ad81287965bab0b19258facf67212caf74",
+      "sha256": "1cfde29dbfc06d78d4ad6f65ec0745c9133aed30422283576d65309d2b4095b6"
+    },
+    {
+      "revision": 212,
+      "at": 1792037365.8619158,
+      "action": "task",
+      "data": {
+        "id": "T-web-gravity-score-stale-tab",
+        "objective": "古いタブから別タブの最高スコアを下げない",
+        "acceptance": [
+          "20読込→別タブ500保存→100更新の旧上書きを実hookで再現",
+          "保存と失敗再試行の直前に正常な最高値を保持",
+          "途中の読込拒否は無通知で上書きせず復旧できる",
+          "実ブラウザ2タブで順次更新と再読込を確認、同時排他の保証と区別"
+        ],
+        "outputs": [
+          "実hook回帰",
+          "Web実装",
+          "2タブ検査記録"
+        ],
+        "checks": [
+          "actual hook stale storage",
+          "production browser2tabs",
+          "TS ESLint build"
+        ],
+        "next_step": "保存直前の別タブ値を再現して最高値を保持する",
+        "source": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+        "priority": 1,
+        "depends_on": [
+          "T-web-gravity-mobile-notice-layout"
+        ],
+        "decision_id": "D-web-save-scope-20261014",
+        "hypothesis": "保存直前に読める最高値を採用すれば古い画面による低値への上書きを防げる",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "1cfde29dbfc06d78d4ad6f65ec0745c9133aed30422283576d65309d2b4095b6",
+      "sha256": "11b3a71475d6b527b434640febcb104e01fa26a0e7a2b3b2ada455dcbf517b08"
+    },
+    {
+      "revision": 213,
+      "at": 1792037365.8909266,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261015T1300-stale-1da240",
+        "source": "scheduled-continuation:unity-20261015T1300-score-read-6bc28a:2026-10-15T13:00:00+09:00",
+        "deadline": "2026-10-15T13:25:00+09:00"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "11b3a71475d6b527b434640febcb104e01fa26a0e7a2b3b2ada455dcbf517b08",
+      "sha256": "9669e04d48e3bbb4f158362b19247fc7ca6208218e74d8fdfa6646761e3f6ee2"
+    },
+    {
+      "revision": 214,
+      "at": 1792037365.9185965,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261015T1300-stale-1da240",
+        "task_id": "T-web-gravity-score-stale-tab",
+        "ttl_seconds": 800
+      },
+      "result": {
+        "run_id": "unity-20261015T1300-stale-1da240",
+        "task_id": "T-web-gravity-score-stale-tab",
+        "fence": 35,
+        "expires_at": 1792038165.9185965
+      },
+      "previous": "9669e04d48e3bbb4f158362b19247fc7ca6208218e74d8fdfa6646761e3f6ee2",
+      "sha256": "892bb985afc4a052e2b1ae6f584d156139068f123481ea1da085618ab8be9d9c"
+    },
+    {
+      "revision": 215,
+      "at": 1792037484.4452152,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261015T1300-stale-1da240",
+        "fence": 35,
+        "artifacts": [
+          {
+            "path": "web/src/shared/hooks/useHighScore.ts",
+            "sha256": "82f18e3f1ca4a4af79eb754293912cf50834fd53223980ed40d85ad6fdc6754e"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "41f7ed93e3399a08a1cc3fa0b215eae7be4eedc7dd2685ab370c3ff9efd159af"
+          },
+          {
+            "path": "docs/web-gravity-stale-score-20261015.md",
+            "sha256": "57baf7d1771796f1160ab47b837e9c67b3769f7bd4eaa3d1cea55f6a6c530286"
+          },
+          {
+            "path": "docs/images/gravity-stale-20261015-1280.png",
+            "sha256": "11a245265d32f9b2393eb13085487d30eeb51fdd280bd7fb57bb9ef3f1b928c4"
+          }
+        ],
+        "checks": [
+          "old500->100 reproduced; actual hook stale/read/write failures passed",
+          "TS ESLint build",
+          "Chrome2tabs retained50000/80000; recovery focus and both reloads"
+        ],
+        "next_step": "GravityBallの遅延演出が再開始とunmount後に残らないか検査",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "892bb985afc4a052e2b1ae6f584d156139068f123481ea1da085618ab8be9d9c",
+      "sha256": "110923b73dbb3dc6e092b24f6d2ef14287e1b0ef70633b39e06c5f8a83fb1b32"
+    },
+    {
+      "revision": 216,
+      "at": 1792037484.4749098,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261015T1300-stale-1da240",
+        "fence": 35,
+        "artifacts": [
+          {
+            "path": "web/src/shared/hooks/useHighScore.ts",
+            "sha256": "82f18e3f1ca4a4af79eb754293912cf50834fd53223980ed40d85ad6fdc6754e"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "41f7ed93e3399a08a1cc3fa0b215eae7be4eedc7dd2685ab370c3ff9efd159af"
+          },
+          {
+            "path": "docs/web-gravity-stale-score-20261015.md",
+            "sha256": "57baf7d1771796f1160ab47b837e9c67b3769f7bd4eaa3d1cea55f6a6c530286"
+          },
+          {
+            "path": "docs/images/gravity-stale-20261015-1280.png",
+            "sha256": "11a245265d32f9b2393eb13085487d30eeb51fdd280bd7fb57bb9ef3f1b928c4"
+          }
+        ],
+        "checks": [
+          "old500->100 reproduced; actual hook stale/read/write failures passed",
+          "TS ESLint build",
+          "Chrome2tabs retained50000/80000; recovery focus and both reloads"
+        ],
+        "next_step": "GravityBallの遅延演出が再開始とunmount後に残らないか検査",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "110923b73dbb3dc6e092b24f6d2ef14287e1b0ef70633b39e06c5f8a83fb1b32",
+      "sha256": "65e08311c1a19d3a08500caf30083492b0cf3c90ca87991c99fc7c8193a00e00"
+    },
+    {
+      "revision": 217,
+      "at": 1792037484.5031395,
+      "action": "task",
+      "data": {
+        "id": "T-web-gravity-popup-timer-cleanup",
+        "objective": "GravityBallの前ゲームの遅延演出を再開始後に出さない",
+        "acceptance": [
+          "得点演出の遅延timerが再開始/unmountで残ることを実Appで再現",
+          "遅延演出timerを再開始/unmountで解除し進行遷移を維持",
+          "ブラウザで最終状態から即再開始し遅延演出が再出現しないことを確認"
+        ],
+        "outputs": [
+          "Web実装",
+          "実App回帰",
+          "ブラウザ検査記録"
+        ],
+        "checks": [
+          "actual App timers",
+          "TS ESLint build",
+          "production browser"
+        ],
+        "next_step": "得点演出setTimeoutの残留を実Appで再現",
+        "source": "web/games/gravityball/src/App.tsx",
+        "priority": 1,
+        "depends_on": [
+          "T-web-gravity-score-stale-tab"
+        ],
+        "decision_id": "D-web-save-scope-20261014",
+        "hypothesis": "前ゲームの演出を取り消せば新しいゲームへの古い結果表示を防げる",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "65e08311c1a19d3a08500caf30083492b0cf3c90ca87991c99fc7c8193a00e00",
+      "sha256": "36416288fb7e20f66c42df93a45840d9dbcb9f0b8e56814370d20027129e2b07"
+    },
+    {
+      "revision": 218,
+      "at": 1792037484.531898,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261015T1300-popup-591cdf",
+        "source": "scheduled-continuation:unity-20261015T1300-score-read-6bc28a:2026-10-15T13:00:00+09:00",
+        "deadline": "2026-10-15T13:25:00+09:00"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "36416288fb7e20f66c42df93a45840d9dbcb9f0b8e56814370d20027129e2b07",
+      "sha256": "d6517bcb75aeacaa8e066bb49e3d38ca507ae81585dd716a53d7475a3a66cd99"
+    },
+    {
+      "revision": 219,
+      "at": 1792037484.5607471,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261015T1300-popup-591cdf",
+        "task_id": "T-web-gravity-popup-timer-cleanup",
+        "ttl_seconds": 600
+      },
+      "result": {
+        "run_id": "unity-20261015T1300-popup-591cdf",
+        "task_id": "T-web-gravity-popup-timer-cleanup",
+        "fence": 36,
+        "expires_at": 1792038084.5607471
+      },
+      "previous": "d6517bcb75aeacaa8e066bb49e3d38ca507ae81585dd716a53d7475a3a66cd99",
+      "sha256": "539083e5a324c8473255d2d14a855736c9157b3432e3fd10c867587c71b703fd"
+    },
+    {
+      "revision": 220,
+      "at": 1792037731.9033926,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261015T1300-popup-591cdf",
+        "fence": 36,
+        "artifacts": [
+          {
+            "path": "web/src/shared/hooks/useHighScore.ts",
+            "sha256": "e7ba96adff219fb405df85b17d375bfede976066acee45426e6b4fdd24bcf473"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "a0f965be7d243ccc8ee64ed6e67ddddd1abf8fdc14a6a56183bebd34e1657c08"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.css",
+            "sha256": "ede9c43adb6bb3e123a52522b44f3bd0d3a3044d599359cabc154a7b0741dff4"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "b4795d3711047df824826b7e8b2811dd83db28f0f133133e007da96d794f6152"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "f474320d5944f5ce61b48e0456a7a510f29abf47ca7b7e9379da62dc250bdb1d"
+          },
+          {
+            "path": "docs/web-gravity-score-read-20261015.md",
+            "sha256": "c0612ac9f4b99b3eee59515daaae1f8759edb7e71757b4e513af8852d7e34bd2"
+          },
+          {
+            "path": "docs/web-gravity-mobile-layout-20261015.md",
+            "sha256": "84cf6286deadd17a5633f1e9176b876fb4857d32306c7235c83188a2be453ea8"
+          },
+          {
+            "path": "docs/web-gravity-stale-score-20261015.md",
+            "sha256": "0e580512d40373560ee79acb6fa98b98e095efa520821881c137b30dcdb9b44a"
+          },
+          {
+            "path": "docs/web-gravity-popup-timers-20261015.md",
+            "sha256": "8831e0908575914d2e8aa82d2ae1a580a2359b5ec322b939147eea749c67787d"
+          },
+          {
+            "path": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+            "sha256": "82a5015a90d46051f949ec996fc80425711b555e638ae0a3d9071bde8be8efda"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "6f6deb1faf098c4a20080412cacf43165a54dc5bbb40590378b2021d8226ee6b"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "573c61c37c84c3f0baf474c722cd93787a026a0e721416562364f8688f158b71"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "373f1eb89c92f4b95d42cc57eab182db94c2c4c1ed5a6d4e8449f5e2b83daef9"
+          },
+          {
+            "path": "docs/images/gravity-final-read-write-20261015-1280.png",
+            "sha256": "dc0c484bcd30a0a144caeab36afc6b1865e97f4561aa19b63767915f00951004"
+          },
+          {
+            "path": "docs/images/gravity-final-read-write-20261015-390.png",
+            "sha256": "a1852ceb7cc0d677832b6b56550fc553120fbd2f95f2439e354ae2e16ef0d7ed"
+          },
+          {
+            "path": "docs/images/gravity-mobile-read-20261015-1280.png",
+            "sha256": "0b98579a3e553cf92ace8f23542fac63a5a4f39ddfb271a36b9f628fab0eb9c2"
+          },
+          {
+            "path": "docs/images/gravity-mobile-read-20261015-390.png",
+            "sha256": "0a69e004abf6ea93362ea7e1cccbb3e5a1583115d0341c202160c3ad2972a3d9"
+          },
+          {
+            "path": "docs/images/gravity-mobile-write-20261015-390.png",
+            "sha256": "6305bf484c1ec2d4e91bf145358f52a5c88b1cdebdc2e96d258b5e9b7e17a63e"
+          },
+          {
+            "path": "docs/images/gravity-popup-reset-20261015-1280.png",
+            "sha256": "8beadbd0940eccf8deb6dfe37fab3017c9e91e04d6774f44f54958323ec81766"
+          },
+          {
+            "path": "docs/images/gravity-popup-reset-20261015-390.png",
+            "sha256": "d71c4a203a4caf1900a715491d8c8ffe264203408b4d554c173fa608dfc8fcf2"
+          },
+          {
+            "path": "docs/images/gravity-score-read-20261015-1280.png",
+            "sha256": "86499bb90ab31b0e4821ed68cd72167f560b5fa04422ab0be793e1809cb9067e"
+          },
+          {
+            "path": "docs/images/gravity-score-read-20261015-390.png",
+            "sha256": "1df0217d31d8efed52480da40fb7efcd18534e91767c58b73e5c3a867f35b8cc"
+          },
+          {
+            "path": "docs/images/gravity-stale-20261015-1280.png",
+            "sha256": "11a245265d32f9b2393eb13085487d30eeb51fdd280bd7fb57bb9ef3f1b928c4"
+          },
+          {
+            "path": "business/unity/evidence/gravity-quality-20261015-1300.json",
+            "sha256": "3fa7efc8c9039e8e6061abd293071572648b85208285feeef3405924c08d678d"
+          }
+        ],
+        "checks": [
+          "TS/ESLint/Vite5SSG35hashes",
+          "4game actualApp/hook regressions including new stale/read/timer cases",
+          "navigation SSR/8guides/19GUID/27ledger tests",
+          "Chrome390/1280 read denial/invalid recovery",
+          "390normal/read/write notice canvas359x430.8/retry348x44;1280canvas500x600",
+          "Chrome2tabs sequential50000/80000 preservation and reload",
+          "delayed celebrations pending4desktop/3mobile ->UIEnter restart0; no later popup",
+          "final combined read+pending-write notice both sizes; API restored",
+          "parent4HEAD/recovery8hashes/original202events/protected files unchanged"
+        ],
+        "next_step": "翌日の日次PRへローカル成果をまとめ最新head CI成功後に反映する",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "539083e5a324c8473255d2d14a855736c9157b3432e3fd10c867587c71b703fd",
+      "sha256": "6acf229b93f9463890a34dbf8547cebc83342e629be75dd046adbf2fe7ed0b58"
+    },
+    {
+      "revision": 221,
+      "at": 1792037731.937702,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261015T1300-popup-591cdf",
+        "fence": 36,
+        "artifacts": [
+          {
+            "path": "web/src/shared/hooks/useHighScore.ts",
+            "sha256": "e7ba96adff219fb405df85b17d375bfede976066acee45426e6b4fdd24bcf473"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "a0f965be7d243ccc8ee64ed6e67ddddd1abf8fdc14a6a56183bebd34e1657c08"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.css",
+            "sha256": "ede9c43adb6bb3e123a52522b44f3bd0d3a3044d599359cabc154a7b0741dff4"
+          },
+          {
+            "path": "web/games/gravityball/src/App.tsx",
+            "sha256": "b4795d3711047df824826b7e8b2811dd83db28f0f133133e007da96d794f6152"
+          },
+          {
+            "path": "scripts/check-gravityball.mjs",
+            "sha256": "f474320d5944f5ce61b48e0456a7a510f29abf47ca7b7e9379da62dc250bdb1d"
+          },
+          {
+            "path": "docs/web-gravity-score-read-20261015.md",
+            "sha256": "c0612ac9f4b99b3eee59515daaae1f8759edb7e71757b4e513af8852d7e34bd2"
+          },
+          {
+            "path": "docs/web-gravity-mobile-layout-20261015.md",
+            "sha256": "84cf6286deadd17a5633f1e9176b876fb4857d32306c7235c83188a2be453ea8"
+          },
+          {
+            "path": "docs/web-gravity-stale-score-20261015.md",
+            "sha256": "0e580512d40373560ee79acb6fa98b98e095efa520821881c137b30dcdb9b44a"
+          },
+          {
+            "path": "docs/web-gravity-popup-timers-20261015.md",
+            "sha256": "8831e0908575914d2e8aa82d2ae1a580a2359b5ec322b939147eea749c67787d"
+          },
+          {
+            "path": "business/unity/research/2026-10-15-browser-save-and-layout.md",
+            "sha256": "82a5015a90d46051f949ec996fc80425711b555e638ae0a3d9071bde8be8efda"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "6f6deb1faf098c4a20080412cacf43165a54dc5bbb40590378b2021d8226ee6b"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "573c61c37c84c3f0baf474c722cd93787a026a0e721416562364f8688f158b71"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "373f1eb89c92f4b95d42cc57eab182db94c2c4c1ed5a6d4e8449f5e2b83daef9"
+          },
+          {
+            "path": "docs/images/gravity-final-read-write-20261015-1280.png",
+            "sha256": "dc0c484bcd30a0a144caeab36afc6b1865e97f4561aa19b63767915f00951004"
+          },
+          {
+            "path": "docs/images/gravity-final-read-write-20261015-390.png",
+            "sha256": "a1852ceb7cc0d677832b6b56550fc553120fbd2f95f2439e354ae2e16ef0d7ed"
+          },
+          {
+            "path": "docs/images/gravity-mobile-read-20261015-1280.png",
+            "sha256": "0b98579a3e553cf92ace8f23542fac63a5a4f39ddfb271a36b9f628fab0eb9c2"
+          },
+          {
+            "path": "docs/images/gravity-mobile-read-20261015-390.png",
+            "sha256": "0a69e004abf6ea93362ea7e1cccbb3e5a1583115d0341c202160c3ad2972a3d9"
+          },
+          {
+            "path": "docs/images/gravity-mobile-write-20261015-390.png",
+            "sha256": "6305bf484c1ec2d4e91bf145358f52a5c88b1cdebdc2e96d258b5e9b7e17a63e"
+          },
+          {
+            "path": "docs/images/gravity-popup-reset-20261015-1280.png",
+            "sha256": "8beadbd0940eccf8deb6dfe37fab3017c9e91e04d6774f44f54958323ec81766"
+          },
+          {
+            "path": "docs/images/gravity-popup-reset-20261015-390.png",
+            "sha256": "d71c4a203a4caf1900a715491d8c8ffe264203408b4d554c173fa608dfc8fcf2"
+          },
+          {
+            "path": "docs/images/gravity-score-read-20261015-1280.png",
+            "sha256": "86499bb90ab31b0e4821ed68cd72167f560b5fa04422ab0be793e1809cb9067e"
+          },
+          {
+            "path": "docs/images/gravity-score-read-20261015-390.png",
+            "sha256": "1df0217d31d8efed52480da40fb7efcd18534e91767c58b73e5c3a867f35b8cc"
+          },
+          {
+            "path": "docs/images/gravity-stale-20261015-1280.png",
+            "sha256": "11a245265d32f9b2393eb13085487d30eeb51fdd280bd7fb57bb9ef3f1b928c4"
+          },
+          {
+            "path": "business/unity/evidence/gravity-quality-20261015-1300.json",
+            "sha256": "3fa7efc8c9039e8e6061abd293071572648b85208285feeef3405924c08d678d"
+          }
+        ],
+        "checks": [
+          "TS/ESLint/Vite5SSG35hashes",
+          "4game actualApp/hook regressions including new stale/read/timer cases",
+          "navigation SSR/8guides/19GUID/27ledger tests",
+          "Chrome390/1280 read denial/invalid recovery",
+          "390normal/read/write notice canvas359x430.8/retry348x44;1280canvas500x600",
+          "Chrome2tabs sequential50000/80000 preservation and reload",
+          "delayed celebrations pending4desktop/3mobile ->UIEnter restart0; no later popup",
+          "final combined read+pending-write notice both sizes; API restored",
+          "parent4HEAD/recovery8hashes/original202events/protected files unchanged"
+        ],
+        "next_step": "翌日の日次PRへローカル成果をまとめ最新head CI成功後に反映する",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "6acf229b93f9463890a34dbf8547cebc83342e629be75dd046adbf2fe7ed0b58",
+      "sha256": "7af893376be744661cd02e36003f6d993e91529a81c4786da2deffec0dc5bc2e"
+    },
+    {
+      "revision": 222,
+      "at": 1792037731.9705296,
+      "action": "task",
+      "data": {
+        "id": "T-web-daily-ci-integration-20261016",
+        "objective": "10月15日の検証済みローカル成果を翌日日次PRへ統合する",
+        "acceptance": [
+          "日本時間10月16日以降の日次PR件数と既存PRを照合",
+          "ローカル成果と復元索引を同じ日次PRへまとめ非公開物を含めない",
+          "最新headの全CI成功を確認しそのheadだけをマージ",
+          "CI成果物の版と復元元を保持し本番全体置換をしない"
+        ],
+        "outputs": [
+          "日次PR",
+          "CI結果",
+          "復元索引"
+        ],
+        "checks": [
+          "verified diff",
+          "exact head CI",
+          "package restore"
+        ],
+        "next_step": "翌日日次枠でPR件数を確認してunblockする",
+        "source": "user:automation:2026-10-13:daily-batching",
+        "priority": 1,
+        "depends_on": [
+          "T-web-gravity-popup-timer-cleanup"
+        ],
+        "decision_id": "D-web-save-scope-20261014",
+        "hypothesis": "日次一括でレビューと記録の重複を抑え検証済み成果を保持する",
+        "pdca": "check",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "7af893376be744661cd02e36003f6d993e91529a81c4786da2deffec0dc5bc2e",
+      "sha256": "c70a717d556165c5c49166c32dec32e556198af33ccdb02e44e12853f4cfc82c"
+    },
+    {
+      "revision": 223,
+      "at": 1792037731.9992857,
+      "action": "block",
+      "data": {
+        "task_id": "T-web-daily-ci-integration-20261016",
+        "source": "user:automation:2026-10-13:daily-batching",
+        "reason": "本日2026-10-15のPR23はマージ済み。本人の1日1件程度の指示に従い追加PRは翌日まで保留。今回の内部実装工程は完了。",
+        "next_step": "翌日日次枠でPR件数を確認してunblockする"
+      },
+      "result": {
+        "recorded": "block"
+      },
+      "previous": "c70a717d556165c5c49166c32dec32e556198af33ccdb02e44e12853f4cfc82c",
+      "sha256": "12a19a6b47228a9fa8b380437cce454ab77f3e9261f552a7038ec2073d021ebf"
+    },
+    {
+      "revision": 224,
+      "at": 1792037856.3736908,
+      "action": "decision",
+      "data": {
+        "id": "D-web-quality-retention-20261015-1300",
+        "source": "business/unity/evidence/web-local-retention-20261015-1300.json",
+        "hypothesis": "検証したソース版と復元済み成果物を結び翌日日次統合で旧CI版との取り違えを防ぐ",
+        "next_step": "10月16日以降の同じ日次PRにローカル成果と記録をまとめ最新head CI成功後に反映",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/web-local-retention-20261015-1300.json",
+            "sha256": "316f559f71a5c96327c82b77122abaf7165596e1c593a8354e28ac2bdd6d3f56"
+          },
+          {
+            "path": "docs/web-gravity-retention-20261015-1300.md",
+            "sha256": "9a2c558b79eb0dc5de595ed352bf569e8f1be1008a493f0580bbeb3fe5d085ba"
+          },
+          {
+            "path": "docs/images/gravity-restored-20261015-390.png",
+            "sha256": "0aee27ea04b041d3a45ef917f51269fb66af8db3733b784953e4aad3464d172c"
+          }
+        ],
+        "checks": [
+          "package original/ZIP restored all36files and5pages",
+          "modified/missing/extra/version/manifest rejection",
+          "110sourceZIP blobs byte-identical to source Git commit",
+          "restored4218Chrome390canvas359 Enter-playing/ArrowRight gravity0.3,0",
+          "injected321 test record read after reload, no warning",
+          "test APIs restored;2tabs closed;viewport reset;4217/4218 own previews stopped"
+        ]
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "12a19a6b47228a9fa8b380437cce454ab77f3e9261f552a7038ec2073d021ebf",
+      "sha256": "126384a677eb4bfca7160d92b80f84050e000422ca285fe7dfdf8ca517f58058"
+    },
+    {
+      "revision": 225,
+      "at": 1792058423.1564944,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261015T1900-catalog-8e392a",
+        "scheduled_at": "2026-10-15T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "126384a677eb4bfca7160d92b80f84050e000422ca285fe7dfdf8ca517f58058",
+      "sha256": "c497e9322c74790e29c3e8819dddf93a063e6f111f3974c7b0ef7e5bdb736d0b"
+    },
+    {
+      "revision": 226,
+      "at": 1792058423.2399657,
+      "action": "decision",
+      "data": {
+        "id": "D-web-catalog-discovery-20261015",
+        "source": "local:926118d:catalog-and-acceptance-records",
+        "hypothesis": "既存Web作品の操作と保存条件を一覧から確認できれば公開前の検査成果と案内を結び付けられる。需要は未観測。",
+        "next_step": "n目並べの紹介を独立したworks経路へ追加し既存play経路を保つ",
+        "business_judgment": "unobserved",
+        "technical_judgment": "improve"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "c497e9322c74790e29c3e8819dddf93a063e6f111f3974c7b0ef7e5bdb736d0b",
+      "sha256": "cf298f978d3dba285cef07d72d100355338b6fb5fdfa81ad8d9868d0780092df"
+    },
+    {
+      "revision": 227,
+      "at": 1792058423.2685015,
+      "action": "task",
+      "data": {
+        "id": "T-web-ntik-catalog-discovery",
+        "objective": "既存n目並べを公開前のWeb作品として一覧と詳細へ案内する",
+        "acceptance": [
+          "既存/games/ntiktaktoe/の実行を保ち/works/ntiktaktoe/を紹介に使う",
+          "release=nullで開始リンクを出さずWebと公開状態を区別",
+          "操作と同じブラウザ内の保存範囲を表示し未確認環境を確認済みにしない",
+          "390/1280で検索・詳細・一覧復帰・再読込・公開中絞込を実ブラウザ検査",
+          "SSGと配布準備検査が紹介ページを含み既存4URLを維持"
+        ],
+        "outputs": [
+          "作品紹介",
+          "検査記録",
+          "戦略判断"
+        ],
+        "checks": [
+          "TS ESLint build",
+          "navigation guide route regressions",
+          "production browser",
+          "package restore"
+        ],
+        "next_step": "紹介とプレイの経路衝突を回避してn目並べ1作品を登録",
+        "source": "user:automation:19-strategy-and-existing-web",
+        "priority": 1,
+        "depends_on": [
+          "T-web-ntik-streak-storage-notice"
+        ],
+        "decision_id": "D-web-catalog-discovery-20261015",
+        "hypothesis": "検査済み既存作品の案内を追加し公開条件と制作技術を分離する",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "cf298f978d3dba285cef07d72d100355338b6fb5fdfa81ad8d9868d0780092df",
+      "sha256": "afc9055ab49c58a917777a0cd27983445527c71d97f2c55836a52e697b7b402f"
+    },
+    {
+      "revision": 228,
+      "at": 1792058423.2976089,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261015T1900-catalog-8e392a",
+        "task_id": "T-web-ntik-catalog-discovery",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261015T1900-catalog-8e392a",
+        "task_id": "T-web-ntik-catalog-discovery",
+        "fence": 37,
+        "expires_at": 1792059923.2976089
+      },
+      "previous": "afc9055ab49c58a917777a0cd27983445527c71d97f2c55836a52e697b7b402f",
+      "sha256": "7982ce3900a385fc9bda41e7ea24f5cdeae347a7330a220b5ccf1100a8750375"
+    },
+    {
+      "revision": 229,
+      "at": 1792058932.9693866,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "source": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+        "evidence": "既存n目並べの紹介と実行URLを分け6SSG/実ブラウザ/ZIP復元を検査。需要の実観測0件。",
+        "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+        "stage": "do"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "7982ce3900a385fc9bda41e7ea24f5cdeae347a7330a220b5ccf1100a8750375",
+      "sha256": "3090313dcfd3ca58634177fb7a1e0a3205926c0bdec2c8654393d7dedf2921cc"
+    },
+    {
+      "revision": 230,
+      "at": 1792058932.9997227,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "source": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+        "evidence": "既存n目並べの紹介と実行URLを分け6SSG/実ブラウザ/ZIP復元を検査。需要の実観測0件。",
+        "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+        "stage": "check"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "3090313dcfd3ca58634177fb7a1e0a3205926c0bdec2c8654393d7dedf2921cc",
+      "sha256": "ce35babbd8f769a9edd4a60d7c7bfbf60a905b262626a101dd55b60cdfa67543"
+    },
+    {
+      "revision": 231,
+      "at": 1792058933.0307484,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "source": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+        "evidence": "既存n目並べの紹介と実行URLを分け6SSG/実ブラウザ/ZIP復元を検査。需要の実観測0件。",
+        "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+        "stage": "act",
+        "judgment": "unobserved"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "ce35babbd8f769a9edd4a60d7c7bfbf60a905b262626a101dd55b60cdfa67543",
+      "sha256": "b38cb3d55789cdc170c7b310cca481538492157aafd4aa7b88d8277a8a50f01e"
+    },
+    {
+      "revision": 232,
+      "at": 1792058948.1593,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261015T1900-catalog-8e392a",
+        "fence": 37,
+        "artifacts": [
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "09e3da94e40ad29387af4e7ea44667a2946f04a3c467cf3439a9985fe71b226b"
+          },
+          {
+            "path": "scripts/check-portal-work-guides.mjs",
+            "sha256": "cdcf06c74e108d4eaf51e866a469343beba4d9796ace9fa4f0db551ed0e0ab49"
+          },
+          {
+            "path": "scripts/check-repository.mjs",
+            "sha256": "89b4c9fed8144fb47419b0584f1cdf04f311f9dc2fde52b0c0b546ff2f1d885a"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "89bb2c53c16e5fb79358a0974a9912c2c20dc80550c8b1f28f699a80d543b4c7"
+          },
+          {
+            "path": "scripts/web-release-package.mjs",
+            "sha256": "902254ff2a964c43fc4265da95b147a46c262ecc302b9aa73f87a9ff97f48814"
+          },
+          {
+            "path": "web/scripts/prebuild.mjs",
+            "sha256": "1596b3d89b9f7d4d5fa28fa9e2094fcd2159965c9582011ffe634948966c8c35"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "c09e3a4f858a39b4b36b26472fa79bedfe187bdec0af4e4fc00cdeb48f4bceaa"
+          },
+          {
+            "path": "web/src/portal/catalog.ts",
+            "sha256": "1e52e50a53c9ebf8922ad7e67a2596d8fe1fbf66a38a5ceba5db1fb6cce6f313"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "65872166ccb78fa71230dd50864a380ecdd1293c889c3af732d26db4f2ec4e59"
+          },
+          {
+            "path": "docs/web-ntik-catalog-20261015.md",
+            "sha256": "b168ac1cc6a5ae5a044d898584380f64afbfb760357f8ee07a3e5e64ae130ceb"
+          },
+          {
+            "path": "docs/images/ntik-catalog-20261015-390.png",
+            "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+          },
+          {
+            "path": "docs/images/ntik-catalog-20261015-1280.png",
+            "sha256": "ebebda05c88226817f1ba7b02b050adae90a043e1a0193343b75f83d5afc9ecc"
+          },
+          {
+            "path": "docs/images/ntik-catalog-restored-20261015-390.png",
+            "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "bc0205950d6275e057c1fed6f910292b72f86aece54914a52d1a149841e67246"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "a2690c18004f3bd7b25e11b31f4699e02eb3e056a3c7b460f5d91436cc575de9"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "63b26615cb5d7dece01dff7e911d0a00c67dd23d009f594dcd53b8c691ddcadf"
+          },
+          {
+            "path": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+            "sha256": "1c74e747d152e8cbb8d190a90be1f18421bd4c34534c69b20442be5b87ac2e42"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite6SSG 4legacy 36checksums",
+          "navigation SSR and Web/ownerUnity8 guide evidence cases",
+          "business27tests",
+          "390/1280 search detail return reload no-start no-overflow",
+          "legacyURL3x3 coordinate move reload X and Player2; no state injection",
+          "package37sitefiles6pages and all38files ZIP restoration",
+          "sourceZIP110exactGitblobs",
+          "modified missing extra version manifest rejection",
+          "old5pagepackage backward compatibility",
+          "restored390 guide Enter no-start return Web query works focus",
+          "original224events parent4HEAD recovery8hashes protectedpaths unchanged",
+          "dailyPR23 merged checked; no additionalPR push merge deployment",
+          "own4219/4220 previews stopped; tabclosed viewportreset"
+        ],
+        "next_step": "10月16日以降の日次PRへローカル成果と復元索引をまとめ最新head CI成功後に反映",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "b38cb3d55789cdc170c7b310cca481538492157aafd4aa7b88d8277a8a50f01e",
+      "sha256": "c11a8f3749344e481da1daca86c5a7ccf6b7fb9c34b000897f9c83b8406ecbf8"
+    },
+    {
+      "revision": 233,
+      "at": 1792058948.1947107,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261015T1900-catalog-8e392a",
+        "fence": 37,
+        "artifacts": [
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "09e3da94e40ad29387af4e7ea44667a2946f04a3c467cf3439a9985fe71b226b"
+          },
+          {
+            "path": "scripts/check-portal-work-guides.mjs",
+            "sha256": "cdcf06c74e108d4eaf51e866a469343beba4d9796ace9fa4f0db551ed0e0ab49"
+          },
+          {
+            "path": "scripts/check-repository.mjs",
+            "sha256": "89b4c9fed8144fb47419b0584f1cdf04f311f9dc2fde52b0c0b546ff2f1d885a"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "89bb2c53c16e5fb79358a0974a9912c2c20dc80550c8b1f28f699a80d543b4c7"
+          },
+          {
+            "path": "scripts/web-release-package.mjs",
+            "sha256": "902254ff2a964c43fc4265da95b147a46c262ecc302b9aa73f87a9ff97f48814"
+          },
+          {
+            "path": "web/scripts/prebuild.mjs",
+            "sha256": "1596b3d89b9f7d4d5fa28fa9e2094fcd2159965c9582011ffe634948966c8c35"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "c09e3a4f858a39b4b36b26472fa79bedfe187bdec0af4e4fc00cdeb48f4bceaa"
+          },
+          {
+            "path": "web/src/portal/catalog.ts",
+            "sha256": "1e52e50a53c9ebf8922ad7e67a2596d8fe1fbf66a38a5ceba5db1fb6cce6f313"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "65872166ccb78fa71230dd50864a380ecdd1293c889c3af732d26db4f2ec4e59"
+          },
+          {
+            "path": "docs/web-ntik-catalog-20261015.md",
+            "sha256": "b168ac1cc6a5ae5a044d898584380f64afbfb760357f8ee07a3e5e64ae130ceb"
+          },
+          {
+            "path": "docs/images/ntik-catalog-20261015-390.png",
+            "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+          },
+          {
+            "path": "docs/images/ntik-catalog-20261015-1280.png",
+            "sha256": "ebebda05c88226817f1ba7b02b050adae90a043e1a0193343b75f83d5afc9ecc"
+          },
+          {
+            "path": "docs/images/ntik-catalog-restored-20261015-390.png",
+            "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "bc0205950d6275e057c1fed6f910292b72f86aece54914a52d1a149841e67246"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "a2690c18004f3bd7b25e11b31f4699e02eb3e056a3c7b460f5d91436cc575de9"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "63b26615cb5d7dece01dff7e911d0a00c67dd23d009f594dcd53b8c691ddcadf"
+          },
+          {
+            "path": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+            "sha256": "1c74e747d152e8cbb8d190a90be1f18421bd4c34534c69b20442be5b87ac2e42"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite6SSG 4legacy 36checksums",
+          "navigation SSR and Web/ownerUnity8 guide evidence cases",
+          "business27tests",
+          "390/1280 search detail return reload no-start no-overflow",
+          "legacyURL3x3 coordinate move reload X and Player2; no state injection",
+          "package37sitefiles6pages and all38files ZIP restoration",
+          "sourceZIP110exactGitblobs",
+          "modified missing extra version manifest rejection",
+          "old5pagepackage backward compatibility",
+          "restored390 guide Enter no-start return Web query works focus",
+          "original224events parent4HEAD recovery8hashes protectedpaths unchanged",
+          "dailyPR23 merged checked; no additionalPR push merge deployment",
+          "own4219/4220 previews stopped; tabclosed viewportreset"
+        ],
+        "next_step": "10月16日以降の日次PRへローカル成果と復元索引をまとめ最新head CI成功後に反映",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "c11a8f3749344e481da1daca86c5a7ccf6b7fb9c34b000897f9c83b8406ecbf8",
+      "sha256": "d0e598d55ca4c9f876c16d3f4addd7f7246c9c8e972abda453ec4203debade68"
+    },
+    {
+      "revision": 234,
+      "at": 1792080227.1239328,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261016T0100-integration-45f5794c",
+        "scheduled_at": "2026-10-16T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "d0e598d55ca4c9f876c16d3f4addd7f7246c9c8e972abda453ec4203debade68",
+      "sha256": "64c65c23aa63ecfde0623068f7d3d910bde15d0fd9c053e4dc0c7ce791c9cf26"
+    },
+    {
+      "revision": 235,
+      "at": 1792080227.2006555,
+      "action": "unblock",
+      "data": {
+        "task_id": "T-web-daily-ci-integration-20261016",
+        "source": "github:daily-pr-list:2026-10-16",
+        "reason": "JST10月16日に到達し当日PRなし、既存open PRなしを照合",
+        "next_step": "既存ローカル成果を同じ日次PRでCI検証"
+      },
+      "result": {
+        "recorded": "unblock"
+      },
+      "previous": "64c65c23aa63ecfde0623068f7d3d910bde15d0fd9c053e4dc0c7ce791c9cf26",
+      "sha256": "d66dbf085eb443410ebe8f84b2cfa4cec044c0ea3ce2b9b3cd27d0a156072745"
+    },
+    {
+      "revision": 236,
+      "at": 1792080227.2408962,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261016T0100-integration-45f5794c",
+        "task_id": "T-web-daily-ci-integration-20261016",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261016T0100-integration-45f5794c",
+        "task_id": "T-web-daily-ci-integration-20261016",
+        "fence": 38,
+        "expires_at": 1792081727.2408962
+      },
+      "previous": "d66dbf085eb443410ebe8f84b2cfa4cec044c0ea3ce2b9b3cd27d0a156072745",
+      "sha256": "af0eeed120db7f506f5cff5cb3685d48d0f75db90e121e646ff199edf76b0174"
+    },
+    {
+      "revision": 237,
+      "at": 1792080292.96912,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T0100-integration-45f5794c",
+        "fence": 38,
+        "artifacts": [
+          {
+            "path": "docs/web-daily-integration-20261016.md",
+            "sha256": "eabbf0ac5e00bf9f4eb40dd4fc0fc53b99525efbf23cba23f9d69c8d0c732926"
+          }
+        ],
+        "checks": [
+          "build/TS/ESLint/6SSG",
+          "4 games/navigation/8 guides",
+          "27 business tests",
+          "17 previous artifact hashes and192 main events preserved",
+          "parent4HEAD protected paths unchanged",
+          "dailyPR none; entire code diff reviewed"
+        ],
+        "next_step": "同日日次PRで最新head CIを確認し版指定マージ、CI成果物を復元",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "af0eeed120db7f506f5cff5cb3685d48d0f75db90e121e646ff199edf76b0174",
+      "sha256": "48f121cc515e472eb9f74d346512a7a05c80ce87eede57038990eac47c2d911d"
     }
   ],
-  "projection_sha256": "c97ceb87ad69a4bd8e655b499ca251835fddeb8d6ccf3231777671a5ffa711bc"
+  "projection_sha256": "b19aaf9c0fd88b50a51111296a8f4c6c19fce68e68163c59489f87066011a68f"
 }
