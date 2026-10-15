@@ -65,3 +65,5 @@ Ice Slideのモバイル操作部はdocs/web-ice-mobile-20261013.mdで24px以上
 
 
 2026-10-15の01時枠でn目並べ保存範囲工程を完了。最終Chrome390/1280の削除dialog44px、取消/Tab/Enter/Escape/フォーカス復帰、通常着手の再読み込み、通常勝利後の進行のみ削除と設定・連勝JSON一致を確認。型/静的/ビルドと保存/タイマー回帰成功。詳細docs/web-ntik-save-acceptance-20261015.md。次は連勝履歴の保存失敗案内。物理タッチ/Safari/人間評価/指標は未確認・null。天啓の継続指示は保持し、本番配置なし。昨日のローカル成果を本日日次PRへまとめる。
+
+2026-10-16の日次PR24はCI成功後にマージ済み。現行CI復元索引はbusiness/unity/evidence/delivery-web-daily-20261016.json。以後のIce Slide紹介7ページ版はローカル検証版でCI版と区別する。T-web-minerush-catalog-discovery: 固定9×9/10地雷・初手・旗・途中保存なしを既存実装から整理し独立紹介へ追加。PR24は本日マージ済みのため追加PRなし、翌日分へローカル保存。

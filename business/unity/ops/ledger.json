@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 242,
+  "revision": 245,
   "business_id": "game-site",
   "fence": 39,
-  "lease": {
-    "run_id": "unity-20261016T0100-iceslide-continuation",
-    "task_id": "T-web-iceslide-catalog-discovery",
-    "fence": 39,
-    "expires_at": 1792081610.9894452
-  },
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -6135,8 +6130,113 @@
       "hypothesis": "既存作品のルールと保存範囲を一覧から理解できる入口を整える。需要は未観測。",
       "pdca": "do",
       "experiment_id": "E-unity-portal",
-      "status": "running",
-      "checkpoints": [],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261016T0100-iceslide-continuation",
+          "fence": 39,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/iceslide-catalog-20261016-0100.json",
+              "sha256": "c05cf65c9cd43c79d787e00022039e7dad518f9362921afbeae1ad2ff07b9274"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "0757cdf6e0da8710fa68c8489879284a7d0b538ea9be43393199e64ba065b9b8"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "0e81341b00ba74349b30cb125c8ae84a73f1c090d8740d9d716d1a29bc61f6db"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "1f4668968e0d41c7912135be5cafe63a2d7f5b854e5ea934a73c97a93c7a097b"
+            },
+            {
+              "path": "docs/web-iceslide-catalog-20261016.md",
+              "sha256": "96314bbf3573a69b94518ffb3a0b7187ea2056178065e3212138f59b7bf69f28"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "295d54abccc66ce815066f7fc4f2201b754d17c4c6ccc7f30660668d5bec4c04"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "d5b38f49abf40006cab1e9116873c06a936d7e09ae3e87297f8e0a1da09d91ec"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "6824f9457327c995314754b321336a7cdcadd5cd086ab4437fd915e79d106196"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite7SSG 4legacy 37checksums",
+            "navigation SSR includes Ice Slide save-scope/no-start and8Web-ownerUnity guide cases",
+            "3901280 Enter guide no-overflow no-start return query works focus and reload",
+            "390 published filter0 then all restores1",
+            "legacy game normal Enter start ArrowDown ArrowRight2move clear, no fixtures",
+            "39files ZIP restoration exact; modified/missing/extra/version/manifest rejection",
+            "sourceZIP110exactGitblobs",
+            "final restored4223IAB390guideEnter/no-start/no-overflow/returnIcequery worksfocus",
+            "game code and storage unchanged; owner Unity oldcloud parent data unchanged"
+          ],
+          "next_step": "T-web-minerush-catalog-discovery: 固定9×9/10地雷・初手・旗・途中保存なしを既存実装から整理し独立紹介へ追加。PR24は本日マージ済みのため追加PRなし、翌日分へローカル保存。",
+          "passed": true,
+          "at": 1792080738.8804352
+        },
+        {
+          "run_id": "unity-20261016T0100-iceslide-continuation",
+          "fence": 39,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/iceslide-catalog-20261016-0100.json",
+              "sha256": "c05cf65c9cd43c79d787e00022039e7dad518f9362921afbeae1ad2ff07b9274"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "0757cdf6e0da8710fa68c8489879284a7d0b538ea9be43393199e64ba065b9b8"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "0e81341b00ba74349b30cb125c8ae84a73f1c090d8740d9d716d1a29bc61f6db"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "1f4668968e0d41c7912135be5cafe63a2d7f5b854e5ea934a73c97a93c7a097b"
+            },
+            {
+              "path": "docs/web-iceslide-catalog-20261016.md",
+              "sha256": "96314bbf3573a69b94518ffb3a0b7187ea2056178065e3212138f59b7bf69f28"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "295d54abccc66ce815066f7fc4f2201b754d17c4c6ccc7f30660668d5bec4c04"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "d5b38f49abf40006cab1e9116873c06a936d7e09ae3e87297f8e0a1da09d91ec"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "6824f9457327c995314754b321336a7cdcadd5cd086ab4437fd915e79d106196"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite7SSG 4legacy 37checksums",
+            "navigation SSR includes Ice Slide save-scope/no-start and8Web-ownerUnity guide cases",
+            "3901280 Enter guide no-overflow no-start return query works focus and reload",
+            "390 published filter0 then all restores1",
+            "legacy game normal Enter start ArrowDown ArrowRight2move clear, no fixtures",
+            "39files ZIP restoration exact; modified/missing/extra/version/manifest rejection",
+            "sourceZIP110exactGitblobs",
+            "final restored4223IAB390guideEnter/no-start/no-overflow/returnIcequery worksfocus",
+            "game code and storage unchanged; owner Unity oldcloud parent data unchanged"
+          ],
+          "next_step": "T-web-minerush-catalog-discovery: 固定9×9/10地雷・初手・旗・途中保存なしを既存実装から整理し独立紹介へ追加。PR24は本日マージ済みのため追加PRなし、翌日分へローカル保存。",
+          "passed": true,
+          "at": 1792080738.9211726
+        }
+      ],
       "claims": [
         {
           "run_id": "unity-20261016T0100-iceslide-continuation",
@@ -6145,6 +6245,40 @@
           "expires_at": 1792081610.9894452
         }
       ]
+    },
+    "T-web-minerush-catalog-discovery": {
+      "id": "T-web-minerush-catalog-discovery",
+      "objective": "既存MineRushのルールと保存範囲を作品紹介へ追加",
+      "acceptance": [
+        "/works/minerush/紹介と/games/minerush/実行を分離",
+        "固定9×9/10地雷・初手と旗操作・キーボード代替を現在実装に照合",
+        "途中保存なしと公開版未確認を表示、release=null開始リンクなし",
+        "3901280検索詳細往復再読込とSSG/4URL/ZIP復元検査"
+      ],
+      "outputs": [
+        "作品紹介",
+        "検査記録",
+        "復元索引"
+      ],
+      "checks": [
+        "build TS ESLint",
+        "navigation guides",
+        "browser",
+        "package restore"
+      ],
+      "next_step": "既存MineRushソースと検査記録を照合して紹介を追加",
+      "source": "user:automation:existing-web-portal-renovation",
+      "priority": 1,
+      "depends_on": [
+        "T-web-iceslide-catalog-discovery"
+      ],
+      "decision_id": "D-web-catalog-discovery-20261015",
+      "hypothesis": "既存作品の操作と保存範囲を案内から理解できる。需要未観測。",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -6571,7 +6705,7 @@
     "unity-20261016T0100-iceslide-continuation": {
       "run_id": "unity-20261016T0100-iceslide-continuation",
       "source": "continuation:original0100-deadline",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792080510.9518993
     }
   },
@@ -15954,7 +16088,170 @@
       },
       "previous": "99ca895b92a14cec30ebadbe547cd54be0a772cb6f3afd0709fb77eb59385a64",
       "sha256": "12d69ed631f087f602d2286ec6c754aedcac91a34f6e34025ab5c609a464651e"
+    },
+    {
+      "revision": 243,
+      "at": 1792080738.8804352,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T0100-iceslide-continuation",
+        "fence": 39,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/iceslide-catalog-20261016-0100.json",
+            "sha256": "c05cf65c9cd43c79d787e00022039e7dad518f9362921afbeae1ad2ff07b9274"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "0757cdf6e0da8710fa68c8489879284a7d0b538ea9be43393199e64ba065b9b8"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "0e81341b00ba74349b30cb125c8ae84a73f1c090d8740d9d716d1a29bc61f6db"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "1f4668968e0d41c7912135be5cafe63a2d7f5b854e5ea934a73c97a93c7a097b"
+          },
+          {
+            "path": "docs/web-iceslide-catalog-20261016.md",
+            "sha256": "96314bbf3573a69b94518ffb3a0b7187ea2056178065e3212138f59b7bf69f28"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "295d54abccc66ce815066f7fc4f2201b754d17c4c6ccc7f30660668d5bec4c04"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "d5b38f49abf40006cab1e9116873c06a936d7e09ae3e87297f8e0a1da09d91ec"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "6824f9457327c995314754b321336a7cdcadd5cd086ab4437fd915e79d106196"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite7SSG 4legacy 37checksums",
+          "navigation SSR includes Ice Slide save-scope/no-start and8Web-ownerUnity guide cases",
+          "3901280 Enter guide no-overflow no-start return query works focus and reload",
+          "390 published filter0 then all restores1",
+          "legacy game normal Enter start ArrowDown ArrowRight2move clear, no fixtures",
+          "39files ZIP restoration exact; modified/missing/extra/version/manifest rejection",
+          "sourceZIP110exactGitblobs",
+          "final restored4223IAB390guideEnter/no-start/no-overflow/returnIcequery worksfocus",
+          "game code and storage unchanged; owner Unity oldcloud parent data unchanged"
+        ],
+        "next_step": "T-web-minerush-catalog-discovery: 固定9×9/10地雷・初手・旗・途中保存なしを既存実装から整理し独立紹介へ追加。PR24は本日マージ済みのため追加PRなし、翌日分へローカル保存。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "12d69ed631f087f602d2286ec6c754aedcac91a34f6e34025ab5c609a464651e",
+      "sha256": "fdb67c6b131d113c70c98aeaf4554abb0410c757541ba0b5be1b5aad162c61e3"
+    },
+    {
+      "revision": 244,
+      "at": 1792080738.9211726,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261016T0100-iceslide-continuation",
+        "fence": 39,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/iceslide-catalog-20261016-0100.json",
+            "sha256": "c05cf65c9cd43c79d787e00022039e7dad518f9362921afbeae1ad2ff07b9274"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "0757cdf6e0da8710fa68c8489879284a7d0b538ea9be43393199e64ba065b9b8"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "0e81341b00ba74349b30cb125c8ae84a73f1c090d8740d9d716d1a29bc61f6db"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "1f4668968e0d41c7912135be5cafe63a2d7f5b854e5ea934a73c97a93c7a097b"
+          },
+          {
+            "path": "docs/web-iceslide-catalog-20261016.md",
+            "sha256": "96314bbf3573a69b94518ffb3a0b7187ea2056178065e3212138f59b7bf69f28"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "295d54abccc66ce815066f7fc4f2201b754d17c4c6ccc7f30660668d5bec4c04"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "d5b38f49abf40006cab1e9116873c06a936d7e09ae3e87297f8e0a1da09d91ec"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "6824f9457327c995314754b321336a7cdcadd5cd086ab4437fd915e79d106196"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite7SSG 4legacy 37checksums",
+          "navigation SSR includes Ice Slide save-scope/no-start and8Web-ownerUnity guide cases",
+          "3901280 Enter guide no-overflow no-start return query works focus and reload",
+          "390 published filter0 then all restores1",
+          "legacy game normal Enter start ArrowDown ArrowRight2move clear, no fixtures",
+          "39files ZIP restoration exact; modified/missing/extra/version/manifest rejection",
+          "sourceZIP110exactGitblobs",
+          "final restored4223IAB390guideEnter/no-start/no-overflow/returnIcequery worksfocus",
+          "game code and storage unchanged; owner Unity oldcloud parent data unchanged"
+        ],
+        "next_step": "T-web-minerush-catalog-discovery: 固定9×9/10地雷・初手・旗・途中保存なしを既存実装から整理し独立紹介へ追加。PR24は本日マージ済みのため追加PRなし、翌日分へローカル保存。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "fdb67c6b131d113c70c98aeaf4554abb0410c757541ba0b5be1b5aad162c61e3",
+      "sha256": "966aade0aee01b620473120773860fac9454b1f0d6a1317c7d03fd2e967a1e86"
+    },
+    {
+      "revision": 245,
+      "at": 1792080738.9608507,
+      "action": "task",
+      "data": {
+        "id": "T-web-minerush-catalog-discovery",
+        "objective": "既存MineRushのルールと保存範囲を作品紹介へ追加",
+        "acceptance": [
+          "/works/minerush/紹介と/games/minerush/実行を分離",
+          "固定9×9/10地雷・初手と旗操作・キーボード代替を現在実装に照合",
+          "途中保存なしと公開版未確認を表示、release=null開始リンクなし",
+          "3901280検索詳細往復再読込とSSG/4URL/ZIP復元検査"
+        ],
+        "outputs": [
+          "作品紹介",
+          "検査記録",
+          "復元索引"
+        ],
+        "checks": [
+          "build TS ESLint",
+          "navigation guides",
+          "browser",
+          "package restore"
+        ],
+        "next_step": "既存MineRushソースと検査記録を照合して紹介を追加",
+        "source": "user:automation:existing-web-portal-renovation",
+        "priority": 1,
+        "depends_on": [
+          "T-web-iceslide-catalog-discovery"
+        ],
+        "decision_id": "D-web-catalog-discovery-20261015",
+        "hypothesis": "既存作品の操作と保存範囲を案内から理解できる。需要未観測。",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "966aade0aee01b620473120773860fac9454b1f0d6a1317c7d03fd2e967a1e86",
+      "sha256": "03c8cba487bc257bd3a2422b546edd5bbaaccd6605152f65af49c6ff1ffb252f"
     }
   ],
-  "projection_sha256": "f4c10a198b22ba83585a8b1682b93c21e5382a47dd8b0969f4fdb1fb8a4630cf"
+  "projection_sha256": "df9f30cd92e11db6731daf7cc1aaabdc8cda14e1b05efd195cbd33f16dc89502"
 }
