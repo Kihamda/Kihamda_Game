@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 245,
+  "revision": 252,
   "business_id": "game-site",
-  "fence": 39,
-  "lease": null,
+  "fence": 41,
+  "lease": {
+    "run_id": "unity-20261016T0700-gravity-continuation",
+    "task_id": "T-web-gravityball-catalog-discovery",
+    "fence": 41,
+    "expires_at": 1792103050.8048842
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -6276,9 +6281,142 @@
       "hypothesis": "既存作品の操作と保存範囲を案内から理解できる。需要未観測。",
       "pdca": "do",
       "experiment_id": "E-unity-portal",
-      "status": "ready",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261016T0700-minerush",
+          "fence": 40,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/minerush-catalog-20261016-0700.json",
+              "sha256": "25166983b3d2bbccd30b2f9f362c4f0a7ceb849782854adf01b8d2ab22d43358"
+            },
+            {
+              "path": "docs/web-minerush-catalog-20261016.md",
+              "sha256": "7edd66f85741125ac482b9f3e16c54c607415ea1644be7a33d19befc222aedec"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "588ea57c50e3faeb2ce1e51f7023ae64913328204c86d60ac25ab5333d70131e"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "0d3ba88292b7496ff4e8b38cda3bc1deb33065efd7f8bca87300b7f91a5a3783"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "c2af7be343030526f284a3cdb8f0e1ddb98edfa30134c1a8cabde7d1f8defa57"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "3c7f296716cf469112f6594bd3f7990ab5e7b8d053115bd664b04b071b5726a8"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite8SSG4URLs38hashes",
+            "navigation and8guides",
+            "MineRush actual App handlers",
+            "3901280 and restored390 browser",
+            "ZIP40exact and5negative cases",
+            "business27tests",
+            "parent4HEAD verified; no gamecode edits or public operations"
+          ],
+          "next_step": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
+          "passed": true,
+          "at": 1792102050.627109
+        },
+        {
+          "run_id": "unity-20261016T0700-minerush",
+          "fence": 40,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/minerush-catalog-20261016-0700.json",
+              "sha256": "25166983b3d2bbccd30b2f9f362c4f0a7ceb849782854adf01b8d2ab22d43358"
+            },
+            {
+              "path": "docs/web-minerush-catalog-20261016.md",
+              "sha256": "7edd66f85741125ac482b9f3e16c54c607415ea1644be7a33d19befc222aedec"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "588ea57c50e3faeb2ce1e51f7023ae64913328204c86d60ac25ab5333d70131e"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "0d3ba88292b7496ff4e8b38cda3bc1deb33065efd7f8bca87300b7f91a5a3783"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "c2af7be343030526f284a3cdb8f0e1ddb98edfa30134c1a8cabde7d1f8defa57"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "3c7f296716cf469112f6594bd3f7990ab5e7b8d053115bd664b04b071b5726a8"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite8SSG4URLs38hashes",
+            "navigation and8guides",
+            "MineRush actual App handlers",
+            "3901280 and restored390 browser",
+            "ZIP40exact and5negative cases",
+            "business27tests",
+            "parent4HEAD verified; no gamecode edits or public operations"
+          ],
+          "next_step": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
+          "passed": true,
+          "at": 1792102050.6699827
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261016T0700-minerush",
+          "task_id": "T-web-minerush-catalog-discovery",
+          "fence": 40,
+          "expires_at": 1792103333.002628
+        }
+      ]
+    },
+    "T-web-gravityball-catalog-discovery": {
+      "id": "T-web-gravityball-catalog-discovery",
+      "objective": "既存GravityBallの操作と保存範囲を独立した紹介へ追加",
+      "acceptance": [
+        "/works/gravityball/紹介と/games/gravityball/実行を分離",
+        "重力操作と再開・最高値のみ保存を現行実装に照合",
+        "Web/verification/release=null開始なし",
+        "3901280検索詳細往復再読込、9SSG4URLとZIP復元"
+      ],
+      "outputs": [
+        "作品紹介",
+        "検査記録",
+        "復元索引"
+      ],
+      "checks": [
+        "build TS ESLint",
+        "navigation guides",
+        "browser",
+        "package restore"
+      ],
+      "next_step": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
+      "source": "user:automation:existing-web-portal-renovation",
+      "priority": 1,
+      "depends_on": [
+        "T-web-minerush-catalog-discovery"
+      ],
+      "decision_id": "D-web-catalog-discovery-20261015",
+      "hypothesis": "既存作品の操作と保存範囲を案内から理解できる。需要は未観測。",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "running",
       "checkpoints": [],
-      "claims": []
+      "claims": [
+        {
+          "run_id": "unity-20261016T0700-gravity-continuation",
+          "task_id": "T-web-gravityball-catalog-discovery",
+          "fence": 41,
+          "expires_at": 1792103050.8048842
+        }
+      ]
     }
   },
   "decisions": {
@@ -6707,6 +6845,19 @@
       "source": "continuation:original0100-deadline",
       "status": "completed",
       "started_at": 1792080510.9518993
+    },
+    "unity-20261016T0700-minerush": {
+      "run_id": "unity-20261016T0700-minerush",
+      "scheduled_at": "2026-10-16T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-16T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792101832.913195
+    },
+    "unity-20261016T0700-gravity-continuation": {
+      "run_id": "unity-20261016T0700-gravity-continuation",
+      "source": "continuation:original0700-deadline",
+      "status": "open",
+      "started_at": 1792102050.762156
     }
   },
   "experiments": {
@@ -6889,7 +7040,8 @@
     "2026-10-15T07:00:00+09:00": "unity-20261015T0700-streak-013ac59e",
     "2026-10-15T13:00:00+09:00": "unity-20261015T1300-score-read-6bc28a",
     "2026-10-15T19:00:00+09:00": "unity-20261015T1900-catalog-8e392a",
-    "2026-10-16T01:00:00+09:00": "unity-20261016T0100-integration-45f5794c"
+    "2026-10-16T01:00:00+09:00": "unity-20261016T0100-integration-45f5794c",
+    "2026-10-16T07:00:00+09:00": "unity-20261016T0700-minerush"
   },
   "feedback": [
     {
@@ -16251,7 +16403,214 @@
       },
       "previous": "966aade0aee01b620473120773860fac9454b1f0d6a1317c7d03fd2e967a1e86",
       "sha256": "03c8cba487bc257bd3a2422b546edd5bbaaccd6605152f65af49c6ff1ffb252f"
+    },
+    {
+      "revision": 246,
+      "at": 1792101832.913195,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261016T0700-minerush",
+        "scheduled_at": "2026-10-16T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "03c8cba487bc257bd3a2422b546edd5bbaaccd6605152f65af49c6ff1ffb252f",
+      "sha256": "2b74c7eb45cf464389b72cc58474936b911152ed0d712a0f8222b0e1d8ead440"
+    },
+    {
+      "revision": 247,
+      "at": 1792101833.002628,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261016T0700-minerush",
+        "task_id": "T-web-minerush-catalog-discovery",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261016T0700-minerush",
+        "task_id": "T-web-minerush-catalog-discovery",
+        "fence": 40,
+        "expires_at": 1792103333.002628
+      },
+      "previous": "2b74c7eb45cf464389b72cc58474936b911152ed0d712a0f8222b0e1d8ead440",
+      "sha256": "9d731fa36b7443b5ad0923c5ad2edb092de06bb9637291852cfe2eafcaad7eea"
+    },
+    {
+      "revision": 248,
+      "at": 1792102050.627109,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T0700-minerush",
+        "fence": 40,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/minerush-catalog-20261016-0700.json",
+            "sha256": "25166983b3d2bbccd30b2f9f362c4f0a7ceb849782854adf01b8d2ab22d43358"
+          },
+          {
+            "path": "docs/web-minerush-catalog-20261016.md",
+            "sha256": "7edd66f85741125ac482b9f3e16c54c607415ea1644be7a33d19befc222aedec"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "588ea57c50e3faeb2ce1e51f7023ae64913328204c86d60ac25ab5333d70131e"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "0d3ba88292b7496ff4e8b38cda3bc1deb33065efd7f8bca87300b7f91a5a3783"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "c2af7be343030526f284a3cdb8f0e1ddb98edfa30134c1a8cabde7d1f8defa57"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "3c7f296716cf469112f6594bd3f7990ab5e7b8d053115bd664b04b071b5726a8"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite8SSG4URLs38hashes",
+          "navigation and8guides",
+          "MineRush actual App handlers",
+          "3901280 and restored390 browser",
+          "ZIP40exact and5negative cases",
+          "business27tests",
+          "parent4HEAD verified; no gamecode edits or public operations"
+        ],
+        "next_step": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "9d731fa36b7443b5ad0923c5ad2edb092de06bb9637291852cfe2eafcaad7eea",
+      "sha256": "c23815c4218f7688d28ce188e3573e4e94bb7365ec9060e544f50a9006dc38f3"
+    },
+    {
+      "revision": 249,
+      "at": 1792102050.6699827,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261016T0700-minerush",
+        "fence": 40,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/minerush-catalog-20261016-0700.json",
+            "sha256": "25166983b3d2bbccd30b2f9f362c4f0a7ceb849782854adf01b8d2ab22d43358"
+          },
+          {
+            "path": "docs/web-minerush-catalog-20261016.md",
+            "sha256": "7edd66f85741125ac482b9f3e16c54c607415ea1644be7a33d19befc222aedec"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "588ea57c50e3faeb2ce1e51f7023ae64913328204c86d60ac25ab5333d70131e"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "0d3ba88292b7496ff4e8b38cda3bc1deb33065efd7f8bca87300b7f91a5a3783"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "c2af7be343030526f284a3cdb8f0e1ddb98edfa30134c1a8cabde7d1f8defa57"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "3c7f296716cf469112f6594bd3f7990ab5e7b8d053115bd664b04b071b5726a8"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite8SSG4URLs38hashes",
+          "navigation and8guides",
+          "MineRush actual App handlers",
+          "3901280 and restored390 browser",
+          "ZIP40exact and5negative cases",
+          "business27tests",
+          "parent4HEAD verified; no gamecode edits or public operations"
+        ],
+        "next_step": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "c23815c4218f7688d28ce188e3573e4e94bb7365ec9060e544f50a9006dc38f3",
+      "sha256": "0589219e4b14cd1cccc579608028ff11e458d275b92ee0d7476f08166f1c86e8"
+    },
+    {
+      "revision": 250,
+      "at": 1792102050.7203834,
+      "action": "task",
+      "data": {
+        "id": "T-web-gravityball-catalog-discovery",
+        "objective": "既存GravityBallの操作と保存範囲を独立した紹介へ追加",
+        "acceptance": [
+          "/works/gravityball/紹介と/games/gravityball/実行を分離",
+          "重力操作と再開・最高値のみ保存を現行実装に照合",
+          "Web/verification/release=null開始なし",
+          "3901280検索詳細往復再読込、9SSG4URLとZIP復元"
+        ],
+        "outputs": [
+          "作品紹介",
+          "検査記録",
+          "復元索引"
+        ],
+        "checks": [
+          "build TS ESLint",
+          "navigation guides",
+          "browser",
+          "package restore"
+        ],
+        "next_step": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
+        "source": "user:automation:existing-web-portal-renovation",
+        "priority": 1,
+        "depends_on": [
+          "T-web-minerush-catalog-discovery"
+        ],
+        "decision_id": "D-web-catalog-discovery-20261015",
+        "hypothesis": "既存作品の操作と保存範囲を案内から理解できる。需要は未観測。",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "0589219e4b14cd1cccc579608028ff11e458d275b92ee0d7476f08166f1c86e8",
+      "sha256": "2fa68653ed6a7ceaadd492f8d4189777d4fdf19cb43aed876f6aad1ca3211162"
+    },
+    {
+      "revision": 251,
+      "at": 1792102050.762156,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261016T0700-gravity-continuation",
+        "source": "continuation:original0700-deadline"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "2fa68653ed6a7ceaadd492f8d4189777d4fdf19cb43aed876f6aad1ca3211162",
+      "sha256": "b67ec91b64be4745ad5dc36faa96d845c41f194afc0be847cfeb4b3525f4c897"
+    },
+    {
+      "revision": 252,
+      "at": 1792102050.8048842,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261016T0700-gravity-continuation",
+        "task_id": "T-web-gravityball-catalog-discovery",
+        "ttl_seconds": 1000
+      },
+      "result": {
+        "run_id": "unity-20261016T0700-gravity-continuation",
+        "task_id": "T-web-gravityball-catalog-discovery",
+        "fence": 41,
+        "expires_at": 1792103050.8048842
+      },
+      "previous": "b67ec91b64be4745ad5dc36faa96d845c41f194afc0be847cfeb4b3525f4c897",
+      "sha256": "374128bf96eccf6a687636a8b4b3c51f8a4540fc0a0d257934288ccb57cca339"
     }
   ],
-  "projection_sha256": "df9f30cd92e11db6731daf7cc1aaabdc8cda14e1b05efd195cbd33f16dc89502"
+  "projection_sha256": "5912deb4778b8a7500012c7e35e9379e117923bb9e77114535a8e58a9e9ed83a"
 }

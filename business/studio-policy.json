@@ -62,7 +62,7 @@
   "webApplicationTechnology": "web",
   "autonomousUnityDevelopment": false,
   "acceptOwnerProvidedUnityFinishedArtifacts": true,
-  "nextStep": "T-web-minerush-catalog-discovery: 固定9×9/10地雷・初手・旗・途中保存なしを既存実装から整理し独立紹介へ追加。PR24は本日マージ済みのため追加PRなし、翌日分へローカル保存。",
+  "nextStep": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
   "unityFinishedArtifactPolicy": "本人が他で開発したUnityアプリの完成品デプロイを受け入れる。受領後に版・対象環境・ハッシュ・実動作・配布条件・復元方法を確認する。ソース提供・移植・再ビルドを一律必須にしない。",
   "ownerInstructionConflictPolicy": "最新の直接指示が天啓.mdの旧すべてUnity製方針に優先する。本人の原文を書き換えて整合させない。",
   "catalogAcceptanceSource": "docs/web-catalog-20261012.md",
