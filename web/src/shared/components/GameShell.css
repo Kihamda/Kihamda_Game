@@ -224,3 +224,25 @@
     font-size: 12px;
   }
 }
+
+/* A tall canvas retains its width while guidance and notices remain reachable. */
+@media (max-width: 960px) {
+  .game-shell-root--scroll-mobile {
+    overflow-y: auto;
+  }
+
+  .game-shell-root--scroll-mobile .game-shell-main {
+    height: auto;
+    flex-shrink: 0;
+    grid-template-rows: auto auto;
+  }
+
+  .game-shell-root--scroll-mobile .game-shell-panel-inner {
+    height: auto;
+    overflow: visible;
+  }
+
+  .game-shell-root--scroll-mobile .game-shell-stage {
+    height: min(614px, calc((100vw - 30px) * 1.2 + 14px));
+  }
+}

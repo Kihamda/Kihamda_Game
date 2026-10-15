@@ -25,11 +25,12 @@ export function useHighScore(gameId: string) {
   const readErrorRef = useRef(initial.error);
 
   const bestRef = useRef(best);
+  const lastReadBestRef = useRef(initial.score);
   const pendingOperation = useRef<"write" | "delete" | null>(null);
   const [saveError, setSaveError] = useState(false);
 
   const retry = useCallback((): boolean => {
-    if (readErrorRef.current !== null) {
+    if (readErrorRef.current !== null || pendingOperation.current === "write") {
       const result = read();
       readErrorRef.current = result.error;
       setReadError(result.error);
@@ -37,6 +38,7 @@ export function useHighScore(gameId: string) {
         if (pendingOperation.current !== null) setSaveError(true);
         return false;
       }
+      lastReadBestRef.current = result.score;
       if (pendingOperation.current !== "delete") {
         bestRef.current = Math.max(bestRef.current, result.score);
         setBest(bestRef.current);
@@ -67,7 +69,7 @@ export function useHighScore(gameId: string) {
       setBest(score);
       pendingOperation.current = "write";
       retry();
-      return !historyUnverified;
+      return !historyUnverified && readErrorRef.current === null && score > lastReadBestRef.current;
     },
     [retry],
   );

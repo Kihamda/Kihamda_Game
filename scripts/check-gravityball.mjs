@@ -16,7 +16,7 @@ const compiled = await build({
   } }],
 });
 
-let slots, cursor, effects, refs, stored, denied, timers, frame;
+let slots, cursor, effects, refs, stored, denied, timers, frame, timerSequence;
 const react = {
   useRef(value) { const index = cursor++; if (!slots[index]) slots[index] = { current: value }; refs.push(slots[index]); return slots[index]; },
   useState(initial) { const index = cursor++; if (!(index in slots)) slots[index] = typeof initial === 'function' ? initial() : initial; return [slots[index], value => { slots[index] = typeof value === 'function' ? value(slots[index]) : value; }]; },
@@ -49,12 +49,12 @@ assert.equal(hasRoute({ ...STAGES[3], obstacles: STAGES[3].obstacles.map((o, i) 
 for (const [index, stage] of STAGES.entries()) assert(hasRoute(stage), `Stage ${index + 1} has no radius-aware route`);
 
 function setup(value = null) {
-  slots = []; cursor = 0; effects = []; refs = []; stored = value; denied = false; timers = new Map(); frame = null;
+  slots = []; cursor = 0; effects = []; refs = []; stored = value; denied = false; timers = new Map(); frame = null; timerSequence = 0;
   globalThis.localStorage = { getItem: () => stored, setItem: (_key, value) => { if (denied) throw Error('denied'); stored = value; }, removeItem: () => { if (denied) throw Error('denied'); stored = null; } };
   globalThis.window = { addEventListener() {}, removeEventListener() {} };
   globalThis.requestAnimationFrame = fn => { frame = fn; return 1; };
   globalThis.cancelAnimationFrame = () => { frame = null; };
-  globalThis.setTimeout = (fn, delay) => { const id = timers.size + 1; timers.set(id, { fn, delay }); return id; };
+  globalThis.setTimeout = (fn, delay) => { const id = ++timerSequence; timers.set(id, { fn: () => { timers.delete(id); fn(); }, delay }); return id; };
   globalThis.clearTimeout = id => timers.delete(id);
 }
 function renderHook() { cursor = 0; refs = []; return useHighScore('gravityball'); }
@@ -85,6 +85,18 @@ try {
   setup('bad'); renderHook(); stored='80'; assert.equal(renderHook().retry(),true);
   assert.equal(renderHook().best,80); assert.equal(renderHook().readError,null);
   setup(); assert.equal(renderHook().readError,null); assert.equal(renderHook().best,0);
+  setup('20'); renderHook(); stored='500';
+  assert.equal(renderHook().update(100),false,'higher stored record prevents false new record');
+  assert.equal(stored,'500'); assert.equal(renderHook().best,500);
+  denied=true; renderHook().update(600); assert.equal(renderHook().saveError,true);
+  stored='900'; denied=false; assert.equal(renderHook().retry(),true);
+  assert.equal(stored,'900'); assert.equal(renderHook().best,900);
+  setup('20'); renderHook(); const savedRead=localStorage.getItem;
+  localStorage.getItem=()=>{throw Error('read failed after startup')};
+  assert.equal(renderHook().update(100),false); assert.equal(stored,'20');
+  assert.equal(renderHook().readError,'unavailable');
+  localStorage.getItem=savedRead; assert.equal(renderHook().retry(),true);
+  assert.equal(stored,'100'); assert.equal(renderHook().readError,null);
   setup('100'); let hook = renderHook(); assert.equal(hook.best, 100);
   assert.equal(hook.update(200), true); assert.equal(hook.update(150), false); assert.equal(stored, '200');
   assert.equal(hook.update(NaN), false); denied = true; assert.equal(hook.update(300), true); assert.equal(renderHook().saveError, true); assert.equal(stored, '200');
@@ -124,7 +136,8 @@ try {
   await app.container.props.onClick(); assert.equal(app.state.current.phase, 'start'); assert.equal(app.state.current.stageIndex, 0); assert.equal(app.state.current.score, 0);
   Object.assign(app.state.current, { phase: 'playing', stageIndex: 2, ballPos: { x: 250, y: 510 }, ballVel: { x: 0, y: 0 } }); frame(); assert.equal(app.state.current.phase, 'gameover');
   await app.container.props.onClick(); assert.equal(app.state.current.phase, 'playing'); assert.deepEqual(app.state.current.ballPos, STAGES[2].ball); assert.equal(app.state.current.stageIndex, 2);
+  assert.equal(timers.size,0,'restart cancels all delayed celebrations');
   const second = startApp(); second.state.current.phase = 'playing'; second.state.current.ballPos = { ...STAGES[0].goal }; second.state.current.gravity = { x: 0, y: 0 }; frame();
-  assert([...timers.values()].some(timer => timer.delay === 1500)); for (const cleanup of second.cleanup) cleanup?.(); assert(![...timers.values()].some(timer => timer.delay === 1500), 'Unmount must cancel transition');
+  assert([...timers.values()].some(timer => timer.delay === 1500)); for (const cleanup of second.cleanup) cleanup?.(); assert(![...timers.values()].some(timer => timer.delay === 1500), 'Unmount must cancel transition'); assert.equal(timers.size,0,'unmount cancels all delayed celebrations');
 } finally { for (const [key, value] of Object.entries(preserved)) { if (value === undefined) delete globalThis[key]; else globalThis[key] = value; } }
 console.log('GravityBall: 5 geometric routes, original stage4 failure, score validation/denial, transition click/double score/unmount, final save/restart and spike retry passed. Physics steering and touch require separate browser evidence.');

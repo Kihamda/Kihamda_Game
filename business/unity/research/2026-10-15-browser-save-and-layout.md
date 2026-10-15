@@ -14,3 +14,10 @@ https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_S
 実画面では保存案内が表示されると390pxの盤面が約159×191pxになる。次の独立タスクT-web-gravity-mobile-notice-layoutは同じ作品に限定する。受入条件は390×844の通常時/読込失敗時/書込失敗時でcanvas幅300px以上、説明・警告・44px以上の再試行操作にスクロールで到達可能、横はみ出しなし、1280×720では500×600盤面を維持、Enter/矢印入力と復旧後フォーカスを維持すること。物理タッチと人間評価は別に未確認として残す。
 
 月間純利益・訪問・開始率・完了率・再訪はnull。14/28日の公開観測は未開始のため事業判断unobserved。技術的な保存と配置の改善を需要の証明にしない。
+
+## 複数タブの保存
+
+MDNのstorageイベント案内は、同一オリジンの別タブからlocalStorageが更新されることを説明する。
+https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event
+
+現行hookは初期読込が成功すると保存直前に値を読み直さない。別タブで高い値が保存された後、古い画面から低い値を保存すると最高値を下げる可能性がある。次の同一作品の工程T-web-gravity-score-stale-tabは実hookで20読込→外部500保存→100更新を再現し、保存直前の正常値を下げず、拒否中の再試行でも同じ保護を保つことを受入条件とする。実ブラウザの2タブで順番に更新し再読み込みする。localStorageの同時書込を原子的に排他できると主張しない。

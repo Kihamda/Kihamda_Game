@@ -71,8 +71,20 @@ export default function App() {
   const mousePositionRef = useRef<Vector | null>(null);
   const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const celebrationTimersRef = useRef(new Set<ReturnType<typeof setTimeout>>());
+
   useEffect(() => () => {
+    for (const timer of celebrationTimersRef.current) clearTimeout(timer);
+    celebrationTimersRef.current.clear();
     if (transitionTimerRef.current !== null) clearTimeout(transitionTimerRef.current);
+  }, []);
+
+  const scheduleCelebration = useCallback((callback: () => void, delay: number) => {
+    const timer = setTimeout(() => {
+      celebrationTimersRef.current.delete(timer);
+      callback();
+    }, delay);
+    celebrationTimersRef.current.add(timer);
   }, []);
 
   const [, setTick] = useState(0);
@@ -231,13 +243,13 @@ export default function App() {
     
     // Show popups sequentially
     messages.forEach((msg, i) => {
-      setTimeout(() => {
+      scheduleCelebration(() => {
         showPopup(msg.text, msg.variant, msg.size);
       }, i * 800);
     });
     
     return bonus;
-  }, [showPopup]);
+  }, [scheduleCelebration, showPopup]);
 
   // 次のステージへ
   const nextStage = useCallback(() => {
@@ -265,16 +277,18 @@ export default function App() {
       // Check for high score
       const isNew = updateHighScore(state.score);
       if (isNew) {
-        setTimeout(() => {
+        scheduleCelebration(() => {
           showPopup("🏆 NEW HIGH SCORE!", "critical", "xl");
         }, 1500);
       }
     }
     setTick((t) => t + 1);
-  }, [showPopup, updateHighScore]);
+  }, [scheduleCelebration, showPopup, updateHighScore]);
 
   // リスタート
   const restartGame = useCallback(() => {
+    for (const timer of celebrationTimersRef.current) clearTimeout(timer);
+    celebrationTimersRef.current.clear();
     if (transitionTimerRef.current !== null) clearTimeout(transitionTimerRef.current);
     transitionTimerRef.current = null;
     gameStateRef.current = createInitialState(0);
@@ -490,7 +504,7 @@ export default function App() {
             confettiRef.current();
             // Check for all clear achievements
             if (state.perfectStages >= STAGES.length) {
-              setTimeout(() => {
+              scheduleCelebration(() => {
                 showPopup("🌟 ALL PERFECT!", "critical", "xl");
               }, 2000);
             }
@@ -570,7 +584,7 @@ export default function App() {
     return () => {
       cancelAnimationFrame(animationFrameRef.current);
     };
-  }, [calculateStageScore, highScore, readError, nextStage, showPopup, updateHighScore]);
+  }, [calculateStageScore, highScore, readError, nextStage, scheduleCelebration, showPopup, updateHighScore]);
 
   // クリックハンドラー
   const handleClick = useCallback(() => {
@@ -623,7 +637,7 @@ export default function App() {
   }, [handleClick, handleOrientation]);
 
   return (
-    <GameShell gameId="gravityball" layout="default" controlHints={["クリック・タップ・Enterで開始。マウス移動・指のドラッグ・矢印キーで重力方向を変更", "赤い障害物で失敗。同じステージから再挑戦", "全5ステージ完了時の最高スコアだけをこのブラウザに保存。途中経過は保存しません"]}
+    <GameShell gameId="gravityball" layout="default" mobileScroll controlHints={["クリック・タップ・Enterで開始。マウス移動・指のドラッグ・矢印キーで重力方向を変更", "赤い障害物で失敗。同じステージから再挑戦", "全5ステージ完了時の最高スコアだけをこのブラウザに保存。途中経過は保存しません"]}
       statusMessage={readError ? (readError === "unavailable" ? "最高スコアを読み込めませんでした。過去の記録は未確認です。読み込みを再試行してください。" : "最高スコアの保存形式を確認できません。過去の記録は変更していません。読み込みを再試行できます。") + (saveError ? " 今回の記録も未保存です。" : "") : saveError ? "最高スコアを保存できませんでした。再読み込みすると今回の記録は失われます。保存を再試行できます。" : undefined}
       statusAction={readError || saveError ? { label: readError ? "最高スコアの読み込みを再試行" : "最高スコアの保存を再試行", onClick: () => {
         if (retryHighScore()) containerRef.current?.focus();
