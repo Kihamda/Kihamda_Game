@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 228,
+  "revision": 233,
   "business_id": "game-site",
   "fence": 37,
-  "lease": {
-    "run_id": "unity-20261015T1900-catalog-8e392a",
-    "task_id": "T-web-ntik-catalog-discovery",
-    "fence": 37,
-    "expires_at": 1792059923.2976089
-  },
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -5812,8 +5807,193 @@
       "hypothesis": "検査済み既存作品の案内を追加し公開条件と制作技術を分離する",
       "pdca": "do",
       "experiment_id": "E-unity-portal",
-      "status": "running",
-      "checkpoints": [],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261015T1900-catalog-8e392a",
+          "fence": 37,
+          "artifacts": [
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "09e3da94e40ad29387af4e7ea44667a2946f04a3c467cf3439a9985fe71b226b"
+            },
+            {
+              "path": "scripts/check-portal-work-guides.mjs",
+              "sha256": "cdcf06c74e108d4eaf51e866a469343beba4d9796ace9fa4f0db551ed0e0ab49"
+            },
+            {
+              "path": "scripts/check-repository.mjs",
+              "sha256": "89b4c9fed8144fb47419b0584f1cdf04f311f9dc2fde52b0c0b546ff2f1d885a"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "89bb2c53c16e5fb79358a0974a9912c2c20dc80550c8b1f28f699a80d543b4c7"
+            },
+            {
+              "path": "scripts/web-release-package.mjs",
+              "sha256": "902254ff2a964c43fc4265da95b147a46c262ecc302b9aa73f87a9ff97f48814"
+            },
+            {
+              "path": "web/scripts/prebuild.mjs",
+              "sha256": "1596b3d89b9f7d4d5fa28fa9e2094fcd2159965c9582011ffe634948966c8c35"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "c09e3a4f858a39b4b36b26472fa79bedfe187bdec0af4e4fc00cdeb48f4bceaa"
+            },
+            {
+              "path": "web/src/portal/catalog.ts",
+              "sha256": "1e52e50a53c9ebf8922ad7e67a2596d8fe1fbf66a38a5ceba5db1fb6cce6f313"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "65872166ccb78fa71230dd50864a380ecdd1293c889c3af732d26db4f2ec4e59"
+            },
+            {
+              "path": "docs/web-ntik-catalog-20261015.md",
+              "sha256": "b168ac1cc6a5ae5a044d898584380f64afbfb760357f8ee07a3e5e64ae130ceb"
+            },
+            {
+              "path": "docs/images/ntik-catalog-20261015-390.png",
+              "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+            },
+            {
+              "path": "docs/images/ntik-catalog-20261015-1280.png",
+              "sha256": "ebebda05c88226817f1ba7b02b050adae90a043e1a0193343b75f83d5afc9ecc"
+            },
+            {
+              "path": "docs/images/ntik-catalog-restored-20261015-390.png",
+              "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "bc0205950d6275e057c1fed6f910292b72f86aece54914a52d1a149841e67246"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "a2690c18004f3bd7b25e11b31f4699e02eb3e056a3c7b460f5d91436cc575de9"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "63b26615cb5d7dece01dff7e911d0a00c67dd23d009f594dcd53b8c691ddcadf"
+            },
+            {
+              "path": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+              "sha256": "1c74e747d152e8cbb8d190a90be1f18421bd4c34534c69b20442be5b87ac2e42"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite6SSG 4legacy 36checksums",
+            "navigation SSR and Web/ownerUnity8 guide evidence cases",
+            "business27tests",
+            "390/1280 search detail return reload no-start no-overflow",
+            "legacyURL3x3 coordinate move reload X and Player2; no state injection",
+            "package37sitefiles6pages and all38files ZIP restoration",
+            "sourceZIP110exactGitblobs",
+            "modified missing extra version manifest rejection",
+            "old5pagepackage backward compatibility",
+            "restored390 guide Enter no-start return Web query works focus",
+            "original224events parent4HEAD recovery8hashes protectedpaths unchanged",
+            "dailyPR23 merged checked; no additionalPR push merge deployment",
+            "own4219/4220 previews stopped; tabclosed viewportreset"
+          ],
+          "next_step": "10月16日以降の日次PRへローカル成果と復元索引をまとめ最新head CI成功後に反映",
+          "passed": true,
+          "at": 1792058948.1593
+        },
+        {
+          "run_id": "unity-20261015T1900-catalog-8e392a",
+          "fence": 37,
+          "artifacts": [
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "09e3da94e40ad29387af4e7ea44667a2946f04a3c467cf3439a9985fe71b226b"
+            },
+            {
+              "path": "scripts/check-portal-work-guides.mjs",
+              "sha256": "cdcf06c74e108d4eaf51e866a469343beba4d9796ace9fa4f0db551ed0e0ab49"
+            },
+            {
+              "path": "scripts/check-repository.mjs",
+              "sha256": "89b4c9fed8144fb47419b0584f1cdf04f311f9dc2fde52b0c0b546ff2f1d885a"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "89bb2c53c16e5fb79358a0974a9912c2c20dc80550c8b1f28f699a80d543b4c7"
+            },
+            {
+              "path": "scripts/web-release-package.mjs",
+              "sha256": "902254ff2a964c43fc4265da95b147a46c262ecc302b9aa73f87a9ff97f48814"
+            },
+            {
+              "path": "web/scripts/prebuild.mjs",
+              "sha256": "1596b3d89b9f7d4d5fa28fa9e2094fcd2159965c9582011ffe634948966c8c35"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "c09e3a4f858a39b4b36b26472fa79bedfe187bdec0af4e4fc00cdeb48f4bceaa"
+            },
+            {
+              "path": "web/src/portal/catalog.ts",
+              "sha256": "1e52e50a53c9ebf8922ad7e67a2596d8fe1fbf66a38a5ceba5db1fb6cce6f313"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "65872166ccb78fa71230dd50864a380ecdd1293c889c3af732d26db4f2ec4e59"
+            },
+            {
+              "path": "docs/web-ntik-catalog-20261015.md",
+              "sha256": "b168ac1cc6a5ae5a044d898584380f64afbfb760357f8ee07a3e5e64ae130ceb"
+            },
+            {
+              "path": "docs/images/ntik-catalog-20261015-390.png",
+              "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+            },
+            {
+              "path": "docs/images/ntik-catalog-20261015-1280.png",
+              "sha256": "ebebda05c88226817f1ba7b02b050adae90a043e1a0193343b75f83d5afc9ecc"
+            },
+            {
+              "path": "docs/images/ntik-catalog-restored-20261015-390.png",
+              "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "bc0205950d6275e057c1fed6f910292b72f86aece54914a52d1a149841e67246"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "a2690c18004f3bd7b25e11b31f4699e02eb3e056a3c7b460f5d91436cc575de9"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "63b26615cb5d7dece01dff7e911d0a00c67dd23d009f594dcd53b8c691ddcadf"
+            },
+            {
+              "path": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+              "sha256": "1c74e747d152e8cbb8d190a90be1f18421bd4c34534c69b20442be5b87ac2e42"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite6SSG 4legacy 36checksums",
+            "navigation SSR and Web/ownerUnity8 guide evidence cases",
+            "business27tests",
+            "390/1280 search detail return reload no-start no-overflow",
+            "legacyURL3x3 coordinate move reload X and Player2; no state injection",
+            "package37sitefiles6pages and all38files ZIP restoration",
+            "sourceZIP110exactGitblobs",
+            "modified missing extra version manifest rejection",
+            "old5pagepackage backward compatibility",
+            "restored390 guide Enter no-start return Web query works focus",
+            "original224events parent4HEAD recovery8hashes protectedpaths unchanged",
+            "dailyPR23 merged checked; no additionalPR push merge deployment",
+            "own4219/4220 previews stopped; tabclosed viewportreset"
+          ],
+          "next_step": "10月16日以降の日次PRへローカル成果と復元索引をまとめ最新head CI成功後に反映",
+          "passed": true,
+          "at": 1792058948.1947107
+        }
+      ],
       "claims": [
         {
           "run_id": "unity-20261015T1900-catalog-8e392a",
@@ -6235,7 +6415,7 @@
       "run_id": "unity-20261015T1900-catalog-8e392a",
       "scheduled_at": "2026-10-15T19:00:00+09:00",
       "source": "scheduled:game-site:2026-10-15T19:00:00+09:00",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792058423.1564944
     }
   },
@@ -6282,9 +6462,9 @@
       ],
       "measurement_plan": "内部表示・操作検査と公開後の開始率を分離する。公開指標は未観測でnull",
       "decision_id": "D-web-renovation-20261010",
-      "next_step": "Same T-web-ntik-save-scope-guidance: final390/1280 page-dialog keyboard/cancel/confirm/focus and three-key save/reload acceptance; NOT complete",
+      "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
       "source": "user:天啓.md:2026-10-10:web-renovation",
-      "stage": "plan",
+      "stage": "act",
       "history": [
         {
           "id": "E-unity-portal",
@@ -6361,6 +6541,34 @@
           "next_step": "Same T-web-ntik-save-scope-guidance: final390/1280 page-dialog keyboard/cancel/confirm/focus and three-key save/reload acceptance; NOT complete",
           "at": 1791973154.3370245,
           "previous_stage": "act"
+        },
+        {
+          "id": "E-unity-portal",
+          "source": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+          "evidence": "既存n目並べの紹介と実行URLを分け6SSG/実ブラウザ/ZIP復元を検査。需要の実観測0件。",
+          "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+          "stage": "do",
+          "at": 1792058932.9693866,
+          "previous_stage": "plan"
+        },
+        {
+          "id": "E-unity-portal",
+          "source": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+          "evidence": "既存n目並べの紹介と実行URLを分け6SSG/実ブラウザ/ZIP復元を検査。需要の実観測0件。",
+          "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+          "stage": "check",
+          "at": 1792058932.9997227,
+          "previous_stage": "do"
+        },
+        {
+          "id": "E-unity-portal",
+          "source": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+          "evidence": "既存n目並べの紹介と実行URLを分け6SSG/実ブラウザ/ZIP復元を検査。需要の実観測0件。",
+          "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+          "stage": "act",
+          "judgment": "unobserved",
+          "at": 1792058933.0307484,
+          "previous_stage": "check"
         }
       ],
       "release": null
@@ -15104,7 +15312,261 @@
       },
       "previous": "afc9055ab49c58a917777a0cd27983445527c71d97f2c55836a52e697b7b402f",
       "sha256": "7982ce3900a385fc9bda41e7ea24f5cdeae347a7330a220b5ccf1100a8750375"
+    },
+    {
+      "revision": 229,
+      "at": 1792058932.9693866,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "source": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+        "evidence": "既存n目並べの紹介と実行URLを分け6SSG/実ブラウザ/ZIP復元を検査。需要の実観測0件。",
+        "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+        "stage": "do"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "7982ce3900a385fc9bda41e7ea24f5cdeae347a7330a220b5ccf1100a8750375",
+      "sha256": "3090313dcfd3ca58634177fb7a1e0a3205926c0bdec2c8654393d7dedf2921cc"
+    },
+    {
+      "revision": 230,
+      "at": 1792058932.9997227,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "source": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+        "evidence": "既存n目並べの紹介と実行URLを分け6SSG/実ブラウザ/ZIP復元を検査。需要の実観測0件。",
+        "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+        "stage": "check"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "3090313dcfd3ca58634177fb7a1e0a3205926c0bdec2c8654393d7dedf2921cc",
+      "sha256": "ce35babbd8f769a9edd4a60d7c7bfbf60a905b262626a101dd55b60cdfa67543"
+    },
+    {
+      "revision": 231,
+      "at": 1792058933.0307484,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "source": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+        "evidence": "既存n目並べの紹介と実行URLを分け6SSG/実ブラウザ/ZIP復元を検査。需要の実観測0件。",
+        "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+        "stage": "act",
+        "judgment": "unobserved"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "ce35babbd8f769a9edd4a60d7c7bfbf60a905b262626a101dd55b60cdfa67543",
+      "sha256": "b38cb3d55789cdc170c7b310cca481538492157aafd4aa7b88d8277a8a50f01e"
+    },
+    {
+      "revision": 232,
+      "at": 1792058948.1593,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261015T1900-catalog-8e392a",
+        "fence": 37,
+        "artifacts": [
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "09e3da94e40ad29387af4e7ea44667a2946f04a3c467cf3439a9985fe71b226b"
+          },
+          {
+            "path": "scripts/check-portal-work-guides.mjs",
+            "sha256": "cdcf06c74e108d4eaf51e866a469343beba4d9796ace9fa4f0db551ed0e0ab49"
+          },
+          {
+            "path": "scripts/check-repository.mjs",
+            "sha256": "89b4c9fed8144fb47419b0584f1cdf04f311f9dc2fde52b0c0b546ff2f1d885a"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "89bb2c53c16e5fb79358a0974a9912c2c20dc80550c8b1f28f699a80d543b4c7"
+          },
+          {
+            "path": "scripts/web-release-package.mjs",
+            "sha256": "902254ff2a964c43fc4265da95b147a46c262ecc302b9aa73f87a9ff97f48814"
+          },
+          {
+            "path": "web/scripts/prebuild.mjs",
+            "sha256": "1596b3d89b9f7d4d5fa28fa9e2094fcd2159965c9582011ffe634948966c8c35"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "c09e3a4f858a39b4b36b26472fa79bedfe187bdec0af4e4fc00cdeb48f4bceaa"
+          },
+          {
+            "path": "web/src/portal/catalog.ts",
+            "sha256": "1e52e50a53c9ebf8922ad7e67a2596d8fe1fbf66a38a5ceba5db1fb6cce6f313"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "65872166ccb78fa71230dd50864a380ecdd1293c889c3af732d26db4f2ec4e59"
+          },
+          {
+            "path": "docs/web-ntik-catalog-20261015.md",
+            "sha256": "b168ac1cc6a5ae5a044d898584380f64afbfb760357f8ee07a3e5e64ae130ceb"
+          },
+          {
+            "path": "docs/images/ntik-catalog-20261015-390.png",
+            "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+          },
+          {
+            "path": "docs/images/ntik-catalog-20261015-1280.png",
+            "sha256": "ebebda05c88226817f1ba7b02b050adae90a043e1a0193343b75f83d5afc9ecc"
+          },
+          {
+            "path": "docs/images/ntik-catalog-restored-20261015-390.png",
+            "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "bc0205950d6275e057c1fed6f910292b72f86aece54914a52d1a149841e67246"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "a2690c18004f3bd7b25e11b31f4699e02eb3e056a3c7b460f5d91436cc575de9"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "63b26615cb5d7dece01dff7e911d0a00c67dd23d009f594dcd53b8c691ddcadf"
+          },
+          {
+            "path": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+            "sha256": "1c74e747d152e8cbb8d190a90be1f18421bd4c34534c69b20442be5b87ac2e42"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite6SSG 4legacy 36checksums",
+          "navigation SSR and Web/ownerUnity8 guide evidence cases",
+          "business27tests",
+          "390/1280 search detail return reload no-start no-overflow",
+          "legacyURL3x3 coordinate move reload X and Player2; no state injection",
+          "package37sitefiles6pages and all38files ZIP restoration",
+          "sourceZIP110exactGitblobs",
+          "modified missing extra version manifest rejection",
+          "old5pagepackage backward compatibility",
+          "restored390 guide Enter no-start return Web query works focus",
+          "original224events parent4HEAD recovery8hashes protectedpaths unchanged",
+          "dailyPR23 merged checked; no additionalPR push merge deployment",
+          "own4219/4220 previews stopped; tabclosed viewportreset"
+        ],
+        "next_step": "10月16日以降の日次PRへローカル成果と復元索引をまとめ最新head CI成功後に反映",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "b38cb3d55789cdc170c7b310cca481538492157aafd4aa7b88d8277a8a50f01e",
+      "sha256": "c11a8f3749344e481da1daca86c5a7ccf6b7fb9c34b000897f9c83b8406ecbf8"
+    },
+    {
+      "revision": 233,
+      "at": 1792058948.1947107,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261015T1900-catalog-8e392a",
+        "fence": 37,
+        "artifacts": [
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "09e3da94e40ad29387af4e7ea44667a2946f04a3c467cf3439a9985fe71b226b"
+          },
+          {
+            "path": "scripts/check-portal-work-guides.mjs",
+            "sha256": "cdcf06c74e108d4eaf51e866a469343beba4d9796ace9fa4f0db551ed0e0ab49"
+          },
+          {
+            "path": "scripts/check-repository.mjs",
+            "sha256": "89b4c9fed8144fb47419b0584f1cdf04f311f9dc2fde52b0c0b546ff2f1d885a"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "89bb2c53c16e5fb79358a0974a9912c2c20dc80550c8b1f28f699a80d543b4c7"
+          },
+          {
+            "path": "scripts/web-release-package.mjs",
+            "sha256": "902254ff2a964c43fc4265da95b147a46c262ecc302b9aa73f87a9ff97f48814"
+          },
+          {
+            "path": "web/scripts/prebuild.mjs",
+            "sha256": "1596b3d89b9f7d4d5fa28fa9e2094fcd2159965c9582011ffe634948966c8c35"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "c09e3a4f858a39b4b36b26472fa79bedfe187bdec0af4e4fc00cdeb48f4bceaa"
+          },
+          {
+            "path": "web/src/portal/catalog.ts",
+            "sha256": "1e52e50a53c9ebf8922ad7e67a2596d8fe1fbf66a38a5ceba5db1fb6cce6f313"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "65872166ccb78fa71230dd50864a380ecdd1293c889c3af732d26db4f2ec4e59"
+          },
+          {
+            "path": "docs/web-ntik-catalog-20261015.md",
+            "sha256": "b168ac1cc6a5ae5a044d898584380f64afbfb760357f8ee07a3e5e64ae130ceb"
+          },
+          {
+            "path": "docs/images/ntik-catalog-20261015-390.png",
+            "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+          },
+          {
+            "path": "docs/images/ntik-catalog-20261015-1280.png",
+            "sha256": "ebebda05c88226817f1ba7b02b050adae90a043e1a0193343b75f83d5afc9ecc"
+          },
+          {
+            "path": "docs/images/ntik-catalog-restored-20261015-390.png",
+            "sha256": "54f3408f9046fd476ac4e91d7d816e91d2884b8bc48ad12e0ba7a175122c4def"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "bc0205950d6275e057c1fed6f910292b72f86aece54914a52d1a149841e67246"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "a2690c18004f3bd7b25e11b31f4699e02eb3e056a3c7b460f5d91436cc575de9"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "63b26615cb5d7dece01dff7e911d0a00c67dd23d009f594dcd53b8c691ddcadf"
+          },
+          {
+            "path": "business/unity/evidence/ntik-catalog-20261015-1900.json",
+            "sha256": "1c74e747d152e8cbb8d190a90be1f18421bd4c34534c69b20442be5b87ac2e42"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite6SSG 4legacy 36checksums",
+          "navigation SSR and Web/ownerUnity8 guide evidence cases",
+          "business27tests",
+          "390/1280 search detail return reload no-start no-overflow",
+          "legacyURL3x3 coordinate move reload X and Player2; no state injection",
+          "package37sitefiles6pages and all38files ZIP restoration",
+          "sourceZIP110exactGitblobs",
+          "modified missing extra version manifest rejection",
+          "old5pagepackage backward compatibility",
+          "restored390 guide Enter no-start return Web query works focus",
+          "original224events parent4HEAD recovery8hashes protectedpaths unchanged",
+          "dailyPR23 merged checked; no additionalPR push merge deployment",
+          "own4219/4220 previews stopped; tabclosed viewportreset"
+        ],
+        "next_step": "10月16日以降の日次PRへローカル成果と復元索引をまとめ最新head CI成功後に反映",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "c11a8f3749344e481da1daca86c5a7ccf6b7fb9c34b000897f9c83b8406ecbf8",
+      "sha256": "d0e598d55ca4c9f876c16d3f4addd7f7246c9c8e972abda453ec4203debade68"
     }
   ],
-  "projection_sha256": "d53c9125f300f34bde33a8709bb3233ac1751e2e785b76af96630ea5834776ef"
+  "projection_sha256": "f8b7ac538f1102335873b34f76d5bfa58f2a43995e77bb888d1af439d757d79e"
 }
