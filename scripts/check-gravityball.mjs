@@ -69,6 +69,22 @@ function startApp() {
 const preserved = Object.fromEntries(['localStorage', 'window', 'requestAnimationFrame', 'cancelAnimationFrame', 'setTimeout', 'clearTimeout'].map(key => [key, globalThis[key]]));
 try {
   for (const invalid of ['NaN', 'Infinity', '-1', '1.5', 'garbage', '9007199254740992']) { setup(invalid); assert.equal(renderHook().best, 0); }
+  for (const invalid of ['', ' ', '{}', 'NaN', '-1']) {
+    setup(invalid); assert.equal(renderHook().readError,'invalid');
+    assert.equal(stored,invalid,'read must preserve invalid history');
+    assert.equal(renderHook().retry(),false); assert.equal(stored,invalid);
+  }
+  setup('500'); const originalRead=localStorage.getItem;
+  localStorage.getItem=()=>{throw Error('read denied')};
+  assert.equal(renderHook().readError,'unavailable');
+  assert.equal(renderHook().update(100),false,'unread history cannot confirm a new record'); assert.equal(renderHook().saveError,true); assert.equal(stored,'500','unknown maximum must not be overwritten');
+  assert.equal(renderHook().retry(),false);
+  localStorage.getItem=originalRead;
+  assert.equal(renderHook().retry(),true); assert.equal(renderHook().best,500);
+  assert.equal(stored,'500'); assert.equal(renderHook().readError,null);
+  setup('bad'); renderHook(); stored='80'; assert.equal(renderHook().retry(),true);
+  assert.equal(renderHook().best,80); assert.equal(renderHook().readError,null);
+  setup(); assert.equal(renderHook().readError,null); assert.equal(renderHook().best,0);
   setup('100'); let hook = renderHook(); assert.equal(hook.best, 100);
   assert.equal(hook.update(200), true); assert.equal(hook.update(150), false); assert.equal(stored, '200');
   assert.equal(hook.update(NaN), false); denied = true; assert.equal(hook.update(300), true); assert.equal(renderHook().saveError, true); assert.equal(stored, '200');
