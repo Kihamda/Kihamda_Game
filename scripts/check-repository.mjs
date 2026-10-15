@@ -11,8 +11,8 @@ const unityProjects = JSON.parse(read('unity-projects.json')).projects;
 assert.equal(new Set(unityCatalog.map(game => game.id)).size, unityCatalog.length, 'Duplicate Unity catalog IDs');
 for (const game of unityCatalog) {
   assert(game.technology !== "unity" || game.origin !== "preserved-prototype" || unityProjects.some(project => project.id === game.id), `Unregistered Unity game ${game.id}`);
-  assert.equal(game.path, `/games/${game.id}/`);
-  assert(!games.some(legacy => legacy.id === game.id), `Unity/legacy route collision ${game.id}`);
+  assert([`/games/${game.id}/`, `/works/${game.id}/`].includes(game.path));
+  assert(!games.some(legacy => legacy.path === game.path), `Catalog/play route collision ${game.id}`);
   assert(game.title && game.description && game.tags.length, `Incomplete Unity catalog ${game.id}`);
 }
 const previous = JSON.parse(read('docs/legacy-recovery/games-current-before.json')).games;

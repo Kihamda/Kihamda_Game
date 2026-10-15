@@ -19,7 +19,7 @@ function checkedSite(site, commit) {
   const files = inventory(site);
   const entries = files.map(file => ({ path: relative(site, file.path).replaceAll('\\', '/'), size: file.size, sha256: file.sha256 }));
   for (const file of entries) {
-    assert(/^(?:assets\/[a-zA-Z0-9_.-]+|(?:icons|thumbnails|work-evidence)\/[a-zA-Z0-9_./-]+\.(?:svg|png|jpg|webp)|(?:games\/[a-zA-Z0-9-]+\/)?index\.html|(?:about|contact|privacy-policy)\/index\.html|robots\.txt|sitemap\.xml|_headers|_redirects|adsense-readiness\.html|manifest\.webmanifest|sw\.js|build-version\.json|SHA256SUMS)$/.test(file.path), `Unexpected publication file: ${file.path}`);
+    assert(/^(?:assets\/[a-zA-Z0-9_.-]+|(?:icons|thumbnails|work-evidence)\/[a-zA-Z0-9_./-]+\.(?:svg|png|jpg|webp)|(?:(?:games|works)\/[a-zA-Z0-9-]+\/)?index\.html|(?:about|contact|privacy-policy)\/index\.html|robots\.txt|sitemap\.xml|_headers|_redirects|adsense-readiness\.html|manifest\.webmanifest|sw\.js|build-version\.json|SHA256SUMS)$/.test(file.path), `Unexpected publication file: ${file.path}`);
     assert(!/WebGL|__local-unity|runner\.html|\.map$/.test(file.path), `Local artifact refused: ${file.path}`);
   }
   const sums = read(resolve(site, 'SHA256SUMS')).toString('utf8').trim().split('\n').map(line => {
@@ -32,7 +32,11 @@ function checkedSite(site, commit) {
   const version = JSON.parse(read(resolve(site, 'build-version.json')));
   assert.equal(version.commit, commit, 'Build source commit mismatch');
   assert.equal(version.source, 'web');
-  const pages = ['index.html', 'about/index.html', 'contact/index.html', 'privacy-policy/index.html', 'games/ice-courier/index.html'].map(path => {
+  const portalFiles = entries.filter(file => file.path.endsWith('index.html') && read(resolve(site, file.path)).toString('utf8').includes('id="main"')).map(file => file.path);
+  assert.equal(portalFiles.length, version.gameCount + 4, 'Portal page count differs from checked catalog');
+  const requiredPages = ['index.html', 'about/index.html', 'contact/index.html', 'privacy-policy/index.html', 'games/ice-courier/index.html'];
+  for (const required of requiredPages) assert(portalFiles.includes(required), `Missing portal page: ${required}`);
+  const pages = [...requiredPages, ...portalFiles.filter(path => !requiredPages.includes(path))].map(path => {
     const html = read(resolve(site, path)).toString('utf8');
     const title = html.match(/<title>(.*?)<\/title>/)?.[1];
     const pathname = path === 'index.html' ? '/' : `/${path.replace(/index\.html$/, '')}`;

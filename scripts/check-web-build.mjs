@@ -8,7 +8,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = resolve(root, 'web/dist');
 const games = JSON.parse(readFileSync(resolve(root, 'web/src/portal/data/games.json'), 'utf8')).games;
 const unityGames = JSON.parse(readFileSync(resolve(root, 'web/src/portal/data/works.json'), 'utf8')).games;
-const portalPaths = ['index.html', 'about/index.html', 'contact/index.html', 'privacy-policy/index.html', ...unityGames.map(game => `games/${game.id}/index.html`)];
+const portalPaths = ['index.html', 'about/index.html', 'contact/index.html', 'privacy-policy/index.html', ...unityGames.map(game => `${game.path.slice(1)}index.html`)];
 for (const path of [...portalPaths, ...games.map(game => `games/${game.id}/index.html`)]) {
   const html = readFileSync(resolve(dist, path), 'utf8');
   assert(html.includes('<html'), `Missing HTML ${path}`);
@@ -34,6 +34,13 @@ for (const path of portalPaths) {
   }
 }
 const detail = readFileSync(resolve(dist, 'games/ice-courier/index.html'), 'utf8');
+const webDetail = readFileSync(resolve(dist, 'works/ntiktaktoe/index.html'), 'utf8');
+assert(webDetail.includes('公開前の確認中') && webDetail.includes('行・列を指定して選択') && !webDetail.includes('作品を開始') && !webDetail.includes('<iframe'));
+const legacyPlay = readFileSync(resolve(dist, 'games/ntiktaktoe/index.html'), 'utf8');
+assert(!legacyPlay.includes('id="guide-title"'), 'Work introduction must not replace legacy play route');
+const sitemap = readFileSync(resolve(dist, 'sitemap.xml'), 'utf8');
+for (const path of ['/games/ntiktaktoe/', '/works/ntiktaktoe/']) assert(sitemap.includes(`<loc>https://game.kihamda.net${path}</loc>`));
+assert.equal((sitemap.match(/<loc>https:\/\/game\.kihamda\.net\/games\/ntiktaktoe\/<\/loc>/g) ?? []).length, 1);
 for (const work of unityGames) {
   for (const shot of work.guide?.screenshots ?? []) {
     const screenshot = readFileSync(resolve(dist, shot.url.slice(1)));

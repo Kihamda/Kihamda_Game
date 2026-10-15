@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 224,
+  "revision": 228,
   "business_id": "game-site",
-  "fence": 36,
-  "lease": null,
+  "fence": 37,
+  "lease": {
+    "run_id": "unity-20261015T1900-catalog-8e392a",
+    "task_id": "T-web-ntik-catalog-discovery",
+    "fence": 37,
+    "expires_at": 1792059923.2976089
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -5775,6 +5780,48 @@
         }
       ],
       "claims": []
+    },
+    "T-web-ntik-catalog-discovery": {
+      "id": "T-web-ntik-catalog-discovery",
+      "objective": "既存n目並べを公開前のWeb作品として一覧と詳細へ案内する",
+      "acceptance": [
+        "既存/games/ntiktaktoe/の実行を保ち/works/ntiktaktoe/を紹介に使う",
+        "release=nullで開始リンクを出さずWebと公開状態を区別",
+        "操作と同じブラウザ内の保存範囲を表示し未確認環境を確認済みにしない",
+        "390/1280で検索・詳細・一覧復帰・再読込・公開中絞込を実ブラウザ検査",
+        "SSGと配布準備検査が紹介ページを含み既存4URLを維持"
+      ],
+      "outputs": [
+        "作品紹介",
+        "検査記録",
+        "戦略判断"
+      ],
+      "checks": [
+        "TS ESLint build",
+        "navigation guide route regressions",
+        "production browser",
+        "package restore"
+      ],
+      "next_step": "紹介とプレイの経路衝突を回避してn目並べ1作品を登録",
+      "source": "user:automation:19-strategy-and-existing-web",
+      "priority": 1,
+      "depends_on": [
+        "T-web-ntik-streak-storage-notice"
+      ],
+      "decision_id": "D-web-catalog-discovery-20261015",
+      "hypothesis": "検査済み既存作品の案内を追加し公開条件と制作技術を分離する",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "running",
+      "checkpoints": [],
+      "claims": [
+        {
+          "run_id": "unity-20261015T1900-catalog-8e392a",
+          "task_id": "T-web-ntik-catalog-discovery",
+          "fence": 37,
+          "expires_at": 1792059923.2976089
+        }
+      ]
     }
   },
   "decisions": {
@@ -5929,6 +5976,14 @@
         "injected321 test record read after reload, no warning",
         "test APIs restored;2tabs closed;viewport reset;4217/4218 own previews stopped"
       ]
+    },
+    "D-web-catalog-discovery-20261015": {
+      "id": "D-web-catalog-discovery-20261015",
+      "source": "local:926118d:catalog-and-acceptance-records",
+      "hypothesis": "既存Web作品の操作と保存条件を一覧から確認できれば公開前の検査成果と案内を結び付けられる。需要は未観測。",
+      "next_step": "n目並べの紹介を独立したworks経路へ追加し既存play経路を保つ",
+      "business_judgment": "unobserved",
+      "technical_judgment": "improve"
     }
   },
   "runs": {
@@ -6175,6 +6230,13 @@
       "deadline": "2026-10-15T13:25:00+09:00",
       "status": "completed",
       "started_at": 1792037484.531898
+    },
+    "unity-20261015T1900-catalog-8e392a": {
+      "run_id": "unity-20261015T1900-catalog-8e392a",
+      "scheduled_at": "2026-10-15T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-15T19:00:00+09:00",
+      "status": "open",
+      "started_at": 1792058423.1564944
     }
   },
   "experiments": {
@@ -6327,7 +6389,8 @@
     "2026-10-14T19:00:00+09:00": "unity-20261014T1900-scope-6d828f91",
     "2026-10-15T01:00:00+09:00": "unity-20261015T0100-scope-a631",
     "2026-10-15T07:00:00+09:00": "unity-20261015T0700-streak-013ac59e",
-    "2026-10-15T13:00:00+09:00": "unity-20261015T1300-score-read-6bc28a"
+    "2026-10-15T13:00:00+09:00": "unity-20261015T1300-score-read-6bc28a",
+    "2026-10-15T19:00:00+09:00": "unity-20261015T1900-catalog-8e392a"
   },
   "feedback": [
     {
@@ -14949,7 +15012,99 @@
       },
       "previous": "12a19a6b47228a9fa8b380437cce454ab77f3e9261f552a7038ec2073d021ebf",
       "sha256": "126384a677eb4bfca7160d92b80f84050e000422ca285fe7dfdf8ca517f58058"
+    },
+    {
+      "revision": 225,
+      "at": 1792058423.1564944,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261015T1900-catalog-8e392a",
+        "scheduled_at": "2026-10-15T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "126384a677eb4bfca7160d92b80f84050e000422ca285fe7dfdf8ca517f58058",
+      "sha256": "c497e9322c74790e29c3e8819dddf93a063e6f111f3974c7b0ef7e5bdb736d0b"
+    },
+    {
+      "revision": 226,
+      "at": 1792058423.2399657,
+      "action": "decision",
+      "data": {
+        "id": "D-web-catalog-discovery-20261015",
+        "source": "local:926118d:catalog-and-acceptance-records",
+        "hypothesis": "既存Web作品の操作と保存条件を一覧から確認できれば公開前の検査成果と案内を結び付けられる。需要は未観測。",
+        "next_step": "n目並べの紹介を独立したworks経路へ追加し既存play経路を保つ",
+        "business_judgment": "unobserved",
+        "technical_judgment": "improve"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "c497e9322c74790e29c3e8819dddf93a063e6f111f3974c7b0ef7e5bdb736d0b",
+      "sha256": "cf298f978d3dba285cef07d72d100355338b6fb5fdfa81ad8d9868d0780092df"
+    },
+    {
+      "revision": 227,
+      "at": 1792058423.2685015,
+      "action": "task",
+      "data": {
+        "id": "T-web-ntik-catalog-discovery",
+        "objective": "既存n目並べを公開前のWeb作品として一覧と詳細へ案内する",
+        "acceptance": [
+          "既存/games/ntiktaktoe/の実行を保ち/works/ntiktaktoe/を紹介に使う",
+          "release=nullで開始リンクを出さずWebと公開状態を区別",
+          "操作と同じブラウザ内の保存範囲を表示し未確認環境を確認済みにしない",
+          "390/1280で検索・詳細・一覧復帰・再読込・公開中絞込を実ブラウザ検査",
+          "SSGと配布準備検査が紹介ページを含み既存4URLを維持"
+        ],
+        "outputs": [
+          "作品紹介",
+          "検査記録",
+          "戦略判断"
+        ],
+        "checks": [
+          "TS ESLint build",
+          "navigation guide route regressions",
+          "production browser",
+          "package restore"
+        ],
+        "next_step": "紹介とプレイの経路衝突を回避してn目並べ1作品を登録",
+        "source": "user:automation:19-strategy-and-existing-web",
+        "priority": 1,
+        "depends_on": [
+          "T-web-ntik-streak-storage-notice"
+        ],
+        "decision_id": "D-web-catalog-discovery-20261015",
+        "hypothesis": "検査済み既存作品の案内を追加し公開条件と制作技術を分離する",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "cf298f978d3dba285cef07d72d100355338b6fb5fdfa81ad8d9868d0780092df",
+      "sha256": "afc9055ab49c58a917777a0cd27983445527c71d97f2c55836a52e697b7b402f"
+    },
+    {
+      "revision": 228,
+      "at": 1792058423.2976089,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261015T1900-catalog-8e392a",
+        "task_id": "T-web-ntik-catalog-discovery",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261015T1900-catalog-8e392a",
+        "task_id": "T-web-ntik-catalog-discovery",
+        "fence": 37,
+        "expires_at": 1792059923.2976089
+      },
+      "previous": "afc9055ab49c58a917777a0cd27983445527c71d97f2c55836a52e697b7b402f",
+      "sha256": "7982ce3900a385fc9bda41e7ea24f5cdeae347a7330a220b5ccf1100a8750375"
     }
   ],
-  "projection_sha256": "134736cd5d3e288b3061a7e38bdf1b36a187cd44cb3dfc046358230382f383b3"
+  "projection_sha256": "d53c9125f300f34bde33a8709bb3233ac1751e2e785b76af96630ea5834776ef"
 }

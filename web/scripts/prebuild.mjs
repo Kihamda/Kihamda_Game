@@ -32,7 +32,7 @@ ${staticPages
 ${[...games, ...unityGames]
   .map(
     (g) => `  <url>
-    <loc>${SITE}/games/${g.id}/</loc>
+    <loc>${SITE}${g.path}</loc>
 ${g.publishedAt ? `    <lastmod>${g.publishedAt}</lastmod>\n` : ""}    <priority>0.7</priority>
   </url>`,
   )
@@ -44,8 +44,8 @@ writeFileSync("public/sitemap.xml", sitemap);
 // _redirects (SPA fallback per game)
 const redirects = [...games, ...unityGames]
   .flatMap((g) => [
-    `/games/${g.id}  /games/${g.id}/  301`,
-    `/games/${g.id}/index.html  /games/${g.id}/  301`,
+    `${g.path.replace(/\/$/, "")}  ${g.path}  301`,
+    `${g.path}index.html  ${g.path}  301`,
   ])
   .join("\n");
 
