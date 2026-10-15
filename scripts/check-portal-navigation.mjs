@@ -48,3 +48,10 @@ assert(webDetail.includes('行・列を指定して選択') && webDetail.include
 assert(!webDetail.includes('作品を開始') && !webDetail.includes('<iframe'));
 assert(!render('/', '?q=Web&filter=released').includes('class="work-card"'));
 console.log('Portal navigation SSR passed: state links, released filter, direct detail, unknown filter, escaped query, no fake start.');
+
+const iceDetail = render('/works/iceslide/', '?q=アイス');
+assert(iceDetail.includes('全20ステージ') && iceDetail.includes('途中の盤面と手数は保存しません'));
+assert(iceDetail.includes('Command+Z') && iceDetail.includes('実端末での操作性は未確認'));
+assert(!iceDetail.includes('作品を開始') && !iceDetail.includes('<iframe'));
+assert(render('/', '?q=アイス').includes('href="/works/iceslide/?q='));
+assert(!render('/', '?q=アイス&filter=released').includes('class="work-card"'));
