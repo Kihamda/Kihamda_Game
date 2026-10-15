@@ -1,3 +1,5 @@
+2026-10-16の01時枠。前日のWeb保存品質・配置・n目並べ紹介を日次PR24へ統合。最新head a24346eのLinux/Windows CI成功後17168adへhead指定マージ。CI版85c7e9aの37ファイル/6紹介ページ復元と12実行assetの既存ブラウザ検査版一致を確認。390の復元版で説明展開・開始リンクなし・検索語付き一覧復帰を確認。本番配置なし、指標null。索引business/unity/evidence/delivery-web-daily-20261016.json。次は既存Ice Slideの紹介を同じWeb入口へ追加し実行URLを保持する。本日の追加PRなし。
+
 2026-10-15の19時枠で既存n目並べを公開前のWeb作品として一覧と紹介へ追加。紹介/works/ntiktaktoe/と従来の実行/games/ntiktaktoe/を分け、release=nullの開始リンクを抑止。390/1280の検索・往復・保存範囲案内・再読み込みと既存ゲームの通常着手保存を確認。型/静的/6SSG/4URL/36ハッシュ、Webと持込Unityの案内、台帳27テスト成功。詳細docs/web-ntik-catalog-20261015.md。事業unobserved・指標null。本日PR23はマージ済みのためローカル保存し、翌日日次統合を継続する。実タッチ/Safari/人間評価は未確認、天啓の継続指示は保持。
 
 2026-10-15の13時枠でGravityBallの読込異常案内、未知/別タブの最高値保護、保存案内中のモバイル盤面拡大、再開始/unmount時の演出取消を検証した。390の通常/警告時canvas359×430.8px、1280は500×600px。実hook/AppとChrome2タブのfixture検査を通常プレイと区別し、APIを復元した。一次資料調査business/unity/research/2026-10-15-browser-save-and-layout.md。4作品/導線/型/静的/ビルドと台帳27テスト成功。本日PR23はマージ済みなので追加PR/push/リモートCI/配信なし。実タッチ/Safari/人間評価/同時書込排他は未確認、指標null。次の一工程は翌日日次PRへローカル成果と復元索引をまとめ最新headのCIを確認すること。天啓の継続指示は保持する。

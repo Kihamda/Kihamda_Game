@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "revision": 237,
+  "revision": 242,
   "business_id": "game-site",
-  "fence": 38,
+  "fence": 39,
   "lease": {
-    "run_id": "unity-20261016T0100-integration-45f5794c",
-    "task_id": "T-web-daily-ci-integration-20261016",
-    "fence": 38,
-    "expires_at": 1792081727.2408962
+    "run_id": "unity-20261016T0100-iceslide-continuation",
+    "task_id": "T-web-iceslide-catalog-discovery",
+    "fence": 39,
+    "expires_at": 1792081610.9894452
   },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -5769,7 +5769,7 @@
       "hypothesis": "日次一括でレビューと記録の重複を抑え検証済み成果を保持する",
       "pdca": "check",
       "experiment_id": "E-unity-portal",
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "task_id": "T-web-daily-ci-integration-20261016",
@@ -5805,6 +5805,66 @@
           "next_step": "同日日次PRで最新head CIを確認し版指定マージ、CI成果物を復元",
           "passed": true,
           "at": 1792080292.96912
+        },
+        {
+          "run_id": "unity-20261016T0100-integration-45f5794c",
+          "fence": 38,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-daily-20261016.json",
+              "sha256": "3a99bae62708556e6dcdfd6cda0a8ee67d531eeba4dbf580e44d093f498869b2"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "689c98114d79286165bdac1a012bfb1eb1d3528c3dfbd8e594f462b7572b80b6"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "73880bd583d6e9ee917c815301af6445089c5f23aba7f6d96ab256f1b0a5ca0a"
+            }
+          ],
+          "checks": [
+            "Linux57s Windows39s success on exact head",
+            "37files6pages restoration and modified/missing/extra/version/manifest rejection",
+            "12 runtime assets identical to browser-tested previous local package",
+            "CI merge parents verified by GitHub API; local object initially unavailable",
+            "390 CI restored guide Enter expanded no-start no-overflow; return Web query works focus",
+            "17 prior checkpoint hashes192 original main events4 parentHEAD8 recovery hashes",
+            "excluded paths absent; credential-pattern scan; JSON parsed; complete code diff review"
+          ],
+          "next_step": "T-web-iceslide-catalog-discovery: 検査済み既存Ice Slideの紹介を独立経路へ追加し実行URLを保持する。本日PR24マージ済み、追加PRなし。",
+          "passed": true,
+          "at": 1792080510.8339846
+        },
+        {
+          "run_id": "unity-20261016T0100-integration-45f5794c",
+          "fence": 38,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-daily-20261016.json",
+              "sha256": "3a99bae62708556e6dcdfd6cda0a8ee67d531eeba4dbf580e44d093f498869b2"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "689c98114d79286165bdac1a012bfb1eb1d3528c3dfbd8e594f462b7572b80b6"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "73880bd583d6e9ee917c815301af6445089c5f23aba7f6d96ab256f1b0a5ca0a"
+            }
+          ],
+          "checks": [
+            "Linux57s Windows39s success on exact head",
+            "37files6pages restoration and modified/missing/extra/version/manifest rejection",
+            "12 runtime assets identical to browser-tested previous local package",
+            "CI merge parents verified by GitHub API; local object initially unavailable",
+            "390 CI restored guide Enter expanded no-start no-overflow; return Web query works focus",
+            "17 prior checkpoint hashes192 original main events4 parentHEAD8 recovery hashes",
+            "excluded paths absent; credential-pattern scan; JSON parsed; complete code diff review"
+          ],
+          "next_step": "T-web-iceslide-catalog-discovery: 検査済み既存Ice Slideの紹介を独立経路へ追加し実行URLを保持する。本日PR24マージ済み、追加PRなし。",
+          "passed": true,
+          "at": 1792080510.8734748
         }
       ],
       "claims": [
@@ -6040,6 +6100,49 @@
           "task_id": "T-web-ntik-catalog-discovery",
           "fence": 37,
           "expires_at": 1792059923.2976089
+        }
+      ]
+    },
+    "T-web-iceslide-catalog-discovery": {
+      "id": "T-web-iceslide-catalog-discovery",
+      "objective": "既存Ice Slideのルールと保存範囲を公開前の作品紹介へ追加",
+      "acceptance": [
+        "/works/iceslide/紹介と/games/iceslide/実行を分離",
+        "Web/verification/release=null、開始リンクなし",
+        "実装に合う20ステージ・方向操作・Undo・クリア保存/途中保存なしの案内",
+        "390/1280実ブラウザの検索・詳細・戻る・再読込",
+        "7SSG/4旧URL/案内条件/ZIP復元を検査"
+      ],
+      "outputs": [
+        "紹介",
+        "検査記録",
+        "復元索引"
+      ],
+      "checks": [
+        "TS ESLint build",
+        "navigation guide regression",
+        "browser",
+        "package restore"
+      ],
+      "next_step": "既存ソースと検査に基づきIce Slide紹介を追加",
+      "source": "user:automation:existing-web-portal-renovation",
+      "priority": 1,
+      "depends_on": [
+        "T-web-ntik-catalog-discovery",
+        "T-web-daily-ci-integration-20261016"
+      ],
+      "decision_id": "D-web-catalog-discovery-20261015",
+      "hypothesis": "既存作品のルールと保存範囲を一覧から理解できる入口を整える。需要は未観測。",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "running",
+      "checkpoints": [],
+      "claims": [
+        {
+          "run_id": "unity-20261016T0100-iceslide-continuation",
+          "task_id": "T-web-iceslide-catalog-discovery",
+          "fence": 39,
+          "expires_at": 1792081610.9894452
         }
       ]
     }
@@ -6462,8 +6565,14 @@
       "run_id": "unity-20261016T0100-integration-45f5794c",
       "scheduled_at": "2026-10-16T01:00:00+09:00",
       "source": "scheduled:game-site:2026-10-16T01:00:00+09:00",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792080227.1239328
+    },
+    "unity-20261016T0100-iceslide-continuation": {
+      "run_id": "unity-20261016T0100-iceslide-continuation",
+      "source": "continuation:original0100-deadline",
+      "status": "open",
+      "started_at": 1792080510.9518993
     }
   },
   "experiments": {
@@ -15692,7 +15801,160 @@
       },
       "previous": "af0eeed120db7f506f5cff5cb3685d48d0f75db90e121e646ff199edf76b0174",
       "sha256": "48f121cc515e472eb9f74d346512a7a05c80ce87eede57038990eac47c2d911d"
+    },
+    {
+      "revision": 238,
+      "at": 1792080510.8339846,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T0100-integration-45f5794c",
+        "fence": 38,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261016.json",
+            "sha256": "3a99bae62708556e6dcdfd6cda0a8ee67d531eeba4dbf580e44d093f498869b2"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "689c98114d79286165bdac1a012bfb1eb1d3528c3dfbd8e594f462b7572b80b6"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "73880bd583d6e9ee917c815301af6445089c5f23aba7f6d96ab256f1b0a5ca0a"
+          }
+        ],
+        "checks": [
+          "Linux57s Windows39s success on exact head",
+          "37files6pages restoration and modified/missing/extra/version/manifest rejection",
+          "12 runtime assets identical to browser-tested previous local package",
+          "CI merge parents verified by GitHub API; local object initially unavailable",
+          "390 CI restored guide Enter expanded no-start no-overflow; return Web query works focus",
+          "17 prior checkpoint hashes192 original main events4 parentHEAD8 recovery hashes",
+          "excluded paths absent; credential-pattern scan; JSON parsed; complete code diff review"
+        ],
+        "next_step": "T-web-iceslide-catalog-discovery: 検査済み既存Ice Slideの紹介を独立経路へ追加し実行URLを保持する。本日PR24マージ済み、追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "48f121cc515e472eb9f74d346512a7a05c80ce87eede57038990eac47c2d911d",
+      "sha256": "8cc22f468b77602d8f60e61323f10a83976715c2c5e2d2279cedb040589bf150"
+    },
+    {
+      "revision": 239,
+      "at": 1792080510.8734748,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261016T0100-integration-45f5794c",
+        "fence": 38,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261016.json",
+            "sha256": "3a99bae62708556e6dcdfd6cda0a8ee67d531eeba4dbf580e44d093f498869b2"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "689c98114d79286165bdac1a012bfb1eb1d3528c3dfbd8e594f462b7572b80b6"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "73880bd583d6e9ee917c815301af6445089c5f23aba7f6d96ab256f1b0a5ca0a"
+          }
+        ],
+        "checks": [
+          "Linux57s Windows39s success on exact head",
+          "37files6pages restoration and modified/missing/extra/version/manifest rejection",
+          "12 runtime assets identical to browser-tested previous local package",
+          "CI merge parents verified by GitHub API; local object initially unavailable",
+          "390 CI restored guide Enter expanded no-start no-overflow; return Web query works focus",
+          "17 prior checkpoint hashes192 original main events4 parentHEAD8 recovery hashes",
+          "excluded paths absent; credential-pattern scan; JSON parsed; complete code diff review"
+        ],
+        "next_step": "T-web-iceslide-catalog-discovery: 検査済み既存Ice Slideの紹介を独立経路へ追加し実行URLを保持する。本日PR24マージ済み、追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "8cc22f468b77602d8f60e61323f10a83976715c2c5e2d2279cedb040589bf150",
+      "sha256": "1ae101f9231062d7362c4855b9e05d72fe8629008831f1a98dfc45d7c4dad398"
+    },
+    {
+      "revision": 240,
+      "at": 1792080510.9136539,
+      "action": "task",
+      "data": {
+        "id": "T-web-iceslide-catalog-discovery",
+        "objective": "既存Ice Slideのルールと保存範囲を公開前の作品紹介へ追加",
+        "acceptance": [
+          "/works/iceslide/紹介と/games/iceslide/実行を分離",
+          "Web/verification/release=null、開始リンクなし",
+          "実装に合う20ステージ・方向操作・Undo・クリア保存/途中保存なしの案内",
+          "390/1280実ブラウザの検索・詳細・戻る・再読込",
+          "7SSG/4旧URL/案内条件/ZIP復元を検査"
+        ],
+        "outputs": [
+          "紹介",
+          "検査記録",
+          "復元索引"
+        ],
+        "checks": [
+          "TS ESLint build",
+          "navigation guide regression",
+          "browser",
+          "package restore"
+        ],
+        "next_step": "既存ソースと検査に基づきIce Slide紹介を追加",
+        "source": "user:automation:existing-web-portal-renovation",
+        "priority": 1,
+        "depends_on": [
+          "T-web-ntik-catalog-discovery",
+          "T-web-daily-ci-integration-20261016"
+        ],
+        "decision_id": "D-web-catalog-discovery-20261015",
+        "hypothesis": "既存作品のルールと保存範囲を一覧から理解できる入口を整える。需要は未観測。",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "1ae101f9231062d7362c4855b9e05d72fe8629008831f1a98dfc45d7c4dad398",
+      "sha256": "74d2fed5db08dcb8bebdb2ccc153cc19c535c37b8e4109e4bf6fd8e40dd74e80"
+    },
+    {
+      "revision": 241,
+      "at": 1792080510.9518993,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261016T0100-iceslide-continuation",
+        "source": "continuation:original0100-deadline"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "74d2fed5db08dcb8bebdb2ccc153cc19c535c37b8e4109e4bf6fd8e40dd74e80",
+      "sha256": "99ca895b92a14cec30ebadbe547cd54be0a772cb6f3afd0709fb77eb59385a64"
+    },
+    {
+      "revision": 242,
+      "at": 1792080510.9894452,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261016T0100-iceslide-continuation",
+        "task_id": "T-web-iceslide-catalog-discovery",
+        "ttl_seconds": 1100
+      },
+      "result": {
+        "run_id": "unity-20261016T0100-iceslide-continuation",
+        "task_id": "T-web-iceslide-catalog-discovery",
+        "fence": 39,
+        "expires_at": 1792081610.9894452
+      },
+      "previous": "99ca895b92a14cec30ebadbe547cd54be0a772cb6f3afd0709fb77eb59385a64",
+      "sha256": "12d69ed631f087f602d2286ec6c754aedcac91a34f6e34025ab5c609a464651e"
     }
   ],
-  "projection_sha256": "b19aaf9c0fd88b50a51111296a8f4c6c19fce68e68163c59489f87066011a68f"
+  "projection_sha256": "f4c10a198b22ba83585a8b1682b93c21e5382a47dd8b0969f4fdb1fb8a4630cf"
 }
