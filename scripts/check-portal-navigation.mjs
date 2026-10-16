@@ -72,3 +72,21 @@ assert(!gravityDetail.includes('作品を開始') && !gravityDetail.includes('<i
 assert(gravityDetail.includes('href="/?q=GravityBall#works"'));
 assert(render('/', '?q=GravityBall').includes('href="/works/gravityball/?q=GravityBall"'));
 assert(!render('/', '?q=GravityBall&filter=released').includes('class="work-card"'));
+
+// Search the facts players can already read; never invent supported devices or release.
+for (const [query, ids] of [
+  ['1人用', ['ice-courier', 'iceslide', 'minerush', 'gravityball']],
+  ['交代プレイ', ['ntiktaktoe']],
+  ['全20ステージ', ['iceslide']],
+  ['最高スコア', ['gravityball']],
+  ['  wEb  ', ['ntiktaktoe', 'iceslide', 'minerush', 'gravityball']],
+]) {
+  const html = render('/', `?q=${encodeURIComponent(query)}`);
+  assert.equal((html.match(/class="work-card"/g) || []).length, ids.length, query);
+  for (const id of ids) assert(html.includes(`/${id}/?q=`), `${query}: ${id}`);
+  assert(!html.includes('作品を開始'));
+  assert(!render('/', `?q=${encodeURIComponent(query)}&filter=released`).includes('class="work-card"'));
+}
+const factsDetail = render('/works/iceslide/', '?q=' + encodeURIComponent('全20ステージ'));
+assert(factsDetail.includes('href="/?q=' + encodeURIComponent('全20ステージ') + '#works"'));
+console.log('Catalog fact searches passed: solo, shared turn, stage count, high score, case/trim, released filter, return URL.');
