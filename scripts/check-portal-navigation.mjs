@@ -90,3 +90,27 @@ for (const [query, ids] of [
 const factsDetail = render('/works/iceslide/', '?q=' + encodeURIComponent('全20ステージ'));
 assert(factsDetail.includes('href="/?q=' + encodeURIComponent('全20ステージ') + '#works"'));
 console.log('Catalog fact searches passed: solo, shared turn, stage count, high score, case/trim, released filter, return URL.');
+
+// Conditions in separate visible fields must combine regardless of word order.
+for (const [query, ids] of [
+  ['Web 1人用', ['iceslide', 'minerush', 'gravityball']],
+  ['1人用 Web', ['iceslide', 'minerush', 'gravityball']],
+  ['  WEB　 1人用  ', ['iceslide', 'minerush', 'gravityball']],
+  ['Web\t1人用\n全20ステージ', ['iceslide']],
+  ['Unity 1人用', ['ice-courier']],
+  ['Web 交代プレイ', ['ntiktaktoe']],
+  ['Web 見つからない単語', []],
+  ['　 ', ['ice-courier', 'ntiktaktoe', 'iceslide', 'minerush', 'gravityball']],
+]) {
+  const search = '?q=' + encodeURIComponent(query);
+  const html = render('/', search);
+  assert.equal((html.match(/class="work-card"/g) || []).length, ids.length, query);
+  for (const id of ids) assert(html.includes(`/${id}/?q=`), `${query}: ${id}`);
+  assert(!html.includes('作品を開始'));
+  assert(!render('/', search + '&filter=released').includes('class="work-card"'));
+}
+assert(render('/', '').includes('aria-describedby="search-help"'));
+assert(render('/', '').includes('すべての語を含む作品を探せます'));
+const combinedDetail = render('/works/iceslide/', '?q=Web+1人用');
+assert(combinedDetail.includes('href="/?q=Web+1%E4%BA%BA%E7%94%A8#works"'));
+console.log('Combined search passed: AND, word order, full-width/repeated whitespace, case, negative terms, empty, filter and return URL.');
