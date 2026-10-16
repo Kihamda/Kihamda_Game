@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 262,
+  "revision": 272,
   "business_id": "game-site",
-  "fence": 42,
+  "fence": 43,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -6704,6 +6704,142 @@
           "expires_at": 1792124693.4028177
         }
       ]
+    },
+    "T-web-combined-search-20261016": {
+      "id": "T-web-combined-search-20261016",
+      "objective": "実測した複数検索語の検索漏れを改善",
+      "acceptance": [
+        "Web 1人用は3件、語順逆転と全角空白に対応",
+        "存在しない語との組合せは0件、単語と空検索は維持",
+        "公開中0件、未公開開始なし、検索URL往復と再読込を確認",
+        "型・静的・ビルド・SSRと390/1280実ブラウザ確認"
+      ],
+      "outputs": [
+        "検索実装",
+        "検査記録",
+        "戦略判断"
+      ],
+      "checks": [
+        "SSR",
+        "build",
+        "browser"
+      ],
+      "next_step": "翌日日次PRへ既存紹介と検索改善を集約",
+      "source": "user:automation:19-analysis-and-strategy",
+      "decision_id": "D-web-combined-search-20261016",
+      "hypothesis": "既存情報の組合せ検索を可能にする。需要は未観測。",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261016T1900-1d34d937",
+          "fence": 43,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/combined-search-20261016-1900.json",
+              "sha256": "87a2fffe64677f0aeee69c63ae696469d981a0c02afc53a0d112cddba46a8cac"
+            },
+            {
+              "path": "docs/web-combined-search-20261016.md",
+              "sha256": "65323ff2af60112b063058b6c19075f6ac901a4986783bebbf55c1ba019e294f"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "c262f1222f3a9c652a257d2f6241ebf64d68e065a2970f4e02a681dde0789cd7"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "d00199f3d16ea05acee0e85e2861ef214f58ff7741695cca04cbdad675a4f0e9"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "621338b13418ece96cd462b2b2229335ce272fd93469021cdf2ac86e6cc3852d"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d57ed37d3ed2e89066cdd5ce2c90bdbd8ebd5fe5f91f6d67ca9be09cf63c1b73"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "0f187457ece5b1ac892e242f332cf162ca5c2555a9e33619861ded6da341afad"
+            }
+          ],
+          "checks": [
+            "TypeScript ESLint Vite9SSG",
+            "navigation SSR AND8cases plus existing facts/URLs/filter/escaping",
+            "Web ownerUnity guide8cases",
+            "4legacy routes39checksums19GUID",
+            "390 reverse/fullwidth query3 detail Enter return worksfocus reload released0 nooverflow",
+            "1280 three terms1 reload nooverflow screenshot observed only",
+            "restored package1280 search3 and390 MineRush Enter return worksfocus reload noStart nooverflow",
+            "ZIP41exact file bytes; package40sitefiles9pages; valid and5negative cases",
+            "original262events protectedpaths unchanged;4parent HEAD8recovery hashes match",
+            "PR24 live verified merged today; no newPR push remoteCI deployment"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+          "passed": true,
+          "at": 1792145008.3194118
+        },
+        {
+          "run_id": "unity-20261016T1900-1d34d937",
+          "fence": 43,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/combined-search-20261016-1900.json",
+              "sha256": "87a2fffe64677f0aeee69c63ae696469d981a0c02afc53a0d112cddba46a8cac"
+            },
+            {
+              "path": "docs/web-combined-search-20261016.md",
+              "sha256": "65323ff2af60112b063058b6c19075f6ac901a4986783bebbf55c1ba019e294f"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "c262f1222f3a9c652a257d2f6241ebf64d68e065a2970f4e02a681dde0789cd7"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "d00199f3d16ea05acee0e85e2861ef214f58ff7741695cca04cbdad675a4f0e9"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "621338b13418ece96cd462b2b2229335ce272fd93469021cdf2ac86e6cc3852d"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d57ed37d3ed2e89066cdd5ce2c90bdbd8ebd5fe5f91f6d67ca9be09cf63c1b73"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "0f187457ece5b1ac892e242f332cf162ca5c2555a9e33619861ded6da341afad"
+            }
+          ],
+          "checks": [
+            "TypeScript ESLint Vite9SSG",
+            "navigation SSR AND8cases plus existing facts/URLs/filter/escaping",
+            "Web ownerUnity guide8cases",
+            "4legacy routes39checksums19GUID",
+            "390 reverse/fullwidth query3 detail Enter return worksfocus reload released0 nooverflow",
+            "1280 three terms1 reload nooverflow screenshot observed only",
+            "restored package1280 search3 and390 MineRush Enter return worksfocus reload noStart nooverflow",
+            "ZIP41exact file bytes; package40sitefiles9pages; valid and5negative cases",
+            "original262events protectedpaths unchanged;4parent HEAD8recovery hashes match",
+            "PR24 live verified merged today; no newPR push remoteCI deployment"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+          "passed": true,
+          "at": 1792145008.3650484
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261016T1900-1d34d937",
+          "task_id": "T-web-combined-search-20261016",
+          "fence": 43,
+          "expires_at": 1792146317.9452255
+        }
+      ]
     }
   },
   "decisions": {
@@ -6872,6 +7008,12 @@
       "source": "user:automation:13-primary-research;itch.io/docs/creators/quality-guidelines",
       "hypothesis": "既存の正確な作品情報を検索対象に含めれば人数や内容から紹介を探せる。利用改善は未観測。",
       "next_step": "既存factsの検索対応と受入検査。翌日日次統合は維持。"
+    },
+    "D-web-combined-search-20261016": {
+      "id": "D-web-combined-search-20261016",
+      "source": "local-browser:4230:Web 1人用 returns 0; user:19-measurement",
+      "hypothesis": "既存の人数と制作技術を組み合わせて検索できる。利用改善と需要は未観測。",
+      "next_step": "同じ既存一覧の空白区切りAND検索と案内を実装し実測する。"
     }
   },
   "runs": {
@@ -7158,6 +7300,13 @@
       "source": "scheduled:game-site:2026-10-16T13:00:00+09:00",
       "status": "completed",
       "started_at": 1792123493.2408147
+    },
+    "unity-20261016T1900-1d34d937": {
+      "run_id": "unity-20261016T1900-1d34d937",
+      "scheduled_at": "2026-10-16T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-16T19:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792144817.7163112
     }
   },
   "experiments": {
@@ -7203,7 +7352,7 @@
       ],
       "measurement_plan": "内部表示・操作検査と公開後の開始率を分離する。公開指標は未観測でnull",
       "decision_id": "D-web-renovation-20261010",
-      "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+      "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
       "source": "user:天啓.md:2026-10-10:web-renovation",
       "stage": "act",
       "history": [
@@ -7310,6 +7459,43 @@
           "judgment": "unobserved",
           "at": 1792058933.0307484,
           "previous_stage": "check"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "plan",
+          "source": "local-browser:combined-search-20261016-1900",
+          "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+          "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+          "at": 1792145008.1132524,
+          "previous_stage": "act"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "do",
+          "source": "local-browser:combined-search-20261016-1900",
+          "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+          "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+          "at": 1792145008.158328,
+          "previous_stage": "plan"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "check",
+          "source": "local-browser:combined-search-20261016-1900",
+          "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+          "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+          "at": 1792145008.2042885,
+          "previous_stage": "do"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "act",
+          "source": "local-browser:combined-search-20261016-1900",
+          "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+          "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+          "judgment": "unobserved",
+          "at": 1792145008.2509708,
+          "previous_stage": "check"
         }
       ],
       "release": null
@@ -7342,7 +7528,8 @@
     "2026-10-15T19:00:00+09:00": "unity-20261015T1900-catalog-8e392a",
     "2026-10-16T01:00:00+09:00": "unity-20261016T0100-integration-45f5794c",
     "2026-10-16T07:00:00+09:00": "unity-20261016T0700-minerush",
-    "2026-10-16T13:00:00+09:00": "unity-20261016T1300-c275fb43"
+    "2026-10-16T13:00:00+09:00": "unity-20261016T1300-c275fb43",
+    "2026-10-16T19:00:00+09:00": "unity-20261016T1900-1d34d937"
   },
   "feedback": [
     {
@@ -17300,7 +17487,277 @@
       },
       "previous": "6fe7fda3e683c7e3870aec75c4f48fca125a7f8cd6890c766ae39a9f971a95f0",
       "sha256": "53f7a1a02d8d01e16e4f493d2f5f7e44a68db59ca776b2d7e52a51b62586408f"
+    },
+    {
+      "revision": 263,
+      "at": 1792144817.7163112,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261016T1900-1d34d937",
+        "scheduled_at": "2026-10-16T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "53f7a1a02d8d01e16e4f493d2f5f7e44a68db59ca776b2d7e52a51b62586408f",
+      "sha256": "99a0cf15eac869b36ed36794e2e71d91e59a7969b850f2d756cb6bb86787a1b2"
+    },
+    {
+      "revision": 264,
+      "at": 1792144817.8494267,
+      "action": "decision",
+      "data": {
+        "id": "D-web-combined-search-20261016",
+        "source": "local-browser:4230:Web 1人用 returns 0; user:19-measurement",
+        "hypothesis": "既存の人数と制作技術を組み合わせて検索できる。利用改善と需要は未観測。",
+        "next_step": "同じ既存一覧の空白区切りAND検索と案内を実装し実測する。"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "99a0cf15eac869b36ed36794e2e71d91e59a7969b850f2d756cb6bb86787a1b2",
+      "sha256": "5af7f2a79eaeddb5f385f24e385dd1cd9a0c543369482e3e227c8f39071574be"
+    },
+    {
+      "revision": 265,
+      "at": 1792144817.8999922,
+      "action": "task",
+      "data": {
+        "id": "T-web-combined-search-20261016",
+        "objective": "実測した複数検索語の検索漏れを改善",
+        "acceptance": [
+          "Web 1人用は3件、語順逆転と全角空白に対応",
+          "存在しない語との組合せは0件、単語と空検索は維持",
+          "公開中0件、未公開開始なし、検索URL往復と再読込を確認",
+          "型・静的・ビルド・SSRと390/1280実ブラウザ確認"
+        ],
+        "outputs": [
+          "検索実装",
+          "検査記録",
+          "戦略判断"
+        ],
+        "checks": [
+          "SSR",
+          "build",
+          "browser"
+        ],
+        "next_step": "翌日日次PRへ既存紹介と検索改善を集約",
+        "source": "user:automation:19-analysis-and-strategy",
+        "decision_id": "D-web-combined-search-20261016",
+        "hypothesis": "既存情報の組合せ検索を可能にする。需要は未観測。",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "5af7f2a79eaeddb5f385f24e385dd1cd9a0c543369482e3e227c8f39071574be",
+      "sha256": "ab25525c98785b24120e8c479789261a1291d32fc1c7cb9838887fd2496ecc5a"
+    },
+    {
+      "revision": 266,
+      "at": 1792144817.9452255,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261016T1900-1d34d937",
+        "task_id": "T-web-combined-search-20261016",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261016T1900-1d34d937",
+        "task_id": "T-web-combined-search-20261016",
+        "fence": 43,
+        "expires_at": 1792146317.9452255
+      },
+      "previous": "ab25525c98785b24120e8c479789261a1291d32fc1c7cb9838887fd2496ecc5a",
+      "sha256": "6af04adaf844e95c01b57cfc4ee1469c2b4dc809767df146d932ba119b18fbd3"
+    },
+    {
+      "revision": 267,
+      "at": 1792145008.1132524,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "plan",
+        "source": "local-browser:combined-search-20261016-1900",
+        "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+        "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "6af04adaf844e95c01b57cfc4ee1469c2b4dc809767df146d932ba119b18fbd3",
+      "sha256": "81782ff9f5e719e712e6629711a7788baef25be4d095457cd950167ee3b37812"
+    },
+    {
+      "revision": 268,
+      "at": 1792145008.158328,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "do",
+        "source": "local-browser:combined-search-20261016-1900",
+        "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+        "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "81782ff9f5e719e712e6629711a7788baef25be4d095457cd950167ee3b37812",
+      "sha256": "e5d0323c9c79616af5bd94070812ae2ac5d174c9c213f090f9821b4eff99d50d"
+    },
+    {
+      "revision": 269,
+      "at": 1792145008.2042885,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "check",
+        "source": "local-browser:combined-search-20261016-1900",
+        "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+        "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "e5d0323c9c79616af5bd94070812ae2ac5d174c9c213f090f9821b4eff99d50d",
+      "sha256": "c4b807d693042d24db5e3f01a32eaba21f677e957aad0632d9d91eee96331d4e"
+    },
+    {
+      "revision": 270,
+      "at": 1792145008.2509708,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "act",
+        "source": "local-browser:combined-search-20261016-1900",
+        "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+        "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+        "judgment": "unobserved"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "c4b807d693042d24db5e3f01a32eaba21f677e957aad0632d9d91eee96331d4e",
+      "sha256": "6a28214f56863de62cff59772ae1b70d48d59d566ee62a2e5ce6ca3c6d70480a"
+    },
+    {
+      "revision": 271,
+      "at": 1792145008.3194118,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T1900-1d34d937",
+        "fence": 43,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/combined-search-20261016-1900.json",
+            "sha256": "87a2fffe64677f0aeee69c63ae696469d981a0c02afc53a0d112cddba46a8cac"
+          },
+          {
+            "path": "docs/web-combined-search-20261016.md",
+            "sha256": "65323ff2af60112b063058b6c19075f6ac901a4986783bebbf55c1ba019e294f"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "c262f1222f3a9c652a257d2f6241ebf64d68e065a2970f4e02a681dde0789cd7"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "d00199f3d16ea05acee0e85e2861ef214f58ff7741695cca04cbdad675a4f0e9"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "621338b13418ece96cd462b2b2229335ce272fd93469021cdf2ac86e6cc3852d"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d57ed37d3ed2e89066cdd5ce2c90bdbd8ebd5fe5f91f6d67ca9be09cf63c1b73"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "0f187457ece5b1ac892e242f332cf162ca5c2555a9e33619861ded6da341afad"
+          }
+        ],
+        "checks": [
+          "TypeScript ESLint Vite9SSG",
+          "navigation SSR AND8cases plus existing facts/URLs/filter/escaping",
+          "Web ownerUnity guide8cases",
+          "4legacy routes39checksums19GUID",
+          "390 reverse/fullwidth query3 detail Enter return worksfocus reload released0 nooverflow",
+          "1280 three terms1 reload nooverflow screenshot observed only",
+          "restored package1280 search3 and390 MineRush Enter return worksfocus reload noStart nooverflow",
+          "ZIP41exact file bytes; package40sitefiles9pages; valid and5negative cases",
+          "original262events protectedpaths unchanged;4parent HEAD8recovery hashes match",
+          "PR24 live verified merged today; no newPR push remoteCI deployment"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "6a28214f56863de62cff59772ae1b70d48d59d566ee62a2e5ce6ca3c6d70480a",
+      "sha256": "704515fc1b02e1feaef864a7463352c45e6e1616fef39e7cb8d52f03b09592cc"
+    },
+    {
+      "revision": 272,
+      "at": 1792145008.3650484,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261016T1900-1d34d937",
+        "fence": 43,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/combined-search-20261016-1900.json",
+            "sha256": "87a2fffe64677f0aeee69c63ae696469d981a0c02afc53a0d112cddba46a8cac"
+          },
+          {
+            "path": "docs/web-combined-search-20261016.md",
+            "sha256": "65323ff2af60112b063058b6c19075f6ac901a4986783bebbf55c1ba019e294f"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "c262f1222f3a9c652a257d2f6241ebf64d68e065a2970f4e02a681dde0789cd7"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "d00199f3d16ea05acee0e85e2861ef214f58ff7741695cca04cbdad675a4f0e9"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "621338b13418ece96cd462b2b2229335ce272fd93469021cdf2ac86e6cc3852d"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d57ed37d3ed2e89066cdd5ce2c90bdbd8ebd5fe5f91f6d67ca9be09cf63c1b73"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "0f187457ece5b1ac892e242f332cf162ca5c2555a9e33619861ded6da341afad"
+          }
+        ],
+        "checks": [
+          "TypeScript ESLint Vite9SSG",
+          "navigation SSR AND8cases plus existing facts/URLs/filter/escaping",
+          "Web ownerUnity guide8cases",
+          "4legacy routes39checksums19GUID",
+          "390 reverse/fullwidth query3 detail Enter return worksfocus reload released0 nooverflow",
+          "1280 three terms1 reload nooverflow screenshot observed only",
+          "restored package1280 search3 and390 MineRush Enter return worksfocus reload noStart nooverflow",
+          "ZIP41exact file bytes; package40sitefiles9pages; valid and5negative cases",
+          "original262events protectedpaths unchanged;4parent HEAD8recovery hashes match",
+          "PR24 live verified merged today; no newPR push remoteCI deployment"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "704515fc1b02e1feaef864a7463352c45e6e1616fef39e7cb8d52f03b09592cc",
+      "sha256": "68ca5153935884d163ea66541851fd09845f0b8a8eaf97770b75eef3810bc053"
     }
   ],
-  "projection_sha256": "3075c0fe96fa87547f5ac314f650733674866da24c6b5c94d63103c723945845"
+  "projection_sha256": "d24d23bc6e44776d4b06dc50814bca37d214578f18dcb94ced5b8d602bc675e7"
 }
