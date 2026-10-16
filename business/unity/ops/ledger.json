@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 272,
+  "revision": 275,
   "business_id": "game-site",
-  "fence": 43,
-  "lease": null,
+  "fence": 44,
+  "lease": {
+    "run_id": "unity-20261017T0100-daily",
+    "task_id": "T-web-daily-ci-integration-20261017",
+    "fence": 44,
+    "expires_at": 1792168280.7677534
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -6556,7 +6561,7 @@
       "hypothesis": "既存制作を日次集約し検証と復元可能性を保持する。需要は未観測。",
       "pdca": "do",
       "experiment_id": "E-unity-portal",
-      "status": "blocked",
+      "status": "running",
       "checkpoints": [
         {
           "task_id": "T-web-daily-ci-integration-20261017",
@@ -6564,9 +6569,23 @@
           "reason": "本人の日次PR原則1件方針。本日PR24マージ済み。追加PRは翌日分へ集約する。",
           "next_step": "T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。",
           "at": 1792102262.3782551
+        },
+        {
+          "task_id": "T-web-daily-ci-integration-20261017",
+          "source": "github:20261017:no-daily-pr",
+          "reason": "JST date changed; latest PR24 merged yesterday; no open PR",
+          "next_step": "Batch existing local work into one daily PR and verify exact-head CI",
+          "at": 1792166480.723893
         }
       ],
-      "claims": []
+      "claims": [
+        {
+          "run_id": "unity-20261017T0100-daily",
+          "task_id": "T-web-daily-ci-integration-20261017",
+          "fence": 44,
+          "expires_at": 1792168280.7677534
+        }
+      ]
     },
     "T-web-facts-discovery-20261016": {
       "id": "T-web-facts-discovery-20261016",
@@ -7307,6 +7326,13 @@
       "source": "scheduled:game-site:2026-10-16T19:00:00+09:00",
       "status": "completed",
       "started_at": 1792144817.7163112
+    },
+    "unity-20261017T0100-daily": {
+      "run_id": "unity-20261017T0100-daily",
+      "scheduled_at": "2026-10-17T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-17T01:00:00+09:00",
+      "status": "open",
+      "started_at": 1792166480.62639
     }
   },
   "experiments": {
@@ -7529,7 +7555,8 @@
     "2026-10-16T01:00:00+09:00": "unity-20261016T0100-integration-45f5794c",
     "2026-10-16T07:00:00+09:00": "unity-20261016T0700-minerush",
     "2026-10-16T13:00:00+09:00": "unity-20261016T1300-c275fb43",
-    "2026-10-16T19:00:00+09:00": "unity-20261016T1900-1d34d937"
+    "2026-10-16T19:00:00+09:00": "unity-20261016T1900-1d34d937",
+    "2026-10-17T01:00:00+09:00": "unity-20261017T0100-daily"
   },
   "feedback": [
     {
@@ -17757,7 +17784,54 @@
       },
       "previous": "704515fc1b02e1feaef864a7463352c45e6e1616fef39e7cb8d52f03b09592cc",
       "sha256": "68ca5153935884d163ea66541851fd09845f0b8a8eaf97770b75eef3810bc053"
+    },
+    {
+      "revision": 273,
+      "at": 1792166480.62639,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261017T0100-daily",
+        "scheduled_at": "2026-10-17T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "68ca5153935884d163ea66541851fd09845f0b8a8eaf97770b75eef3810bc053",
+      "sha256": "6db2fb43a71ea637fbcd945fa3ae481966f923fa43c91c8a0f5f3c3a18d41b3f"
+    },
+    {
+      "revision": 274,
+      "at": 1792166480.723893,
+      "action": "unblock",
+      "data": {
+        "task_id": "T-web-daily-ci-integration-20261017",
+        "source": "github:20261017:no-daily-pr",
+        "reason": "JST date changed; latest PR24 merged yesterday; no open PR",
+        "next_step": "Batch existing local work into one daily PR and verify exact-head CI"
+      },
+      "result": {
+        "recorded": "unblock"
+      },
+      "previous": "6db2fb43a71ea637fbcd945fa3ae481966f923fa43c91c8a0f5f3c3a18d41b3f",
+      "sha256": "6d26feb8faeecad200fd7e116990e5cb10356f45e6a2abda9a060aadb656227e"
+    },
+    {
+      "revision": 275,
+      "at": 1792166480.7677534,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261017T0100-daily",
+        "task_id": "T-web-daily-ci-integration-20261017"
+      },
+      "result": {
+        "run_id": "unity-20261017T0100-daily",
+        "task_id": "T-web-daily-ci-integration-20261017",
+        "fence": 44,
+        "expires_at": 1792168280.7677534
+      },
+      "previous": "6d26feb8faeecad200fd7e116990e5cb10356f45e6a2abda9a060aadb656227e",
+      "sha256": "61e142220b4e7a21a94b8eae2bc8c68aa2aadd7fef547a7dfa9cf7ca9ff75b33"
     }
   ],
-  "projection_sha256": "d24d23bc6e44776d4b06dc50814bca37d214578f18dcb94ced5b8d602bc675e7"
+  "projection_sha256": "4486882de4deea40c8711beca030f5de9132253eb679708d99a2e72e53fd6e00"
 }
