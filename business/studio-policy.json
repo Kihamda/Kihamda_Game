@@ -62,7 +62,7 @@
   "webApplicationTechnology": "web",
   "autonomousUnityDevelopment": false,
   "acceptOwnerProvidedUnityFinishedArtifacts": true,
-  "nextStep": "T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。",
+  "nextStep": "T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。",
   "unityFinishedArtifactPolicy": "本人が他で開発したUnityアプリの完成品デプロイを受け入れる。受領後に版・対象環境・ハッシュ・実動作・配布条件・復元方法を確認する。ソース提供・移植・再ビルドを一律必須にしない。",
   "ownerInstructionConflictPolicy": "最新の直接指示が天啓.mdの旧すべてUnity製方針に優先する。本人の原文を書き換えて整合させない。",
   "catalogAcceptanceSource": "docs/web-catalog-20261012.md",
@@ -109,5 +109,6 @@
   "ntikCatalogSource": "docs/web-ntik-catalog-20261015.md",
   "iceSlideCatalogSource": "docs/web-iceslide-catalog-20261016.md",
   "mineRushCatalogSource": "docs/web-minerush-catalog-20261016.md",
-  "gravityBallCatalogSource": "docs/web-gravityball-catalog-20261016.md"
+  "gravityBallCatalogSource": "docs/web-gravityball-catalog-20261016.md",
+  "catalogFactsResearchSource": "business/unity/research/2026-10-16-catalog-facts-discovery.md"
 }

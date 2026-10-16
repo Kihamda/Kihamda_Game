@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 256,
+  "revision": 262,
   "business_id": "game-site",
-  "fence": 41,
+  "fence": 42,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -6567,6 +6567,143 @@
         }
       ],
       "claims": []
+    },
+    "T-web-facts-discovery-20261016": {
+      "id": "T-web-facts-discovery-20261016",
+      "objective": "一次資料から既存作品の検索漏れを直し受入条件を検証",
+      "acceptance": [
+        "一次資料3件と事実/推測/需要未観測を分離",
+        "既存factsを検索し人数/内容から該当作品を表示",
+        "空白/英字大小文字/公開中フィルタ/URL往復と未公開開始なしを維持",
+        "型静的ビルドSSRと実ブラウザ入力再読込を確認"
+      ],
+      "outputs": [
+        "市場調査",
+        "検索実装",
+        "検査証跡"
+      ],
+      "checks": [
+        "sources",
+        "build",
+        "SSR",
+        "browser"
+      ],
+      "next_step": "既存factsを検索へ追加し翌日日次PRへ集約",
+      "decision_id": "D-web-facts-discovery-20261016",
+      "hypothesis": "正確な人数・内容を既存情報から検索できる。需要は未観測。",
+      "source": "user:automation:13-primary-research",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261016T1300-c275fb43",
+          "fence": 42,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-16-catalog-facts-discovery.md",
+              "sha256": "69e374aee0809a50832e230c2a9767374fd30b255ecfabe6986c75bd29501fe6"
+            },
+            {
+              "path": "business/unity/evidence/catalog-facts-20261016-1300.json",
+              "sha256": "b623e74fe1cfbd66fa69ac8b8eb00bab764b85dc8ad7f03f617e15099baa398d"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "0293bcb9ebb1e3c22df2523af0490a8afba9e2c6fe2d85658900d4b58099ae46"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "c3bc6ae1d591884aaa01365b084fb4793d11b68091dee4a59accfb70a5a78133"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "3ae9195c6e9f10ee2546f84ab44b36bd9006af47da67b37718b2ca2c2822b94b"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d22f418f1dd898a93fa4f49406960b9a87091aeb654ccd59f03e79f1fdd35c67"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "912773e79c6a9f3f2b57c01aab731e00ec8dac25ff01bc342bfeb5dfb2a5880b"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite9SSG",
+            "navigation SSR fact query cases and release filters",
+            "work guides8cases",
+            "repository4entries19GUID",
+            "390 input/query return focus reload filter0 nooverflow",
+            "1280 highscore query reload detail nooverflow noStart",
+            "ZIP41files exactbytes restoration",
+            "valid package and5negative cases",
+            "restored1280 input detail return query focus",
+            "four parent HEADs match"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。",
+          "passed": true,
+          "at": 1792123691.5929356
+        },
+        {
+          "run_id": "unity-20261016T1300-c275fb43",
+          "fence": 42,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-16-catalog-facts-discovery.md",
+              "sha256": "69e374aee0809a50832e230c2a9767374fd30b255ecfabe6986c75bd29501fe6"
+            },
+            {
+              "path": "business/unity/evidence/catalog-facts-20261016-1300.json",
+              "sha256": "b623e74fe1cfbd66fa69ac8b8eb00bab764b85dc8ad7f03f617e15099baa398d"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "0293bcb9ebb1e3c22df2523af0490a8afba9e2c6fe2d85658900d4b58099ae46"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "c3bc6ae1d591884aaa01365b084fb4793d11b68091dee4a59accfb70a5a78133"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "3ae9195c6e9f10ee2546f84ab44b36bd9006af47da67b37718b2ca2c2822b94b"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d22f418f1dd898a93fa4f49406960b9a87091aeb654ccd59f03e79f1fdd35c67"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "912773e79c6a9f3f2b57c01aab731e00ec8dac25ff01bc342bfeb5dfb2a5880b"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite9SSG",
+            "navigation SSR fact query cases and release filters",
+            "work guides8cases",
+            "repository4entries19GUID",
+            "390 input/query return focus reload filter0 nooverflow",
+            "1280 highscore query reload detail nooverflow noStart",
+            "ZIP41files exactbytes restoration",
+            "valid package and5negative cases",
+            "restored1280 input detail return query focus",
+            "four parent HEADs match"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。",
+          "passed": true,
+          "at": 1792123691.635219
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261016T1300-c275fb43",
+          "task_id": "T-web-facts-discovery-20261016",
+          "fence": 42,
+          "expires_at": 1792124693.4028177
+        }
+      ]
     }
   },
   "decisions": {
@@ -6729,6 +6866,12 @@
       "next_step": "n目並べの紹介を独立したworks経路へ追加し既存play経路を保つ",
       "business_judgment": "unobserved",
       "technical_judgment": "improve"
+    },
+    "D-web-facts-discovery-20261016": {
+      "id": "D-web-facts-discovery-20261016",
+      "source": "user:automation:13-primary-research;itch.io/docs/creators/quality-guidelines",
+      "hypothesis": "既存の正確な作品情報を検索対象に含めれば人数や内容から紹介を探せる。利用改善は未観測。",
+      "next_step": "既存factsの検索対応と受入検査。翌日日次統合は維持。"
     }
   },
   "runs": {
@@ -7008,6 +7151,13 @@
       "source": "continuation:original0700-deadline",
       "status": "completed",
       "started_at": 1792102050.762156
+    },
+    "unity-20261016T1300-c275fb43": {
+      "run_id": "unity-20261016T1300-c275fb43",
+      "scheduled_at": "2026-10-16T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-16T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792123493.2408147
     }
   },
   "experiments": {
@@ -7191,7 +7341,8 @@
     "2026-10-15T13:00:00+09:00": "unity-20261015T1300-score-read-6bc28a",
     "2026-10-15T19:00:00+09:00": "unity-20261015T1900-catalog-8e392a",
     "2026-10-16T01:00:00+09:00": "unity-20261016T0100-integration-45f5794c",
-    "2026-10-16T07:00:00+09:00": "unity-20261016T0700-minerush"
+    "2026-10-16T07:00:00+09:00": "unity-20261016T0700-minerush",
+    "2026-10-16T13:00:00+09:00": "unity-20261016T1300-c275fb43"
   },
   "feedback": [
     {
@@ -16947,7 +17098,209 @@
       },
       "previous": "22d61ffc7ee80511c3a9eb87a47b7c925c898de40865213b7ab1180cec61d6f7",
       "sha256": "e40b0b4519f7c4a122cf6d0d7d537f58d460e3912c91cd47b80f6f84aa24040b"
+    },
+    {
+      "revision": 257,
+      "at": 1792123493.2408147,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261016T1300-c275fb43",
+        "scheduled_at": "2026-10-16T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "e40b0b4519f7c4a122cf6d0d7d537f58d460e3912c91cd47b80f6f84aa24040b",
+      "sha256": "301f2e7dc03343d3ea6fa5da13f5b6067b93763d0190c3efae18410d1c9284b9"
+    },
+    {
+      "revision": 258,
+      "at": 1792123493.321375,
+      "action": "decision",
+      "data": {
+        "id": "D-web-facts-discovery-20261016",
+        "source": "user:automation:13-primary-research;itch.io/docs/creators/quality-guidelines",
+        "hypothesis": "既存の正確な作品情報を検索対象に含めれば人数や内容から紹介を探せる。利用改善は未観測。",
+        "next_step": "既存factsの検索対応と受入検査。翌日日次統合は維持。"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "301f2e7dc03343d3ea6fa5da13f5b6067b93763d0190c3efae18410d1c9284b9",
+      "sha256": "3be7bfb7640ad615957c0e0b667f55c207d50635f6cb6e8eadb179a59aa95ef1"
+    },
+    {
+      "revision": 259,
+      "at": 1792123493.361374,
+      "action": "task",
+      "data": {
+        "id": "T-web-facts-discovery-20261016",
+        "objective": "一次資料から既存作品の検索漏れを直し受入条件を検証",
+        "acceptance": [
+          "一次資料3件と事実/推測/需要未観測を分離",
+          "既存factsを検索し人数/内容から該当作品を表示",
+          "空白/英字大小文字/公開中フィルタ/URL往復と未公開開始なしを維持",
+          "型静的ビルドSSRと実ブラウザ入力再読込を確認"
+        ],
+        "outputs": [
+          "市場調査",
+          "検索実装",
+          "検査証跡"
+        ],
+        "checks": [
+          "sources",
+          "build",
+          "SSR",
+          "browser"
+        ],
+        "next_step": "既存factsを検索へ追加し翌日日次PRへ集約",
+        "decision_id": "D-web-facts-discovery-20261016",
+        "hypothesis": "正確な人数・内容を既存情報から検索できる。需要は未観測。",
+        "source": "user:automation:13-primary-research",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "3be7bfb7640ad615957c0e0b667f55c207d50635f6cb6e8eadb179a59aa95ef1",
+      "sha256": "378d29ed7ad2e815301bbdcaed11daa9a1a765a42d83aa981ec2c9cc733b7dd9"
+    },
+    {
+      "revision": 260,
+      "at": 1792123493.4028177,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261016T1300-c275fb43",
+        "task_id": "T-web-facts-discovery-20261016",
+        "ttl_seconds": 1200
+      },
+      "result": {
+        "run_id": "unity-20261016T1300-c275fb43",
+        "task_id": "T-web-facts-discovery-20261016",
+        "fence": 42,
+        "expires_at": 1792124693.4028177
+      },
+      "previous": "378d29ed7ad2e815301bbdcaed11daa9a1a765a42d83aa981ec2c9cc733b7dd9",
+      "sha256": "2b7c607b6cce11ce4adcbcca41d9b8993fb05c92ef5852682eb3a587b8ca54f6"
+    },
+    {
+      "revision": 261,
+      "at": 1792123691.5929356,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T1300-c275fb43",
+        "fence": 42,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-16-catalog-facts-discovery.md",
+            "sha256": "69e374aee0809a50832e230c2a9767374fd30b255ecfabe6986c75bd29501fe6"
+          },
+          {
+            "path": "business/unity/evidence/catalog-facts-20261016-1300.json",
+            "sha256": "b623e74fe1cfbd66fa69ac8b8eb00bab764b85dc8ad7f03f617e15099baa398d"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "0293bcb9ebb1e3c22df2523af0490a8afba9e2c6fe2d85658900d4b58099ae46"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "c3bc6ae1d591884aaa01365b084fb4793d11b68091dee4a59accfb70a5a78133"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "3ae9195c6e9f10ee2546f84ab44b36bd9006af47da67b37718b2ca2c2822b94b"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d22f418f1dd898a93fa4f49406960b9a87091aeb654ccd59f03e79f1fdd35c67"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "912773e79c6a9f3f2b57c01aab731e00ec8dac25ff01bc342bfeb5dfb2a5880b"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite9SSG",
+          "navigation SSR fact query cases and release filters",
+          "work guides8cases",
+          "repository4entries19GUID",
+          "390 input/query return focus reload filter0 nooverflow",
+          "1280 highscore query reload detail nooverflow noStart",
+          "ZIP41files exactbytes restoration",
+          "valid package and5negative cases",
+          "restored1280 input detail return query focus",
+          "four parent HEADs match"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "2b7c607b6cce11ce4adcbcca41d9b8993fb05c92ef5852682eb3a587b8ca54f6",
+      "sha256": "6fe7fda3e683c7e3870aec75c4f48fca125a7f8cd6890c766ae39a9f971a95f0"
+    },
+    {
+      "revision": 262,
+      "at": 1792123691.635219,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261016T1300-c275fb43",
+        "fence": 42,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-16-catalog-facts-discovery.md",
+            "sha256": "69e374aee0809a50832e230c2a9767374fd30b255ecfabe6986c75bd29501fe6"
+          },
+          {
+            "path": "business/unity/evidence/catalog-facts-20261016-1300.json",
+            "sha256": "b623e74fe1cfbd66fa69ac8b8eb00bab764b85dc8ad7f03f617e15099baa398d"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "0293bcb9ebb1e3c22df2523af0490a8afba9e2c6fe2d85658900d4b58099ae46"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "c3bc6ae1d591884aaa01365b084fb4793d11b68091dee4a59accfb70a5a78133"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "3ae9195c6e9f10ee2546f84ab44b36bd9006af47da67b37718b2ca2c2822b94b"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d22f418f1dd898a93fa4f49406960b9a87091aeb654ccd59f03e79f1fdd35c67"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "912773e79c6a9f3f2b57c01aab731e00ec8dac25ff01bc342bfeb5dfb2a5880b"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite9SSG",
+          "navigation SSR fact query cases and release filters",
+          "work guides8cases",
+          "repository4entries19GUID",
+          "390 input/query return focus reload filter0 nooverflow",
+          "1280 highscore query reload detail nooverflow noStart",
+          "ZIP41files exactbytes restoration",
+          "valid package and5negative cases",
+          "restored1280 input detail return query focus",
+          "four parent HEADs match"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "6fe7fda3e683c7e3870aec75c4f48fca125a7f8cd6890c766ae39a9f971a95f0",
+      "sha256": "53f7a1a02d8d01e16e4f493d2f5f7e44a68db59ca776b2d7e52a51b62586408f"
     }
   ],
-  "projection_sha256": "b9eae93e08fdefaffdff890eb47b7119c1cf29f4688f58af4ed3e2234fc48bb9"
+  "projection_sha256": "3075c0fe96fa87547f5ac314f650733674866da24c6b5c94d63103c723945845"
 }

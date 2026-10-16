@@ -1,3 +1,5 @@
+2026-10-16の13時枠でitch.io公式3資料から既存紹介の検索漏れを調査し、既存factsを検索へ追加。交代プレイ/最高スコア/人数/ステージを検索できる。型/静的/9SSG/4URL/39ハッシュ/案内8条件/検索SSR成功。IAB390/1280で入力・詳細往復・検索保持・再読込・公開中0件・はみ出しなし、ZIP41ファイル完全復元と5拒否条件、復元1280の往復成功。索引business/unity/evidence/catalog-facts-20261016-1300.json。実タッチ/Safari/人間評価/公開版/新ゲーム保存回帰は未確認、事業指標null。PR24本日マージ済みなので追加PR/push/配信なし。T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。
+
 2026-10-16の01時枠継続で既存Ice Slideの紹介/works/iceslide/を追加。20ステージ・操作・クリアと最少手数のみ保存/途中保存なしを案内し、公開前と制作技術を分離。390/1280の説明展開・一覧往復・検索語保持・再読込・開始リンクなしを検査。7SSG/4URL/37ハッシュ/案内条件/39ファイルZIP復元、ソース110Gitblob一致。通常2手クリアは確認、最後の再読込snapshotは読込中で新しい永続化成功と扱わない。詳細docs/web-iceslide-catalog-20261016.md、索引business/unity/evidence/iceslide-catalog-20261016-0100.json。新ローカル版はリモートCI未検査、本日追加PR/push/配信なし。実タッチ/Safari/人間評価と指標nullを保持。次は既存MineRushの紹介を整える。
 
 2026-10-16の01時枠。前日のWeb保存品質・配置・n目並べ紹介を日次PR24へ統合。最新head a24346eのLinux/Windows CI成功後17168adへhead指定マージ。CI版85c7e9aの37ファイル/6紹介ページ復元と12実行assetの既存ブラウザ検査版一致を確認。390の復元版で説明展開・開始リンクなし・検索語付き一覧復帰を確認。本番配置なし、指標null。索引business/unity/evidence/delivery-web-daily-20261016.json。次は既存Ice Slideの紹介を同じWeb入口へ追加し実行URLを保持する。本日の追加PRなし。

@@ -71,3 +71,6 @@ Ice Slideのモバイル操作部はdocs/web-ice-mobile-20261013.mdで24px以上
 2026-10-16の07時枠でMineRushの作品紹介を追加。固定9×9/10地雷、初手と周囲の除外、旗とキーボード、途中保存なしを実装照合。390/1280の検索・詳細・戻る・再読み込み、8SSG/4URL/38ハッシュ、案内8条件、台帳27テスト、ZIP40ファイル完全復元と390復元画面が成功。詳細docs/web-minerush-catalog-20261016.md。実タッチ/Safari/人間評価/公開版は未確認、指標null。本日PR24はマージ済みなので追加PRなし。T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。
 
 2026-10-16の07時枠でGravityBallの独立紹介を追加し、既存Web4作品の紹介を揃えた。全5ステージ、重力の向き、再挑戦、最高スコアのみ保存を実装照合。390/1280の検索・詳細・戻る・再読み込み、9SSG/4URL/39ハッシュ、案内8条件と既存GravityBall回帰成功。ZIP41ファイル完全復元、ソースZIP112Gitblob一致、復元390画面を確認。詳細docs/web-gravityball-catalog-20261016.md。記事はbusiness/blog/drafts/2026-10-16-game-guides-and-save-scope.mdに下書きのみ。実タッチ/Safari/傾き/人間評価/公開版は未確認、指標null。現在CI6ページ版とローカル9ページ版を区別し、本日PR24マージ済みのため追加PR/push/配信なし。T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。
+
+
+2026-10-16の13時枠でitch.io公式3資料から既存紹介の検索漏れを調査し、既存factsを検索へ追加。交代プレイ/最高スコア/人数/ステージを検索できる。型/静的/9SSG/4URL/39ハッシュ/案内8条件/検索SSR成功。IAB390/1280で入力・詳細往復・検索保持・再読込・公開中0件・はみ出しなし、ZIP41ファイル完全復元と5拒否条件、復元1280の往復成功。索引business/unity/evidence/catalog-facts-20261016-1300.json。実タッチ/Safari/人間評価/公開版/新ゲーム保存回帰は未確認、事業指標null。PR24本日マージ済みなので追加PR/push/配信なし。T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。
