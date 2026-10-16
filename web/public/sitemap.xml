@@ -48,4 +48,16 @@
     <loc>https://game.kihamda.net/works/ntiktaktoe/</loc>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://game.kihamda.net/works/iceslide/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/works/minerush/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://game.kihamda.net/works/gravityball/</loc>
+    <priority>0.7</priority>
+  </url>
 </urlset>

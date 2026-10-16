@@ -65,3 +65,14 @@ Ice Slideのモバイル操作部はdocs/web-ice-mobile-20261013.mdで24px以上
 
 
 2026-10-15の01時枠でn目並べ保存範囲工程を完了。最終Chrome390/1280の削除dialog44px、取消/Tab/Enter/Escape/フォーカス復帰、通常着手の再読み込み、通常勝利後の進行のみ削除と設定・連勝JSON一致を確認。型/静的/ビルドと保存/タイマー回帰成功。詳細docs/web-ntik-save-acceptance-20261015.md。次は連勝履歴の保存失敗案内。物理タッチ/Safari/人間評価/指標は未確認・null。天啓の継続指示は保持し、本番配置なし。昨日のローカル成果を本日日次PRへまとめる。
+
+2026-10-16の日次PR24はCI成功後にマージ済み。現行CI復元索引はbusiness/unity/evidence/delivery-web-daily-20261016.json。以後のIce Slide紹介7ページ版はローカル検証版でCI版と区別する。T-web-minerush-catalog-discovery: 固定9×9/10地雷・初手・旗・途中保存なしを既存実装から整理し独立紹介へ追加。PR24は本日マージ済みのため追加PRなし、翌日分へローカル保存。
+
+2026-10-16の07時枠でMineRushの作品紹介を追加。固定9×9/10地雷、初手と周囲の除外、旗とキーボード、途中保存なしを実装照合。390/1280の検索・詳細・戻る・再読み込み、8SSG/4URL/38ハッシュ、案内8条件、台帳27テスト、ZIP40ファイル完全復元と390復元画面が成功。詳細docs/web-minerush-catalog-20261016.md。実タッチ/Safari/人間評価/公開版は未確認、指標null。本日PR24はマージ済みなので追加PRなし。T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。
+
+2026-10-16の07時枠でGravityBallの独立紹介を追加し、既存Web4作品の紹介を揃えた。全5ステージ、重力の向き、再挑戦、最高スコアのみ保存を実装照合。390/1280の検索・詳細・戻る・再読み込み、9SSG/4URL/39ハッシュ、案内8条件と既存GravityBall回帰成功。ZIP41ファイル完全復元、ソースZIP112Gitblob一致、復元390画面を確認。詳細docs/web-gravityball-catalog-20261016.md。記事はbusiness/blog/drafts/2026-10-16-game-guides-and-save-scope.mdに下書きのみ。実タッチ/Safari/傾き/人間評価/公開版は未確認、指標null。現在CI6ページ版とローカル9ページ版を区別し、本日PR24マージ済みのため追加PR/push/配信なし。T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。
+
+
+2026-10-16の13時枠でitch.io公式3資料から既存紹介の検索漏れを調査し、既存factsを検索へ追加。交代プレイ/最高スコア/人数/ステージを検索できる。型/静的/9SSG/4URL/39ハッシュ/案内8条件/検索SSR成功。IAB390/1280で入力・詳細往復・検索保持・再読込・公開中0件・はみ出しなし、ZIP41ファイル完全復元と5拒否条件、復元1280の往復成功。索引business/unity/evidence/catalog-facts-20261016-1300.json。実タッチ/Safari/人間評価/公開版/新ゲーム保存回帰は未確認、事業指標null。PR24本日マージ済みなので追加PR/push/配信なし。T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。
+
+2026-10-16の19時枠で実測した「Web 1人用」0件の検索漏れを修正。空白区切りの全語一致で3件、3条件で1件。390/1280の入力・往復・URL保持・再読込・公開中0件・はみ出しなし、型/静的/9SSG/39ハッシュ/案内8条件、ZIP41ファイル完全復元と5拒否検査、復元390画面が成功。詳細docs/web-combined-search-20261016.md。技術improve、事業unobserved、指標null。実タッチ/Safari/人間評価/今回の版のリモートCIは未確認。本日PR24マージ済みなので追加PR/push/配信なし。T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。

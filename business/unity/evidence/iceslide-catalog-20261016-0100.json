@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "recordedAt": "2026-10-16T01:12:18.813809+09:00",
+  "runId": "unity-20261016T0100-iceslide-continuation",
+  "fence": 39,
+  "sourceCommit": "7cfd70241e4561a0e8288038a2ef1b62ddb7b674",
+  "publication": "prepared-not-deployed",
+  "remoteCiVerified": false,
+  "package": "artifacts/releases/web-20261016-0100-local",
+  "restored": "artifacts/releases/web-20261016-0100-restored",
+  "siteFileCount": 38,
+  "portalPageCount": 7,
+  "sourceBlobCount": 110,
+  "files": [
+    {
+      "path": "artifacts/releases/web-20261016-0100-local.zip",
+      "sha256": "e4021c305895080855544c05a244eff44175cfb0d4caa7855f90d358af841a1e"
+    },
+    {
+      "path": "artifacts/releases/web-20261016-0100-source.zip",
+      "sha256": "ea548f95d61f8cac3d1be793f341f968e635fc1a630e2c045acee4509a9ff9af"
+    },
+    {
+      "path": "artifacts/releases/web-20261016-0100-restored/manifest.json",
+      "sha256": "2140b59743cc3f6f1c5706b0b6f9d67b97befd97ac4b89939faa5a3a2443066e"
+    }
+  ],
+  "checks": [
+    "TS ESLint Vite7SSG 4legacy 37checksums",
+    "navigation SSR includes Ice Slide save-scope/no-start and8Web-ownerUnity guide cases",
+    "3901280 Enter guide no-overflow no-start return query works focus and reload",
+    "390 published filter0 then all restores1",
+    "legacy game normal Enter start ArrowDown ArrowRight2move clear, no fixtures",
+    "39files ZIP restoration exact; modified/missing/extra/version/manifest rejection",
+    "sourceZIP110exactGitblobs",
+    "final restored4223IAB390guideEnter/no-start/no-overflow/returnIcequery worksfocus",
+    "game code and storage unchanged; owner Unity oldcloud parent data unchanged"
+  ],
+  "unverified": [
+    "post-clear reload final snapshot still loading; no new persistence-success claim",
+    "physical touch Safari human response published-version operation off-PC recovery",
+    "new local7page edition not remoteCI verified"
+  ],
+  "sourceArchiveCorrection": "git archive export mismatch scripts/check-unity-artifact.mjs detected; rejected export retained locally; replacement ZIP uses110exact Git blobs",
+  "businessJudgment": "unobserved",
+  "technicalJudgment": "improve",
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "playStarts": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "cleanup": "created tabs closed viewport reset own4221/4222/4223 previews stopped; original4178 untouched"
+}

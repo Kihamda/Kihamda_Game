@@ -1,0 +1,248 @@
+{
+  "run_id": "unity-20261016T1300-c275fb43",
+  "slot": "2026-10-16T13:00:00+09:00",
+  "fence": 42,
+  "sourceCommit": "0aa821192dadcff82d2e14829c6ecbf0ab4c23ed",
+  "scope": "existing catalog fact search only",
+  "research": "business/unity/research/2026-10-16-catalog-facts-discovery.md",
+  "sources": [
+    "https://itch.io/docs/creators/getting-started",
+    "https://itch.io/docs/creators/quality-guidelines",
+    "https://itch.io/docs/creators/getting-indexed"
+  ],
+  "checks": [
+    "TS ESLint Vite9SSG",
+    "navigation SSR fact query cases and release filters",
+    "work guides8cases",
+    "repository4entries19GUID",
+    "390 input/query return focus reload filter0 nooverflow",
+    "1280 highscore query reload detail nooverflow noStart",
+    "ZIP41files exactbytes restoration",
+    "valid package and5negative cases",
+    "restored1280 input detail return query focus",
+    "four parent HEADs match"
+  ],
+  "package": "artifacts/releases/web-20261016-1300-search.zip",
+  "packageSha256": "d35f510fdf2462e2ccf76c13df4508bf103ff0181bb30c7d7b1ff22ee25b594d",
+  "manifestSha256": "adefc782f330214bca8508cd4ce344094adc4bc5526000ad6c36f47bf290a173",
+  "files": [
+    {
+      "path": "SHA256SUMS",
+      "size": 3451,
+      "sha256": "9ba4612a2909565a9f4ff2141473bb27c4398336e38525eca0cfcde77d452ffd"
+    },
+    {
+      "path": "_headers",
+      "size": 443,
+      "sha256": "3038340a456ae15ff549e7d1685bf6c404f9a8f4df702f7337a045ad7a055eeb"
+    },
+    {
+      "path": "_redirects",
+      "size": 852,
+      "sha256": "7fb5444ff193057f97939a4cd055d948c25d8fd2a66408f93a6aeaa4a40b0f32"
+    },
+    {
+      "path": "about/index.html",
+      "size": 3549,
+      "sha256": "01c04aa276b74581b3622ba1727607f79a48b1941bb043e0c57a3d1135f04d57"
+    },
+    {
+      "path": "adsense-readiness.html",
+      "size": 3257,
+      "sha256": "a99613344b0f97c28491cc9a49bec58e69c08222e5ac01765e5b4ec41a8c5a12"
+    },
+    {
+      "path": "assets/App-7Vg3EMtI.css",
+      "size": 6675,
+      "sha256": "eeeef76032727218be5b125ae69618a7d698670694650a4dc649f67c8f3bb78c"
+    },
+    {
+      "path": "assets/App-B5UNeCUW.css",
+      "size": 367,
+      "sha256": "ccaec1a307cf5216bd51b3aeb6207d8d6d0cb20d9c2d18d1ca57eaaffd0ec1e8"
+    },
+    {
+      "path": "assets/App-BQYoIghu.js",
+      "size": 12206,
+      "sha256": "5615f4f80e7e66d760c8c0b00d3ffc0f0c30ecbe38a1a7f18441c0878de8f4be"
+    },
+    {
+      "path": "assets/App-BZ6jidgZ.js",
+      "size": 6399,
+      "sha256": "268be53192f8071842b30bd36c45bf704aa9db1dd6db5f920f3cae8d8e3c048e"
+    },
+    {
+      "path": "assets/App-Bku9euTB.js",
+      "size": 25019,
+      "sha256": "0ad3547c555e9be9108db8caa3f91f3cdc8ea50a36571d3192a55614a90d8852"
+    },
+    {
+      "path": "assets/App-CuyzgG7l.css",
+      "size": 1909,
+      "sha256": "48f2297270beb36d5db1982a1d7722fd1d6919eedce4340e53c0a5c6eab12ac3"
+    },
+    {
+      "path": "assets/App-D8FB1TBu.js",
+      "size": 13586,
+      "sha256": "5033c2e683cf5ab15dbb40de5fe2c86db09984cf2e43d885e66e6f39ece92533"
+    },
+    {
+      "path": "assets/App-DeECvmPy.css",
+      "size": 4597,
+      "sha256": "3d250170bbd003f039b3dda1204e1639cb0c0ca34709eca25deb1eedc97e8047"
+    },
+    {
+      "path": "assets/ScreenShake-CeuNuo7P.js",
+      "size": 12074,
+      "sha256": "c6d1b9cbc6cab61d6d3024f8347b5d9e6d36fe2fd7fcd3c528bbcea5925ada47"
+    },
+    {
+      "path": "assets/ScreenShake-D8ul6jLM.css",
+      "size": 11291,
+      "sha256": "fb642052265d3eaba47a8c4cd0f48587eca2a737aa052f1cda8f0b3173c086b5"
+    },
+    {
+      "path": "assets/index-CQqFZ9-O.js",
+      "size": 230392,
+      "sha256": "0a28c5364e8cbc5dc2c7e4c7f9a06ed8c3efffccb103d3bb8d080d734ad31031"
+    },
+    {
+      "path": "assets/index-U9pQBW-E.css",
+      "size": 11283,
+      "sha256": "141d51be6e6da608697aa3ff98d7fedf3d01304e22bdb300538e2c57b362b048"
+    },
+    {
+      "path": "build-version.json",
+      "size": 166,
+      "sha256": "b75b3c557a81b9b16f017c8f9dd73819b4c7905deadf298b6f7269acf9d07278"
+    },
+    {
+      "path": "contact/index.html",
+      "size": 3163,
+      "sha256": "e11085e8bb0119b376d5013e2c50f99ea441d9356d7db1f6e541e85a61a8c6be"
+    },
+    {
+      "path": "games/gravityball/index.html",
+      "size": 3104,
+      "sha256": "e922e064c65b1f2a67ce6109c9e31dd41247a18000cff6dc160991c610eaeb48"
+    },
+    {
+      "path": "games/ice-courier/index.html",
+      "size": 7457,
+      "sha256": "ffb65d76ab2db9fce9777748bcaa45e63aa3d69c5becbd75678ff6a0b9f006a3"
+    },
+    {
+      "path": "games/iceslide/index.html",
+      "size": 3125,
+      "sha256": "864cf285b70872106c58db532a02912153fe706b6ed6c4f055dddf7121954830"
+    },
+    {
+      "path": "games/minerush/index.html",
+      "size": 2952,
+      "sha256": "5efde9c869e85662360346a9ceda0b0c64a6c243bf26b37b173e9b408d2f05c5"
+    },
+    {
+      "path": "games/ntiktaktoe/index.html",
+      "size": 2994,
+      "sha256": "f0ef4f7c01d0e25e85d3bc0b28516e1df53c03607b3f9ed4db1e7305aa6fb66f"
+    },
+    {
+      "path": "icons/icon.svg",
+      "size": 1347,
+      "sha256": "2c8f5d1c0170572759e8d72c133ecafb9b0ff1182110c7f36328e07f00853ed1"
+    },
+    {
+      "path": "index.html",
+      "size": 10577,
+      "sha256": "9a1246578a68a0b041adf7a611b70d5ab2a08dbb0f5ad65641bb9a0752549f50"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "size": 358,
+      "sha256": "a8869f35c1699e774ff52cd8522e6dca33a97a2c4eb83982ffe0820f1f5d3791"
+    },
+    {
+      "path": "privacy-policy/index.html",
+      "size": 3659,
+      "sha256": "f5320c7aba055a19f353742ec935348451629997d3777bb99d6d6c79d636d454"
+    },
+    {
+      "path": "robots.txt",
+      "size": 72,
+      "sha256": "7a1eb5d016e2c70d23f21592235cb53dfc5d6da204a527a2e2b426a0a0eaf984"
+    },
+    {
+      "path": "sitemap.xml",
+      "size": 1689,
+      "sha256": "615c056b9d6ea218b3f292130ba4d63f94fab1fd66073ebb9031b0ed2113323a"
+    },
+    {
+      "path": "sw.js",
+      "size": 189,
+      "sha256": "b928d0947627fdafdc5c9227fbd3aa3b26a67a1cfb18bb522b551db05d8b31ce"
+    },
+    {
+      "path": "thumbnails/gravityball.svg",
+      "size": 782,
+      "sha256": "0c5c58d5ab51b9b85bfaf26cd2cfb1765f9584ac39fbf5f2968c50d525987b5a"
+    },
+    {
+      "path": "thumbnails/iceslide.svg",
+      "size": 3518,
+      "sha256": "332b79622812097071d99ddbcfe40df217b2a8ebfc86a2c88b8c7601c18cd79c"
+    },
+    {
+      "path": "thumbnails/minerush.svg",
+      "size": 6769,
+      "sha256": "ea71667b5e7cf14939994b0025e91f218404ad3300ed32575a56027d70f88e9f"
+    },
+    {
+      "path": "thumbnails/ntiktaktoe.svg",
+      "size": 807,
+      "sha256": "96aad504951acf84337b67dd1f2c13716b057bd70e27fd731ecc7bf263212b7a"
+    },
+    {
+      "path": "thumbnails/ogp-default.svg",
+      "size": 1547,
+      "sha256": "d46eabf1047e546cc7ce164e77fea27e057f641ca6c28e1962d922bfbd54b88d"
+    },
+    {
+      "path": "works/gravityball/index.html",
+      "size": 5010,
+      "sha256": "5c645feae7fe522a8f6f67e04070c71e7464e359ff48d7d4e4e0d87b01c3482d"
+    },
+    {
+      "path": "works/iceslide/index.html",
+      "size": 4983,
+      "sha256": "edeb5303029208f32c03b2ed67da7e890e811d7f4d209b0195551a69a7eac48f"
+    },
+    {
+      "path": "works/minerush/index.html",
+      "size": 4748,
+      "sha256": "6111a3c209497deb6b877072a77a418717be3843fbe8c1639f4a19288957e715"
+    },
+    {
+      "path": "works/ntiktaktoe/index.html",
+      "size": 4996,
+      "sha256": "5ea3bbcda82c2bbb85ce12e01292440e70f2720cc538742d9509d91d8108e0e4"
+    }
+  ],
+  "unverified": [
+    "physical touch",
+    "Safari",
+    "human feedback",
+    "public version",
+    "new full game/storage regression",
+    "off-PC restoration"
+  ],
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "playStarts": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "publication": "local-only; PR24 already merged; no push/new PR/remote CI/deployment",
+  "next_step": "T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。",
+  "initial_failures": "Missing guide script name corrected to check-portal-work-guides. Package attempted before checksum generation and source stamp; rejected, then regenerated check-web-build with exact GITHUB_SHA and all checks passed. Previous checkpoint intentional test-file delta separated from eight unchanged matching artifacts."
+}

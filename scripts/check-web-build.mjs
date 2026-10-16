@@ -36,6 +36,18 @@ for (const path of portalPaths) {
 const detail = readFileSync(resolve(dist, 'games/ice-courier/index.html'), 'utf8');
 const webDetail = readFileSync(resolve(dist, 'works/ntiktaktoe/index.html'), 'utf8');
 assert(webDetail.includes('公開前の確認中') && webDetail.includes('行・列を指定して選択') && !webDetail.includes('作品を開始') && !webDetail.includes('<iframe'));
+const iceDetail = readFileSync(resolve(dist, 'works/iceslide/index.html'), 'utf8');
+assert(iceDetail.includes('全20ステージ') && iceDetail.includes('途中の盤面と手数は保存しません') && !iceDetail.includes('作品を開始'));
+const mineDetail = readFileSync(resolve(dist, 'works/minerush/index.html'), 'utf8');
+assert(mineDetail.includes('9×9マス') && mineDetail.includes('途中の盤面と旗を保存しません') && !mineDetail.includes('作品を開始'));
+const minePlay = readFileSync(resolve(dist, 'games/minerush/index.html'), 'utf8');
+assert(!minePlay.includes('id="guide-title"'), 'MineRush introduction must not replace play route');
+const gravityDetail = readFileSync(resolve(dist, 'works/gravityball/index.html'), 'utf8');
+assert(gravityDetail.includes('全5ステージ') && gravityDetail.includes('途中のステージや得点は保存しません') && !gravityDetail.includes('作品を開始'));
+const gravityPlay = readFileSync(resolve(dist, 'games/gravityball/index.html'), 'utf8');
+assert(!gravityPlay.includes('id="guide-title"'), 'GravityBall introduction must not replace play route');
+const icePlay = readFileSync(resolve(dist, 'games/iceslide/index.html'), 'utf8');
+assert(!icePlay.includes('id="guide-title"'), 'Ice Slide introduction must not replace play route');
 const legacyPlay = readFileSync(resolve(dist, 'games/ntiktaktoe/index.html'), 'utf8');
 assert(!legacyPlay.includes('id="guide-title"'), 'Work introduction must not replace legacy play route');
 const sitemap = readFileSync(resolve(dist, 'sitemap.xml'), 'utf8');

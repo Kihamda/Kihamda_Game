@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "revision": 237,
+  "revision": 275,
   "business_id": "game-site",
-  "fence": 38,
+  "fence": 44,
   "lease": {
-    "run_id": "unity-20261016T0100-integration-45f5794c",
-    "task_id": "T-web-daily-ci-integration-20261016",
-    "fence": 38,
-    "expires_at": 1792081727.2408962
+    "run_id": "unity-20261017T0100-daily",
+    "task_id": "T-web-daily-ci-integration-20261017",
+    "fence": 44,
+    "expires_at": 1792168280.7677534
   },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -5769,7 +5769,7 @@
       "hypothesis": "日次一括でレビューと記録の重複を抑え検証済み成果を保持する",
       "pdca": "check",
       "experiment_id": "E-unity-portal",
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "task_id": "T-web-daily-ci-integration-20261016",
@@ -5805,6 +5805,66 @@
           "next_step": "同日日次PRで最新head CIを確認し版指定マージ、CI成果物を復元",
           "passed": true,
           "at": 1792080292.96912
+        },
+        {
+          "run_id": "unity-20261016T0100-integration-45f5794c",
+          "fence": 38,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-daily-20261016.json",
+              "sha256": "3a99bae62708556e6dcdfd6cda0a8ee67d531eeba4dbf580e44d093f498869b2"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "689c98114d79286165bdac1a012bfb1eb1d3528c3dfbd8e594f462b7572b80b6"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "73880bd583d6e9ee917c815301af6445089c5f23aba7f6d96ab256f1b0a5ca0a"
+            }
+          ],
+          "checks": [
+            "Linux57s Windows39s success on exact head",
+            "37files6pages restoration and modified/missing/extra/version/manifest rejection",
+            "12 runtime assets identical to browser-tested previous local package",
+            "CI merge parents verified by GitHub API; local object initially unavailable",
+            "390 CI restored guide Enter expanded no-start no-overflow; return Web query works focus",
+            "17 prior checkpoint hashes192 original main events4 parentHEAD8 recovery hashes",
+            "excluded paths absent; credential-pattern scan; JSON parsed; complete code diff review"
+          ],
+          "next_step": "T-web-iceslide-catalog-discovery: 検査済み既存Ice Slideの紹介を独立経路へ追加し実行URLを保持する。本日PR24マージ済み、追加PRなし。",
+          "passed": true,
+          "at": 1792080510.8339846
+        },
+        {
+          "run_id": "unity-20261016T0100-integration-45f5794c",
+          "fence": 38,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-daily-20261016.json",
+              "sha256": "3a99bae62708556e6dcdfd6cda0a8ee67d531eeba4dbf580e44d093f498869b2"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "689c98114d79286165bdac1a012bfb1eb1d3528c3dfbd8e594f462b7572b80b6"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "73880bd583d6e9ee917c815301af6445089c5f23aba7f6d96ab256f1b0a5ca0a"
+            }
+          ],
+          "checks": [
+            "Linux57s Windows39s success on exact head",
+            "37files6pages restoration and modified/missing/extra/version/manifest rejection",
+            "12 runtime assets identical to browser-tested previous local package",
+            "CI merge parents verified by GitHub API; local object initially unavailable",
+            "390 CI restored guide Enter expanded no-start no-overflow; return Web query works focus",
+            "17 prior checkpoint hashes192 original main events4 parentHEAD8 recovery hashes",
+            "excluded paths absent; credential-pattern scan; JSON parsed; complete code diff review"
+          ],
+          "next_step": "T-web-iceslide-catalog-discovery: 検査済み既存Ice Slideの紹介を独立経路へ追加し実行URLを保持する。本日PR24マージ済み、追加PRなし。",
+          "passed": true,
+          "at": 1792080510.8734748
         }
       ],
       "claims": [
@@ -6042,6 +6102,763 @@
           "expires_at": 1792059923.2976089
         }
       ]
+    },
+    "T-web-iceslide-catalog-discovery": {
+      "id": "T-web-iceslide-catalog-discovery",
+      "objective": "既存Ice Slideのルールと保存範囲を公開前の作品紹介へ追加",
+      "acceptance": [
+        "/works/iceslide/紹介と/games/iceslide/実行を分離",
+        "Web/verification/release=null、開始リンクなし",
+        "実装に合う20ステージ・方向操作・Undo・クリア保存/途中保存なしの案内",
+        "390/1280実ブラウザの検索・詳細・戻る・再読込",
+        "7SSG/4旧URL/案内条件/ZIP復元を検査"
+      ],
+      "outputs": [
+        "紹介",
+        "検査記録",
+        "復元索引"
+      ],
+      "checks": [
+        "TS ESLint build",
+        "navigation guide regression",
+        "browser",
+        "package restore"
+      ],
+      "next_step": "既存ソースと検査に基づきIce Slide紹介を追加",
+      "source": "user:automation:existing-web-portal-renovation",
+      "priority": 1,
+      "depends_on": [
+        "T-web-ntik-catalog-discovery",
+        "T-web-daily-ci-integration-20261016"
+      ],
+      "decision_id": "D-web-catalog-discovery-20261015",
+      "hypothesis": "既存作品のルールと保存範囲を一覧から理解できる入口を整える。需要は未観測。",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261016T0100-iceslide-continuation",
+          "fence": 39,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/iceslide-catalog-20261016-0100.json",
+              "sha256": "c05cf65c9cd43c79d787e00022039e7dad518f9362921afbeae1ad2ff07b9274"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "0757cdf6e0da8710fa68c8489879284a7d0b538ea9be43393199e64ba065b9b8"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "0e81341b00ba74349b30cb125c8ae84a73f1c090d8740d9d716d1a29bc61f6db"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "1f4668968e0d41c7912135be5cafe63a2d7f5b854e5ea934a73c97a93c7a097b"
+            },
+            {
+              "path": "docs/web-iceslide-catalog-20261016.md",
+              "sha256": "96314bbf3573a69b94518ffb3a0b7187ea2056178065e3212138f59b7bf69f28"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "295d54abccc66ce815066f7fc4f2201b754d17c4c6ccc7f30660668d5bec4c04"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "d5b38f49abf40006cab1e9116873c06a936d7e09ae3e87297f8e0a1da09d91ec"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "6824f9457327c995314754b321336a7cdcadd5cd086ab4437fd915e79d106196"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite7SSG 4legacy 37checksums",
+            "navigation SSR includes Ice Slide save-scope/no-start and8Web-ownerUnity guide cases",
+            "3901280 Enter guide no-overflow no-start return query works focus and reload",
+            "390 published filter0 then all restores1",
+            "legacy game normal Enter start ArrowDown ArrowRight2move clear, no fixtures",
+            "39files ZIP restoration exact; modified/missing/extra/version/manifest rejection",
+            "sourceZIP110exactGitblobs",
+            "final restored4223IAB390guideEnter/no-start/no-overflow/returnIcequery worksfocus",
+            "game code and storage unchanged; owner Unity oldcloud parent data unchanged"
+          ],
+          "next_step": "T-web-minerush-catalog-discovery: 固定9×9/10地雷・初手・旗・途中保存なしを既存実装から整理し独立紹介へ追加。PR24は本日マージ済みのため追加PRなし、翌日分へローカル保存。",
+          "passed": true,
+          "at": 1792080738.8804352
+        },
+        {
+          "run_id": "unity-20261016T0100-iceslide-continuation",
+          "fence": 39,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/iceslide-catalog-20261016-0100.json",
+              "sha256": "c05cf65c9cd43c79d787e00022039e7dad518f9362921afbeae1ad2ff07b9274"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "0757cdf6e0da8710fa68c8489879284a7d0b538ea9be43393199e64ba065b9b8"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "0e81341b00ba74349b30cb125c8ae84a73f1c090d8740d9d716d1a29bc61f6db"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "1f4668968e0d41c7912135be5cafe63a2d7f5b854e5ea934a73c97a93c7a097b"
+            },
+            {
+              "path": "docs/web-iceslide-catalog-20261016.md",
+              "sha256": "96314bbf3573a69b94518ffb3a0b7187ea2056178065e3212138f59b7bf69f28"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "295d54abccc66ce815066f7fc4f2201b754d17c4c6ccc7f30660668d5bec4c04"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "d5b38f49abf40006cab1e9116873c06a936d7e09ae3e87297f8e0a1da09d91ec"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "6824f9457327c995314754b321336a7cdcadd5cd086ab4437fd915e79d106196"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite7SSG 4legacy 37checksums",
+            "navigation SSR includes Ice Slide save-scope/no-start and8Web-ownerUnity guide cases",
+            "3901280 Enter guide no-overflow no-start return query works focus and reload",
+            "390 published filter0 then all restores1",
+            "legacy game normal Enter start ArrowDown ArrowRight2move clear, no fixtures",
+            "39files ZIP restoration exact; modified/missing/extra/version/manifest rejection",
+            "sourceZIP110exactGitblobs",
+            "final restored4223IAB390guideEnter/no-start/no-overflow/returnIcequery worksfocus",
+            "game code and storage unchanged; owner Unity oldcloud parent data unchanged"
+          ],
+          "next_step": "T-web-minerush-catalog-discovery: 固定9×9/10地雷・初手・旗・途中保存なしを既存実装から整理し独立紹介へ追加。PR24は本日マージ済みのため追加PRなし、翌日分へローカル保存。",
+          "passed": true,
+          "at": 1792080738.9211726
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261016T0100-iceslide-continuation",
+          "task_id": "T-web-iceslide-catalog-discovery",
+          "fence": 39,
+          "expires_at": 1792081610.9894452
+        }
+      ]
+    },
+    "T-web-minerush-catalog-discovery": {
+      "id": "T-web-minerush-catalog-discovery",
+      "objective": "既存MineRushのルールと保存範囲を作品紹介へ追加",
+      "acceptance": [
+        "/works/minerush/紹介と/games/minerush/実行を分離",
+        "固定9×9/10地雷・初手と旗操作・キーボード代替を現在実装に照合",
+        "途中保存なしと公開版未確認を表示、release=null開始リンクなし",
+        "3901280検索詳細往復再読込とSSG/4URL/ZIP復元検査"
+      ],
+      "outputs": [
+        "作品紹介",
+        "検査記録",
+        "復元索引"
+      ],
+      "checks": [
+        "build TS ESLint",
+        "navigation guides",
+        "browser",
+        "package restore"
+      ],
+      "next_step": "既存MineRushソースと検査記録を照合して紹介を追加",
+      "source": "user:automation:existing-web-portal-renovation",
+      "priority": 1,
+      "depends_on": [
+        "T-web-iceslide-catalog-discovery"
+      ],
+      "decision_id": "D-web-catalog-discovery-20261015",
+      "hypothesis": "既存作品の操作と保存範囲を案内から理解できる。需要未観測。",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261016T0700-minerush",
+          "fence": 40,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/minerush-catalog-20261016-0700.json",
+              "sha256": "25166983b3d2bbccd30b2f9f362c4f0a7ceb849782854adf01b8d2ab22d43358"
+            },
+            {
+              "path": "docs/web-minerush-catalog-20261016.md",
+              "sha256": "7edd66f85741125ac482b9f3e16c54c607415ea1644be7a33d19befc222aedec"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "588ea57c50e3faeb2ce1e51f7023ae64913328204c86d60ac25ab5333d70131e"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "0d3ba88292b7496ff4e8b38cda3bc1deb33065efd7f8bca87300b7f91a5a3783"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "c2af7be343030526f284a3cdb8f0e1ddb98edfa30134c1a8cabde7d1f8defa57"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "3c7f296716cf469112f6594bd3f7990ab5e7b8d053115bd664b04b071b5726a8"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite8SSG4URLs38hashes",
+            "navigation and8guides",
+            "MineRush actual App handlers",
+            "3901280 and restored390 browser",
+            "ZIP40exact and5negative cases",
+            "business27tests",
+            "parent4HEAD verified; no gamecode edits or public operations"
+          ],
+          "next_step": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
+          "passed": true,
+          "at": 1792102050.627109
+        },
+        {
+          "run_id": "unity-20261016T0700-minerush",
+          "fence": 40,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/minerush-catalog-20261016-0700.json",
+              "sha256": "25166983b3d2bbccd30b2f9f362c4f0a7ceb849782854adf01b8d2ab22d43358"
+            },
+            {
+              "path": "docs/web-minerush-catalog-20261016.md",
+              "sha256": "7edd66f85741125ac482b9f3e16c54c607415ea1644be7a33d19befc222aedec"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "588ea57c50e3faeb2ce1e51f7023ae64913328204c86d60ac25ab5333d70131e"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "0d3ba88292b7496ff4e8b38cda3bc1deb33065efd7f8bca87300b7f91a5a3783"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "c2af7be343030526f284a3cdb8f0e1ddb98edfa30134c1a8cabde7d1f8defa57"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "3c7f296716cf469112f6594bd3f7990ab5e7b8d053115bd664b04b071b5726a8"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite8SSG4URLs38hashes",
+            "navigation and8guides",
+            "MineRush actual App handlers",
+            "3901280 and restored390 browser",
+            "ZIP40exact and5negative cases",
+            "business27tests",
+            "parent4HEAD verified; no gamecode edits or public operations"
+          ],
+          "next_step": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
+          "passed": true,
+          "at": 1792102050.6699827
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261016T0700-minerush",
+          "task_id": "T-web-minerush-catalog-discovery",
+          "fence": 40,
+          "expires_at": 1792103333.002628
+        }
+      ]
+    },
+    "T-web-gravityball-catalog-discovery": {
+      "id": "T-web-gravityball-catalog-discovery",
+      "objective": "既存GravityBallの操作と保存範囲を独立した紹介へ追加",
+      "acceptance": [
+        "/works/gravityball/紹介と/games/gravityball/実行を分離",
+        "重力操作と再開・最高値のみ保存を現行実装に照合",
+        "Web/verification/release=null開始なし",
+        "3901280検索詳細往復再読込、9SSG4URLとZIP復元"
+      ],
+      "outputs": [
+        "作品紹介",
+        "検査記録",
+        "復元索引"
+      ],
+      "checks": [
+        "build TS ESLint",
+        "navigation guides",
+        "browser",
+        "package restore"
+      ],
+      "next_step": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
+      "source": "user:automation:existing-web-portal-renovation",
+      "priority": 1,
+      "depends_on": [
+        "T-web-minerush-catalog-discovery"
+      ],
+      "decision_id": "D-web-catalog-discovery-20261015",
+      "hypothesis": "既存作品の操作と保存範囲を案内から理解できる。需要は未観測。",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261016T0700-gravity-continuation",
+          "fence": 41,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/gravityball-catalog-20261016-0700.json",
+              "sha256": "d322823a3b65761546531c80c859d66313871e2f809071c229670ddce841e346"
+            },
+            {
+              "path": "docs/web-gravityball-catalog-20261016.md",
+              "sha256": "ded0ef4c97da659a888cfe632b90015932f472bfe507f7d2c986362f2c80a8aa"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-16-game-guides-and-save-scope.md",
+              "sha256": "5630c54ac0f58868e3e204d9bec4433cac4dc51afa278a764e9545895b22fb95"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "4e5ac7fa367b365288aabb2fed1400e853af9c84117647f1bce0b8cc68721b56"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "93db2f21146005d02f1e9f898bd1dfd70b3ad636e7a862a68c72cee65cd8199a"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "672994913630f78c37b4218de14e9f0bd37773e2107fdbc818dd7a1d0a7ba653"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "7612fc009e7843e30ec6cbc69955fe14f9981f3201f84d719e00480c49f8f736"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "2fc6754af6e2d32a87c675f2358eebf7ca6ff83de6eecc1b389a07fdeb99a17e"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "90de127cba45c0237bbbab3c4488497034ac2ffc9951772486e179531df1587c"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite9SSG4URLs39hashes",
+            "navigation SSR and8guide cases",
+            "GravityBall actual App regression",
+            "3901280 browser search detail Enter no-start no-overflow return query works-focus reload",
+            "legacy start ArrowRight movement then reload start; no injected state",
+            "ZIP41exact restore sourceZIP112exactGitblobs and5negative cases",
+            "restored390 guide and MineRush route",
+            "parent4HEAD recovery8hashes protectedpaths unchanged",
+            "PR24 already merged; no extraPR push CI deployment; draftonly"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。",
+          "passed": true,
+          "at": 1792102262.2550983
+        },
+        {
+          "run_id": "unity-20261016T0700-gravity-continuation",
+          "fence": 41,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/gravityball-catalog-20261016-0700.json",
+              "sha256": "d322823a3b65761546531c80c859d66313871e2f809071c229670ddce841e346"
+            },
+            {
+              "path": "docs/web-gravityball-catalog-20261016.md",
+              "sha256": "ded0ef4c97da659a888cfe632b90015932f472bfe507f7d2c986362f2c80a8aa"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-16-game-guides-and-save-scope.md",
+              "sha256": "5630c54ac0f58868e3e204d9bec4433cac4dc51afa278a764e9545895b22fb95"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "4e5ac7fa367b365288aabb2fed1400e853af9c84117647f1bce0b8cc68721b56"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "93db2f21146005d02f1e9f898bd1dfd70b3ad636e7a862a68c72cee65cd8199a"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "672994913630f78c37b4218de14e9f0bd37773e2107fdbc818dd7a1d0a7ba653"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "7612fc009e7843e30ec6cbc69955fe14f9981f3201f84d719e00480c49f8f736"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "2fc6754af6e2d32a87c675f2358eebf7ca6ff83de6eecc1b389a07fdeb99a17e"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "90de127cba45c0237bbbab3c4488497034ac2ffc9951772486e179531df1587c"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite9SSG4URLs39hashes",
+            "navigation SSR and8guide cases",
+            "GravityBall actual App regression",
+            "3901280 browser search detail Enter no-start no-overflow return query works-focus reload",
+            "legacy start ArrowRight movement then reload start; no injected state",
+            "ZIP41exact restore sourceZIP112exactGitblobs and5negative cases",
+            "restored390 guide and MineRush route",
+            "parent4HEAD recovery8hashes protectedpaths unchanged",
+            "PR24 already merged; no extraPR push CI deployment; draftonly"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。",
+          "passed": true,
+          "at": 1792102262.2963336
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261016T0700-gravity-continuation",
+          "task_id": "T-web-gravityball-catalog-discovery",
+          "fence": 41,
+          "expires_at": 1792103050.8048842
+        }
+      ]
+    },
+    "T-web-daily-ci-integration-20261017": {
+      "id": "T-web-daily-ci-integration-20261017",
+      "objective": "ローカルの既存Web作品紹介と復元記録を翌日日次PRへ統合",
+      "acceptance": [
+        "当日PR/open PRと既存headを照合し日次1件へ集約",
+        "既存4ゲームと9SSG/導線/案内/ZIP復元の検査が成功",
+        "差分全体と公開除外を確認、最新PRheadのCI成功後に版指定merge",
+        "CI成果物の版とハッシュを照合し復元、ローカル版と区別"
+      ],
+      "outputs": [
+        "日次PR",
+        "CI検査",
+        "CI復元索引"
+      ],
+      "checks": [
+        "build TS ESLint",
+        "existing games navigation guides",
+        "CI latesthead",
+        "package restore"
+      ],
+      "next_step": "T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。",
+      "source": "user:automation:2026-10-13:daily-pr-limit",
+      "priority": 1,
+      "depends_on": [
+        "T-web-gravityball-catalog-discovery"
+      ],
+      "decision_id": "D-web-catalog-discovery-20261015",
+      "hypothesis": "既存制作を日次集約し検証と復元可能性を保持する。需要は未観測。",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "running",
+      "checkpoints": [
+        {
+          "task_id": "T-web-daily-ci-integration-20261017",
+          "source": "github:PR24:merged:2026-10-16JST",
+          "reason": "本人の日次PR原則1件方針。本日PR24マージ済み。追加PRは翌日分へ集約する。",
+          "next_step": "T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。",
+          "at": 1792102262.3782551
+        },
+        {
+          "task_id": "T-web-daily-ci-integration-20261017",
+          "source": "github:20261017:no-daily-pr",
+          "reason": "JST date changed; latest PR24 merged yesterday; no open PR",
+          "next_step": "Batch existing local work into one daily PR and verify exact-head CI",
+          "at": 1792166480.723893
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261017T0100-daily",
+          "task_id": "T-web-daily-ci-integration-20261017",
+          "fence": 44,
+          "expires_at": 1792168280.7677534
+        }
+      ]
+    },
+    "T-web-facts-discovery-20261016": {
+      "id": "T-web-facts-discovery-20261016",
+      "objective": "一次資料から既存作品の検索漏れを直し受入条件を検証",
+      "acceptance": [
+        "一次資料3件と事実/推測/需要未観測を分離",
+        "既存factsを検索し人数/内容から該当作品を表示",
+        "空白/英字大小文字/公開中フィルタ/URL往復と未公開開始なしを維持",
+        "型静的ビルドSSRと実ブラウザ入力再読込を確認"
+      ],
+      "outputs": [
+        "市場調査",
+        "検索実装",
+        "検査証跡"
+      ],
+      "checks": [
+        "sources",
+        "build",
+        "SSR",
+        "browser"
+      ],
+      "next_step": "既存factsを検索へ追加し翌日日次PRへ集約",
+      "decision_id": "D-web-facts-discovery-20261016",
+      "hypothesis": "正確な人数・内容を既存情報から検索できる。需要は未観測。",
+      "source": "user:automation:13-primary-research",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261016T1300-c275fb43",
+          "fence": 42,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-16-catalog-facts-discovery.md",
+              "sha256": "69e374aee0809a50832e230c2a9767374fd30b255ecfabe6986c75bd29501fe6"
+            },
+            {
+              "path": "business/unity/evidence/catalog-facts-20261016-1300.json",
+              "sha256": "b623e74fe1cfbd66fa69ac8b8eb00bab764b85dc8ad7f03f617e15099baa398d"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "0293bcb9ebb1e3c22df2523af0490a8afba9e2c6fe2d85658900d4b58099ae46"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "c3bc6ae1d591884aaa01365b084fb4793d11b68091dee4a59accfb70a5a78133"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "3ae9195c6e9f10ee2546f84ab44b36bd9006af47da67b37718b2ca2c2822b94b"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d22f418f1dd898a93fa4f49406960b9a87091aeb654ccd59f03e79f1fdd35c67"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "912773e79c6a9f3f2b57c01aab731e00ec8dac25ff01bc342bfeb5dfb2a5880b"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite9SSG",
+            "navigation SSR fact query cases and release filters",
+            "work guides8cases",
+            "repository4entries19GUID",
+            "390 input/query return focus reload filter0 nooverflow",
+            "1280 highscore query reload detail nooverflow noStart",
+            "ZIP41files exactbytes restoration",
+            "valid package and5negative cases",
+            "restored1280 input detail return query focus",
+            "four parent HEADs match"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。",
+          "passed": true,
+          "at": 1792123691.5929356
+        },
+        {
+          "run_id": "unity-20261016T1300-c275fb43",
+          "fence": 42,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-16-catalog-facts-discovery.md",
+              "sha256": "69e374aee0809a50832e230c2a9767374fd30b255ecfabe6986c75bd29501fe6"
+            },
+            {
+              "path": "business/unity/evidence/catalog-facts-20261016-1300.json",
+              "sha256": "b623e74fe1cfbd66fa69ac8b8eb00bab764b85dc8ad7f03f617e15099baa398d"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "0293bcb9ebb1e3c22df2523af0490a8afba9e2c6fe2d85658900d4b58099ae46"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "c3bc6ae1d591884aaa01365b084fb4793d11b68091dee4a59accfb70a5a78133"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "3ae9195c6e9f10ee2546f84ab44b36bd9006af47da67b37718b2ca2c2822b94b"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d22f418f1dd898a93fa4f49406960b9a87091aeb654ccd59f03e79f1fdd35c67"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "912773e79c6a9f3f2b57c01aab731e00ec8dac25ff01bc342bfeb5dfb2a5880b"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite9SSG",
+            "navigation SSR fact query cases and release filters",
+            "work guides8cases",
+            "repository4entries19GUID",
+            "390 input/query return focus reload filter0 nooverflow",
+            "1280 highscore query reload detail nooverflow noStart",
+            "ZIP41files exactbytes restoration",
+            "valid package and5negative cases",
+            "restored1280 input detail return query focus",
+            "four parent HEADs match"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。",
+          "passed": true,
+          "at": 1792123691.635219
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261016T1300-c275fb43",
+          "task_id": "T-web-facts-discovery-20261016",
+          "fence": 42,
+          "expires_at": 1792124693.4028177
+        }
+      ]
+    },
+    "T-web-combined-search-20261016": {
+      "id": "T-web-combined-search-20261016",
+      "objective": "実測した複数検索語の検索漏れを改善",
+      "acceptance": [
+        "Web 1人用は3件、語順逆転と全角空白に対応",
+        "存在しない語との組合せは0件、単語と空検索は維持",
+        "公開中0件、未公開開始なし、検索URL往復と再読込を確認",
+        "型・静的・ビルド・SSRと390/1280実ブラウザ確認"
+      ],
+      "outputs": [
+        "検索実装",
+        "検査記録",
+        "戦略判断"
+      ],
+      "checks": [
+        "SSR",
+        "build",
+        "browser"
+      ],
+      "next_step": "翌日日次PRへ既存紹介と検索改善を集約",
+      "source": "user:automation:19-analysis-and-strategy",
+      "decision_id": "D-web-combined-search-20261016",
+      "hypothesis": "既存情報の組合せ検索を可能にする。需要は未観測。",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261016T1900-1d34d937",
+          "fence": 43,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/combined-search-20261016-1900.json",
+              "sha256": "87a2fffe64677f0aeee69c63ae696469d981a0c02afc53a0d112cddba46a8cac"
+            },
+            {
+              "path": "docs/web-combined-search-20261016.md",
+              "sha256": "65323ff2af60112b063058b6c19075f6ac901a4986783bebbf55c1ba019e294f"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "c262f1222f3a9c652a257d2f6241ebf64d68e065a2970f4e02a681dde0789cd7"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "d00199f3d16ea05acee0e85e2861ef214f58ff7741695cca04cbdad675a4f0e9"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "621338b13418ece96cd462b2b2229335ce272fd93469021cdf2ac86e6cc3852d"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d57ed37d3ed2e89066cdd5ce2c90bdbd8ebd5fe5f91f6d67ca9be09cf63c1b73"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "0f187457ece5b1ac892e242f332cf162ca5c2555a9e33619861ded6da341afad"
+            }
+          ],
+          "checks": [
+            "TypeScript ESLint Vite9SSG",
+            "navigation SSR AND8cases plus existing facts/URLs/filter/escaping",
+            "Web ownerUnity guide8cases",
+            "4legacy routes39checksums19GUID",
+            "390 reverse/fullwidth query3 detail Enter return worksfocus reload released0 nooverflow",
+            "1280 three terms1 reload nooverflow screenshot observed only",
+            "restored package1280 search3 and390 MineRush Enter return worksfocus reload noStart nooverflow",
+            "ZIP41exact file bytes; package40sitefiles9pages; valid and5negative cases",
+            "original262events protectedpaths unchanged;4parent HEAD8recovery hashes match",
+            "PR24 live verified merged today; no newPR push remoteCI deployment"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+          "passed": true,
+          "at": 1792145008.3194118
+        },
+        {
+          "run_id": "unity-20261016T1900-1d34d937",
+          "fence": 43,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/combined-search-20261016-1900.json",
+              "sha256": "87a2fffe64677f0aeee69c63ae696469d981a0c02afc53a0d112cddba46a8cac"
+            },
+            {
+              "path": "docs/web-combined-search-20261016.md",
+              "sha256": "65323ff2af60112b063058b6c19075f6ac901a4986783bebbf55c1ba019e294f"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "c262f1222f3a9c652a257d2f6241ebf64d68e065a2970f4e02a681dde0789cd7"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "d00199f3d16ea05acee0e85e2861ef214f58ff7741695cca04cbdad675a4f0e9"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "621338b13418ece96cd462b2b2229335ce272fd93469021cdf2ac86e6cc3852d"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "d57ed37d3ed2e89066cdd5ce2c90bdbd8ebd5fe5f91f6d67ca9be09cf63c1b73"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "0f187457ece5b1ac892e242f332cf162ca5c2555a9e33619861ded6da341afad"
+            }
+          ],
+          "checks": [
+            "TypeScript ESLint Vite9SSG",
+            "navigation SSR AND8cases plus existing facts/URLs/filter/escaping",
+            "Web ownerUnity guide8cases",
+            "4legacy routes39checksums19GUID",
+            "390 reverse/fullwidth query3 detail Enter return worksfocus reload released0 nooverflow",
+            "1280 three terms1 reload nooverflow screenshot observed only",
+            "restored package1280 search3 and390 MineRush Enter return worksfocus reload noStart nooverflow",
+            "ZIP41exact file bytes; package40sitefiles9pages; valid and5negative cases",
+            "original262events protectedpaths unchanged;4parent HEAD8recovery hashes match",
+            "PR24 live verified merged today; no newPR push remoteCI deployment"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+          "passed": true,
+          "at": 1792145008.3650484
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261016T1900-1d34d937",
+          "task_id": "T-web-combined-search-20261016",
+          "fence": 43,
+          "expires_at": 1792146317.9452255
+        }
+      ]
     }
   },
   "decisions": {
@@ -6204,6 +7021,18 @@
       "next_step": "n目並べの紹介を独立したworks経路へ追加し既存play経路を保つ",
       "business_judgment": "unobserved",
       "technical_judgment": "improve"
+    },
+    "D-web-facts-discovery-20261016": {
+      "id": "D-web-facts-discovery-20261016",
+      "source": "user:automation:13-primary-research;itch.io/docs/creators/quality-guidelines",
+      "hypothesis": "既存の正確な作品情報を検索対象に含めれば人数や内容から紹介を探せる。利用改善は未観測。",
+      "next_step": "既存factsの検索対応と受入検査。翌日日次統合は維持。"
+    },
+    "D-web-combined-search-20261016": {
+      "id": "D-web-combined-search-20261016",
+      "source": "local-browser:4230:Web 1人用 returns 0; user:19-measurement",
+      "hypothesis": "既存の人数と制作技術を組み合わせて検索できる。利用改善と需要は未観測。",
+      "next_step": "同じ既存一覧の空白区切りAND検索と案内を実装し実測する。"
     }
   },
   "runs": {
@@ -6462,8 +7291,48 @@
       "run_id": "unity-20261016T0100-integration-45f5794c",
       "scheduled_at": "2026-10-16T01:00:00+09:00",
       "source": "scheduled:game-site:2026-10-16T01:00:00+09:00",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792080227.1239328
+    },
+    "unity-20261016T0100-iceslide-continuation": {
+      "run_id": "unity-20261016T0100-iceslide-continuation",
+      "source": "continuation:original0100-deadline",
+      "status": "completed",
+      "started_at": 1792080510.9518993
+    },
+    "unity-20261016T0700-minerush": {
+      "run_id": "unity-20261016T0700-minerush",
+      "scheduled_at": "2026-10-16T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-16T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792101832.913195
+    },
+    "unity-20261016T0700-gravity-continuation": {
+      "run_id": "unity-20261016T0700-gravity-continuation",
+      "source": "continuation:original0700-deadline",
+      "status": "completed",
+      "started_at": 1792102050.762156
+    },
+    "unity-20261016T1300-c275fb43": {
+      "run_id": "unity-20261016T1300-c275fb43",
+      "scheduled_at": "2026-10-16T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-16T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792123493.2408147
+    },
+    "unity-20261016T1900-1d34d937": {
+      "run_id": "unity-20261016T1900-1d34d937",
+      "scheduled_at": "2026-10-16T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-16T19:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792144817.7163112
+    },
+    "unity-20261017T0100-daily": {
+      "run_id": "unity-20261017T0100-daily",
+      "scheduled_at": "2026-10-17T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-17T01:00:00+09:00",
+      "status": "open",
+      "started_at": 1792166480.62639
     }
   },
   "experiments": {
@@ -6509,7 +7378,7 @@
       ],
       "measurement_plan": "内部表示・操作検査と公開後の開始率を分離する。公開指標は未観測でnull",
       "decision_id": "D-web-renovation-20261010",
-      "next_step": "10月16日以降の日次PRへ検証済みローカル成果と復元索引をまとめ最新head CI成功後に反映する",
+      "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
       "source": "user:天啓.md:2026-10-10:web-renovation",
       "stage": "act",
       "history": [
@@ -6616,6 +7485,43 @@
           "judgment": "unobserved",
           "at": 1792058933.0307484,
           "previous_stage": "check"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "plan",
+          "source": "local-browser:combined-search-20261016-1900",
+          "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+          "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+          "at": 1792145008.1132524,
+          "previous_stage": "act"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "do",
+          "source": "local-browser:combined-search-20261016-1900",
+          "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+          "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+          "at": 1792145008.158328,
+          "previous_stage": "plan"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "check",
+          "source": "local-browser:combined-search-20261016-1900",
+          "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+          "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+          "at": 1792145008.2042885,
+          "previous_stage": "do"
+        },
+        {
+          "id": "E-unity-portal",
+          "stage": "act",
+          "source": "local-browser:combined-search-20261016-1900",
+          "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+          "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+          "judgment": "unobserved",
+          "at": 1792145008.2509708,
+          "previous_stage": "check"
         }
       ],
       "release": null
@@ -6646,7 +7552,11 @@
     "2026-10-15T07:00:00+09:00": "unity-20261015T0700-streak-013ac59e",
     "2026-10-15T13:00:00+09:00": "unity-20261015T1300-score-read-6bc28a",
     "2026-10-15T19:00:00+09:00": "unity-20261015T1900-catalog-8e392a",
-    "2026-10-16T01:00:00+09:00": "unity-20261016T0100-integration-45f5794c"
+    "2026-10-16T01:00:00+09:00": "unity-20261016T0100-integration-45f5794c",
+    "2026-10-16T07:00:00+09:00": "unity-20261016T0700-minerush",
+    "2026-10-16T13:00:00+09:00": "unity-20261016T1300-c275fb43",
+    "2026-10-16T19:00:00+09:00": "unity-20261016T1900-1d34d937",
+    "2026-10-17T01:00:00+09:00": "unity-20261017T0100-daily"
   },
   "feedback": [
     {
@@ -15692,7 +16602,1236 @@
       },
       "previous": "af0eeed120db7f506f5cff5cb3685d48d0f75db90e121e646ff199edf76b0174",
       "sha256": "48f121cc515e472eb9f74d346512a7a05c80ce87eede57038990eac47c2d911d"
+    },
+    {
+      "revision": 238,
+      "at": 1792080510.8339846,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T0100-integration-45f5794c",
+        "fence": 38,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261016.json",
+            "sha256": "3a99bae62708556e6dcdfd6cda0a8ee67d531eeba4dbf580e44d093f498869b2"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "689c98114d79286165bdac1a012bfb1eb1d3528c3dfbd8e594f462b7572b80b6"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "73880bd583d6e9ee917c815301af6445089c5f23aba7f6d96ab256f1b0a5ca0a"
+          }
+        ],
+        "checks": [
+          "Linux57s Windows39s success on exact head",
+          "37files6pages restoration and modified/missing/extra/version/manifest rejection",
+          "12 runtime assets identical to browser-tested previous local package",
+          "CI merge parents verified by GitHub API; local object initially unavailable",
+          "390 CI restored guide Enter expanded no-start no-overflow; return Web query works focus",
+          "17 prior checkpoint hashes192 original main events4 parentHEAD8 recovery hashes",
+          "excluded paths absent; credential-pattern scan; JSON parsed; complete code diff review"
+        ],
+        "next_step": "T-web-iceslide-catalog-discovery: 検査済み既存Ice Slideの紹介を独立経路へ追加し実行URLを保持する。本日PR24マージ済み、追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "48f121cc515e472eb9f74d346512a7a05c80ce87eede57038990eac47c2d911d",
+      "sha256": "8cc22f468b77602d8f60e61323f10a83976715c2c5e2d2279cedb040589bf150"
+    },
+    {
+      "revision": 239,
+      "at": 1792080510.8734748,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261016T0100-integration-45f5794c",
+        "fence": 38,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261016.json",
+            "sha256": "3a99bae62708556e6dcdfd6cda0a8ee67d531eeba4dbf580e44d093f498869b2"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "689c98114d79286165bdac1a012bfb1eb1d3528c3dfbd8e594f462b7572b80b6"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "73880bd583d6e9ee917c815301af6445089c5f23aba7f6d96ab256f1b0a5ca0a"
+          }
+        ],
+        "checks": [
+          "Linux57s Windows39s success on exact head",
+          "37files6pages restoration and modified/missing/extra/version/manifest rejection",
+          "12 runtime assets identical to browser-tested previous local package",
+          "CI merge parents verified by GitHub API; local object initially unavailable",
+          "390 CI restored guide Enter expanded no-start no-overflow; return Web query works focus",
+          "17 prior checkpoint hashes192 original main events4 parentHEAD8 recovery hashes",
+          "excluded paths absent; credential-pattern scan; JSON parsed; complete code diff review"
+        ],
+        "next_step": "T-web-iceslide-catalog-discovery: 検査済み既存Ice Slideの紹介を独立経路へ追加し実行URLを保持する。本日PR24マージ済み、追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "8cc22f468b77602d8f60e61323f10a83976715c2c5e2d2279cedb040589bf150",
+      "sha256": "1ae101f9231062d7362c4855b9e05d72fe8629008831f1a98dfc45d7c4dad398"
+    },
+    {
+      "revision": 240,
+      "at": 1792080510.9136539,
+      "action": "task",
+      "data": {
+        "id": "T-web-iceslide-catalog-discovery",
+        "objective": "既存Ice Slideのルールと保存範囲を公開前の作品紹介へ追加",
+        "acceptance": [
+          "/works/iceslide/紹介と/games/iceslide/実行を分離",
+          "Web/verification/release=null、開始リンクなし",
+          "実装に合う20ステージ・方向操作・Undo・クリア保存/途中保存なしの案内",
+          "390/1280実ブラウザの検索・詳細・戻る・再読込",
+          "7SSG/4旧URL/案内条件/ZIP復元を検査"
+        ],
+        "outputs": [
+          "紹介",
+          "検査記録",
+          "復元索引"
+        ],
+        "checks": [
+          "TS ESLint build",
+          "navigation guide regression",
+          "browser",
+          "package restore"
+        ],
+        "next_step": "既存ソースと検査に基づきIce Slide紹介を追加",
+        "source": "user:automation:existing-web-portal-renovation",
+        "priority": 1,
+        "depends_on": [
+          "T-web-ntik-catalog-discovery",
+          "T-web-daily-ci-integration-20261016"
+        ],
+        "decision_id": "D-web-catalog-discovery-20261015",
+        "hypothesis": "既存作品のルールと保存範囲を一覧から理解できる入口を整える。需要は未観測。",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "1ae101f9231062d7362c4855b9e05d72fe8629008831f1a98dfc45d7c4dad398",
+      "sha256": "74d2fed5db08dcb8bebdb2ccc153cc19c535c37b8e4109e4bf6fd8e40dd74e80"
+    },
+    {
+      "revision": 241,
+      "at": 1792080510.9518993,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261016T0100-iceslide-continuation",
+        "source": "continuation:original0100-deadline"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "74d2fed5db08dcb8bebdb2ccc153cc19c535c37b8e4109e4bf6fd8e40dd74e80",
+      "sha256": "99ca895b92a14cec30ebadbe547cd54be0a772cb6f3afd0709fb77eb59385a64"
+    },
+    {
+      "revision": 242,
+      "at": 1792080510.9894452,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261016T0100-iceslide-continuation",
+        "task_id": "T-web-iceslide-catalog-discovery",
+        "ttl_seconds": 1100
+      },
+      "result": {
+        "run_id": "unity-20261016T0100-iceslide-continuation",
+        "task_id": "T-web-iceslide-catalog-discovery",
+        "fence": 39,
+        "expires_at": 1792081610.9894452
+      },
+      "previous": "99ca895b92a14cec30ebadbe547cd54be0a772cb6f3afd0709fb77eb59385a64",
+      "sha256": "12d69ed631f087f602d2286ec6c754aedcac91a34f6e34025ab5c609a464651e"
+    },
+    {
+      "revision": 243,
+      "at": 1792080738.8804352,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T0100-iceslide-continuation",
+        "fence": 39,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/iceslide-catalog-20261016-0100.json",
+            "sha256": "c05cf65c9cd43c79d787e00022039e7dad518f9362921afbeae1ad2ff07b9274"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "0757cdf6e0da8710fa68c8489879284a7d0b538ea9be43393199e64ba065b9b8"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "0e81341b00ba74349b30cb125c8ae84a73f1c090d8740d9d716d1a29bc61f6db"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "1f4668968e0d41c7912135be5cafe63a2d7f5b854e5ea934a73c97a93c7a097b"
+          },
+          {
+            "path": "docs/web-iceslide-catalog-20261016.md",
+            "sha256": "96314bbf3573a69b94518ffb3a0b7187ea2056178065e3212138f59b7bf69f28"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "295d54abccc66ce815066f7fc4f2201b754d17c4c6ccc7f30660668d5bec4c04"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "d5b38f49abf40006cab1e9116873c06a936d7e09ae3e87297f8e0a1da09d91ec"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "6824f9457327c995314754b321336a7cdcadd5cd086ab4437fd915e79d106196"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite7SSG 4legacy 37checksums",
+          "navigation SSR includes Ice Slide save-scope/no-start and8Web-ownerUnity guide cases",
+          "3901280 Enter guide no-overflow no-start return query works focus and reload",
+          "390 published filter0 then all restores1",
+          "legacy game normal Enter start ArrowDown ArrowRight2move clear, no fixtures",
+          "39files ZIP restoration exact; modified/missing/extra/version/manifest rejection",
+          "sourceZIP110exactGitblobs",
+          "final restored4223IAB390guideEnter/no-start/no-overflow/returnIcequery worksfocus",
+          "game code and storage unchanged; owner Unity oldcloud parent data unchanged"
+        ],
+        "next_step": "T-web-minerush-catalog-discovery: 固定9×9/10地雷・初手・旗・途中保存なしを既存実装から整理し独立紹介へ追加。PR24は本日マージ済みのため追加PRなし、翌日分へローカル保存。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "12d69ed631f087f602d2286ec6c754aedcac91a34f6e34025ab5c609a464651e",
+      "sha256": "fdb67c6b131d113c70c98aeaf4554abb0410c757541ba0b5be1b5aad162c61e3"
+    },
+    {
+      "revision": 244,
+      "at": 1792080738.9211726,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261016T0100-iceslide-continuation",
+        "fence": 39,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/iceslide-catalog-20261016-0100.json",
+            "sha256": "c05cf65c9cd43c79d787e00022039e7dad518f9362921afbeae1ad2ff07b9274"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "0757cdf6e0da8710fa68c8489879284a7d0b538ea9be43393199e64ba065b9b8"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "0e81341b00ba74349b30cb125c8ae84a73f1c090d8740d9d716d1a29bc61f6db"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "1f4668968e0d41c7912135be5cafe63a2d7f5b854e5ea934a73c97a93c7a097b"
+          },
+          {
+            "path": "docs/web-iceslide-catalog-20261016.md",
+            "sha256": "96314bbf3573a69b94518ffb3a0b7187ea2056178065e3212138f59b7bf69f28"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "295d54abccc66ce815066f7fc4f2201b754d17c4c6ccc7f30660668d5bec4c04"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "d5b38f49abf40006cab1e9116873c06a936d7e09ae3e87297f8e0a1da09d91ec"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "6824f9457327c995314754b321336a7cdcadd5cd086ab4437fd915e79d106196"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite7SSG 4legacy 37checksums",
+          "navigation SSR includes Ice Slide save-scope/no-start and8Web-ownerUnity guide cases",
+          "3901280 Enter guide no-overflow no-start return query works focus and reload",
+          "390 published filter0 then all restores1",
+          "legacy game normal Enter start ArrowDown ArrowRight2move clear, no fixtures",
+          "39files ZIP restoration exact; modified/missing/extra/version/manifest rejection",
+          "sourceZIP110exactGitblobs",
+          "final restored4223IAB390guideEnter/no-start/no-overflow/returnIcequery worksfocus",
+          "game code and storage unchanged; owner Unity oldcloud parent data unchanged"
+        ],
+        "next_step": "T-web-minerush-catalog-discovery: 固定9×9/10地雷・初手・旗・途中保存なしを既存実装から整理し独立紹介へ追加。PR24は本日マージ済みのため追加PRなし、翌日分へローカル保存。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "fdb67c6b131d113c70c98aeaf4554abb0410c757541ba0b5be1b5aad162c61e3",
+      "sha256": "966aade0aee01b620473120773860fac9454b1f0d6a1317c7d03fd2e967a1e86"
+    },
+    {
+      "revision": 245,
+      "at": 1792080738.9608507,
+      "action": "task",
+      "data": {
+        "id": "T-web-minerush-catalog-discovery",
+        "objective": "既存MineRushのルールと保存範囲を作品紹介へ追加",
+        "acceptance": [
+          "/works/minerush/紹介と/games/minerush/実行を分離",
+          "固定9×9/10地雷・初手と旗操作・キーボード代替を現在実装に照合",
+          "途中保存なしと公開版未確認を表示、release=null開始リンクなし",
+          "3901280検索詳細往復再読込とSSG/4URL/ZIP復元検査"
+        ],
+        "outputs": [
+          "作品紹介",
+          "検査記録",
+          "復元索引"
+        ],
+        "checks": [
+          "build TS ESLint",
+          "navigation guides",
+          "browser",
+          "package restore"
+        ],
+        "next_step": "既存MineRushソースと検査記録を照合して紹介を追加",
+        "source": "user:automation:existing-web-portal-renovation",
+        "priority": 1,
+        "depends_on": [
+          "T-web-iceslide-catalog-discovery"
+        ],
+        "decision_id": "D-web-catalog-discovery-20261015",
+        "hypothesis": "既存作品の操作と保存範囲を案内から理解できる。需要未観測。",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "966aade0aee01b620473120773860fac9454b1f0d6a1317c7d03fd2e967a1e86",
+      "sha256": "03c8cba487bc257bd3a2422b546edd5bbaaccd6605152f65af49c6ff1ffb252f"
+    },
+    {
+      "revision": 246,
+      "at": 1792101832.913195,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261016T0700-minerush",
+        "scheduled_at": "2026-10-16T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "03c8cba487bc257bd3a2422b546edd5bbaaccd6605152f65af49c6ff1ffb252f",
+      "sha256": "2b74c7eb45cf464389b72cc58474936b911152ed0d712a0f8222b0e1d8ead440"
+    },
+    {
+      "revision": 247,
+      "at": 1792101833.002628,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261016T0700-minerush",
+        "task_id": "T-web-minerush-catalog-discovery",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261016T0700-minerush",
+        "task_id": "T-web-minerush-catalog-discovery",
+        "fence": 40,
+        "expires_at": 1792103333.002628
+      },
+      "previous": "2b74c7eb45cf464389b72cc58474936b911152ed0d712a0f8222b0e1d8ead440",
+      "sha256": "9d731fa36b7443b5ad0923c5ad2edb092de06bb9637291852cfe2eafcaad7eea"
+    },
+    {
+      "revision": 248,
+      "at": 1792102050.627109,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T0700-minerush",
+        "fence": 40,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/minerush-catalog-20261016-0700.json",
+            "sha256": "25166983b3d2bbccd30b2f9f362c4f0a7ceb849782854adf01b8d2ab22d43358"
+          },
+          {
+            "path": "docs/web-minerush-catalog-20261016.md",
+            "sha256": "7edd66f85741125ac482b9f3e16c54c607415ea1644be7a33d19befc222aedec"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "588ea57c50e3faeb2ce1e51f7023ae64913328204c86d60ac25ab5333d70131e"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "0d3ba88292b7496ff4e8b38cda3bc1deb33065efd7f8bca87300b7f91a5a3783"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "c2af7be343030526f284a3cdb8f0e1ddb98edfa30134c1a8cabde7d1f8defa57"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "3c7f296716cf469112f6594bd3f7990ab5e7b8d053115bd664b04b071b5726a8"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite8SSG4URLs38hashes",
+          "navigation and8guides",
+          "MineRush actual App handlers",
+          "3901280 and restored390 browser",
+          "ZIP40exact and5negative cases",
+          "business27tests",
+          "parent4HEAD verified; no gamecode edits or public operations"
+        ],
+        "next_step": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "9d731fa36b7443b5ad0923c5ad2edb092de06bb9637291852cfe2eafcaad7eea",
+      "sha256": "c23815c4218f7688d28ce188e3573e4e94bb7365ec9060e544f50a9006dc38f3"
+    },
+    {
+      "revision": 249,
+      "at": 1792102050.6699827,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261016T0700-minerush",
+        "fence": 40,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/minerush-catalog-20261016-0700.json",
+            "sha256": "25166983b3d2bbccd30b2f9f362c4f0a7ceb849782854adf01b8d2ab22d43358"
+          },
+          {
+            "path": "docs/web-minerush-catalog-20261016.md",
+            "sha256": "7edd66f85741125ac482b9f3e16c54c607415ea1644be7a33d19befc222aedec"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "588ea57c50e3faeb2ce1e51f7023ae64913328204c86d60ac25ab5333d70131e"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "0d3ba88292b7496ff4e8b38cda3bc1deb33065efd7f8bca87300b7f91a5a3783"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "c2af7be343030526f284a3cdb8f0e1ddb98edfa30134c1a8cabde7d1f8defa57"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "3c7f296716cf469112f6594bd3f7990ab5e7b8d053115bd664b04b071b5726a8"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite8SSG4URLs38hashes",
+          "navigation and8guides",
+          "MineRush actual App handlers",
+          "3901280 and restored390 browser",
+          "ZIP40exact and5negative cases",
+          "business27tests",
+          "parent4HEAD verified; no gamecode edits or public operations"
+        ],
+        "next_step": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "c23815c4218f7688d28ce188e3573e4e94bb7365ec9060e544f50a9006dc38f3",
+      "sha256": "0589219e4b14cd1cccc579608028ff11e458d275b92ee0d7476f08166f1c86e8"
+    },
+    {
+      "revision": 250,
+      "at": 1792102050.7203834,
+      "action": "task",
+      "data": {
+        "id": "T-web-gravityball-catalog-discovery",
+        "objective": "既存GravityBallの操作と保存範囲を独立した紹介へ追加",
+        "acceptance": [
+          "/works/gravityball/紹介と/games/gravityball/実行を分離",
+          "重力操作と再開・最高値のみ保存を現行実装に照合",
+          "Web/verification/release=null開始なし",
+          "3901280検索詳細往復再読込、9SSG4URLとZIP復元"
+        ],
+        "outputs": [
+          "作品紹介",
+          "検査記録",
+          "復元索引"
+        ],
+        "checks": [
+          "build TS ESLint",
+          "navigation guides",
+          "browser",
+          "package restore"
+        ],
+        "next_step": "T-web-gravityball-catalog-discovery: 既存GravityBallの重力操作・失敗再開・最高値保存を実装照合し独立紹介へ追加。本日追加PRなし。",
+        "source": "user:automation:existing-web-portal-renovation",
+        "priority": 1,
+        "depends_on": [
+          "T-web-minerush-catalog-discovery"
+        ],
+        "decision_id": "D-web-catalog-discovery-20261015",
+        "hypothesis": "既存作品の操作と保存範囲を案内から理解できる。需要は未観測。",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "0589219e4b14cd1cccc579608028ff11e458d275b92ee0d7476f08166f1c86e8",
+      "sha256": "2fa68653ed6a7ceaadd492f8d4189777d4fdf19cb43aed876f6aad1ca3211162"
+    },
+    {
+      "revision": 251,
+      "at": 1792102050.762156,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261016T0700-gravity-continuation",
+        "source": "continuation:original0700-deadline"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "2fa68653ed6a7ceaadd492f8d4189777d4fdf19cb43aed876f6aad1ca3211162",
+      "sha256": "b67ec91b64be4745ad5dc36faa96d845c41f194afc0be847cfeb4b3525f4c897"
+    },
+    {
+      "revision": 252,
+      "at": 1792102050.8048842,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261016T0700-gravity-continuation",
+        "task_id": "T-web-gravityball-catalog-discovery",
+        "ttl_seconds": 1000
+      },
+      "result": {
+        "run_id": "unity-20261016T0700-gravity-continuation",
+        "task_id": "T-web-gravityball-catalog-discovery",
+        "fence": 41,
+        "expires_at": 1792103050.8048842
+      },
+      "previous": "b67ec91b64be4745ad5dc36faa96d845c41f194afc0be847cfeb4b3525f4c897",
+      "sha256": "374128bf96eccf6a687636a8b4b3c51f8a4540fc0a0d257934288ccb57cca339"
+    },
+    {
+      "revision": 253,
+      "at": 1792102262.2550983,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T0700-gravity-continuation",
+        "fence": 41,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/gravityball-catalog-20261016-0700.json",
+            "sha256": "d322823a3b65761546531c80c859d66313871e2f809071c229670ddce841e346"
+          },
+          {
+            "path": "docs/web-gravityball-catalog-20261016.md",
+            "sha256": "ded0ef4c97da659a888cfe632b90015932f472bfe507f7d2c986362f2c80a8aa"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-16-game-guides-and-save-scope.md",
+            "sha256": "5630c54ac0f58868e3e204d9bec4433cac4dc51afa278a764e9545895b22fb95"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "4e5ac7fa367b365288aabb2fed1400e853af9c84117647f1bce0b8cc68721b56"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "93db2f21146005d02f1e9f898bd1dfd70b3ad636e7a862a68c72cee65cd8199a"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "672994913630f78c37b4218de14e9f0bd37773e2107fdbc818dd7a1d0a7ba653"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "7612fc009e7843e30ec6cbc69955fe14f9981f3201f84d719e00480c49f8f736"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "2fc6754af6e2d32a87c675f2358eebf7ca6ff83de6eecc1b389a07fdeb99a17e"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "90de127cba45c0237bbbab3c4488497034ac2ffc9951772486e179531df1587c"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite9SSG4URLs39hashes",
+          "navigation SSR and8guide cases",
+          "GravityBall actual App regression",
+          "3901280 browser search detail Enter no-start no-overflow return query works-focus reload",
+          "legacy start ArrowRight movement then reload start; no injected state",
+          "ZIP41exact restore sourceZIP112exactGitblobs and5negative cases",
+          "restored390 guide and MineRush route",
+          "parent4HEAD recovery8hashes protectedpaths unchanged",
+          "PR24 already merged; no extraPR push CI deployment; draftonly"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "374128bf96eccf6a687636a8b4b3c51f8a4540fc0a0d257934288ccb57cca339",
+      "sha256": "29230681a2c75fa5cfd6c748b09062a6009ceae869bbfe17a3d95aa940926ee8"
+    },
+    {
+      "revision": 254,
+      "at": 1792102262.2963336,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261016T0700-gravity-continuation",
+        "fence": 41,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/gravityball-catalog-20261016-0700.json",
+            "sha256": "d322823a3b65761546531c80c859d66313871e2f809071c229670ddce841e346"
+          },
+          {
+            "path": "docs/web-gravityball-catalog-20261016.md",
+            "sha256": "ded0ef4c97da659a888cfe632b90015932f472bfe507f7d2c986362f2c80a8aa"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-16-game-guides-and-save-scope.md",
+            "sha256": "5630c54ac0f58868e3e204d9bec4433cac4dc51afa278a764e9545895b22fb95"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "4e5ac7fa367b365288aabb2fed1400e853af9c84117647f1bce0b8cc68721b56"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "93db2f21146005d02f1e9f898bd1dfd70b3ad636e7a862a68c72cee65cd8199a"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "672994913630f78c37b4218de14e9f0bd37773e2107fdbc818dd7a1d0a7ba653"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "7612fc009e7843e30ec6cbc69955fe14f9981f3201f84d719e00480c49f8f736"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "2fc6754af6e2d32a87c675f2358eebf7ca6ff83de6eecc1b389a07fdeb99a17e"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "90de127cba45c0237bbbab3c4488497034ac2ffc9951772486e179531df1587c"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite9SSG4URLs39hashes",
+          "navigation SSR and8guide cases",
+          "GravityBall actual App regression",
+          "3901280 browser search detail Enter no-start no-overflow return query works-focus reload",
+          "legacy start ArrowRight movement then reload start; no injected state",
+          "ZIP41exact restore sourceZIP112exactGitblobs and5negative cases",
+          "restored390 guide and MineRush route",
+          "parent4HEAD recovery8hashes protectedpaths unchanged",
+          "PR24 already merged; no extraPR push CI deployment; draftonly"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "29230681a2c75fa5cfd6c748b09062a6009ceae869bbfe17a3d95aa940926ee8",
+      "sha256": "c4f86c599f1f2f6887a2e8b374ef81663d825bec1ca0f9ac36063c997df862bc"
+    },
+    {
+      "revision": 255,
+      "at": 1792102262.3384292,
+      "action": "task",
+      "data": {
+        "id": "T-web-daily-ci-integration-20261017",
+        "objective": "ローカルの既存Web作品紹介と復元記録を翌日日次PRへ統合",
+        "acceptance": [
+          "当日PR/open PRと既存headを照合し日次1件へ集約",
+          "既存4ゲームと9SSG/導線/案内/ZIP復元の検査が成功",
+          "差分全体と公開除外を確認、最新PRheadのCI成功後に版指定merge",
+          "CI成果物の版とハッシュを照合し復元、ローカル版と区別"
+        ],
+        "outputs": [
+          "日次PR",
+          "CI検査",
+          "CI復元索引"
+        ],
+        "checks": [
+          "build TS ESLint",
+          "existing games navigation guides",
+          "CI latesthead",
+          "package restore"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。",
+        "source": "user:automation:2026-10-13:daily-pr-limit",
+        "priority": 1,
+        "depends_on": [
+          "T-web-gravityball-catalog-discovery"
+        ],
+        "decision_id": "D-web-catalog-discovery-20261015",
+        "hypothesis": "既存制作を日次集約し検証と復元可能性を保持する。需要は未観測。",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "c4f86c599f1f2f6887a2e8b374ef81663d825bec1ca0f9ac36063c997df862bc",
+      "sha256": "22d61ffc7ee80511c3a9eb87a47b7c925c898de40865213b7ab1180cec61d6f7"
+    },
+    {
+      "revision": 256,
+      "at": 1792102262.3782551,
+      "action": "block",
+      "data": {
+        "task_id": "T-web-daily-ci-integration-20261017",
+        "source": "github:PR24:merged:2026-10-16JST",
+        "reason": "本人の日次PR原則1件方針。本日PR24マージ済み。追加PRは翌日分へ集約する。",
+        "next_step": "T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。"
+      },
+      "result": {
+        "recorded": "block"
+      },
+      "previous": "22d61ffc7ee80511c3a9eb87a47b7c925c898de40865213b7ab1180cec61d6f7",
+      "sha256": "e40b0b4519f7c4a122cf6d0d7d537f58d460e3912c91cd47b80f6f84aa24040b"
+    },
+    {
+      "revision": 257,
+      "at": 1792123493.2408147,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261016T1300-c275fb43",
+        "scheduled_at": "2026-10-16T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "e40b0b4519f7c4a122cf6d0d7d537f58d460e3912c91cd47b80f6f84aa24040b",
+      "sha256": "301f2e7dc03343d3ea6fa5da13f5b6067b93763d0190c3efae18410d1c9284b9"
+    },
+    {
+      "revision": 258,
+      "at": 1792123493.321375,
+      "action": "decision",
+      "data": {
+        "id": "D-web-facts-discovery-20261016",
+        "source": "user:automation:13-primary-research;itch.io/docs/creators/quality-guidelines",
+        "hypothesis": "既存の正確な作品情報を検索対象に含めれば人数や内容から紹介を探せる。利用改善は未観測。",
+        "next_step": "既存factsの検索対応と受入検査。翌日日次統合は維持。"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "301f2e7dc03343d3ea6fa5da13f5b6067b93763d0190c3efae18410d1c9284b9",
+      "sha256": "3be7bfb7640ad615957c0e0b667f55c207d50635f6cb6e8eadb179a59aa95ef1"
+    },
+    {
+      "revision": 259,
+      "at": 1792123493.361374,
+      "action": "task",
+      "data": {
+        "id": "T-web-facts-discovery-20261016",
+        "objective": "一次資料から既存作品の検索漏れを直し受入条件を検証",
+        "acceptance": [
+          "一次資料3件と事実/推測/需要未観測を分離",
+          "既存factsを検索し人数/内容から該当作品を表示",
+          "空白/英字大小文字/公開中フィルタ/URL往復と未公開開始なしを維持",
+          "型静的ビルドSSRと実ブラウザ入力再読込を確認"
+        ],
+        "outputs": [
+          "市場調査",
+          "検索実装",
+          "検査証跡"
+        ],
+        "checks": [
+          "sources",
+          "build",
+          "SSR",
+          "browser"
+        ],
+        "next_step": "既存factsを検索へ追加し翌日日次PRへ集約",
+        "decision_id": "D-web-facts-discovery-20261016",
+        "hypothesis": "正確な人数・内容を既存情報から検索できる。需要は未観測。",
+        "source": "user:automation:13-primary-research",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "3be7bfb7640ad615957c0e0b667f55c207d50635f6cb6e8eadb179a59aa95ef1",
+      "sha256": "378d29ed7ad2e815301bbdcaed11daa9a1a765a42d83aa981ec2c9cc733b7dd9"
+    },
+    {
+      "revision": 260,
+      "at": 1792123493.4028177,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261016T1300-c275fb43",
+        "task_id": "T-web-facts-discovery-20261016",
+        "ttl_seconds": 1200
+      },
+      "result": {
+        "run_id": "unity-20261016T1300-c275fb43",
+        "task_id": "T-web-facts-discovery-20261016",
+        "fence": 42,
+        "expires_at": 1792124693.4028177
+      },
+      "previous": "378d29ed7ad2e815301bbdcaed11daa9a1a765a42d83aa981ec2c9cc733b7dd9",
+      "sha256": "2b7c607b6cce11ce4adcbcca41d9b8993fb05c92ef5852682eb3a587b8ca54f6"
+    },
+    {
+      "revision": 261,
+      "at": 1792123691.5929356,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T1300-c275fb43",
+        "fence": 42,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-16-catalog-facts-discovery.md",
+            "sha256": "69e374aee0809a50832e230c2a9767374fd30b255ecfabe6986c75bd29501fe6"
+          },
+          {
+            "path": "business/unity/evidence/catalog-facts-20261016-1300.json",
+            "sha256": "b623e74fe1cfbd66fa69ac8b8eb00bab764b85dc8ad7f03f617e15099baa398d"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "0293bcb9ebb1e3c22df2523af0490a8afba9e2c6fe2d85658900d4b58099ae46"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "c3bc6ae1d591884aaa01365b084fb4793d11b68091dee4a59accfb70a5a78133"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "3ae9195c6e9f10ee2546f84ab44b36bd9006af47da67b37718b2ca2c2822b94b"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d22f418f1dd898a93fa4f49406960b9a87091aeb654ccd59f03e79f1fdd35c67"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "912773e79c6a9f3f2b57c01aab731e00ec8dac25ff01bc342bfeb5dfb2a5880b"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite9SSG",
+          "navigation SSR fact query cases and release filters",
+          "work guides8cases",
+          "repository4entries19GUID",
+          "390 input/query return focus reload filter0 nooverflow",
+          "1280 highscore query reload detail nooverflow noStart",
+          "ZIP41files exactbytes restoration",
+          "valid package and5negative cases",
+          "restored1280 input detail return query focus",
+          "four parent HEADs match"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "2b7c607b6cce11ce4adcbcca41d9b8993fb05c92ef5852682eb3a587b8ca54f6",
+      "sha256": "6fe7fda3e683c7e3870aec75c4f48fca125a7f8cd6890c766ae39a9f971a95f0"
+    },
+    {
+      "revision": 262,
+      "at": 1792123691.635219,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261016T1300-c275fb43",
+        "fence": 42,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-16-catalog-facts-discovery.md",
+            "sha256": "69e374aee0809a50832e230c2a9767374fd30b255ecfabe6986c75bd29501fe6"
+          },
+          {
+            "path": "business/unity/evidence/catalog-facts-20261016-1300.json",
+            "sha256": "b623e74fe1cfbd66fa69ac8b8eb00bab764b85dc8ad7f03f617e15099baa398d"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "0293bcb9ebb1e3c22df2523af0490a8afba9e2c6fe2d85658900d4b58099ae46"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "c3bc6ae1d591884aaa01365b084fb4793d11b68091dee4a59accfb70a5a78133"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "3ae9195c6e9f10ee2546f84ab44b36bd9006af47da67b37718b2ca2c2822b94b"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d22f418f1dd898a93fa4f49406960b9a87091aeb654ccd59f03e79f1fdd35c67"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "912773e79c6a9f3f2b57c01aab731e00ec8dac25ff01bc342bfeb5dfb2a5880b"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite9SSG",
+          "navigation SSR fact query cases and release filters",
+          "work guides8cases",
+          "repository4entries19GUID",
+          "390 input/query return focus reload filter0 nooverflow",
+          "1280 highscore query reload detail nooverflow noStart",
+          "ZIP41files exactbytes restoration",
+          "valid package and5negative cases",
+          "restored1280 input detail return query focus",
+          "four parent HEADs match"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "6fe7fda3e683c7e3870aec75c4f48fca125a7f8cd6890c766ae39a9f971a95f0",
+      "sha256": "53f7a1a02d8d01e16e4f493d2f5f7e44a68db59ca776b2d7e52a51b62586408f"
+    },
+    {
+      "revision": 263,
+      "at": 1792144817.7163112,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261016T1900-1d34d937",
+        "scheduled_at": "2026-10-16T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "53f7a1a02d8d01e16e4f493d2f5f7e44a68db59ca776b2d7e52a51b62586408f",
+      "sha256": "99a0cf15eac869b36ed36794e2e71d91e59a7969b850f2d756cb6bb86787a1b2"
+    },
+    {
+      "revision": 264,
+      "at": 1792144817.8494267,
+      "action": "decision",
+      "data": {
+        "id": "D-web-combined-search-20261016",
+        "source": "local-browser:4230:Web 1人用 returns 0; user:19-measurement",
+        "hypothesis": "既存の人数と制作技術を組み合わせて検索できる。利用改善と需要は未観測。",
+        "next_step": "同じ既存一覧の空白区切りAND検索と案内を実装し実測する。"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "99a0cf15eac869b36ed36794e2e71d91e59a7969b850f2d756cb6bb86787a1b2",
+      "sha256": "5af7f2a79eaeddb5f385f24e385dd1cd9a0c543369482e3e227c8f39071574be"
+    },
+    {
+      "revision": 265,
+      "at": 1792144817.8999922,
+      "action": "task",
+      "data": {
+        "id": "T-web-combined-search-20261016",
+        "objective": "実測した複数検索語の検索漏れを改善",
+        "acceptance": [
+          "Web 1人用は3件、語順逆転と全角空白に対応",
+          "存在しない語との組合せは0件、単語と空検索は維持",
+          "公開中0件、未公開開始なし、検索URL往復と再読込を確認",
+          "型・静的・ビルド・SSRと390/1280実ブラウザ確認"
+        ],
+        "outputs": [
+          "検索実装",
+          "検査記録",
+          "戦略判断"
+        ],
+        "checks": [
+          "SSR",
+          "build",
+          "browser"
+        ],
+        "next_step": "翌日日次PRへ既存紹介と検索改善を集約",
+        "source": "user:automation:19-analysis-and-strategy",
+        "decision_id": "D-web-combined-search-20261016",
+        "hypothesis": "既存情報の組合せ検索を可能にする。需要は未観測。",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "5af7f2a79eaeddb5f385f24e385dd1cd9a0c543369482e3e227c8f39071574be",
+      "sha256": "ab25525c98785b24120e8c479789261a1291d32fc1c7cb9838887fd2496ecc5a"
+    },
+    {
+      "revision": 266,
+      "at": 1792144817.9452255,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261016T1900-1d34d937",
+        "task_id": "T-web-combined-search-20261016",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261016T1900-1d34d937",
+        "task_id": "T-web-combined-search-20261016",
+        "fence": 43,
+        "expires_at": 1792146317.9452255
+      },
+      "previous": "ab25525c98785b24120e8c479789261a1291d32fc1c7cb9838887fd2496ecc5a",
+      "sha256": "6af04adaf844e95c01b57cfc4ee1469c2b4dc809767df146d932ba119b18fbd3"
+    },
+    {
+      "revision": 267,
+      "at": 1792145008.1132524,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "plan",
+        "source": "local-browser:combined-search-20261016-1900",
+        "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+        "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "6af04adaf844e95c01b57cfc4ee1469c2b4dc809767df146d932ba119b18fbd3",
+      "sha256": "81782ff9f5e719e712e6629711a7788baef25be4d095457cd950167ee3b37812"
+    },
+    {
+      "revision": 268,
+      "at": 1792145008.158328,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "do",
+        "source": "local-browser:combined-search-20261016-1900",
+        "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+        "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "81782ff9f5e719e712e6629711a7788baef25be4d095457cd950167ee3b37812",
+      "sha256": "e5d0323c9c79616af5bd94070812ae2ac5d174c9c213f090f9821b4eff99d50d"
+    },
+    {
+      "revision": 269,
+      "at": 1792145008.2042885,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "check",
+        "source": "local-browser:combined-search-20261016-1900",
+        "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+        "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "e5d0323c9c79616af5bd94070812ae2ac5d174c9c213f090f9821b4eff99d50d",
+      "sha256": "c4b807d693042d24db5e3f01a32eaba21f677e957aad0632d9d91eee96331d4e"
+    },
+    {
+      "revision": 270,
+      "at": 1792145008.2509708,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-unity-portal",
+        "stage": "act",
+        "source": "local-browser:combined-search-20261016-1900",
+        "evidence": "business/unity/evidence/combined-search-20261016-1900.json",
+        "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+        "judgment": "unobserved"
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "c4b807d693042d24db5e3f01a32eaba21f677e957aad0632d9d91eee96331d4e",
+      "sha256": "6a28214f56863de62cff59772ae1b70d48d59d566ee62a2e5ce6ca3c6d70480a"
+    },
+    {
+      "revision": 271,
+      "at": 1792145008.3194118,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261016T1900-1d34d937",
+        "fence": 43,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/combined-search-20261016-1900.json",
+            "sha256": "87a2fffe64677f0aeee69c63ae696469d981a0c02afc53a0d112cddba46a8cac"
+          },
+          {
+            "path": "docs/web-combined-search-20261016.md",
+            "sha256": "65323ff2af60112b063058b6c19075f6ac901a4986783bebbf55c1ba019e294f"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "c262f1222f3a9c652a257d2f6241ebf64d68e065a2970f4e02a681dde0789cd7"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "d00199f3d16ea05acee0e85e2861ef214f58ff7741695cca04cbdad675a4f0e9"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "621338b13418ece96cd462b2b2229335ce272fd93469021cdf2ac86e6cc3852d"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d57ed37d3ed2e89066cdd5ce2c90bdbd8ebd5fe5f91f6d67ca9be09cf63c1b73"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "0f187457ece5b1ac892e242f332cf162ca5c2555a9e33619861ded6da341afad"
+          }
+        ],
+        "checks": [
+          "TypeScript ESLint Vite9SSG",
+          "navigation SSR AND8cases plus existing facts/URLs/filter/escaping",
+          "Web ownerUnity guide8cases",
+          "4legacy routes39checksums19GUID",
+          "390 reverse/fullwidth query3 detail Enter return worksfocus reload released0 nooverflow",
+          "1280 three terms1 reload nooverflow screenshot observed only",
+          "restored package1280 search3 and390 MineRush Enter return worksfocus reload noStart nooverflow",
+          "ZIP41exact file bytes; package40sitefiles9pages; valid and5negative cases",
+          "original262events protectedpaths unchanged;4parent HEAD8recovery hashes match",
+          "PR24 live verified merged today; no newPR push remoteCI deployment"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "6a28214f56863de62cff59772ae1b70d48d59d566ee62a2e5ce6ca3c6d70480a",
+      "sha256": "704515fc1b02e1feaef864a7463352c45e6e1616fef39e7cb8d52f03b09592cc"
+    },
+    {
+      "revision": 272,
+      "at": 1792145008.3650484,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261016T1900-1d34d937",
+        "fence": 43,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/combined-search-20261016-1900.json",
+            "sha256": "87a2fffe64677f0aeee69c63ae696469d981a0c02afc53a0d112cddba46a8cac"
+          },
+          {
+            "path": "docs/web-combined-search-20261016.md",
+            "sha256": "65323ff2af60112b063058b6c19075f6ac901a4986783bebbf55c1ba019e294f"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "c262f1222f3a9c652a257d2f6241ebf64d68e065a2970f4e02a681dde0789cd7"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "d00199f3d16ea05acee0e85e2861ef214f58ff7741695cca04cbdad675a4f0e9"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "621338b13418ece96cd462b2b2229335ce272fd93469021cdf2ac86e6cc3852d"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "d57ed37d3ed2e89066cdd5ce2c90bdbd8ebd5fe5f91f6d67ca9be09cf63c1b73"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "0f187457ece5b1ac892e242f332cf162ca5c2555a9e33619861ded6da341afad"
+          }
+        ],
+        "checks": [
+          "TypeScript ESLint Vite9SSG",
+          "navigation SSR AND8cases plus existing facts/URLs/filter/escaping",
+          "Web ownerUnity guide8cases",
+          "4legacy routes39checksums19GUID",
+          "390 reverse/fullwidth query3 detail Enter return worksfocus reload released0 nooverflow",
+          "1280 three terms1 reload nooverflow screenshot observed only",
+          "restored package1280 search3 and390 MineRush Enter return worksfocus reload noStart nooverflow",
+          "ZIP41exact file bytes; package40sitefiles9pages; valid and5negative cases",
+          "original262events protectedpaths unchanged;4parent HEAD8recovery hashes match",
+          "PR24 live verified merged today; no newPR push remoteCI deployment"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "704515fc1b02e1feaef864a7463352c45e6e1616fef39e7cb8d52f03b09592cc",
+      "sha256": "68ca5153935884d163ea66541851fd09845f0b8a8eaf97770b75eef3810bc053"
+    },
+    {
+      "revision": 273,
+      "at": 1792166480.62639,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261017T0100-daily",
+        "scheduled_at": "2026-10-17T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "68ca5153935884d163ea66541851fd09845f0b8a8eaf97770b75eef3810bc053",
+      "sha256": "6db2fb43a71ea637fbcd945fa3ae481966f923fa43c91c8a0f5f3c3a18d41b3f"
+    },
+    {
+      "revision": 274,
+      "at": 1792166480.723893,
+      "action": "unblock",
+      "data": {
+        "task_id": "T-web-daily-ci-integration-20261017",
+        "source": "github:20261017:no-daily-pr",
+        "reason": "JST date changed; latest PR24 merged yesterday; no open PR",
+        "next_step": "Batch existing local work into one daily PR and verify exact-head CI"
+      },
+      "result": {
+        "recorded": "unblock"
+      },
+      "previous": "6db2fb43a71ea637fbcd945fa3ae481966f923fa43c91c8a0f5f3c3a18d41b3f",
+      "sha256": "6d26feb8faeecad200fd7e116990e5cb10356f45e6a2abda9a060aadb656227e"
+    },
+    {
+      "revision": 275,
+      "at": 1792166480.7677534,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261017T0100-daily",
+        "task_id": "T-web-daily-ci-integration-20261017"
+      },
+      "result": {
+        "run_id": "unity-20261017T0100-daily",
+        "task_id": "T-web-daily-ci-integration-20261017",
+        "fence": 44,
+        "expires_at": 1792168280.7677534
+      },
+      "previous": "6d26feb8faeecad200fd7e116990e5cb10356f45e6a2abda9a060aadb656227e",
+      "sha256": "61e142220b4e7a21a94b8eae2bc8c68aa2aadd7fef547a7dfa9cf7ca9ff75b33"
     }
   ],
-  "projection_sha256": "b19aaf9c0fd88b50a51111296a8f4c6c19fce68e68163c59489f87066011a68f"
+  "projection_sha256": "4486882de4deea40c8711beca030f5de9132253eb679708d99a2e72e53fd6e00"
 }
