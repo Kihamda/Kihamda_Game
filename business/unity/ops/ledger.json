@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 275,
+  "revision": 278,
   "business_id": "game-site",
   "fence": 44,
-  "lease": {
-    "run_id": "unity-20261017T0100-daily",
-    "task_id": "T-web-daily-ci-integration-20261017",
-    "fence": 44,
-    "expires_at": 1792168280.7677534
-  },
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -6561,7 +6556,7 @@
       "hypothesis": "既存制作を日次集約し検証と復元可能性を保持する。需要は未観測。",
       "pdca": "do",
       "experiment_id": "E-unity-portal",
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "task_id": "T-web-daily-ci-integration-20261017",
@@ -6576,6 +6571,86 @@
           "reason": "JST date changed; latest PR24 merged yesterday; no open PR",
           "next_step": "Batch existing local work into one daily PR and verify exact-head CI",
           "at": 1792166480.723893
+        },
+        {
+          "run_id": "unity-20261017T0100-daily",
+          "fence": 44,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-daily-20261017.json",
+              "sha256": "f2bff8053f70c994f9f8e3cdebbe29c1bd0845e78fad52d1d7c146c1e1ba8e65"
+            },
+            {
+              "path": "docs/web-daily-integration-20261017.md",
+              "sha256": "8e2b69468e41ee5a17a588d98e039c765f2ad315a3114b2b693a667f62a37139"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "d0a9d400624b9eb74ca01fe2b3431dfa1b3b14b120417b1e3e9e19c8b0aa8a36"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "81391ce00e36be16ca7e211386b1c863097ea29871f621cc29bf167c9406ac71"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "ed6e1b8124261f693280d1182f2b35036c4779712e177bd67c91c51dd8e2705b"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite9SSG 4URLs39checksums",
+            "4existing game regressions; navigation facts AND queries;8Web-ownerUnity guide cases",
+            "27 business tests with writable TEMP; Core3routes",
+            "main237event prefix; previous7checkpoint hashes;4parent commits8recovery hashes",
+            "CI package checksum restored40files9pages; valid and5rejection cases",
+            "12runtime assets exact match previous browser-tested package",
+            "IAB390 query3 MineRush Enter guide expansion return worksfocus reload query preserved no overflow no start iframe0",
+            "IAB1280 released0 all3 reload query preserved no overflow screenshot observed only",
+            "exact latest head successful CI then guarded merge; no production deploy"
+          ],
+          "next_step": "T-web-catalog-preview-images: 既存Web4作品の実画面を版・SHA-256付きで採取し、公開前検査版と明示して紹介へ表示する。release=nullは維持。",
+          "passed": true,
+          "at": 1792166788.613082
+        },
+        {
+          "run_id": "unity-20261017T0100-daily",
+          "fence": 44,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-daily-20261017.json",
+              "sha256": "f2bff8053f70c994f9f8e3cdebbe29c1bd0845e78fad52d1d7c146c1e1ba8e65"
+            },
+            {
+              "path": "docs/web-daily-integration-20261017.md",
+              "sha256": "8e2b69468e41ee5a17a588d98e039c765f2ad315a3114b2b693a667f62a37139"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "d0a9d400624b9eb74ca01fe2b3431dfa1b3b14b120417b1e3e9e19c8b0aa8a36"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "81391ce00e36be16ca7e211386b1c863097ea29871f621cc29bf167c9406ac71"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "ed6e1b8124261f693280d1182f2b35036c4779712e177bd67c91c51dd8e2705b"
+            }
+          ],
+          "checks": [
+            "TS ESLint Vite9SSG 4URLs39checksums",
+            "4existing game regressions; navigation facts AND queries;8Web-ownerUnity guide cases",
+            "27 business tests with writable TEMP; Core3routes",
+            "main237event prefix; previous7checkpoint hashes;4parent commits8recovery hashes",
+            "CI package checksum restored40files9pages; valid and5rejection cases",
+            "12runtime assets exact match previous browser-tested package",
+            "IAB390 query3 MineRush Enter guide expansion return worksfocus reload query preserved no overflow no start iframe0",
+            "IAB1280 released0 all3 reload query preserved no overflow screenshot observed only",
+            "exact latest head successful CI then guarded merge; no production deploy"
+          ],
+          "next_step": "T-web-catalog-preview-images: 既存Web4作品の実画面を版・SHA-256付きで採取し、公開前検査版と明示して紹介へ表示する。release=nullは維持。",
+          "passed": true,
+          "at": 1792166788.6565683
         }
       ],
       "claims": [
@@ -6859,6 +6934,41 @@
           "expires_at": 1792146317.9452255
         }
       ]
+    },
+    "T-web-catalog-preview-images": {
+      "id": "T-web-catalog-preview-images",
+      "objective": "文字だけの既存Web作品紹介へ検査版の実画面を示す",
+      "acceptance": [
+        "既存4作品の通常入力で実画面採取しゲーム領域だけを保存",
+        "撮影元commitと成果物/画像SHA-256と復元手順を照合",
+        "公開前検査版と明示し公開版の検証済み画像へ偽装しない",
+        "390/1280の一覧/詳細と代替テキスト/画像失敗/検索往復を検査",
+        "release=nullの開始リンク抑止を保持し本番全体置換しない"
+      ],
+      "outputs": [
+        "既存作品の実画像",
+        "版付き画像データと表示",
+        "ブラウザ検査と復元記録"
+      ],
+      "checks": [
+        "画像ハッシュ",
+        "型/静的/SSG",
+        "実ブラウザ390/1280",
+        "ZIP復元"
+      ],
+      "next_step": "T-web-catalog-preview-images: 既存Web4作品の実画面を版・SHA-256付きで採取し、公開前検査版と明示して紹介へ表示する。release=nullは維持。",
+      "decision_id": "D-web-catalog-discovery-20261015",
+      "hypothesis": "タイトルだけの領域を実画面へ替えるとルールを見分けやすくなる。利用増加は未観測。",
+      "source": "research:business/unity/research/2026-10-16-catalog-facts-discovery.md",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "depends_on": [
+        "T-web-daily-ci-integration-20261017"
+      ],
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -7331,7 +7441,7 @@
       "run_id": "unity-20261017T0100-daily",
       "scheduled_at": "2026-10-17T01:00:00+09:00",
       "source": "scheduled:game-site:2026-10-17T01:00:00+09:00",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792166480.62639
     }
   },
@@ -17831,7 +17941,147 @@
       },
       "previous": "6d26feb8faeecad200fd7e116990e5cb10356f45e6a2abda9a060aadb656227e",
       "sha256": "61e142220b4e7a21a94b8eae2bc8c68aa2aadd7fef547a7dfa9cf7ca9ff75b33"
+    },
+    {
+      "revision": 276,
+      "at": 1792166788.613082,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261017T0100-daily",
+        "fence": 44,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261017.json",
+            "sha256": "f2bff8053f70c994f9f8e3cdebbe29c1bd0845e78fad52d1d7c146c1e1ba8e65"
+          },
+          {
+            "path": "docs/web-daily-integration-20261017.md",
+            "sha256": "8e2b69468e41ee5a17a588d98e039c765f2ad315a3114b2b693a667f62a37139"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "d0a9d400624b9eb74ca01fe2b3431dfa1b3b14b120417b1e3e9e19c8b0aa8a36"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "81391ce00e36be16ca7e211386b1c863097ea29871f621cc29bf167c9406ac71"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "ed6e1b8124261f693280d1182f2b35036c4779712e177bd67c91c51dd8e2705b"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite9SSG 4URLs39checksums",
+          "4existing game regressions; navigation facts AND queries;8Web-ownerUnity guide cases",
+          "27 business tests with writable TEMP; Core3routes",
+          "main237event prefix; previous7checkpoint hashes;4parent commits8recovery hashes",
+          "CI package checksum restored40files9pages; valid and5rejection cases",
+          "12runtime assets exact match previous browser-tested package",
+          "IAB390 query3 MineRush Enter guide expansion return worksfocus reload query preserved no overflow no start iframe0",
+          "IAB1280 released0 all3 reload query preserved no overflow screenshot observed only",
+          "exact latest head successful CI then guarded merge; no production deploy"
+        ],
+        "next_step": "T-web-catalog-preview-images: 既存Web4作品の実画面を版・SHA-256付きで採取し、公開前検査版と明示して紹介へ表示する。release=nullは維持。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "61e142220b4e7a21a94b8eae2bc8c68aa2aadd7fef547a7dfa9cf7ca9ff75b33",
+      "sha256": "75e598d04201d5a82f8e000138dcc92f54726f658adb26e701d243d9ff10413d"
+    },
+    {
+      "revision": 277,
+      "at": 1792166788.6565683,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261017T0100-daily",
+        "fence": 44,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-daily-20261017.json",
+            "sha256": "f2bff8053f70c994f9f8e3cdebbe29c1bd0845e78fad52d1d7c146c1e1ba8e65"
+          },
+          {
+            "path": "docs/web-daily-integration-20261017.md",
+            "sha256": "8e2b69468e41ee5a17a588d98e039c765f2ad315a3114b2b693a667f62a37139"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "d0a9d400624b9eb74ca01fe2b3431dfa1b3b14b120417b1e3e9e19c8b0aa8a36"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "81391ce00e36be16ca7e211386b1c863097ea29871f621cc29bf167c9406ac71"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "ed6e1b8124261f693280d1182f2b35036c4779712e177bd67c91c51dd8e2705b"
+          }
+        ],
+        "checks": [
+          "TS ESLint Vite9SSG 4URLs39checksums",
+          "4existing game regressions; navigation facts AND queries;8Web-ownerUnity guide cases",
+          "27 business tests with writable TEMP; Core3routes",
+          "main237event prefix; previous7checkpoint hashes;4parent commits8recovery hashes",
+          "CI package checksum restored40files9pages; valid and5rejection cases",
+          "12runtime assets exact match previous browser-tested package",
+          "IAB390 query3 MineRush Enter guide expansion return worksfocus reload query preserved no overflow no start iframe0",
+          "IAB1280 released0 all3 reload query preserved no overflow screenshot observed only",
+          "exact latest head successful CI then guarded merge; no production deploy"
+        ],
+        "next_step": "T-web-catalog-preview-images: 既存Web4作品の実画面を版・SHA-256付きで採取し、公開前検査版と明示して紹介へ表示する。release=nullは維持。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "75e598d04201d5a82f8e000138dcc92f54726f658adb26e701d243d9ff10413d",
+      "sha256": "ff6ab5c85fdf393c0919e7951acd36efa89ca18f39092ae6a01269ce3188b3df"
+    },
+    {
+      "revision": 278,
+      "at": 1792166788.7009096,
+      "action": "task",
+      "data": {
+        "id": "T-web-catalog-preview-images",
+        "objective": "文字だけの既存Web作品紹介へ検査版の実画面を示す",
+        "acceptance": [
+          "既存4作品の通常入力で実画面採取しゲーム領域だけを保存",
+          "撮影元commitと成果物/画像SHA-256と復元手順を照合",
+          "公開前検査版と明示し公開版の検証済み画像へ偽装しない",
+          "390/1280の一覧/詳細と代替テキスト/画像失敗/検索往復を検査",
+          "release=nullの開始リンク抑止を保持し本番全体置換しない"
+        ],
+        "outputs": [
+          "既存作品の実画像",
+          "版付き画像データと表示",
+          "ブラウザ検査と復元記録"
+        ],
+        "checks": [
+          "画像ハッシュ",
+          "型/静的/SSG",
+          "実ブラウザ390/1280",
+          "ZIP復元"
+        ],
+        "next_step": "T-web-catalog-preview-images: 既存Web4作品の実画面を版・SHA-256付きで採取し、公開前検査版と明示して紹介へ表示する。release=nullは維持。",
+        "decision_id": "D-web-catalog-discovery-20261015",
+        "hypothesis": "タイトルだけの領域を実画面へ替えるとルールを見分けやすくなる。利用増加は未観測。",
+        "source": "research:business/unity/research/2026-10-16-catalog-facts-discovery.md",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 1,
+        "depends_on": [
+          "T-web-daily-ci-integration-20261017"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "ff6ab5c85fdf393c0919e7951acd36efa89ca18f39092ae6a01269ce3188b3df",
+      "sha256": "6bc61457af60dabd3a034c90cab895ac4074c1b6419b26f2e3b093a952554b64"
     }
   ],
-  "projection_sha256": "4486882de4deea40c8711beca030f5de9132253eb679708d99a2e72e53fd6e00"
+  "projection_sha256": "efcd5011fa82208a5f56433812a02931e0f38bd90888b2895b25b231bfd790f6"
 }
