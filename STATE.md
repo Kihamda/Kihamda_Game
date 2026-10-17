@@ -181,3 +181,5 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 
 
 2026-10-17の19時枠補足。run unity-20261017T1900-preview-f47はrevision285/286で19時slotを取得済み。CDP撮影呼出しが3771.212秒戻らず期限超過。4画像は操作パネル混入・ゲーム切れで不採用としartifacts/evidence/preview-rejected-20261017-1900へ保全。復旧前のexpected照合時、別実行によるrevision287 recoverを検出し、上書きやslot再取得を止めた。287の証跡は13時run表記だが対象leaseは19時fence47だったため、次回は実行記録を照合してから同じ画像工程を続ける。台帳検証成功・lease null・工程ready、完了ではない。詳細business/unity/evidence/preview-interrupted-20261017-1900.json。PR25以降のPRなし、本実行はpush・配信なし。
+
+2026-10-18の01時枠で同じ画像紹介工程のローカル受入を完了。CI38928793802の元版・tar.gz SHA-256と40ファイルを照合し、通常操作で既存4作品の実画面を採取。範囲撮影の座標ずれを避け標準画像から実測領域だけを切り出した。一覧・詳細に公開前検査版と明示し、画像失敗時の本文案内を追加。390/1280の4紹介・検索往復・画像読込、両幅で通信遮断と解除後復帰、型/静的/9SSG/43チェックサム/既存4作品回帰に成功。44ファイルの配布準備版を別フォルダへ復元し、390のMineRushと1280の一覧/GravityBallを実ブラウザ確認。詳細docs/web-catalog-preview-20261018.md、証跡catalog-preview-20261018-0100.jsonとcatalog-preview-package-20261018.json。今回のCI・日次PR反映はこれから確認し、未検証マージをしない。前日復旧の帰属はrevision287が19時fence47を対象にしたことを照合し、履歴を保持。実タッチ/Safari/人間評価は未確認、指標null、release全件null・本番配信なし。次は390pxで画像内の数字や記号を読める拡大表示を、検査版の表示と検索復帰を保って追加する。

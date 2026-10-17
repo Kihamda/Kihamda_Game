@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 290,
+  "revision": 293,
   "business_id": "game-site",
   "fence": 48,
-  "lease": {
-    "run_id": "unity-20261018T0100-preview",
-    "task_id": "T-web-catalog-preview-images",
-    "fence": 48,
-    "expires_at": 1792254507.3725007
-  },
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -6971,7 +6966,7 @@
       "depends_on": [
         "T-web-daily-ci-integration-20261017"
       ],
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "source": "github:PR25-merged-20261017-readonly-reconciled",
@@ -7041,6 +7036,86 @@
           ],
           "next_step": "Same T-web-catalog-preview-images: verify restored new package and exact-head CI.",
           "at": 1792253430.2677352
+        },
+        {
+          "run_id": "unity-20261018T0100-preview",
+          "fence": 48,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/catalog-preview-20261018-0100.json",
+              "sha256": "8194bc170946cbad019c55a9b7643a2cd50df1c0d8ea3dff845e0ecb579354f7"
+            },
+            {
+              "path": "business/unity/evidence/catalog-preview-package-20261018.json",
+              "sha256": "91a30fe0934bf0699d86e3d6b78b0663255772b85327bf4e14d5e4ae5db1c35f"
+            },
+            {
+              "path": "docs/web-catalog-preview-20261018.md",
+              "sha256": "b848be5f3d2a099a8af0698764531110d71785bd4bf215ed4280d27c614d0bff"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "50e2a3f74b8f8f7cef743f50d479d35d716331c4b80ff12fa563301e839c41f4"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "866ca6c324b4529a87f56e8919a0be940e0b344c07988fbe9ce7da4feda3b845"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "1bc2336c91ac77c82b08a9093b440848d150e42ac42fd9a9bdc421b26a0148a6"
+            }
+          ],
+          "checks": [
+            "4game normal-input exact-CI captures and imageSHA match",
+            "390/1280 input navigation reload fallback and restored package verified",
+            "TypeScript ESLint Vite9SSG43checksums4legacy routes",
+            "4game regressions guides8SSR navigationAND passed",
+            "44files9pages tar restoration and5negative cases passed"
+          ],
+          "next_step": "T-web-catalog-preview-enlargement: enlarge inspection images preserving label, keyboard and search return. Daily PR CI/merge still pending.",
+          "passed": true,
+          "at": 1792253544.6441631
+        },
+        {
+          "run_id": "unity-20261018T0100-preview",
+          "fence": 48,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/catalog-preview-20261018-0100.json",
+              "sha256": "8194bc170946cbad019c55a9b7643a2cd50df1c0d8ea3dff845e0ecb579354f7"
+            },
+            {
+              "path": "business/unity/evidence/catalog-preview-package-20261018.json",
+              "sha256": "91a30fe0934bf0699d86e3d6b78b0663255772b85327bf4e14d5e4ae5db1c35f"
+            },
+            {
+              "path": "docs/web-catalog-preview-20261018.md",
+              "sha256": "b848be5f3d2a099a8af0698764531110d71785bd4bf215ed4280d27c614d0bff"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "50e2a3f74b8f8f7cef743f50d479d35d716331c4b80ff12fa563301e839c41f4"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "866ca6c324b4529a87f56e8919a0be940e0b344c07988fbe9ce7da4feda3b845"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "1bc2336c91ac77c82b08a9093b440848d150e42ac42fd9a9bdc421b26a0148a6"
+            }
+          ],
+          "checks": [
+            "4game normal-input exact-CI captures and imageSHA match",
+            "390/1280 input navigation reload fallback and restored package verified",
+            "TypeScript ESLint Vite9SSG43checksums4legacy routes",
+            "4game regressions guides8SSR navigationAND passed",
+            "44files9pages tar restoration and5negative cases passed"
+          ],
+          "next_step": "T-web-catalog-preview-enlargement: enlarge inspection images preserving label, keyboard and search return. Daily PR CI/merge still pending.",
+          "passed": true,
+          "at": 1792253544.6822183
         }
       ],
       "claims": [
@@ -7069,6 +7144,40 @@
           "expires_at": 1792254507.3725007
         }
       ]
+    },
+    "T-web-catalog-preview-enlargement": {
+      "id": "T-web-catalog-preview-enlargement",
+      "objective": "390pxの検査版画像を拡大し盤面の数字と記号を確認できるようにする",
+      "acceptance": [
+        "検査版ラベルを保った拡大表示と明確な閉じる操作",
+        "Enter/Tab/Escapeと閉じた後の起点フォーカス",
+        "390/1280で画像を欠けさせず内容を確認できる",
+        "検索語と公開状態と一覧復帰を保持しrelease=nullの開始リンクを追加しない",
+        "型/静的/SSG/画像ハッシュと実ブラウザと成果物復元を検査"
+      ],
+      "outputs": [
+        "検査版画像の拡大導線",
+        "キーボードとモバイル幅の検査記録"
+      ],
+      "checks": [
+        "390/1280 browser",
+        "keyboard focus and Escape",
+        "SSG image checksums",
+        "package restoration"
+      ],
+      "next_step": "既存4作品の紹介に検査版画像の拡大表示を追加する。",
+      "decision_id": "D-web-catalog-discovery-20261015",
+      "hypothesis": "390px詳細の表示幅335pxでは画像内の数字が小さいため、拡大表示で原画像を確認できるようにする。利用増は未観測。",
+      "source": "measurement:business/unity/evidence/catalog-preview-20261018-0100.json",
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "depends_on": [
+        "T-web-catalog-preview-images"
+      ],
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -7569,7 +7678,7 @@
       "run_id": "unity-20261018T0100-preview",
       "scheduled_at": "2026-10-18T01:00:00+09:00",
       "source": "scheduled:game-site:2026-10-18T01:00:00+09:00",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792252807.2874997
     }
   },
@@ -18443,7 +18552,146 @@
       },
       "previous": "348321cd5708225423529c75edcfe06fee25097c9dfd9a07c26d6c8b5e767f31",
       "sha256": "fe23dea660fb416383b729ebaa33c641e3e853288c04d055d6ec009d8b9b695e"
+    },
+    {
+      "revision": 291,
+      "at": 1792253544.6441631,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261018T0100-preview",
+        "fence": 48,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/catalog-preview-20261018-0100.json",
+            "sha256": "8194bc170946cbad019c55a9b7643a2cd50df1c0d8ea3dff845e0ecb579354f7"
+          },
+          {
+            "path": "business/unity/evidence/catalog-preview-package-20261018.json",
+            "sha256": "91a30fe0934bf0699d86e3d6b78b0663255772b85327bf4e14d5e4ae5db1c35f"
+          },
+          {
+            "path": "docs/web-catalog-preview-20261018.md",
+            "sha256": "b848be5f3d2a099a8af0698764531110d71785bd4bf215ed4280d27c614d0bff"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "50e2a3f74b8f8f7cef743f50d479d35d716331c4b80ff12fa563301e839c41f4"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "866ca6c324b4529a87f56e8919a0be940e0b344c07988fbe9ce7da4feda3b845"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "1bc2336c91ac77c82b08a9093b440848d150e42ac42fd9a9bdc421b26a0148a6"
+          }
+        ],
+        "checks": [
+          "4game normal-input exact-CI captures and imageSHA match",
+          "390/1280 input navigation reload fallback and restored package verified",
+          "TypeScript ESLint Vite9SSG43checksums4legacy routes",
+          "4game regressions guides8SSR navigationAND passed",
+          "44files9pages tar restoration and5negative cases passed"
+        ],
+        "next_step": "T-web-catalog-preview-enlargement: enlarge inspection images preserving label, keyboard and search return. Daily PR CI/merge still pending.",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "fe23dea660fb416383b729ebaa33c641e3e853288c04d055d6ec009d8b9b695e",
+      "sha256": "bfa1e8172307acad250775564a167fba978f677332b2242f66055c8d25bf1d30"
+    },
+    {
+      "revision": 292,
+      "at": 1792253544.6822183,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261018T0100-preview",
+        "fence": 48,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/catalog-preview-20261018-0100.json",
+            "sha256": "8194bc170946cbad019c55a9b7643a2cd50df1c0d8ea3dff845e0ecb579354f7"
+          },
+          {
+            "path": "business/unity/evidence/catalog-preview-package-20261018.json",
+            "sha256": "91a30fe0934bf0699d86e3d6b78b0663255772b85327bf4e14d5e4ae5db1c35f"
+          },
+          {
+            "path": "docs/web-catalog-preview-20261018.md",
+            "sha256": "b848be5f3d2a099a8af0698764531110d71785bd4bf215ed4280d27c614d0bff"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "50e2a3f74b8f8f7cef743f50d479d35d716331c4b80ff12fa563301e839c41f4"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "866ca6c324b4529a87f56e8919a0be940e0b344c07988fbe9ce7da4feda3b845"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "1bc2336c91ac77c82b08a9093b440848d150e42ac42fd9a9bdc421b26a0148a6"
+          }
+        ],
+        "checks": [
+          "4game normal-input exact-CI captures and imageSHA match",
+          "390/1280 input navigation reload fallback and restored package verified",
+          "TypeScript ESLint Vite9SSG43checksums4legacy routes",
+          "4game regressions guides8SSR navigationAND passed",
+          "44files9pages tar restoration and5negative cases passed"
+        ],
+        "next_step": "T-web-catalog-preview-enlargement: enlarge inspection images preserving label, keyboard and search return. Daily PR CI/merge still pending.",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "bfa1e8172307acad250775564a167fba978f677332b2242f66055c8d25bf1d30",
+      "sha256": "c6c40eba055394a67ed698b0e6dfa27bc924fa6606f80855d4505a991478bc4e"
+    },
+    {
+      "revision": 293,
+      "at": 1792253544.723442,
+      "action": "task",
+      "data": {
+        "id": "T-web-catalog-preview-enlargement",
+        "objective": "390pxの検査版画像を拡大し盤面の数字と記号を確認できるようにする",
+        "acceptance": [
+          "検査版ラベルを保った拡大表示と明確な閉じる操作",
+          "Enter/Tab/Escapeと閉じた後の起点フォーカス",
+          "390/1280で画像を欠けさせず内容を確認できる",
+          "検索語と公開状態と一覧復帰を保持しrelease=nullの開始リンクを追加しない",
+          "型/静的/SSG/画像ハッシュと実ブラウザと成果物復元を検査"
+        ],
+        "outputs": [
+          "検査版画像の拡大導線",
+          "キーボードとモバイル幅の検査記録"
+        ],
+        "checks": [
+          "390/1280 browser",
+          "keyboard focus and Escape",
+          "SSG image checksums",
+          "package restoration"
+        ],
+        "next_step": "既存4作品の紹介に検査版画像の拡大表示を追加する。",
+        "decision_id": "D-web-catalog-discovery-20261015",
+        "hypothesis": "390px詳細の表示幅335pxでは画像内の数字が小さいため、拡大表示で原画像を確認できるようにする。利用増は未観測。",
+        "source": "measurement:business/unity/evidence/catalog-preview-20261018-0100.json",
+        "pdca": "do",
+        "experiment_id": "E-unity-portal",
+        "priority": 1,
+        "depends_on": [
+          "T-web-catalog-preview-images"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "c6c40eba055394a67ed698b0e6dfa27bc924fa6606f80855d4505a991478bc4e",
+      "sha256": "51696a7b950ea77dbbb93c4f38c43e18653903af6f3c20ed1a5b4b6922bd7309"
     }
   ],
-  "projection_sha256": "3b73011005faf8aff0cd4b1789353e447dc155dcd823ca5ea86008bbc1f4e3ff"
+  "projection_sha256": "ffa8c74abf4f9b77f61d8bbaa319c63fe7d85c8b15802ff65d638f9c320606d5"
 }
