@@ -103,3 +103,5 @@ business/blog/drafts/2026-10-16-game-guides-and-save-scope.md text eol=lf
 docs/web-combined-search-20261016.md text eol=lf
 
 docs/web-daily-integration-20261017.md text eol=lf
+docs/web-catalog-preview-20261018.md text eol=lf
+web/src/portal/InspectionPreview.tsx text eol=lf

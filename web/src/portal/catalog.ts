@@ -14,6 +14,7 @@ export type Work = {
   origin: "studio-web" | "owner-finished" | "preserved-prototype";
   status: "development" | "paused" | "verification";
   release: Release | null;
+  inspectionPreview?: BuildEvidence & { url: string; alt: string; imageSha256: string; sourceCommit: string; width: number; height: number };
   guide?: WorkGuide;
 };
 export type BuildEvidence = { version: string; artifactSha256: string; verification: string };
@@ -36,6 +37,15 @@ export function parseCatalog(data: unknown): Work[] {
       || !["web", "unity"].includes(game.technology) || !["development", "paused", "verification"].includes(game.status)
       || !(game.technology === "web" ? game.origin === "studio-web" : ["owner-finished", "preserved-prototype"].includes(game.origin))) throw new Error("Invalid work metadata");
     ids.add(game.id);
+    if (game.inspectionPreview !== undefined) {
+      const preview = game.inspectionPreview;
+      if (!preview || !/^\/media\/inspection\/[a-z0-9-]+\.jpg$/.test(preview.url)
+        || ![preview.alt, preview.version, preview.verification].every(text)
+        || ![preview.imageSha256, preview.artifactSha256].every(value => /^[a-f0-9]{64}$/.test(value))
+        || !/^[a-f0-9]{40}$/.test(preview.sourceCommit)
+        || ![preview.width, preview.height].every(value => Number.isSafeInteger(value) && value > 0 && value <= 4096)
+        || game.origin === "preserved-prototype") throw new Error("Invalid inspection preview");
+    }
     if (game.release !== null) {
       const release = game.release;
       if (!release || !/^\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9]+)?\/?$/.test(release.url) || release.url === game.path

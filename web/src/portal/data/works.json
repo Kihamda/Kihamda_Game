@@ -78,6 +78,17 @@
       "origin": "studio-web",
       "status": "verification",
       "facts": ["同じ端末で交代プレイ", "縦・横それぞれ3〜30マス", "行と列を指定する代替操作"],
+      "inspectionPreview": {
+        "version": "2026-10-17 CI検査版",
+        "artifactSha256": "5916be47fb0756a0cb3bbffdce988e9915b2bd6abb0923655e36cf261ca7c5c5",
+        "sourceCommit": "14b0d268120988689b630be7a1b5e1b3730c2e33",
+        "verification": "docs/web-catalog-preview-20261018.md",
+        "url": "/media/inspection/ntiktaktoe-20261018.jpg",
+        "alt": "5×5の盤面でXとOを2個ずつ置いたn目並べの検査版",
+        "imageSha256": "8e5ce4ba5b5618cad8d11fc63cec57453e1a8fc6a2c65bb897abfd2a6b56a492",
+        "width": 974,
+        "height": 704
+      },
       "guide": {
         "controls": [
           {"input": "新しいゲームの設定", "action": "盤面の縦・横、そろえる数、プレイヤー、通常・重力ルールを選びます。"},
@@ -111,6 +122,17 @@
         "一手戻す・現在のステージをやり直す",
         "クリア状況と最少手数をブラウザに保存"
       ],
+      "inspectionPreview": {
+        "version": "2026-10-17 CI検査版",
+        "artifactSha256": "5916be47fb0756a0cb3bbffdce988e9915b2bd6abb0923655e36cf261ca7c5c5",
+        "sourceCommit": "14b0d268120988689b630be7a1b5e1b3730c2e33",
+        "verification": "docs/web-catalog-preview-20261018.md",
+        "url": "/media/inspection/iceslide-20261018.jpg",
+        "alt": "ステージ1の氷の盤面にペンギンとゴール、下に方向ボタンがあるアイススライドの検査版",
+        "imageSha256": "8f5b3f7e8ef9bb18623cd448e13d4991245f47b53340d5d16018fcb03158982e",
+        "width": 932,
+        "height": 704
+      },
       "guide": {
         "controls": [
           {
@@ -156,6 +178,17 @@
         "最初に開くマスと周囲には地雷を置かない",
         "途中の盤面は保存しない"
       ],
+      "inspectionPreview": {
+        "version": "2026-10-17 CI検査版",
+        "artifactSha256": "5916be47fb0756a0cb3bbffdce988e9915b2bd6abb0923655e36cf261ca7c5c5",
+        "sourceCommit": "14b0d268120988689b630be7a1b5e1b3730c2e33",
+        "verification": "docs/web-catalog-preview-20261018.md",
+        "url": "/media/inspection/minerush-20261018.jpg",
+        "alt": "9×9の盤面で中央の初手から安全なマスが開き、数字と未開封のマスが見えるMineRushの検査版",
+        "imageSha256": "e57ba2dd4aa73340739244b853f6dd8362c662e25086cd3bf688fb9e7bb62cd1",
+        "width": 932,
+        "height": 704
+      },
       "guide": {
         "controls": [
           {
@@ -201,6 +234,17 @@
         "矢印キーでも重力を操作",
         "保存対象は全ステージ完了時の最高スコア"
       ],
+      "inspectionPreview": {
+        "version": "2026-10-17 CI検査版",
+        "artifactSha256": "5916be47fb0756a0cb3bbffdce988e9915b2bd6abb0923655e36cf261ca7c5c5",
+        "sourceCommit": "14b0d268120988689b630be7a1b5e1b3730c2e33",
+        "verification": "docs/web-catalog-preview-20261018.md",
+        "url": "/media/inspection/gravityball-20261018.jpg",
+        "alt": "ステージ1の青いボールと足場、右下のゴールが見えるGravityBallの検査版",
+        "imageSha256": "8e0f08aef125316a4a86215f27fc2962d74c6ac60bed65fe809ebca6f9f5b195",
+        "width": 932,
+        "height": 704
+      },
       "guide": {
         "controls": [
           {

@@ -164,3 +164,22 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 2026-10-16の07時枠でGravityBallの独立紹介を追加し、既存Web4作品の紹介を揃えた。全5ステージ、重力の向き、再挑戦、最高スコアのみ保存を実装照合。390/1280の検索・詳細・戻る・再読み込み、9SSG/4URL/39ハッシュ、案内8条件と既存GravityBall回帰成功。ZIP41ファイル完全復元、ソースZIP112Gitblob一致、復元390画面を確認。詳細docs/web-gravityball-catalog-20261016.md。記事はbusiness/blog/drafts/2026-10-16-game-guides-and-save-scope.mdに下書きのみ。実タッチ/Safari/傾き/人間評価/公開版は未確認、指標null。現在CI6ページ版とローカル9ページ版を区別し、本日PR24マージ済みのため追加PR/push/配信なし。T-web-daily-ci-integration-20261017: ローカルのIce Slide/MineRush/GravityBall紹介と復元記録を翌日日次PRへまとめ、最新headのCI成功後に反映。本日追加PRなし。
 
 2026-10-16の19時枠で実測した「Web 1人用」0件の検索漏れを修正。空白区切りの全語一致で3件、3条件で1件。390/1280の入力・往復・URL保持・再読込・公開中0件・はみ出しなし、型/静的/9SSG/39ハッシュ/案内8条件、ZIP41ファイル完全復元と5拒否検査、復元390画面が成功。詳細docs/web-combined-search-20261016.md。技術improve、事業unobserved、指標null。実タッチ/Safari/人間評価/今回の版のリモートCIは未確認。本日PR24マージ済みなので追加PR/push/配信なし。T-web-daily-ci-integration-20261017: 既存3紹介・単語検索と複数語検索・復元索引を翌日日次PRへ集約し、最新headのCI成功後に反映。本日追加PRなし。
+
+2026-10-17の01時枠で日次PR25を統合。既存3作品の紹介と既存情報による複数語検索を一件へ集約し、最新head70612caのLinux46秒/Windows21秒CI成功後にhead指定マージccf7666を確認した。CI38928793802の40ファイル・9ページをSHA-256照合して復元し、12実行アセットは前日実ブラウザ検査版と一致。復元版390/1280の検索・MineRush紹介・Enter案内・一覧復帰・検索再読込・公開中0件・はみ出しなしを確認。型/静的/4作品回帰/台帳27件/Core3ルート成功。索引business/unity/evidence/delivery-web-daily-20261017.json。本番配信なし、実タッチ/Safari/人間評価/別PC復元は未確認、指標null。本日追加PRは作らず後続成果はローカル保存。T-web-catalog-preview-images: 既存Web4作品の実画面を版・SHA-256付きで採取し、公開前検査版と明示して紹介へ表示する。release=nullは維持。
+
+
+2026-10-17の13時枠前の復旧。07時runはfence45取得後のcheckpoint・完了保存がなく期限超過。HEAD b63d42d、GitHubの本日PR25マージ済み・後続PRなし、未確定外部操作なし、前回checkpoint5ハッシュを照合し、flow.py recover revision281で同じ画像紹介工程をreadyへ戻した。未追跡MineRush画像は出所未確認として削除せず保全し、採用・公開していない。07時の期限内完了とは扱わず、同slotを再取得しない。証跡business/unity/evidence/recovery-preview-20261017-1300.json。
+
+
+2026-10-17の13時枠は未完了。run unity-20261017T1300-0d6f2150/fence46。実ブラウザでMineRush中央の通常初手47マス展開を確認したが、CDP画像採取呼出しが25484.1866秒戻らず20:05まで停止し、25分checkpoint・30分保存を守れなかった。返却画像は盤面ではなく左操作欄のため不採用。既存未追跡画像と今回画像をSHA-256照合してartifacts/preview-interrupted-20261017へ保全移動し、公開用フォルダに残さない。作品データ・表示の実装、4作品画像採取・390/1280・復元検査は未完了。PR/push/merge/配信なし。本日PR25は既にマージ済み。19時slotを遡及取得しない。同じT-web-catalog-preview-imagesを継続し、最初に長時間化しない画像採取方法を確認する。証跡business/unity/evidence/preview-interrupted-20261017-1300.json。指標null、天啓原文は保持。
+
+
+2026-10-17 07時枠の呼出復帰時記録（2026-10-17T20:05:44.612184+09:00）。撮影API呼出が46787秒戻らず25分checkpoint・30分保存を未達。返却画像は指定領域の切出しも不正確だったため採用せず、今回作成のPNG2枚のみartifacts/interrupted-preview-20261017-0700へバイト照合して退避。紹介実装・記事下書き・画面受入は未完了。後続枠がrevision281で07枠を復旧済みのため再復旧・同slot再取得をせず、後続fence47と他の成果物には介入しない。詳細business/unity/evidence/interrupted-preview-20261017-0700.json。本呼出によるpush/PR/merge/配信なし。
+上記退避枚数の訂正：実際にこの復帰処理で退避できたのはiceslide-20261017.pngの1枚。MineRushのPNGは処理時点ですでにpublicからなく、移動や削除をしていない。台帳・後続成果は変更していない。
+
+復旧の帰属訂正。長時間停止中に別の19時runがrevision284で13時leaseをrecoverし、285/286でfence47を取得していた。20:05のrevision287は期限切れの19時leaseをrecoverしており、13時leaseの復旧という記述は誤り。履歴を改変せず証跡へ訂正を追記する。19時runの外部結果はこの13時workerでは独立照合しておらず、再実行・完了扱いをしない。他workerの追加ファイルは編集しない。
+
+
+2026-10-17の19時枠補足。run unity-20261017T1900-preview-f47はrevision285/286で19時slotを取得済み。CDP撮影呼出しが3771.212秒戻らず期限超過。4画像は操作パネル混入・ゲーム切れで不採用としartifacts/evidence/preview-rejected-20261017-1900へ保全。復旧前のexpected照合時、別実行によるrevision287 recoverを検出し、上書きやslot再取得を止めた。287の証跡は13時run表記だが対象leaseは19時fence47だったため、次回は実行記録を照合してから同じ画像工程を続ける。台帳検証成功・lease null・工程ready、完了ではない。詳細business/unity/evidence/preview-interrupted-20261017-1900.json。PR25以降のPRなし、本実行はpush・配信なし。
+
+2026-10-18の01時枠で同じ画像紹介工程のローカル受入を完了。CI38928793802の元版・tar.gz SHA-256と40ファイルを照合し、通常操作で既存4作品の実画面を採取。範囲撮影の座標ずれを避け標準画像から実測領域だけを切り出した。一覧・詳細に公開前検査版と明示し、画像失敗時の本文案内を追加。390/1280の4紹介・検索往復・画像読込、両幅で通信遮断と解除後復帰、型/静的/9SSG/43チェックサム/既存4作品回帰に成功。44ファイルの配布準備版を別フォルダへ復元し、390のMineRushと1280の一覧/GravityBallを実ブラウザ確認。詳細docs/web-catalog-preview-20261018.md、証跡catalog-preview-20261018-0100.jsonとcatalog-preview-package-20261018.json。今回のCI・日次PR反映はこれから確認し、未検証マージをしない。前日復旧の帰属はrevision287が19時fence47を対象にしたことを照合し、履歴を保持。実タッチ/Safari/人間評価は未確認、指標null、release全件null・本番配信なし。次は390pxで画像内の数字や記号を読める拡大表示を、検査版の表示と検索復帰を保って追加する。

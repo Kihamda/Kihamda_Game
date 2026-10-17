@@ -1,0 +1,540 @@
+{
+  "at": "2026-10-18T01:09:31.647364+09:00",
+  "run": "unity-20261018T0100-preview",
+  "fence": 48,
+  "status": "local-browser-verified-ci-pending",
+  "images": [
+    {
+      "id": "ntiktaktoe",
+      "version": "2026-10-17 CI検査版",
+      "artifactSha256": "5916be47fb0756a0cb3bbffdce988e9915b2bd6abb0923655e36cf261ca7c5c5",
+      "sourceCommit": "14b0d268120988689b630be7a1b5e1b3730c2e33",
+      "verification": "docs/web-catalog-preview-20261018.md",
+      "url": "/media/inspection/ntiktaktoe-20261018.jpg",
+      "alt": "5×5の盤面でXとOを2個ずつ置いたn目並べの検査版",
+      "imageSha256": "8e5ce4ba5b5618cad8d11fc63cec57453e1a8fc6a2c65bb897abfd2a6b56a492",
+      "width": 974,
+      "height": 704,
+      "rawSha256": "ead6bba04ea6917254594bcfbfda578c29a815a1ccc5c9d0b10581dfc446ce68",
+      "capture": {
+        "id": "ntiktaktoe",
+        "url": "http://127.0.0.1:4242/games/ntiktaktoe/",
+        "rect": {
+          "bottom": 712,
+          "height": 704,
+          "left": 298,
+          "right": 1272,
+          "top": 8,
+          "width": 974,
+          "x": 298,
+          "y": 8
+        },
+        "action": "通常4着手後にページ再読込、X2/O2・Player1を確認して採取",
+        "elapsedMs": 22
+      }
+    },
+    {
+      "id": "iceslide",
+      "version": "2026-10-17 CI検査版",
+      "artifactSha256": "5916be47fb0756a0cb3bbffdce988e9915b2bd6abb0923655e36cf261ca7c5c5",
+      "sourceCommit": "14b0d268120988689b630be7a1b5e1b3730c2e33",
+      "verification": "docs/web-catalog-preview-20261018.md",
+      "url": "/media/inspection/iceslide-20261018.jpg",
+      "alt": "ステージ1の氷の盤面にペンギンとゴール、下に方向ボタンがあるアイススライドの検査版",
+      "imageSha256": "8f5b3f7e8ef9bb18623cd448e13d4991245f47b53340d5d16018fcb03158982e",
+      "width": 932,
+      "height": 704,
+      "rawSha256": "48b943583937c0950785a611dce09dbfe3116dfe5d5f9b80b169959cb51676db",
+      "capture": {
+        "id": "iceslide",
+        "url": "http://127.0.0.1:4242/games/iceslide/",
+        "rect": {
+          "bottom": 712,
+          "height": 704,
+          "left": 340,
+          "right": 1272,
+          "top": 8,
+          "width": 932,
+          "x": 340,
+          "y": 8
+        },
+        "action": "ゲームスタート→右へ移動を通常クリック、手数1",
+        "elapsedMs": 24
+      }
+    },
+    {
+      "id": "minerush",
+      "version": "2026-10-17 CI検査版",
+      "artifactSha256": "5916be47fb0756a0cb3bbffdce988e9915b2bd6abb0923655e36cf261ca7c5c5",
+      "sourceCommit": "14b0d268120988689b630be7a1b5e1b3730c2e33",
+      "verification": "docs/web-catalog-preview-20261018.md",
+      "url": "/media/inspection/minerush-20261018.jpg",
+      "alt": "9×9の盤面で中央の初手から安全なマスが開き、数字と未開封のマスが見えるMineRushの検査版",
+      "imageSha256": "e57ba2dd4aa73340739244b853f6dd8362c662e25086cd3bf688fb9e7bb62cd1",
+      "width": 932,
+      "height": 704,
+      "rawSha256": "f30b539ef5167a221770c7db259612dda278e2331b2bfaad374671d65d44ed3c",
+      "capture": {
+        "id": "minerush",
+        "url": "http://127.0.0.1:4242/games/minerush/",
+        "rect": {
+          "bottom": 712,
+          "height": 704,
+          "left": 340,
+          "right": 1272,
+          "top": 8,
+          "width": 932,
+          "x": 340,
+          "y": 8
+        },
+        "action": "セル5-5へ通常クリック",
+        "elapsedMs": 28
+      }
+    },
+    {
+      "id": "gravityball",
+      "version": "2026-10-17 CI検査版",
+      "artifactSha256": "5916be47fb0756a0cb3bbffdce988e9915b2bd6abb0923655e36cf261ca7c5c5",
+      "sourceCommit": "14b0d268120988689b630be7a1b5e1b3730c2e33",
+      "verification": "docs/web-catalog-preview-20261018.md",
+      "url": "/media/inspection/gravityball-20261018.jpg",
+      "alt": "ステージ1の青いボールと足場、右下のゴールが見えるGravityBallの検査版",
+      "imageSha256": "8e0f08aef125316a4a86215f27fc2962d74c6ac60bed65fe809ebca6f9f5b195",
+      "width": 932,
+      "height": 704,
+      "rawSha256": "5865b1b31468b4be0003e62b12e7311a8ea2d110e8673c7e76ddf7b0d85e2f56",
+      "capture": {
+        "id": "gravityball",
+        "url": "http://127.0.0.1:4242/games/gravityball/",
+        "rect": {
+          "bottom": 712,
+          "height": 704,
+          "left": 340,
+          "right": 1272,
+          "top": 8,
+          "width": 932,
+          "x": 340,
+          "y": 8
+        },
+        "action": "Enterで開始後、描画済みStage1を確認して採取",
+        "elapsedMs": 22
+      }
+    }
+  ],
+  "browserChecks": [
+    {
+      "label": "390 n目並べ detail",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "5×5の盤面でXとOを2個ずつ置いたn目並べの検査版",
+          "loaded": true,
+          "renderedHeight": 242.125,
+          "renderedWidth": 335
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/ntiktaktoe/?q=Web",
+      "width": 390
+    },
+    {
+      "label": "390 return list",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "works",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "5×5の盤面でXとOを2個ずつ置いたn目並べの検査版",
+          "loaded": true,
+          "renderedHeight": 242.125,
+          "renderedWidth": 335
+        },
+        {
+          "alt": "ステージ1の氷の盤面にペンギンとゴール、下に方向ボタンがあるアイススライドの検査版",
+          "loaded": false,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        },
+        {
+          "alt": "9×9の盤面で中央の初手から安全なマスが開き、数字と未開封のマスが見えるMineRushの検査版",
+          "loaded": false,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        },
+        {
+          "alt": "ステージ1の青いボールと足場、右下のゴールが見えるGravityBallの検査版",
+          "loaded": false,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/?q=Web#works",
+      "width": 390
+    },
+    {
+      "label": "390 アイススライドパズル detail",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "ステージ1の氷の盤面にペンギンとゴール、下に方向ボタンがあるアイススライドの検査版",
+          "loaded": true,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/iceslide/?q=Web",
+      "width": 390
+    },
+    {
+      "label": "390 アイススライドパズル reload",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "ステージ1の氷の盤面にペンギンとゴール、下に方向ボタンがあるアイススライドの検査版",
+          "loaded": true,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/iceslide/?q=Web",
+      "width": 390
+    },
+    {
+      "label": "390 MineRush detail",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "9×9の盤面で中央の初手から安全なマスが開き、数字と未開封のマスが見えるMineRushの検査版",
+          "loaded": true,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/minerush/?q=Web",
+      "width": 390
+    },
+    {
+      "label": "390 MineRush reload",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "9×9の盤面で中央の初手から安全なマスが開き、数字と未開封のマスが見えるMineRushの検査版",
+          "loaded": true,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/minerush/?q=Web",
+      "width": 390
+    },
+    {
+      "label": "390 GravityBall detail",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "ステージ1の青いボールと足場、右下のゴールが見えるGravityBallの検査版",
+          "loaded": true,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/gravityball/?q=Web",
+      "width": 390
+    },
+    {
+      "label": "390 GravityBall reload",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "ステージ1の青いボールと足場、右下のゴールが見えるGravityBallの検査版",
+          "loaded": true,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/gravityball/?q=Web",
+      "width": 390
+    },
+    {
+      "label": "390 final return",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "works",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "5×5の盤面でXとOを2個ずつ置いたn目並べの検査版",
+          "loaded": true,
+          "renderedHeight": 242.125,
+          "renderedWidth": 335
+        },
+        {
+          "alt": "ステージ1の氷の盤面にペンギンとゴール、下に方向ボタンがあるアイススライドの検査版",
+          "loaded": true,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        },
+        {
+          "alt": "9×9の盤面で中央の初手から安全なマスが開き、数字と未開封のマスが見えるMineRushの検査版",
+          "loaded": false,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        },
+        {
+          "alt": "ステージ1の青いボールと足場、右下のゴールが見えるGravityBallの検査版",
+          "loaded": true,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/?q=Web#works",
+      "width": 390
+    },
+    {
+      "label": "1280 n目並べ detail",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "5×5の盤面でXとOを2個ずつ置いたn目並べの検査版",
+          "loaded": true,
+          "renderedHeight": 578.21875,
+          "renderedWidth": 800
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/ntiktaktoe/?q=Web",
+      "width": 1280
+    },
+    {
+      "label": "1280 アイススライドパズル detail",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "ステージ1の氷の盤面にペンギンとゴール、下に方向ボタンがあるアイススライドの検査版",
+          "loaded": true,
+          "renderedHeight": 604.28125,
+          "renderedWidth": 800
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/iceslide/?q=Web",
+      "width": 1280
+    },
+    {
+      "label": "1280 MineRush detail",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "9×9の盤面で中央の初手から安全なマスが開き、数字と未開封のマスが見えるMineRushの検査版",
+          "loaded": true,
+          "renderedHeight": 604.28125,
+          "renderedWidth": 800
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/minerush/?q=Web",
+      "width": 1280
+    },
+    {
+      "label": "1280 GravityBall detail",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "ステージ1の青いボールと足場、右下のゴールが見えるGravityBallの検査版",
+          "loaded": true,
+          "renderedHeight": 604.28125,
+          "renderedWidth": 800
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/gravityball/?q=Web",
+      "width": 1280
+    },
+    {
+      "label": "1280 return",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "works",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "5×5の盤面でXとOを2個ずつ置いたn目並べの検査版",
+          "loaded": true,
+          "renderedHeight": 378.46875,
+          "renderedWidth": 523.625
+        },
+        {
+          "alt": "ステージ1の氷の盤面にペンギンとゴール、下に方向ボタンがあるアイススライドの検査版",
+          "loaded": true,
+          "renderedHeight": 395.515625,
+          "renderedWidth": 523.625
+        },
+        {
+          "alt": "9×9の盤面で中央の初手から安全なマスが開き、数字と未開封のマスが見えるMineRushの検査版",
+          "loaded": true,
+          "renderedHeight": 395.515625,
+          "renderedWidth": 523.625
+        },
+        {
+          "alt": "ステージ1の青いボールと足場、右下のゴールが見えるGravityBallの検査版",
+          "loaded": true,
+          "renderedHeight": 395.515625,
+          "renderedWidth": 523.625
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/?q=Web#works",
+      "width": 1280
+    },
+    {
+      "label": "1280 blocked image fallback",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/minerush/?q=Web",
+      "width": 1280
+    },
+    {
+      "label": "1280 restored image",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "9×9の盤面で中央の初手から安全なマスが開き、数字と未開封のマスが見えるMineRushの検査版",
+          "loaded": true,
+          "renderedHeight": 604.28125,
+          "renderedWidth": 800
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/minerush/?q=Web",
+      "width": 1280
+    },
+    {
+      "label": "390 blocked image fallback",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/minerush/?q=Web",
+      "width": 390
+    },
+    {
+      "label": "390 restored image",
+      "caption": "公開前検査版の実画面2026-10-17 CI検査版。公開版の動作確認は未完了です。",
+      "focus": "main",
+      "iframes": 0,
+      "images": [
+        {
+          "alt": "9×9の盤面で中央の初手から安全なマスが開き、数字と未開封のマスが見えるMineRushの検査版",
+          "loaded": true,
+          "renderedHeight": 253.046875,
+          "renderedWidth": 335
+        }
+      ],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/works/minerush/?q=Web",
+      "width": 390
+    },
+    {
+      "label": "390 released filter",
+      "focus": "",
+      "iframes": 0,
+      "images": [],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/?q=Web&filter=released#works",
+      "width": 390
+    },
+    {
+      "label": "390 released filter reload",
+      "focus": "works",
+      "iframes": 0,
+      "images": [],
+      "overflow": false,
+      "start": false,
+      "url": "http://127.0.0.1:4241/?q=Web&filter=released#works",
+      "width": 390
+    }
+  ],
+  "priorRuns": {
+    "revision287RecoveredFence": 47,
+    "sourceReceiptLabel": "13 slot label retained; actual19 lease recovered",
+    "leaseAtStart": null,
+    "github": "PR25 latest merged; no PR for JST2026-10-18 at start"
+  },
+  "checks": [
+    "CI capture package40files9pages SHA256 matched",
+    "4parent HEAD8recovery hashes matched",
+    "original278events unchanged",
+    "TypeScript ESLint Vite9SSG",
+    "4image hashes43checksums4legacyURLs",
+    "8Web-ownerUnity SSR publication cases",
+    "390/1280 detail pictures and navigation nooverflow",
+    "390/1280 blocked image fallback then restored; settings cleared"
+  ],
+  "unverified": [
+    "physical touch",
+    "Safari",
+    "human evaluation",
+    "production operation"
+  ],
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "playStarts": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "next_step": "Verify same image task CI and restored artifact; no unverified release links."
+}

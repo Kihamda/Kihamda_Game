@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-17T20:06:07.203099+09:00",
+  "run": "unity-20261017T1900-preview-f47",
+  "fence": 47,
+  "slot": "2026-10-17T19:00:00+09:00",
+  "status": "incomplete",
+  "callSeconds": 3771.212,
+  "images": [
+    {
+      "path": "artifacts/evidence/preview-rejected-20261017-1900/gravityball-ci-20261017.jpg",
+      "sha256": "9b769f3a70336d36bd39d402132cf66e189f7334a2716835616abe1b0c153eb5",
+      "accepted": false
+    },
+    {
+      "path": "artifacts/evidence/preview-rejected-20261017-1900/iceslide-ci-20261017.jpg",
+      "sha256": "82838814eb37dd8eb9d34741960735febd5925d605f5edc36d516f1273373234",
+      "accepted": false
+    },
+    {
+      "path": "artifacts/evidence/preview-rejected-20261017-1900/minerush-ci-20261017.jpg",
+      "sha256": "91847e1db51ab8f58f361d8b2e7b68af055d06fb90e82818c164f010e1855f10",
+      "accepted": false
+    },
+    {
+      "path": "artifacts/evidence/preview-rejected-20261017-1900/ntiktaktoe-ci-20261017.jpg",
+      "sha256": "9dfd3a7043b9f7df162780daf9e54258c9ff844f3e06127c65c5b73786ff8b71",
+      "accepted": false
+    }
+  ],
+  "checks": [
+    "PR25 merged and no later PR live checked after timeout",
+    "HEAD unchanged b63d42d",
+    "four normal UI-input screenshots saved but crop wrong; rejected and moved to ignored local artifacts",
+    "ledger verified via flow.Ledger.read revision287 lease null"
+  ],
+  "failure": "Tool blocked past25/30min; no completion or implementation acceptance. Earlier13 worker resumed concurrently and recovered active19 lease with a13-labelled receipt at287. Do not rewrite history or reacquire consumed19slot.",
+  "next_step": "Same image task: reconcile overlapping run metadata, then bounded capture with confirmed game-only crop. No new game or PR today."
+}

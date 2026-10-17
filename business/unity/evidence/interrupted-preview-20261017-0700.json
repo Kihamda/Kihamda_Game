@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-17T20:05:44.612184+09:00",
+  "run": "unity-20261017T0700-preview",
+  "fence": 45,
+  "status": "interrupted-not-complete",
+  "blockingToolSeconds": 46787.1585,
+  "checkpointWithin25Minutes": false,
+  "reason": "Screenshot call did not return for about 13 hours; clip x/y not reflected in returned image",
+  "images": [
+    {
+      "path": "artifacts\\interrupted-preview-20261017-0700\\iceslide-20261017.png",
+      "sha256": "9b0750f44b2bdd6b47104e5ceee9d35c54d2e44e66e4ed5441d64cda0b2a0164",
+      "accepted": false
+    }
+  ],
+  "ledger": "07 run already recovered by later slot revision281; current fence47 belongs to later run and was not changed",
+  "nextStep": "Continue same T-web-catalog-preview-images in current scheduled worker; do not reuse these failed crops",
+  "publication": false
+}
