@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 278,
+  "revision": 290,
   "business_id": "game-site",
-  "fence": 44,
-  "lease": null,
+  "fence": 48,
+  "lease": {
+    "run_id": "unity-20261018T0100-preview",
+    "task_id": "T-web-catalog-preview-images",
+    "fence": 48,
+    "expires_at": 1792254507.3725007
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -6966,9 +6971,104 @@
       "depends_on": [
         "T-web-daily-ci-integration-20261017"
       ],
-      "status": "ready",
-      "checkpoints": [],
-      "claims": []
+      "status": "running",
+      "checkpoints": [
+        {
+          "source": "github:PR25-merged-20261017-readonly-reconciled",
+          "reconciliation": "HEAD b63d42d unchanged; only PR25 merged 01:03 JST, no newer PR. Ledger has only slot/claim since prior completion, no unknown external operations. One untracked image preserved; provenance and normal input not established, not accepted or published. 07 slot exceeded lease without checkpoint; not successful.",
+          "artifacts": [
+            {
+              "path": "web/public/media/inspection/minerush-20261017.png",
+              "sha256": "eacf6baaa3bfd77eb618ed0335778bf7bbf741447a11e152394e8fa271f51d54"
+            }
+          ],
+          "next_step": "Resume same T-web-catalog-preview-images at next actual slot; establish capture provenance before display.",
+          "at": 1792209399.5541809,
+          "recovered_fence": 45
+        },
+        {
+          "source": "user:automation:20261017-19:github-reconciled",
+          "reconciliation": "13 slot expired with no checkpoint. HEAD b63d42d unchanged; GitHub PR25 merged, no later PR. Only preserved untracked image and recovery receipt; no unknown external results. Image provenance unverified; do not publish.",
+          "artifacts": [
+            {
+              "path": "web/public/media/inspection/minerush-20261017.png",
+              "sha256": "eacf6baaa3bfd77eb618ed0335778bf7bbf741447a11e152394e8fa271f51d54"
+            }
+          ],
+          "next_step": "Continue same preview image task at actual 19 slot; retain all previous records.",
+          "at": 1792231194.0635371,
+          "recovered_fence": 46
+        },
+        {
+          "source": "local:preview-interrupted-20261017-1300",
+          "reconciliation": "HEAD unchanged b63d42d; no external mutation requested; no unknown ledger external results. Screenshot call exceeded lease and wrong crop rejected; both images preserved locally with hashes. No checkpoint/completion claim.",
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/preview-interrupted-20261017-1300.json",
+              "sha256": "60fcb46801b7cac458b9195e0170c96fd01ccf8cf583b5bb739c7e8666e6e830"
+            }
+          ],
+          "next_step": "Same T-web-catalog-preview-images. First diagnose bounded screenshot capture without CDP crop, preserve local-only raw captures; do not consume 19 slot retroactively.",
+          "at": 1792235130.8734837,
+          "recovered_fence": 47
+        },
+        {
+          "run_id": "unity-20261018T0100-preview",
+          "fence": 48,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/catalog-preview-20261018-0100.json",
+              "sha256": "8194bc170946cbad019c55a9b7643a2cd50df1c0d8ea3dff845e0ecb579354f7"
+            },
+            {
+              "path": "docs/web-catalog-preview-20261018.md",
+              "sha256": "b848be5f3d2a099a8af0698764531110d71785bd4bf215ed4280d27c614d0bff"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "90ae4f30e761b2e50c495aecb0dacccfb14519dfaa7616467c06ae7c16e7a036"
+            },
+            {
+              "path": "web/src/portal/InspectionPreview.tsx",
+              "sha256": "e6df2b01278c976fce828a64da3b9ac944e768b6118ff226c85faf9e542aaf50"
+            }
+          ],
+          "checks": [
+            "4 exact-CI normal-input game captures; game-only crops visually inspected",
+            "390/1280 image load, alt, labels, nooverflow, search return",
+            "390/1280 image-failure fallback and reset; release null noStart",
+            "TypeScript ESLint Vite9SSG guidesSSR navigation and image hashes passed"
+          ],
+          "next_step": "Same T-web-catalog-preview-images: verify restored new package and exact-head CI.",
+          "at": 1792253430.2677352
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261017T0700-preview",
+          "task_id": "T-web-catalog-preview-images",
+          "fence": 45,
+          "expires_at": 1792189764.587783
+        },
+        {
+          "run_id": "unity-20261017T1300-0d6f2150",
+          "task_id": "T-web-catalog-preview-images",
+          "fence": 46,
+          "expires_at": 1792211110.0388236
+        },
+        {
+          "run_id": "unity-20261017T1900-preview-f47",
+          "task_id": "T-web-catalog-preview-images",
+          "fence": 47,
+          "expires_at": 1792232925.821022
+        },
+        {
+          "run_id": "unity-20261018T0100-preview",
+          "task_id": "T-web-catalog-preview-images",
+          "fence": 48,
+          "expires_at": 1792254507.3725007
+        }
+      ]
     }
   },
   "decisions": {
@@ -7443,6 +7543,34 @@
       "source": "scheduled:game-site:2026-10-17T01:00:00+09:00",
       "status": "completed",
       "started_at": 1792166480.62639
+    },
+    "unity-20261017T0700-preview": {
+      "run_id": "unity-20261017T0700-preview",
+      "scheduled_at": "2026-10-17T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-17T07:00:00+09:00",
+      "status": "recovered",
+      "started_at": 1792188264.4778795
+    },
+    "unity-20261017T1300-0d6f2150": {
+      "run_id": "unity-20261017T1300-0d6f2150",
+      "scheduled_at": "2026-10-17T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-17T13:00:00+09:00",
+      "status": "recovered",
+      "started_at": 1792209609.9387476
+    },
+    "unity-20261017T1900-preview-f47": {
+      "run_id": "unity-20261017T1900-preview-f47",
+      "scheduled_at": "2026-10-17T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-17T19:00:00+09:00",
+      "status": "recovered",
+      "started_at": 1792231225.7163284
+    },
+    "unity-20261018T0100-preview": {
+      "run_id": "unity-20261018T0100-preview",
+      "scheduled_at": "2026-10-18T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-18T01:00:00+09:00",
+      "status": "open",
+      "started_at": 1792252807.2874997
     }
   },
   "experiments": {
@@ -7666,7 +7794,11 @@
     "2026-10-16T07:00:00+09:00": "unity-20261016T0700-minerush",
     "2026-10-16T13:00:00+09:00": "unity-20261016T1300-c275fb43",
     "2026-10-16T19:00:00+09:00": "unity-20261016T1900-1d34d937",
-    "2026-10-17T01:00:00+09:00": "unity-20261017T0100-daily"
+    "2026-10-17T01:00:00+09:00": "unity-20261017T0100-daily",
+    "2026-10-17T07:00:00+09:00": "unity-20261017T0700-preview",
+    "2026-10-17T13:00:00+09:00": "unity-20261017T1300-0d6f2150",
+    "2026-10-17T19:00:00+09:00": "unity-20261017T1900-preview-f47",
+    "2026-10-18T01:00:00+09:00": "unity-20261018T0100-preview"
   },
   "feedback": [
     {
@@ -18081,7 +18213,237 @@
       },
       "previous": "ff6ab5c85fdf393c0919e7951acd36efa89ca18f39092ae6a01269ce3188b3df",
       "sha256": "6bc61457af60dabd3a034c90cab895ac4074c1b6419b26f2e3b093a952554b64"
+    },
+    {
+      "revision": 279,
+      "at": 1792188264.4778795,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261017T0700-preview",
+        "scheduled_at": "2026-10-17T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "6bc61457af60dabd3a034c90cab895ac4074c1b6419b26f2e3b093a952554b64",
+      "sha256": "aafa08ddf8c8cb00d6c21d550ffd2be1441d731dd8d3edc98414b4be76a83546"
+    },
+    {
+      "revision": 280,
+      "at": 1792188264.587783,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261017T0700-preview",
+        "task_id": "T-web-catalog-preview-images",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261017T0700-preview",
+        "task_id": "T-web-catalog-preview-images",
+        "fence": 45,
+        "expires_at": 1792189764.587783
+      },
+      "previous": "aafa08ddf8c8cb00d6c21d550ffd2be1441d731dd8d3edc98414b4be76a83546",
+      "sha256": "1e51d2599da2a96b4dc8fa1336b4e1d2eba93d142a519b789632012f07999bfe"
+    },
+    {
+      "revision": 281,
+      "at": 1792209399.5541809,
+      "action": "recover",
+      "data": {
+        "source": "github:PR25-merged-20261017-readonly-reconciled",
+        "reconciliation": "HEAD b63d42d unchanged; only PR25 merged 01:03 JST, no newer PR. Ledger has only slot/claim since prior completion, no unknown external operations. One untracked image preserved; provenance and normal input not established, not accepted or published. 07 slot exceeded lease without checkpoint; not successful.",
+        "artifacts": [
+          {
+            "path": "web/public/media/inspection/minerush-20261017.png",
+            "sha256": "eacf6baaa3bfd77eb618ed0335778bf7bbf741447a11e152394e8fa271f51d54"
+          }
+        ],
+        "next_step": "Resume same T-web-catalog-preview-images at next actual slot; establish capture provenance before display."
+      },
+      "result": {
+        "recorded": "recover"
+      },
+      "previous": "1e51d2599da2a96b4dc8fa1336b4e1d2eba93d142a519b789632012f07999bfe",
+      "sha256": "5ec54bc46380a143e185eeb8628306c122e63d622c73da90f0d5a0c2afb53b03"
+    },
+    {
+      "revision": 282,
+      "at": 1792209609.9387476,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261017T1300-0d6f2150",
+        "scheduled_at": "2026-10-17T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "5ec54bc46380a143e185eeb8628306c122e63d622c73da90f0d5a0c2afb53b03",
+      "sha256": "217cc11c1376ac671627c95b6c933d8e2374e09463d2504967e619c320b73b92"
+    },
+    {
+      "revision": 283,
+      "at": 1792209610.0388236,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261017T1300-0d6f2150",
+        "task_id": "T-web-catalog-preview-images",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261017T1300-0d6f2150",
+        "task_id": "T-web-catalog-preview-images",
+        "fence": 46,
+        "expires_at": 1792211110.0388236
+      },
+      "previous": "217cc11c1376ac671627c95b6c933d8e2374e09463d2504967e619c320b73b92",
+      "sha256": "06d286e75b24aa8a22f34b70bc92e09a0c997804c13b842b7dcbe83ce6cab803"
+    },
+    {
+      "revision": 284,
+      "at": 1792231194.0635371,
+      "action": "recover",
+      "data": {
+        "source": "user:automation:20261017-19:github-reconciled",
+        "reconciliation": "13 slot expired with no checkpoint. HEAD b63d42d unchanged; GitHub PR25 merged, no later PR. Only preserved untracked image and recovery receipt; no unknown external results. Image provenance unverified; do not publish.",
+        "artifacts": [
+          {
+            "path": "web/public/media/inspection/minerush-20261017.png",
+            "sha256": "eacf6baaa3bfd77eb618ed0335778bf7bbf741447a11e152394e8fa271f51d54"
+          }
+        ],
+        "next_step": "Continue same preview image task at actual 19 slot; retain all previous records."
+      },
+      "result": {
+        "recorded": "recover"
+      },
+      "previous": "06d286e75b24aa8a22f34b70bc92e09a0c997804c13b842b7dcbe83ce6cab803",
+      "sha256": "f81f92077325927f21469b39c3743f368bda04394813d5f939d137874f5d7cae"
+    },
+    {
+      "revision": 285,
+      "at": 1792231225.7163284,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261017T1900-preview-f47",
+        "scheduled_at": "2026-10-17T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "f81f92077325927f21469b39c3743f368bda04394813d5f939d137874f5d7cae",
+      "sha256": "10fc2c37d51fb4199438c844f8223b59aeda25bf29c24a7726d0e9f3d6cc5524"
+    },
+    {
+      "revision": 286,
+      "at": 1792231225.821022,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261017T1900-preview-f47",
+        "task_id": "T-web-catalog-preview-images",
+        "ttl_seconds": 1700
+      },
+      "result": {
+        "run_id": "unity-20261017T1900-preview-f47",
+        "task_id": "T-web-catalog-preview-images",
+        "fence": 47,
+        "expires_at": 1792232925.821022
+      },
+      "previous": "10fc2c37d51fb4199438c844f8223b59aeda25bf29c24a7726d0e9f3d6cc5524",
+      "sha256": "a5d56b38bde40cfb91ced6a8dd2eeadb7634bc95af7b3c161085fdaf55f42618"
+    },
+    {
+      "revision": 287,
+      "at": 1792235130.8734837,
+      "action": "recover",
+      "data": {
+        "source": "local:preview-interrupted-20261017-1300",
+        "reconciliation": "HEAD unchanged b63d42d; no external mutation requested; no unknown ledger external results. Screenshot call exceeded lease and wrong crop rejected; both images preserved locally with hashes. No checkpoint/completion claim.",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/preview-interrupted-20261017-1300.json",
+            "sha256": "60fcb46801b7cac458b9195e0170c96fd01ccf8cf583b5bb739c7e8666e6e830"
+          }
+        ],
+        "next_step": "Same T-web-catalog-preview-images. First diagnose bounded screenshot capture without CDP crop, preserve local-only raw captures; do not consume 19 slot retroactively."
+      },
+      "result": {
+        "recorded": "recover"
+      },
+      "previous": "a5d56b38bde40cfb91ced6a8dd2eeadb7634bc95af7b3c161085fdaf55f42618",
+      "sha256": "43d86205d27ef1b2a512e0c3fa2548f529f0cfff462863c07885054803e44349"
+    },
+    {
+      "revision": 288,
+      "at": 1792252807.2874997,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261018T0100-preview",
+        "scheduled_at": "2026-10-18T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "43d86205d27ef1b2a512e0c3fa2548f529f0cfff462863c07885054803e44349",
+      "sha256": "eb8c3acddb82e68827083d7d4d5f18d90ef4bb128b2e5c10c19936211d115c55"
+    },
+    {
+      "revision": 289,
+      "at": 1792252807.3725007,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261018T0100-preview",
+        "task_id": "T-web-catalog-preview-images",
+        "ttl_seconds": 1700
+      },
+      "result": {
+        "run_id": "unity-20261018T0100-preview",
+        "task_id": "T-web-catalog-preview-images",
+        "fence": 48,
+        "expires_at": 1792254507.3725007
+      },
+      "previous": "eb8c3acddb82e68827083d7d4d5f18d90ef4bb128b2e5c10c19936211d115c55",
+      "sha256": "348321cd5708225423529c75edcfe06fee25097c9dfd9a07c26d6c8b5e767f31"
+    },
+    {
+      "revision": 290,
+      "at": 1792253430.2677352,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261018T0100-preview",
+        "fence": 48,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/catalog-preview-20261018-0100.json",
+            "sha256": "8194bc170946cbad019c55a9b7643a2cd50df1c0d8ea3dff845e0ecb579354f7"
+          },
+          {
+            "path": "docs/web-catalog-preview-20261018.md",
+            "sha256": "b848be5f3d2a099a8af0698764531110d71785bd4bf215ed4280d27c614d0bff"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "90ae4f30e761b2e50c495aecb0dacccfb14519dfaa7616467c06ae7c16e7a036"
+          },
+          {
+            "path": "web/src/portal/InspectionPreview.tsx",
+            "sha256": "e6df2b01278c976fce828a64da3b9ac944e768b6118ff226c85faf9e542aaf50"
+          }
+        ],
+        "checks": [
+          "4 exact-CI normal-input game captures; game-only crops visually inspected",
+          "390/1280 image load, alt, labels, nooverflow, search return",
+          "390/1280 image-failure fallback and reset; release null noStart",
+          "TypeScript ESLint Vite9SSG guidesSSR navigation and image hashes passed"
+        ],
+        "next_step": "Same T-web-catalog-preview-images: verify restored new package and exact-head CI."
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "348321cd5708225423529c75edcfe06fee25097c9dfd9a07c26d6c8b5e767f31",
+      "sha256": "fe23dea660fb416383b729ebaa33c641e3e853288c04d055d6ec009d8b9b695e"
     }
   ],
-  "projection_sha256": "efcd5011fa82208a5f56433812a02931e0f38bd90888b2895b25b231bfd790f6"
+  "projection_sha256": "3b73011005faf8aff0cd4b1789353e447dc155dcd823ca5ea86008bbc1f4e3ff"
 }

@@ -17,6 +17,7 @@ for (const technology of ['web', 'unity']) for (const released of [false, true])
     release: released ? { url: '/play/test-only/', version: proof.version, platform: 'Test', sha256: proof.artifactSha256,
       verification: 'test-only', distributionPermission: 'test-only', recovery: 'test-only' } : null,
     ...(withGuide ? { guide } : {}),
+    ...(withGuide ? { inspectionPreview: { ...proof, url: '/media/inspection/test-only.jpg', alt: '公開前の検査盤面', imageSha256: 'c'.repeat(64), sourceCommit: 'd'.repeat(40), width: 932, height: 704 } } : {}),
   };
   const result = await build({
     stdin: { contents: `import React from 'react'; import { renderToStaticMarkup } from 'react-dom/server';
@@ -37,6 +38,12 @@ for (const technology of ['web', 'unity']) for (const released of [false, true])
   assert(!home.includes('<iframe') && !detail.includes('<iframe') && !home.includes('<audio'));
   assert(!detail.includes('C</dt>') && !detail.includes('UNDO'));
   if (withGuide) {
+    assert.equal(home.includes('公開前検査版の実画面'), !released);
+    assert.equal(detail.includes('公開前検査版の実画面'), !released);
+    for (const change of [p => { p.imageSha256 = 'invalid'; }, p => { p.sourceCommit = ''; }, p => { p.url = '//example.com/a.jpg'; }, p => { p.width = 0; }]) {
+      const invalid = structuredClone(work); change(invalid.inspectionPreview);
+      assert.throws(() => parseCatalog({ games: [invalid] }));
+    }
     assert(detail.includes('テスト固有のジャンプ') && detail.includes('Test browser'));
     assert(detail.includes('src="/media/test-only.png"') && detail.includes('実画面 · test-v1'));
     const missing = structuredClone(work); delete missing.guide.screenshots[0].imageSha256;

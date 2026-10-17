@@ -54,6 +54,13 @@ const sitemap = readFileSync(resolve(dist, 'sitemap.xml'), 'utf8');
 for (const path of ['/games/ntiktaktoe/', '/works/ntiktaktoe/']) assert(sitemap.includes(`<loc>https://game.kihamda.net${path}</loc>`));
 assert.equal((sitemap.match(/<loc>https:\/\/game\.kihamda\.net\/games\/ntiktaktoe\/<\/loc>/g) ?? []).length, 1);
 for (const work of unityGames) {
+  if (work.inspectionPreview) {
+    const preview = work.inspectionPreview;
+    const bytes = readFileSync(resolve(dist, preview.url.slice(1)));
+    assert(createHash('sha256').update(bytes).digest('hex') === preview.imageSha256, `Inspection preview checksum mismatch: ${work.id}`);
+    const page = readFileSync(resolve(dist, `${work.path.slice(1)}index.html`), 'utf8');
+    assert(work.release ? !page.includes(preview.url) : page.includes(preview.url) && page.includes('公開前検査版の実画面'), `Inspection preview publication mismatch: ${work.id}`);
+  }
   for (const shot of work.guide?.screenshots ?? []) {
     const screenshot = readFileSync(resolve(dist, shot.url.slice(1)));
     assert(createHash('sha256').update(screenshot).digest('hex') === shot.imageSha256, `Screenshot checksum mismatch: ${work.id}`);
