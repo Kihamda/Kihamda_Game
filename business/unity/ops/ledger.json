@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 308,
+  "revision": 312,
   "business_id": "game-site",
-  "fence": 51,
-  "lease": null,
+  "fence": 52,
+  "lease": {
+    "run_id": "unity-20261019T0100-d9718f8a",
+    "task_id": "T-web-daily-ci-integration-20261019",
+    "fence": 52,
+    "expires_at": 1792340965.3442345
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -7349,7 +7354,7 @@
       "depends_on": [
         "T-web-catalog-preview-enlargement"
       ],
-      "status": "blocked",
+      "status": "running",
       "checkpoints": [
         {
           "task_id": "T-web-daily-ci-integration-20261019",
@@ -7357,9 +7362,54 @@
           "reason": "本日PR26マージ済み。追加PR禁止を守り翌日分へまとめる。",
           "next_step": "2026-10-19以降に当日PR件数を照合してunblockし、既存ローカル成果を一件へまとめる。",
           "at": 1792296385.7954037
+        },
+        {
+          "task_id": "T-web-daily-ci-integration-20261019",
+          "source": "github:PR26-merged-20261018;20261019-no-PR",
+          "reason": "New JST day; live PR listing confirms no current daily PR.",
+          "next_step": "Batch retained enlargement implementation and evidence; CI restore and guarded merge.",
+          "at": 1792339465.2989428
+        },
+        {
+          "run_id": "unity-20261019T0100-d9718f8a",
+          "fence": 52,
+          "artifacts": [
+            {
+              "path": "web/src/portal/InspectionPreview.tsx",
+              "sha256": "3e391bb47899b3f44b7c48a3d658245a05bebad5e063ac74d174059632a803b0"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "106cc4f594fe6d49031856092edbe0e27cf67362c2a708131469d95d6bfad8a8"
+            },
+            {
+              "path": "web/src/portal/App.css",
+              "sha256": "683289b46a2c01c05fb4e481b391c2051c95930360300d7d3163187125387ad2"
+            },
+            {
+              "path": "docs/web-catalog-enlargement-20261018.md",
+              "sha256": "204aaab182c677ade32652be09efb8dfc92c2fa860d4aa5dfb42888c359fa810"
+            }
+          ],
+          "checks": [
+            "TypeScript ESLint Vite 9 SSG 43 checksums",
+            "navigation and work guides SSR",
+            "repository contract and business 27 tests",
+            "daily PR count zero; complete retained diff reviewed"
+          ],
+          "next_step": "Create one daily PR, verify latest-head CI, restore CI artifact and inspect 390/1280 before guarded merge.",
+          "passed": true,
+          "at": 1792339521.37974
         }
       ],
-      "claims": []
+      "claims": [
+        {
+          "run_id": "unity-20261019T0100-d9718f8a",
+          "task_id": "T-web-daily-ci-integration-20261019",
+          "fence": 52,
+          "expires_at": 1792340965.3442345
+        }
+      ]
     },
     "T-web-enlargement-strategy-20261018": {
       "id": "T-web-enlargement-strategy-20261018",
@@ -8002,6 +8052,13 @@
       "source": "scheduled:game-site:2026-10-18T19:00:00+09:00",
       "status": "completed",
       "started_at": 1792317855.8651855
+    },
+    "unity-20261019T0100-d9718f8a": {
+      "run_id": "unity-20261019T0100-d9718f8a",
+      "scheduled_at": "2026-10-19T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-19T01:00:00+09:00",
+      "status": "open",
+      "started_at": 1792339465.1628242
     }
   },
   "experiments": {
@@ -8232,7 +8289,8 @@
     "2026-10-18T01:00:00+09:00": "unity-20261018T0100-preview",
     "2026-10-18T07:00:00+09:00": "unity-20261018T0700-enlarge-a91f",
     "2026-10-18T13:00:00+09:00": "unity-20261018T1300-enlarge",
-    "2026-10-18T19:00:00+09:00": "unity-20261018T1900-strategy-2c4f2979"
+    "2026-10-18T19:00:00+09:00": "unity-20261018T1900-strategy-2c4f2979",
+    "2026-10-19T01:00:00+09:00": "unity-20261019T0100-d9718f8a"
   },
   "feedback": [
     {
@@ -19467,7 +19525,95 @@
       },
       "previous": "defaa10b24597a63c079ea70e0d11bf540562b0d5ac35768ce07308a3b6e587b",
       "sha256": "9d5b1842099884442e8c5c0b7e50ced32f3f6ab1aca373c14a148517af0d94f5"
+    },
+    {
+      "revision": 309,
+      "at": 1792339465.1628242,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261019T0100-d9718f8a",
+        "scheduled_at": "2026-10-19T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "9d5b1842099884442e8c5c0b7e50ced32f3f6ab1aca373c14a148517af0d94f5",
+      "sha256": "ddd8c43eac64711f5682c9dff5f58ced48598ffe6118e84f6cfab51752f2e31c"
+    },
+    {
+      "revision": 310,
+      "at": 1792339465.2989428,
+      "action": "unblock",
+      "data": {
+        "task_id": "T-web-daily-ci-integration-20261019",
+        "source": "github:PR26-merged-20261018;20261019-no-PR",
+        "reason": "New JST day; live PR listing confirms no current daily PR.",
+        "next_step": "Batch retained enlargement implementation and evidence; CI restore and guarded merge."
+      },
+      "result": {
+        "recorded": "unblock"
+      },
+      "previous": "ddd8c43eac64711f5682c9dff5f58ced48598ffe6118e84f6cfab51752f2e31c",
+      "sha256": "2f1e41e480df76f0aa2ed4776d9e1633f0765ff5399d1793172127deca23a924"
+    },
+    {
+      "revision": 311,
+      "at": 1792339465.3442345,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261019T0100-d9718f8a",
+        "task_id": "T-web-daily-ci-integration-20261019",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261019T0100-d9718f8a",
+        "task_id": "T-web-daily-ci-integration-20261019",
+        "fence": 52,
+        "expires_at": 1792340965.3442345
+      },
+      "previous": "2f1e41e480df76f0aa2ed4776d9e1633f0765ff5399d1793172127deca23a924",
+      "sha256": "cfa64f7bc6379130ec3935999cbb58bfddf38c3dbce6313dca10b74cb8f76419"
+    },
+    {
+      "revision": 312,
+      "at": 1792339521.37974,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261019T0100-d9718f8a",
+        "fence": 52,
+        "artifacts": [
+          {
+            "path": "web/src/portal/InspectionPreview.tsx",
+            "sha256": "3e391bb47899b3f44b7c48a3d658245a05bebad5e063ac74d174059632a803b0"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "106cc4f594fe6d49031856092edbe0e27cf67362c2a708131469d95d6bfad8a8"
+          },
+          {
+            "path": "web/src/portal/App.css",
+            "sha256": "683289b46a2c01c05fb4e481b391c2051c95930360300d7d3163187125387ad2"
+          },
+          {
+            "path": "docs/web-catalog-enlargement-20261018.md",
+            "sha256": "204aaab182c677ade32652be09efb8dfc92c2fa860d4aa5dfb42888c359fa810"
+          }
+        ],
+        "checks": [
+          "TypeScript ESLint Vite 9 SSG 43 checksums",
+          "navigation and work guides SSR",
+          "repository contract and business 27 tests",
+          "daily PR count zero; complete retained diff reviewed"
+        ],
+        "next_step": "Create one daily PR, verify latest-head CI, restore CI artifact and inspect 390/1280 before guarded merge.",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "cfa64f7bc6379130ec3935999cbb58bfddf38c3dbce6313dca10b74cb8f76419",
+      "sha256": "28cd2a2f4b6a5602e11d5201ab4ef3853702f56de32631f1f01af3fd34f2c7a0"
     }
   ],
-  "projection_sha256": "20d050d5f9134d31a2f23403a7044bcc6cd3c0c43d7beb5ade47cc129f5c151e"
+  "projection_sha256": "58b32d4d5e61081c402faa186d6e19d4fa31f75aa16ec5ab6e9f06e834757f53"
 }
