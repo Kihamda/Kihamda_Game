@@ -2,6 +2,8 @@
 
 # Kihamda.NET制作スタジオ
 
+2026-10-18の13時枠で画像拡大のローカル受入を完了。最終4作品の390/1280開閉と検索復帰、原寸スクロールと再表示時の中央復帰、45ファイル完全復元を確認した。記録docs/web-catalog-enlargement-20261018.md。新準備版はローカル検査版で、現行CI保全版とは区別する。本日PR26マージ済みのため追加PRは作らず、次はT-web-daily-ci-integration-20261019へ実装と受入・復元記録を一件にまとめる。実タッチ/Safari/人間評価は未確認、releaseと事業指標はnull。天啓の効率化継続指示は保持する。
+
 2026-10-15の13時枠でGravityBallの読込異常案内、未知/別タブの最高値保護、保存案内中のモバイル盤面拡大、再開始/unmount時の演出取消を検証した。390の通常/警告時canvas359×430.8px、1280は500×600px。実hook/AppとChrome2タブのfixture検査を通常プレイと区別し、APIを復元した。一次資料調査business/unity/research/2026-10-15-browser-save-and-layout.md。4作品/導線/型/静的/ビルドと台帳27テスト成功。本日PR23はマージ済みなので追加PR/push/リモートCI/配信なし。実タッチ/Safari/人間評価/同時書込排他は未確認、指標null。次の一工程は翌日日次PRへローカル成果と復元索引をまとめ最新headのCIを確認すること。天啓の継続指示は保持する。
 
 毎回、天啓.md、STATE.md、business/studio-policy.json、business/unity/ops/ledger.json、最新checkpointとGit状態を読む。本人の最新の直接指示を優先する。天啓.mdは本人の指示入力用で、未完了の指示と作業中の追記・変更は消さない。取り組みと必要な検証が完了した指示だけ、STATE.mdへ結果を記録してから削除する。継続方針はこのファイルとbusiness/studio-policy.jsonへ保存する。天啓.md自体と追記欄は残す。
@@ -80,3 +82,5 @@ Ice Slideのモバイル操作部はdocs/web-ice-mobile-20261013.mdで24px以上
 2026-10-17の01時枠で日次PR25を統合。既存3作品の紹介と既存情報による複数語検索を一件へ集約し、最新head70612caのLinux46秒/Windows21秒CI成功後にhead指定マージccf7666を確認した。CI38928793802の40ファイル・9ページをSHA-256照合して復元し、12実行アセットは前日実ブラウザ検査版と一致。復元版390/1280の検索・MineRush紹介・Enter案内・一覧復帰・検索再読込・公開中0件・はみ出しなしを確認。型/静的/4作品回帰/台帳27件/Core3ルート成功。索引business/unity/evidence/delivery-web-daily-20261017.json。本番配信なし、実タッチ/Safari/人間評価/別PC復元は未確認、指標null。本日追加PRは作らず後続成果はローカル保存。T-web-catalog-preview-images: 既存Web4作品の実画面を版・SHA-256付きで採取し、公開前検査版と明示して紹介へ表示する。release=nullは維持。
 
 2026-10-18の画像紹介受入はdocs/web-catalog-preview-20261018.md。inspectionPreviewは公開版のguide.screenshotsと分け、元commit・成果物/画像SHA-256・切出し寸法を照合する。release登録時は検査版画像を隠す。次はT-web-catalog-preview-enlargementで390pxでも原寸の盤面を確認できる拡大表示を加え、検査版の識別・キーボード・検索復帰を保つ。需要や実タッチの成功とは扱わない。
+
+2026-10-18の19時枠は画像拡大後の戦略評価。最終Git9件・保持アーカイブ・親4HEADとPR26マージ済みを照合。技術continue/事業unobserved、未観測指標null。policy.nextStepの完了済み工程への参照を台帳のT-web-daily-ci-integration-20261019へ修正した。次は翌日日次PR一件へ既存成果と記録を集約し、最新headのLinux/Windows CIと390/1280復元版を確認する。詳細docs/web-enlargement-strategy-20261018.md。新しい実装・ブラウザ検査・追加PR/push/配信なし。実タッチ/Safari/人間反応は未確認。天啓の継続指示は保持する。

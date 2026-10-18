@@ -142,3 +142,12 @@
 .inspection-preview figcaption span { display: block; font-size: 12px; }
 .preview-fallback { padding: 24px; font-size: 16px; }
 .info-page > .inspection-preview { margin-block: 24px; }
+.preview-expand { margin: 0 16px 16px; padding: 12px 16px; min-height: 44px; max-width: calc(100% - 32px); color: #172b28; background: #c9ec8e; border: 1px solid currentColor; }
+.preview-dialog { box-sizing: border-box; width: min(1200px, calc(100vw - 24px)); max-width: none; max-height: calc(100dvh - 24px); padding: 16px; color: #f4f5ef; background: #101826; border: 1px solid #52625d; }
+.preview-dialog::backdrop { background: #000b; }
+.preview-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.preview-dialog-header button { min-height: 44px; padding: 8px 16px; flex-shrink: 0; }
+.preview-dialog p { font-size: 14px; margin-block: 8px; }
+.preview-image-scroll { overflow: auto; max-height: calc(100dvh - 220px); margin-top: 16px; }
+.inspection-preview .preview-image-scroll img { width: auto; max-width: none; height: auto; }
+.preview-image-scroll:focus-visible { outline: 3px solid #c9ec8e; outline-offset: 2px; }

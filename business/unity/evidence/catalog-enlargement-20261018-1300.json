@@ -1,0 +1,380 @@
+{
+  "run": "unity-20261018T1300-enlarge",
+  "fence": 50,
+  "savedAt": "2026-10-18T13:06:11.260980+09:00",
+  "status": "local-acceptance-passed-not-remotely-tested",
+  "sourceCommit": "1e003f8760a0f810194072f46162f4649d399981",
+  "sources": [
+    {
+      "path": "web/src/portal/InspectionPreview.tsx",
+      "sha256": "3e391bb47899b3f44b7c48a3d658245a05bebad5e063ac74d174059632a803b0"
+    },
+    {
+      "path": "web/src/portal/App.tsx",
+      "sha256": "106cc4f594fe6d49031856092edbe0e27cf67362c2a708131469d95d6bfad8a8"
+    },
+    {
+      "path": "web/src/portal/App.css",
+      "sha256": "683289b46a2c01c05fb4e481b391c2051c95930360300d7d3163187125387ad2"
+    },
+    {
+      "path": "web/src/portal/data/works.json",
+      "sha256": "90ae4f30e761b2e50c495aecb0dacccfb14519dfaa7616467c06ae7c16e7a036"
+    },
+    {
+      "path": "docs/web-catalog-enlargement-20261018.md",
+      "sha256": "7b1ad452f80a181694936cba14bc0c6be2810a13384a1d61f0b112b4bb0dbf0d"
+    },
+    {
+      "path": "business/unity/research/2026-10-18-inspection-image-discovery.md",
+      "sha256": "10859947fdc188946c06626e7d8591d2b968e68ea0428296f28f8330b8146422"
+    },
+    {
+      "path": "STATE.md",
+      "sha256": "9ae151eea9f5bff72c14a3fbd3219fb53941ee957fb70aa627c8116f31c428a0"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "5cb13cff96a6497f8e63069ba31e6a0db4588d19669dd36cd0b6f78865e45429"
+    },
+    {
+      "path": "business/studio-policy.json",
+      "sha256": "abb4d751900616fecef13b14edf68c90a425e31e206175551836148a05c024e0"
+    }
+  ],
+  "browserMatrix": [
+    {
+      "width": 390,
+      "name": "n目並べ",
+      "opened": {
+        "dialogWidth": 366,
+        "focus": "閉じる",
+        "loaded": true,
+        "maxX": 657,
+        "maxY": 95,
+        "natural": [
+          974,
+          704
+        ],
+        "open": true,
+        "overflow": false,
+        "scrollLeft": 329,
+        "scrollTop": 0
+      },
+      "tabFocus": "preview-image-scroll",
+      "shiftFocus": "閉じる",
+      "closed": {
+        "focus": "n目並べの実画面を拡大",
+        "open": false,
+        "starts": 0
+      },
+      "returned": {
+        "focus": "works",
+        "search": "Web",
+        "url": "http://127.0.0.1:4247/?q=Web#works"
+      }
+    },
+    {
+      "width": 390,
+      "name": "アイススライドパズル",
+      "opened": {
+        "dialogWidth": 366,
+        "focus": "閉じる",
+        "loaded": true,
+        "maxX": 615,
+        "maxY": 95,
+        "natural": [
+          932,
+          704
+        ],
+        "open": true,
+        "overflow": false,
+        "scrollLeft": 308,
+        "scrollTop": 0
+      },
+      "tabFocus": "preview-image-scroll",
+      "shiftFocus": "閉じる",
+      "closed": {
+        "focus": "アイススライドパズルの実画面を拡大",
+        "open": false,
+        "starts": 0
+      },
+      "returned": {
+        "focus": "works",
+        "search": "Web",
+        "url": "http://127.0.0.1:4247/?q=Web#works"
+      }
+    },
+    {
+      "width": 390,
+      "name": "MineRush",
+      "opened": {
+        "dialogWidth": 366,
+        "focus": "閉じる",
+        "loaded": true,
+        "maxX": 615,
+        "maxY": 95,
+        "natural": [
+          932,
+          704
+        ],
+        "open": true,
+        "overflow": false,
+        "scrollLeft": 308,
+        "scrollTop": 0
+      },
+      "tabFocus": "preview-image-scroll",
+      "shiftFocus": "閉じる",
+      "closed": {
+        "focus": "MineRushの実画面を拡大",
+        "open": false,
+        "starts": 0
+      },
+      "returned": {
+        "focus": "works",
+        "search": "Web",
+        "url": "http://127.0.0.1:4247/?q=Web#works"
+      }
+    },
+    {
+      "width": 390,
+      "name": "GravityBall",
+      "opened": {
+        "dialogWidth": 366,
+        "focus": "閉じる",
+        "loaded": true,
+        "maxX": 615,
+        "maxY": 95,
+        "natural": [
+          932,
+          704
+        ],
+        "open": true,
+        "overflow": false,
+        "scrollLeft": 308,
+        "scrollTop": 0
+      },
+      "tabFocus": "preview-image-scroll",
+      "shiftFocus": "閉じる",
+      "closed": {
+        "focus": "GravityBallの実画面を拡大",
+        "open": false,
+        "starts": 0
+      },
+      "returned": {
+        "focus": "works",
+        "search": "Web",
+        "url": "http://127.0.0.1:4247/?q=Web#works"
+      }
+    },
+    {
+      "width": 1280,
+      "name": "n目並べ",
+      "opened": {
+        "dialogWidth": 1200,
+        "focus": "閉じる",
+        "loaded": true,
+        "maxX": 0,
+        "maxY": 204,
+        "natural": [
+          974,
+          704
+        ],
+        "open": true,
+        "overflow": false,
+        "scrollLeft": 0,
+        "scrollTop": 0
+      },
+      "tabFocus": "preview-image-scroll",
+      "shiftFocus": "閉じる",
+      "closed": {
+        "focus": "n目並べの実画面を拡大",
+        "open": false,
+        "starts": 0
+      },
+      "returned": {
+        "focus": "works",
+        "search": "Web",
+        "url": "http://127.0.0.1:4247/?q=Web#works"
+      }
+    },
+    {
+      "width": 1280,
+      "name": "アイススライドパズル",
+      "opened": {
+        "dialogWidth": 1200,
+        "focus": "閉じる",
+        "loaded": true,
+        "maxX": 0,
+        "maxY": 204,
+        "natural": [
+          932,
+          704
+        ],
+        "open": true,
+        "overflow": false,
+        "scrollLeft": 0,
+        "scrollTop": 0
+      },
+      "tabFocus": "preview-image-scroll",
+      "shiftFocus": "閉じる",
+      "closed": {
+        "focus": "アイススライドパズルの実画面を拡大",
+        "open": false,
+        "starts": 0
+      },
+      "returned": {
+        "focus": "works",
+        "search": "Web",
+        "url": "http://127.0.0.1:4247/?q=Web#works"
+      }
+    },
+    {
+      "width": 1280,
+      "name": "MineRush",
+      "opened": {
+        "dialogWidth": 1200,
+        "focus": "閉じる",
+        "loaded": true,
+        "maxX": 0,
+        "maxY": 204,
+        "natural": [
+          932,
+          704
+        ],
+        "open": true,
+        "overflow": false,
+        "scrollLeft": 0,
+        "scrollTop": 0
+      },
+      "tabFocus": "preview-image-scroll",
+      "shiftFocus": "閉じる",
+      "closed": {
+        "focus": "MineRushの実画面を拡大",
+        "open": false,
+        "starts": 0
+      },
+      "returned": {
+        "focus": "works",
+        "search": "Web",
+        "url": "http://127.0.0.1:4247/?q=Web#works"
+      }
+    },
+    {
+      "width": 1280,
+      "name": "GravityBall",
+      "opened": {
+        "dialogWidth": 1200,
+        "focus": "閉じる",
+        "loaded": true,
+        "maxX": 0,
+        "maxY": 204,
+        "natural": [
+          932,
+          704
+        ],
+        "open": true,
+        "overflow": false,
+        "scrollLeft": 0,
+        "scrollTop": 0
+      },
+      "tabFocus": "preview-image-scroll",
+      "shiftFocus": "閉じる",
+      "closed": {
+        "focus": "GravityBallの実画面を拡大",
+        "open": false,
+        "starts": 0
+      },
+      "returned": {
+        "focus": "works",
+        "search": "Web",
+        "url": "http://127.0.0.1:4247/?q=Web#works"
+      }
+    }
+  ],
+  "restoredBrowser": {
+    "edge": {
+      "left": 615,
+      "maxX": 615,
+      "maxY": 95,
+      "top": 95
+    },
+    "reopen": {
+      "focus": "閉じる",
+      "left": 308,
+      "top": 0
+    },
+    "wide": {
+      "dialogWidth": 1200,
+      "focus": "preview-image-scroll",
+      "loaded": true,
+      "overflow": false
+    },
+    "returned": {
+      "focus": "works",
+      "search": "Web",
+      "url": "http://127.0.0.1:4248/?q=Web#works"
+    }
+  },
+  "preservation": {
+    "parentProjects": [
+      {
+        "folder": "extreme_tik_tok_toe",
+        "commit": "95f3ee02af36803422aa312c58131eda89be2dc1",
+        "decision": "merge-reference"
+      },
+      {
+        "folder": "iloveyou",
+        "commit": "77ea78084a98cae76ce806be50a3fe1693a3e616",
+        "decision": "retire-preserve-history"
+      },
+      {
+        "folder": "Inf-minesweeper",
+        "commit": "361cf68ccf9e5b4cb74c4a8d0ebdfcf0004322ef",
+        "decision": "merge-concept"
+      },
+      {
+        "folder": "pachinko-calculator",
+        "commit": "2345bd226503a412ce34a5031b9b7b6ea046a010",
+        "decision": "retain-reference"
+      }
+    ],
+    "eventPrefixPreserved": 296,
+    "exactRestoredFiles": 45,
+    "archiveSha256": "d974cb1423a31f900a9392526002c5ba0c858183d1db11bd5dd632b9ca8af2b3"
+  },
+  "package": {
+    "path": "artifacts/releases/web-20261018-1300-enlargement.tar.gz",
+    "sha256": "d974cb1423a31f900a9392526002c5ba0c858183d1db11bd5dd632b9ca8af2b3",
+    "siteFiles": 44,
+    "exactRestoredFilesIncludingManifest": 45,
+    "negativeCases": [
+      "modified",
+      "missing",
+      "extra",
+      "version",
+      "manifest"
+    ]
+  },
+  "checks": [
+    "TypeScript ESLint Vite 9 SSG 43 checksums 4 legacy routes",
+    "Work guides 8 SSR cases and AND navigation regression",
+    "4 existing game regressions; business 27 tests",
+    "390/1280 four works normal keyboard enlargement and focus/query return",
+    "390 restored MineRush scroll edge615/95 reopen308/0 reload filter0",
+    "1280 restored GravityBall keyboard close and search return"
+  ],
+  "limitations": [
+    "No new remote CI or production deploy; PR26 already merged today",
+    "No communication blocking rerun; denied CDP action not retried",
+    "Physical touch Safari human evaluation and off-PC restoration unverified",
+    "Metrics null; release all null; no public-version acceptance"
+  ],
+  "localScreenshots": [
+    {
+      "path": "artifacts/enlargement-20261018-1300/minerush-390-final.png",
+      "sha256": "b67c07d23dbc4353782b79ac491d3d0c9baf91c24837e180e04563256d3394b2"
+    }
+  ],
+  "nextStep": "T-web-daily-ci-integration-20261019: batch implementation and acceptance/restoration records in next daily PR; exact latest-head CI before guarded merge."
+}

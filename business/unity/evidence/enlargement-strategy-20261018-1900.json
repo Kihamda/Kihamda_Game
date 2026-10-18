@@ -1,0 +1,46 @@
+{
+  "run": "unity-20261018T1900-strategy-2c4f2979",
+  "fence": 51,
+  "savedAt": "2026-10-18T19:04:47.804795+09:00",
+  "judgment": {
+    "technical": "continue",
+    "business": "unobserved"
+  },
+  "verified": [
+    "9 final Git source SHA-256",
+    "retained archive SHA-256",
+    "4 parent HEADs",
+    "GitHub PR26 merged 2026-10-18T01:14:33+09:00 and no later PR"
+  ],
+  "metrics": {
+    "monthlyNetProfitJpy": null,
+    "visitors": null,
+    "playStarts": null,
+    "completionRate": null,
+    "returnRate": null
+  },
+  "newBrowserTest": false,
+  "remoteCiForLocalEdition": false,
+  "humanReaction": null,
+  "physicalTouch": null,
+  "safari": null,
+  "nextTask": "T-web-daily-ci-integration-20261019",
+  "sources": [
+    "business/unity/evidence/catalog-enlargement-retention-20261018.json",
+    "business/unity/evidence/catalog-enlargement-20261018-1300.json"
+  ],
+  "protected": {
+    "天啓.md": "7e6f37f19a651e7a4ddd7b36c8f0db4e6dc25fa92d6918853d2a28697b747683",
+    "business/ops/ledger.json": "5b206aa5596459db59f88ad1bab31ab31b618e7ede58fc72d6ce3f4fd9e73b41",
+    "business/workspace-projects.json": "2a87731cb7e1b3fa13c037d490dcc6a944a4f2235b01092d834ae0ba5908d016",
+    "docs/workspace-handoff.md": "eb4b3c716341c0c9791bca86a7a6dfa3dbd64bfd02d05494d0d523831b5f9719"
+  },
+  "checks": [
+    "27 business tests passed using isolated TEMP/TMP after default sandbox TEMP permission failure",
+    "policy nextStep matches blocked integration task",
+    "protected files unchanged",
+    "302 prior events preserved",
+    "report local links exist",
+    "git diff --check"
+  ]
+}
