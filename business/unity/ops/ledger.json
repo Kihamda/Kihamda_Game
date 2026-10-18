@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 314,
+  "revision": 321,
   "business_id": "game-site",
-  "fence": 52,
+  "fence": 53,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -7592,6 +7592,176 @@
           "expires_at": 1792319356.0519736
         }
       ]
+    },
+    "T-web-preview-dialog-load-error": {
+      "id": "T-web-preview-dialog-load-error",
+      "objective": "Handle enlarged image request failure inside the dialog",
+      "acceptance": [
+        "Normal image enlargement remains usable",
+        "Dialog-only image failure shows guidance and retains close/focus return",
+        "390/1280 browser checks and blog draft",
+        "Local commit only after merged daily PR"
+      ],
+      "outputs": [
+        "Dialog image failure guidance",
+        "Browser evidence and draft"
+      ],
+      "checks": [
+        "build",
+        "browser normal and injected failure"
+      ],
+      "next_step": "Batch verified local changes in next daily PR",
+      "decision_id": "D-web-enlargement-strategy-20261018",
+      "hypothesis": "The second image request can fail after thumbnail success; modal needs its own fallback",
+      "source": "local:web/src/portal/InspectionPreview.tsx",
+      "priority": 1,
+      "pdca": "do",
+      "experiment_id": "E-unity-portal",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261019T0700-c1b88b7e",
+          "fence": 53,
+          "artifacts": [
+            {
+              "path": "web/src/portal/InspectionPreview.tsx",
+              "sha256": "1b7e5590f6718dcef86f4007b591159be6a0fd35f7dd42438177d79b7084e87f"
+            },
+            {
+              "path": "docs/web-preview-dialog-error-20261019.md",
+              "sha256": "90930c79f8351b935366113574266b83b21a59b075f775957effe1e06ccb7279"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-19-image-error-guidance.md",
+              "sha256": "0434bf766ca14dcf87f2cf0ef31fe115bab6eb0a5a2e35b979341bde6cebde1a"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "7085fb01208d1a5fd3de337697732e4b060686336c1d49648e48bab80194d7b2"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "7c2ced84ddf9883a634bc7faa6ef7ac4aca35c6f33e3859b5cf50fa535b2f0fe"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "58cb6bd444e90d1dc74a4d2d64481ae9589e8a4e39737ca55039081137c29175"
+            },
+            {
+              "path": "business\\unity\\evidence\\preview-dialog-error-20261019-0700.json",
+              "sha256": "be154b66e6d28d947503b6be603647e69c0a1997e30f213ff68469fe30be7e3e"
+            }
+          ],
+          "checks": [
+            "TypeScript ESLint Vite 9 SSG",
+            "4 legacy routes and 43 checksums",
+            "8 guide SSR cases and search/navigation SSR",
+            "repository contract 4 entries and 19 Unity GUIDs",
+            "27 business tests",
+            "44 site files restored with identical hashes",
+            "valid plus 5 invalid package cases rejected",
+            "390/1280 browser normal and synthetic error; restored browser passed"
+          ],
+          "next_step": "Batch verified dialog error guidance in next daily PR; latest-head CI and restored browser before merge.",
+          "passed": true,
+          "at": 1792361360.6295154
+        },
+        {
+          "run_id": "unity-20261019T0700-c1b88b7e",
+          "fence": 53,
+          "artifacts": [
+            {
+              "path": "web/src/portal/InspectionPreview.tsx",
+              "sha256": "1b7e5590f6718dcef86f4007b591159be6a0fd35f7dd42438177d79b7084e87f"
+            },
+            {
+              "path": "docs/web-preview-dialog-error-20261019.md",
+              "sha256": "90930c79f8351b935366113574266b83b21a59b075f775957effe1e06ccb7279"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-19-image-error-guidance.md",
+              "sha256": "0434bf766ca14dcf87f2cf0ef31fe115bab6eb0a5a2e35b979341bde6cebde1a"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "7085fb01208d1a5fd3de337697732e4b060686336c1d49648e48bab80194d7b2"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "7c2ced84ddf9883a634bc7faa6ef7ac4aca35c6f33e3859b5cf50fa535b2f0fe"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "58cb6bd444e90d1dc74a4d2d64481ae9589e8a4e39737ca55039081137c29175"
+            },
+            {
+              "path": "business\\unity\\evidence\\preview-dialog-error-20261019-0700.json",
+              "sha256": "be154b66e6d28d947503b6be603647e69c0a1997e30f213ff68469fe30be7e3e"
+            }
+          ],
+          "checks": [
+            "TypeScript ESLint Vite 9 SSG",
+            "4 legacy routes and 43 checksums",
+            "8 guide SSR cases and search/navigation SSR",
+            "repository contract 4 entries and 19 Unity GUIDs",
+            "27 business tests",
+            "44 site files restored with identical hashes",
+            "valid plus 5 invalid package cases rejected",
+            "390/1280 browser normal and synthetic error; restored browser passed"
+          ],
+          "next_step": "Batch verified dialog error guidance in next daily PR; latest-head CI and restored browser before merge.",
+          "passed": true,
+          "at": 1792361360.6705198
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261019T0700-c1b88b7e",
+          "task_id": "T-web-preview-dialog-load-error",
+          "fence": 53,
+          "expires_at": 1792362534.7847314
+        }
+      ]
+    },
+    "T-web-daily-ci-integration-20261020": {
+      "id": "T-web-daily-ci-integration-20261020",
+      "objective": "Integrate locally verified dialog error guidance in one daily PR",
+      "acceptance": [
+        "Check current JST day PR count and reuse daily branch/PR",
+        "Review full diff and exclude private/raw/recovery files",
+        "Verify latest-head Linux and Windows CI",
+        "Restore exact CI archive and inspect browser before guarded merge"
+      ],
+      "outputs": [
+        "One daily PR",
+        "CI restoration evidence"
+      ],
+      "checks": [
+        "latest-head CI",
+        "artifact hashes",
+        "restored browser"
+      ],
+      "next_step": "On or after 2026-10-20 inspect daily PR count, unblock and integrate local changes.",
+      "decision_id": "D-web-enlargement-strategy-20261018",
+      "hypothesis": "Preserve verified local progress without creating extra daily PRs",
+      "source": "user:automation:2026-10-13:daily-batching",
+      "pdca": "check",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "depends_on": [
+        "T-web-preview-dialog-load-error"
+      ],
+      "status": "blocked",
+      "checkpoints": [
+        {
+          "task_id": "T-web-daily-ci-integration-20261020",
+          "source": "github:PR27-merged-20261019;user:daily-batching",
+          "reason": "Daily PR27 already merged on current JST day; retain local progress until next day.",
+          "next_step": "On or after 2026-10-20 inspect daily PR count, unblock and integrate local changes.",
+          "at": 1792361360.7537873
+        }
+      ],
+      "claims": []
     }
   },
   "decisions": {
@@ -8130,6 +8300,13 @@
       "source": "scheduled:game-site:2026-10-19T01:00:00+09:00",
       "status": "completed",
       "started_at": 1792339465.1628242
+    },
+    "unity-20261019T0700-c1b88b7e": {
+      "run_id": "unity-20261019T0700-c1b88b7e",
+      "scheduled_at": "2026-10-19T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-19T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792361020.6854622
     }
   },
   "experiments": {
@@ -8361,7 +8538,8 @@
     "2026-10-18T07:00:00+09:00": "unity-20261018T0700-enlarge-a91f",
     "2026-10-18T13:00:00+09:00": "unity-20261018T1300-enlarge",
     "2026-10-18T19:00:00+09:00": "unity-20261018T1900-strategy-2c4f2979",
-    "2026-10-19T01:00:00+09:00": "unity-20261019T0100-d9718f8a"
+    "2026-10-19T01:00:00+09:00": "unity-20261019T0100-d9718f8a",
+    "2026-10-19T07:00:00+09:00": "unity-20261019T0700-c1b88b7e"
   },
   "feedback": [
     {
@@ -19778,7 +19956,241 @@
       },
       "previous": "bde5dd9566031425d9387b99e90680a45ff13f17dbab0c84dcc4a9a681d77b5b",
       "sha256": "c429744fa16622e3f4fbb432ec2dfc4c71a6d1d0b24a3987cbd066154531bcad"
+    },
+    {
+      "revision": 315,
+      "at": 1792361020.6854622,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261019T0700-c1b88b7e",
+        "scheduled_at": "2026-10-19T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "c429744fa16622e3f4fbb432ec2dfc4c71a6d1d0b24a3987cbd066154531bcad",
+      "sha256": "9bb95216e35c038830a21b4ceedb75f6f2cb125352a73cdbca373b245c4e3115"
+    },
+    {
+      "revision": 316,
+      "at": 1792361034.7381475,
+      "action": "task",
+      "data": {
+        "id": "T-web-preview-dialog-load-error",
+        "objective": "Handle enlarged image request failure inside the dialog",
+        "acceptance": [
+          "Normal image enlargement remains usable",
+          "Dialog-only image failure shows guidance and retains close/focus return",
+          "390/1280 browser checks and blog draft",
+          "Local commit only after merged daily PR"
+        ],
+        "outputs": [
+          "Dialog image failure guidance",
+          "Browser evidence and draft"
+        ],
+        "checks": [
+          "build",
+          "browser normal and injected failure"
+        ],
+        "next_step": "Batch verified local changes in next daily PR",
+        "decision_id": "D-web-enlargement-strategy-20261018",
+        "hypothesis": "The second image request can fail after thumbnail success; modal needs its own fallback",
+        "source": "local:web/src/portal/InspectionPreview.tsx",
+        "priority": 1,
+        "pdca": "do",
+        "experiment_id": "E-unity-portal"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "9bb95216e35c038830a21b4ceedb75f6f2cb125352a73cdbca373b245c4e3115",
+      "sha256": "4bf824c4d59ce87706b5f02277c38cae53a9ecda36874fb0289fa05c104e3e4f"
+    },
+    {
+      "revision": 317,
+      "at": 1792361034.7847314,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261019T0700-c1b88b7e",
+        "task_id": "T-web-preview-dialog-load-error",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261019T0700-c1b88b7e",
+        "task_id": "T-web-preview-dialog-load-error",
+        "fence": 53,
+        "expires_at": 1792362534.7847314
+      },
+      "previous": "4bf824c4d59ce87706b5f02277c38cae53a9ecda36874fb0289fa05c104e3e4f",
+      "sha256": "390bdf9ff1abc85ae8d96f10d43977e7eb91a8ba9bee02de1b110b47d6b23d30"
+    },
+    {
+      "revision": 318,
+      "at": 1792361360.6295154,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261019T0700-c1b88b7e",
+        "fence": 53,
+        "artifacts": [
+          {
+            "path": "web/src/portal/InspectionPreview.tsx",
+            "sha256": "1b7e5590f6718dcef86f4007b591159be6a0fd35f7dd42438177d79b7084e87f"
+          },
+          {
+            "path": "docs/web-preview-dialog-error-20261019.md",
+            "sha256": "90930c79f8351b935366113574266b83b21a59b075f775957effe1e06ccb7279"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-19-image-error-guidance.md",
+            "sha256": "0434bf766ca14dcf87f2cf0ef31fe115bab6eb0a5a2e35b979341bde6cebde1a"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "7085fb01208d1a5fd3de337697732e4b060686336c1d49648e48bab80194d7b2"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "7c2ced84ddf9883a634bc7faa6ef7ac4aca35c6f33e3859b5cf50fa535b2f0fe"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "58cb6bd444e90d1dc74a4d2d64481ae9589e8a4e39737ca55039081137c29175"
+          },
+          {
+            "path": "business\\unity\\evidence\\preview-dialog-error-20261019-0700.json",
+            "sha256": "be154b66e6d28d947503b6be603647e69c0a1997e30f213ff68469fe30be7e3e"
+          }
+        ],
+        "checks": [
+          "TypeScript ESLint Vite 9 SSG",
+          "4 legacy routes and 43 checksums",
+          "8 guide SSR cases and search/navigation SSR",
+          "repository contract 4 entries and 19 Unity GUIDs",
+          "27 business tests",
+          "44 site files restored with identical hashes",
+          "valid plus 5 invalid package cases rejected",
+          "390/1280 browser normal and synthetic error; restored browser passed"
+        ],
+        "next_step": "Batch verified dialog error guidance in next daily PR; latest-head CI and restored browser before merge.",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "390bdf9ff1abc85ae8d96f10d43977e7eb91a8ba9bee02de1b110b47d6b23d30",
+      "sha256": "315719be9b7218f7b67ef486076e48d5ab6bb6d60dc432a2e64624b63c50645b"
+    },
+    {
+      "revision": 319,
+      "at": 1792361360.6705198,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261019T0700-c1b88b7e",
+        "fence": 53,
+        "artifacts": [
+          {
+            "path": "web/src/portal/InspectionPreview.tsx",
+            "sha256": "1b7e5590f6718dcef86f4007b591159be6a0fd35f7dd42438177d79b7084e87f"
+          },
+          {
+            "path": "docs/web-preview-dialog-error-20261019.md",
+            "sha256": "90930c79f8351b935366113574266b83b21a59b075f775957effe1e06ccb7279"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-19-image-error-guidance.md",
+            "sha256": "0434bf766ca14dcf87f2cf0ef31fe115bab6eb0a5a2e35b979341bde6cebde1a"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "7085fb01208d1a5fd3de337697732e4b060686336c1d49648e48bab80194d7b2"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "7c2ced84ddf9883a634bc7faa6ef7ac4aca35c6f33e3859b5cf50fa535b2f0fe"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "58cb6bd444e90d1dc74a4d2d64481ae9589e8a4e39737ca55039081137c29175"
+          },
+          {
+            "path": "business\\unity\\evidence\\preview-dialog-error-20261019-0700.json",
+            "sha256": "be154b66e6d28d947503b6be603647e69c0a1997e30f213ff68469fe30be7e3e"
+          }
+        ],
+        "checks": [
+          "TypeScript ESLint Vite 9 SSG",
+          "4 legacy routes and 43 checksums",
+          "8 guide SSR cases and search/navigation SSR",
+          "repository contract 4 entries and 19 Unity GUIDs",
+          "27 business tests",
+          "44 site files restored with identical hashes",
+          "valid plus 5 invalid package cases rejected",
+          "390/1280 browser normal and synthetic error; restored browser passed"
+        ],
+        "next_step": "Batch verified dialog error guidance in next daily PR; latest-head CI and restored browser before merge.",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "315719be9b7218f7b67ef486076e48d5ab6bb6d60dc432a2e64624b63c50645b",
+      "sha256": "fc27f1f5795ce20b4840875b0de3843ae581897f4896f7930fc0a6bf1a527f49"
+    },
+    {
+      "revision": 320,
+      "at": 1792361360.714741,
+      "action": "task",
+      "data": {
+        "id": "T-web-daily-ci-integration-20261020",
+        "objective": "Integrate locally verified dialog error guidance in one daily PR",
+        "acceptance": [
+          "Check current JST day PR count and reuse daily branch/PR",
+          "Review full diff and exclude private/raw/recovery files",
+          "Verify latest-head Linux and Windows CI",
+          "Restore exact CI archive and inspect browser before guarded merge"
+        ],
+        "outputs": [
+          "One daily PR",
+          "CI restoration evidence"
+        ],
+        "checks": [
+          "latest-head CI",
+          "artifact hashes",
+          "restored browser"
+        ],
+        "next_step": "On or after 2026-10-20 inspect daily PR count, unblock and integrate local changes.",
+        "decision_id": "D-web-enlargement-strategy-20261018",
+        "hypothesis": "Preserve verified local progress without creating extra daily PRs",
+        "source": "user:automation:2026-10-13:daily-batching",
+        "pdca": "check",
+        "experiment_id": "E-unity-portal",
+        "priority": 1,
+        "depends_on": [
+          "T-web-preview-dialog-load-error"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "fc27f1f5795ce20b4840875b0de3843ae581897f4896f7930fc0a6bf1a527f49",
+      "sha256": "96eee864259bfcd231f498f69d5cc845c6382f78181e2c032ca4f3260a409e80"
+    },
+    {
+      "revision": 321,
+      "at": 1792361360.7537873,
+      "action": "block",
+      "data": {
+        "task_id": "T-web-daily-ci-integration-20261020",
+        "source": "github:PR27-merged-20261019;user:daily-batching",
+        "reason": "Daily PR27 already merged on current JST day; retain local progress until next day.",
+        "next_step": "On or after 2026-10-20 inspect daily PR count, unblock and integrate local changes."
+      },
+      "result": {
+        "recorded": "block"
+      },
+      "previous": "96eee864259bfcd231f498f69d5cc845c6382f78181e2c032ca4f3260a409e80",
+      "sha256": "4d8aa60404685437a0e8272d3c30145222f2c740f880f9a93dc93c673cd3c52b"
     }
   ],
-  "projection_sha256": "1ad68bd54000a2468e0225fcedbf81b5e85ec65004949766eec38fe460cefd2b"
+  "projection_sha256": "668c73a685c59abe0673c6658e1fbde0c9374697fb343da5226cdc8ea613509d"
 }

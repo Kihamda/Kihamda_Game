@@ -197,3 +197,6 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 2026-10-18の19時枠は画像拡大後の戦略評価。最終Git9件・保持アーカイブ・親4HEADとPR26マージ済みを照合。技術continue/事業unobserved、未観測指標null。policy.nextStepの完了済み工程への参照を台帳のT-web-daily-ci-integration-20261019へ修正した。次は翌日日次PR一件へ既存成果と記録を集約し、最新headのLinux/Windows CIと390/1280復元版を確認する。詳細docs/web-enlargement-strategy-20261018.md。新しい実装・ブラウザ検査・追加PR/push/配信なし。実タッチ/Safari/人間反応は未確認。天啓の継続指示は保持する。
 
 台帳27テスト成功。一時領域の権限エラー後、隔離したTEMP/TMPで再実行した。差分・JSON・参照先と既存302イベントの保持を確認した。
+
+
+2026-10-19の07時枠でT-web-preview-dialog-load-errorを完了。拡大画像の独立した失敗案内を追加し、通常390/1280の開閉とTab/ShiftTab/Enter/Escape、合成error時の案内と起点復帰、検索Web保持を実ブラウザ検査した。型/静的/9SSG/43ハッシュ/案内8条件/検索SSR/台帳27テスト成功。元7595b50の44ファイル・9ページを圧縮復元し全ハッシュと5拒否条件、復元390の失敗と再読込復帰/1280の通常表示を確認。合成イベント検査であり実通信障害の再現ではない。詳細docs/web-preview-dialog-error-20261019.md、記事はbusiness/blog/drafts/2026-10-19-image-error-guidance.mdへ下書きのみ。本日PR27マージ済みのため追加PR/push/リモートCI/本番配置なし。現行CI索引を保持。次はT-web-daily-ci-integration-20261020。実タッチ/Safari/人間評価/別PC復元は未確認、releaseと事業指標null。天啓の継続指示を保持し、Unity/旧クラウド台帳/親原本/復元保管庫/Atohitoriは変更しない。
