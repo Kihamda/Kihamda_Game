@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 312,
+  "revision": 314,
   "business_id": "game-site",
   "fence": 52,
-  "lease": {
-    "run_id": "unity-20261019T0100-d9718f8a",
-    "task_id": "T-web-daily-ci-integration-20261019",
-    "fence": 52,
-    "expires_at": 1792340965.3442345
-  },
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -7354,7 +7349,7 @@
       "depends_on": [
         "T-web-catalog-preview-enlargement"
       ],
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "task_id": "T-web-daily-ci-integration-20261019",
@@ -7400,6 +7395,82 @@
           "next_step": "Create one daily PR, verify latest-head CI, restore CI artifact and inspect 390/1280 before guarded merge.",
           "passed": true,
           "at": 1792339521.37974
+        },
+        {
+          "run_id": "unity-20261019T0100-d9718f8a",
+          "fence": 52,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-enlargement-20261019.json",
+              "sha256": "df767e4a0f4476e87c4b089920fb06bca4d292988d45ab390482f578c706e1bc"
+            },
+            {
+              "path": "docs/web-daily-integration-20261019.md",
+              "sha256": "ec2bd62c5561759ab562098890e8055876f3f9b3905d4922b0e90b01acf22bc3"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "b5003dc11ec8039834261c46cbfdbe8f26c0db93a82bb53026d486fbb97b5896"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "451039b495bd11267b440860b09ac307c216d96c0b24163133111a948a2b6fca"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "f7ee4ac8488d1ea4fdfcd397ea6afbb030fd4de7e76f6e4312b1334cc165e8af"
+            }
+          ],
+          "checks": [
+            "Latest PR head bc8b23d Linux43s Windows22s CI success",
+            "CI source f337fbb parents bind exact head/base;4 image hashes matched",
+            "44files9pages restored; valid and5 rejection cases passed",
+            "390/1280 all4 expansion return nooverflow noStart iframe0",
+            "Keyboard Tab ShiftTab Escape Enter; scroll348/95 reopen308/0; Web query/reload and published0",
+            "Guarded PR27 merge21771ff confirmed; no production deployment",
+            "Protected files and original308 event prefix retained"
+          ],
+          "next_step": "Retain current CI package and resume existing portal quality work at the next actual slot; no additional PR today. Physical touch/Safari/human evaluation unobserved.",
+          "passed": true,
+          "at": 1792339802.8591485
+        },
+        {
+          "run_id": "unity-20261019T0100-d9718f8a",
+          "fence": 52,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-enlargement-20261019.json",
+              "sha256": "df767e4a0f4476e87c4b089920fb06bca4d292988d45ab390482f578c706e1bc"
+            },
+            {
+              "path": "docs/web-daily-integration-20261019.md",
+              "sha256": "ec2bd62c5561759ab562098890e8055876f3f9b3905d4922b0e90b01acf22bc3"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "b5003dc11ec8039834261c46cbfdbe8f26c0db93a82bb53026d486fbb97b5896"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "451039b495bd11267b440860b09ac307c216d96c0b24163133111a948a2b6fca"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "f7ee4ac8488d1ea4fdfcd397ea6afbb030fd4de7e76f6e4312b1334cc165e8af"
+            }
+          ],
+          "checks": [
+            "Latest PR head bc8b23d Linux43s Windows22s CI success",
+            "CI source f337fbb parents bind exact head/base;4 image hashes matched",
+            "44files9pages restored; valid and5 rejection cases passed",
+            "390/1280 all4 expansion return nooverflow noStart iframe0",
+            "Keyboard Tab ShiftTab Escape Enter; scroll348/95 reopen308/0; Web query/reload and published0",
+            "Guarded PR27 merge21771ff confirmed; no production deployment",
+            "Protected files and original308 event prefix retained"
+          ],
+          "next_step": "Retain current CI package and resume existing portal quality work at the next actual slot; no additional PR today. Physical touch/Safari/human evaluation unobserved.",
+          "passed": true,
+          "at": 1792339802.909685
         }
       ],
       "claims": [
@@ -8057,7 +8128,7 @@
       "run_id": "unity-20261019T0100-d9718f8a",
       "scheduled_at": "2026-10-19T01:00:00+09:00",
       "source": "scheduled:game-site:2026-10-19T01:00:00+09:00",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792339465.1628242
     }
   },
@@ -19613,7 +19684,101 @@
       },
       "previous": "cfa64f7bc6379130ec3935999cbb58bfddf38c3dbce6313dca10b74cb8f76419",
       "sha256": "28cd2a2f4b6a5602e11d5201ab4ef3853702f56de32631f1f01af3fd34f2c7a0"
+    },
+    {
+      "revision": 313,
+      "at": 1792339802.8591485,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261019T0100-d9718f8a",
+        "fence": 52,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-enlargement-20261019.json",
+            "sha256": "df767e4a0f4476e87c4b089920fb06bca4d292988d45ab390482f578c706e1bc"
+          },
+          {
+            "path": "docs/web-daily-integration-20261019.md",
+            "sha256": "ec2bd62c5561759ab562098890e8055876f3f9b3905d4922b0e90b01acf22bc3"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "b5003dc11ec8039834261c46cbfdbe8f26c0db93a82bb53026d486fbb97b5896"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "451039b495bd11267b440860b09ac307c216d96c0b24163133111a948a2b6fca"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "f7ee4ac8488d1ea4fdfcd397ea6afbb030fd4de7e76f6e4312b1334cc165e8af"
+          }
+        ],
+        "checks": [
+          "Latest PR head bc8b23d Linux43s Windows22s CI success",
+          "CI source f337fbb parents bind exact head/base;4 image hashes matched",
+          "44files9pages restored; valid and5 rejection cases passed",
+          "390/1280 all4 expansion return nooverflow noStart iframe0",
+          "Keyboard Tab ShiftTab Escape Enter; scroll348/95 reopen308/0; Web query/reload and published0",
+          "Guarded PR27 merge21771ff confirmed; no production deployment",
+          "Protected files and original308 event prefix retained"
+        ],
+        "next_step": "Retain current CI package and resume existing portal quality work at the next actual slot; no additional PR today. Physical touch/Safari/human evaluation unobserved.",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "28cd2a2f4b6a5602e11d5201ab4ef3853702f56de32631f1f01af3fd34f2c7a0",
+      "sha256": "bde5dd9566031425d9387b99e90680a45ff13f17dbab0c84dcc4a9a681d77b5b"
+    },
+    {
+      "revision": 314,
+      "at": 1792339802.909685,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261019T0100-d9718f8a",
+        "fence": 52,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-enlargement-20261019.json",
+            "sha256": "df767e4a0f4476e87c4b089920fb06bca4d292988d45ab390482f578c706e1bc"
+          },
+          {
+            "path": "docs/web-daily-integration-20261019.md",
+            "sha256": "ec2bd62c5561759ab562098890e8055876f3f9b3905d4922b0e90b01acf22bc3"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "b5003dc11ec8039834261c46cbfdbe8f26c0db93a82bb53026d486fbb97b5896"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "451039b495bd11267b440860b09ac307c216d96c0b24163133111a948a2b6fca"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "f7ee4ac8488d1ea4fdfcd397ea6afbb030fd4de7e76f6e4312b1334cc165e8af"
+          }
+        ],
+        "checks": [
+          "Latest PR head bc8b23d Linux43s Windows22s CI success",
+          "CI source f337fbb parents bind exact head/base;4 image hashes matched",
+          "44files9pages restored; valid and5 rejection cases passed",
+          "390/1280 all4 expansion return nooverflow noStart iframe0",
+          "Keyboard Tab ShiftTab Escape Enter; scroll348/95 reopen308/0; Web query/reload and published0",
+          "Guarded PR27 merge21771ff confirmed; no production deployment",
+          "Protected files and original308 event prefix retained"
+        ],
+        "next_step": "Retain current CI package and resume existing portal quality work at the next actual slot; no additional PR today. Physical touch/Safari/human evaluation unobserved.",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "bde5dd9566031425d9387b99e90680a45ff13f17dbab0c84dcc4a9a681d77b5b",
+      "sha256": "c429744fa16622e3f4fbb432ec2dfc4c71a6d1d0b24a3987cbd066154531bcad"
     }
   ],
-  "projection_sha256": "58b32d4d5e61081c402faa186d6e19d4fa31f75aa16ec5ab6e9f06e834757f53"
+  "projection_sha256": "1ad68bd54000a2468e0225fcedbf81b5e85ec65004949766eec38fe460cefd2b"
 }

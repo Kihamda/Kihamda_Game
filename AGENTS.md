@@ -1,3 +1,5 @@
+2026-10-19の01時枠でT-web-daily-ci-integration-20261019を完了。PR27はhead bc8b23dのLinux43秒・Windows22秒CI成功後、復元版4作品390/1280の拡大・閉じる・中央復帰・検索往復を確認して21771ffへhead指定でマージ。CI版f337fbbは44ファイル・9ページ、画像4件の原本一致とアーカイブSHA-256、正常と5拒否検査を照合した。復元索引はbusiness/unity/evidence/delivery-web-enlargement-20261019.json。実タッチ・Safari・人間評価・別PC復元は未確認、releaseと事業指標null。本番配置・Unity追加ビルド・投稿なし。本日日次PRは完了したため追加PRを作らず、後続の内部成果と完了記録はローカル保存する。継続的効率改善は完了条件のない継続指示なので天啓.mdを保持する。
+
 2026-10-15の19時枠で既存n目並べを公開前のWeb作品として一覧と紹介へ追加。紹介/works/ntiktaktoe/と従来の実行/games/ntiktaktoe/を分け、release=nullの開始リンクを抑止。390/1280の検索・往復・保存範囲案内・再読み込みと既存ゲームの通常着手保存を確認。型/静的/6SSG/4URL/36ハッシュ、Webと持込Unityの案内、台帳27テスト成功。詳細docs/web-ntik-catalog-20261015.md。事業unobserved・指標null。本日PR23はマージ済みのためローカル保存し、翌日日次統合を継続する。実タッチ/Safari/人間評価は未確認、天啓の継続指示は保持。
 
 # Kihamda.NET制作スタジオ

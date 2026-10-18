@@ -1,0 +1,7 @@
+# 画像拡大の日次CI統合
+
+2026-10-19の01時枠でT-web-daily-ci-integration-20261019を完了。PR27はhead bc8b23dのLinux43秒・Windows22秒CI成功後、復元版4作品390/1280の拡大・閉じる・中央復帰・検索往復を確認して21771ffへhead指定でマージ。CI版f337fbbは44ファイル・9ページ、画像4件の原本一致とアーカイブSHA-256、正常と5拒否検査を照合した。復元索引はbusiness/unity/evidence/delivery-web-enlargement-20261019.json。実タッチ・Safari・人間評価・別PC復元は未確認、releaseと事業指標null。本番配置・Unity追加ビルド・投稿なし。本日日次PRは完了したため追加PRを作らず、後続の内部成果と完了記録はローカル保存する。継続的効率改善は完了条件のない継続指示なので天啓.mdを保持する。
+
+アーカイブSHA-256: 722f1a7a3681e00434003dd0062e06976bec35b0afa4ba80c18b40e6250a6028。CIの仮マージ元版はf337fbb2d78423fd5ce29e08c148c22e43ddcbb5で、両親がPR headと既存mainに一致する。受入は本番配信を意味しない。
+
+390のMineRushで縦95px・横348pxへキーボードで移動し、再表示は横308px・縦0pxへ戻った。1280のGravityBallでTab/Shift+Tab、Enter閉じると起点復帰を確認。検索語Webは一覧往復と再読み込み後も保持し、公開中は0作品。
