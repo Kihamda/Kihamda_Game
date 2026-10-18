@@ -2,6 +2,8 @@
 
 # Kihamda.NET制作スタジオ
 
+2026-10-18の13時枠で画像拡大のローカル受入を完了。最終4作品の390/1280開閉と検索復帰、原寸スクロールと再表示時の中央復帰、45ファイル完全復元を確認した。記録docs/web-catalog-enlargement-20261018.md。新準備版はローカル検査版で、現行CI保全版とは区別する。本日PR26マージ済みのため追加PRは作らず、次はT-web-daily-ci-integration-20261019へ実装と受入・復元記録を一件にまとめる。実タッチ/Safari/人間評価は未確認、releaseと事業指標はnull。天啓の効率化継続指示は保持する。
+
 2026-10-15の13時枠でGravityBallの読込異常案内、未知/別タブの最高値保護、保存案内中のモバイル盤面拡大、再開始/unmount時の演出取消を検証した。390の通常/警告時canvas359×430.8px、1280は500×600px。実hook/AppとChrome2タブのfixture検査を通常プレイと区別し、APIを復元した。一次資料調査business/unity/research/2026-10-15-browser-save-and-layout.md。4作品/導線/型/静的/ビルドと台帳27テスト成功。本日PR23はマージ済みなので追加PR/push/リモートCI/配信なし。実タッチ/Safari/人間評価/同時書込排他は未確認、指標null。次の一工程は翌日日次PRへローカル成果と復元索引をまとめ最新headのCIを確認すること。天啓の継続指示は保持する。
 
 毎回、天啓.md、STATE.md、business/studio-policy.json、business/unity/ops/ledger.json、最新checkpointとGit状態を読む。本人の最新の直接指示を優先する。天啓.mdは本人の指示入力用で、未完了の指示と作業中の追記・変更は消さない。取り組みと必要な検証が完了した指示だけ、STATE.mdへ結果を記録してから削除する。継続方針はこのファイルとbusiness/studio-policy.jsonへ保存する。天啓.md自体と追記欄は残す。

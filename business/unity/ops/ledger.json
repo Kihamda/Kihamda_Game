@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 296,
+  "revision": 302,
   "business_id": "game-site",
-  "fence": 49,
+  "fence": 50,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -7175,7 +7175,7 @@
       "depends_on": [
         "T-web-catalog-preview-images"
       ],
-      "status": "ready",
+      "status": "done",
       "checkpoints": [
         {
           "source": "local:catalog-enlargement-partial-20261018-0700",
@@ -7189,6 +7189,120 @@
           "next_step": "Same T-web-catalog-preview-enlargement: final-source390/1280 all4 keyboard/scroll/search-return and package restoration; avoid permission-gated CDP inspection.",
           "at": 1792295467.8230202,
           "recovered_fence": 49
+        },
+        {
+          "run_id": "unity-20261018T1300-enlarge",
+          "fence": 50,
+          "artifacts": [
+            {
+              "path": "web/src/portal/InspectionPreview.tsx",
+              "sha256": "3e391bb47899b3f44b7c48a3d658245a05bebad5e063ac74d174059632a803b0"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "106cc4f594fe6d49031856092edbe0e27cf67362c2a708131469d95d6bfad8a8"
+            },
+            {
+              "path": "web/src/portal/App.css",
+              "sha256": "683289b46a2c01c05fb4e481b391c2051c95930360300d7d3163187125387ad2"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "90ae4f30e761b2e50c495aecb0dacccfb14519dfaa7616467c06ae7c16e7a036"
+            },
+            {
+              "path": "docs/web-catalog-enlargement-20261018.md",
+              "sha256": "7b1ad452f80a181694936cba14bc0c6be2810a13384a1d61f0b112b4bb0dbf0d"
+            },
+            {
+              "path": "business/unity/research/2026-10-18-inspection-image-discovery.md",
+              "sha256": "10859947fdc188946c06626e7d8591d2b968e68ea0428296f28f8330b8146422"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "9ae151eea9f5bff72c14a3fbd3219fb53941ee957fb70aa627c8116f31c428a0"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "5cb13cff96a6497f8e63069ba31e6a0db4588d19669dd36cd0b6f78865e45429"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "abb4d751900616fecef13b14edf68c90a425e31e206175551836148a05c024e0"
+            },
+            {
+              "path": "business/unity/evidence/catalog-enlargement-20261018-1300.json",
+              "sha256": "72382057dc1fe7925a42d41fc86917869b5ec1b5395bfba48804566513d2dfff"
+            }
+          ],
+          "checks": [
+            "TypeScript ESLint Vite 9 SSG 43 checksums 4 legacy routes",
+            "Work guides 8 SSR cases and AND navigation regression",
+            "4 existing game regressions; business 27 tests",
+            "390/1280 four works normal keyboard enlargement and focus/query return",
+            "390 restored MineRush scroll edge615/95 reopen308/0 reload filter0",
+            "1280 restored GravityBall keyboard close and search return"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261019: batch implementation and acceptance/restoration records in next daily PR; exact latest-head CI before guarded merge.",
+          "passed": true,
+          "at": 1792296385.6805367
+        },
+        {
+          "run_id": "unity-20261018T1300-enlarge",
+          "fence": 50,
+          "artifacts": [
+            {
+              "path": "web/src/portal/InspectionPreview.tsx",
+              "sha256": "3e391bb47899b3f44b7c48a3d658245a05bebad5e063ac74d174059632a803b0"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "106cc4f594fe6d49031856092edbe0e27cf67362c2a708131469d95d6bfad8a8"
+            },
+            {
+              "path": "web/src/portal/App.css",
+              "sha256": "683289b46a2c01c05fb4e481b391c2051c95930360300d7d3163187125387ad2"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "90ae4f30e761b2e50c495aecb0dacccfb14519dfaa7616467c06ae7c16e7a036"
+            },
+            {
+              "path": "docs/web-catalog-enlargement-20261018.md",
+              "sha256": "7b1ad452f80a181694936cba14bc0c6be2810a13384a1d61f0b112b4bb0dbf0d"
+            },
+            {
+              "path": "business/unity/research/2026-10-18-inspection-image-discovery.md",
+              "sha256": "10859947fdc188946c06626e7d8591d2b968e68ea0428296f28f8330b8146422"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "9ae151eea9f5bff72c14a3fbd3219fb53941ee957fb70aa627c8116f31c428a0"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "5cb13cff96a6497f8e63069ba31e6a0db4588d19669dd36cd0b6f78865e45429"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "abb4d751900616fecef13b14edf68c90a425e31e206175551836148a05c024e0"
+            },
+            {
+              "path": "business/unity/evidence/catalog-enlargement-20261018-1300.json",
+              "sha256": "72382057dc1fe7925a42d41fc86917869b5ec1b5395bfba48804566513d2dfff"
+            }
+          ],
+          "checks": [
+            "TypeScript ESLint Vite 9 SSG 43 checksums 4 legacy routes",
+            "Work guides 8 SSR cases and AND navigation regression",
+            "4 existing game regressions; business 27 tests",
+            "390/1280 four works normal keyboard enlargement and focus/query return",
+            "390 restored MineRush scroll edge615/95 reopen308/0 reload filter0",
+            "1280 restored GravityBall keyboard close and search return"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261019: batch implementation and acceptance/restoration records in next daily PR; exact latest-head CI before guarded merge.",
+          "passed": true,
+          "at": 1792296385.719199
         }
       ],
       "claims": [
@@ -7197,8 +7311,55 @@
           "task_id": "T-web-catalog-preview-enlargement",
           "fence": 49,
           "expires_at": 1792275915.0838273
+        },
+        {
+          "run_id": "unity-20261018T1300-enlarge",
+          "task_id": "T-web-catalog-preview-enlargement",
+          "fence": 50,
+          "expires_at": 1792297507.8421452
         }
       ]
+    },
+    "T-web-daily-ci-integration-20261019": {
+      "id": "T-web-daily-ci-integration-20261019",
+      "objective": "検証済み画像拡大と再表示修正を翌日日次PR一件へ集約する",
+      "acceptance": [
+        "当日の作成済みPRと既存PRを照合し一件へまとめる",
+        "公開前検査版の表示とrelease=null・開始リンクなしを保持する",
+        "差分に秘密・非公開原稿・生の画面・復元保管庫を含めない",
+        "最新headのLinux/Windows CI成功後に同headだけをマージする",
+        "CI成果物の元版・画像・ハッシュを照合して復元し拡大と検索復帰を実ブラウザ確認する"
+      ],
+      "outputs": [
+        "日次PR一件",
+        "CI版の復元索引と正確な未確認事項"
+      ],
+      "checks": [
+        "latest-head CI",
+        "artifact restoration and source image hashes",
+        "390/1280 restored browser"
+      ],
+      "next_step": "2026-10-19以降に当日PR件数を照合してunblockし、既存ローカル成果を一件へまとめる。",
+      "decision_id": "D-web-catalog-discovery-20261015",
+      "hypothesis": "実画面と開発状態の正確な案内を復元可能な検証版で保持する。需要への効果は未観測。",
+      "source": "research:business/unity/research/2026-10-18-inspection-image-discovery.md",
+      "pdca": "check",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "depends_on": [
+        "T-web-catalog-preview-enlargement"
+      ],
+      "status": "blocked",
+      "checkpoints": [
+        {
+          "task_id": "T-web-daily-ci-integration-20261019",
+          "source": "user:automation:2026-10-13:daily-batching;github:PR26-merged-20261018",
+          "reason": "本日PR26マージ済み。追加PR禁止を守り翌日分へまとめる。",
+          "next_step": "2026-10-19以降に当日PR件数を照合してunblockし、既存ローカル成果を一件へまとめる。",
+          "at": 1792296385.7954037
+        }
+      ],
+      "claims": []
     }
   },
   "decisions": {
@@ -7708,6 +7869,13 @@
       "source": "scheduled:game-site:2026-10-18T07:00:00+09:00",
       "status": "recovered",
       "started_at": 1792274414.9985814
+    },
+    "unity-20261018T1300-enlarge": {
+      "run_id": "unity-20261018T1300-enlarge",
+      "scheduled_at": "2026-10-18T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-18T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792296007.7237797
     }
   },
   "experiments": {
@@ -7936,7 +8104,8 @@
     "2026-10-17T13:00:00+09:00": "unity-20261017T1300-0d6f2150",
     "2026-10-17T19:00:00+09:00": "unity-20261017T1900-preview-f47",
     "2026-10-18T01:00:00+09:00": "unity-20261018T0100-preview",
-    "2026-10-18T07:00:00+09:00": "unity-20261018T0700-enlarge-a91f"
+    "2026-10-18T07:00:00+09:00": "unity-20261018T0700-enlarge-a91f",
+    "2026-10-18T13:00:00+09:00": "unity-20261018T1300-enlarge"
   },
   "feedback": [
     {
@@ -18773,7 +18942,227 @@
       },
       "previous": "162397718441891dcbaea4f0c9f462dad1caa61d986251a038c14f64edecb0ba",
       "sha256": "cd35f00e48f018037a35638d99fc0ccac2b8bcc1f6d8bda5c7f1b899f9c728b2"
+    },
+    {
+      "revision": 297,
+      "at": 1792296007.7237797,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261018T1300-enlarge",
+        "scheduled_at": "2026-10-18T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "cd35f00e48f018037a35638d99fc0ccac2b8bcc1f6d8bda5c7f1b899f9c728b2",
+      "sha256": "5070ee0b0f4927d30d3671b42cb29ce8928c7dbf04d981a0a91c51eed9eae45b"
+    },
+    {
+      "revision": 298,
+      "at": 1792296007.8421452,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261018T1300-enlarge",
+        "task_id": "T-web-catalog-preview-enlargement",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261018T1300-enlarge",
+        "task_id": "T-web-catalog-preview-enlargement",
+        "fence": 50,
+        "expires_at": 1792297507.8421452
+      },
+      "previous": "5070ee0b0f4927d30d3671b42cb29ce8928c7dbf04d981a0a91c51eed9eae45b",
+      "sha256": "f2d0889750e7c72ff86a27bafc86b999f33a2e01caa28eb859298f20e828ea9e"
+    },
+    {
+      "revision": 299,
+      "at": 1792296385.6805367,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261018T1300-enlarge",
+        "fence": 50,
+        "artifacts": [
+          {
+            "path": "web/src/portal/InspectionPreview.tsx",
+            "sha256": "3e391bb47899b3f44b7c48a3d658245a05bebad5e063ac74d174059632a803b0"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "106cc4f594fe6d49031856092edbe0e27cf67362c2a708131469d95d6bfad8a8"
+          },
+          {
+            "path": "web/src/portal/App.css",
+            "sha256": "683289b46a2c01c05fb4e481b391c2051c95930360300d7d3163187125387ad2"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "90ae4f30e761b2e50c495aecb0dacccfb14519dfaa7616467c06ae7c16e7a036"
+          },
+          {
+            "path": "docs/web-catalog-enlargement-20261018.md",
+            "sha256": "7b1ad452f80a181694936cba14bc0c6be2810a13384a1d61f0b112b4bb0dbf0d"
+          },
+          {
+            "path": "business/unity/research/2026-10-18-inspection-image-discovery.md",
+            "sha256": "10859947fdc188946c06626e7d8591d2b968e68ea0428296f28f8330b8146422"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "9ae151eea9f5bff72c14a3fbd3219fb53941ee957fb70aa627c8116f31c428a0"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "5cb13cff96a6497f8e63069ba31e6a0db4588d19669dd36cd0b6f78865e45429"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "abb4d751900616fecef13b14edf68c90a425e31e206175551836148a05c024e0"
+          },
+          {
+            "path": "business/unity/evidence/catalog-enlargement-20261018-1300.json",
+            "sha256": "72382057dc1fe7925a42d41fc86917869b5ec1b5395bfba48804566513d2dfff"
+          }
+        ],
+        "checks": [
+          "TypeScript ESLint Vite 9 SSG 43 checksums 4 legacy routes",
+          "Work guides 8 SSR cases and AND navigation regression",
+          "4 existing game regressions; business 27 tests",
+          "390/1280 four works normal keyboard enlargement and focus/query return",
+          "390 restored MineRush scroll edge615/95 reopen308/0 reload filter0",
+          "1280 restored GravityBall keyboard close and search return"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261019: batch implementation and acceptance/restoration records in next daily PR; exact latest-head CI before guarded merge.",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "f2d0889750e7c72ff86a27bafc86b999f33a2e01caa28eb859298f20e828ea9e",
+      "sha256": "9d25c602fa9be982e77368897f1bbf22d03c73b4745a75c7fce179bc1e59640c"
+    },
+    {
+      "revision": 300,
+      "at": 1792296385.719199,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261018T1300-enlarge",
+        "fence": 50,
+        "artifacts": [
+          {
+            "path": "web/src/portal/InspectionPreview.tsx",
+            "sha256": "3e391bb47899b3f44b7c48a3d658245a05bebad5e063ac74d174059632a803b0"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "106cc4f594fe6d49031856092edbe0e27cf67362c2a708131469d95d6bfad8a8"
+          },
+          {
+            "path": "web/src/portal/App.css",
+            "sha256": "683289b46a2c01c05fb4e481b391c2051c95930360300d7d3163187125387ad2"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "90ae4f30e761b2e50c495aecb0dacccfb14519dfaa7616467c06ae7c16e7a036"
+          },
+          {
+            "path": "docs/web-catalog-enlargement-20261018.md",
+            "sha256": "7b1ad452f80a181694936cba14bc0c6be2810a13384a1d61f0b112b4bb0dbf0d"
+          },
+          {
+            "path": "business/unity/research/2026-10-18-inspection-image-discovery.md",
+            "sha256": "10859947fdc188946c06626e7d8591d2b968e68ea0428296f28f8330b8146422"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "9ae151eea9f5bff72c14a3fbd3219fb53941ee957fb70aa627c8116f31c428a0"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "5cb13cff96a6497f8e63069ba31e6a0db4588d19669dd36cd0b6f78865e45429"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "abb4d751900616fecef13b14edf68c90a425e31e206175551836148a05c024e0"
+          },
+          {
+            "path": "business/unity/evidence/catalog-enlargement-20261018-1300.json",
+            "sha256": "72382057dc1fe7925a42d41fc86917869b5ec1b5395bfba48804566513d2dfff"
+          }
+        ],
+        "checks": [
+          "TypeScript ESLint Vite 9 SSG 43 checksums 4 legacy routes",
+          "Work guides 8 SSR cases and AND navigation regression",
+          "4 existing game regressions; business 27 tests",
+          "390/1280 four works normal keyboard enlargement and focus/query return",
+          "390 restored MineRush scroll edge615/95 reopen308/0 reload filter0",
+          "1280 restored GravityBall keyboard close and search return"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261019: batch implementation and acceptance/restoration records in next daily PR; exact latest-head CI before guarded merge.",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "9d25c602fa9be982e77368897f1bbf22d03c73b4745a75c7fce179bc1e59640c",
+      "sha256": "268b864f275430b9a08dc90787ef8b5181fe977d36c72a4c4429f3f0d612da8c"
+    },
+    {
+      "revision": 301,
+      "at": 1792296385.757274,
+      "action": "task",
+      "data": {
+        "id": "T-web-daily-ci-integration-20261019",
+        "objective": "検証済み画像拡大と再表示修正を翌日日次PR一件へ集約する",
+        "acceptance": [
+          "当日の作成済みPRと既存PRを照合し一件へまとめる",
+          "公開前検査版の表示とrelease=null・開始リンクなしを保持する",
+          "差分に秘密・非公開原稿・生の画面・復元保管庫を含めない",
+          "最新headのLinux/Windows CI成功後に同headだけをマージする",
+          "CI成果物の元版・画像・ハッシュを照合して復元し拡大と検索復帰を実ブラウザ確認する"
+        ],
+        "outputs": [
+          "日次PR一件",
+          "CI版の復元索引と正確な未確認事項"
+        ],
+        "checks": [
+          "latest-head CI",
+          "artifact restoration and source image hashes",
+          "390/1280 restored browser"
+        ],
+        "next_step": "2026-10-19以降に当日PR件数を照合してunblockし、既存ローカル成果を一件へまとめる。",
+        "decision_id": "D-web-catalog-discovery-20261015",
+        "hypothesis": "実画面と開発状態の正確な案内を復元可能な検証版で保持する。需要への効果は未観測。",
+        "source": "research:business/unity/research/2026-10-18-inspection-image-discovery.md",
+        "pdca": "check",
+        "experiment_id": "E-unity-portal",
+        "priority": 1,
+        "depends_on": [
+          "T-web-catalog-preview-enlargement"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "268b864f275430b9a08dc90787ef8b5181fe977d36c72a4c4429f3f0d612da8c",
+      "sha256": "944a3dae240acaa3ba1d2503bbea2169acb58da455bbb14a313cf785d4f202cb"
+    },
+    {
+      "revision": 302,
+      "at": 1792296385.7954037,
+      "action": "block",
+      "data": {
+        "task_id": "T-web-daily-ci-integration-20261019",
+        "source": "user:automation:2026-10-13:daily-batching;github:PR26-merged-20261018",
+        "reason": "本日PR26マージ済み。追加PR禁止を守り翌日分へまとめる。",
+        "next_step": "2026-10-19以降に当日PR件数を照合してunblockし、既存ローカル成果を一件へまとめる。"
+      },
+      "result": {
+        "recorded": "block"
+      },
+      "previous": "944a3dae240acaa3ba1d2503bbea2169acb58da455bbb14a313cf785d4f202cb",
+      "sha256": "8a7b5dc032c69f3bbfafcd9f7e773427b84f450fc0385560db8640dfd3a2577b"
     }
   ],
-  "projection_sha256": "bac5c9b491086e163a19b7e7a5c4c7b6e83a7b5978539836750c58392f7eeef0"
+  "projection_sha256": "0fd078469209ee700ac5aaab4f2f374ae85b034226bbf5e74a5a3def8ef9f684"
 }

@@ -188,3 +188,6 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 
 
 2026-10-18の07時枠は画像拡大の部分成果。詳細専用dialog・公開前検査版表示・原寸スクロール・Escape/閉じる/起点復帰を実装。初期390/1280の4作品読込と枠内表示、最終1280のTab/ShiftTab循環を確認。型/静的/9SSG/43ハッシュ/案内と検索回帰成功。CDP承認呼出しが20830.7124秒停止し25分checkpoint・30分保存を未達、権限拒否で通信遮断は未実行。期限切れleaseはHEAD・PR26マージ済み/後続なし・外部変更未送信を照合してrecoverし、同じT-web-catalog-preview-enlargementへ引継ぎ。最終390/1280横断と配布準備版の復元画面は未確認。詳細docs/web-catalog-enlargement-20261018.md。記事は下書きのみ。本日追加PR/push/本番配信なし、指標null、天啓原文を保持。
+
+
+2026-10-18の13時枠でT-web-catalog-preview-enlargementを継続しローカル受入を完了。4作品の390/1280開閉、Tab/ShiftTab/EscapeとEnter、起点復帰、検索語Webとworksフォーカスを確認。原寸画像の右端位置が再表示で残る問題を修正し、読込完了時も横中央・上端へ戻す。一次資料のitch.ioとW3Cから受入条件を整理。型/静的/9SSG/43ハッシュ/4作品回帰/台帳27件成功。元1e003f8の44サイトファイルとmanifestをtar.gzから別フォルダ復元し45ファイル完全一致、5拒否検査と復元390/1280操作成功。詳細docs/web-catalog-enlargement-20261018.md。PR26マージ済みを再照合し追加PR/push/本番配信なし、新版のリモートCIは翌日日次統合で確認。次はT-web-daily-ci-integration-20261019。本番CI保全版の索引は変えない。通信遮断は再試行せず、実タッチ/Safari/人間評価/別PC復元は未確認、指標null・release全件null。親4元commitと既存296イベントを照合して保持。天啓の継続指示は保持し、Unity/旧クラウド台帳/Atohitori/復元保管庫の編集なし。

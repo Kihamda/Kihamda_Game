@@ -1,0 +1,77 @@
+{
+  "sourceCommit": "1e003f8760a0f810194072f46162f4649d399981",
+  "checkpointReceipt": "business/unity/evidence/catalog-enlargement-20261018-1300.json",
+  "checkpointReceiptSha256": "72382057dc1fe7925a42d41fc86917869b5ec1b5395bfba48804566513d2dfff",
+  "note": "Immutable checkpoint299/complete300 retain pre-Git working-byte hashes. STATE and enlargement report were normalized from CRLF to repository LF at staging; only newline bytes differ. Final Git hashes below are separately verified.",
+  "finalSources": [
+    {
+      "path": "web/src/portal/InspectionPreview.tsx",
+      "checkpointWorkingSha256": "3e391bb47899b3f44b7c48a3d658245a05bebad5e063ac74d174059632a803b0",
+      "finalGitSha256": "3e391bb47899b3f44b7c48a3d658245a05bebad5e063ac74d174059632a803b0",
+      "normalizationOnly": false
+    },
+    {
+      "path": "web/src/portal/App.tsx",
+      "checkpointWorkingSha256": "106cc4f594fe6d49031856092edbe0e27cf67362c2a708131469d95d6bfad8a8",
+      "finalGitSha256": "106cc4f594fe6d49031856092edbe0e27cf67362c2a708131469d95d6bfad8a8",
+      "normalizationOnly": false
+    },
+    {
+      "path": "web/src/portal/App.css",
+      "checkpointWorkingSha256": "683289b46a2c01c05fb4e481b391c2051c95930360300d7d3163187125387ad2",
+      "finalGitSha256": "683289b46a2c01c05fb4e481b391c2051c95930360300d7d3163187125387ad2",
+      "normalizationOnly": false
+    },
+    {
+      "path": "web/src/portal/data/works.json",
+      "checkpointWorkingSha256": "90ae4f30e761b2e50c495aecb0dacccfb14519dfaa7616467c06ae7c16e7a036",
+      "finalGitSha256": "90ae4f30e761b2e50c495aecb0dacccfb14519dfaa7616467c06ae7c16e7a036",
+      "normalizationOnly": false
+    },
+    {
+      "path": "docs/web-catalog-enlargement-20261018.md",
+      "checkpointWorkingSha256": "7b1ad452f80a181694936cba14bc0c6be2810a13384a1d61f0b112b4bb0dbf0d",
+      "finalGitSha256": "204aaab182c677ade32652be09efb8dfc92c2fa860d4aa5dfb42888c359fa810",
+      "normalizationOnly": true
+    },
+    {
+      "path": "business/unity/research/2026-10-18-inspection-image-discovery.md",
+      "checkpointWorkingSha256": "10859947fdc188946c06626e7d8591d2b968e68ea0428296f28f8330b8146422",
+      "finalGitSha256": "10859947fdc188946c06626e7d8591d2b968e68ea0428296f28f8330b8146422",
+      "normalizationOnly": false
+    },
+    {
+      "path": "STATE.md",
+      "checkpointWorkingSha256": "9ae151eea9f5bff72c14a3fbd3219fb53941ee957fb70aa627c8116f31c428a0",
+      "finalGitSha256": "0ddd3127df6912c1bcdbeee8d37009df05b743152a4c6314952699f05d240e8b",
+      "normalizationOnly": true
+    },
+    {
+      "path": "AGENTS.md",
+      "checkpointWorkingSha256": "5cb13cff96a6497f8e63069ba31e6a0db4588d19669dd36cd0b6f78865e45429",
+      "finalGitSha256": "5cb13cff96a6497f8e63069ba31e6a0db4588d19669dd36cd0b6f78865e45429",
+      "normalizationOnly": false
+    },
+    {
+      "path": "business/studio-policy.json",
+      "checkpointWorkingSha256": "abb4d751900616fecef13b14edf68c90a425e31e206175551836148a05c024e0",
+      "finalGitSha256": "abb4d751900616fecef13b14edf68c90a425e31e206175551836148a05c024e0",
+      "normalizationOnly": false
+    }
+  ],
+  "package": {
+    "path": "artifacts/releases/web-20261018-1300-enlargement.tar.gz",
+    "sha256": "d974cb1423a31f900a9392526002c5ba0c858183d1db11bd5dd632b9ca8af2b3",
+    "siteFiles": 44,
+    "exactRestoredFilesIncludingManifest": 45,
+    "negativeCases": [
+      "modified",
+      "missing",
+      "extra",
+      "version",
+      "manifest"
+    ]
+  },
+  "remoteCi": "not-run-current-local-edition",
+  "nextTask": "T-web-daily-ci-integration-20261019"
+}
