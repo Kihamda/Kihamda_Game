@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 302,
+  "revision": 308,
   "business_id": "game-site",
-  "fence": 50,
+  "fence": 51,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -7360,6 +7360,117 @@
         }
       ],
       "claims": []
+    },
+    "T-web-enlargement-strategy-20261018": {
+      "id": "T-web-enlargement-strategy-20261018",
+      "objective": "19時の既存証跡評価と運用次工程の不整合解消",
+      "acceptance": [
+        "最終Git証跡9件と保持アーカイブを照合",
+        "事業指標と人間反応を未観測として維持",
+        "運用設定を翌日CI統合工程に一致させる",
+        "当日追加PRなしと翌日の受入条件を記録"
+      ],
+      "outputs": [
+        "戦略判断記録",
+        "整合した運用設定"
+      ],
+      "checks": [
+        "final Git SHA-256",
+        "policy-ledger consistency",
+        "daily PR reconciliation"
+      ],
+      "next_step": "T-web-daily-ci-integration-20261019: 翌日のPR件数確認後にローカル成果を一件へ統合し、最新headのCIと復元版を確認する。",
+      "decision_id": "D-web-enlargement-strategy-20261018",
+      "hypothesis": "完了済み工程を次工程と誤認する重複作業を防ぐ。",
+      "source": "user:automation:19-slot-strategy",
+      "pdca": "act",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261018T1900-strategy-2c4f2979",
+          "fence": 51,
+          "artifacts": [
+            {
+              "path": "docs/web-enlargement-strategy-20261018.md",
+              "sha256": "0e377ca26deb6b4526b45f4a506226118f0448fecd30f06829e72e8a68e6e843"
+            },
+            {
+              "path": "business/unity/evidence/enlargement-strategy-20261018-1900.json",
+              "sha256": "65d71424b67fed9e1b0a07cc0f9ea8deda6b0ee259b4120a3d9ed9d4dfa5a9f9"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "5019f871d48db6a8a51acc28907ec51f5ddca985e61e9d0f4dd2e056083a44a6"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "5b1e300fbfb3ec82e59ed31b288ff3d54e38528e47b0b8e933bd8728647b9128"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "f7963fef0fb71ebf0534e53ac27777ff67ca1c7c1889c72369b03cb4166ff346"
+            }
+          ],
+          "checks": [
+            "27 business tests passed using isolated TEMP/TMP after default sandbox TEMP permission failure",
+            "policy nextStep matches blocked integration task",
+            "protected files unchanged",
+            "302 prior events preserved",
+            "report local links exist",
+            "git diff --check"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261019: 翌日のPR件数確認後にローカル成果を一件へ統合し、最新headのCIと復元版を確認する。",
+          "passed": true,
+          "at": 1792317918.224711
+        },
+        {
+          "run_id": "unity-20261018T1900-strategy-2c4f2979",
+          "fence": 51,
+          "artifacts": [
+            {
+              "path": "docs/web-enlargement-strategy-20261018.md",
+              "sha256": "0e377ca26deb6b4526b45f4a506226118f0448fecd30f06829e72e8a68e6e843"
+            },
+            {
+              "path": "business/unity/evidence/enlargement-strategy-20261018-1900.json",
+              "sha256": "65d71424b67fed9e1b0a07cc0f9ea8deda6b0ee259b4120a3d9ed9d4dfa5a9f9"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "5019f871d48db6a8a51acc28907ec51f5ddca985e61e9d0f4dd2e056083a44a6"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "5b1e300fbfb3ec82e59ed31b288ff3d54e38528e47b0b8e933bd8728647b9128"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "f7963fef0fb71ebf0534e53ac27777ff67ca1c7c1889c72369b03cb4166ff346"
+            }
+          ],
+          "checks": [
+            "27 business tests passed using isolated TEMP/TMP after default sandbox TEMP permission failure",
+            "policy nextStep matches blocked integration task",
+            "protected files unchanged",
+            "302 prior events preserved",
+            "report local links exist",
+            "git diff --check"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261019: 翌日のPR件数確認後にローカル成果を一件へ統合し、最新headのCIと復元版を確認する。",
+          "passed": true,
+          "at": 1792317918.2736018
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261018T1900-strategy-2c4f2979",
+          "task_id": "T-web-enlargement-strategy-20261018",
+          "fence": 51,
+          "expires_at": 1792319356.0519736
+        }
+      ]
     }
   },
   "decisions": {
@@ -7534,6 +7645,14 @@
       "source": "local-browser:4230:Web 1人用 returns 0; user:19-measurement",
       "hypothesis": "既存の人数と制作技術を組み合わせて検索できる。利用改善と需要は未観測。",
       "next_step": "同じ既存一覧の空白区切りAND検索と案内を実装し実測する。"
+    },
+    "D-web-enlargement-strategy-20261018": {
+      "id": "D-web-enlargement-strategy-20261018",
+      "source": "local:business/unity/evidence/catalog-enlargement-retention-20261018.json",
+      "hypothesis": "画像拡大の技術受入は完了。需要と人間の反応は未観測のため、作品追加より既存成果のCI統合を継続する。",
+      "next_step": "T-web-daily-ci-integration-20261019: 翌日のPR件数確認後にローカル成果を一件へ統合し、最新headのCIと復元版を確認する。",
+      "technicalJudgment": "continue",
+      "businessJudgment": "unobserved"
     }
   },
   "runs": {
@@ -7876,6 +7995,13 @@
       "source": "scheduled:game-site:2026-10-18T13:00:00+09:00",
       "status": "completed",
       "started_at": 1792296007.7237797
+    },
+    "unity-20261018T1900-strategy-2c4f2979": {
+      "run_id": "unity-20261018T1900-strategy-2c4f2979",
+      "scheduled_at": "2026-10-18T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-18T19:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792317855.8651855
     }
   },
   "experiments": {
@@ -8105,7 +8231,8 @@
     "2026-10-17T19:00:00+09:00": "unity-20261017T1900-preview-f47",
     "2026-10-18T01:00:00+09:00": "unity-20261018T0100-preview",
     "2026-10-18T07:00:00+09:00": "unity-20261018T0700-enlarge-a91f",
-    "2026-10-18T13:00:00+09:00": "unity-20261018T1300-enlarge"
+    "2026-10-18T13:00:00+09:00": "unity-20261018T1300-enlarge",
+    "2026-10-18T19:00:00+09:00": "unity-20261018T1900-strategy-2c4f2979"
   },
   "feedback": [
     {
@@ -19162,7 +19289,185 @@
       },
       "previous": "944a3dae240acaa3ba1d2503bbea2169acb58da455bbb14a313cf785d4f202cb",
       "sha256": "8a7b5dc032c69f3bbfafcd9f7e773427b84f450fc0385560db8640dfd3a2577b"
+    },
+    {
+      "revision": 303,
+      "at": 1792317855.8651855,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261018T1900-strategy-2c4f2979",
+        "scheduled_at": "2026-10-18T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "8a7b5dc032c69f3bbfafcd9f7e773427b84f450fc0385560db8640dfd3a2577b",
+      "sha256": "06c390e49c583351f9bc20a6ace9bf44dcc2770de6cb03373bc00b4df11bf015"
+    },
+    {
+      "revision": 304,
+      "at": 1792317855.9602132,
+      "action": "decision",
+      "data": {
+        "id": "D-web-enlargement-strategy-20261018",
+        "source": "local:business/unity/evidence/catalog-enlargement-retention-20261018.json",
+        "hypothesis": "画像拡大の技術受入は完了。需要と人間の反応は未観測のため、作品追加より既存成果のCI統合を継続する。",
+        "next_step": "T-web-daily-ci-integration-20261019: 翌日のPR件数確認後にローカル成果を一件へ統合し、最新headのCIと復元版を確認する。",
+        "technicalJudgment": "continue",
+        "businessJudgment": "unobserved"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "06c390e49c583351f9bc20a6ace9bf44dcc2770de6cb03373bc00b4df11bf015",
+      "sha256": "a220a55b9431972f0552bf853f361a88b1eb9995860f807da0d29bf977a0e63a"
+    },
+    {
+      "revision": 305,
+      "at": 1792317856.0064638,
+      "action": "task",
+      "data": {
+        "id": "T-web-enlargement-strategy-20261018",
+        "objective": "19時の既存証跡評価と運用次工程の不整合解消",
+        "acceptance": [
+          "最終Git証跡9件と保持アーカイブを照合",
+          "事業指標と人間反応を未観測として維持",
+          "運用設定を翌日CI統合工程に一致させる",
+          "当日追加PRなしと翌日の受入条件を記録"
+        ],
+        "outputs": [
+          "戦略判断記録",
+          "整合した運用設定"
+        ],
+        "checks": [
+          "final Git SHA-256",
+          "policy-ledger consistency",
+          "daily PR reconciliation"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261019: 翌日のPR件数確認後にローカル成果を一件へ統合し、最新headのCIと復元版を確認する。",
+        "decision_id": "D-web-enlargement-strategy-20261018",
+        "hypothesis": "完了済み工程を次工程と誤認する重複作業を防ぐ。",
+        "source": "user:automation:19-slot-strategy",
+        "pdca": "act",
+        "experiment_id": "E-unity-portal",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "a220a55b9431972f0552bf853f361a88b1eb9995860f807da0d29bf977a0e63a",
+      "sha256": "57ee599463e284b999e7ad4cfb82867417f43369b06344a2292aff8a0332d4c0"
+    },
+    {
+      "revision": 306,
+      "at": 1792317856.0519736,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261018T1900-strategy-2c4f2979",
+        "task_id": "T-web-enlargement-strategy-20261018",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261018T1900-strategy-2c4f2979",
+        "task_id": "T-web-enlargement-strategy-20261018",
+        "fence": 51,
+        "expires_at": 1792319356.0519736
+      },
+      "previous": "57ee599463e284b999e7ad4cfb82867417f43369b06344a2292aff8a0332d4c0",
+      "sha256": "304c5f80be0bf61abb4d8e8ac00f30496b974a358b550b4541f73dd540543dec"
+    },
+    {
+      "revision": 307,
+      "at": 1792317918.224711,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261018T1900-strategy-2c4f2979",
+        "fence": 51,
+        "artifacts": [
+          {
+            "path": "docs/web-enlargement-strategy-20261018.md",
+            "sha256": "0e377ca26deb6b4526b45f4a506226118f0448fecd30f06829e72e8a68e6e843"
+          },
+          {
+            "path": "business/unity/evidence/enlargement-strategy-20261018-1900.json",
+            "sha256": "65d71424b67fed9e1b0a07cc0f9ea8deda6b0ee259b4120a3d9ed9d4dfa5a9f9"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "5019f871d48db6a8a51acc28907ec51f5ddca985e61e9d0f4dd2e056083a44a6"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "5b1e300fbfb3ec82e59ed31b288ff3d54e38528e47b0b8e933bd8728647b9128"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "f7963fef0fb71ebf0534e53ac27777ff67ca1c7c1889c72369b03cb4166ff346"
+          }
+        ],
+        "checks": [
+          "27 business tests passed using isolated TEMP/TMP after default sandbox TEMP permission failure",
+          "policy nextStep matches blocked integration task",
+          "protected files unchanged",
+          "302 prior events preserved",
+          "report local links exist",
+          "git diff --check"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261019: 翌日のPR件数確認後にローカル成果を一件へ統合し、最新headのCIと復元版を確認する。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "304c5f80be0bf61abb4d8e8ac00f30496b974a358b550b4541f73dd540543dec",
+      "sha256": "defaa10b24597a63c079ea70e0d11bf540562b0d5ac35768ce07308a3b6e587b"
+    },
+    {
+      "revision": 308,
+      "at": 1792317918.2736018,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261018T1900-strategy-2c4f2979",
+        "fence": 51,
+        "artifacts": [
+          {
+            "path": "docs/web-enlargement-strategy-20261018.md",
+            "sha256": "0e377ca26deb6b4526b45f4a506226118f0448fecd30f06829e72e8a68e6e843"
+          },
+          {
+            "path": "business/unity/evidence/enlargement-strategy-20261018-1900.json",
+            "sha256": "65d71424b67fed9e1b0a07cc0f9ea8deda6b0ee259b4120a3d9ed9d4dfa5a9f9"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "5019f871d48db6a8a51acc28907ec51f5ddca985e61e9d0f4dd2e056083a44a6"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "5b1e300fbfb3ec82e59ed31b288ff3d54e38528e47b0b8e933bd8728647b9128"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "f7963fef0fb71ebf0534e53ac27777ff67ca1c7c1889c72369b03cb4166ff346"
+          }
+        ],
+        "checks": [
+          "27 business tests passed using isolated TEMP/TMP after default sandbox TEMP permission failure",
+          "policy nextStep matches blocked integration task",
+          "protected files unchanged",
+          "302 prior events preserved",
+          "report local links exist",
+          "git diff --check"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261019: 翌日のPR件数確認後にローカル成果を一件へ統合し、最新headのCIと復元版を確認する。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "defaa10b24597a63c079ea70e0d11bf540562b0d5ac35768ce07308a3b6e587b",
+      "sha256": "9d5b1842099884442e8c5c0b7e50ced32f3f6ab1aca373c14a148517af0d94f5"
     }
   ],
-  "projection_sha256": "0fd078469209ee700ac5aaab4f2f374ae85b034226bbf5e74a5a3def8ef9f684"
+  "projection_sha256": "20d050d5f9134d31a2f23403a7044bcc6cd3c0c43d7beb5ade47cc129f5c151e"
 }

@@ -191,3 +191,7 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 
 
 2026-10-18の13時枠でT-web-catalog-preview-enlargementを継続しローカル受入を完了。4作品の390/1280開閉、Tab/ShiftTab/EscapeとEnter、起点復帰、検索語Webとworksフォーカスを確認。原寸画像の右端位置が再表示で残る問題を修正し、読込完了時も横中央・上端へ戻す。一次資料のitch.ioとW3Cから受入条件を整理。型/静的/9SSG/43ハッシュ/4作品回帰/台帳27件成功。元1e003f8の44サイトファイルとmanifestをtar.gzから別フォルダ復元し45ファイル完全一致、5拒否検査と復元390/1280操作成功。詳細docs/web-catalog-enlargement-20261018.md。PR26マージ済みを再照合し追加PR/push/本番配信なし、新版のリモートCIは翌日日次統合で確認。次はT-web-daily-ci-integration-20261019。本番CI保全版の索引は変えない。通信遮断は再試行せず、実タッチ/Safari/人間評価/別PC復元は未確認、指標null・release全件null。親4元commitと既存296イベントを照合して保持。天啓の継続指示は保持し、Unity/旧クラウド台帳/Atohitori/復元保管庫の編集なし。
+
+2026-10-18の19時枠は画像拡大後の戦略評価。最終Git9件・保持アーカイブ・親4HEADとPR26マージ済みを照合。技術continue/事業unobserved、未観測指標null。policy.nextStepの完了済み工程への参照を台帳のT-web-daily-ci-integration-20261019へ修正した。次は翌日日次PR一件へ既存成果と記録を集約し、最新headのLinux/Windows CIと390/1280復元版を確認する。詳細docs/web-enlargement-strategy-20261018.md。新しい実装・ブラウザ検査・追加PR/push/配信なし。実タッチ/Safari/人間反応は未確認。天啓の継続指示は保持する。
+
+台帳27テスト成功。一時領域の権限エラー後、隔離したTEMP/TMPで再実行した。差分・JSON・参照先と既存302イベントの保持を確認した。
