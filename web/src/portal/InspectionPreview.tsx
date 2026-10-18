@@ -1,13 +1,33 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { Work } from "./catalog";
 
-export default function InspectionPreview({ work }: { work: Work }) {
+export default function InspectionPreview({ work, expandable = false }: { work: Work; expandable?: boolean }) {
   const preview = work.inspectionPreview;
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const closeButton = useRef<HTMLButtonElement>(null);
+  const imageScroll = useRef<HTMLDivElement>(null);
   if (!preview || work.release) return null;
   return <figure className="inspection-preview">
     {failedUrl === preview.url ? <p className="preview-fallback" role="status">実画面を読み込めませんでした。ルールと操作方法は本文で確認できます。</p>
       : <img src={preview.url} alt={preview.alt} width={preview.width} height={preview.height} loading="lazy" onError={() => setFailedUrl(preview.url)} />}
     <figcaption>公開前検査版の実画面<span>{preview.version}。公開版の動作確認は未完了です。</span></figcaption>
+    {expandable && failedUrl !== preview.url && <>
+      <button ref={trigger} type="button" className="preview-expand" onClick={() => dialog.current?.showModal()}>{work.title}の実画面を拡大</button>
+      <dialog ref={dialog} className="preview-dialog" aria-label={`${work.title}の公開前検査版の実画面`} onClose={() => trigger.current?.focus()} onKeyDown={event => {
+        if (event.key === "Tab") {
+          event.preventDefault();
+          (event.target === closeButton.current ? imageScroll.current : closeButton.current)?.focus();
+        }
+      }}>
+        <div className="preview-dialog-header"><p>公開前検査版の実画面</p><button ref={closeButton} type="button" autoFocus onClick={() => dialog.current?.close()}>閉じる</button></div>
+        <p>{preview.version}。公開版の動作確認は未完了です。</p>
+        <p>画像をスクロールして全体を確認できます。</p>
+        <div ref={imageScroll} className="preview-image-scroll" tabIndex={0} role="region" aria-label="拡大画像。矢印キーでスクロール">
+          <img src={preview.url} alt={preview.alt} width={preview.width} height={preview.height} />
+        </div>
+      </dialog>
+    </>}
   </figure>;
 }

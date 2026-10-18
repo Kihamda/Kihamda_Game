@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 293,
+  "revision": 296,
   "business_id": "game-site",
-  "fence": 48,
+  "fence": 49,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -7176,8 +7176,29 @@
         "T-web-catalog-preview-images"
       ],
       "status": "ready",
-      "checkpoints": [],
-      "claims": []
+      "checkpoints": [
+        {
+          "source": "local:catalog-enlargement-partial-20261018-0700",
+          "reconciliation": "HEAD27a7ca0 unchanged. Read-only GitHub latestPR26 merged; no later PR. No external mutation submitted. CDP authority declined, no confirmed Network mutation. Local source and screenshots retained. Approval call blocked20830s; missed checkpoint, not successful completion.",
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/catalog-enlargement-partial-20261018-0700.json",
+              "sha256": "85ae91153c4dcab99d895bc900f87d2753f920552a9a64840287491b95640a10"
+            }
+          ],
+          "next_step": "Same T-web-catalog-preview-enlargement: final-source390/1280 all4 keyboard/scroll/search-return and package restoration; avoid permission-gated CDP inspection.",
+          "at": 1792295467.8230202,
+          "recovered_fence": 49
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261018T0700-enlarge-a91f",
+          "task_id": "T-web-catalog-preview-enlargement",
+          "fence": 49,
+          "expires_at": 1792275915.0838273
+        }
+      ]
     }
   },
   "decisions": {
@@ -7680,6 +7701,13 @@
       "source": "scheduled:game-site:2026-10-18T01:00:00+09:00",
       "status": "completed",
       "started_at": 1792252807.2874997
+    },
+    "unity-20261018T0700-enlarge-a91f": {
+      "run_id": "unity-20261018T0700-enlarge-a91f",
+      "scheduled_at": "2026-10-18T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-18T07:00:00+09:00",
+      "status": "recovered",
+      "started_at": 1792274414.9985814
     }
   },
   "experiments": {
@@ -7907,7 +7935,8 @@
     "2026-10-17T07:00:00+09:00": "unity-20261017T0700-preview",
     "2026-10-17T13:00:00+09:00": "unity-20261017T1300-0d6f2150",
     "2026-10-17T19:00:00+09:00": "unity-20261017T1900-preview-f47",
-    "2026-10-18T01:00:00+09:00": "unity-20261018T0100-preview"
+    "2026-10-18T01:00:00+09:00": "unity-20261018T0100-preview",
+    "2026-10-18T07:00:00+09:00": "unity-20261018T0700-enlarge-a91f"
   },
   "feedback": [
     {
@@ -18691,7 +18720,60 @@
       },
       "previous": "c6c40eba055394a67ed698b0e6dfa27bc924fa6606f80855d4505a991478bc4e",
       "sha256": "51696a7b950ea77dbbb93c4f38c43e18653903af6f3c20ed1a5b4b6922bd7309"
+    },
+    {
+      "revision": 294,
+      "at": 1792274414.9985814,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261018T0700-enlarge-a91f",
+        "scheduled_at": "2026-10-18T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "51696a7b950ea77dbbb93c4f38c43e18653903af6f3c20ed1a5b4b6922bd7309",
+      "sha256": "f5e2f72d10da9ef2d031d3f21144738776a83416e9e1815ebca661ebdbb10b47"
+    },
+    {
+      "revision": 295,
+      "at": 1792274415.0838273,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261018T0700-enlarge-a91f",
+        "task_id": "T-web-catalog-preview-enlargement",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261018T0700-enlarge-a91f",
+        "task_id": "T-web-catalog-preview-enlargement",
+        "fence": 49,
+        "expires_at": 1792275915.0838273
+      },
+      "previous": "f5e2f72d10da9ef2d031d3f21144738776a83416e9e1815ebca661ebdbb10b47",
+      "sha256": "162397718441891dcbaea4f0c9f462dad1caa61d986251a038c14f64edecb0ba"
+    },
+    {
+      "revision": 296,
+      "at": 1792295467.8230202,
+      "action": "recover",
+      "data": {
+        "source": "local:catalog-enlargement-partial-20261018-0700",
+        "reconciliation": "HEAD27a7ca0 unchanged. Read-only GitHub latestPR26 merged; no later PR. No external mutation submitted. CDP authority declined, no confirmed Network mutation. Local source and screenshots retained. Approval call blocked20830s; missed checkpoint, not successful completion.",
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/catalog-enlargement-partial-20261018-0700.json",
+            "sha256": "85ae91153c4dcab99d895bc900f87d2753f920552a9a64840287491b95640a10"
+          }
+        ],
+        "next_step": "Same T-web-catalog-preview-enlargement: final-source390/1280 all4 keyboard/scroll/search-return and package restoration; avoid permission-gated CDP inspection."
+      },
+      "result": {
+        "recorded": "recover"
+      },
+      "previous": "162397718441891dcbaea4f0c9f462dad1caa61d986251a038c14f64edecb0ba",
+      "sha256": "cd35f00e48f018037a35638d99fc0ccac2b8bcc1f6d8bda5c7f1b899f9c728b2"
     }
   ],
-  "projection_sha256": "ffa8c74abf4f9b77f61d8bbaa319c63fe7d85c8b15802ff65d638f9c320606d5"
+  "projection_sha256": "bac5c9b491086e163a19b7e7a5c4c7b6e83a7b5978539836750c58392f7eeef0"
 }
