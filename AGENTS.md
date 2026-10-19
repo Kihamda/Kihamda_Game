@@ -1,3 +1,5 @@
+2026-10-19の01時枠でT-web-daily-ci-integration-20261019を完了。PR27はhead bc8b23dのLinux43秒・Windows22秒CI成功後、復元版4作品390/1280の拡大・閉じる・中央復帰・検索往復を確認して21771ffへhead指定でマージ。CI版f337fbbは44ファイル・9ページ、画像4件の原本一致とアーカイブSHA-256、正常と5拒否検査を照合した。復元索引はbusiness/unity/evidence/delivery-web-enlargement-20261019.json。実タッチ・Safari・人間評価・別PC復元は未確認、releaseと事業指標null。本番配置・Unity追加ビルド・投稿なし。本日日次PRは完了したため追加PRを作らず、後続の内部成果と完了記録はローカル保存する。継続的効率改善は完了条件のない継続指示なので天啓.mdを保持する。
+
 2026-10-15の19時枠で既存n目並べを公開前のWeb作品として一覧と紹介へ追加。紹介/works/ntiktaktoe/と従来の実行/games/ntiktaktoe/を分け、release=nullの開始リンクを抑止。390/1280の検索・往復・保存範囲案内・再読み込みと既存ゲームの通常着手保存を確認。型/静的/6SSG/4URL/36ハッシュ、Webと持込Unityの案内、台帳27テスト成功。詳細docs/web-ntik-catalog-20261015.md。事業unobserved・指標null。本日PR23はマージ済みのためローカル保存し、翌日日次統合を継続する。実タッチ/Safari/人間評価は未確認、天啓の継続指示は保持。
 
 # Kihamda.NET制作スタジオ
@@ -84,3 +86,6 @@ Ice Slideのモバイル操作部はdocs/web-ice-mobile-20261013.mdで24px以上
 2026-10-18の画像紹介受入はdocs/web-catalog-preview-20261018.md。inspectionPreviewは公開版のguide.screenshotsと分け、元commit・成果物/画像SHA-256・切出し寸法を照合する。release登録時は検査版画像を隠す。次はT-web-catalog-preview-enlargementで390pxでも原寸の盤面を確認できる拡大表示を加え、検査版の識別・キーボード・検索復帰を保つ。需要や実タッチの成功とは扱わない。
 
 2026-10-18の19時枠は画像拡大後の戦略評価。最終Git9件・保持アーカイブ・親4HEADとPR26マージ済みを照合。技術continue/事業unobserved、未観測指標null。policy.nextStepの完了済み工程への参照を台帳のT-web-daily-ci-integration-20261019へ修正した。次は翌日日次PR一件へ既存成果と記録を集約し、最新headのLinux/Windows CIと390/1280復元版を確認する。詳細docs/web-enlargement-strategy-20261018.md。新しい実装・ブラウザ検査・追加PR/push/配信なし。実タッチ/Safari/人間反応は未確認。天啓の継続指示は保持する。
+
+
+2026-10-19の07時枠でT-web-preview-dialog-load-errorを完了。拡大画像の独立した失敗案内を追加し、通常390/1280の開閉とTab/ShiftTab/Enter/Escape、合成error時の案内と起点復帰、検索Web保持を実ブラウザ検査した。型/静的/9SSG/43ハッシュ/案内8条件/検索SSR/台帳27テスト成功。元7595b50の44ファイル・9ページを圧縮復元し全ハッシュと5拒否条件、復元390の失敗と再読込復帰/1280の通常表示を確認。合成イベント検査であり実通信障害の再現ではない。詳細docs/web-preview-dialog-error-20261019.md、記事はbusiness/blog/drafts/2026-10-19-image-error-guidance.mdへ下書きのみ。本日PR27マージ済みのため追加PR/push/リモートCI/本番配置なし。現行CI索引を保持。次はT-web-daily-ci-integration-20261020。実タッチ/Safari/人間評価/別PC復元は未確認、releaseと事業指標null。天啓の継続指示を保持し、Unity/旧クラウド台帳/親原本/復元保管庫/Atohitoriは変更しない。

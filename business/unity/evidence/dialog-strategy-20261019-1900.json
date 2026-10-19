@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "recordedAt": "2026-10-19T19:01:12.146242+09:00",
+  "run_id": "unity-20261019T1900-cb67b470",
+  "fence": 55,
+  "priorEventsPreserved": 327,
+  "technicalJudgment": "continue",
+  "businessJudgment": "unobserved",
+  "metrics": null,
+  "release": null,
+  "artifacts": [
+    {
+      "path": "docs/web-dialog-strategy-20261019.md",
+      "sha256": "4bcd77d2bfe9cde26bb500d565f6e8663a46a6c942a69d0368dda5979ea02e7f"
+    },
+    {
+      "path": "STATE.md",
+      "sha256": "d1b145aad3d7ae1a5b9efe9c755b64a22b8270ef6771de2bd29ac69965fcdd6a"
+    },
+    {
+      "path": "business/studio-policy.json",
+      "sha256": "b2dbf7f2f5bbdbb05204d1245beabaa42fedfb406eee2f4e7270b36f2cf625af"
+    }
+  ],
+  "checks": [
+    "7 morning artifacts verified; mutable snapshots checked at saved commit",
+    "four parent HEADs match",
+    "PR27 merged today; no later PR",
+    "no unknown external operations"
+  ],
+  "browser": "not rerun; no application change",
+  "nextStep": "T-web-daily-ci-integration-20261020",
+  "unverified": [
+    "new source remote CI",
+    "real HTTP failure",
+    "physical touch",
+    "Safari",
+    "screenreader",
+    "human evaluation",
+    "off-PC restore"
+  ]
+}

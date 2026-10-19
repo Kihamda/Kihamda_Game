@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "recordedAt": "2026-10-19T13:00:41.006276+09:00",
+  "run_id": "unity-20261019T1300-e74c926c",
+  "fence": 54,
+  "priorEventsPreserved": 321,
+  "checks": [
+    "7 prior artifact hashes match",
+    "retained archive SHA256 matches",
+    "four parent HEADs match",
+    "PR27 merged today; no later PR",
+    "primary marketplace sources checked live"
+  ],
+  "artifacts": [
+    {
+      "path": "business/unity/research/2026-10-19-distribution-scope.md",
+      "sha256": "c3bf7aa9a3518ada03a4ebaa4d54f41fedde3ec74bd0a01248f58f8ee70ece77"
+    },
+    {
+      "path": "STATE.md",
+      "sha256": "202eb8c7920e5d040eaee1a9fcfe10f04e9523a7e01c98880c82f0b964787aa1"
+    },
+    {
+      "path": "business/studio-policy.json",
+      "sha256": "9814be7f510fc049f5360f1d2465b50c07d726fb7630dc1249dd5711cd95c75e"
+    }
+  ],
+  "release": null,
+  "metrics": null,
+  "browser": "not rerun; no application change",
+  "nextStep": "T-web-daily-ci-integration-20261020",
+  "unverified": [
+    "new source remote CI",
+    "physical touch",
+    "Safari",
+    "human evaluation",
+    "real HTTP failure",
+    "off-PC restore",
+    "marketplace distribution"
+  ]
+}

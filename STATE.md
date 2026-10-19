@@ -1,3 +1,5 @@
+2026-10-19の01時枠でT-web-daily-ci-integration-20261019を完了。PR27はhead bc8b23dのLinux43秒・Windows22秒CI成功後、復元版4作品390/1280の拡大・閉じる・中央復帰・検索往復を確認して21771ffへhead指定でマージ。CI版f337fbbは44ファイル・9ページ、画像4件の原本一致とアーカイブSHA-256、正常と5拒否検査を照合した。復元索引はbusiness/unity/evidence/delivery-web-enlargement-20261019.json。実タッチ・Safari・人間評価・別PC復元は未確認、releaseと事業指標null。本番配置・Unity追加ビルド・投稿なし。本日日次PRは完了したため追加PRを作らず、後続の内部成果と完了記録はローカル保存する。継続的効率改善は完了条件のない継続指示なので天啓.mdを保持する。
+
 2026-10-16の13時枠でitch.io公式3資料から既存紹介の検索漏れを調査し、既存factsを検索へ追加。交代プレイ/最高スコア/人数/ステージを検索できる。型/静的/9SSG/4URL/39ハッシュ/案内8条件/検索SSR成功。IAB390/1280で入力・詳細往復・検索保持・再読込・公開中0件・はみ出しなし、ZIP41ファイル完全復元と5拒否条件、復元1280の往復成功。索引business/unity/evidence/catalog-facts-20261016-1300.json。実タッチ/Safari/人間評価/公開版/新ゲーム保存回帰は未確認、事業指標null。PR24本日マージ済みなので追加PR/push/配信なし。T-web-daily-ci-integration-20261017: 今朝の3紹介・検索改善・復元索引を翌日日次PRへ集約し最新head CI成功後に反映。本日追加PRなし。
 
 2026-10-16の01時枠継続で既存Ice Slideの紹介/works/iceslide/を追加。20ステージ・操作・クリアと最少手数のみ保存/途中保存なしを案内し、公開前と制作技術を分離。390/1280の説明展開・一覧往復・検索語保持・再読込・開始リンクなしを検査。7SSG/4URL/37ハッシュ/案内条件/39ファイルZIP復元、ソース110Gitblob一致。通常2手クリアは確認、最後の再読込snapshotは読込中で新しい永続化成功と扱わない。詳細docs/web-iceslide-catalog-20261016.md、索引business/unity/evidence/iceslide-catalog-20261016-0100.json。新ローカル版はリモートCI未検査、本日追加PR/push/配信なし。実タッチ/Safari/人間評価と指標nullを保持。次は既存MineRushの紹介を整える。
@@ -195,3 +197,12 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 2026-10-18の19時枠は画像拡大後の戦略評価。最終Git9件・保持アーカイブ・親4HEADとPR26マージ済みを照合。技術continue/事業unobserved、未観測指標null。policy.nextStepの完了済み工程への参照を台帳のT-web-daily-ci-integration-20261019へ修正した。次は翌日日次PR一件へ既存成果と記録を集約し、最新headのLinux/Windows CIと390/1280復元版を確認する。詳細docs/web-enlargement-strategy-20261018.md。新しい実装・ブラウザ検査・追加PR/push/配信なし。実タッチ/Safari/人間反応は未確認。天啓の継続指示は保持する。
 
 台帳27テスト成功。一時領域の権限エラー後、隔離したTEMP/TMPで再実行した。差分・JSON・参照先と既存302イベントの保持を確認した。
+
+
+2026-10-19の07時枠でT-web-preview-dialog-load-errorを完了。拡大画像の独立した失敗案内を追加し、通常390/1280の開閉とTab/ShiftTab/Enter/Escape、合成error時の案内と起点復帰、検索Web保持を実ブラウザ検査した。型/静的/9SSG/43ハッシュ/案内8条件/検索SSR/台帳27テスト成功。元7595b50の44ファイル・9ページを圧縮復元し全ハッシュと5拒否条件、復元390の失敗と再読込復帰/1280の通常表示を確認。合成イベント検査であり実通信障害の再現ではない。詳細docs/web-preview-dialog-error-20261019.md、記事はbusiness/blog/drafts/2026-10-19-image-error-guidance.mdへ下書きのみ。本日PR27マージ済みのため追加PR/push/リモートCI/本番配置なし。現行CI索引を保持。次はT-web-daily-ci-integration-20261020。実タッチ/Safari/人間評価/別PC復元は未確認、releaseと事業指標null。天啓の継続指示を保持し、Unity/旧クラウド台帳/親原本/復元保管庫/Atohitoriは変更しない。
+
+
+2026-10-19の13時枠で掲載先の一次資料を調査し、配布先ごとの成立条件を既存翌日日次統合へ反映した。itch.ioはindex.html入りZIPと相対パスを指定し、現行tar.gzをそのまま外部掲載可能と扱わない。朝の証跡7件・保持アーカイブ・親4HEAD一致。詳細business/unity/research/2026-10-19-distribution-scope.md。PR27当日マージ済みのため追加PR/push/配信なし。アプリ変更と実ブラウザ再検査なし。次は同じT-web-daily-ci-integration-20261020の最新head CI、復元390/1280と画像失敗案内の受入。指標null・事業unobserved、天啓の継続指示を保持する。
+
+
+2026-10-19の19時枠は技術continue・事業unobserved。朝の証跡7件を現物または保存commitで照合し、親4HEADとPR27当日マージ済みを確認。実HTTP障害と合成error、人間評価を区別し、指標null・release=nullを保持。詳細docs/web-dialog-strategy-20261019.md。次は既存T-web-daily-ci-integration-20261020の最新head CIと復元390/1280受入。新しいアプリ変更やブラウザ再検査、追加PR/push/配信なし。天啓の継続指示は保持する。
