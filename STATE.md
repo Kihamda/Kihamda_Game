@@ -200,3 +200,6 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 
 
 2026-10-19の07時枠でT-web-preview-dialog-load-errorを完了。拡大画像の独立した失敗案内を追加し、通常390/1280の開閉とTab/ShiftTab/Enter/Escape、合成error時の案内と起点復帰、検索Web保持を実ブラウザ検査した。型/静的/9SSG/43ハッシュ/案内8条件/検索SSR/台帳27テスト成功。元7595b50の44ファイル・9ページを圧縮復元し全ハッシュと5拒否条件、復元390の失敗と再読込復帰/1280の通常表示を確認。合成イベント検査であり実通信障害の再現ではない。詳細docs/web-preview-dialog-error-20261019.md、記事はbusiness/blog/drafts/2026-10-19-image-error-guidance.mdへ下書きのみ。本日PR27マージ済みのため追加PR/push/リモートCI/本番配置なし。現行CI索引を保持。次はT-web-daily-ci-integration-20261020。実タッチ/Safari/人間評価/別PC復元は未確認、releaseと事業指標null。天啓の継続指示を保持し、Unity/旧クラウド台帳/親原本/復元保管庫/Atohitoriは変更しない。
+
+
+2026-10-19の13時枠で掲載先の一次資料を調査し、配布先ごとの成立条件を既存翌日日次統合へ反映した。itch.ioはindex.html入りZIPと相対パスを指定し、現行tar.gzをそのまま外部掲載可能と扱わない。朝の証跡7件・保持アーカイブ・親4HEAD一致。詳細business/unity/research/2026-10-19-distribution-scope.md。PR27当日マージ済みのため追加PR/push/配信なし。アプリ変更と実ブラウザ再検査なし。次は同じT-web-daily-ci-integration-20261020の最新head CI、復元390/1280と画像失敗案内の受入。指標null・事業unobserved、天啓の継続指示を保持する。

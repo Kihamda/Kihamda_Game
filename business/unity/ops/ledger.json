@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 321,
+  "revision": 327,
   "business_id": "game-site",
-  "fence": 53,
+  "fence": 54,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -7762,6 +7762,107 @@
         }
       ],
       "claims": []
+    },
+    "T-web-distribution-scope-research-20261019": {
+      "id": "T-web-distribution-scope-research-20261019",
+      "objective": "Verify primary marketplace requirements and carry concrete boundaries into existing daily integration",
+      "acceptance": [
+        "Primary sources checked live",
+        "Existing source, receipt hashes, archive and four parent commits reconciled",
+        "Document next integration acceptance without claiming market demand or marketplace readiness"
+      ],
+      "outputs": [
+        "business/unity/research/2026-10-19-distribution-scope.md"
+      ],
+      "checks": [
+        "source traceability",
+        "retained hashes",
+        "flow tests"
+      ],
+      "next_step": "Continue T-web-daily-ci-integration-20261020 on next JST day",
+      "decision_id": "D-web-distribution-scope-20261019",
+      "hypothesis": "Avoid unsupported distribution claims while preserving WIP1",
+      "source": "user:automation:13-slot;primary:itch.io",
+      "pdca": "plan",
+      "experiment_id": "E-unity-portal",
+      "priority": 1,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261019T1300-e74c926c",
+          "fence": 54,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-19-distribution-scope.md",
+              "sha256": "c3bf7aa9a3518ada03a4ebaa4d54f41fedde3ec74bd0a01248f58f8ee70ece77"
+            },
+            {
+              "path": "business/unity/evidence/distribution-scope-20261019-1300.json",
+              "sha256": "75d1184179eaf3de21dde502acc2c75018a233f5cc014365e84b1129e9cdb2c0"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "202eb8c7920e5d040eaee1a9fcfe10f04e9523a7e01c98880c82f0b964787aa1"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "9814be7f510fc049f5360f1d2465b50c07d726fb7630dc1249dd5711cd95c75e"
+            }
+          ],
+          "checks": [
+            "primary sources checked live",
+            "prior seven hashes and archive match",
+            "four parent HEADs match",
+            "27 business tests passed",
+            "321 prior ledger events intact",
+            "git diff --check passed"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261020 remains blocked until next JST day",
+          "passed": true,
+          "at": 1792382457.9832382
+        },
+        {
+          "run_id": "unity-20261019T1300-e74c926c",
+          "fence": 54,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-19-distribution-scope.md",
+              "sha256": "c3bf7aa9a3518ada03a4ebaa4d54f41fedde3ec74bd0a01248f58f8ee70ece77"
+            },
+            {
+              "path": "business/unity/evidence/distribution-scope-20261019-1300.json",
+              "sha256": "75d1184179eaf3de21dde502acc2c75018a233f5cc014365e84b1129e9cdb2c0"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "202eb8c7920e5d040eaee1a9fcfe10f04e9523a7e01c98880c82f0b964787aa1"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "9814be7f510fc049f5360f1d2465b50c07d726fb7630dc1249dd5711cd95c75e"
+            }
+          ],
+          "checks": [
+            "primary sources checked live",
+            "prior seven hashes and archive match",
+            "four parent HEADs match",
+            "27 business tests passed",
+            "321 prior ledger events intact",
+            "git diff --check passed"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261020 remains blocked until next JST day",
+          "passed": true,
+          "at": 1792382458.0333292
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261019T1300-e74c926c",
+          "task_id": "T-web-distribution-scope-research-20261019",
+          "fence": 54,
+          "expires_at": 1792384212.545216
+        }
+      ]
     }
   },
   "decisions": {
@@ -7944,6 +8045,12 @@
       "next_step": "T-web-daily-ci-integration-20261019: 翌日のPR件数確認後にローカル成果を一件へ統合し、最新headのCIと復元版を確認する。",
       "technicalJudgment": "continue",
       "businessJudgment": "unobserved"
+    },
+    "D-web-distribution-scope-20261019": {
+      "id": "D-web-distribution-scope-20261019",
+      "source": "https://itch.io/docs/creators/html5;https://itch.io/docs/creators/quality-guidelines",
+      "hypothesis": "Keep current-domain retention distinct from unverified marketplace delivery; accurate presentation precedes demand measurement.",
+      "next_step": "Preserve existing next-day CI integration; record target-specific acceptance without new distribution."
     }
   },
   "runs": {
@@ -8307,6 +8414,13 @@
       "source": "scheduled:game-site:2026-10-19T07:00:00+09:00",
       "status": "completed",
       "started_at": 1792361020.6854622
+    },
+    "unity-20261019T1300-e74c926c": {
+      "scheduled_at": "2026-10-19T13:00:00+09:00",
+      "run_id": "unity-20261019T1300-e74c926c",
+      "source": "scheduled:game-site:2026-10-19T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792382412.3279188
     }
   },
   "experiments": {
@@ -8539,7 +8653,8 @@
     "2026-10-18T13:00:00+09:00": "unity-20261018T1300-enlarge",
     "2026-10-18T19:00:00+09:00": "unity-20261018T1900-strategy-2c4f2979",
     "2026-10-19T01:00:00+09:00": "unity-20261019T0100-d9718f8a",
-    "2026-10-19T07:00:00+09:00": "unity-20261019T0700-c1b88b7e"
+    "2026-10-19T07:00:00+09:00": "unity-20261019T0700-c1b88b7e",
+    "2026-10-19T13:00:00+09:00": "unity-20261019T1300-e74c926c"
   },
   "feedback": [
     {
@@ -20190,7 +20305,173 @@
       },
       "previous": "96eee864259bfcd231f498f69d5cc845c6382f78181e2c032ca4f3260a409e80",
       "sha256": "4d8aa60404685437a0e8272d3c30145222f2c740f880f9a93dc93c673cd3c52b"
+    },
+    {
+      "revision": 322,
+      "at": 1792382412.3279188,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-19T13:00:00+09:00",
+        "run_id": "unity-20261019T1300-e74c926c"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "4d8aa60404685437a0e8272d3c30145222f2c740f880f9a93dc93c673cd3c52b",
+      "sha256": "0dfd7fe68222460e8990d5e52634d18ea9cd85eba035cc0c38bd26c7b5291552"
+    },
+    {
+      "revision": 323,
+      "at": 1792382412.44675,
+      "action": "decision",
+      "data": {
+        "id": "D-web-distribution-scope-20261019",
+        "source": "https://itch.io/docs/creators/html5;https://itch.io/docs/creators/quality-guidelines",
+        "hypothesis": "Keep current-domain retention distinct from unverified marketplace delivery; accurate presentation precedes demand measurement.",
+        "next_step": "Preserve existing next-day CI integration; record target-specific acceptance without new distribution."
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "0dfd7fe68222460e8990d5e52634d18ea9cd85eba035cc0c38bd26c7b5291552",
+      "sha256": "5b408efd1668565c492127f0480bcecafa8715256083a84b991f49c118f84f92"
+    },
+    {
+      "revision": 324,
+      "at": 1792382412.495085,
+      "action": "task",
+      "data": {
+        "id": "T-web-distribution-scope-research-20261019",
+        "objective": "Verify primary marketplace requirements and carry concrete boundaries into existing daily integration",
+        "acceptance": [
+          "Primary sources checked live",
+          "Existing source, receipt hashes, archive and four parent commits reconciled",
+          "Document next integration acceptance without claiming market demand or marketplace readiness"
+        ],
+        "outputs": [
+          "business/unity/research/2026-10-19-distribution-scope.md"
+        ],
+        "checks": [
+          "source traceability",
+          "retained hashes",
+          "flow tests"
+        ],
+        "next_step": "Continue T-web-daily-ci-integration-20261020 on next JST day",
+        "decision_id": "D-web-distribution-scope-20261019",
+        "hypothesis": "Avoid unsupported distribution claims while preserving WIP1",
+        "source": "user:automation:13-slot;primary:itch.io",
+        "pdca": "plan",
+        "experiment_id": "E-unity-portal",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "5b408efd1668565c492127f0480bcecafa8715256083a84b991f49c118f84f92",
+      "sha256": "d547bd8d274c1b697b69e2f0c349c993fecf7d5d27c188f686a30144bb4946dc"
+    },
+    {
+      "revision": 325,
+      "at": 1792382412.545216,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261019T1300-e74c926c",
+        "task_id": "T-web-distribution-scope-research-20261019",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261019T1300-e74c926c",
+        "task_id": "T-web-distribution-scope-research-20261019",
+        "fence": 54,
+        "expires_at": 1792384212.545216
+      },
+      "previous": "d547bd8d274c1b697b69e2f0c349c993fecf7d5d27c188f686a30144bb4946dc",
+      "sha256": "b058b9233311615146b6973b2c460c12fcb42f8e9c592fca4746196a1b464ca5"
+    },
+    {
+      "revision": 326,
+      "at": 1792382457.9832382,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261019T1300-e74c926c",
+        "fence": 54,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-19-distribution-scope.md",
+            "sha256": "c3bf7aa9a3518ada03a4ebaa4d54f41fedde3ec74bd0a01248f58f8ee70ece77"
+          },
+          {
+            "path": "business/unity/evidence/distribution-scope-20261019-1300.json",
+            "sha256": "75d1184179eaf3de21dde502acc2c75018a233f5cc014365e84b1129e9cdb2c0"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "202eb8c7920e5d040eaee1a9fcfe10f04e9523a7e01c98880c82f0b964787aa1"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "9814be7f510fc049f5360f1d2465b50c07d726fb7630dc1249dd5711cd95c75e"
+          }
+        ],
+        "checks": [
+          "primary sources checked live",
+          "prior seven hashes and archive match",
+          "four parent HEADs match",
+          "27 business tests passed",
+          "321 prior ledger events intact",
+          "git diff --check passed"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261020 remains blocked until next JST day",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "b058b9233311615146b6973b2c460c12fcb42f8e9c592fca4746196a1b464ca5",
+      "sha256": "a9547f3e89af53b7fc647a113bde614b106528aba9b58b66c64498619f22c914"
+    },
+    {
+      "revision": 327,
+      "at": 1792382458.0333292,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261019T1300-e74c926c",
+        "fence": 54,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-19-distribution-scope.md",
+            "sha256": "c3bf7aa9a3518ada03a4ebaa4d54f41fedde3ec74bd0a01248f58f8ee70ece77"
+          },
+          {
+            "path": "business/unity/evidence/distribution-scope-20261019-1300.json",
+            "sha256": "75d1184179eaf3de21dde502acc2c75018a233f5cc014365e84b1129e9cdb2c0"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "202eb8c7920e5d040eaee1a9fcfe10f04e9523a7e01c98880c82f0b964787aa1"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "9814be7f510fc049f5360f1d2465b50c07d726fb7630dc1249dd5711cd95c75e"
+          }
+        ],
+        "checks": [
+          "primary sources checked live",
+          "prior seven hashes and archive match",
+          "four parent HEADs match",
+          "27 business tests passed",
+          "321 prior ledger events intact",
+          "git diff --check passed"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261020 remains blocked until next JST day",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "a9547f3e89af53b7fc647a113bde614b106528aba9b58b66c64498619f22c914",
+      "sha256": "719e95686088e5cfc7678c8f524546286c2c4ec5138624e89253547d7e3d1890"
     }
   ],
-  "projection_sha256": "668c73a685c59abe0673c6658e1fbde0c9374697fb343da5226cdc8ea613509d"
+  "projection_sha256": "abdc56aab00bf3c016d45ddf7ddf39d389f80efbe8c940905e1d961e3548f333"
 }
