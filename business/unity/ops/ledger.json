@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 333,
+  "revision": 337,
   "business_id": "game-site",
-  "fence": 55,
-  "lease": null,
+  "fence": 56,
+  "lease": {
+    "run_id": "unity-20261020T0100-bb483ee1",
+    "task_id": "T-web-daily-ci-integration-20261020",
+    "fence": 56,
+    "expires_at": 1792427389.4897144
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -7751,7 +7756,7 @@
       "depends_on": [
         "T-web-preview-dialog-load-error"
       ],
-      "status": "blocked",
+      "status": "running",
       "checkpoints": [
         {
           "task_id": "T-web-daily-ci-integration-20261020",
@@ -7759,9 +7764,43 @@
           "reason": "Daily PR27 already merged on current JST day; retain local progress until next day.",
           "next_step": "On or after 2026-10-20 inspect daily PR count, unblock and integrate local changes.",
           "at": 1792361360.7537873
+        },
+        {
+          "task_id": "T-web-daily-ci-integration-20261020",
+          "source": "user:automation:2026-10-20",
+          "reason": "Date boundary passed; no daily PR today",
+          "next_step": "latest head CI and restored browser acceptance",
+          "at": 1792425889.4399188
+        },
+        {
+          "run_id": "unity-20261020T0100-bb483ee1",
+          "fence": 56,
+          "artifacts": [
+            {
+              "path": "docs/web-daily-integration-20261020.md",
+              "sha256": "577d56f2eb3a08b68854aa15f0d2f66e13bdb529f984c5f2a4fd68bc36e53bae"
+            }
+          ],
+          "checks": [
+            "local build/type/lint/SSG/hash/guide/navigation passed",
+            "27 business tests passed",
+            "four parent HEADs match",
+            "333 prior events preserved",
+            "no daily PR today; full scope reviewed"
+          ],
+          "next_step": "latest-head CI, exact restored browser acceptance before guarded merge",
+          "passed": false,
+          "at": 1792425945.064752
         }
       ],
-      "claims": []
+      "claims": [
+        {
+          "run_id": "unity-20261020T0100-bb483ee1",
+          "task_id": "T-web-daily-ci-integration-20261020",
+          "fence": 56,
+          "expires_at": 1792427389.4897144
+        }
+      ]
     },
     "T-web-distribution-scope-research-20261019": {
       "id": "T-web-distribution-scope-research-20261019",
@@ -8544,6 +8583,13 @@
       "source": "scheduled:game-site:2026-10-19T19:00:00+09:00",
       "status": "completed",
       "started_at": 1792404042.6326776
+    },
+    "unity-20261020T0100-bb483ee1": {
+      "scheduled_at": "2026-10-20T01:00:00+09:00",
+      "run_id": "unity-20261020T0100-bb483ee1",
+      "source": "scheduled:game-site:2026-10-20T01:00:00+09:00",
+      "status": "open",
+      "started_at": 1792425889.3344054
     }
   },
   "experiments": {
@@ -8778,7 +8824,8 @@
     "2026-10-19T01:00:00+09:00": "unity-20261019T0100-d9718f8a",
     "2026-10-19T07:00:00+09:00": "unity-20261019T0700-c1b88b7e",
     "2026-10-19T13:00:00+09:00": "unity-20261019T1300-e74c926c",
-    "2026-10-19T19:00:00+09:00": "unity-20261019T1900-cb67b470"
+    "2026-10-19T19:00:00+09:00": "unity-20261019T1900-cb67b470",
+    "2026-10-20T01:00:00+09:00": "unity-20261020T0100-bb483ee1"
   },
   "feedback": [
     {
@@ -20770,7 +20817,84 @@
       },
       "previous": "e3fc2fc6d0002cabc930ee11b35c98a1c7891bf8c69a2edaa283bb18816e6c11",
       "sha256": "bc00fad22d05ee15e404efd08329ad50b580bafcbd9df67bcb684734cab082ea"
+    },
+    {
+      "revision": 334,
+      "at": 1792425889.3344054,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-20T01:00:00+09:00",
+        "run_id": "unity-20261020T0100-bb483ee1"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "bc00fad22d05ee15e404efd08329ad50b580bafcbd9df67bcb684734cab082ea",
+      "sha256": "59fe44ae9490db014104a29e2263adbedd3226ee5dce89fbd3acc68f9c83f363"
+    },
+    {
+      "revision": 335,
+      "at": 1792425889.4399188,
+      "action": "unblock",
+      "data": {
+        "task_id": "T-web-daily-ci-integration-20261020",
+        "source": "user:automation:2026-10-20",
+        "reason": "Date boundary passed; no daily PR today",
+        "next_step": "latest head CI and restored browser acceptance"
+      },
+      "result": {
+        "recorded": "unblock"
+      },
+      "previous": "59fe44ae9490db014104a29e2263adbedd3226ee5dce89fbd3acc68f9c83f363",
+      "sha256": "cad412312bc78dfa43c572616edbfbf627c49562eaacb2ae6c55ae7b4b2e537f"
+    },
+    {
+      "revision": 336,
+      "at": 1792425889.4897144,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261020T0100-bb483ee1",
+        "task_id": "T-web-daily-ci-integration-20261020",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261020T0100-bb483ee1",
+        "task_id": "T-web-daily-ci-integration-20261020",
+        "fence": 56,
+        "expires_at": 1792427389.4897144
+      },
+      "previous": "cad412312bc78dfa43c572616edbfbf627c49562eaacb2ae6c55ae7b4b2e537f",
+      "sha256": "09371c1f733aafcdc7bb134db9573dee73b1a1b4f39e357d6ee177f1dfd3813e"
+    },
+    {
+      "revision": 337,
+      "at": 1792425945.064752,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T0100-bb483ee1",
+        "fence": 56,
+        "artifacts": [
+          {
+            "path": "docs/web-daily-integration-20261020.md",
+            "sha256": "577d56f2eb3a08b68854aa15f0d2f66e13bdb529f984c5f2a4fd68bc36e53bae"
+          }
+        ],
+        "checks": [
+          "local build/type/lint/SSG/hash/guide/navigation passed",
+          "27 business tests passed",
+          "four parent HEADs match",
+          "333 prior events preserved",
+          "no daily PR today; full scope reviewed"
+        ],
+        "next_step": "latest-head CI, exact restored browser acceptance before guarded merge",
+        "passed": false
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "09371c1f733aafcdc7bb134db9573dee73b1a1b4f39e357d6ee177f1dfd3813e",
+      "sha256": "0fdfa006047062d4026067148c013ed7a990286e0591090a8b1109d0666ca624"
     }
   ],
-  "projection_sha256": "f2f9cf721e6c5fe1ecc2008a219ccdb848d2b36b5dec9db1ff96a532c5ab84b4"
+  "projection_sha256": "60dd6beb8a442639e61968efaab07e05631b1883753ab6c599a7c7c44044ebb2"
 }
