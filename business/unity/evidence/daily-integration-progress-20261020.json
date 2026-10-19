@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "runId": "unity-20261020T0100-bb483ee1",
+  "fence": 56,
+  "pr": "https://github.com/Kihamda/Kihamda_Game/pull/28",
+  "head": "e2dcca07c99d2606b9647f2017cc563aebd287ea",
+  "ciRun": 39282780335,
+  "ciStatus": "queued",
+  "checks": [
+    "local TypeScript ESLint Vite9SSG43checksums",
+    "guide8 navigation/search SSR",
+    "business27",
+    "parent4HEADs match",
+    "333 prior events preserved",
+    "7 prior committed artifact hashes match",
+    "protected owner/oldcloud/handoff unchanged",
+    "full diff scope reviewed; no private/raw/recovery files"
+  ],
+  "localBrowser": {
+    "work": "MineRush",
+    "widths": [
+      390,
+      1280
+    ],
+    "normalNaturalWidth": 932,
+    "syntheticErrorStatus": true,
+    "keyboard": [
+      "Tab",
+      "Shift+Tab",
+      "Escape",
+      "Enter"
+    ],
+    "triggerFocusReturn": true,
+    "queryWebReturnFocus": "works",
+    "overflow": false,
+    "reloadReset": true
+  },
+  "unverified": [
+    "latest-head remote CI",
+    "exact CI package restoration/browser",
+    "real HTTP failure",
+    "physical touch",
+    "Safari",
+    "human evaluation",
+    "off-PC restoration"
+  ],
+  "publication": "PR only; no deployment or merge yet",
+  "nextStep": "Wait existing CI run; restore exact artifact and inspect390/1280 before guarded merge. Do not create another PR or rerun slot."
+}

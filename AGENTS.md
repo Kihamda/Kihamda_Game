@@ -89,3 +89,5 @@ Ice Slideのモバイル操作部はdocs/web-ice-mobile-20261013.mdで24px以上
 
 
 2026-10-19の07時枠でT-web-preview-dialog-load-errorを完了。拡大画像の独立した失敗案内を追加し、通常390/1280の開閉とTab/ShiftTab/Enter/Escape、合成error時の案内と起点復帰、検索Web保持を実ブラウザ検査した。型/静的/9SSG/43ハッシュ/案内8条件/検索SSR/台帳27テスト成功。元7595b50の44ファイル・9ページを圧縮復元し全ハッシュと5拒否条件、復元390の失敗と再読込復帰/1280の通常表示を確認。合成イベント検査であり実通信障害の再現ではない。詳細docs/web-preview-dialog-error-20261019.md、記事はbusiness/blog/drafts/2026-10-19-image-error-guidance.mdへ下書きのみ。本日PR27マージ済みのため追加PR/push/リモートCI/本番配置なし。現行CI索引を保持。次はT-web-daily-ci-integration-20261020。実タッチ/Safari/人間評価/別PC復元は未確認、releaseと事業指標null。天啓の継続指示を保持し、Unity/旧クラウド台帳/親原本/復元保管庫/Atohitoriは変更しない。
+
+2026-10-20の01時枠は日次PR28を作成し、画像拡大の読込失敗案内と前日の検査・下書き・研究を統合。head e2dcca07c99d2606b9647f2017cc563aebd287eaのCI39282780335は両ジョブqueued。GitHub公式のActions/Pages/Webhooks性能低下と処理遅延を確認したが、今回のキューとの直接因果は未確定。ローカル型/静的/9SSG/43ハッシュ/案内8/検索/台帳27テストと390/1280の通常画像・合成error・キーボード・検索復帰を確認。最新CI版の復元受入とマージは未完了で、同じT-web-daily-ci-integration-20261020をyieldしPR28を継続する。詳細docs/web-daily-integration-20261020.md。既存CI保全索引・release=null・指標nullを保持。本番配置/Unity追加ビルド/投稿なし。実HTTP障害/実タッチ/Safari/人間評価/別PC復元は未確認。天啓の継続指示を保持する。

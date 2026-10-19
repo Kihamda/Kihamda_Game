@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 337,
+  "revision": 340,
   "business_id": "game-site",
   "fence": 56,
-  "lease": {
-    "run_id": "unity-20261020T0100-bb483ee1",
-    "task_id": "T-web-daily-ci-integration-20261020",
-    "fence": 56,
-    "expires_at": 1792427389.4897144
-  },
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -7756,7 +7751,7 @@
       "depends_on": [
         "T-web-preview-dialog-load-error"
       ],
-      "status": "running",
+      "status": "ready",
       "checkpoints": [
         {
           "task_id": "T-web-daily-ci-integration-20261020",
@@ -7791,6 +7786,112 @@
           "next_step": "latest-head CI, exact restored browser acceptance before guarded merge",
           "passed": false,
           "at": 1792425945.064752
+        },
+        {
+          "run_id": "unity-20261020T0100-bb483ee1",
+          "fence": 56,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/daily-integration-progress-20261020.json",
+              "sha256": "7730dc5e150e1899853d60d6211a6c3e25fa1f436e7e65c7a89a4ff15c271f9e"
+            }
+          ],
+          "checks": [
+            "local TypeScript ESLint Vite9SSG43checksums",
+            "guide8 navigation/search SSR",
+            "business27",
+            "parent4HEADs match",
+            "333 prior events preserved",
+            "7 prior committed artifact hashes match",
+            "protected owner/oldcloud/handoff unchanged",
+            "full diff scope reviewed; no private/raw/recovery files",
+            "current local browser390/1280 normal and synthetic error passed"
+          ],
+          "next_step": "Wait existing CI run; restore exact artifact and inspect390/1280 before guarded merge. Do not create another PR or rerun slot.",
+          "passed": false,
+          "at": 1792426210.3442945
+        },
+        {
+          "run_id": "unity-20261020T0100-bb483ee1",
+          "fence": 56,
+          "artifacts": [
+            {
+              "path": "docs/web-daily-integration-20261020.md",
+              "sha256": "f7660ab24dfdc71c1e29f9a9f3c9d77f11b9978141882d7d895426f5c4b96139"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "93ed587d3acff46481f0c013377d19e4c602b8f4853764cb26e18d1337c205a7"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "a8082a3a4b728d05deac2bb4d0ea2bd588191b50d1896c8cf1fed2b78a29fc6e"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "d072f1218341e0eeb32b5fae66b46f8f03b07337a91c65bf49c3e0ad1b518620"
+            },
+            {
+              "path": "business/unity/evidence/daily-integration-pending-20261020.json",
+              "sha256": "fd94a129406b04723209d6e66a6d400a1f5a4aae17970ba7bf67c75fd16ee871"
+            }
+          ],
+          "checks": [
+            "local TypeScript ESLint Vite9SSG43checksums",
+            "guide8 navigation/search SSR",
+            "business27",
+            "parent4HEADs match",
+            "333 prior events preserved",
+            "7 prior committed artifact hashes match",
+            "protected owner/oldcloud/handoff unchanged",
+            "full diff scope reviewed; no private/raw/recovery files",
+            "local390/1280 browser passed; remote CI still queued; no merge",
+            "official GitHub incident checked"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261020: 既存PR28のhead e2dcca0に対するCI39282780335を確認し、CI成果物の復元390/1280受入後にhead指定マージする。CI待ちで未完了。新PRとslot再取得はしない。",
+          "passed": false,
+          "at": 1792426323.2701333
+        },
+        {
+          "run_id": "unity-20261020T0100-bb483ee1",
+          "fence": 56,
+          "artifacts": [
+            {
+              "path": "docs/web-daily-integration-20261020.md",
+              "sha256": "f7660ab24dfdc71c1e29f9a9f3c9d77f11b9978141882d7d895426f5c4b96139"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "93ed587d3acff46481f0c013377d19e4c602b8f4853764cb26e18d1337c205a7"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "a8082a3a4b728d05deac2bb4d0ea2bd588191b50d1896c8cf1fed2b78a29fc6e"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "d072f1218341e0eeb32b5fae66b46f8f03b07337a91c65bf49c3e0ad1b518620"
+            },
+            {
+              "path": "business/unity/evidence/daily-integration-pending-20261020.json",
+              "sha256": "fd94a129406b04723209d6e66a6d400a1f5a4aae17970ba7bf67c75fd16ee871"
+            }
+          ],
+          "checks": [
+            "local TypeScript ESLint Vite9SSG43checksums",
+            "guide8 navigation/search SSR",
+            "business27",
+            "parent4HEADs match",
+            "333 prior events preserved",
+            "7 prior committed artifact hashes match",
+            "protected owner/oldcloud/handoff unchanged",
+            "full diff scope reviewed; no private/raw/recovery files",
+            "local390/1280 browser passed; remote CI still queued; no merge",
+            "official GitHub incident checked"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261020: 既存PR28のhead e2dcca0に対するCI39282780335を確認し、CI成果物の復元390/1280受入後にhead指定マージする。CI待ちで未完了。新PRとslot再取得はしない。",
+          "passed": false,
+          "at": 1792426323.3217566
         }
       ],
       "claims": [
@@ -8588,7 +8689,7 @@
       "scheduled_at": "2026-10-20T01:00:00+09:00",
       "run_id": "unity-20261020T0100-bb483ee1",
       "source": "scheduled:game-site:2026-10-20T01:00:00+09:00",
-      "status": "open",
+      "status": "checkpointed",
       "started_at": 1792425889.3344054
     }
   },
@@ -20894,7 +20995,140 @@
       },
       "previous": "09371c1f733aafcdc7bb134db9573dee73b1a1b4f39e357d6ee177f1dfd3813e",
       "sha256": "0fdfa006047062d4026067148c013ed7a990286e0591090a8b1109d0666ca624"
+    },
+    {
+      "revision": 338,
+      "at": 1792426210.3442945,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T0100-bb483ee1",
+        "fence": 56,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/daily-integration-progress-20261020.json",
+            "sha256": "7730dc5e150e1899853d60d6211a6c3e25fa1f436e7e65c7a89a4ff15c271f9e"
+          }
+        ],
+        "checks": [
+          "local TypeScript ESLint Vite9SSG43checksums",
+          "guide8 navigation/search SSR",
+          "business27",
+          "parent4HEADs match",
+          "333 prior events preserved",
+          "7 prior committed artifact hashes match",
+          "protected owner/oldcloud/handoff unchanged",
+          "full diff scope reviewed; no private/raw/recovery files",
+          "current local browser390/1280 normal and synthetic error passed"
+        ],
+        "next_step": "Wait existing CI run; restore exact artifact and inspect390/1280 before guarded merge. Do not create another PR or rerun slot.",
+        "passed": false
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "0fdfa006047062d4026067148c013ed7a990286e0591090a8b1109d0666ca624",
+      "sha256": "91b17e9db85e17e5c228449f174b08fb195faae1b07ceb41b724286b98be0521"
+    },
+    {
+      "revision": 339,
+      "at": 1792426323.2701333,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T0100-bb483ee1",
+        "fence": 56,
+        "artifacts": [
+          {
+            "path": "docs/web-daily-integration-20261020.md",
+            "sha256": "f7660ab24dfdc71c1e29f9a9f3c9d77f11b9978141882d7d895426f5c4b96139"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "93ed587d3acff46481f0c013377d19e4c602b8f4853764cb26e18d1337c205a7"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "a8082a3a4b728d05deac2bb4d0ea2bd588191b50d1896c8cf1fed2b78a29fc6e"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "d072f1218341e0eeb32b5fae66b46f8f03b07337a91c65bf49c3e0ad1b518620"
+          },
+          {
+            "path": "business/unity/evidence/daily-integration-pending-20261020.json",
+            "sha256": "fd94a129406b04723209d6e66a6d400a1f5a4aae17970ba7bf67c75fd16ee871"
+          }
+        ],
+        "checks": [
+          "local TypeScript ESLint Vite9SSG43checksums",
+          "guide8 navigation/search SSR",
+          "business27",
+          "parent4HEADs match",
+          "333 prior events preserved",
+          "7 prior committed artifact hashes match",
+          "protected owner/oldcloud/handoff unchanged",
+          "full diff scope reviewed; no private/raw/recovery files",
+          "local390/1280 browser passed; remote CI still queued; no merge",
+          "official GitHub incident checked"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261020: 既存PR28のhead e2dcca0に対するCI39282780335を確認し、CI成果物の復元390/1280受入後にhead指定マージする。CI待ちで未完了。新PRとslot再取得はしない。",
+        "passed": false
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "91b17e9db85e17e5c228449f174b08fb195faae1b07ceb41b724286b98be0521",
+      "sha256": "1076a871b0ec94b41a882c10e0bcc954ed29f1c2c995aa317057c0280cd8eac8"
+    },
+    {
+      "revision": 340,
+      "at": 1792426323.3217566,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261020T0100-bb483ee1",
+        "fence": 56,
+        "artifacts": [
+          {
+            "path": "docs/web-daily-integration-20261020.md",
+            "sha256": "f7660ab24dfdc71c1e29f9a9f3c9d77f11b9978141882d7d895426f5c4b96139"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "93ed587d3acff46481f0c013377d19e4c602b8f4853764cb26e18d1337c205a7"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "a8082a3a4b728d05deac2bb4d0ea2bd588191b50d1896c8cf1fed2b78a29fc6e"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "d072f1218341e0eeb32b5fae66b46f8f03b07337a91c65bf49c3e0ad1b518620"
+          },
+          {
+            "path": "business/unity/evidence/daily-integration-pending-20261020.json",
+            "sha256": "fd94a129406b04723209d6e66a6d400a1f5a4aae17970ba7bf67c75fd16ee871"
+          }
+        ],
+        "checks": [
+          "local TypeScript ESLint Vite9SSG43checksums",
+          "guide8 navigation/search SSR",
+          "business27",
+          "parent4HEADs match",
+          "333 prior events preserved",
+          "7 prior committed artifact hashes match",
+          "protected owner/oldcloud/handoff unchanged",
+          "full diff scope reviewed; no private/raw/recovery files",
+          "local390/1280 browser passed; remote CI still queued; no merge",
+          "official GitHub incident checked"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261020: 既存PR28のhead e2dcca0に対するCI39282780335を確認し、CI成果物の復元390/1280受入後にhead指定マージする。CI待ちで未完了。新PRとslot再取得はしない。",
+        "passed": false
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "1076a871b0ec94b41a882c10e0bcc954ed29f1c2c995aa317057c0280cd8eac8",
+      "sha256": "6edc1b23106dd98143bb0a39a3b0591adcb572d68653458a229db979c4572608"
     }
   ],
-  "projection_sha256": "60dd6beb8a442639e61968efaab07e05631b1883753ab6c599a7c7c44044ebb2"
+  "projection_sha256": "8bb54f01fa5267adb281edbc9a17ead9cc81a8ab89043986451b5ea4de6e1be8"
 }

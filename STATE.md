@@ -206,3 +206,5 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 
 
 2026-10-19の19時枠は技術continue・事業unobserved。朝の証跡7件を現物または保存commitで照合し、親4HEADとPR27当日マージ済みを確認。実HTTP障害と合成error、人間評価を区別し、指標null・release=nullを保持。詳細docs/web-dialog-strategy-20261019.md。次は既存T-web-daily-ci-integration-20261020の最新head CIと復元390/1280受入。新しいアプリ変更やブラウザ再検査、追加PR/push/配信なし。天啓の継続指示は保持する。
+
+2026-10-20の01時枠は日次PR28を作成し、画像拡大の読込失敗案内と前日の検査・下書き・研究を統合。head e2dcca07c99d2606b9647f2017cc563aebd287eaのCI39282780335は両ジョブqueued。GitHub公式のActions/Pages/Webhooks性能低下と処理遅延を確認したが、今回のキューとの直接因果は未確定。ローカル型/静的/9SSG/43ハッシュ/案内8/検索/台帳27テストと390/1280の通常画像・合成error・キーボード・検索復帰を確認。最新CI版の復元受入とマージは未完了で、同じT-web-daily-ci-integration-20261020をyieldしPR28を継続する。詳細docs/web-daily-integration-20261020.md。既存CI保全索引・release=null・指標nullを保持。本番配置/Unity追加ビルド/投稿なし。実HTTP障害/実タッチ/Safari/人間評価/別PC復元は未確認。天啓の継続指示を保持する。
