@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 340,
+  "revision": 345,
   "business_id": "game-site",
-  "fence": 56,
+  "fence": 57,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -7751,7 +7751,7 @@
       "depends_on": [
         "T-web-preview-dialog-load-error"
       ],
-      "status": "ready",
+      "status": "done",
       "checkpoints": [
         {
           "task_id": "T-web-daily-ci-integration-20261020",
@@ -7892,6 +7892,121 @@
           "next_step": "T-web-daily-ci-integration-20261020: 既存PR28のhead e2dcca0に対するCI39282780335を確認し、CI成果物の復元390/1280受入後にhead指定マージする。CI待ちで未完了。新PRとslot再取得はしない。",
           "passed": false,
           "at": 1792426323.3217566
+        },
+        {
+          "run_id": "unity-20261020T0700-eba7fbfc",
+          "fence": 57,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-dialog-error-20261020.json",
+              "sha256": "4fcc1c5b1a315c7dec8b9a04c0ad2f8bc9fb73ba8ad5799e820d51bad537881d"
+            }
+          ],
+          "checks": [
+            "archiveSHA",
+            "valid and5 rejection tests",
+            "image4 byte matches",
+            "prior checkpoint hashes",
+            "parent4HEADs",
+            "340 event prefix preserved",
+            "protected files unchanged",
+            "full16path diff reviewed; no private/raw/recovery files",
+            "restored390/1280 normal/error keyboard/search passed"
+          ],
+          "next_step": "Verify latest PR28 head CI and guarded merge",
+          "at": 1792447362.0590866
+        },
+        {
+          "run_id": "unity-20261020T0700-eba7fbfc",
+          "fence": 57,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-dialog-error-final-20261020.json",
+              "sha256": "274913efa73e4d8fcd1da2277ef425b98d00529e74f267a377e834137d90ef8d"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "e481988446e555e04cda9003a485ffb9f757842ad4e73d3882bb5f7232969322"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "6841ebed226b489f6ba37bd097c6490ccefb9a396a20d2d54f95316328b4ac9f"
+            },
+            {
+              "path": "docs/web-daily-integration-20261020.md",
+              "sha256": "aaaab71fef3cfd782b49db1be0ed2e9ce2f7c47169202ff7d993ecb340deff5b"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "814b61551b12f24e8eba475a5d0dfb7a5e9af2c1cb9d6bd3e3135325b34ebe46"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-20-ci-restoration-before-merge.md",
+              "sha256": "b2b3144412ded46fbdd3da7929ceea7162e6b77c5366d39561fdc1c30ea38c4a"
+            }
+          ],
+          "checks": [
+            "archiveSHA",
+            "valid and5 rejection tests",
+            "image4 byte matches",
+            "prior checkpoint hashes",
+            "parent4HEADs",
+            "340 event prefix preserved",
+            "protected files unchanged",
+            "full16path diff reviewed; no private/raw/recovery files",
+            "restored390/1280 acceptance passed",
+            "latest head CI passed; guarded merge confirmed",
+            "07 blog draft only"
+          ],
+          "next_step": "PR28の日次統合は完了。現行CI保全版を保持し、既存Web入口の実測で具体的な品質問題が見つかった場合に同じWIP1で改善する。本日追加PR・記録だけのpushは行わない。実HTTP障害・実タッチ・Safari・人間評価は未確認。",
+          "passed": true,
+          "at": 1792447393.7430332
+        },
+        {
+          "run_id": "unity-20261020T0700-eba7fbfc",
+          "fence": 57,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-dialog-error-final-20261020.json",
+              "sha256": "274913efa73e4d8fcd1da2277ef425b98d00529e74f267a377e834137d90ef8d"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "e481988446e555e04cda9003a485ffb9f757842ad4e73d3882bb5f7232969322"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "6841ebed226b489f6ba37bd097c6490ccefb9a396a20d2d54f95316328b4ac9f"
+            },
+            {
+              "path": "docs/web-daily-integration-20261020.md",
+              "sha256": "aaaab71fef3cfd782b49db1be0ed2e9ce2f7c47169202ff7d993ecb340deff5b"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "814b61551b12f24e8eba475a5d0dfb7a5e9af2c1cb9d6bd3e3135325b34ebe46"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-20-ci-restoration-before-merge.md",
+              "sha256": "b2b3144412ded46fbdd3da7929ceea7162e6b77c5366d39561fdc1c30ea38c4a"
+            }
+          ],
+          "checks": [
+            "archiveSHA",
+            "valid and5 rejection tests",
+            "image4 byte matches",
+            "prior checkpoint hashes",
+            "parent4HEADs",
+            "340 event prefix preserved",
+            "protected files unchanged",
+            "full16path diff reviewed; no private/raw/recovery files",
+            "restored390/1280 acceptance passed",
+            "latest head CI passed; guarded merge confirmed",
+            "07 blog draft only"
+          ],
+          "next_step": "PR28の日次統合は完了。現行CI保全版を保持し、既存Web入口の実測で具体的な品質問題が見つかった場合に同じWIP1で改善する。本日追加PR・記録だけのpushは行わない。実HTTP障害・実タッチ・Safari・人間評価は未確認。",
+          "passed": true,
+          "at": 1792447393.79381
         }
       ],
       "claims": [
@@ -7900,6 +8015,12 @@
           "task_id": "T-web-daily-ci-integration-20261020",
           "fence": 56,
           "expires_at": 1792427389.4897144
+        },
+        {
+          "run_id": "unity-20261020T0700-eba7fbfc",
+          "task_id": "T-web-daily-ci-integration-20261020",
+          "fence": 57,
+          "expires_at": 1792449027.5515761
         }
       ]
     },
@@ -8691,6 +8812,13 @@
       "source": "scheduled:game-site:2026-10-20T01:00:00+09:00",
       "status": "checkpointed",
       "started_at": 1792425889.3344054
+    },
+    "unity-20261020T0700-eba7fbfc": {
+      "run_id": "unity-20261020T0700-eba7fbfc",
+      "scheduled_at": "2026-10-20T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-20T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792447227.4424274
     }
   },
   "experiments": {
@@ -8926,7 +9054,8 @@
     "2026-10-19T07:00:00+09:00": "unity-20261019T0700-c1b88b7e",
     "2026-10-19T13:00:00+09:00": "unity-20261019T1300-e74c926c",
     "2026-10-19T19:00:00+09:00": "unity-20261019T1900-cb67b470",
-    "2026-10-20T01:00:00+09:00": "unity-20261020T0100-bb483ee1"
+    "2026-10-20T01:00:00+09:00": "unity-20261020T0100-bb483ee1",
+    "2026-10-20T07:00:00+09:00": "unity-20261020T0700-eba7fbfc"
   },
   "feedback": [
     {
@@ -21128,7 +21257,181 @@
       },
       "previous": "1076a871b0ec94b41a882c10e0bcc954ed29f1c2c995aa317057c0280cd8eac8",
       "sha256": "6edc1b23106dd98143bb0a39a3b0591adcb572d68653458a229db979c4572608"
+    },
+    {
+      "revision": 341,
+      "at": 1792447227.4424274,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261020T0700-eba7fbfc",
+        "scheduled_at": "2026-10-20T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "6edc1b23106dd98143bb0a39a3b0591adcb572d68653458a229db979c4572608",
+      "sha256": "ad980287fd44631e4e8bfb562051917a0cbf71267e162411348a33f0d540097e"
+    },
+    {
+      "revision": 342,
+      "at": 1792447227.5515761,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261020T0700-eba7fbfc",
+        "task_id": "T-web-daily-ci-integration-20261020",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261020T0700-eba7fbfc",
+        "task_id": "T-web-daily-ci-integration-20261020",
+        "fence": 57,
+        "expires_at": 1792449027.5515761
+      },
+      "previous": "ad980287fd44631e4e8bfb562051917a0cbf71267e162411348a33f0d540097e",
+      "sha256": "ba6d34d5dbb4bce598193da104f7ef5870a3cc78ca9e77d2b8c8d27d451d8dce"
+    },
+    {
+      "revision": 343,
+      "at": 1792447362.0590866,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T0700-eba7fbfc",
+        "fence": 57,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-dialog-error-20261020.json",
+            "sha256": "4fcc1c5b1a315c7dec8b9a04c0ad2f8bc9fb73ba8ad5799e820d51bad537881d"
+          }
+        ],
+        "checks": [
+          "archiveSHA",
+          "valid and5 rejection tests",
+          "image4 byte matches",
+          "prior checkpoint hashes",
+          "parent4HEADs",
+          "340 event prefix preserved",
+          "protected files unchanged",
+          "full16path diff reviewed; no private/raw/recovery files",
+          "restored390/1280 normal/error keyboard/search passed"
+        ],
+        "next_step": "Verify latest PR28 head CI and guarded merge"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "ba6d34d5dbb4bce598193da104f7ef5870a3cc78ca9e77d2b8c8d27d451d8dce",
+      "sha256": "806ddfe8936573ebb7282bbaafb026e166054c36398e92ec0a595543ef075c3c"
+    },
+    {
+      "revision": 344,
+      "at": 1792447393.7430332,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T0700-eba7fbfc",
+        "fence": 57,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-dialog-error-final-20261020.json",
+            "sha256": "274913efa73e4d8fcd1da2277ef425b98d00529e74f267a377e834137d90ef8d"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "e481988446e555e04cda9003a485ffb9f757842ad4e73d3882bb5f7232969322"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "6841ebed226b489f6ba37bd097c6490ccefb9a396a20d2d54f95316328b4ac9f"
+          },
+          {
+            "path": "docs/web-daily-integration-20261020.md",
+            "sha256": "aaaab71fef3cfd782b49db1be0ed2e9ce2f7c47169202ff7d993ecb340deff5b"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "814b61551b12f24e8eba475a5d0dfb7a5e9af2c1cb9d6bd3e3135325b34ebe46"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-20-ci-restoration-before-merge.md",
+            "sha256": "b2b3144412ded46fbdd3da7929ceea7162e6b77c5366d39561fdc1c30ea38c4a"
+          }
+        ],
+        "checks": [
+          "archiveSHA",
+          "valid and5 rejection tests",
+          "image4 byte matches",
+          "prior checkpoint hashes",
+          "parent4HEADs",
+          "340 event prefix preserved",
+          "protected files unchanged",
+          "full16path diff reviewed; no private/raw/recovery files",
+          "restored390/1280 acceptance passed",
+          "latest head CI passed; guarded merge confirmed",
+          "07 blog draft only"
+        ],
+        "next_step": "PR28の日次統合は完了。現行CI保全版を保持し、既存Web入口の実測で具体的な品質問題が見つかった場合に同じWIP1で改善する。本日追加PR・記録だけのpushは行わない。実HTTP障害・実タッチ・Safari・人間評価は未確認。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "806ddfe8936573ebb7282bbaafb026e166054c36398e92ec0a595543ef075c3c",
+      "sha256": "7529597f9aaddf63d9d1158f6829e7ba6c28156dfcfb549ad653da4c2a78074b"
+    },
+    {
+      "revision": 345,
+      "at": 1792447393.79381,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261020T0700-eba7fbfc",
+        "fence": 57,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-dialog-error-final-20261020.json",
+            "sha256": "274913efa73e4d8fcd1da2277ef425b98d00529e74f267a377e834137d90ef8d"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "e481988446e555e04cda9003a485ffb9f757842ad4e73d3882bb5f7232969322"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "6841ebed226b489f6ba37bd097c6490ccefb9a396a20d2d54f95316328b4ac9f"
+          },
+          {
+            "path": "docs/web-daily-integration-20261020.md",
+            "sha256": "aaaab71fef3cfd782b49db1be0ed2e9ce2f7c47169202ff7d993ecb340deff5b"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "814b61551b12f24e8eba475a5d0dfb7a5e9af2c1cb9d6bd3e3135325b34ebe46"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-20-ci-restoration-before-merge.md",
+            "sha256": "b2b3144412ded46fbdd3da7929ceea7162e6b77c5366d39561fdc1c30ea38c4a"
+          }
+        ],
+        "checks": [
+          "archiveSHA",
+          "valid and5 rejection tests",
+          "image4 byte matches",
+          "prior checkpoint hashes",
+          "parent4HEADs",
+          "340 event prefix preserved",
+          "protected files unchanged",
+          "full16path diff reviewed; no private/raw/recovery files",
+          "restored390/1280 acceptance passed",
+          "latest head CI passed; guarded merge confirmed",
+          "07 blog draft only"
+        ],
+        "next_step": "PR28の日次統合は完了。現行CI保全版を保持し、既存Web入口の実測で具体的な品質問題が見つかった場合に同じWIP1で改善する。本日追加PR・記録だけのpushは行わない。実HTTP障害・実タッチ・Safari・人間評価は未確認。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "7529597f9aaddf63d9d1158f6829e7ba6c28156dfcfb549ad653da4c2a78074b",
+      "sha256": "035f4b757e8fbc561490d9ac3929c77dc9a667868b7982a8bf84950d85d275e3"
     }
   ],
-  "projection_sha256": "8bb54f01fa5267adb281edbc9a17ead9cc81a8ab89043986451b5ea4de6e1be8"
+  "projection_sha256": "4af078db67664995461fe53d9cd4b735f337c9edd90c9686d331244adfc679d3"
 }
