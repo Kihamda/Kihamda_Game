@@ -203,3 +203,6 @@ npm run build（TypeScript・ESLintを含む）、npm run check、生成HTMLの�
 
 
 2026-10-19の13時枠で掲載先の一次資料を調査し、配布先ごとの成立条件を既存翌日日次統合へ反映した。itch.ioはindex.html入りZIPと相対パスを指定し、現行tar.gzをそのまま外部掲載可能と扱わない。朝の証跡7件・保持アーカイブ・親4HEAD一致。詳細business/unity/research/2026-10-19-distribution-scope.md。PR27当日マージ済みのため追加PR/push/配信なし。アプリ変更と実ブラウザ再検査なし。次は同じT-web-daily-ci-integration-20261020の最新head CI、復元390/1280と画像失敗案内の受入。指標null・事業unobserved、天啓の継続指示を保持する。
+
+
+2026-10-19の19時枠は技術continue・事業unobserved。朝の証跡7件を現物または保存commitで照合し、親4HEADとPR27当日マージ済みを確認。実HTTP障害と合成error、人間評価を区別し、指標null・release=nullを保持。詳細docs/web-dialog-strategy-20261019.md。次は既存T-web-daily-ci-integration-20261020の最新head CIと復元390/1280受入。新しいアプリ変更やブラウザ再検査、追加PR/push/配信なし。天啓の継続指示は保持する。
