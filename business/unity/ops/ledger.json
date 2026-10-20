@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 345,
+  "revision": 351,
   "business_id": "game-site",
-  "fence": 57,
+  "fence": 58,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -8227,6 +8227,109 @@
           "expires_at": 1792405542.7757635
         }
       ]
+    },
+    "T-web-page-discovery-20261020": {
+      "id": "T-web-page-discovery-20261020",
+      "objective": "既存Web入口のページ識別情報を一次資料と照合する",
+      "acceptance": [
+        "9ポータルページのtitle・description・canonical・OGが重複なく内容と一致",
+        "実ブラウザで作品詳細・案内・戻る・再読込後にページ情報と検索条件が一致",
+        "release=nullと現在のCI保全索引を維持、未観測需要を成果にしない"
+      ],
+      "outputs": [
+        "business/unity/research/2026-10-20-page-discovery.md",
+        "business/unity/evidence/page-discovery-20261020-1300.json"
+      ],
+      "checks": [
+        "生成済み9ページのHTML照合",
+        "実ブラウザ390/1280の往復・再読込",
+        "親4元commit照合",
+        "台帳チェーンと保護対象差分確認"
+      ],
+      "next_step": "実際の不一致があれば同じ工程で修正、なければ保全して観測待ち",
+      "decision_id": "D-web-page-discovery-20261020",
+      "experiment_id": "E-unity-portal",
+      "pdca": "check",
+      "hypothesis": "ページごとのタイトルと説明・正規URLが内容と一致すれば検索と往復で作品を区別できる。流入改善は未観測。",
+      "source": "user:automation:2026-10-20:13-primary-research",
+      "priority": 1,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261020T1300-06077b21",
+          "fence": 58,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-20-page-discovery.md",
+              "sha256": "fecac3a977a12dba6cbcd2772268ef420b4ae9665adbabf7b9389f36b389b3df"
+            },
+            {
+              "path": "business/unity/evidence/page-discovery-20261020-1300.json",
+              "sha256": "970e675f1699ee4eab561a2719742a5ce5084dc1780ca50a7c32656a4d7840a8"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "d0f01aaf6f95a22217416b946c3e6a17a2cb70c55a98eeada9393977e2fcd0f3"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "4ef5f68edd89c5228abd1a47ac0d9fc38b61667277d1121828d0e1f6177a3e33"
+            }
+          ],
+          "checks": [
+            "9 restored CI page metadata accepted",
+            "390/1280 detail-info-back-reload-query accepted",
+            "archive SHA and parent4 HEADs matched",
+            "27 business tests passed",
+            "345 prior events and protected files preserved",
+            "no app change; current retention preserved"
+          ],
+          "next_step": "19時枠で既存Web入口の実観測と具体的な品質問題を照合する。今回のページ情報検査は完了。不一致や観測なしに新工程を追加せず、本日追加PR・記録だけのpushは行わない。",
+          "passed": true,
+          "at": 1792469068.6290934
+        },
+        {
+          "run_id": "unity-20261020T1300-06077b21",
+          "fence": 58,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-20-page-discovery.md",
+              "sha256": "fecac3a977a12dba6cbcd2772268ef420b4ae9665adbabf7b9389f36b389b3df"
+            },
+            {
+              "path": "business/unity/evidence/page-discovery-20261020-1300.json",
+              "sha256": "970e675f1699ee4eab561a2719742a5ce5084dc1780ca50a7c32656a4d7840a8"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "d0f01aaf6f95a22217416b946c3e6a17a2cb70c55a98eeada9393977e2fcd0f3"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "4ef5f68edd89c5228abd1a47ac0d9fc38b61667277d1121828d0e1f6177a3e33"
+            }
+          ],
+          "checks": [
+            "9 restored CI page metadata accepted",
+            "390/1280 detail-info-back-reload-query accepted",
+            "archive SHA and parent4 HEADs matched",
+            "27 business tests passed",
+            "345 prior events and protected files preserved",
+            "no app change; current retention preserved"
+          ],
+          "next_step": "19時枠で既存Web入口の実観測と具体的な品質問題を照合する。今回のページ情報検査は完了。不一致や観測なしに新工程を追加せず、本日追加PR・記録だけのpushは行わない。",
+          "passed": true,
+          "at": 1792469068.680314
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261020T1300-06077b21",
+          "task_id": "T-web-page-discovery-20261020",
+          "fence": 58,
+          "expires_at": 1792470401.940195
+        }
+      ]
     }
   },
   "decisions": {
@@ -8428,6 +8531,12 @@
         "business/unity/evidence/preview-dialog-error-20261019-0700.json",
         "business/unity/research/2026-10-19-distribution-scope.md"
       ]
+    },
+    "D-web-page-discovery-20261020": {
+      "id": "D-web-page-discovery-20261020",
+      "source": "https://developers.google.com/search/docs/appearance/title-link",
+      "hypothesis": "ページごとのタイトルと説明・正規URLが内容と一致すれば検索と往復で作品を区別できる。流入改善は未観測。",
+      "next_step": "既存9ページの生成HTMLと実ブラウザ往復で照合し、実在する差異だけ修正する"
     }
   },
   "runs": {
@@ -8819,6 +8928,13 @@
       "source": "scheduled:game-site:2026-10-20T07:00:00+09:00",
       "status": "completed",
       "started_at": 1792447227.4424274
+    },
+    "unity-20261020T1300-06077b21": {
+      "run_id": "unity-20261020T1300-06077b21",
+      "scheduled_at": "2026-10-20T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-20T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792468843.9387498
     }
   },
   "experiments": {
@@ -9055,7 +9171,8 @@
     "2026-10-19T13:00:00+09:00": "unity-20261019T1300-e74c926c",
     "2026-10-19T19:00:00+09:00": "unity-20261019T1900-cb67b470",
     "2026-10-20T01:00:00+09:00": "unity-20261020T0100-bb483ee1",
-    "2026-10-20T07:00:00+09:00": "unity-20261020T0700-eba7fbfc"
+    "2026-10-20T07:00:00+09:00": "unity-20261020T0700-eba7fbfc",
+    "2026-10-20T13:00:00+09:00": "unity-20261020T1300-06077b21"
   },
   "feedback": [
     {
@@ -21431,7 +21548,175 @@
       },
       "previous": "7529597f9aaddf63d9d1158f6829e7ba6c28156dfcfb549ad653da4c2a78074b",
       "sha256": "035f4b757e8fbc561490d9ac3929c77dc9a667868b7982a8bf84950d85d275e3"
+    },
+    {
+      "revision": 346,
+      "at": 1792468843.9387498,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261020T1300-06077b21",
+        "scheduled_at": "2026-10-20T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "035f4b757e8fbc561490d9ac3929c77dc9a667868b7982a8bf84950d85d275e3",
+      "sha256": "8839f5007818d2801788b0c02fa2250f52f6c45fb2107028819e700aae984de3"
+    },
+    {
+      "revision": 347,
+      "at": 1792468901.8598032,
+      "action": "decision",
+      "data": {
+        "id": "D-web-page-discovery-20261020",
+        "source": "https://developers.google.com/search/docs/appearance/title-link",
+        "hypothesis": "ページごとのタイトルと説明・正規URLが内容と一致すれば検索と往復で作品を区別できる。流入改善は未観測。",
+        "next_step": "既存9ページの生成HTMLと実ブラウザ往復で照合し、実在する差異だけ修正する"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "8839f5007818d2801788b0c02fa2250f52f6c45fb2107028819e700aae984de3",
+      "sha256": "956dd9f499d173a79f4773d5c49eb6ee68a5313679762824c7256636a5e216bc"
+    },
+    {
+      "revision": 348,
+      "at": 1792468901.8998654,
+      "action": "task",
+      "data": {
+        "id": "T-web-page-discovery-20261020",
+        "objective": "既存Web入口のページ識別情報を一次資料と照合する",
+        "acceptance": [
+          "9ポータルページのtitle・description・canonical・OGが重複なく内容と一致",
+          "実ブラウザで作品詳細・案内・戻る・再読込後にページ情報と検索条件が一致",
+          "release=nullと現在のCI保全索引を維持、未観測需要を成果にしない"
+        ],
+        "outputs": [
+          "business/unity/research/2026-10-20-page-discovery.md",
+          "business/unity/evidence/page-discovery-20261020-1300.json"
+        ],
+        "checks": [
+          "生成済み9ページのHTML照合",
+          "実ブラウザ390/1280の往復・再読込",
+          "親4元commit照合",
+          "台帳チェーンと保護対象差分確認"
+        ],
+        "next_step": "実際の不一致があれば同じ工程で修正、なければ保全して観測待ち",
+        "decision_id": "D-web-page-discovery-20261020",
+        "experiment_id": "E-unity-portal",
+        "pdca": "check",
+        "hypothesis": "ページごとのタイトルと説明・正規URLが内容と一致すれば検索と往復で作品を区別できる。流入改善は未観測。",
+        "source": "user:automation:2026-10-20:13-primary-research",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "956dd9f499d173a79f4773d5c49eb6ee68a5313679762824c7256636a5e216bc",
+      "sha256": "83417bbb657bca902bd3723efd1da66da42781234a142f12b98e38e54431c431"
+    },
+    {
+      "revision": 349,
+      "at": 1792468901.940195,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261020T1300-06077b21",
+        "task_id": "T-web-page-discovery-20261020",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261020T1300-06077b21",
+        "task_id": "T-web-page-discovery-20261020",
+        "fence": 58,
+        "expires_at": 1792470401.940195
+      },
+      "previous": "83417bbb657bca902bd3723efd1da66da42781234a142f12b98e38e54431c431",
+      "sha256": "1c5139a92668f7a2f0cdeee860765ba6e400df5ea284f6a92e43c77d57959c3c"
+    },
+    {
+      "revision": 350,
+      "at": 1792469068.6290934,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T1300-06077b21",
+        "fence": 58,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-20-page-discovery.md",
+            "sha256": "fecac3a977a12dba6cbcd2772268ef420b4ae9665adbabf7b9389f36b389b3df"
+          },
+          {
+            "path": "business/unity/evidence/page-discovery-20261020-1300.json",
+            "sha256": "970e675f1699ee4eab561a2719742a5ce5084dc1780ca50a7c32656a4d7840a8"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "d0f01aaf6f95a22217416b946c3e6a17a2cb70c55a98eeada9393977e2fcd0f3"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "4ef5f68edd89c5228abd1a47ac0d9fc38b61667277d1121828d0e1f6177a3e33"
+          }
+        ],
+        "checks": [
+          "9 restored CI page metadata accepted",
+          "390/1280 detail-info-back-reload-query accepted",
+          "archive SHA and parent4 HEADs matched",
+          "27 business tests passed",
+          "345 prior events and protected files preserved",
+          "no app change; current retention preserved"
+        ],
+        "next_step": "19時枠で既存Web入口の実観測と具体的な品質問題を照合する。今回のページ情報検査は完了。不一致や観測なしに新工程を追加せず、本日追加PR・記録だけのpushは行わない。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "1c5139a92668f7a2f0cdeee860765ba6e400df5ea284f6a92e43c77d57959c3c",
+      "sha256": "3d6c96e6f518889460ecbdffe287eb17b1cf3ebbbf8ceec055d7e2b3c93448d8"
+    },
+    {
+      "revision": 351,
+      "at": 1792469068.680314,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261020T1300-06077b21",
+        "fence": 58,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-20-page-discovery.md",
+            "sha256": "fecac3a977a12dba6cbcd2772268ef420b4ae9665adbabf7b9389f36b389b3df"
+          },
+          {
+            "path": "business/unity/evidence/page-discovery-20261020-1300.json",
+            "sha256": "970e675f1699ee4eab561a2719742a5ce5084dc1780ca50a7c32656a4d7840a8"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "d0f01aaf6f95a22217416b946c3e6a17a2cb70c55a98eeada9393977e2fcd0f3"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "4ef5f68edd89c5228abd1a47ac0d9fc38b61667277d1121828d0e1f6177a3e33"
+          }
+        ],
+        "checks": [
+          "9 restored CI page metadata accepted",
+          "390/1280 detail-info-back-reload-query accepted",
+          "archive SHA and parent4 HEADs matched",
+          "27 business tests passed",
+          "345 prior events and protected files preserved",
+          "no app change; current retention preserved"
+        ],
+        "next_step": "19時枠で既存Web入口の実観測と具体的な品質問題を照合する。今回のページ情報検査は完了。不一致や観測なしに新工程を追加せず、本日追加PR・記録だけのpushは行わない。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "3d6c96e6f518889460ecbdffe287eb17b1cf3ebbbf8ceec055d7e2b3c93448d8",
+      "sha256": "28072a80173ea08339919197c559bb6fe22c534d4a78beb90d5e7b08e73e8304"
     }
   ],
-  "projection_sha256": "4af078db67664995461fe53d9cd4b735f337c9edd90c9686d331244adfc679d3"
+  "projection_sha256": "5d821b5611163936332ed579a06ded861d0d3710f39b69019151699c396cfae5"
 }
