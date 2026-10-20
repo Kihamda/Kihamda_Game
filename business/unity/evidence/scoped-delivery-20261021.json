@@ -3,7 +3,7 @@
   "run": "unity-20261020T2355-delivery",
   "fence": 63,
   "task": "T-web-scoped-production-delivery-20261020",
-  "status": "delivery-in-progress-not-accepted",
+  "status": "upload-in-progress-not-accepted",
   "sourceCommit": "2bc5d74eef7386aecd1fc39fc42d177d817ad916",
   "ciRun": 39445834759,
   "ci": "success-linux-windows",
@@ -38,5 +38,46 @@
     "production bytes and browser acceptance",
     "real touch Safari human evaluation off-PC restore"
   ],
-  "nextStep": "Reconcile run39445984592 and its retained journal before any dispatch; verify production bytes and gameplay, recover conditionally if necessary."
+  "nextStep": "Reconcile run39445984592 and its retained journal before any dispatch; verify production bytes and gameplay, recover conditionally if necessary.",
+  "uploadStepStartedAt": "2026-10-21T00:20:57+09:00",
+  "localOnlyChange": "FTPS progress logging; not in production candidate",
+  "offlineRehearsalSha256": "7995fb53127750a2a12a50bf0348bf7c06c861a32a162ffa0df764e6b09cb950",
+  "candidateMobileScreenshotSha256": "a6487226e141b908674d3c6beba6fd7b3ab4f7073eeed364237b81695e84e3f0",
+  "localTestCount": 72,
+  "offlineRehearsal": "artifacts/scoped-offline-rehearsal-20261021/result.json",
+  "started_at": "2026-10-20T23:56:10.364568+09:00",
+  "save_started_at": "2026-10-21T00:21:22.2641236+09:00",
+  "candidateMobileScreenshot": "artifacts/scoped-minerush-main-20261021/mobile-390.png",
+  "exit_reason": "Checkpoint/save window after more than25minutes productive work; confirmed delivery workflow remains in progress. Same run must be reconciled before any resend.",
+  "ended_at": "2026-10-21T00:23:04.8782920+09:00",
+  "early_exit_evidence": null,
+  "elapsed_seconds": 1614.514,
+  "finalKnownWorkflowStatus": "in_progress",
+  "finalKnownWorkflowStep": "Upload MineRush assets and switch entry last",
+  "sourceArtifacts": [
+    {
+      "path": "business/ops/scoped_delivery.py",
+      "sha256": "bb44c5c3f531ff66388bf0c3654ca5c79394b237a27abea31986141a12d21cb4"
+    },
+    {
+      "path": "business/ops/scoped_upload.py",
+      "sha256": "a9e78fb46f583dae39432c54f322f2ec4fb0e012b71973bf35b8cafe330c775d"
+    },
+    {
+      "path": "business/ops/scoped_acceptance.py",
+      "sha256": "6e08d8358fdc27788cfb35fa6014c11494dce925edce2689b0d59b59dd594005"
+    },
+    {
+      "path": "business/tests/test_scoped_delivery.py",
+      "sha256": "623c5979b44dcd8447c48d1bc0d4dacc1e19e71723d118a3c253d26ccb4bf084"
+    },
+    {
+      "path": "business/tests/test_scoped_upload.py",
+      "sha256": "40e566778235ac2c8ad99ef0f40e51efadac52f8d590afb480f0010996180c70"
+    },
+    {
+      "path": "business/tests/test_scoped_acceptance.py",
+      "sha256": "c0968d4dd6ad579d66ca79ca3b233b5f8d1b9765842fc57d7a9cddc626fddcb1"
+    }
+  ]
 }
