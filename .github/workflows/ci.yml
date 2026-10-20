@@ -62,6 +62,16 @@ jobs:
           tar -xzf artifacts/web-release.tar.gz -C artifacts/web-restored
           node scripts/web-release-package.mjs verify artifacts/web-restored
           sha256sum artifacts/web-release.tar.gz > artifacts/web-release.tar.gz.sha256
+      - name: Build and verify isolated MineRush candidate
+        run: |
+          node scripts/build-scoped-minerush.mjs artifacts/scoped-minerush
+          python business/ops/scoped_delivery.py artifacts/scoped-minerush --verify-only
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scoped-minerush-${{ github.sha }}
+          path: artifacts/scoped-minerush/
+          retention-days: 30
+          if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
           name: web-release-${{ github.sha }}

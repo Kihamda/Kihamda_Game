@@ -114,3 +114,7 @@ docs/history/context-migration-20261020.json text eol=lf
 docs/autonomous-workflow.md text eol=lf
 docs/coding-conventions.md text eol=lf
 docs/context-delivery-20261020.md text eol=lf
+scripts/build-scoped-minerush.mjs text eol=lf
+web/scoped/minerush/index.html text eol=lf
+web/src/standalone/minerush.tsx text eol=lf
+docs/web-scoped-production-delivery.md text eol=lf
