@@ -54,7 +54,7 @@ def asset_references(body, source):
     return result
 
 
-def collect_recovery(baseline, ftp, http_read):
+def collect_recovery(baseline, ftp, http_read, progress=None):
     """Read the reachable static asset graph without modifying the server."""
     pending = asset_references(baseline[SCOPE + "index.html"], SCOPE + "index.html")
     edges = {}
@@ -77,6 +77,9 @@ def collect_recovery(baseline, ftp, http_read):
         dependencies = asset_references(remote, path)
         edges[path] = sorted(dependencies)
         pending.update(dependencies - baseline.keys())
+        if progress and len(edges) % 16 == 0:
+            progress({"phase": "recovery-inventory", "checkedFiles": len(baseline),
+                      "checkedBytes": total, "pendingFiles": len(pending)})
     return edges
 
 
@@ -137,7 +140,7 @@ def ftp_read(ftp, path):
     return b"".join(chunks)
 
 
-def inspect(package, backup, ftp, http_read=https_read):
+def inspect(package, backup, ftp, http_read=https_read, progress=None):
     manifest = checked_package(package)
     backup = Path(backup)
     if backup.exists():
@@ -151,7 +154,9 @@ def inspect(package, backup, ftp, http_read=https_read):
         if public != remote:
             raise ValueError("FTPS root does not match HTTPS production: " + path)
         baseline[path] = remote
-    dependencies = collect_recovery(baseline, ftp, http_read)
+    if progress:
+        progress({"phase": "production-root-matched"})
+    dependencies = collect_recovery(baseline, ftp, http_read, progress)
     collisions = []
     for entry in manifest["files"]:
         if not entry["path"].startswith(SCOPE + "assets/"):
@@ -168,9 +173,12 @@ def inspect(package, backup, ftp, http_read=https_read):
             raise ValueError("Scoped asset collision; refuse overwrite")
         collisions.append({"path": entry["path"], "state": "identical"})
     # A second read catches changes during inspection; publication must check again.
-    for path, body in baseline.items():
+    for index, (path, body) in enumerate(baseline.items(), 1):
         if ftp_read(ftp, path) != body:
             raise ValueError("Production changed during preflight")
+        if progress and index % 16 == 0:
+            progress({"phase": "baseline-reread", "checkedFiles": index,
+                      "totalFiles": len(baseline)})
     backup.mkdir(parents=True)
     for path, body in baseline.items():
         target = backup / "before" / path
@@ -205,7 +213,8 @@ def main():
         ftp.login(os.environ["FTP_USERNAME"], os.environ["FTP_PASSWORD"])
         ftp.prot_p()
         ftp.cwd(os.environ.get("FTP_SERVER_DIR") or ".")
-        result = inspect(args.package, args.backup, ftp)
+        result = inspect(args.package, args.backup, ftp,
+                         progress=lambda event: print(json.dumps(event), flush=True))
     print(json.dumps({"status": result["status"], "deployed": False, "scope": SCOPE}))
 
 

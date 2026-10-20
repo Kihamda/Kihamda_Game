@@ -40,10 +40,13 @@ def save(journal, state):
     temporary.replace(journal)
 
 
-def baseline_check(ftp, baseline):
-    for path, body in baseline.items():
+def baseline_check(ftp, baseline, progress=None):
+    for index, (path, body) in enumerate(baseline.items(), 1):
         if ftp_read(ftp, path) != body:
             raise ValueError("Production baseline changed: " + path)
+        if progress and index % 16 == 0:
+            progress({"phase": "baseline-check", "checkedFiles": index,
+                      "totalFiles": len(baseline)})
 
 
 def replace(ftp, path, body, state, journal):
@@ -65,7 +68,7 @@ def replace(ftp, path, body, state, journal):
     save(journal, state)
 
 
-def deliver(package, backup, ftp, journal):
+def deliver(package, backup, ftp, journal, progress=None):
     """Write immutable assets first, version second, entry HTML last.
 
     No automatic retry after a failed/unknown write. Use recover with a fresh
@@ -92,7 +95,7 @@ def deliver(package, backup, ftp, journal):
         baseline[path] = body
     if not {"index.html", SCOPE + "index.html"} <= baseline.keys():
         raise ValueError("Missing production baseline")
-    baseline_check(ftp, baseline)
+    baseline_check(ftp, baseline, progress)
     entries = listing(ftp, SCOPE.rstrip("/"))
     if entries.get("index.html") != "file":
         raise ValueError("Existing entry must be a regular file")
@@ -117,25 +120,34 @@ def deliver(package, backup, ftp, journal):
              "newVersionSha256": sha((package / "site" / version).read_bytes()),
              "deployed": False}
     save(journal, state)
+    def phase(name):
+        state["status"] = name
+        save(journal, state)
+        if progress:
+            progress({"phase": name})
     try:
         if assets and "assets" not in entries:
-            state["status"] = "creating-assets-directory"
-            save(journal, state)
+            phase("creating-assets-directory")
             ftp.mkd(SCOPE + "assets")
+        phase("uploading-assets")
         for entry in assets:
             name = entry["path"].removeprefix(SCOPE + "assets/")
             if name not in asset_entries:
                 replace(ftp, entry["path"], (package / "site" / entry["path"]).read_bytes(), state, journal)
         # Do not switch the entry if any protected baseline moved during upload.
-        baseline_check(ftp, baseline)
+        phase("checking-before-cutover")
+        baseline_check(ftp, baseline, progress)
         current_entries = listing(ftp, SCOPE.rstrip("/"))
         current_version = ftp_read(ftp, version) if "build-version.json" in current_entries else None
         if current_version != old_version:
             raise ValueError("Version changed during upload")
+        phase("switching-version")
         replace(ftp, version, (package / "site" / version).read_bytes(), state, journal)
-        baseline_check(ftp, baseline)
+        baseline_check(ftp, baseline, progress)
+        phase("switching-entry")
         replace(ftp, SCOPE + "index.html", (package / "site" / SCOPE / "index.html").read_bytes(), state, journal)
-        baseline_check(ftp, {p: b for p, b in baseline.items() if p != SCOPE + "index.html"})
+        phase("verifying-protected-baseline")
+        baseline_check(ftp, {p: b for p, b in baseline.items() if p != SCOPE + "index.html"}, progress)
         state["status"] = "uploaded-awaiting-http-and-browser-acceptance"
         save(journal, state)
     except Exception:
@@ -192,7 +204,8 @@ def main():
         ftp.login(os.environ["FTP_USERNAME"], os.environ["FTP_PASSWORD"])
         ftp.prot_p()
         ftp.cwd(os.environ.get("FTP_SERVER_DIR") or ".")
-        state = (deliver(args.package, args.backup, ftp, args.journal)
+        state = (deliver(args.package, args.backup, ftp, args.journal,
+                         progress=lambda event: print(json.dumps(event), flush=True))
                  if args.action == "upload" else recover(ftp, args.journal))
     print(json.dumps({"status": state["status"], "deployed": False, "scope": SCOPE}))
 

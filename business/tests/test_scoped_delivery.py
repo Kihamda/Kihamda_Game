@@ -93,6 +93,19 @@ class ScopedDeliveryTest(unittest.TestCase):
         self.assertIn("computed URLs", report["recoveryCoverage"])
         self.assertTrue(all(command.startswith("RETR ") for command in ftp.calls))
 
+    def test_progress_exposes_counts_without_production_content(self):
+        self.remote["assets/old.js"] = self.http["assets/old.js"] = (
+            ";".join(f'import("./chunk{n}.js")' for n in range(18))).encode()
+        for n in range(18):
+            self.remote[f"assets/chunk{n}.js"] = self.http[f"assets/chunk{n}.js"] = b"private response body"
+        events = []
+        delivery.inspect(self.package, self.root / "backup", ReadOnlyFTP(self.remote),
+                         self.http.__getitem__, progress=events.append)
+        self.assertEqual({event["phase"] for event in events},
+                         {"production-root-matched", "recovery-inventory", "baseline-reread"})
+        self.assertNotIn("private response body", json.dumps(events))
+        self.assertNotIn("assets/", json.dumps(events))
+
     def test_nested_dependency_mismatch_refused_without_partial_backup(self):
         self.graph()
         self.remote["assets/nested/leaf.js"] = b"different"
