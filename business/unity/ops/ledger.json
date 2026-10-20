@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 359,
+  "revision": 363,
   "business_id": "game-site",
-  "fence": 59,
+  "fence": 60,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -8511,8 +8511,134 @@
       "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
       "priority": 1,
       "status": "ready",
-      "checkpoints": [],
-      "claims": []
+      "checkpoints": [
+        {
+          "run_id": "unity-20261020T1900-scoped",
+          "fence": 60,
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_delivery.py",
+              "sha256": "7a48caf6a26f1155e6b0ad96d86b007d123711b2640834140cbb78afdbf4cf9a"
+            },
+            {
+              "path": "business/tests/test_scoped_delivery.py",
+              "sha256": "250adb0eb0b1c5d26d976f3f188005fb4a8c068652334e8c3c8d45f3671c2a21"
+            },
+            {
+              "path": "scripts/build-scoped-minerush.mjs",
+              "sha256": "84f9478c3fb80704a8dbce085baa5affaa84c8bf8e43caea771f3c2e4f7f1df2"
+            },
+            {
+              "path": "web/scoped/minerush/index.html",
+              "sha256": "bc65bda8b1780765ea092bed7823d534bc28f7157867958db5eb1fefeb1ae9c7"
+            },
+            {
+              "path": "web/src/standalone/minerush.tsx",
+              "sha256": "be76edeedf0ae4b5129f2e18a7c543bbbe57fa4933fb6f89c9a449e22a681421"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "e20a75307abda616b09869280a8cfe64ac15628f0e4a3518143f9e49cc3ed9fe"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "4adb490e8013e23c2a2435fedb7446ed9be02eaef6ca34dcbdaa0768bed4f7fd"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-delivery.json",
+              "sha256": "09ed7ff256133a768b802b40259e0d575196ec5aab7a215a0e14a35bd348dda1"
+            }
+          ],
+          "checks": [
+            "repository contract passed; TypeScript/ESLint/build passed; 9 SSG pages/43 files verified",
+            "existing MineRush input regression passed",
+            "42 business tests passed including 8 new scoped delivery tests; fake FTP RETR only",
+            "uncommitted-source build refused before output creation",
+            "final committed-source package verified; HTML/JS/CSS match provisional browser-tested bytes",
+            "desktop real-browser click/reveal, flag mode, ArrowRight/F on unopened cell, reload reset passed; final package opened",
+            "production root/MineRush/privacy/contact/about HTTP200; sw.js install/activate only",
+            "original359 ledger events preserved; owner/old cloud/handoff unchanged",
+            "Read current instructions/policy/conventions/workflow and context --task; selected deployment/game/router/package evidence. Workflow hashes retained in receipt; hidden paths excluded from checkpoint contract."
+          ],
+          "next_step": "Integrate scoped build in next daily CI, run main read-only preflight and match FTP root/backup; then implement confined upload/rollback and verify real production before release.",
+          "unverified": [
+            "remote CI of scoped candidate",
+            "actual FTPS root and permissions",
+            "complete old dynamic dependency recovery",
+            "scoped uploader and rollback implementation",
+            "mobile width, real touch, Safari",
+            "production upload and post-delivery browser acceptance"
+          ],
+          "at": 1792491184.510294
+        },
+        {
+          "run_id": "unity-20261020T1900-scoped",
+          "fence": 60,
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_delivery.py",
+              "sha256": "7a48caf6a26f1155e6b0ad96d86b007d123711b2640834140cbb78afdbf4cf9a"
+            },
+            {
+              "path": "business/tests/test_scoped_delivery.py",
+              "sha256": "250adb0eb0b1c5d26d976f3f188005fb4a8c068652334e8c3c8d45f3671c2a21"
+            },
+            {
+              "path": "scripts/build-scoped-minerush.mjs",
+              "sha256": "84f9478c3fb80704a8dbce085baa5affaa84c8bf8e43caea771f3c2e4f7f1df2"
+            },
+            {
+              "path": "web/scoped/minerush/index.html",
+              "sha256": "bc65bda8b1780765ea092bed7823d534bc28f7157867958db5eb1fefeb1ae9c7"
+            },
+            {
+              "path": "web/src/standalone/minerush.tsx",
+              "sha256": "be76edeedf0ae4b5129f2e18a7c543bbbe57fa4933fb6f89c9a449e22a681421"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "e20a75307abda616b09869280a8cfe64ac15628f0e4a3518143f9e49cc3ed9fe"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "4adb490e8013e23c2a2435fedb7446ed9be02eaef6ca34dcbdaa0768bed4f7fd"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-delivery.json",
+              "sha256": "09ed7ff256133a768b802b40259e0d575196ec5aab7a215a0e14a35bd348dda1"
+            }
+          ],
+          "checks": [
+            "repository contract passed; TypeScript/ESLint/build passed; 9 SSG pages/43 files verified",
+            "existing MineRush input regression passed",
+            "42 business tests passed including 8 new scoped delivery tests; fake FTP RETR only",
+            "uncommitted-source build refused before output creation",
+            "final committed-source package verified; HTML/JS/CSS match provisional browser-tested bytes",
+            "desktop real-browser click/reveal, flag mode, ArrowRight/F on unopened cell, reload reset passed; final package opened",
+            "production root/MineRush/privacy/contact/about HTTP200; sw.js install/activate only",
+            "original359 ledger events preserved; owner/old cloud/handoff unchanged",
+            "Read current instructions/policy/conventions/workflow and context --task; selected deployment/game/router/package evidence. Workflow hashes retained in receipt; hidden paths excluded from checkpoint contract."
+          ],
+          "next_step": "Integrate scoped build in next daily CI, run main read-only preflight and match FTP root/backup; then implement confined upload/rollback and verify real production before release.",
+          "unverified": [
+            "remote CI of scoped candidate",
+            "actual FTPS root and permissions",
+            "complete old dynamic dependency recovery",
+            "scoped uploader and rollback implementation",
+            "mobile width, real touch, Safari",
+            "production upload and post-delivery browser acceptance"
+          ],
+          "at": 1792491184.5534246
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261020T1900-scoped",
+          "task_id": "T-web-scoped-production-delivery-20261020",
+          "fence": 60,
+          "expires_at": 1792492460.4150462
+        }
+      ]
     }
   },
   "decisions": {
@@ -9130,6 +9256,13 @@
       "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
       "status": "completed",
       "started_at": 1792480875.1086485
+    },
+    "unity-20261020T1900-scoped": {
+      "scheduled_at": "2026-10-20T19:00:00+09:00",
+      "run_id": "unity-20261020T1900-scoped",
+      "source": "scheduled:game-site:2026-10-20T19:00:00+09:00",
+      "status": "checkpointed",
+      "started_at": 1792490660.333541
     }
   },
   "experiments": {
@@ -9367,7 +9500,8 @@
     "2026-10-19T19:00:00+09:00": "unity-20261019T1900-cb67b470",
     "2026-10-20T01:00:00+09:00": "unity-20261020T0100-bb483ee1",
     "2026-10-20T07:00:00+09:00": "unity-20261020T0700-eba7fbfc",
-    "2026-10-20T13:00:00+09:00": "unity-20261020T1300-06077b21"
+    "2026-10-20T13:00:00+09:00": "unity-20261020T1300-06077b21",
+    "2026-10-20T19:00:00+09:00": "unity-20261020T1900-scoped"
   },
   "feedback": [
     {
@@ -22187,7 +22321,174 @@
       },
       "previous": "8392cdfec539716b2ce0c6f070fd4f58f565c9e7cd5db3829b89fdca2bc9c46f",
       "sha256": "fbf85348fa154418e7d9db145bf6d507283634924b086b56d2cb7b36fffe2045"
+    },
+    {
+      "revision": 360,
+      "at": 1792490660.333541,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-20T19:00:00+09:00",
+        "run_id": "unity-20261020T1900-scoped"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "fbf85348fa154418e7d9db145bf6d507283634924b086b56d2cb7b36fffe2045",
+      "sha256": "67beaa2b25bd68163a637e80885510917fe7060666715320d494201f6eaa4008"
+    },
+    {
+      "revision": 361,
+      "at": 1792490660.4150462,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261020T1900-scoped",
+        "task_id": "T-web-scoped-production-delivery-20261020"
+      },
+      "result": {
+        "run_id": "unity-20261020T1900-scoped",
+        "task_id": "T-web-scoped-production-delivery-20261020",
+        "fence": 60,
+        "expires_at": 1792492460.4150462
+      },
+      "previous": "67beaa2b25bd68163a637e80885510917fe7060666715320d494201f6eaa4008",
+      "sha256": "a9b3e6110af22d13b265f5857dfece808178da7b87b46c176766c3d3a2e429f8"
+    },
+    {
+      "revision": 362,
+      "at": 1792491184.510294,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T1900-scoped",
+        "fence": 60,
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_delivery.py",
+            "sha256": "7a48caf6a26f1155e6b0ad96d86b007d123711b2640834140cbb78afdbf4cf9a"
+          },
+          {
+            "path": "business/tests/test_scoped_delivery.py",
+            "sha256": "250adb0eb0b1c5d26d976f3f188005fb4a8c068652334e8c3c8d45f3671c2a21"
+          },
+          {
+            "path": "scripts/build-scoped-minerush.mjs",
+            "sha256": "84f9478c3fb80704a8dbce085baa5affaa84c8bf8e43caea771f3c2e4f7f1df2"
+          },
+          {
+            "path": "web/scoped/minerush/index.html",
+            "sha256": "bc65bda8b1780765ea092bed7823d534bc28f7157867958db5eb1fefeb1ae9c7"
+          },
+          {
+            "path": "web/src/standalone/minerush.tsx",
+            "sha256": "be76edeedf0ae4b5129f2e18a7c543bbbe57fa4933fb6f89c9a449e22a681421"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "e20a75307abda616b09869280a8cfe64ac15628f0e4a3518143f9e49cc3ed9fe"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "4adb490e8013e23c2a2435fedb7446ed9be02eaef6ca34dcbdaa0768bed4f7fd"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-delivery.json",
+            "sha256": "09ed7ff256133a768b802b40259e0d575196ec5aab7a215a0e14a35bd348dda1"
+          }
+        ],
+        "checks": [
+          "repository contract passed; TypeScript/ESLint/build passed; 9 SSG pages/43 files verified",
+          "existing MineRush input regression passed",
+          "42 business tests passed including 8 new scoped delivery tests; fake FTP RETR only",
+          "uncommitted-source build refused before output creation",
+          "final committed-source package verified; HTML/JS/CSS match provisional browser-tested bytes",
+          "desktop real-browser click/reveal, flag mode, ArrowRight/F on unopened cell, reload reset passed; final package opened",
+          "production root/MineRush/privacy/contact/about HTTP200; sw.js install/activate only",
+          "original359 ledger events preserved; owner/old cloud/handoff unchanged",
+          "Read current instructions/policy/conventions/workflow and context --task; selected deployment/game/router/package evidence. Workflow hashes retained in receipt; hidden paths excluded from checkpoint contract."
+        ],
+        "next_step": "Integrate scoped build in next daily CI, run main read-only preflight and match FTP root/backup; then implement confined upload/rollback and verify real production before release.",
+        "unverified": [
+          "remote CI of scoped candidate",
+          "actual FTPS root and permissions",
+          "complete old dynamic dependency recovery",
+          "scoped uploader and rollback implementation",
+          "mobile width, real touch, Safari",
+          "production upload and post-delivery browser acceptance"
+        ]
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "a9b3e6110af22d13b265f5857dfece808178da7b87b46c176766c3d3a2e429f8",
+      "sha256": "989f4dcdf43071e270e6a4cc472e1b3c9a83f3114e93cb906730a75633f70fdb"
+    },
+    {
+      "revision": 363,
+      "at": 1792491184.5534246,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261020T1900-scoped",
+        "fence": 60,
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_delivery.py",
+            "sha256": "7a48caf6a26f1155e6b0ad96d86b007d123711b2640834140cbb78afdbf4cf9a"
+          },
+          {
+            "path": "business/tests/test_scoped_delivery.py",
+            "sha256": "250adb0eb0b1c5d26d976f3f188005fb4a8c068652334e8c3c8d45f3671c2a21"
+          },
+          {
+            "path": "scripts/build-scoped-minerush.mjs",
+            "sha256": "84f9478c3fb80704a8dbce085baa5affaa84c8bf8e43caea771f3c2e4f7f1df2"
+          },
+          {
+            "path": "web/scoped/minerush/index.html",
+            "sha256": "bc65bda8b1780765ea092bed7823d534bc28f7157867958db5eb1fefeb1ae9c7"
+          },
+          {
+            "path": "web/src/standalone/minerush.tsx",
+            "sha256": "be76edeedf0ae4b5129f2e18a7c543bbbe57fa4933fb6f89c9a449e22a681421"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "e20a75307abda616b09869280a8cfe64ac15628f0e4a3518143f9e49cc3ed9fe"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "4adb490e8013e23c2a2435fedb7446ed9be02eaef6ca34dcbdaa0768bed4f7fd"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-delivery.json",
+            "sha256": "09ed7ff256133a768b802b40259e0d575196ec5aab7a215a0e14a35bd348dda1"
+          }
+        ],
+        "checks": [
+          "repository contract passed; TypeScript/ESLint/build passed; 9 SSG pages/43 files verified",
+          "existing MineRush input regression passed",
+          "42 business tests passed including 8 new scoped delivery tests; fake FTP RETR only",
+          "uncommitted-source build refused before output creation",
+          "final committed-source package verified; HTML/JS/CSS match provisional browser-tested bytes",
+          "desktop real-browser click/reveal, flag mode, ArrowRight/F on unopened cell, reload reset passed; final package opened",
+          "production root/MineRush/privacy/contact/about HTTP200; sw.js install/activate only",
+          "original359 ledger events preserved; owner/old cloud/handoff unchanged",
+          "Read current instructions/policy/conventions/workflow and context --task; selected deployment/game/router/package evidence. Workflow hashes retained in receipt; hidden paths excluded from checkpoint contract."
+        ],
+        "next_step": "Integrate scoped build in next daily CI, run main read-only preflight and match FTP root/backup; then implement confined upload/rollback and verify real production before release.",
+        "unverified": [
+          "remote CI of scoped candidate",
+          "actual FTPS root and permissions",
+          "complete old dynamic dependency recovery",
+          "scoped uploader and rollback implementation",
+          "mobile width, real touch, Safari",
+          "production upload and post-delivery browser acceptance"
+        ]
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "989f4dcdf43071e270e6a4cc472e1b3c9a83f3114e93cb906730a75633f70fdb",
+      "sha256": "09bab2e139f98f8301d9e502a2801d18ac6c5c7815d815507411ef4c84b9a098"
     }
   ],
-  "projection_sha256": "5bf671ddfe9348c7bc7733f92ba74741bf24e36439d816bf0e753330d7a04a14"
+  "projection_sha256": "8b227d17890dc9cd71040a5ad14e1e3d2d725e5eeee763bfa7079d081aa51f87"
 }
