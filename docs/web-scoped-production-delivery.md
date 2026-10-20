@@ -41,3 +41,17 @@
 コード内の一般文字列をURLと解釈する問題は本番読み取り検査で検出し、拡張子と引用符の抽出条件を修正した。初期の試験フックは550例外より後に変更を実行していたため修正した。最終49テスト、リポジトリ検査、既存専用パッケージ検証が成功。Webアプリのソース変更がないため画面検査とWebビルドは再実行していない。
 
 動的に組み立てるURL、外部URL、共有assets以外の依存、実FTPS接続、書き込み・復旧、配信後の操作は未確認。正規表現による静的参照の保存を完全な実行依存解析やサイト全体の復元保証とは扱わない。次は同じ工程の新候補を日次CIへ統合し、mainからFTPS読み取り検査を行う。実デプロイは未実施。
+
+## 2026-10-21 限定アップロードと復旧
+
+`business/ops/scoped_upload.py`に限定配信と条件付き復旧を実装した。CI候補と復元レポートの結び付け、復元バイトのハッシュ、本番baselineを照合する。MLSDで対象ディレクトリを正常に列挙できた場合だけ未掲載ファイルを不存在と扱い、RETRの550だけから推測しない。既存アセットは同じバイトだけ受け入れる。書込み先はMineRush専用ファイルと同じ場所の一時ファイルに限定する。
+
+専用アセット、版ファイル、入口HTMLの順で、一時ファイルへ転送・読戻し・rename・再読戻しを行う。各書込み前にローカルのtransaction journalを保存する。入口切替前にbaselineを再照合する。FTPには比較付きの原子的更新がないため、最終照合とrenameの間の別クライアント更新は完全には防げない。同じproduction concurrency groupを使い、別の手動配信と同時実行しない。サーバーが既存ファイルへのrenameを拒否した場合、既存HTMLの削除で回避せず、未確定として停止する。
+
+切断・応答消失時は同じjournalを使う再送を拒否する。新しい接続で`recover`を実行し、本番HTMLと版が旧バイトかこのtransactionの新バイトであることを確認してから旧HTMLを戻す。第三者の更新は上書きしない。旧版ファイルが存在した場合はそのバイトも戻す。旧版ファイルがなかった場合、新しい版マーカーと未参照アセット・一時ファイルは残す。版マーカー単独を配信成功の証拠にしない。
+
+`.github/workflows/scoped-production-upload.yml`はmain限定。成功したMonorepo CIのrun ID、head SHA、workflow path、同一リポジトリを照合し、そのrunの専用artifactだけを使用する。新しいFTPS preflightを保存後に配信する。HTTP検査は全4ファイルと末尾スラッシュURLの一致、トップ・privacy-policy・contact・about・sw.jsの不変を確認する。HTTP成功も実ブラウザ受入れ前は`deployed=false`とする。途中失敗時も復元元とjournalをartifactへ保存する。
+
+復旧は保持した同一artifactを新しい隔離ディレクトリへ展開し、productionの同じFTPS接続設定で`python business/ops/scoped_upload.py recover <transaction.json>`を使う。その後に旧HTML・版・起動・操作・戻り導線を確認する。別PC復元と実サーバーのrename挙動はまだ未確認。自動復旧を無条件に再送しない。
+
+68のbusinessテストが成功。新規分は転送途中失敗、rename後の応答消失、rename拒否、外部更新、同名衝突、MLSD拒否、再送拒否、対象パス制限、全HTTPバイトと対象外URLの検査を含む。通常ビルド内のTypeScript/ESLint、9ページSSG、43ファイル検査、既存MineRush入力回帰も成功。存在しない`web`のcheckスクリプト呼出しは失敗したが、正規のルート`npm run check`とビルド内検査で確認した。実FTPSと本番配信はこの実装検査とは別に実施する。
