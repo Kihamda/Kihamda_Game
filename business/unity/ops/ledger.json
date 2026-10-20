@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 367,
+  "revision": 374,
   "business_id": "game-site",
-  "fence": 61,
+  "fence": 62,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -8733,6 +8733,128 @@
           "expires_at": 1792506355.9849544
         }
       ]
+    },
+    "T-full-work-session-20261020": {
+      "id": "T-full-work-session-20261020",
+      "objective": "定期実行が短い確認やcheckpointで終了しない継続条件を整える",
+      "acceptance": [
+        "原則25分制作・検証、最後5分保存を明示",
+        "一区切り・当日PRマージ済み・CI待ちだけでは終了しない",
+        "早期終了には具体的障害と独立作業を進められない理由と実時間を記録",
+        "短い定期promptと既存配信タスクを維持"
+      ],
+      "outputs": [
+        "AGENTS.md",
+        "docs/autonomous-workflow.md",
+        "business/studio-policy.json"
+      ],
+      "checks": [
+        "現行3規約の整合",
+        "台帳イベント保全",
+        "差分とリポジトリ契約"
+      ],
+      "next_step": "規約と現在欄へ反映し保存",
+      "decision_id": "D-full-work-session-20261020",
+      "experiment_id": "E-unity-portal",
+      "pdca": "act",
+      "hypothesis": "継続判断を明確化し実制作時間を確保する",
+      "source": "user:current-thread:2026-10-20:use-full-work-session",
+      "priority": 0,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "manual-full-work-session-20261020",
+          "fence": 62,
+          "artifacts": [
+            {
+              "path": "AGENTS.md",
+              "sha256": "0de8dfeff32c16e9f3682e5fec5fc78a93697e11064e03602fc7d39e1c2884ba"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "8dcb8e42b0ade7fe8ac7a16bd4f5b4d59c19fb4cfefa9f790bd9e3db10f9d09f"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "e75141f0380c43a031bc4ca41449d23f5afcb50d3a4331fab80a85c4d2674e7f"
+            },
+            {
+              "path": "docs/autonomous-workflow.md",
+              "sha256": "9a0295e22598fb0875056fcd9c0722de32e169339b4d4cb391656d020db73812"
+            },
+            {
+              "path": "docs/context-delivery-20261020.md",
+              "sha256": "6dc96634b46d9f0ac28e9843ea1478351e9a010d8df8cba08c6f8c95fe7b380c"
+            }
+          ],
+          "checks": [
+            "npm run check passed",
+            "git diff --check passed",
+            "367 prior events preserved; existing delivery task remains ready",
+            "AGENTS, workflow and policy align:25 productive minutes plus5 saving; no partial-result early exit",
+            "short automation prompt unchanged; no code change requiring repeated gameplay tests"
+          ],
+          "next_step": "既存T-web-scoped-production-delivery-20261020を新しい定期枠の継続条件で進め、次回の開始・終了・経過時間と終了理由を記録する",
+          "passed": true,
+          "work_session": {
+            "started_at": "2026-10-20T14:01:20.322290+00:00",
+            "ended_at": "2026-10-20T14:02:07.766863+00:00",
+            "elapsed_seconds": 47.44,
+            "exit_reason": "manual policy-correction request completed; scheduled development time budget does not apply"
+          },
+          "at": 1792504927.8048465
+        },
+        {
+          "run_id": "manual-full-work-session-20261020",
+          "fence": 62,
+          "artifacts": [
+            {
+              "path": "AGENTS.md",
+              "sha256": "0de8dfeff32c16e9f3682e5fec5fc78a93697e11064e03602fc7d39e1c2884ba"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "8dcb8e42b0ade7fe8ac7a16bd4f5b4d59c19fb4cfefa9f790bd9e3db10f9d09f"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "e75141f0380c43a031bc4ca41449d23f5afcb50d3a4331fab80a85c4d2674e7f"
+            },
+            {
+              "path": "docs/autonomous-workflow.md",
+              "sha256": "9a0295e22598fb0875056fcd9c0722de32e169339b4d4cb391656d020db73812"
+            },
+            {
+              "path": "docs/context-delivery-20261020.md",
+              "sha256": "6dc96634b46d9f0ac28e9843ea1478351e9a010d8df8cba08c6f8c95fe7b380c"
+            }
+          ],
+          "checks": [
+            "npm run check passed",
+            "git diff --check passed",
+            "367 prior events preserved; existing delivery task remains ready",
+            "AGENTS, workflow and policy align:25 productive minutes plus5 saving; no partial-result early exit",
+            "short automation prompt unchanged; no code change requiring repeated gameplay tests"
+          ],
+          "next_step": "既存T-web-scoped-production-delivery-20261020を新しい定期枠の継続条件で進め、次回の開始・終了・経過時間と終了理由を記録する",
+          "passed": true,
+          "work_session": {
+            "started_at": "2026-10-20T14:01:20.322290+00:00",
+            "ended_at": "2026-10-20T14:02:07.766863+00:00",
+            "elapsed_seconds": 47.44,
+            "exit_reason": "manual policy-correction request completed; scheduled development time budget does not apply"
+          },
+          "at": 1792504927.905196
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "manual-full-work-session-20261020",
+          "task_id": "T-full-work-session-20261020",
+          "fence": 62,
+          "expires_at": 1792506680.3761592
+        }
+      ]
     }
   },
   "decisions": {
@@ -8946,6 +9068,12 @@
       "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
       "hypothesis": "短い起動指示と現行規約・正本台帳の選択読込で判断の重複を減らし、検証済み改善の実デプロイを一日一回目安で進める",
       "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する"
+    },
+    "D-full-work-session-20261020": {
+      "id": "D-full-work-session-20261020",
+      "source": "user:current-thread:2026-10-20:use-full-work-session",
+      "hypothesis": "時間上限だけでなく継続条件・保存開始・早期終了理由を定めると、短い確認だけで終了する運用を減らせる",
+      "next_step": "現行手順とpolicyを修正し既存配信工程を保持する"
     }
   },
   "runs": {
@@ -9363,6 +9491,12 @@
       "source": "user:automation:unity:2026-10-20:continuation-outside-slot",
       "status": "checkpointed",
       "started_at": 1792504555.943954
+    },
+    "manual-full-work-session-20261020": {
+      "run_id": "manual-full-work-session-20261020",
+      "source": "user:current-thread:2026-10-20:use-full-work-session",
+      "status": "completed",
+      "started_at": 1792504880.3222902
     }
   },
   "experiments": {
@@ -9621,6 +9755,12 @@
       "message": "良い感じに開発してますね。続行していってください意思決定の裁量もどんどん上げていっていいですからね。デプロイ頻度を上げましょう。一日一個目安。ただ、定期実行のたびにクソ長promptが送られてるのは気になります。実行時に、不要な意思決定の履歴を見ずに、適宜何を見ないといけないのかを判断させて、正規の履歴からちゃんと読ませ、ちゃんとコーディング規約を見せ、自分で分析する流れを構築してください",
       "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する",
       "at": 1792480874.954525
+    },
+    {
+      "source": "user:current-thread:2026-10-20:use-full-work-session",
+      "message": "３０分動かずに５分とかで終わっちゃうんだよね",
+      "next_step": "定期枠を原則25分の制作・検証と5分の保存へ変更し、早期yieldの条件と実稼働時間の記録を明確にする",
+      "at": 1792504880.1636946
     }
   ],
   "approvals": [
@@ -22725,7 +22865,209 @@
       },
       "previous": "dd176af31b3c0905f1c611f52746fd9800294603c892b12e8aff8529af23715a",
       "sha256": "749ae143e68c771cc1a1be73d547bcb0b8a934860edd960501b5fdbf52c30c5c"
+    },
+    {
+      "revision": 368,
+      "at": 1792504880.1636946,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-20:use-full-work-session",
+        "message": "３０分動かずに５分とかで終わっちゃうんだよね",
+        "next_step": "定期枠を原則25分の制作・検証と5分の保存へ変更し、早期yieldの条件と実稼働時間の記録を明確にする"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "749ae143e68c771cc1a1be73d547bcb0b8a934860edd960501b5fdbf52c30c5c",
+      "sha256": "e0393a36b05a11707d90c7489216916ade4872de1b09fa0b552a9c145a4f3f6f"
+    },
+    {
+      "revision": 369,
+      "at": 1792504880.2163785,
+      "action": "decision",
+      "data": {
+        "id": "D-full-work-session-20261020",
+        "source": "user:current-thread:2026-10-20:use-full-work-session",
+        "hypothesis": "時間上限だけでなく継続条件・保存開始・早期終了理由を定めると、短い確認だけで終了する運用を減らせる",
+        "next_step": "現行手順とpolicyを修正し既存配信工程を保持する"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "e0393a36b05a11707d90c7489216916ade4872de1b09fa0b552a9c145a4f3f6f",
+      "sha256": "4675abc327215e83fc5e8a6a58a17f2001d057eb19aecc0573deb25840f40a5c"
+    },
+    {
+      "revision": 370,
+      "at": 1792504880.2699375,
+      "action": "task",
+      "data": {
+        "id": "T-full-work-session-20261020",
+        "objective": "定期実行が短い確認やcheckpointで終了しない継続条件を整える",
+        "acceptance": [
+          "原則25分制作・検証、最後5分保存を明示",
+          "一区切り・当日PRマージ済み・CI待ちだけでは終了しない",
+          "早期終了には具体的障害と独立作業を進められない理由と実時間を記録",
+          "短い定期promptと既存配信タスクを維持"
+        ],
+        "outputs": [
+          "AGENTS.md",
+          "docs/autonomous-workflow.md",
+          "business/studio-policy.json"
+        ],
+        "checks": [
+          "現行3規約の整合",
+          "台帳イベント保全",
+          "差分とリポジトリ契約"
+        ],
+        "next_step": "規約と現在欄へ反映し保存",
+        "decision_id": "D-full-work-session-20261020",
+        "experiment_id": "E-unity-portal",
+        "pdca": "act",
+        "hypothesis": "継続判断を明確化し実制作時間を確保する",
+        "source": "user:current-thread:2026-10-20:use-full-work-session",
+        "priority": 0
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "4675abc327215e83fc5e8a6a58a17f2001d057eb19aecc0573deb25840f40a5c",
+      "sha256": "d975b3ae444a2d2d4ff6bf1d8ed460b26a87dcc630acc4f6647fed280901f92d"
+    },
+    {
+      "revision": 371,
+      "at": 1792504880.3222902,
+      "action": "start",
+      "data": {
+        "run_id": "manual-full-work-session-20261020",
+        "source": "user:current-thread:2026-10-20:use-full-work-session"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "d975b3ae444a2d2d4ff6bf1d8ed460b26a87dcc630acc4f6647fed280901f92d",
+      "sha256": "f38e91925ddcab1d87f3731e092416d16240aa87d8aef9d03162987aa16f2cbf"
+    },
+    {
+      "revision": 372,
+      "at": 1792504880.3761592,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-full-work-session-20261020",
+        "task_id": "T-full-work-session-20261020",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "manual-full-work-session-20261020",
+        "task_id": "T-full-work-session-20261020",
+        "fence": 62,
+        "expires_at": 1792506680.3761592
+      },
+      "previous": "f38e91925ddcab1d87f3731e092416d16240aa87d8aef9d03162987aa16f2cbf",
+      "sha256": "d0e2909316a4bdc95ef86ffca631915d607d716c5d726426e74cb0b447496b70"
+    },
+    {
+      "revision": 373,
+      "at": 1792504927.8048465,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "manual-full-work-session-20261020",
+        "fence": 62,
+        "artifacts": [
+          {
+            "path": "AGENTS.md",
+            "sha256": "0de8dfeff32c16e9f3682e5fec5fc78a93697e11064e03602fc7d39e1c2884ba"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "8dcb8e42b0ade7fe8ac7a16bd4f5b4d59c19fb4cfefa9f790bd9e3db10f9d09f"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "e75141f0380c43a031bc4ca41449d23f5afcb50d3a4331fab80a85c4d2674e7f"
+          },
+          {
+            "path": "docs/autonomous-workflow.md",
+            "sha256": "9a0295e22598fb0875056fcd9c0722de32e169339b4d4cb391656d020db73812"
+          },
+          {
+            "path": "docs/context-delivery-20261020.md",
+            "sha256": "6dc96634b46d9f0ac28e9843ea1478351e9a010d8df8cba08c6f8c95fe7b380c"
+          }
+        ],
+        "checks": [
+          "npm run check passed",
+          "git diff --check passed",
+          "367 prior events preserved; existing delivery task remains ready",
+          "AGENTS, workflow and policy align:25 productive minutes plus5 saving; no partial-result early exit",
+          "short automation prompt unchanged; no code change requiring repeated gameplay tests"
+        ],
+        "next_step": "既存T-web-scoped-production-delivery-20261020を新しい定期枠の継続条件で進め、次回の開始・終了・経過時間と終了理由を記録する",
+        "passed": true,
+        "work_session": {
+          "started_at": "2026-10-20T14:01:20.322290+00:00",
+          "ended_at": "2026-10-20T14:02:07.766863+00:00",
+          "elapsed_seconds": 47.44,
+          "exit_reason": "manual policy-correction request completed; scheduled development time budget does not apply"
+        }
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "d0e2909316a4bdc95ef86ffca631915d607d716c5d726426e74cb0b447496b70",
+      "sha256": "8e6ba53698f3beff1ecbe837571dfa0be2ff4d454a00f48056011dd1cac3db59"
+    },
+    {
+      "revision": 374,
+      "at": 1792504927.905196,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-full-work-session-20261020",
+        "fence": 62,
+        "artifacts": [
+          {
+            "path": "AGENTS.md",
+            "sha256": "0de8dfeff32c16e9f3682e5fec5fc78a93697e11064e03602fc7d39e1c2884ba"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "8dcb8e42b0ade7fe8ac7a16bd4f5b4d59c19fb4cfefa9f790bd9e3db10f9d09f"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "e75141f0380c43a031bc4ca41449d23f5afcb50d3a4331fab80a85c4d2674e7f"
+          },
+          {
+            "path": "docs/autonomous-workflow.md",
+            "sha256": "9a0295e22598fb0875056fcd9c0722de32e169339b4d4cb391656d020db73812"
+          },
+          {
+            "path": "docs/context-delivery-20261020.md",
+            "sha256": "6dc96634b46d9f0ac28e9843ea1478351e9a010d8df8cba08c6f8c95fe7b380c"
+          }
+        ],
+        "checks": [
+          "npm run check passed",
+          "git diff --check passed",
+          "367 prior events preserved; existing delivery task remains ready",
+          "AGENTS, workflow and policy align:25 productive minutes plus5 saving; no partial-result early exit",
+          "short automation prompt unchanged; no code change requiring repeated gameplay tests"
+        ],
+        "next_step": "既存T-web-scoped-production-delivery-20261020を新しい定期枠の継続条件で進め、次回の開始・終了・経過時間と終了理由を記録する",
+        "passed": true,
+        "work_session": {
+          "started_at": "2026-10-20T14:01:20.322290+00:00",
+          "ended_at": "2026-10-20T14:02:07.766863+00:00",
+          "elapsed_seconds": 47.44,
+          "exit_reason": "manual policy-correction request completed; scheduled development time budget does not apply"
+        }
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "8e6ba53698f3beff1ecbe837571dfa0be2ff4d454a00f48056011dd1cac3db59",
+      "sha256": "fdc1ee722e6f3bc673c002c59d15dc21c64cb733356d78dc17a06218d6f6efc0"
     }
   ],
-  "projection_sha256": "162ed3d2af4cfb1ac13966ed606c437d71bfeed61c21253f549025051015a0e2"
+  "projection_sha256": "ebedfadc34d8bcfe36a69b144d69e4658751258340d205593062b9288dd355be"
 }

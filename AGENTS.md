@@ -23,7 +23,7 @@
 
 制作の正本台帳はbusiness/unity/ops/ledger.json。共通business/ops/flow.pyだけで更新する。expected revision・run ID・lease・fenceを照合し、手書き・初期化・履歴削除・競合自動merge・force pushをしない。期限切れleaseは成果物・Git・PR・外部結果を照合してrecoverし、未知の外部結果を再送しない。旧business/ops/ledger.jsonと別workerのleaseに介入しない。
 
-25分でcheckpoint、30分以内に成果物ハッシュ・検査・未確認事項と次工程を保存する。未達はyieldで同じ工程へ戻す。定期slotを二重取得せず、30分以上遅れた枠をcatch-upしない。01/07/13/19時の役割はstudio-policy.jsonを参照し、07時記事はbusiness/blog/draftsへの下書きだけとする。
+定期実行は原則25分まで制作・検証を続け、残り5分でcheckpoint・成果物ハッシュ・検査・未確認事項・次工程を保存する。一つの修正やcheckpoint、当日PRマージ済み、CI待ちだけで早期終了しない。残る受入条件や独立した実装・検査へ続ける。早期終了は許可範囲の独立作業も進められない具体的根拠を残す。実時計で開始・終了・経過時間と終了理由を記録し、待機や無意味な反復で時間を埋めない。詳細はdocs/autonomous-workflow.md。未達は保存段階でyieldする。定期slotを二重取得せず、30分以上遅れた枠をcatch-upしない。01/07/13/19時の役割はstudio-policy.jsonを参照し、07時記事はbusiness/blog/draftsへの下書きだけとする。
 
 STATE.mdには現在の状況と直近結果・詳細参照先を保つ。本文とpolicyへ完了経緯を追記しない。旧記録はdocs/historyに原本のまま保全済み。必要な履歴だけ正本台帳・Git・証跡へ遡る。利益・訪問・開始率・完了率・再訪の未観測値はnull。14/28日の実観測で判断し、検査成功や本数を需要や利益にしない。
 

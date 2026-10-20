@@ -22,3 +22,7 @@ AGENTSは12,868文字から2,282文字、STATEは33,960文字から1,201文字�
 - Web UIと配信workflowに実装変更はなく、今回の検証は運用コード・規約・設定を対象とした。次回の定期起動そのものと実デプロイはまだ未観測。
 
 設定の確認結果はbusiness/unity/evidence/context-delivery-20261020.json、現行手順はdocs/autonomous-workflow.md、規約はdocs/coding-conventions.md。過去の運用promptを新promptや現行AGENTSへ再び蓄積しない。
+
+## 定期枠の短時間終了への修正
+
+本人から「３０分動かずに５分とかで終わっちゃう」と指摘を受け、正本の19時runを照合した。slotからyieldまで約524秒、22:55継続runはstartからyieldまで約191秒だった。これらは台帳内の記録間隔で、会話全体の所要時間ではない。30分上限と25分checkpointだけでは継続条件が曖昧だったため、現行手順・AGENTS・policyへ原則25分の制作/検証と5分の保存、部分成果後の継続、早期終了の根拠、実時計による経過時間と終了理由の記録を追加した。定期promptは177文字のまま維持した。変更後の定期実行時間はまだ未観測。

@@ -52,7 +52,7 @@
     "source": "user:current-thread:2026-10-12:autonomous-work",
     "commitPushPullRequest": true,
     "mergeAfterVerifiedHeadCi": true,
-    "earlyStopPolicy": "短い確認だけで終了せず時間内に既存工程を実装・検証・PR反映する。25分checkpointと30分保存を守る。",
+    "earlyStopPolicy": "定期実行は原則25分まで制作・検証を継続し、残り5分で保存する。一区切り・checkpoint・当日PRマージ済み・CI待ちだけで終了せず、残る受入条件や独立作業へ続ける。早期終了には独立作業も進められない具体的根拠と実経過時間を残す。",
     "publicDisclosureExclusions": [
       "credentials",
       "private-manuscripts",
@@ -86,5 +86,23 @@
     "scope": "validated-free-games-in-existing-permitted-domain-only",
     "wholeSiteReplacementAuthorized": false,
     "qualityGateRequired": true
+  },
+  "workSessionPolicy": {
+    "source": "user:current-thread:2026-10-20:use-full-work-session",
+    "appliesTo": "scheduled-development-runs",
+    "targetMinutes": 30,
+    "productiveWorkUntilMinute": 25,
+    "saveReserveMinutes": 5,
+    "clock": "actual-start-and-end-times",
+    "continueAfterPartialSuccess": true,
+    "earlyExitRequires": "explicit-stop-or-concrete-blocker-with-no-permitted-independent-work",
+    "record": [
+      "started_at",
+      "ended_at",
+      "elapsed_seconds",
+      "exit_reason",
+      "early_exit_evidence_if_under_25_minutes"
+    ],
+    "noArtificialWaiting": true
   }
 }
