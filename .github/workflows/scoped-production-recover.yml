@@ -1,0 +1,69 @@
+name: Scoped MineRush conditional recovery
+
+on:
+  workflow_dispatch:
+    inputs:
+      delivery_run_id:
+        description: Completed delivery run whose retained journal should be reconciled
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download this repository's completed delivery evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DELIVERY_RUN_ID: ${{ inputs.delivery_run_id }}
+        run: |
+          python - <<'PY'
+          import json, os, re, subprocess
+          run_id = os.environ['DELIVERY_RUN_ID']
+          if not re.fullmatch(r'[0-9]+', run_id):
+              raise SystemExit('Invalid delivery run ID')
+          repo = os.environ['GITHUB_REPOSITORY']
+          run = json.loads(subprocess.check_output(['gh', 'api', f'repos/{repo}/actions/runs/{run_id}']))
+          if (run['status'] != 'completed' or run['path'] != '.github/workflows/scoped-production-upload.yml'
+                  or run['head_repository']['full_name'] != repo or run['head_branch'] != 'main'):
+              raise SystemExit('Completed main production delivery required')
+          subprocess.run(['gh', 'run', 'download', run_id, '--repo', repo, '--name',
+                          'scoped-delivery-' + run_id, '--dir', 'artifacts/recovery-source'], check=True)
+          from pathlib import Path
+          state = json.loads(Path('artifacts/recovery-source/transaction.json').read_text('utf-8'))
+          if state['commit'] != run['head_sha']:
+              raise SystemExit('Journal does not match delivery run SHA')
+          PY
+      - name: Reconcile actual bytes before restoring the old entry
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_SERVER_DIR: ${{ vars.FTP_SERVER_DIR }}
+        run: python business/ops/scoped_upload.py recover artifacts/recovery-source/transaction.json
+      - name: Verify recovered HTTP bytes and unrelated URLs
+        run: python business/ops/scoped_acceptance.py recovered artifacts/recovery-source/protected-before.json --journal artifacts/recovery-source/transaction.json > artifacts/recovery-http.json
+      - name: Retain reconciliation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scoped-recovery-${{ github.run_id }}
+          path: artifacts/
+          retention-days: 90
+          if-no-files-found: error
+      - run: echo 'Recovered HTTP bytes checked. Real browser acceptance remains required.' >> "$GITHUB_STEP_SUMMARY"
