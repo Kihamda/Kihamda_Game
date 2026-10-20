@@ -14,7 +14,7 @@
 
 ## 直近の運用改善
 
-現行規約と過去記録を分離し、正本台帳を検証して必要工程だけ読む手順を運用中。詳細はdocs/context-delivery-20261020.md。定期枠は原則25分の制作・検証と5分の保存。今回の実時刻・終了理由はscoped-recovery-proof-20261021.jsonと正本checkpointへ記録する。共通復元証跡の照合、CLI・workflow修正、公開登録と受入証跡の整合性検査を次回統合用に保存。86テストが成功した。実サーバーへの復旧は未実施。詳細はbusiness/unity/evidence/scoped-recovery-proof-20261021.json。
+現行規約と過去記録を分離し、正本台帳を検証して必要工程だけ読む手順を運用中。詳細はdocs/context-delivery-20261020.md。公開登録を含む保管パッケージの検査と、アップロード前の復元元検査を修正。保持物のオフライン模擬検査を再利用できるコマンドとworkflowへ追加した。ゲーム再読み込み後に一覧・紹介画面のCSSが失われる問題も修正し、4作品からの一覧復帰、390px・1280px、検索条件の保持を実ブラウザで確認。Windows・WSL Linux各98テスト、Linux Node.js22のクリーンビルド、保管・展開と18種類の不正ケース拒否が成功した。最新Webソース9826105。追加PR・本番書込みはなく、次の日次統合で最新headのGitHub CI・mainマージ・読取り専用workflow実行が残る。実サーバーへの復旧は未実施。今回の実時刻・ハッシュ・未確認事項はbusiness/unity/evidence/scoped-hardening-integration.jsonと正本checkpointへ保存する。
 
 ## 履歴を調べる場合
 

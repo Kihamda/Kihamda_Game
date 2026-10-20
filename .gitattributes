@@ -118,3 +118,4 @@ scripts/build-scoped-minerush.mjs text eol=lf
 web/scoped/minerush/index.html text eol=lf
 web/src/standalone/minerush.tsx text eol=lf
 docs/web-scoped-production-delivery.md text eol=lf
+web/plugins/game-pages-generator.ts text eol=lf

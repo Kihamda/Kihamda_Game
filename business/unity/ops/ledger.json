@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 388,
+  "revision": 392,
   "business_id": "game-site",
-  "fence": 65,
+  "fence": 66,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -9268,8 +9268,188 @@
       "source": "scheduled-parent:unity-20261021T0100-reconcile; daily PR already merged on2026-10-21; local source50c66d3",
       "next_step": "2026-10-22の日次統合でローカル50c66d3以降をまとめ、同版CIと復元検査後にhead指定マージ。今日の追加PRや再デプロイは不要。",
       "status": "ready",
-      "checkpoints": [],
-      "claims": []
+      "checkpoints": [
+        {
+          "run_id": "unity-20261021T0656-integration",
+          "fence": 66,
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_transaction.py",
+              "sha256": "e3698d08ed2f423ae060cc34c54b35fb1db3614e0f9a312404f719be72923892"
+            },
+            {
+              "path": "business/ops/scoped_upload.py",
+              "sha256": "0519f992d3fb52fd9b3be71aaee17cca81329c75050b04c013da39e5ff0edff9"
+            },
+            {
+              "path": "business/ops/scoped_delivery.py",
+              "sha256": "e58a9b528d7d8e406a3d2f28b51e770dc3d9176c173b0e4db9700b887b2a1d73"
+            },
+            {
+              "path": "business/tests/test_scoped_upload.py",
+              "sha256": "c32a7a1c9c94a8767e77dacb42b7fde03deade1f3512f7c1929eb56a38e41670"
+            },
+            {
+              "path": "business/tests/test_scoped_delivery.py",
+              "sha256": "7f0a7f2dfcd2231d368c4be1d6256593a233b0a15fc34cfcfb8da55b2759afb4"
+            },
+            {
+              "path": "business/tests/rehearse_scoped_artifact.py",
+              "sha256": "1b7720fc9e0905fbe132d02412fd56c229025d7c7e91c072170fac0178487250"
+            },
+            {
+              "path": "business/tests/test_scoped_rehearsal.py",
+              "sha256": "33926d7c1b3be074c3e893e1271c940596dcfe94e6f54473e437ce819ec12117"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "704b33702f7c2a25275b133cd5a8f38b6cfff834a6ed0727848c3110cad0fad2"
+            },
+            {
+              "path": "scripts/web-release-package.mjs",
+              "sha256": "4499439312b952869fc7f26317ea821ebcfb854fc9be6ab22f9da67d7294879f"
+            },
+            {
+              "path": "scripts/check-web-release-package.mjs",
+              "sha256": "ca3cf747975ad50a48b54f47a9dbc73a29b294e8d39c199492edb8ec07bc2db3"
+            },
+            {
+              "path": "web/plugins/game-pages-generator.ts",
+              "sha256": "3140bbc9028fd5fbf77751139070be24d98e0b5bb0ef2288848cf2d71160406d"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "732aa837c810d26e5b000647b845cddaacc5ac82f0b7379ee9dfb746f3b0cc80"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "24ec3f7dc0ca15fb60a1fffae3c6c898d34befb4fcd7e9d8d3b9437ee78a4fd0"
+            },
+            {
+              "path": "business/unity/evidence/scoped-hardening-integration.json",
+              "sha256": "9ac1c770e334c4d375df54cb050c5b8f90c2e54d9cf9dacb59cf5747f7e47aad"
+            }
+          ],
+          "checks": {
+            "windowsBusinessTests": 98,
+            "linuxBusinessTests": 98,
+            "linuxWeb": "Node22.23.3 clean build and package passed",
+            "browser": "4direct-game returns;390/1280;released1;search/start/flags/reload/return CSS preserved",
+            "production": "5candidateURLs+208baseline files unchanged;no write",
+            "rehearsal": "actual209retained files;fakeFTP only",
+            "readContext": [
+              "天啓.md",
+              "AGENTS.md",
+              "STATE.md",
+              "business/studio-policy.json",
+              "docs/coding-conventions.md",
+              "docs/autonomous-workflow.md",
+              "business/ops/context.py --task T-web-delivery-hardening-integration-20261021"
+            ],
+            "started_at": "2026-10-21T06:56:57.9422885+09:00",
+            "ended_at": "2026-10-21T07:21:34.661638+09:00",
+            "elapsed_seconds": 1476.71935,
+            "exit_reason": "Local implementation, full platform checks, restored browser acceptance and final evidence audit finished; preserve daily batching for exact-head CI, guarded merge and main read-only workflow",
+            "early_exit_evidence": "All independently executable local acceptance completed: Windows/Linux98, Linux Node22 build, actual209file restoration, original CSS regression rejected and4game real browser returns. Remaining acceptance depends on next daily integration/main-only workflow; no additional permitted required local acceptance remains."
+          },
+          "next_step": "Next2026-10-22 daily batch: exact-head GitHub CI, guarded merge, read-only reconciliation; no redispatch of original upload",
+          "at": 1792534894.685288
+        },
+        {
+          "run_id": "unity-20261021T0656-integration",
+          "fence": 66,
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_transaction.py",
+              "sha256": "e3698d08ed2f423ae060cc34c54b35fb1db3614e0f9a312404f719be72923892"
+            },
+            {
+              "path": "business/ops/scoped_upload.py",
+              "sha256": "0519f992d3fb52fd9b3be71aaee17cca81329c75050b04c013da39e5ff0edff9"
+            },
+            {
+              "path": "business/ops/scoped_delivery.py",
+              "sha256": "e58a9b528d7d8e406a3d2f28b51e770dc3d9176c173b0e4db9700b887b2a1d73"
+            },
+            {
+              "path": "business/tests/test_scoped_upload.py",
+              "sha256": "c32a7a1c9c94a8767e77dacb42b7fde03deade1f3512f7c1929eb56a38e41670"
+            },
+            {
+              "path": "business/tests/test_scoped_delivery.py",
+              "sha256": "7f0a7f2dfcd2231d368c4be1d6256593a233b0a15fc34cfcfb8da55b2759afb4"
+            },
+            {
+              "path": "business/tests/rehearse_scoped_artifact.py",
+              "sha256": "1b7720fc9e0905fbe132d02412fd56c229025d7c7e91c072170fac0178487250"
+            },
+            {
+              "path": "business/tests/test_scoped_rehearsal.py",
+              "sha256": "33926d7c1b3be074c3e893e1271c940596dcfe94e6f54473e437ce819ec12117"
+            },
+            {
+              "path": "scripts/check-web-build.mjs",
+              "sha256": "704b33702f7c2a25275b133cd5a8f38b6cfff834a6ed0727848c3110cad0fad2"
+            },
+            {
+              "path": "scripts/web-release-package.mjs",
+              "sha256": "4499439312b952869fc7f26317ea821ebcfb854fc9be6ab22f9da67d7294879f"
+            },
+            {
+              "path": "scripts/check-web-release-package.mjs",
+              "sha256": "ca3cf747975ad50a48b54f47a9dbc73a29b294e8d39c199492edb8ec07bc2db3"
+            },
+            {
+              "path": "web/plugins/game-pages-generator.ts",
+              "sha256": "3140bbc9028fd5fbf77751139070be24d98e0b5bb0ef2288848cf2d71160406d"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "732aa837c810d26e5b000647b845cddaacc5ac82f0b7379ee9dfb746f3b0cc80"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "24ec3f7dc0ca15fb60a1fffae3c6c898d34befb4fcd7e9d8d3b9437ee78a4fd0"
+            },
+            {
+              "path": "business/unity/evidence/scoped-hardening-integration.json",
+              "sha256": "9ac1c770e334c4d375df54cb050c5b8f90c2e54d9cf9dacb59cf5747f7e47aad"
+            }
+          ],
+          "checks": {
+            "windowsBusinessTests": 98,
+            "linuxBusinessTests": 98,
+            "linuxWeb": "Node22.23.3 clean build and package passed",
+            "browser": "4direct-game returns;390/1280;released1;search/start/flags/reload/return CSS preserved",
+            "production": "5candidateURLs+208baseline files unchanged;no write",
+            "rehearsal": "actual209retained files;fakeFTP only",
+            "readContext": [
+              "天啓.md",
+              "AGENTS.md",
+              "STATE.md",
+              "business/studio-policy.json",
+              "docs/coding-conventions.md",
+              "docs/autonomous-workflow.md",
+              "business/ops/context.py --task T-web-delivery-hardening-integration-20261021"
+            ],
+            "started_at": "2026-10-21T06:56:57.9422885+09:00",
+            "ended_at": "2026-10-21T07:21:34.661638+09:00",
+            "elapsed_seconds": 1476.71935,
+            "exit_reason": "Local implementation, full platform checks, restored browser acceptance and final evidence audit finished; preserve daily batching for exact-head CI, guarded merge and main read-only workflow",
+            "early_exit_evidence": "All independently executable local acceptance completed: Windows/Linux98, Linux Node22 build, actual209file restoration, original CSS regression rejected and4game real browser returns. Remaining acceptance depends on next daily integration/main-only workflow; no additional permitted required local acceptance remains."
+          },
+          "next_step": "Next2026-10-22 daily batch: exact-head GitHub CI, guarded merge, read-only reconciliation; no redispatch of original upload",
+          "at": 1792534894.733265
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261021T0656-integration",
+          "task_id": "T-web-delivery-hardening-integration-20261021",
+          "fence": 66,
+          "expires_at": 1792535240.953846
+        }
+      ]
     }
   },
   "decisions": {
@@ -9931,6 +10111,12 @@
       "source": "scheduled-parent:unity-20261021T0100-reconcile; continue same work session without consuming another slot",
       "status": "completed",
       "started_at": 1792512678.6102996
+    },
+    "unity-20261021T0656-integration": {
+      "run_id": "unity-20261021T0656-integration",
+      "source": "user:automation:unity:20261021-0700-arrived-early; no future slot claimed",
+      "status": "checkpointed",
+      "started_at": 1792533440.9077291
     }
   },
   "experiments": {
@@ -24060,7 +24246,229 @@
       },
       "previous": "11e2748b3ac419f97338fdef3b5345607625bff3ee4509b20cf516481039f4fe",
       "sha256": "76aa3e1c34e08a1225a4e61636709229607798aa3b972697ab49c9d021627283"
+    },
+    {
+      "revision": 389,
+      "at": 1792533440.9077291,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261021T0656-integration",
+        "source": "user:automation:unity:20261021-0700-arrived-early; no future slot claimed"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "76aa3e1c34e08a1225a4e61636709229607798aa3b972697ab49c9d021627283",
+      "sha256": "f88e628fa884ac1257f2aafe0d702b999992bcbbf13d81ddac5a1bd606104b89"
+    },
+    {
+      "revision": 390,
+      "at": 1792533440.953846,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261021T0656-integration",
+        "task_id": "T-web-delivery-hardening-integration-20261021",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261021T0656-integration",
+        "task_id": "T-web-delivery-hardening-integration-20261021",
+        "fence": 66,
+        "expires_at": 1792535240.953846
+      },
+      "previous": "f88e628fa884ac1257f2aafe0d702b999992bcbbf13d81ddac5a1bd606104b89",
+      "sha256": "bdfa9b842a45f024031ee89c9de9e4ddee0898b220e1832bd53822f1c36bc3fc"
+    },
+    {
+      "revision": 391,
+      "at": 1792534894.685288,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261021T0656-integration",
+        "fence": 66,
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_transaction.py",
+            "sha256": "e3698d08ed2f423ae060cc34c54b35fb1db3614e0f9a312404f719be72923892"
+          },
+          {
+            "path": "business/ops/scoped_upload.py",
+            "sha256": "0519f992d3fb52fd9b3be71aaee17cca81329c75050b04c013da39e5ff0edff9"
+          },
+          {
+            "path": "business/ops/scoped_delivery.py",
+            "sha256": "e58a9b528d7d8e406a3d2f28b51e770dc3d9176c173b0e4db9700b887b2a1d73"
+          },
+          {
+            "path": "business/tests/test_scoped_upload.py",
+            "sha256": "c32a7a1c9c94a8767e77dacb42b7fde03deade1f3512f7c1929eb56a38e41670"
+          },
+          {
+            "path": "business/tests/test_scoped_delivery.py",
+            "sha256": "7f0a7f2dfcd2231d368c4be1d6256593a233b0a15fc34cfcfb8da55b2759afb4"
+          },
+          {
+            "path": "business/tests/rehearse_scoped_artifact.py",
+            "sha256": "1b7720fc9e0905fbe132d02412fd56c229025d7c7e91c072170fac0178487250"
+          },
+          {
+            "path": "business/tests/test_scoped_rehearsal.py",
+            "sha256": "33926d7c1b3be074c3e893e1271c940596dcfe94e6f54473e437ce819ec12117"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "704b33702f7c2a25275b133cd5a8f38b6cfff834a6ed0727848c3110cad0fad2"
+          },
+          {
+            "path": "scripts/web-release-package.mjs",
+            "sha256": "4499439312b952869fc7f26317ea821ebcfb854fc9be6ab22f9da67d7294879f"
+          },
+          {
+            "path": "scripts/check-web-release-package.mjs",
+            "sha256": "ca3cf747975ad50a48b54f47a9dbc73a29b294e8d39c199492edb8ec07bc2db3"
+          },
+          {
+            "path": "web/plugins/game-pages-generator.ts",
+            "sha256": "3140bbc9028fd5fbf77751139070be24d98e0b5bb0ef2288848cf2d71160406d"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "732aa837c810d26e5b000647b845cddaacc5ac82f0b7379ee9dfb746f3b0cc80"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "24ec3f7dc0ca15fb60a1fffae3c6c898d34befb4fcd7e9d8d3b9437ee78a4fd0"
+          },
+          {
+            "path": "business/unity/evidence/scoped-hardening-integration.json",
+            "sha256": "9ac1c770e334c4d375df54cb050c5b8f90c2e54d9cf9dacb59cf5747f7e47aad"
+          }
+        ],
+        "checks": {
+          "windowsBusinessTests": 98,
+          "linuxBusinessTests": 98,
+          "linuxWeb": "Node22.23.3 clean build and package passed",
+          "browser": "4direct-game returns;390/1280;released1;search/start/flags/reload/return CSS preserved",
+          "production": "5candidateURLs+208baseline files unchanged;no write",
+          "rehearsal": "actual209retained files;fakeFTP only",
+          "readContext": [
+            "天啓.md",
+            "AGENTS.md",
+            "STATE.md",
+            "business/studio-policy.json",
+            "docs/coding-conventions.md",
+            "docs/autonomous-workflow.md",
+            "business/ops/context.py --task T-web-delivery-hardening-integration-20261021"
+          ],
+          "started_at": "2026-10-21T06:56:57.9422885+09:00",
+          "ended_at": "2026-10-21T07:21:34.661638+09:00",
+          "elapsed_seconds": 1476.71935,
+          "exit_reason": "Local implementation, full platform checks, restored browser acceptance and final evidence audit finished; preserve daily batching for exact-head CI, guarded merge and main read-only workflow",
+          "early_exit_evidence": "All independently executable local acceptance completed: Windows/Linux98, Linux Node22 build, actual209file restoration, original CSS regression rejected and4game real browser returns. Remaining acceptance depends on next daily integration/main-only workflow; no additional permitted required local acceptance remains."
+        },
+        "next_step": "Next2026-10-22 daily batch: exact-head GitHub CI, guarded merge, read-only reconciliation; no redispatch of original upload"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "bdfa9b842a45f024031ee89c9de9e4ddee0898b220e1832bd53822f1c36bc3fc",
+      "sha256": "42405cfe1317b5addc071825c7712ac09bf3697f89229980d74ee89eaab4eea4"
+    },
+    {
+      "revision": 392,
+      "at": 1792534894.733265,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261021T0656-integration",
+        "fence": 66,
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_transaction.py",
+            "sha256": "e3698d08ed2f423ae060cc34c54b35fb1db3614e0f9a312404f719be72923892"
+          },
+          {
+            "path": "business/ops/scoped_upload.py",
+            "sha256": "0519f992d3fb52fd9b3be71aaee17cca81329c75050b04c013da39e5ff0edff9"
+          },
+          {
+            "path": "business/ops/scoped_delivery.py",
+            "sha256": "e58a9b528d7d8e406a3d2f28b51e770dc3d9176c173b0e4db9700b887b2a1d73"
+          },
+          {
+            "path": "business/tests/test_scoped_upload.py",
+            "sha256": "c32a7a1c9c94a8767e77dacb42b7fde03deade1f3512f7c1929eb56a38e41670"
+          },
+          {
+            "path": "business/tests/test_scoped_delivery.py",
+            "sha256": "7f0a7f2dfcd2231d368c4be1d6256593a233b0a15fc34cfcfb8da55b2759afb4"
+          },
+          {
+            "path": "business/tests/rehearse_scoped_artifact.py",
+            "sha256": "1b7720fc9e0905fbe132d02412fd56c229025d7c7e91c072170fac0178487250"
+          },
+          {
+            "path": "business/tests/test_scoped_rehearsal.py",
+            "sha256": "33926d7c1b3be074c3e893e1271c940596dcfe94e6f54473e437ce819ec12117"
+          },
+          {
+            "path": "scripts/check-web-build.mjs",
+            "sha256": "704b33702f7c2a25275b133cd5a8f38b6cfff834a6ed0727848c3110cad0fad2"
+          },
+          {
+            "path": "scripts/web-release-package.mjs",
+            "sha256": "4499439312b952869fc7f26317ea821ebcfb854fc9be6ab22f9da67d7294879f"
+          },
+          {
+            "path": "scripts/check-web-release-package.mjs",
+            "sha256": "ca3cf747975ad50a48b54f47a9dbc73a29b294e8d39c199492edb8ec07bc2db3"
+          },
+          {
+            "path": "web/plugins/game-pages-generator.ts",
+            "sha256": "3140bbc9028fd5fbf77751139070be24d98e0b5bb0ef2288848cf2d71160406d"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "732aa837c810d26e5b000647b845cddaacc5ac82f0b7379ee9dfb746f3b0cc80"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "24ec3f7dc0ca15fb60a1fffae3c6c898d34befb4fcd7e9d8d3b9437ee78a4fd0"
+          },
+          {
+            "path": "business/unity/evidence/scoped-hardening-integration.json",
+            "sha256": "9ac1c770e334c4d375df54cb050c5b8f90c2e54d9cf9dacb59cf5747f7e47aad"
+          }
+        ],
+        "checks": {
+          "windowsBusinessTests": 98,
+          "linuxBusinessTests": 98,
+          "linuxWeb": "Node22.23.3 clean build and package passed",
+          "browser": "4direct-game returns;390/1280;released1;search/start/flags/reload/return CSS preserved",
+          "production": "5candidateURLs+208baseline files unchanged;no write",
+          "rehearsal": "actual209retained files;fakeFTP only",
+          "readContext": [
+            "天啓.md",
+            "AGENTS.md",
+            "STATE.md",
+            "business/studio-policy.json",
+            "docs/coding-conventions.md",
+            "docs/autonomous-workflow.md",
+            "business/ops/context.py --task T-web-delivery-hardening-integration-20261021"
+          ],
+          "started_at": "2026-10-21T06:56:57.9422885+09:00",
+          "ended_at": "2026-10-21T07:21:34.661638+09:00",
+          "elapsed_seconds": 1476.71935,
+          "exit_reason": "Local implementation, full platform checks, restored browser acceptance and final evidence audit finished; preserve daily batching for exact-head CI, guarded merge and main read-only workflow",
+          "early_exit_evidence": "All independently executable local acceptance completed: Windows/Linux98, Linux Node22 build, actual209file restoration, original CSS regression rejected and4game real browser returns. Remaining acceptance depends on next daily integration/main-only workflow; no additional permitted required local acceptance remains."
+        },
+        "next_step": "Next2026-10-22 daily batch: exact-head GitHub CI, guarded merge, read-only reconciliation; no redispatch of original upload"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "42405cfe1317b5addc071825c7712ac09bf3697f89229980d74ee89eaab4eea4",
+      "sha256": "c51b07d35c150e67bf7150859ef1764838b83f7bc3a53eb662e1ae4fdf9baa18"
     }
   ],
-  "projection_sha256": "e2f51563dcf5bc5124ec2e50eeca3dae1b94f74694d1a5aeee166adb5752b0fe"
+  "projection_sha256": "3f4b889550a5c88660cd1ce7a119319b6da28d2a9a501577eeda7f48d466cb94"
 }

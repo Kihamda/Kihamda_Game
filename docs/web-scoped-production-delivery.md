@@ -75,4 +75,6 @@ python business/ops/scoped_upload.py recover <展開先>/transaction.json --pack
 
 通常ポータルの保管パッケージはbuild-version.jsonに公開登録を含め、その詳細ページに限り登録URLへの開始リンク1件を要求する。未登録・異なる宛先・重複・iframeは拒否する。登録のない過去パッケージは開始リンクなしの条件で検証できる。これは通常ポータルの保全・統合準備であり、本番全体を置換する許可ではない。
 
+通常Web版のゲームHTML生成では、入口JSとともに共通CSSも引き継ぐ。従来はゲームURLを再読み込みすると共通CSSがなくなり、同一ページ内の遷移で作品一覧・紹介へ戻った際に表示が崩れた。9826105で修正し、4作品からの一覧復帰と、MineRushの390px・1280pxでの再読み込み・検索条件保持を確認した。専用配信版MineRushと本番トップのファイルは変更していない。
+
 改変journal・誤った復元元・部分切替・第三者更新・通信境界での切断を含む検査と、実保持artifactの旧209件を使った偽FTPの復旧を確認した。今回の検査数・実時刻・最終ハッシュはbusiness/unity/evidence/scoped-hardening-integration.jsonと正本checkpointを参照する。実サーバーの復旧成功とは扱わない。過去の部分実装はGit履歴とbusiness/unity/evidence/scoped-delivery-20261021.jsonに保全している。
