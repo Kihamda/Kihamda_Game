@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 374,
+  "revision": 376,
   "business_id": "game-site",
-  "fence": 62,
-  "lease": null,
+  "fence": 63,
+  "lease": {
+    "run_id": "unity-20261020T2355-delivery",
+    "task_id": "T-web-scoped-production-delivery-20261020",
+    "fence": 63,
+    "expires_at": 1792510000.993377
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -8510,7 +8515,7 @@
       "hypothesis": "既存許可領域の最小配信なら全体置換を避けて検証済み改善を利用者へ届けられる",
       "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
       "priority": 1,
-      "status": "ready",
+      "status": "running",
       "checkpoints": [
         {
           "run_id": "unity-20261020T1900-scoped",
@@ -8731,6 +8736,12 @@
           "task_id": "T-web-scoped-production-delivery-20261020",
           "fence": 61,
           "expires_at": 1792506355.9849544
+        },
+        {
+          "run_id": "unity-20261020T2355-delivery",
+          "task_id": "T-web-scoped-production-delivery-20261020",
+          "fence": 63,
+          "expires_at": 1792510000.993377
         }
       ]
     },
@@ -9497,6 +9508,12 @@
       "source": "user:current-thread:2026-10-20:use-full-work-session",
       "status": "completed",
       "started_at": 1792504880.3222902
+    },
+    "unity-20261020T2355-delivery": {
+      "run_id": "unity-20261020T2355-delivery",
+      "source": "user:automation:unity:2026-10-20T2355-outside-slot",
+      "status": "open",
+      "started_at": 1792508200.8050818
     }
   },
   "experiments": {
@@ -23067,7 +23084,39 @@
       },
       "previous": "8e6ba53698f3beff1ecbe837571dfa0be2ff4d454a00f48056011dd1cac3db59",
       "sha256": "fdc1ee722e6f3bc673c002c59d15dc21c64cb733356d78dc17a06218d6f6efc0"
+    },
+    {
+      "revision": 375,
+      "at": 1792508200.8050818,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261020T2355-delivery",
+        "source": "user:automation:unity:2026-10-20T2355-outside-slot"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "fdc1ee722e6f3bc673c002c59d15dc21c64cb733356d78dc17a06218d6f6efc0",
+      "sha256": "3a2d5ff48814c606a506831c1628a1edfe129e23631cf53e7d79ff3ff1c57260"
+    },
+    {
+      "revision": 376,
+      "at": 1792508200.993377,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261020T2355-delivery",
+        "ttl_seconds": 1800,
+        "task_id": "T-web-scoped-production-delivery-20261020"
+      },
+      "result": {
+        "run_id": "unity-20261020T2355-delivery",
+        "task_id": "T-web-scoped-production-delivery-20261020",
+        "fence": 63,
+        "expires_at": 1792510000.993377
+      },
+      "previous": "3a2d5ff48814c606a506831c1628a1edfe129e23631cf53e7d79ff3ff1c57260",
+      "sha256": "f6c0383dcbfb2e4d9d0e7990400075c446cf6c34dfb350ffc4bddbdb7428de81"
     }
   ],
-  "projection_sha256": "ebedfadc34d8bcfe36a69b144d69e4658751258340d205593062b9288dd355be"
+  "projection_sha256": "92cae5c3c06e63a58f35a487718d9e5c4587e0ea4623423e2338a08574ca73d9"
 }

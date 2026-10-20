@@ -1,0 +1,42 @@
+{
+  "at": "2026-10-21T00:15:18.2837644+09:00",
+  "run": "unity-20261020T2355-delivery",
+  "fence": 63,
+  "task": "T-web-scoped-production-delivery-20261020",
+  "status": "delivery-in-progress-not-accepted",
+  "sourceCommit": "2bc5d74eef7386aecd1fc39fc42d177d817ad916",
+  "ciRun": 39445834759,
+  "ci": "success-linux-windows",
+  "pullRequests": [
+    29,
+    30
+  ],
+  "package": "artifacts/scoped-minerush-main-20261021",
+  "manifestSha256": "2ad053d3798d2996d3e0d795671c75d1fcbd55e7bcd4733bb9b9b4b7c6c5169f",
+  "preflightRun": 39444847103,
+  "preflightStatus": "success",
+  "recoveryFileCount": 209,
+  "recoveryBytes": 1514538,
+  "recovery": "artifacts/ftps-preflight-20261021/scoped-recovery",
+  "preflightReportSha256": "ad555e634d014e2dd86ccef9b4b40cca51b81f057455150338bd7fa6ca329e0c",
+  "deliveryRun": 39445984592,
+  "deployed": false,
+  "productionWrites": null,
+  "releaseChanged": false,
+  "checks": [
+    "71 business tests passed",
+    "main exact-head Linux and Windows CI succeeded",
+    "normal build TypeScript ESLint 9 SSG pages 43 files and MineRush regression passed",
+    "downloaded CI scoped package checked; desktop reveal F flags mode reload reset",
+    "390px width equals scrollWidth; real touch not claimed",
+    "209 FTPS recovery files checksummed after download; local old game reveal6 and reload0 flags0",
+    "original374 ledger events and protected owner old ledger handoff paths preserved"
+  ],
+  "unverified": [
+    "delivery run outcome and journal",
+    "MLSD absence and server overwrite rename",
+    "production bytes and browser acceptance",
+    "real touch Safari human evaluation off-PC restore"
+  ],
+  "nextStep": "Reconcile run39445984592 and its retained journal before any dispatch; verify production bytes and gameplay, recover conditionally if necessary."
+}
