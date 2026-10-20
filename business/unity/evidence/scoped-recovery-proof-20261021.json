@@ -81,5 +81,33 @@
     "Three workflows YAML parsed and embedded Python compiled",
     "Protected owner/old ledger/handoff unchanged; original378event prefix preserved",
     "Own preview4259 stopped; task browser tabs closed; temporary viewport reset"
-  ]
+  ],
+  "sourceCommit": "50c66d3756987274d6dd7d4ff38d6dd913d528d4",
+  "nextDailyTask": "T-web-delivery-hardening-integration-20261021",
+  "sourceHashes": {
+    "business/ops/scoped_acceptance.py": "4d7a09326b727e9456fac03ed5932e54345dc034e006df167ae0ce3e6e79700c",
+    "business/ops/scoped_delivery.py": "eb74b7ab8dc492a5901e2515f1d30b99a2d37e8d88d80684ba91db0759ed1f8c",
+    "business/ops/scoped_upload.py": "1654f09027dc0aedd24cb198fff83aa52ebcc21a7f5246284f0e27a2087532a7",
+    "business/ops/scoped_transaction.py": "a5ebedbd4405378a2604dfeb062d6be46163189c4b1842f7de1fa80b5554b631",
+    "business/tests/test_scoped_acceptance.py": "e30baaf05d39ce41660580fdca006a71af78085275a82b70d08590dbdaac565a",
+    "business/tests/test_scoped_delivery.py": "a030b49f6c2e9961890b2944fed02070affdee58499ea0aeef4ac02466dcad10",
+    "business/tests/test_scoped_upload.py": "d33758b209886fe8b1d62ae1a0dc7f698d5a40d9ef38ebb2b8880a9c02ebf8c9",
+    "scripts/check-repository.mjs": "e35457fc1b059b20b3ab28918f02df61405f0a551bc8288f8e623bd2ff6dcc97",
+    "scripts/check-portal-navigation.mjs": "8863b9358ed8a8f94c665538cbc8797133c490005b958ba6bbc8e84e45409b4d",
+    "scripts/check-web-build.mjs": "7232bba3f57c987fb6509a4100ea82d36bb011367512bba65f41c58b3b1f1fe4",
+    "web/src/portal/data/works.json": "70760c5d2c5d7affbf3fd1ee577cd6ebbda6d3f0884df9af3eb354330c68cb31"
+  },
+  "workflowHashes": {
+    ".github/workflows/scoped-production-upload.yml": "5a8752f9bdece94fe8e5f7fb496781f1c77aa3c6cd1aa731ca84439f2d5430eb",
+    ".github/workflows/scoped-production-recover.yml": "91ba50317ec4e2dbdd684f3f20ac62b7f97abd5f14f568bd33277fefaa798d91",
+    ".github/workflows/scoped-production-reconcile.yml": "e1989eee5678e59e41a8434d449d72d400c9b226494a8e43c21b5f65bd2d8b6c"
+  },
+  "workSession": {
+    "startedAt": "2026-10-21T00:59:52.5693554+09:00",
+    "productiveVerificationAt": "2026-10-21T01:24:05.933512+09:00",
+    "parentRun": "unity-20261021T0100-reconcile",
+    "continuationRun": "unity-20261021T0100-recovery-proof",
+    "reason": "Scoped deployment accepted, then continued independent recovery proof, next-delivery asset coverage and real browser terminal verification. Saving canonical records next.",
+    "artificialWaits": false
+  }
 }

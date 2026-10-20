@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 378,
+  "revision": 388,
   "business_id": "game-site",
-  "fence": 63,
+  "fence": 65,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -8510,7 +8510,7 @@
       "hypothesis": "既存許可領域の最小配信なら全体置換を避けて検証済み改善を利用者へ届けられる",
       "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
       "priority": 1,
-      "status": "ready",
+      "status": "done",
       "checkpoints": [
         {
           "run_id": "unity-20261020T1900-scoped",
@@ -8832,6 +8832,82 @@
           ],
           "next_step": "FIRST reconcile workflow39445984592 and scoped-delivery-39445984592 artifact/journal. If successful verify every HTTP file, root/privacy/contact/about/sw unchanged and real production reveal/flags/keyboard/reload/list return before release. On failure inspect actual bytes and use conditional recovery workflow; never blindly dispatch again.",
           "at": 1792509785.0792806
+        },
+        {
+          "run_id": "unity-20261021T0100-reconcile",
+          "task_id": "T-web-scoped-production-delivery-20261020",
+          "fence": 64,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261021.json",
+              "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "70760c5d2c5d7affbf3fd1ee577cd6ebbda6d3f0884df9af3eb354330c68cb31"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "7612d5cf7e49a0aa0425024974fd68ddce5c25754ff738bfed10f780db38db95"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "09b2811f93b0299db7a7dcee3c6f894a5d482033e9660ff9a6cc1f8a54c5b0b6"
+            }
+          ],
+          "checks": [
+            "Exact-main CI success confirmed; interrupted run immutable journal and source/artifact binding verified",
+            "Live4files+slash entry,5protectedURLs,208oldbaseline files match; real browser opening arrows F flagmode reload navigation and390/1280 widths passed",
+            "Terminal gameover disables remaining cell; reset restores81unopened0flags; win not verified",
+            "Local release metadata build TypeScript ESLint SSR and input regression passed; operational improvement work continues within this scheduled work session",
+            "Read current owner AGENTS STATE policy conventions workflow; selected scoped code/tests/workflows; no subagents or fullsite deployment",
+            "stage_completed_at=2026-10-21T01:10:44.519557+09:00; scheduled parent work session continues, this is not an early run exit"
+          ],
+          "unverified": [
+            "physical touch Safari human evaluation off-PC restore production rollback win screen",
+            "Local release metadata and reconciliation workflow not merged or deployed"
+          ],
+          "next_step": "Deployment accepted. Continue permitted local operational hardening in a child run; next daily batch integrates release metadata and read-only reconciliation after CI.",
+          "passed": true,
+          "at": 1792512644.5474794
+        },
+        {
+          "run_id": "unity-20261021T0100-reconcile",
+          "task_id": "T-web-scoped-production-delivery-20261020",
+          "fence": 64,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261021.json",
+              "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "70760c5d2c5d7affbf3fd1ee577cd6ebbda6d3f0884df9af3eb354330c68cb31"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "7612d5cf7e49a0aa0425024974fd68ddce5c25754ff738bfed10f780db38db95"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "09b2811f93b0299db7a7dcee3c6f894a5d482033e9660ff9a6cc1f8a54c5b0b6"
+            }
+          ],
+          "checks": [
+            "Exact-main CI success confirmed; interrupted run immutable journal and source/artifact binding verified",
+            "Live4files+slash entry,5protectedURLs,208oldbaseline files match; real browser opening arrows F flagmode reload navigation and390/1280 widths passed",
+            "Terminal gameover disables remaining cell; reset restores81unopened0flags; win not verified",
+            "Local release metadata build TypeScript ESLint SSR and input regression passed; operational improvement work continues within this scheduled work session",
+            "Read current owner AGENTS STATE policy conventions workflow; selected scoped code/tests/workflows; no subagents or fullsite deployment",
+            "stage_completed_at=2026-10-21T01:10:44.519557+09:00; scheduled parent work session continues, this is not an early run exit"
+          ],
+          "unverified": [
+            "physical touch Safari human evaluation off-PC restore production rollback win screen",
+            "Local release metadata and reconciliation workflow not merged or deployed"
+          ],
+          "next_step": "Deployment accepted. Continue permitted local operational hardening in a child run; next daily batch integrates release metadata and read-only reconciliation after CI.",
+          "passed": true,
+          "at": 1792512644.5926602
         }
       ],
       "claims": [
@@ -8852,6 +8928,12 @@
           "task_id": "T-web-scoped-production-delivery-20261020",
           "fence": 63,
           "expires_at": 1792510000.993377
+        },
+        {
+          "run_id": "unity-20261021T0100-reconcile",
+          "task_id": "T-web-scoped-production-delivery-20261020",
+          "fence": 64,
+          "expires_at": 1792513845.7988756
         }
       ]
     },
@@ -8976,6 +9058,218 @@
           "expires_at": 1792506680.3761592
         }
       ]
+    },
+    "T-web-recovery-proof-20261021": {
+      "id": "T-web-recovery-proof-20261021",
+      "objective": "限定配信の復旧を保持済み候補・preflight・旧HTMLへ結び付け、journal単独の改変を復旧前に拒否する",
+      "hypothesis": "保持した旧HTMLとの一致を必須にすればjournalだけの破損による誤復旧を防げる",
+      "pdca": "act",
+      "acceptance": [
+        "復旧が候補commit・manifest・旧HTML・復元在庫を照合してから本番を読む",
+        "改変journal・誤った復元元・通信切断・第三者更新を既存検査と追加検査で拒否する",
+        "次回統合用にCLIと復旧workflowを更新し、実本番復旧は未確認として保存する"
+      ],
+      "outputs": [
+        "business/ops/scoped_transaction.py",
+        "business/ops/scoped_upload.py",
+        "business/tests/test_scoped_upload.py"
+      ],
+      "checks": [
+        "business unittest",
+        "旧配信artifactの読み取り専用検証",
+        "workflowとCLI整合性"
+      ],
+      "decision_id": "D-context-delivery-20261020",
+      "experiment_id": "E-unity-portal",
+      "source": "scheduled:unity-20261021T0100-reconcile:after-scoped-delivery-acceptance",
+      "next_step": "共通の保持証跡照合を抽出し復旧の必須引数へ適用する",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261021T0100-recovery-proof",
+          "task_id": "T-web-recovery-proof-20261021",
+          "fence": 65,
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_transaction.py",
+              "sha256": "a5ebedbd4405378a2604dfeb062d6be46163189c4b1842f7de1fa80b5554b631"
+            },
+            {
+              "path": "business/ops/scoped_upload.py",
+              "sha256": "1654f09027dc0aedd24cb198fff83aa52ebcc21a7f5246284f0e27a2087532a7"
+            },
+            {
+              "path": "business/ops/scoped_delivery.py",
+              "sha256": "eb74b7ab8dc492a5901e2515f1d30b99a2d37e8d88d80684ba91db0759ed1f8c"
+            },
+            {
+              "path": "business/ops/scoped_acceptance.py",
+              "sha256": "4d7a09326b727e9456fac03ed5932e54345dc034e006df167ae0ce3e6e79700c"
+            },
+            {
+              "path": "business/tests/test_scoped_upload.py",
+              "sha256": "d33758b209886fe8b1d62ae1a0dc7f698d5a40d9ef38ebb2b8880a9c02ebf8c9"
+            },
+            {
+              "path": "business/tests/test_scoped_delivery.py",
+              "sha256": "a030b49f6c2e9961890b2944fed02070affdee58499ea0aeef4ac02466dcad10"
+            },
+            {
+              "path": "business/tests/test_scoped_acceptance.py",
+              "sha256": "e30baaf05d39ce41660580fdca006a71af78085275a82b70d08590dbdaac565a"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261021.json",
+              "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6"
+            },
+            {
+              "path": "business/unity/evidence/scoped-recovery-proof-20261021.json",
+              "sha256": "3ce0c0325cb8c6eb88b12e8aaca0f3823aff7eaeae895e870bab4c80a722c120"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "620728690c3d28a360d1dbc19c45d5549542de1ffb6947b360945a8737a7e820"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "70760c5d2c5d7affbf3fd1ee577cd6ebbda6d3f0884df9af3eb354330c68cb31"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "f35b2193b9225e7a8be7cc1720cd4cd2f7d222ee3e2bf079d8301874d9395214"
+            }
+          ],
+          "checks": [
+            "86business tests passed including upload and recovery failure before/after every FTP boundary, journal and backup tamper, next scoped dependency retention",
+            "Final real-artifact fakeFTP restored209oldfiles; next preflight retainedroot+currentHTML+scopedJS+CSS without production writes",
+            "Normal TS/ESLint/build9SSG43checksums; portal released1 SSR and actual local start/search/return; existing input regression passed",
+            "Read-only reconcile and recovery CLI/workflow signatures aligned;3YAML parsed/3embedded Python compiled; new GitHub runtime not claimed",
+            "Original378events and owner/oldledger/handoff preserved; source50c66d3 exact18committed file hashes verified",
+            "Continued same scheduled work session after initial deployment acceptance; no extra slot, PR, push, deployment, subagent, Unity or Atohitori activity",
+            "save_started_at=2026-10-21T01:24:35.708019+09:00"
+          ],
+          "unverified": [
+            "Next daily integration exact-head Linux/WindowsCI and workflow runtime",
+            "Real production rollback off-PC restore physicaltouch Safari human evaluation"
+          ],
+          "next_step": "T-web-delivery-hardening-integration-20261021: next2026-10-22 daily batch integrates local release metadata and recovery hardening, exact-head CI and artifact restoration before guarded merge; read-only reconciliation after merge.",
+          "at": 1792513475.7273598
+        },
+        {
+          "run_id": "unity-20261021T0100-recovery-proof",
+          "task_id": "T-web-recovery-proof-20261021",
+          "fence": 65,
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_transaction.py",
+              "sha256": "a5ebedbd4405378a2604dfeb062d6be46163189c4b1842f7de1fa80b5554b631"
+            },
+            {
+              "path": "business/ops/scoped_upload.py",
+              "sha256": "1654f09027dc0aedd24cb198fff83aa52ebcc21a7f5246284f0e27a2087532a7"
+            },
+            {
+              "path": "business/ops/scoped_delivery.py",
+              "sha256": "eb74b7ab8dc492a5901e2515f1d30b99a2d37e8d88d80684ba91db0759ed1f8c"
+            },
+            {
+              "path": "business/ops/scoped_acceptance.py",
+              "sha256": "4d7a09326b727e9456fac03ed5932e54345dc034e006df167ae0ce3e6e79700c"
+            },
+            {
+              "path": "business/tests/test_scoped_upload.py",
+              "sha256": "d33758b209886fe8b1d62ae1a0dc7f698d5a40d9ef38ebb2b8880a9c02ebf8c9"
+            },
+            {
+              "path": "business/tests/test_scoped_delivery.py",
+              "sha256": "a030b49f6c2e9961890b2944fed02070affdee58499ea0aeef4ac02466dcad10"
+            },
+            {
+              "path": "business/tests/test_scoped_acceptance.py",
+              "sha256": "e30baaf05d39ce41660580fdca006a71af78085275a82b70d08590dbdaac565a"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261021.json",
+              "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6"
+            },
+            {
+              "path": "business/unity/evidence/scoped-recovery-proof-20261021.json",
+              "sha256": "3ce0c0325cb8c6eb88b12e8aaca0f3823aff7eaeae895e870bab4c80a722c120"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "620728690c3d28a360d1dbc19c45d5549542de1ffb6947b360945a8737a7e820"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "70760c5d2c5d7affbf3fd1ee577cd6ebbda6d3f0884df9af3eb354330c68cb31"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "f35b2193b9225e7a8be7cc1720cd4cd2f7d222ee3e2bf079d8301874d9395214"
+            },
+            {
+              "path": "business/unity/evidence/scoped-recovery-proof-final-20261021.json",
+              "sha256": "3e809f495a8482325fad74be203c9ade0bfc07effe656132b4c762ea95c5fea8"
+            }
+          ],
+          "checks": [
+            "86business tests passed including upload and recovery failure before/after every FTP boundary, journal and backup tamper, next scoped dependency retention",
+            "Final real-artifact fakeFTP restored209oldfiles; next preflight retainedroot+currentHTML+scopedJS+CSS without production writes",
+            "Normal TS/ESLint/build9SSG43checksums; portal released1 SSR and actual local start/search/return; existing input regression passed",
+            "Read-only reconcile and recovery CLI/workflow signatures aligned;3YAML parsed/3embedded Python compiled; new GitHub runtime not claimed",
+            "Original378events and owner/oldledger/handoff preserved; source50c66d3 exact18committed file hashes verified",
+            "Continued same scheduled work session after initial deployment acceptance; no extra slot, PR, push, deployment, subagent, Unity or Atohitori activity",
+            "save_started_at=2026-10-21T01:24:35.708019+09:00",
+            "started_at=2026-10-21T00:59:52.569355+09:00 ended_at=2026-10-21T01:25:05.022752+09:00 elapsed_seconds=1512.453 exit_reason=verified work completed and canonical save window; no artificial waiting"
+          ],
+          "unverified": [
+            "Next daily integration exact-head Linux/WindowsCI and workflow runtime",
+            "Real production rollback off-PC restore physicaltouch Safari human evaluation"
+          ],
+          "next_step": "T-web-delivery-hardening-integration-20261021: next2026-10-22 daily batch integrates local release metadata and recovery hardening, exact-head CI and artifact restoration before guarded merge; read-only reconciliation after merge.",
+          "passed": true,
+          "at": 1792513505.05925
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261021T0100-recovery-proof",
+          "task_id": "T-web-recovery-proof-20261021",
+          "fence": 65,
+          "expires_at": 1792513878.6539328
+        }
+      ]
+    },
+    "T-web-delivery-hardening-integration-20261021": {
+      "id": "T-web-delivery-hardening-integration-20261021",
+      "objective": "公開済みMineRushの登録と復旧改善を次の日次統合でCI確認してmainへ反映する",
+      "hypothesis": "検証済み配信の登録と中断照合・復元証跡を同じ日次CIへ統合すれば次回配信の誤判定を減らせる",
+      "pdca": "check",
+      "acceptance": [
+        "最新headのLinux/Windows CIと同版成果物・公開登録の整合性を確認する",
+        "保全成果物で公開中1件の検索・詳細開始・一覧復帰を実ブラウザ確認する",
+        "head指定マージ後に読取り専用照合workflowを実行し本番書込みなしで結果を保全する"
+      ],
+      "outputs": [
+        "business/unity/evidence/scoped-hardening-integration.json"
+      ],
+      "checks": [
+        "exact-head CI",
+        "restored artifact browser acceptance",
+        "read-only reconciliation workflow"
+      ],
+      "depends_on": [
+        "T-web-recovery-proof-20261021",
+        "T-web-scoped-production-delivery-20261020"
+      ],
+      "decision_id": "D-context-delivery-20261020",
+      "experiment_id": "E-unity-portal",
+      "source": "scheduled-parent:unity-20261021T0100-reconcile; daily PR already merged on2026-10-21; local source50c66d3",
+      "next_step": "2026-10-22の日次統合でローカル50c66d3以降をまとめ、同版CIと復元検査後にhead指定マージ。今日の追加PRや再デプロイは不要。",
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -9624,6 +9918,19 @@
       "source": "user:automation:unity:2026-10-20T2355-outside-slot",
       "status": "checkpointed",
       "started_at": 1792508200.8050818
+    },
+    "unity-20261021T0100-reconcile": {
+      "run_id": "unity-20261021T0100-reconcile",
+      "scheduled_at": "2026-10-21T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-21T01:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792512045.7089713
+    },
+    "unity-20261021T0100-recovery-proof": {
+      "run_id": "unity-20261021T0100-recovery-proof",
+      "source": "scheduled-parent:unity-20261021T0100-reconcile; continue same work session without consuming another slot",
+      "status": "completed",
+      "started_at": 1792512678.6102996
     }
   },
   "experiments": {
@@ -9862,7 +10169,8 @@
     "2026-10-20T01:00:00+09:00": "unity-20261020T0100-bb483ee1",
     "2026-10-20T07:00:00+09:00": "unity-20261020T0700-eba7fbfc",
     "2026-10-20T13:00:00+09:00": "unity-20261020T1300-06077b21",
-    "2026-10-20T19:00:00+09:00": "unity-20261020T1900-scoped"
+    "2026-10-20T19:00:00+09:00": "unity-20261020T1900-scoped",
+    "2026-10-21T01:00:00+09:00": "unity-20261021T0100-reconcile"
   },
   "feedback": [
     {
@@ -23359,7 +23667,400 @@
       },
       "previous": "9bf26332fcf28c4c2c8fb72c1a07f772a499b7d9e08c29191ed52bc33dadc5a7",
       "sha256": "9c96c75ec3576faf808acf67773ef3b1eb09b2abe21e3e94f0a3e6e9ded40d99"
+    },
+    {
+      "revision": 379,
+      "at": 1792512045.7089713,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261021T0100-reconcile",
+        "scheduled_at": "2026-10-21T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "9c96c75ec3576faf808acf67773ef3b1eb09b2abe21e3e94f0a3e6e9ded40d99",
+      "sha256": "1a0ffc498804dafaf4be1a5f590428a027cd277b9a339e41b4694790277ca8d3"
+    },
+    {
+      "revision": 380,
+      "at": 1792512045.7988756,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261021T0100-reconcile",
+        "task_id": "T-web-scoped-production-delivery-20261020"
+      },
+      "result": {
+        "run_id": "unity-20261021T0100-reconcile",
+        "task_id": "T-web-scoped-production-delivery-20261020",
+        "fence": 64,
+        "expires_at": 1792513845.7988756
+      },
+      "previous": "1a0ffc498804dafaf4be1a5f590428a027cd277b9a339e41b4694790277ca8d3",
+      "sha256": "955a5b979cf04e08f26a5414471dc28732b5d5860d1128d6decbc7c82acc35ac"
+    },
+    {
+      "revision": 381,
+      "at": 1792512644.5474794,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261021T0100-reconcile",
+        "task_id": "T-web-scoped-production-delivery-20261020",
+        "fence": 64,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261021.json",
+            "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "70760c5d2c5d7affbf3fd1ee577cd6ebbda6d3f0884df9af3eb354330c68cb31"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "7612d5cf7e49a0aa0425024974fd68ddce5c25754ff738bfed10f780db38db95"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "09b2811f93b0299db7a7dcee3c6f894a5d482033e9660ff9a6cc1f8a54c5b0b6"
+          }
+        ],
+        "checks": [
+          "Exact-main CI success confirmed; interrupted run immutable journal and source/artifact binding verified",
+          "Live4files+slash entry,5protectedURLs,208oldbaseline files match; real browser opening arrows F flagmode reload navigation and390/1280 widths passed",
+          "Terminal gameover disables remaining cell; reset restores81unopened0flags; win not verified",
+          "Local release metadata build TypeScript ESLint SSR and input regression passed; operational improvement work continues within this scheduled work session",
+          "Read current owner AGENTS STATE policy conventions workflow; selected scoped code/tests/workflows; no subagents or fullsite deployment",
+          "stage_completed_at=2026-10-21T01:10:44.519557+09:00; scheduled parent work session continues, this is not an early run exit"
+        ],
+        "unverified": [
+          "physical touch Safari human evaluation off-PC restore production rollback win screen",
+          "Local release metadata and reconciliation workflow not merged or deployed"
+        ],
+        "next_step": "Deployment accepted. Continue permitted local operational hardening in a child run; next daily batch integrates release metadata and read-only reconciliation after CI.",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "955a5b979cf04e08f26a5414471dc28732b5d5860d1128d6decbc7c82acc35ac",
+      "sha256": "d13181324f0ce92fbbe366779733cfb61ef101173d27bc01c8b3000f6287c092"
+    },
+    {
+      "revision": 382,
+      "at": 1792512644.5926602,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261021T0100-reconcile",
+        "task_id": "T-web-scoped-production-delivery-20261020",
+        "fence": 64,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261021.json",
+            "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "70760c5d2c5d7affbf3fd1ee577cd6ebbda6d3f0884df9af3eb354330c68cb31"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "7612d5cf7e49a0aa0425024974fd68ddce5c25754ff738bfed10f780db38db95"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "09b2811f93b0299db7a7dcee3c6f894a5d482033e9660ff9a6cc1f8a54c5b0b6"
+          }
+        ],
+        "checks": [
+          "Exact-main CI success confirmed; interrupted run immutable journal and source/artifact binding verified",
+          "Live4files+slash entry,5protectedURLs,208oldbaseline files match; real browser opening arrows F flagmode reload navigation and390/1280 widths passed",
+          "Terminal gameover disables remaining cell; reset restores81unopened0flags; win not verified",
+          "Local release metadata build TypeScript ESLint SSR and input regression passed; operational improvement work continues within this scheduled work session",
+          "Read current owner AGENTS STATE policy conventions workflow; selected scoped code/tests/workflows; no subagents or fullsite deployment",
+          "stage_completed_at=2026-10-21T01:10:44.519557+09:00; scheduled parent work session continues, this is not an early run exit"
+        ],
+        "unverified": [
+          "physical touch Safari human evaluation off-PC restore production rollback win screen",
+          "Local release metadata and reconciliation workflow not merged or deployed"
+        ],
+        "next_step": "Deployment accepted. Continue permitted local operational hardening in a child run; next daily batch integrates release metadata and read-only reconciliation after CI.",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "d13181324f0ce92fbbe366779733cfb61ef101173d27bc01c8b3000f6287c092",
+      "sha256": "92dcd6b29d851215e0c1bd227567879f7b1428b04f0b84c6b56c1e2adb62609f"
+    },
+    {
+      "revision": 383,
+      "at": 1792512678.5646973,
+      "action": "task",
+      "data": {
+        "id": "T-web-recovery-proof-20261021",
+        "objective": "限定配信の復旧を保持済み候補・preflight・旧HTMLへ結び付け、journal単独の改変を復旧前に拒否する",
+        "hypothesis": "保持した旧HTMLとの一致を必須にすればjournalだけの破損による誤復旧を防げる",
+        "pdca": "act",
+        "acceptance": [
+          "復旧が候補commit・manifest・旧HTML・復元在庫を照合してから本番を読む",
+          "改変journal・誤った復元元・通信切断・第三者更新を既存検査と追加検査で拒否する",
+          "次回統合用にCLIと復旧workflowを更新し、実本番復旧は未確認として保存する"
+        ],
+        "outputs": [
+          "business/ops/scoped_transaction.py",
+          "business/ops/scoped_upload.py",
+          "business/tests/test_scoped_upload.py"
+        ],
+        "checks": [
+          "business unittest",
+          "旧配信artifactの読み取り専用検証",
+          "workflowとCLI整合性"
+        ],
+        "decision_id": "D-context-delivery-20261020",
+        "experiment_id": "E-unity-portal",
+        "source": "scheduled:unity-20261021T0100-reconcile:after-scoped-delivery-acceptance",
+        "next_step": "共通の保持証跡照合を抽出し復旧の必須引数へ適用する"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "92dcd6b29d851215e0c1bd227567879f7b1428b04f0b84c6b56c1e2adb62609f",
+      "sha256": "b400cab15b9db0db8300003d21d6e9a5b9072b0c8f597895928d48c707e00043"
+    },
+    {
+      "revision": 384,
+      "at": 1792512678.6102996,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261021T0100-recovery-proof",
+        "source": "scheduled-parent:unity-20261021T0100-reconcile; continue same work session without consuming another slot"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "b400cab15b9db0db8300003d21d6e9a5b9072b0c8f597895928d48c707e00043",
+      "sha256": "99ade8165ef955a04efb36fe85333a971e46548c699b1856e6ababa0447ee52b"
+    },
+    {
+      "revision": 385,
+      "at": 1792512678.6539328,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261021T0100-recovery-proof",
+        "task_id": "T-web-recovery-proof-20261021",
+        "ttl_seconds": 1200
+      },
+      "result": {
+        "run_id": "unity-20261021T0100-recovery-proof",
+        "task_id": "T-web-recovery-proof-20261021",
+        "fence": 65,
+        "expires_at": 1792513878.6539328
+      },
+      "previous": "99ade8165ef955a04efb36fe85333a971e46548c699b1856e6ababa0447ee52b",
+      "sha256": "75e6aded5d9e86af2acd58336e0bb64836259fc1398a4f7e9db644085579db02"
+    },
+    {
+      "revision": 386,
+      "at": 1792513417.5340889,
+      "action": "task",
+      "data": {
+        "id": "T-web-delivery-hardening-integration-20261021",
+        "objective": "公開済みMineRushの登録と復旧改善を次の日次統合でCI確認してmainへ反映する",
+        "hypothesis": "検証済み配信の登録と中断照合・復元証跡を同じ日次CIへ統合すれば次回配信の誤判定を減らせる",
+        "pdca": "check",
+        "acceptance": [
+          "最新headのLinux/Windows CIと同版成果物・公開登録の整合性を確認する",
+          "保全成果物で公開中1件の検索・詳細開始・一覧復帰を実ブラウザ確認する",
+          "head指定マージ後に読取り専用照合workflowを実行し本番書込みなしで結果を保全する"
+        ],
+        "outputs": [
+          "business/unity/evidence/scoped-hardening-integration.json"
+        ],
+        "checks": [
+          "exact-head CI",
+          "restored artifact browser acceptance",
+          "read-only reconciliation workflow"
+        ],
+        "depends_on": [
+          "T-web-recovery-proof-20261021",
+          "T-web-scoped-production-delivery-20261020"
+        ],
+        "decision_id": "D-context-delivery-20261020",
+        "experiment_id": "E-unity-portal",
+        "source": "scheduled-parent:unity-20261021T0100-reconcile; daily PR already merged on2026-10-21; local source50c66d3",
+        "next_step": "2026-10-22の日次統合でローカル50c66d3以降をまとめ、同版CIと復元検査後にhead指定マージ。今日の追加PRや再デプロイは不要。"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "75e6aded5d9e86af2acd58336e0bb64836259fc1398a4f7e9db644085579db02",
+      "sha256": "0399e12a152e79dd16e754e27779934a41dbdacfe175e5cfcbf7b3707c3fb4f2"
+    },
+    {
+      "revision": 387,
+      "at": 1792513475.7273598,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261021T0100-recovery-proof",
+        "task_id": "T-web-recovery-proof-20261021",
+        "fence": 65,
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_transaction.py",
+            "sha256": "a5ebedbd4405378a2604dfeb062d6be46163189c4b1842f7de1fa80b5554b631"
+          },
+          {
+            "path": "business/ops/scoped_upload.py",
+            "sha256": "1654f09027dc0aedd24cb198fff83aa52ebcc21a7f5246284f0e27a2087532a7"
+          },
+          {
+            "path": "business/ops/scoped_delivery.py",
+            "sha256": "eb74b7ab8dc492a5901e2515f1d30b99a2d37e8d88d80684ba91db0759ed1f8c"
+          },
+          {
+            "path": "business/ops/scoped_acceptance.py",
+            "sha256": "4d7a09326b727e9456fac03ed5932e54345dc034e006df167ae0ce3e6e79700c"
+          },
+          {
+            "path": "business/tests/test_scoped_upload.py",
+            "sha256": "d33758b209886fe8b1d62ae1a0dc7f698d5a40d9ef38ebb2b8880a9c02ebf8c9"
+          },
+          {
+            "path": "business/tests/test_scoped_delivery.py",
+            "sha256": "a030b49f6c2e9961890b2944fed02070affdee58499ea0aeef4ac02466dcad10"
+          },
+          {
+            "path": "business/tests/test_scoped_acceptance.py",
+            "sha256": "e30baaf05d39ce41660580fdca006a71af78085275a82b70d08590dbdaac565a"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261021.json",
+            "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6"
+          },
+          {
+            "path": "business/unity/evidence/scoped-recovery-proof-20261021.json",
+            "sha256": "3ce0c0325cb8c6eb88b12e8aaca0f3823aff7eaeae895e870bab4c80a722c120"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "620728690c3d28a360d1dbc19c45d5549542de1ffb6947b360945a8737a7e820"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "70760c5d2c5d7affbf3fd1ee577cd6ebbda6d3f0884df9af3eb354330c68cb31"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "f35b2193b9225e7a8be7cc1720cd4cd2f7d222ee3e2bf079d8301874d9395214"
+          }
+        ],
+        "checks": [
+          "86business tests passed including upload and recovery failure before/after every FTP boundary, journal and backup tamper, next scoped dependency retention",
+          "Final real-artifact fakeFTP restored209oldfiles; next preflight retainedroot+currentHTML+scopedJS+CSS without production writes",
+          "Normal TS/ESLint/build9SSG43checksums; portal released1 SSR and actual local start/search/return; existing input regression passed",
+          "Read-only reconcile and recovery CLI/workflow signatures aligned;3YAML parsed/3embedded Python compiled; new GitHub runtime not claimed",
+          "Original378events and owner/oldledger/handoff preserved; source50c66d3 exact18committed file hashes verified",
+          "Continued same scheduled work session after initial deployment acceptance; no extra slot, PR, push, deployment, subagent, Unity or Atohitori activity",
+          "save_started_at=2026-10-21T01:24:35.708019+09:00"
+        ],
+        "unverified": [
+          "Next daily integration exact-head Linux/WindowsCI and workflow runtime",
+          "Real production rollback off-PC restore physicaltouch Safari human evaluation"
+        ],
+        "next_step": "T-web-delivery-hardening-integration-20261021: next2026-10-22 daily batch integrates local release metadata and recovery hardening, exact-head CI and artifact restoration before guarded merge; read-only reconciliation after merge."
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "0399e12a152e79dd16e754e27779934a41dbdacfe175e5cfcbf7b3707c3fb4f2",
+      "sha256": "11e2748b3ac419f97338fdef3b5345607625bff3ee4509b20cf516481039f4fe"
+    },
+    {
+      "revision": 388,
+      "at": 1792513505.05925,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261021T0100-recovery-proof",
+        "task_id": "T-web-recovery-proof-20261021",
+        "fence": 65,
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_transaction.py",
+            "sha256": "a5ebedbd4405378a2604dfeb062d6be46163189c4b1842f7de1fa80b5554b631"
+          },
+          {
+            "path": "business/ops/scoped_upload.py",
+            "sha256": "1654f09027dc0aedd24cb198fff83aa52ebcc21a7f5246284f0e27a2087532a7"
+          },
+          {
+            "path": "business/ops/scoped_delivery.py",
+            "sha256": "eb74b7ab8dc492a5901e2515f1d30b99a2d37e8d88d80684ba91db0759ed1f8c"
+          },
+          {
+            "path": "business/ops/scoped_acceptance.py",
+            "sha256": "4d7a09326b727e9456fac03ed5932e54345dc034e006df167ae0ce3e6e79700c"
+          },
+          {
+            "path": "business/tests/test_scoped_upload.py",
+            "sha256": "d33758b209886fe8b1d62ae1a0dc7f698d5a40d9ef38ebb2b8880a9c02ebf8c9"
+          },
+          {
+            "path": "business/tests/test_scoped_delivery.py",
+            "sha256": "a030b49f6c2e9961890b2944fed02070affdee58499ea0aeef4ac02466dcad10"
+          },
+          {
+            "path": "business/tests/test_scoped_acceptance.py",
+            "sha256": "e30baaf05d39ce41660580fdca006a71af78085275a82b70d08590dbdaac565a"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261021.json",
+            "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6"
+          },
+          {
+            "path": "business/unity/evidence/scoped-recovery-proof-20261021.json",
+            "sha256": "3ce0c0325cb8c6eb88b12e8aaca0f3823aff7eaeae895e870bab4c80a722c120"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "620728690c3d28a360d1dbc19c45d5549542de1ffb6947b360945a8737a7e820"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "70760c5d2c5d7affbf3fd1ee577cd6ebbda6d3f0884df9af3eb354330c68cb31"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "f35b2193b9225e7a8be7cc1720cd4cd2f7d222ee3e2bf079d8301874d9395214"
+          },
+          {
+            "path": "business/unity/evidence/scoped-recovery-proof-final-20261021.json",
+            "sha256": "3e809f495a8482325fad74be203c9ade0bfc07effe656132b4c762ea95c5fea8"
+          }
+        ],
+        "checks": [
+          "86business tests passed including upload and recovery failure before/after every FTP boundary, journal and backup tamper, next scoped dependency retention",
+          "Final real-artifact fakeFTP restored209oldfiles; next preflight retainedroot+currentHTML+scopedJS+CSS without production writes",
+          "Normal TS/ESLint/build9SSG43checksums; portal released1 SSR and actual local start/search/return; existing input regression passed",
+          "Read-only reconcile and recovery CLI/workflow signatures aligned;3YAML parsed/3embedded Python compiled; new GitHub runtime not claimed",
+          "Original378events and owner/oldledger/handoff preserved; source50c66d3 exact18committed file hashes verified",
+          "Continued same scheduled work session after initial deployment acceptance; no extra slot, PR, push, deployment, subagent, Unity or Atohitori activity",
+          "save_started_at=2026-10-21T01:24:35.708019+09:00",
+          "started_at=2026-10-21T00:59:52.569355+09:00 ended_at=2026-10-21T01:25:05.022752+09:00 elapsed_seconds=1512.453 exit_reason=verified work completed and canonical save window; no artificial waiting"
+        ],
+        "unverified": [
+          "Next daily integration exact-head Linux/WindowsCI and workflow runtime",
+          "Real production rollback off-PC restore physicaltouch Safari human evaluation"
+        ],
+        "next_step": "T-web-delivery-hardening-integration-20261021: next2026-10-22 daily batch integrates local release metadata and recovery hardening, exact-head CI and artifact restoration before guarded merge; read-only reconciliation after merge.",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "11e2748b3ac419f97338fdef3b5345607625bff3ee4509b20cf516481039f4fe",
+      "sha256": "76aa3e1c34e08a1225a4e61636709229607798aa3b972697ab49c9d021627283"
     }
   ],
-  "projection_sha256": "10e52e5bf002070492d869e2fd4d8cb729f26270f86dbb4908d68a3a6ad3c6a1"
+  "projection_sha256": "e2f51563dcf5bc5124ec2e50eeca3dae1b94f74694d1a5aeee166adb5752b0fe"
 }
