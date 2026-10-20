@@ -67,7 +67,10 @@ for (const work of unityGames) {
   }
 }
 assert(detail.includes('制作停止・保全中') && !detail.includes('作品を開始') && !detail.includes('<iframe'), 'Unreleased game must not expose a fake player');
-const version = { commit: process.env.GITHUB_SHA ?? 'local-uncommitted', gameCount: unityGames.length, legacyRouteCount: games.length, source: 'web', generatedAt: new Date().toISOString() };
+const releases = unityGames.filter(game => game.release).map(game => ({
+  path: game.path, url: game.release.url, version: game.release.version, sha256: game.release.sha256,
+}));
+const version = { commit: process.env.GITHUB_SHA ?? 'local-uncommitted', gameCount: unityGames.length, legacyRouteCount: games.length, source: 'web', releases, generatedAt: new Date().toISOString() };
 writeFileSync(resolve(dist, 'build-version.json'), JSON.stringify(version, null, 2) + '\n');
 function files(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {

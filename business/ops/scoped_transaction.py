@@ -11,23 +11,16 @@ from scoped_delivery import (SCOPE, MAX_RECOVERY_FILES, MAX_RECOVERY_BYTES,
                              asset_references, checked_package, sha)
 
 
-def checked_transaction(package, backup, journal):
+def checked_preflight(package, backup):
+    """Validate a complete retained baseline before upload, recovery or HTTP use."""
     package, backup = Path(package), Path(backup)
     manifest = checked_package(package)
-    state = json.loads(Path(journal).read_text(encoding="utf-8"))
     report = json.loads((backup / "preflight.json").read_text(encoding="utf-8"))
-    if (state.get("schema") != 1 or state.get("scope") != SCOPE or
-            not re.fullmatch(r"[0-9a-f]{32}", state.get("transaction", "")) or
-            state.get("commit") != manifest["commit"] or
-            report.get("schema") != 1 or report.get("scope") != SCOPE or
+    if (report.get("schema") != 1 or report.get("scope") != SCOPE or
             report.get("status") != "read-only-preflight" or
             report.get("commit") != manifest["commit"] or
             report.get("packageManifestSha256") != sha((package / "manifest.json").read_bytes())):
-        raise ValueError("Journal, recovery and candidate are not bound")
-    for key, path in (("newHtmlSha256", SCOPE + "index.html"),
-                      ("newVersionSha256", SCOPE + "build-version.json")):
-        if state.get(key) != sha((package / "site" / path).read_bytes()):
-            raise ValueError("Journal candidate checksum mismatch")
+        raise ValueError("Preflight does not bind this package")
     entries = report.get("baseline")
     if not isinstance(entries, list) or not 2 <= len(entries) <= MAX_RECOVERY_FILES:
         raise ValueError("Invalid recovery inventory")
@@ -49,8 +42,35 @@ def checked_transaction(package, backup, journal):
         if sha(body) != entry["sha256"]:
             raise ValueError("Recovery checksum mismatch")
         baseline[path] = body
-    if (not {"index.html", SCOPE + "index.html"} <= baseline.keys() or
-            bytes.fromhex(state["oldHtmlHex"]) != baseline[SCOPE + "index.html"]):
+    if not {"index.html", SCOPE + "index.html"} <= baseline.keys():
+        raise ValueError("Missing production baseline")
+    pending = {SCOPE + "index.html"}
+    visited = set()
+    while pending:
+        path = pending.pop()
+        if path in visited:
+            continue
+        if path not in baseline:
+            raise ValueError("Recovery static dependency missing: " + path)
+        visited.add(path)
+        pending.update(asset_references(baseline[path], path) - visited)
+    return baseline
+
+
+def checked_transaction(package, backup, journal):
+    package, backup = Path(package), Path(backup)
+    manifest = checked_package(package)
+    state = json.loads(Path(journal).read_text(encoding="utf-8"))
+    if (state.get("schema") != 1 or state.get("scope") != SCOPE or
+            not re.fullmatch(r"[0-9a-f]{32}", state.get("transaction", "")) or
+            state.get("commit") != manifest["commit"]):
+        raise ValueError("Journal, recovery and candidate are not bound")
+    for key, path in (("newHtmlSha256", SCOPE + "index.html"),
+                      ("newVersionSha256", SCOPE + "build-version.json")):
+        if state.get(key) != sha((package / "site" / path).read_bytes()):
+            raise ValueError("Journal candidate checksum mismatch")
+    baseline = checked_preflight(package, backup)
+    if bytes.fromhex(state["oldHtmlHex"]) != baseline[SCOPE + "index.html"]:
         raise ValueError("Old entry does not match recovery")
     old_version = state.get("oldVersionHex")
     if old_version is not None:
@@ -67,14 +87,4 @@ def checked_transaction(package, backup, journal):
             raise ValueError("Old version does not match retained transaction")
     elif old_version is not None:
         raise ValueError("Retained old version receipt required")
-    pending = {SCOPE + "index.html"}
-    visited = set()
-    while pending:
-        path = pending.pop()
-        if path in visited:
-            continue
-        if path not in baseline:
-            raise ValueError("Recovery static dependency missing: " + path)
-        visited.add(path)
-        pending.update(asset_references(baseline[path], path) - visited)
     return state, baseline

@@ -8,6 +8,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ops"))
 import scoped_delivery as delivery
 import scoped_upload as upload
+import scoped_transaction as transaction
 import test_scoped_delivery as fixtures
 
 
@@ -60,6 +61,59 @@ class ScopedUploadTest(unittest.TestCase):
 
     def deliver(self):
         return upload.deliver(self.package, self.backup, self.ftp, self.journal)
+
+    def test_incomplete_or_misbound_upload_backup_refused_before_ftp(self):
+        report_path = self.backup / "preflight.json"
+        original = json.loads(report_path.read_text())
+        reports = []
+        for field, value in (("schema", 2), ("commit", "b" * 40),
+                             ("scope", "games/other/"),
+                             ("packageManifestSha256", "0" * 64)):
+            report = copy.deepcopy(original)
+            report[field] = value
+            reports.append(report)
+        for missing in ("index.html", delivery.SCOPE + "index.html", "assets/old.js"):
+            report = copy.deepcopy(original)
+            report["baseline"] = [item for item in report["baseline"] if item["path"] != missing]
+            reports.append(report)
+        for extra in (copy.deepcopy(original["baseline"][0]),
+                      {"path": "../outside", "sha256": "0" * 64}):
+            report = copy.deepcopy(original)
+            report["baseline"].append(extra)
+            reports.append(report)
+        report = copy.deepcopy(original)
+        report["baseline"] *= delivery.MAX_RECOVERY_FILES
+        reports.append(report)
+        for index, report in enumerate(reports):
+            report_path.write_text(json.dumps(report))
+            # No remote read, directory listing, journal or receipt is allowed.
+            with self.subTest(case=index), patch.object(upload, "baseline_check") as remote:
+                with self.assertRaises(ValueError):
+                    self.deliver()
+                remote.assert_not_called()
+                self.assertFalse(self.journal.exists())
+                self.assertEqual(self.ftp.mutations, [])
+                self.assertEqual(list(self.backup.glob("transaction-*.json")), [])
+
+    def test_upload_backup_byte_limit_refused_before_ftp(self):
+        with patch.object(transaction, "MAX_RECOVERY_BYTES", 1), \
+                patch.object(upload, "baseline_check") as remote:
+            with self.assertRaisesRegex(ValueError, "byte limit"):
+                self.deliver()
+            remote.assert_not_called()
+        self.assertFalse(self.journal.exists())
+
+    def test_upload_cli_refuses_incomplete_backup_before_connection(self):
+        report_path = self.backup / "preflight.json"
+        report = json.loads(report_path.read_text())
+        report["baseline"] = [item for item in report["baseline"] if item["path"] != "assets/old.js"]
+        report_path.write_text(json.dumps(report))
+        argv = ["scoped_upload.py", "upload", str(self.journal),
+                "--package", str(self.package), "--backup", str(self.backup)]
+        with patch.object(sys, "argv", argv), patch.object(upload, "FTP_TLS") as connect:
+            with self.assertRaisesRegex(ValueError, "static dependency missing"):
+                upload.main()
+            connect.assert_not_called()
 
     def test_upload_order_scope_and_conditional_recovery(self):
         old = copy.deepcopy(self.ftp.files)

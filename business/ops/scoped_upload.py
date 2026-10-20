@@ -14,7 +14,7 @@ import ssl
 from uuid import uuid4
 
 from scoped_delivery import SCOPE, checked_package, ftp_read, sha
-from scoped_transaction import checked_transaction
+from scoped_transaction import checked_preflight, checked_transaction
 
 
 def listing(ftp, directory):
@@ -79,23 +79,7 @@ def deliver(package, backup, ftp, journal, progress=None):
     package, backup, journal = Path(package), Path(backup), Path(journal)
     if journal.exists() or journal.with_suffix(".tmp").exists():
         raise ValueError("Use a fresh transaction journal")
-    report = json.loads((backup / "preflight.json").read_text(encoding="utf-8"))
-    if (report.get("status") != "read-only-preflight" or report.get("scope") != SCOPE or
-            report.get("packageManifestSha256") != sha((package / "manifest.json").read_bytes())):
-        raise ValueError("Preflight does not bind this package")
-    baseline = {}
-    for entry in report["baseline"]:
-        path = entry["path"]
-        if path not in ("index.html", SCOPE + "index.html") and not path.startswith(("assets/", SCOPE + "assets/")):
-            raise ValueError("Unsafe baseline path")
-        if ".." in path.split("/") or "\\" in path or path.startswith("/"):
-            raise ValueError("Unsafe baseline path")
-        body = (backup / "before" / path).read_bytes()
-        if sha(body) != entry["sha256"]:
-            raise ValueError("Recovery checksum mismatch")
-        baseline[path] = body
-    if not {"index.html", SCOPE + "index.html"} <= baseline.keys():
-        raise ValueError("Missing production baseline")
+    baseline = checked_preflight(package, backup)
     baseline_check(ftp, baseline, progress)
     entries = listing(ftp, SCOPE.rstrip("/"))
     if entries.get("index.html") != "file":
@@ -214,6 +198,8 @@ def main():
         # Refuse invalid local evidence before even opening an authenticated
         # production connection. recover checks again at its operation boundary.
         checked_transaction(args.package, args.backup, args.journal)
+    else:
+        checked_preflight(args.package, args.backup)
     with FTP_TLS(context=ssl.create_default_context(), timeout=30) as ftp:
         ftp.connect(os.environ["FTP_SERVER"], 21)
         ftp.login(os.environ["FTP_USERNAME"], os.environ["FTP_PASSWORD"])
