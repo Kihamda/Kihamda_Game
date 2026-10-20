@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "runId": "unity-20261020T0100-bb483ee1",
+  "fence": 56,
+  "pr": "https://github.com/Kihamda/Kihamda_Game/pull/28",
+  "head": "e2dcca07c99d2606b9647f2017cc563aebd287ea",
+  "ciRun": 39282780335,
+  "ciStatus": "queued",
+  "checks": [
+    "local TypeScript ESLint Vite9SSG43checksums",
+    "guide8 navigation/search SSR",
+    "business27",
+    "parent4HEADs match",
+    "333 prior events preserved",
+    "7 prior committed artifact hashes match",
+    "protected owner/oldcloud/handoff unchanged",
+    "full diff scope reviewed; no private/raw/recovery files"
+  ],
+  "localBrowser": {
+    "work": "MineRush",
+    "widths": [
+      390,
+      1280
+    ],
+    "normalNaturalWidth": 932,
+    "syntheticErrorStatus": true,
+    "keyboard": [
+      "Tab",
+      "Shift+Tab",
+      "Escape",
+      "Enter"
+    ],
+    "triggerFocusReturn": true,
+    "queryWebReturnFocus": "works",
+    "overflow": false,
+    "reloadReset": true
+  },
+  "unverified": [
+    "latest-head remote CI",
+    "exact CI package restoration/browser",
+    "real HTTP failure",
+    "physical touch",
+    "Safari",
+    "human evaluation",
+    "off-PC restoration"
+  ],
+  "publication": "PR only; no deployment or merge yet",
+  "nextStep": "T-web-daily-ci-integration-20261020: 既存PR28のhead e2dcca0に対するCI39282780335を確認し、CI成果物の復元390/1280受入後にhead指定マージする。CI待ちで未完了。新PRとslot再取得はしない。",
+  "recordedAt": "2026-10-20T01:12:03.234256+09:00",
+  "status": "partial; yielded; no merge",
+  "githubIncident": {
+    "url": "https://www.githubstatus.com/incidents/8tzbpcnl75jp",
+    "status": "investigating",
+    "startedAt": "2026-10-19T15:49:25Z",
+    "workflowDelayUpdate": "2026-10-19T15:56:34Z",
+    "directCauseOfThisQueue": "unconfirmed"
+  },
+  "artifacts": [
+    {
+      "path": "docs/web-daily-integration-20261020.md",
+      "sha256": "f7660ab24dfdc71c1e29f9a9f3c9d77f11b9978141882d7d895426f5c4b96139"
+    },
+    {
+      "path": "STATE.md",
+      "sha256": "93ed587d3acff46481f0c013377d19e4c602b8f4853764cb26e18d1337c205a7"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "a8082a3a4b728d05deac2bb4d0ea2bd588191b50d1896c8cf1fed2b78a29fc6e"
+    },
+    {
+      "path": "business/studio-policy.json",
+      "sha256": "d072f1218341e0eeb32b5fae66b46f8f03b07337a91c65bf49c3e0ad1b518620"
+    }
+  ]
+}

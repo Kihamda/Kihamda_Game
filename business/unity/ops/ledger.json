@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 337,
+  "revision": 374,
   "business_id": "game-site",
-  "fence": 56,
-  "lease": {
-    "run_id": "unity-20261020T0100-bb483ee1",
-    "task_id": "T-web-daily-ci-integration-20261020",
-    "fence": 56,
-    "expires_at": 1792427389.4897144
-  },
+  "fence": 62,
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -7756,7 +7751,7 @@
       "depends_on": [
         "T-web-preview-dialog-load-error"
       ],
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "task_id": "T-web-daily-ci-integration-20261020",
@@ -7791,6 +7786,227 @@
           "next_step": "latest-head CI, exact restored browser acceptance before guarded merge",
           "passed": false,
           "at": 1792425945.064752
+        },
+        {
+          "run_id": "unity-20261020T0100-bb483ee1",
+          "fence": 56,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/daily-integration-progress-20261020.json",
+              "sha256": "7730dc5e150e1899853d60d6211a6c3e25fa1f436e7e65c7a89a4ff15c271f9e"
+            }
+          ],
+          "checks": [
+            "local TypeScript ESLint Vite9SSG43checksums",
+            "guide8 navigation/search SSR",
+            "business27",
+            "parent4HEADs match",
+            "333 prior events preserved",
+            "7 prior committed artifact hashes match",
+            "protected owner/oldcloud/handoff unchanged",
+            "full diff scope reviewed; no private/raw/recovery files",
+            "current local browser390/1280 normal and synthetic error passed"
+          ],
+          "next_step": "Wait existing CI run; restore exact artifact and inspect390/1280 before guarded merge. Do not create another PR or rerun slot.",
+          "passed": false,
+          "at": 1792426210.3442945
+        },
+        {
+          "run_id": "unity-20261020T0100-bb483ee1",
+          "fence": 56,
+          "artifacts": [
+            {
+              "path": "docs/web-daily-integration-20261020.md",
+              "sha256": "f7660ab24dfdc71c1e29f9a9f3c9d77f11b9978141882d7d895426f5c4b96139"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "93ed587d3acff46481f0c013377d19e4c602b8f4853764cb26e18d1337c205a7"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "a8082a3a4b728d05deac2bb4d0ea2bd588191b50d1896c8cf1fed2b78a29fc6e"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "d072f1218341e0eeb32b5fae66b46f8f03b07337a91c65bf49c3e0ad1b518620"
+            },
+            {
+              "path": "business/unity/evidence/daily-integration-pending-20261020.json",
+              "sha256": "fd94a129406b04723209d6e66a6d400a1f5a4aae17970ba7bf67c75fd16ee871"
+            }
+          ],
+          "checks": [
+            "local TypeScript ESLint Vite9SSG43checksums",
+            "guide8 navigation/search SSR",
+            "business27",
+            "parent4HEADs match",
+            "333 prior events preserved",
+            "7 prior committed artifact hashes match",
+            "protected owner/oldcloud/handoff unchanged",
+            "full diff scope reviewed; no private/raw/recovery files",
+            "local390/1280 browser passed; remote CI still queued; no merge",
+            "official GitHub incident checked"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261020: 既存PR28のhead e2dcca0に対するCI39282780335を確認し、CI成果物の復元390/1280受入後にhead指定マージする。CI待ちで未完了。新PRとslot再取得はしない。",
+          "passed": false,
+          "at": 1792426323.2701333
+        },
+        {
+          "run_id": "unity-20261020T0100-bb483ee1",
+          "fence": 56,
+          "artifacts": [
+            {
+              "path": "docs/web-daily-integration-20261020.md",
+              "sha256": "f7660ab24dfdc71c1e29f9a9f3c9d77f11b9978141882d7d895426f5c4b96139"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "93ed587d3acff46481f0c013377d19e4c602b8f4853764cb26e18d1337c205a7"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "a8082a3a4b728d05deac2bb4d0ea2bd588191b50d1896c8cf1fed2b78a29fc6e"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "d072f1218341e0eeb32b5fae66b46f8f03b07337a91c65bf49c3e0ad1b518620"
+            },
+            {
+              "path": "business/unity/evidence/daily-integration-pending-20261020.json",
+              "sha256": "fd94a129406b04723209d6e66a6d400a1f5a4aae17970ba7bf67c75fd16ee871"
+            }
+          ],
+          "checks": [
+            "local TypeScript ESLint Vite9SSG43checksums",
+            "guide8 navigation/search SSR",
+            "business27",
+            "parent4HEADs match",
+            "333 prior events preserved",
+            "7 prior committed artifact hashes match",
+            "protected owner/oldcloud/handoff unchanged",
+            "full diff scope reviewed; no private/raw/recovery files",
+            "local390/1280 browser passed; remote CI still queued; no merge",
+            "official GitHub incident checked"
+          ],
+          "next_step": "T-web-daily-ci-integration-20261020: 既存PR28のhead e2dcca0に対するCI39282780335を確認し、CI成果物の復元390/1280受入後にhead指定マージする。CI待ちで未完了。新PRとslot再取得はしない。",
+          "passed": false,
+          "at": 1792426323.3217566
+        },
+        {
+          "run_id": "unity-20261020T0700-eba7fbfc",
+          "fence": 57,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-dialog-error-20261020.json",
+              "sha256": "4fcc1c5b1a315c7dec8b9a04c0ad2f8bc9fb73ba8ad5799e820d51bad537881d"
+            }
+          ],
+          "checks": [
+            "archiveSHA",
+            "valid and5 rejection tests",
+            "image4 byte matches",
+            "prior checkpoint hashes",
+            "parent4HEADs",
+            "340 event prefix preserved",
+            "protected files unchanged",
+            "full16path diff reviewed; no private/raw/recovery files",
+            "restored390/1280 normal/error keyboard/search passed"
+          ],
+          "next_step": "Verify latest PR28 head CI and guarded merge",
+          "at": 1792447362.0590866
+        },
+        {
+          "run_id": "unity-20261020T0700-eba7fbfc",
+          "fence": 57,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-dialog-error-final-20261020.json",
+              "sha256": "274913efa73e4d8fcd1da2277ef425b98d00529e74f267a377e834137d90ef8d"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "e481988446e555e04cda9003a485ffb9f757842ad4e73d3882bb5f7232969322"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "6841ebed226b489f6ba37bd097c6490ccefb9a396a20d2d54f95316328b4ac9f"
+            },
+            {
+              "path": "docs/web-daily-integration-20261020.md",
+              "sha256": "aaaab71fef3cfd782b49db1be0ed2e9ce2f7c47169202ff7d993ecb340deff5b"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "814b61551b12f24e8eba475a5d0dfb7a5e9af2c1cb9d6bd3e3135325b34ebe46"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-20-ci-restoration-before-merge.md",
+              "sha256": "b2b3144412ded46fbdd3da7929ceea7162e6b77c5366d39561fdc1c30ea38c4a"
+            }
+          ],
+          "checks": [
+            "archiveSHA",
+            "valid and5 rejection tests",
+            "image4 byte matches",
+            "prior checkpoint hashes",
+            "parent4HEADs",
+            "340 event prefix preserved",
+            "protected files unchanged",
+            "full16path diff reviewed; no private/raw/recovery files",
+            "restored390/1280 acceptance passed",
+            "latest head CI passed; guarded merge confirmed",
+            "07 blog draft only"
+          ],
+          "next_step": "PR28の日次統合は完了。現行CI保全版を保持し、既存Web入口の実測で具体的な品質問題が見つかった場合に同じWIP1で改善する。本日追加PR・記録だけのpushは行わない。実HTTP障害・実タッチ・Safari・人間評価は未確認。",
+          "passed": true,
+          "at": 1792447393.7430332
+        },
+        {
+          "run_id": "unity-20261020T0700-eba7fbfc",
+          "fence": 57,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/delivery-web-dialog-error-final-20261020.json",
+              "sha256": "274913efa73e4d8fcd1da2277ef425b98d00529e74f267a377e834137d90ef8d"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "e481988446e555e04cda9003a485ffb9f757842ad4e73d3882bb5f7232969322"
+            },
+            {
+              "path": "AGENTS.md",
+              "sha256": "6841ebed226b489f6ba37bd097c6490ccefb9a396a20d2d54f95316328b4ac9f"
+            },
+            {
+              "path": "docs/web-daily-integration-20261020.md",
+              "sha256": "aaaab71fef3cfd782b49db1be0ed2e9ce2f7c47169202ff7d993ecb340deff5b"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "814b61551b12f24e8eba475a5d0dfb7a5e9af2c1cb9d6bd3e3135325b34ebe46"
+            },
+            {
+              "path": "business/blog/drafts/2026-10-20-ci-restoration-before-merge.md",
+              "sha256": "b2b3144412ded46fbdd3da7929ceea7162e6b77c5366d39561fdc1c30ea38c4a"
+            }
+          ],
+          "checks": [
+            "archiveSHA",
+            "valid and5 rejection tests",
+            "image4 byte matches",
+            "prior checkpoint hashes",
+            "parent4HEADs",
+            "340 event prefix preserved",
+            "protected files unchanged",
+            "full16path diff reviewed; no private/raw/recovery files",
+            "restored390/1280 acceptance passed",
+            "latest head CI passed; guarded merge confirmed",
+            "07 blog draft only"
+          ],
+          "next_step": "PR28の日次統合は完了。現行CI保全版を保持し、既存Web入口の実測で具体的な品質問題が見つかった場合に同じWIP1で改善する。本日追加PR・記録だけのpushは行わない。実HTTP障害・実タッチ・Safari・人間評価は未確認。",
+          "passed": true,
+          "at": 1792447393.79381
         }
       ],
       "claims": [
@@ -7799,6 +8015,12 @@
           "task_id": "T-web-daily-ci-integration-20261020",
           "fence": 56,
           "expires_at": 1792427389.4897144
+        },
+        {
+          "run_id": "unity-20261020T0700-eba7fbfc",
+          "task_id": "T-web-daily-ci-integration-20261020",
+          "fence": 57,
+          "expires_at": 1792449027.5515761
         }
       ]
     },
@@ -8005,6 +8227,634 @@
           "expires_at": 1792405542.7757635
         }
       ]
+    },
+    "T-web-page-discovery-20261020": {
+      "id": "T-web-page-discovery-20261020",
+      "objective": "既存Web入口のページ識別情報を一次資料と照合する",
+      "acceptance": [
+        "9ポータルページのtitle・description・canonical・OGが重複なく内容と一致",
+        "実ブラウザで作品詳細・案内・戻る・再読込後にページ情報と検索条件が一致",
+        "release=nullと現在のCI保全索引を維持、未観測需要を成果にしない"
+      ],
+      "outputs": [
+        "business/unity/research/2026-10-20-page-discovery.md",
+        "business/unity/evidence/page-discovery-20261020-1300.json"
+      ],
+      "checks": [
+        "生成済み9ページのHTML照合",
+        "実ブラウザ390/1280の往復・再読込",
+        "親4元commit照合",
+        "台帳チェーンと保護対象差分確認"
+      ],
+      "next_step": "実際の不一致があれば同じ工程で修正、なければ保全して観測待ち",
+      "decision_id": "D-web-page-discovery-20261020",
+      "experiment_id": "E-unity-portal",
+      "pdca": "check",
+      "hypothesis": "ページごとのタイトルと説明・正規URLが内容と一致すれば検索と往復で作品を区別できる。流入改善は未観測。",
+      "source": "user:automation:2026-10-20:13-primary-research",
+      "priority": 1,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261020T1300-06077b21",
+          "fence": 58,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-20-page-discovery.md",
+              "sha256": "fecac3a977a12dba6cbcd2772268ef420b4ae9665adbabf7b9389f36b389b3df"
+            },
+            {
+              "path": "business/unity/evidence/page-discovery-20261020-1300.json",
+              "sha256": "970e675f1699ee4eab561a2719742a5ce5084dc1780ca50a7c32656a4d7840a8"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "d0f01aaf6f95a22217416b946c3e6a17a2cb70c55a98eeada9393977e2fcd0f3"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "4ef5f68edd89c5228abd1a47ac0d9fc38b61667277d1121828d0e1f6177a3e33"
+            }
+          ],
+          "checks": [
+            "9 restored CI page metadata accepted",
+            "390/1280 detail-info-back-reload-query accepted",
+            "archive SHA and parent4 HEADs matched",
+            "27 business tests passed",
+            "345 prior events and protected files preserved",
+            "no app change; current retention preserved"
+          ],
+          "next_step": "19時枠で既存Web入口の実観測と具体的な品質問題を照合する。今回のページ情報検査は完了。不一致や観測なしに新工程を追加せず、本日追加PR・記録だけのpushは行わない。",
+          "passed": true,
+          "at": 1792469068.6290934
+        },
+        {
+          "run_id": "unity-20261020T1300-06077b21",
+          "fence": 58,
+          "artifacts": [
+            {
+              "path": "business/unity/research/2026-10-20-page-discovery.md",
+              "sha256": "fecac3a977a12dba6cbcd2772268ef420b4ae9665adbabf7b9389f36b389b3df"
+            },
+            {
+              "path": "business/unity/evidence/page-discovery-20261020-1300.json",
+              "sha256": "970e675f1699ee4eab561a2719742a5ce5084dc1780ca50a7c32656a4d7840a8"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "d0f01aaf6f95a22217416b946c3e6a17a2cb70c55a98eeada9393977e2fcd0f3"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "4ef5f68edd89c5228abd1a47ac0d9fc38b61667277d1121828d0e1f6177a3e33"
+            }
+          ],
+          "checks": [
+            "9 restored CI page metadata accepted",
+            "390/1280 detail-info-back-reload-query accepted",
+            "archive SHA and parent4 HEADs matched",
+            "27 business tests passed",
+            "345 prior events and protected files preserved",
+            "no app change; current retention preserved"
+          ],
+          "next_step": "19時枠で既存Web入口の実観測と具体的な品質問題を照合する。今回のページ情報検査は完了。不一致や観測なしに新工程を追加せず、本日追加PR・記録だけのpushは行わない。",
+          "passed": true,
+          "at": 1792469068.680314
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261020T1300-06077b21",
+          "task_id": "T-web-page-discovery-20261020",
+          "fence": 58,
+          "expires_at": 1792470401.940195
+        }
+      ]
+    },
+    "T-context-delivery-20261020": {
+      "id": "T-context-delivery-20261020",
+      "objective": "定期起動を短文化し現行規約と必要履歴から自律判断する流れを構築",
+      "acceptance": [
+        "固定promptに完了済み工程や判断履歴を含めない",
+        "台帳整合性を検証し未完了タスクとcheckpointを選択表示、指定時のみ関連判断を取得",
+        "既存履歴を保全し現行規約・状態・日次実デプロイ目標を分離",
+        "既存定期実行の時刻・モデル・通知を保持して更新し読戻す"
+      ],
+      "outputs": [
+        "AGENTS.md",
+        "docs/autonomous-workflow.md",
+        "docs/coding-conventions.md",
+        "business/ops/context.py"
+      ],
+      "checks": [
+        "コンテキスト選択・破損拒否・履歴保全テスト",
+        "台帳回帰とリポジトリ検査",
+        "定期設定読戻し"
+      ],
+      "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する",
+      "decision_id": "D-context-delivery-20261020",
+      "experiment_id": "E-unity-portal",
+      "pdca": "do",
+      "hypothesis": "必要情報の選択読込で制作と配信の進行を改善",
+      "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+      "priority": 1,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "manual-context-delivery-20261020",
+          "fence": 59,
+          "artifacts": [
+            {
+              "path": "AGENTS.md",
+              "sha256": "44fdb048f2fdb85ee5d517a2ce8a841d10730c7f610d8f95f82fe339411ba7e4"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "17162deefa3f372777572ebeff30ac73ac772505a7eb21ed85b394a881bc2dd6"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "8111aedf09c9fff09dc973f5e46f77c807f7147f4dabe8f0ec34461b7ed18134"
+            },
+            {
+              "path": "business/ops/context.py",
+              "sha256": "fdb360e0d1b17b1f55e7e4b59a7cf2a4adc9f5b3289a99381e370812b6be9fac"
+            },
+            {
+              "path": "business/tests/test_context.py",
+              "sha256": "9516a9a90c97934f524207b0c31a89d6324492739d91f3079ffce0c8c25300c7"
+            },
+            {
+              "path": "docs/autonomous-workflow.md",
+              "sha256": "80cd4d488634419a2d45a88ef8409c0bddbbcec3699f74e30e15cc4e9bc18293"
+            },
+            {
+              "path": "docs/coding-conventions.md",
+              "sha256": "e13d869b24b6d2da641543838520132ca63d599811eb1479a0b6fcfd6f1061f0"
+            },
+            {
+              "path": "docs/context-delivery-20261020.md",
+              "sha256": "a6b756fe3d20dcbc34c718373763c6cf0694e6da1a4a06a9ed5ee505d49c014a"
+            },
+            {
+              "path": "docs/history/context-migration-20261020.json",
+              "sha256": "69f953bbdf82b5e5d52be8196f695c5551daf823f4d216d197f4d7d9b9383493"
+            },
+            {
+              "path": "business/unity/evidence/context-delivery-20261020.json",
+              "sha256": "2dd2de2b934646937696a1f6253a468b2c7c5e1ee7b15a70a4f3bdd4e68e8636"
+            }
+          ],
+          "checks": [
+            "34 business tests passed",
+            "npm run check passed",
+            "automation updated via app and readback verified: 3724 to 177 chars; schedule/model/notifications/target preserved",
+            "351 prior events and exact original archives preserved",
+            "owner instructions, legacy ledger and releases unchanged",
+            "read AGENTS, coding conventions, TypeScript/ESLint configs, canonical task and selected checkpoint; no unrelated decision replay",
+            "full diff reviewed; no public deployment"
+          ],
+          "next_step": "T-web-scoped-production-delivery-20261020で既存1作品の配信先と依存アセットを照合し、他作品とトップを置換しない最小配信を検証して実デプロイへ進める。",
+          "passed": true,
+          "at": 1792481267.9171221
+        },
+        {
+          "run_id": "manual-context-delivery-20261020",
+          "fence": 59,
+          "artifacts": [
+            {
+              "path": "AGENTS.md",
+              "sha256": "44fdb048f2fdb85ee5d517a2ce8a841d10730c7f610d8f95f82fe339411ba7e4"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "17162deefa3f372777572ebeff30ac73ac772505a7eb21ed85b394a881bc2dd6"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "8111aedf09c9fff09dc973f5e46f77c807f7147f4dabe8f0ec34461b7ed18134"
+            },
+            {
+              "path": "business/ops/context.py",
+              "sha256": "fdb360e0d1b17b1f55e7e4b59a7cf2a4adc9f5b3289a99381e370812b6be9fac"
+            },
+            {
+              "path": "business/tests/test_context.py",
+              "sha256": "9516a9a90c97934f524207b0c31a89d6324492739d91f3079ffce0c8c25300c7"
+            },
+            {
+              "path": "docs/autonomous-workflow.md",
+              "sha256": "80cd4d488634419a2d45a88ef8409c0bddbbcec3699f74e30e15cc4e9bc18293"
+            },
+            {
+              "path": "docs/coding-conventions.md",
+              "sha256": "e13d869b24b6d2da641543838520132ca63d599811eb1479a0b6fcfd6f1061f0"
+            },
+            {
+              "path": "docs/context-delivery-20261020.md",
+              "sha256": "a6b756fe3d20dcbc34c718373763c6cf0694e6da1a4a06a9ed5ee505d49c014a"
+            },
+            {
+              "path": "docs/history/context-migration-20261020.json",
+              "sha256": "69f953bbdf82b5e5d52be8196f695c5551daf823f4d216d197f4d7d9b9383493"
+            },
+            {
+              "path": "business/unity/evidence/context-delivery-20261020.json",
+              "sha256": "2dd2de2b934646937696a1f6253a468b2c7c5e1ee7b15a70a4f3bdd4e68e8636"
+            }
+          ],
+          "checks": [
+            "34 business tests passed",
+            "npm run check passed",
+            "automation updated via app and readback verified: 3724 to 177 chars; schedule/model/notifications/target preserved",
+            "351 prior events and exact original archives preserved",
+            "owner instructions, legacy ledger and releases unchanged",
+            "read AGENTS, coding conventions, TypeScript/ESLint configs, canonical task and selected checkpoint; no unrelated decision replay",
+            "full diff reviewed; no public deployment"
+          ],
+          "next_step": "T-web-scoped-production-delivery-20261020で既存1作品の配信先と依存アセットを照合し、他作品とトップを置換しない最小配信を検証して実デプロイへ進める。",
+          "passed": true,
+          "at": 1792481267.9712138
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "manual-context-delivery-20261020",
+          "task_id": "T-context-delivery-20261020",
+          "fence": 59,
+          "expires_at": 1792482675.1594555
+        }
+      ]
+    },
+    "T-web-scoped-production-delivery-20261020": {
+      "id": "T-web-scoped-production-delivery-20261020",
+      "objective": "既存Web1作品と必要アセットだけの配信経路を整え実デプロイする",
+      "acceptance": [
+        "本番の現行版と対象作品・共有アセット・配信先を照合し、トップや対象外作品を置換・削除しない",
+        "同版の必要検査・CI・復元元・SHA-256を照合し既存許可範囲の配信を行う",
+        "配信URLで版・起動・代表入力・保存と再読み込みを確認してから実デプロイ成功を記録。未確認や障害は具体的な証跡を残し成功としない"
+      ],
+      "outputs": [
+        "docs/web-scoped-production-delivery.md",
+        "business/unity/evidence/scoped-production-delivery.json"
+      ],
+      "checks": [
+        "現行本番と配信対象一覧の照合",
+        "必要検査とCI版・ハッシュ・復元の照合",
+        "配信後HTTP・版・実ブラウザ動作"
+      ],
+      "next_step": "既存CI保全索引と対象作品の本番HTML・依存アセットを調べ、最小の配信対象を確定する",
+      "decision_id": "D-context-delivery-20261020",
+      "experiment_id": "E-unity-portal",
+      "pdca": "do",
+      "hypothesis": "既存許可領域の最小配信なら全体置換を避けて検証済み改善を利用者へ届けられる",
+      "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+      "priority": 1,
+      "status": "ready",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261020T1900-scoped",
+          "fence": 60,
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_delivery.py",
+              "sha256": "7a48caf6a26f1155e6b0ad96d86b007d123711b2640834140cbb78afdbf4cf9a"
+            },
+            {
+              "path": "business/tests/test_scoped_delivery.py",
+              "sha256": "250adb0eb0b1c5d26d976f3f188005fb4a8c068652334e8c3c8d45f3671c2a21"
+            },
+            {
+              "path": "scripts/build-scoped-minerush.mjs",
+              "sha256": "84f9478c3fb80704a8dbce085baa5affaa84c8bf8e43caea771f3c2e4f7f1df2"
+            },
+            {
+              "path": "web/scoped/minerush/index.html",
+              "sha256": "bc65bda8b1780765ea092bed7823d534bc28f7157867958db5eb1fefeb1ae9c7"
+            },
+            {
+              "path": "web/src/standalone/minerush.tsx",
+              "sha256": "be76edeedf0ae4b5129f2e18a7c543bbbe57fa4933fb6f89c9a449e22a681421"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "e20a75307abda616b09869280a8cfe64ac15628f0e4a3518143f9e49cc3ed9fe"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "4adb490e8013e23c2a2435fedb7446ed9be02eaef6ca34dcbdaa0768bed4f7fd"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-delivery.json",
+              "sha256": "09ed7ff256133a768b802b40259e0d575196ec5aab7a215a0e14a35bd348dda1"
+            }
+          ],
+          "checks": [
+            "repository contract passed; TypeScript/ESLint/build passed; 9 SSG pages/43 files verified",
+            "existing MineRush input regression passed",
+            "42 business tests passed including 8 new scoped delivery tests; fake FTP RETR only",
+            "uncommitted-source build refused before output creation",
+            "final committed-source package verified; HTML/JS/CSS match provisional browser-tested bytes",
+            "desktop real-browser click/reveal, flag mode, ArrowRight/F on unopened cell, reload reset passed; final package opened",
+            "production root/MineRush/privacy/contact/about HTTP200; sw.js install/activate only",
+            "original359 ledger events preserved; owner/old cloud/handoff unchanged",
+            "Read current instructions/policy/conventions/workflow and context --task; selected deployment/game/router/package evidence. Workflow hashes retained in receipt; hidden paths excluded from checkpoint contract."
+          ],
+          "next_step": "Integrate scoped build in next daily CI, run main read-only preflight and match FTP root/backup; then implement confined upload/rollback and verify real production before release.",
+          "unverified": [
+            "remote CI of scoped candidate",
+            "actual FTPS root and permissions",
+            "complete old dynamic dependency recovery",
+            "scoped uploader and rollback implementation",
+            "mobile width, real touch, Safari",
+            "production upload and post-delivery browser acceptance"
+          ],
+          "at": 1792491184.510294
+        },
+        {
+          "run_id": "unity-20261020T1900-scoped",
+          "fence": 60,
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_delivery.py",
+              "sha256": "7a48caf6a26f1155e6b0ad96d86b007d123711b2640834140cbb78afdbf4cf9a"
+            },
+            {
+              "path": "business/tests/test_scoped_delivery.py",
+              "sha256": "250adb0eb0b1c5d26d976f3f188005fb4a8c068652334e8c3c8d45f3671c2a21"
+            },
+            {
+              "path": "scripts/build-scoped-minerush.mjs",
+              "sha256": "84f9478c3fb80704a8dbce085baa5affaa84c8bf8e43caea771f3c2e4f7f1df2"
+            },
+            {
+              "path": "web/scoped/minerush/index.html",
+              "sha256": "bc65bda8b1780765ea092bed7823d534bc28f7157867958db5eb1fefeb1ae9c7"
+            },
+            {
+              "path": "web/src/standalone/minerush.tsx",
+              "sha256": "be76edeedf0ae4b5129f2e18a7c543bbbe57fa4933fb6f89c9a449e22a681421"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "e20a75307abda616b09869280a8cfe64ac15628f0e4a3518143f9e49cc3ed9fe"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "4adb490e8013e23c2a2435fedb7446ed9be02eaef6ca34dcbdaa0768bed4f7fd"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-delivery.json",
+              "sha256": "09ed7ff256133a768b802b40259e0d575196ec5aab7a215a0e14a35bd348dda1"
+            }
+          ],
+          "checks": [
+            "repository contract passed; TypeScript/ESLint/build passed; 9 SSG pages/43 files verified",
+            "existing MineRush input regression passed",
+            "42 business tests passed including 8 new scoped delivery tests; fake FTP RETR only",
+            "uncommitted-source build refused before output creation",
+            "final committed-source package verified; HTML/JS/CSS match provisional browser-tested bytes",
+            "desktop real-browser click/reveal, flag mode, ArrowRight/F on unopened cell, reload reset passed; final package opened",
+            "production root/MineRush/privacy/contact/about HTTP200; sw.js install/activate only",
+            "original359 ledger events preserved; owner/old cloud/handoff unchanged",
+            "Read current instructions/policy/conventions/workflow and context --task; selected deployment/game/router/package evidence. Workflow hashes retained in receipt; hidden paths excluded from checkpoint contract."
+          ],
+          "next_step": "Integrate scoped build in next daily CI, run main read-only preflight and match FTP root/backup; then implement confined upload/rollback and verify real production before release.",
+          "unverified": [
+            "remote CI of scoped candidate",
+            "actual FTPS root and permissions",
+            "complete old dynamic dependency recovery",
+            "scoped uploader and rollback implementation",
+            "mobile width, real touch, Safari",
+            "production upload and post-delivery browser acceptance"
+          ],
+          "at": 1792491184.5534246
+        },
+        {
+          "run_id": "unity-20261020T2255-recovery",
+          "fence": 61,
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_delivery.py",
+              "sha256": "c9de841986429609bc40a91e47d436e71c2766a6724707bf94cfe811fb09857e"
+            },
+            {
+              "path": "business/tests/test_scoped_delivery.py",
+              "sha256": "52fa9c8a0228791c886eb43bb2fce49676883437535b42441cddc26ad62f6e6b"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "ad6b251e1ebf122a6464467cab213bed5d21ff5ca86410a843565cd6ec253396"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "b3bdb0bb4a94504ea09332e182d2010839765cc1f838d2af8d3d181dead8d8cc"
+            },
+            {
+              "path": "business/unity/evidence/scoped-recovery-20261020-2255.json",
+              "sha256": "9514653dd9287593d55c57b5c3a43f3580c46f1105b1042a076116706437e788"
+            }
+          ],
+          "checks": [
+            "49 business tests passed",
+            "repository contract passed: 4 preserved entries, 19 GUIDs",
+            "existing four-file scoped package verified",
+            "original363 events preserved; three protected paths unchanged in Git",
+            "Read current AGENTS/owner/STATE/policy/conventions/workflow, selected context and scoped source/tests/workflow only",
+            "HTTPS-only live static graph:208 files/1462036 bytes; no production writes; initial literal extraction false positives fixed and regression tested",
+            "No Web source changes; no redundant Web build or browser rerun"
+          ],
+          "next_step": "Integrate scoped candidate in next daily batch, verify exact-head CI and main read-only FTPS root/recovery; then implement and test confined upload/rollback before production acceptance.",
+          "unverified": [
+            "computed URLs and dependencies outside shared assets",
+            "remote CI and FTPS root",
+            "550 ambiguity",
+            "scoped upload and rollback",
+            "production gameplay after delivery"
+          ],
+          "at": 1792504747.1198814
+        },
+        {
+          "run_id": "unity-20261020T2255-recovery",
+          "fence": 61,
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_delivery.py",
+              "sha256": "c9de841986429609bc40a91e47d436e71c2766a6724707bf94cfe811fb09857e"
+            },
+            {
+              "path": "business/tests/test_scoped_delivery.py",
+              "sha256": "52fa9c8a0228791c886eb43bb2fce49676883437535b42441cddc26ad62f6e6b"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "ad6b251e1ebf122a6464467cab213bed5d21ff5ca86410a843565cd6ec253396"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "b3bdb0bb4a94504ea09332e182d2010839765cc1f838d2af8d3d181dead8d8cc"
+            },
+            {
+              "path": "business/unity/evidence/scoped-recovery-20261020-2255.json",
+              "sha256": "9514653dd9287593d55c57b5c3a43f3580c46f1105b1042a076116706437e788"
+            }
+          ],
+          "checks": [
+            "49 business tests passed",
+            "repository contract passed: 4 preserved entries, 19 GUIDs",
+            "existing four-file scoped package verified",
+            "original363 events preserved; three protected paths unchanged in Git",
+            "Read current AGENTS/owner/STATE/policy/conventions/workflow, selected context and scoped source/tests/workflow only",
+            "HTTPS-only live static graph:208 files/1462036 bytes; no production writes; initial literal extraction false positives fixed and regression tested",
+            "No Web source changes; no redundant Web build or browser rerun"
+          ],
+          "next_step": "Integrate scoped candidate in next daily batch, verify exact-head CI and main read-only FTPS root/recovery; then implement and test confined upload/rollback before production acceptance.",
+          "unverified": [
+            "computed URLs and dependencies outside shared assets",
+            "remote CI and FTPS root",
+            "550 ambiguity",
+            "scoped upload and rollback",
+            "production gameplay after delivery"
+          ],
+          "at": 1792504747.1691282
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261020T1900-scoped",
+          "task_id": "T-web-scoped-production-delivery-20261020",
+          "fence": 60,
+          "expires_at": 1792492460.4150462
+        },
+        {
+          "run_id": "unity-20261020T2255-recovery",
+          "task_id": "T-web-scoped-production-delivery-20261020",
+          "fence": 61,
+          "expires_at": 1792506355.9849544
+        }
+      ]
+    },
+    "T-full-work-session-20261020": {
+      "id": "T-full-work-session-20261020",
+      "objective": "定期実行が短い確認やcheckpointで終了しない継続条件を整える",
+      "acceptance": [
+        "原則25分制作・検証、最後5分保存を明示",
+        "一区切り・当日PRマージ済み・CI待ちだけでは終了しない",
+        "早期終了には具体的障害と独立作業を進められない理由と実時間を記録",
+        "短い定期promptと既存配信タスクを維持"
+      ],
+      "outputs": [
+        "AGENTS.md",
+        "docs/autonomous-workflow.md",
+        "business/studio-policy.json"
+      ],
+      "checks": [
+        "現行3規約の整合",
+        "台帳イベント保全",
+        "差分とリポジトリ契約"
+      ],
+      "next_step": "規約と現在欄へ反映し保存",
+      "decision_id": "D-full-work-session-20261020",
+      "experiment_id": "E-unity-portal",
+      "pdca": "act",
+      "hypothesis": "継続判断を明確化し実制作時間を確保する",
+      "source": "user:current-thread:2026-10-20:use-full-work-session",
+      "priority": 0,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "manual-full-work-session-20261020",
+          "fence": 62,
+          "artifacts": [
+            {
+              "path": "AGENTS.md",
+              "sha256": "0de8dfeff32c16e9f3682e5fec5fc78a93697e11064e03602fc7d39e1c2884ba"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "8dcb8e42b0ade7fe8ac7a16bd4f5b4d59c19fb4cfefa9f790bd9e3db10f9d09f"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "e75141f0380c43a031bc4ca41449d23f5afcb50d3a4331fab80a85c4d2674e7f"
+            },
+            {
+              "path": "docs/autonomous-workflow.md",
+              "sha256": "9a0295e22598fb0875056fcd9c0722de32e169339b4d4cb391656d020db73812"
+            },
+            {
+              "path": "docs/context-delivery-20261020.md",
+              "sha256": "6dc96634b46d9f0ac28e9843ea1478351e9a010d8df8cba08c6f8c95fe7b380c"
+            }
+          ],
+          "checks": [
+            "npm run check passed",
+            "git diff --check passed",
+            "367 prior events preserved; existing delivery task remains ready",
+            "AGENTS, workflow and policy align:25 productive minutes plus5 saving; no partial-result early exit",
+            "short automation prompt unchanged; no code change requiring repeated gameplay tests"
+          ],
+          "next_step": "既存T-web-scoped-production-delivery-20261020を新しい定期枠の継続条件で進め、次回の開始・終了・経過時間と終了理由を記録する",
+          "passed": true,
+          "work_session": {
+            "started_at": "2026-10-20T14:01:20.322290+00:00",
+            "ended_at": "2026-10-20T14:02:07.766863+00:00",
+            "elapsed_seconds": 47.44,
+            "exit_reason": "manual policy-correction request completed; scheduled development time budget does not apply"
+          },
+          "at": 1792504927.8048465
+        },
+        {
+          "run_id": "manual-full-work-session-20261020",
+          "fence": 62,
+          "artifacts": [
+            {
+              "path": "AGENTS.md",
+              "sha256": "0de8dfeff32c16e9f3682e5fec5fc78a93697e11064e03602fc7d39e1c2884ba"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "8dcb8e42b0ade7fe8ac7a16bd4f5b4d59c19fb4cfefa9f790bd9e3db10f9d09f"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "e75141f0380c43a031bc4ca41449d23f5afcb50d3a4331fab80a85c4d2674e7f"
+            },
+            {
+              "path": "docs/autonomous-workflow.md",
+              "sha256": "9a0295e22598fb0875056fcd9c0722de32e169339b4d4cb391656d020db73812"
+            },
+            {
+              "path": "docs/context-delivery-20261020.md",
+              "sha256": "6dc96634b46d9f0ac28e9843ea1478351e9a010d8df8cba08c6f8c95fe7b380c"
+            }
+          ],
+          "checks": [
+            "npm run check passed",
+            "git diff --check passed",
+            "367 prior events preserved; existing delivery task remains ready",
+            "AGENTS, workflow and policy align:25 productive minutes plus5 saving; no partial-result early exit",
+            "short automation prompt unchanged; no code change requiring repeated gameplay tests"
+          ],
+          "next_step": "既存T-web-scoped-production-delivery-20261020を新しい定期枠の継続条件で進め、次回の開始・終了・経過時間と終了理由を記録する",
+          "passed": true,
+          "work_session": {
+            "started_at": "2026-10-20T14:01:20.322290+00:00",
+            "ended_at": "2026-10-20T14:02:07.766863+00:00",
+            "elapsed_seconds": 47.44,
+            "exit_reason": "manual policy-correction request completed; scheduled development time budget does not apply"
+          },
+          "at": 1792504927.905196
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "manual-full-work-session-20261020",
+          "task_id": "T-full-work-session-20261020",
+          "fence": 62,
+          "expires_at": 1792506680.3761592
+        }
+      ]
     }
   },
   "decisions": {
@@ -8206,6 +9056,24 @@
         "business/unity/evidence/preview-dialog-error-20261019-0700.json",
         "business/unity/research/2026-10-19-distribution-scope.md"
       ]
+    },
+    "D-web-page-discovery-20261020": {
+      "id": "D-web-page-discovery-20261020",
+      "source": "https://developers.google.com/search/docs/appearance/title-link",
+      "hypothesis": "ページごとのタイトルと説明・正規URLが内容と一致すれば検索と往復で作品を区別できる。流入改善は未観測。",
+      "next_step": "既存9ページの生成HTMLと実ブラウザ往復で照合し、実在する差異だけ修正する"
+    },
+    "D-context-delivery-20261020": {
+      "id": "D-context-delivery-20261020",
+      "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+      "hypothesis": "短い起動指示と現行規約・正本台帳の選択読込で判断の重複を減らし、検証済み改善の実デプロイを一日一回目安で進める",
+      "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する"
+    },
+    "D-full-work-session-20261020": {
+      "id": "D-full-work-session-20261020",
+      "source": "user:current-thread:2026-10-20:use-full-work-session",
+      "hypothesis": "時間上限だけでなく継続条件・保存開始・早期終了理由を定めると、短い確認だけで終了する運用を減らせる",
+      "next_step": "現行手順とpolicyを修正し既存配信工程を保持する"
     }
   },
   "runs": {
@@ -8588,8 +9456,47 @@
       "scheduled_at": "2026-10-20T01:00:00+09:00",
       "run_id": "unity-20261020T0100-bb483ee1",
       "source": "scheduled:game-site:2026-10-20T01:00:00+09:00",
-      "status": "open",
+      "status": "checkpointed",
       "started_at": 1792425889.3344054
+    },
+    "unity-20261020T0700-eba7fbfc": {
+      "run_id": "unity-20261020T0700-eba7fbfc",
+      "scheduled_at": "2026-10-20T07:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-20T07:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792447227.4424274
+    },
+    "unity-20261020T1300-06077b21": {
+      "run_id": "unity-20261020T1300-06077b21",
+      "scheduled_at": "2026-10-20T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-20T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792468843.9387498
+    },
+    "manual-context-delivery-20261020": {
+      "run_id": "manual-context-delivery-20261020",
+      "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+      "status": "completed",
+      "started_at": 1792480875.1086485
+    },
+    "unity-20261020T1900-scoped": {
+      "scheduled_at": "2026-10-20T19:00:00+09:00",
+      "run_id": "unity-20261020T1900-scoped",
+      "source": "scheduled:game-site:2026-10-20T19:00:00+09:00",
+      "status": "checkpointed",
+      "started_at": 1792490660.333541
+    },
+    "unity-20261020T2255-recovery": {
+      "run_id": "unity-20261020T2255-recovery",
+      "source": "user:automation:unity:2026-10-20:continuation-outside-slot",
+      "status": "checkpointed",
+      "started_at": 1792504555.943954
+    },
+    "manual-full-work-session-20261020": {
+      "run_id": "manual-full-work-session-20261020",
+      "source": "user:current-thread:2026-10-20:use-full-work-session",
+      "status": "completed",
+      "started_at": 1792504880.3222902
     }
   },
   "experiments": {
@@ -8825,7 +9732,10 @@
     "2026-10-19T07:00:00+09:00": "unity-20261019T0700-c1b88b7e",
     "2026-10-19T13:00:00+09:00": "unity-20261019T1300-e74c926c",
     "2026-10-19T19:00:00+09:00": "unity-20261019T1900-cb67b470",
-    "2026-10-20T01:00:00+09:00": "unity-20261020T0100-bb483ee1"
+    "2026-10-20T01:00:00+09:00": "unity-20261020T0100-bb483ee1",
+    "2026-10-20T07:00:00+09:00": "unity-20261020T0700-eba7fbfc",
+    "2026-10-20T13:00:00+09:00": "unity-20261020T1300-06077b21",
+    "2026-10-20T19:00:00+09:00": "unity-20261020T1900-scoped"
   },
   "feedback": [
     {
@@ -8839,6 +9749,18 @@
       "message": "毎回６分程度しか働いていませんね。なんでもアクセスできるのだからもっと自律的に仕事してください。このリポジトリなら何でもアクセスしてもらって構いません。(勝手にPR通したりも)",
       "next_step": "Implement existing navigation task, validate and publish/merge checked PR",
       "at": 1791816143.6773832
+    },
+    {
+      "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+      "message": "良い感じに開発してますね。続行していってください意思決定の裁量もどんどん上げていっていいですからね。デプロイ頻度を上げましょう。一日一個目安。ただ、定期実行のたびにクソ長promptが送られてるのは気になります。実行時に、不要な意思決定の履歴を見ずに、適宜何を見ないといけないのかを判断させて、正規の履歴からちゃんと読ませ、ちゃんとコーディング規約を見せ、自分で分析する流れを構築してください",
+      "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する",
+      "at": 1792480874.954525
+    },
+    {
+      "source": "user:current-thread:2026-10-20:use-full-work-session",
+      "message": "３０分動かずに５分とかで終わっちゃうんだよね",
+      "next_step": "定期枠を原則25分の制作・検証と5分の保存へ変更し、早期yieldの条件と実稼働時間の記録を明確にする",
+      "at": 1792504880.1636946
     }
   ],
   "approvals": [
@@ -20894,7 +21816,1258 @@
       },
       "previous": "09371c1f733aafcdc7bb134db9573dee73b1a1b4f39e357d6ee177f1dfd3813e",
       "sha256": "0fdfa006047062d4026067148c013ed7a990286e0591090a8b1109d0666ca624"
+    },
+    {
+      "revision": 338,
+      "at": 1792426210.3442945,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T0100-bb483ee1",
+        "fence": 56,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/daily-integration-progress-20261020.json",
+            "sha256": "7730dc5e150e1899853d60d6211a6c3e25fa1f436e7e65c7a89a4ff15c271f9e"
+          }
+        ],
+        "checks": [
+          "local TypeScript ESLint Vite9SSG43checksums",
+          "guide8 navigation/search SSR",
+          "business27",
+          "parent4HEADs match",
+          "333 prior events preserved",
+          "7 prior committed artifact hashes match",
+          "protected owner/oldcloud/handoff unchanged",
+          "full diff scope reviewed; no private/raw/recovery files",
+          "current local browser390/1280 normal and synthetic error passed"
+        ],
+        "next_step": "Wait existing CI run; restore exact artifact and inspect390/1280 before guarded merge. Do not create another PR or rerun slot.",
+        "passed": false
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "0fdfa006047062d4026067148c013ed7a990286e0591090a8b1109d0666ca624",
+      "sha256": "91b17e9db85e17e5c228449f174b08fb195faae1b07ceb41b724286b98be0521"
+    },
+    {
+      "revision": 339,
+      "at": 1792426323.2701333,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T0100-bb483ee1",
+        "fence": 56,
+        "artifacts": [
+          {
+            "path": "docs/web-daily-integration-20261020.md",
+            "sha256": "f7660ab24dfdc71c1e29f9a9f3c9d77f11b9978141882d7d895426f5c4b96139"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "93ed587d3acff46481f0c013377d19e4c602b8f4853764cb26e18d1337c205a7"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "a8082a3a4b728d05deac2bb4d0ea2bd588191b50d1896c8cf1fed2b78a29fc6e"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "d072f1218341e0eeb32b5fae66b46f8f03b07337a91c65bf49c3e0ad1b518620"
+          },
+          {
+            "path": "business/unity/evidence/daily-integration-pending-20261020.json",
+            "sha256": "fd94a129406b04723209d6e66a6d400a1f5a4aae17970ba7bf67c75fd16ee871"
+          }
+        ],
+        "checks": [
+          "local TypeScript ESLint Vite9SSG43checksums",
+          "guide8 navigation/search SSR",
+          "business27",
+          "parent4HEADs match",
+          "333 prior events preserved",
+          "7 prior committed artifact hashes match",
+          "protected owner/oldcloud/handoff unchanged",
+          "full diff scope reviewed; no private/raw/recovery files",
+          "local390/1280 browser passed; remote CI still queued; no merge",
+          "official GitHub incident checked"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261020: 既存PR28のhead e2dcca0に対するCI39282780335を確認し、CI成果物の復元390/1280受入後にhead指定マージする。CI待ちで未完了。新PRとslot再取得はしない。",
+        "passed": false
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "91b17e9db85e17e5c228449f174b08fb195faae1b07ceb41b724286b98be0521",
+      "sha256": "1076a871b0ec94b41a882c10e0bcc954ed29f1c2c995aa317057c0280cd8eac8"
+    },
+    {
+      "revision": 340,
+      "at": 1792426323.3217566,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261020T0100-bb483ee1",
+        "fence": 56,
+        "artifacts": [
+          {
+            "path": "docs/web-daily-integration-20261020.md",
+            "sha256": "f7660ab24dfdc71c1e29f9a9f3c9d77f11b9978141882d7d895426f5c4b96139"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "93ed587d3acff46481f0c013377d19e4c602b8f4853764cb26e18d1337c205a7"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "a8082a3a4b728d05deac2bb4d0ea2bd588191b50d1896c8cf1fed2b78a29fc6e"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "d072f1218341e0eeb32b5fae66b46f8f03b07337a91c65bf49c3e0ad1b518620"
+          },
+          {
+            "path": "business/unity/evidence/daily-integration-pending-20261020.json",
+            "sha256": "fd94a129406b04723209d6e66a6d400a1f5a4aae17970ba7bf67c75fd16ee871"
+          }
+        ],
+        "checks": [
+          "local TypeScript ESLint Vite9SSG43checksums",
+          "guide8 navigation/search SSR",
+          "business27",
+          "parent4HEADs match",
+          "333 prior events preserved",
+          "7 prior committed artifact hashes match",
+          "protected owner/oldcloud/handoff unchanged",
+          "full diff scope reviewed; no private/raw/recovery files",
+          "local390/1280 browser passed; remote CI still queued; no merge",
+          "official GitHub incident checked"
+        ],
+        "next_step": "T-web-daily-ci-integration-20261020: 既存PR28のhead e2dcca0に対するCI39282780335を確認し、CI成果物の復元390/1280受入後にhead指定マージする。CI待ちで未完了。新PRとslot再取得はしない。",
+        "passed": false
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "1076a871b0ec94b41a882c10e0bcc954ed29f1c2c995aa317057c0280cd8eac8",
+      "sha256": "6edc1b23106dd98143bb0a39a3b0591adcb572d68653458a229db979c4572608"
+    },
+    {
+      "revision": 341,
+      "at": 1792447227.4424274,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261020T0700-eba7fbfc",
+        "scheduled_at": "2026-10-20T07:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "6edc1b23106dd98143bb0a39a3b0591adcb572d68653458a229db979c4572608",
+      "sha256": "ad980287fd44631e4e8bfb562051917a0cbf71267e162411348a33f0d540097e"
+    },
+    {
+      "revision": 342,
+      "at": 1792447227.5515761,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261020T0700-eba7fbfc",
+        "task_id": "T-web-daily-ci-integration-20261020",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261020T0700-eba7fbfc",
+        "task_id": "T-web-daily-ci-integration-20261020",
+        "fence": 57,
+        "expires_at": 1792449027.5515761
+      },
+      "previous": "ad980287fd44631e4e8bfb562051917a0cbf71267e162411348a33f0d540097e",
+      "sha256": "ba6d34d5dbb4bce598193da104f7ef5870a3cc78ca9e77d2b8c8d27d451d8dce"
+    },
+    {
+      "revision": 343,
+      "at": 1792447362.0590866,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T0700-eba7fbfc",
+        "fence": 57,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-dialog-error-20261020.json",
+            "sha256": "4fcc1c5b1a315c7dec8b9a04c0ad2f8bc9fb73ba8ad5799e820d51bad537881d"
+          }
+        ],
+        "checks": [
+          "archiveSHA",
+          "valid and5 rejection tests",
+          "image4 byte matches",
+          "prior checkpoint hashes",
+          "parent4HEADs",
+          "340 event prefix preserved",
+          "protected files unchanged",
+          "full16path diff reviewed; no private/raw/recovery files",
+          "restored390/1280 normal/error keyboard/search passed"
+        ],
+        "next_step": "Verify latest PR28 head CI and guarded merge"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "ba6d34d5dbb4bce598193da104f7ef5870a3cc78ca9e77d2b8c8d27d451d8dce",
+      "sha256": "806ddfe8936573ebb7282bbaafb026e166054c36398e92ec0a595543ef075c3c"
+    },
+    {
+      "revision": 344,
+      "at": 1792447393.7430332,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T0700-eba7fbfc",
+        "fence": 57,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-dialog-error-final-20261020.json",
+            "sha256": "274913efa73e4d8fcd1da2277ef425b98d00529e74f267a377e834137d90ef8d"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "e481988446e555e04cda9003a485ffb9f757842ad4e73d3882bb5f7232969322"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "6841ebed226b489f6ba37bd097c6490ccefb9a396a20d2d54f95316328b4ac9f"
+          },
+          {
+            "path": "docs/web-daily-integration-20261020.md",
+            "sha256": "aaaab71fef3cfd782b49db1be0ed2e9ce2f7c47169202ff7d993ecb340deff5b"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "814b61551b12f24e8eba475a5d0dfb7a5e9af2c1cb9d6bd3e3135325b34ebe46"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-20-ci-restoration-before-merge.md",
+            "sha256": "b2b3144412ded46fbdd3da7929ceea7162e6b77c5366d39561fdc1c30ea38c4a"
+          }
+        ],
+        "checks": [
+          "archiveSHA",
+          "valid and5 rejection tests",
+          "image4 byte matches",
+          "prior checkpoint hashes",
+          "parent4HEADs",
+          "340 event prefix preserved",
+          "protected files unchanged",
+          "full16path diff reviewed; no private/raw/recovery files",
+          "restored390/1280 acceptance passed",
+          "latest head CI passed; guarded merge confirmed",
+          "07 blog draft only"
+        ],
+        "next_step": "PR28の日次統合は完了。現行CI保全版を保持し、既存Web入口の実測で具体的な品質問題が見つかった場合に同じWIP1で改善する。本日追加PR・記録だけのpushは行わない。実HTTP障害・実タッチ・Safari・人間評価は未確認。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "806ddfe8936573ebb7282bbaafb026e166054c36398e92ec0a595543ef075c3c",
+      "sha256": "7529597f9aaddf63d9d1158f6829e7ba6c28156dfcfb549ad653da4c2a78074b"
+    },
+    {
+      "revision": 345,
+      "at": 1792447393.79381,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261020T0700-eba7fbfc",
+        "fence": 57,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/delivery-web-dialog-error-final-20261020.json",
+            "sha256": "274913efa73e4d8fcd1da2277ef425b98d00529e74f267a377e834137d90ef8d"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "e481988446e555e04cda9003a485ffb9f757842ad4e73d3882bb5f7232969322"
+          },
+          {
+            "path": "AGENTS.md",
+            "sha256": "6841ebed226b489f6ba37bd097c6490ccefb9a396a20d2d54f95316328b4ac9f"
+          },
+          {
+            "path": "docs/web-daily-integration-20261020.md",
+            "sha256": "aaaab71fef3cfd782b49db1be0ed2e9ce2f7c47169202ff7d993ecb340deff5b"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "814b61551b12f24e8eba475a5d0dfb7a5e9af2c1cb9d6bd3e3135325b34ebe46"
+          },
+          {
+            "path": "business/blog/drafts/2026-10-20-ci-restoration-before-merge.md",
+            "sha256": "b2b3144412ded46fbdd3da7929ceea7162e6b77c5366d39561fdc1c30ea38c4a"
+          }
+        ],
+        "checks": [
+          "archiveSHA",
+          "valid and5 rejection tests",
+          "image4 byte matches",
+          "prior checkpoint hashes",
+          "parent4HEADs",
+          "340 event prefix preserved",
+          "protected files unchanged",
+          "full16path diff reviewed; no private/raw/recovery files",
+          "restored390/1280 acceptance passed",
+          "latest head CI passed; guarded merge confirmed",
+          "07 blog draft only"
+        ],
+        "next_step": "PR28の日次統合は完了。現行CI保全版を保持し、既存Web入口の実測で具体的な品質問題が見つかった場合に同じWIP1で改善する。本日追加PR・記録だけのpushは行わない。実HTTP障害・実タッチ・Safari・人間評価は未確認。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "7529597f9aaddf63d9d1158f6829e7ba6c28156dfcfb549ad653da4c2a78074b",
+      "sha256": "035f4b757e8fbc561490d9ac3929c77dc9a667868b7982a8bf84950d85d275e3"
+    },
+    {
+      "revision": 346,
+      "at": 1792468843.9387498,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261020T1300-06077b21",
+        "scheduled_at": "2026-10-20T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "035f4b757e8fbc561490d9ac3929c77dc9a667868b7982a8bf84950d85d275e3",
+      "sha256": "8839f5007818d2801788b0c02fa2250f52f6c45fb2107028819e700aae984de3"
+    },
+    {
+      "revision": 347,
+      "at": 1792468901.8598032,
+      "action": "decision",
+      "data": {
+        "id": "D-web-page-discovery-20261020",
+        "source": "https://developers.google.com/search/docs/appearance/title-link",
+        "hypothesis": "ページごとのタイトルと説明・正規URLが内容と一致すれば検索と往復で作品を区別できる。流入改善は未観測。",
+        "next_step": "既存9ページの生成HTMLと実ブラウザ往復で照合し、実在する差異だけ修正する"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "8839f5007818d2801788b0c02fa2250f52f6c45fb2107028819e700aae984de3",
+      "sha256": "956dd9f499d173a79f4773d5c49eb6ee68a5313679762824c7256636a5e216bc"
+    },
+    {
+      "revision": 348,
+      "at": 1792468901.8998654,
+      "action": "task",
+      "data": {
+        "id": "T-web-page-discovery-20261020",
+        "objective": "既存Web入口のページ識別情報を一次資料と照合する",
+        "acceptance": [
+          "9ポータルページのtitle・description・canonical・OGが重複なく内容と一致",
+          "実ブラウザで作品詳細・案内・戻る・再読込後にページ情報と検索条件が一致",
+          "release=nullと現在のCI保全索引を維持、未観測需要を成果にしない"
+        ],
+        "outputs": [
+          "business/unity/research/2026-10-20-page-discovery.md",
+          "business/unity/evidence/page-discovery-20261020-1300.json"
+        ],
+        "checks": [
+          "生成済み9ページのHTML照合",
+          "実ブラウザ390/1280の往復・再読込",
+          "親4元commit照合",
+          "台帳チェーンと保護対象差分確認"
+        ],
+        "next_step": "実際の不一致があれば同じ工程で修正、なければ保全して観測待ち",
+        "decision_id": "D-web-page-discovery-20261020",
+        "experiment_id": "E-unity-portal",
+        "pdca": "check",
+        "hypothesis": "ページごとのタイトルと説明・正規URLが内容と一致すれば検索と往復で作品を区別できる。流入改善は未観測。",
+        "source": "user:automation:2026-10-20:13-primary-research",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "956dd9f499d173a79f4773d5c49eb6ee68a5313679762824c7256636a5e216bc",
+      "sha256": "83417bbb657bca902bd3723efd1da66da42781234a142f12b98e38e54431c431"
+    },
+    {
+      "revision": 349,
+      "at": 1792468901.940195,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261020T1300-06077b21",
+        "task_id": "T-web-page-discovery-20261020",
+        "ttl_seconds": 1500
+      },
+      "result": {
+        "run_id": "unity-20261020T1300-06077b21",
+        "task_id": "T-web-page-discovery-20261020",
+        "fence": 58,
+        "expires_at": 1792470401.940195
+      },
+      "previous": "83417bbb657bca902bd3723efd1da66da42781234a142f12b98e38e54431c431",
+      "sha256": "1c5139a92668f7a2f0cdeee860765ba6e400df5ea284f6a92e43c77d57959c3c"
+    },
+    {
+      "revision": 350,
+      "at": 1792469068.6290934,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T1300-06077b21",
+        "fence": 58,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-20-page-discovery.md",
+            "sha256": "fecac3a977a12dba6cbcd2772268ef420b4ae9665adbabf7b9389f36b389b3df"
+          },
+          {
+            "path": "business/unity/evidence/page-discovery-20261020-1300.json",
+            "sha256": "970e675f1699ee4eab561a2719742a5ce5084dc1780ca50a7c32656a4d7840a8"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "d0f01aaf6f95a22217416b946c3e6a17a2cb70c55a98eeada9393977e2fcd0f3"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "4ef5f68edd89c5228abd1a47ac0d9fc38b61667277d1121828d0e1f6177a3e33"
+          }
+        ],
+        "checks": [
+          "9 restored CI page metadata accepted",
+          "390/1280 detail-info-back-reload-query accepted",
+          "archive SHA and parent4 HEADs matched",
+          "27 business tests passed",
+          "345 prior events and protected files preserved",
+          "no app change; current retention preserved"
+        ],
+        "next_step": "19時枠で既存Web入口の実観測と具体的な品質問題を照合する。今回のページ情報検査は完了。不一致や観測なしに新工程を追加せず、本日追加PR・記録だけのpushは行わない。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "1c5139a92668f7a2f0cdeee860765ba6e400df5ea284f6a92e43c77d57959c3c",
+      "sha256": "3d6c96e6f518889460ecbdffe287eb17b1cf3ebbbf8ceec055d7e2b3c93448d8"
+    },
+    {
+      "revision": 351,
+      "at": 1792469068.680314,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261020T1300-06077b21",
+        "fence": 58,
+        "artifacts": [
+          {
+            "path": "business/unity/research/2026-10-20-page-discovery.md",
+            "sha256": "fecac3a977a12dba6cbcd2772268ef420b4ae9665adbabf7b9389f36b389b3df"
+          },
+          {
+            "path": "business/unity/evidence/page-discovery-20261020-1300.json",
+            "sha256": "970e675f1699ee4eab561a2719742a5ce5084dc1780ca50a7c32656a4d7840a8"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "d0f01aaf6f95a22217416b946c3e6a17a2cb70c55a98eeada9393977e2fcd0f3"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "4ef5f68edd89c5228abd1a47ac0d9fc38b61667277d1121828d0e1f6177a3e33"
+          }
+        ],
+        "checks": [
+          "9 restored CI page metadata accepted",
+          "390/1280 detail-info-back-reload-query accepted",
+          "archive SHA and parent4 HEADs matched",
+          "27 business tests passed",
+          "345 prior events and protected files preserved",
+          "no app change; current retention preserved"
+        ],
+        "next_step": "19時枠で既存Web入口の実観測と具体的な品質問題を照合する。今回のページ情報検査は完了。不一致や観測なしに新工程を追加せず、本日追加PR・記録だけのpushは行わない。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "3d6c96e6f518889460ecbdffe287eb17b1cf3ebbbf8ceec055d7e2b3c93448d8",
+      "sha256": "28072a80173ea08339919197c559bb6fe22c534d4a78beb90d5e7b08e73e8304"
+    },
+    {
+      "revision": 352,
+      "at": 1792480874.954525,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+        "message": "良い感じに開発してますね。続行していってください意思決定の裁量もどんどん上げていっていいですからね。デプロイ頻度を上げましょう。一日一個目安。ただ、定期実行のたびにクソ長promptが送られてるのは気になります。実行時に、不要な意思決定の履歴を見ずに、適宜何を見ないといけないのかを判断させて、正規の履歴からちゃんと読ませ、ちゃんとコーディング規約を見せ、自分で分析する流れを構築してください",
+        "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "28072a80173ea08339919197c559bb6fe22c534d4a78beb90d5e7b08e73e8304",
+      "sha256": "4bf112e23b3806d960af6b9663cd9af6f9ca0c5f30ac43a5a4a7638104a7fcca"
+    },
+    {
+      "revision": 353,
+      "at": 1792480875.004895,
+      "action": "decision",
+      "data": {
+        "id": "D-context-delivery-20261020",
+        "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+        "hypothesis": "短い起動指示と現行規約・正本台帳の選択読込で判断の重複を減らし、検証済み改善の実デプロイを一日一回目安で進める",
+        "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "4bf112e23b3806d960af6b9663cd9af6f9ca0c5f30ac43a5a4a7638104a7fcca",
+      "sha256": "d37cde6020ead38b8beb1dd8c0b7768c4a1537f8b35307f001e303233843623a"
+    },
+    {
+      "revision": 354,
+      "at": 1792480875.056339,
+      "action": "task",
+      "data": {
+        "id": "T-context-delivery-20261020",
+        "objective": "定期起動を短文化し現行規約と必要履歴から自律判断する流れを構築",
+        "acceptance": [
+          "固定promptに完了済み工程や判断履歴を含めない",
+          "台帳整合性を検証し未完了タスクとcheckpointを選択表示、指定時のみ関連判断を取得",
+          "既存履歴を保全し現行規約・状態・日次実デプロイ目標を分離",
+          "既存定期実行の時刻・モデル・通知を保持して更新し読戻す"
+        ],
+        "outputs": [
+          "AGENTS.md",
+          "docs/autonomous-workflow.md",
+          "docs/coding-conventions.md",
+          "business/ops/context.py"
+        ],
+        "checks": [
+          "コンテキスト選択・破損拒否・履歴保全テスト",
+          "台帳回帰とリポジトリ検査",
+          "定期設定読戻し"
+        ],
+        "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する",
+        "decision_id": "D-context-delivery-20261020",
+        "experiment_id": "E-unity-portal",
+        "pdca": "do",
+        "hypothesis": "必要情報の選択読込で制作と配信の進行を改善",
+        "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "d37cde6020ead38b8beb1dd8c0b7768c4a1537f8b35307f001e303233843623a",
+      "sha256": "a6b5a54528573743f74ae3526b28503716934f0a454fd367e9028b5b717b32c0"
+    },
+    {
+      "revision": 355,
+      "at": 1792480875.1086485,
+      "action": "start",
+      "data": {
+        "run_id": "manual-context-delivery-20261020",
+        "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "a6b5a54528573743f74ae3526b28503716934f0a454fd367e9028b5b717b32c0",
+      "sha256": "0870373f6eb61b7dafd0a85176c08628b74d6bfb881d85ddf62f0579dcca42dc"
+    },
+    {
+      "revision": 356,
+      "at": 1792480875.1594555,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-context-delivery-20261020",
+        "task_id": "T-context-delivery-20261020",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "manual-context-delivery-20261020",
+        "task_id": "T-context-delivery-20261020",
+        "fence": 59,
+        "expires_at": 1792482675.1594555
+      },
+      "previous": "0870373f6eb61b7dafd0a85176c08628b74d6bfb881d85ddf62f0579dcca42dc",
+      "sha256": "3d1ef95f8530092ad05e71dfda61bf684e6eff305c64d4054f2459679967a07f"
+    },
+    {
+      "revision": 357,
+      "at": 1792481267.9171221,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "manual-context-delivery-20261020",
+        "fence": 59,
+        "artifacts": [
+          {
+            "path": "AGENTS.md",
+            "sha256": "44fdb048f2fdb85ee5d517a2ce8a841d10730c7f610d8f95f82fe339411ba7e4"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "17162deefa3f372777572ebeff30ac73ac772505a7eb21ed85b394a881bc2dd6"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "8111aedf09c9fff09dc973f5e46f77c807f7147f4dabe8f0ec34461b7ed18134"
+          },
+          {
+            "path": "business/ops/context.py",
+            "sha256": "fdb360e0d1b17b1f55e7e4b59a7cf2a4adc9f5b3289a99381e370812b6be9fac"
+          },
+          {
+            "path": "business/tests/test_context.py",
+            "sha256": "9516a9a90c97934f524207b0c31a89d6324492739d91f3079ffce0c8c25300c7"
+          },
+          {
+            "path": "docs/autonomous-workflow.md",
+            "sha256": "80cd4d488634419a2d45a88ef8409c0bddbbcec3699f74e30e15cc4e9bc18293"
+          },
+          {
+            "path": "docs/coding-conventions.md",
+            "sha256": "e13d869b24b6d2da641543838520132ca63d599811eb1479a0b6fcfd6f1061f0"
+          },
+          {
+            "path": "docs/context-delivery-20261020.md",
+            "sha256": "a6b756fe3d20dcbc34c718373763c6cf0694e6da1a4a06a9ed5ee505d49c014a"
+          },
+          {
+            "path": "docs/history/context-migration-20261020.json",
+            "sha256": "69f953bbdf82b5e5d52be8196f695c5551daf823f4d216d197f4d7d9b9383493"
+          },
+          {
+            "path": "business/unity/evidence/context-delivery-20261020.json",
+            "sha256": "2dd2de2b934646937696a1f6253a468b2c7c5e1ee7b15a70a4f3bdd4e68e8636"
+          }
+        ],
+        "checks": [
+          "34 business tests passed",
+          "npm run check passed",
+          "automation updated via app and readback verified: 3724 to 177 chars; schedule/model/notifications/target preserved",
+          "351 prior events and exact original archives preserved",
+          "owner instructions, legacy ledger and releases unchanged",
+          "read AGENTS, coding conventions, TypeScript/ESLint configs, canonical task and selected checkpoint; no unrelated decision replay",
+          "full diff reviewed; no public deployment"
+        ],
+        "next_step": "T-web-scoped-production-delivery-20261020で既存1作品の配信先と依存アセットを照合し、他作品とトップを置換しない最小配信を検証して実デプロイへ進める。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "3d1ef95f8530092ad05e71dfda61bf684e6eff305c64d4054f2459679967a07f",
+      "sha256": "2e227dde7bdb9d3887f3abf173ebe312161b3beac7ed801e457e6b76a81e4820"
+    },
+    {
+      "revision": 358,
+      "at": 1792481267.9712138,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-context-delivery-20261020",
+        "fence": 59,
+        "artifacts": [
+          {
+            "path": "AGENTS.md",
+            "sha256": "44fdb048f2fdb85ee5d517a2ce8a841d10730c7f610d8f95f82fe339411ba7e4"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "17162deefa3f372777572ebeff30ac73ac772505a7eb21ed85b394a881bc2dd6"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "8111aedf09c9fff09dc973f5e46f77c807f7147f4dabe8f0ec34461b7ed18134"
+          },
+          {
+            "path": "business/ops/context.py",
+            "sha256": "fdb360e0d1b17b1f55e7e4b59a7cf2a4adc9f5b3289a99381e370812b6be9fac"
+          },
+          {
+            "path": "business/tests/test_context.py",
+            "sha256": "9516a9a90c97934f524207b0c31a89d6324492739d91f3079ffce0c8c25300c7"
+          },
+          {
+            "path": "docs/autonomous-workflow.md",
+            "sha256": "80cd4d488634419a2d45a88ef8409c0bddbbcec3699f74e30e15cc4e9bc18293"
+          },
+          {
+            "path": "docs/coding-conventions.md",
+            "sha256": "e13d869b24b6d2da641543838520132ca63d599811eb1479a0b6fcfd6f1061f0"
+          },
+          {
+            "path": "docs/context-delivery-20261020.md",
+            "sha256": "a6b756fe3d20dcbc34c718373763c6cf0694e6da1a4a06a9ed5ee505d49c014a"
+          },
+          {
+            "path": "docs/history/context-migration-20261020.json",
+            "sha256": "69f953bbdf82b5e5d52be8196f695c5551daf823f4d216d197f4d7d9b9383493"
+          },
+          {
+            "path": "business/unity/evidence/context-delivery-20261020.json",
+            "sha256": "2dd2de2b934646937696a1f6253a468b2c7c5e1ee7b15a70a4f3bdd4e68e8636"
+          }
+        ],
+        "checks": [
+          "34 business tests passed",
+          "npm run check passed",
+          "automation updated via app and readback verified: 3724 to 177 chars; schedule/model/notifications/target preserved",
+          "351 prior events and exact original archives preserved",
+          "owner instructions, legacy ledger and releases unchanged",
+          "read AGENTS, coding conventions, TypeScript/ESLint configs, canonical task and selected checkpoint; no unrelated decision replay",
+          "full diff reviewed; no public deployment"
+        ],
+        "next_step": "T-web-scoped-production-delivery-20261020で既存1作品の配信先と依存アセットを照合し、他作品とトップを置換しない最小配信を検証して実デプロイへ進める。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "2e227dde7bdb9d3887f3abf173ebe312161b3beac7ed801e457e6b76a81e4820",
+      "sha256": "8392cdfec539716b2ce0c6f070fd4f58f565c9e7cd5db3829b89fdca2bc9c46f"
+    },
+    {
+      "revision": 359,
+      "at": 1792481268.0241618,
+      "action": "task",
+      "data": {
+        "id": "T-web-scoped-production-delivery-20261020",
+        "objective": "既存Web1作品と必要アセットだけの配信経路を整え実デプロイする",
+        "acceptance": [
+          "本番の現行版と対象作品・共有アセット・配信先を照合し、トップや対象外作品を置換・削除しない",
+          "同版の必要検査・CI・復元元・SHA-256を照合し既存許可範囲の配信を行う",
+          "配信URLで版・起動・代表入力・保存と再読み込みを確認してから実デプロイ成功を記録。未確認や障害は具体的な証跡を残し成功としない"
+        ],
+        "outputs": [
+          "docs/web-scoped-production-delivery.md",
+          "business/unity/evidence/scoped-production-delivery.json"
+        ],
+        "checks": [
+          "現行本番と配信対象一覧の照合",
+          "必要検査とCI版・ハッシュ・復元の照合",
+          "配信後HTTP・版・実ブラウザ動作"
+        ],
+        "next_step": "既存CI保全索引と対象作品の本番HTML・依存アセットを調べ、最小の配信対象を確定する",
+        "decision_id": "D-context-delivery-20261020",
+        "experiment_id": "E-unity-portal",
+        "pdca": "do",
+        "hypothesis": "既存許可領域の最小配信なら全体置換を避けて検証済み改善を利用者へ届けられる",
+        "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "8392cdfec539716b2ce0c6f070fd4f58f565c9e7cd5db3829b89fdca2bc9c46f",
+      "sha256": "fbf85348fa154418e7d9db145bf6d507283634924b086b56d2cb7b36fffe2045"
+    },
+    {
+      "revision": 360,
+      "at": 1792490660.333541,
+      "action": "slot",
+      "data": {
+        "scheduled_at": "2026-10-20T19:00:00+09:00",
+        "run_id": "unity-20261020T1900-scoped"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "fbf85348fa154418e7d9db145bf6d507283634924b086b56d2cb7b36fffe2045",
+      "sha256": "67beaa2b25bd68163a637e80885510917fe7060666715320d494201f6eaa4008"
+    },
+    {
+      "revision": 361,
+      "at": 1792490660.4150462,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261020T1900-scoped",
+        "task_id": "T-web-scoped-production-delivery-20261020"
+      },
+      "result": {
+        "run_id": "unity-20261020T1900-scoped",
+        "task_id": "T-web-scoped-production-delivery-20261020",
+        "fence": 60,
+        "expires_at": 1792492460.4150462
+      },
+      "previous": "67beaa2b25bd68163a637e80885510917fe7060666715320d494201f6eaa4008",
+      "sha256": "a9b3e6110af22d13b265f5857dfece808178da7b87b46c176766c3d3a2e429f8"
+    },
+    {
+      "revision": 362,
+      "at": 1792491184.510294,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T1900-scoped",
+        "fence": 60,
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_delivery.py",
+            "sha256": "7a48caf6a26f1155e6b0ad96d86b007d123711b2640834140cbb78afdbf4cf9a"
+          },
+          {
+            "path": "business/tests/test_scoped_delivery.py",
+            "sha256": "250adb0eb0b1c5d26d976f3f188005fb4a8c068652334e8c3c8d45f3671c2a21"
+          },
+          {
+            "path": "scripts/build-scoped-minerush.mjs",
+            "sha256": "84f9478c3fb80704a8dbce085baa5affaa84c8bf8e43caea771f3c2e4f7f1df2"
+          },
+          {
+            "path": "web/scoped/minerush/index.html",
+            "sha256": "bc65bda8b1780765ea092bed7823d534bc28f7157867958db5eb1fefeb1ae9c7"
+          },
+          {
+            "path": "web/src/standalone/minerush.tsx",
+            "sha256": "be76edeedf0ae4b5129f2e18a7c543bbbe57fa4933fb6f89c9a449e22a681421"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "e20a75307abda616b09869280a8cfe64ac15628f0e4a3518143f9e49cc3ed9fe"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "4adb490e8013e23c2a2435fedb7446ed9be02eaef6ca34dcbdaa0768bed4f7fd"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-delivery.json",
+            "sha256": "09ed7ff256133a768b802b40259e0d575196ec5aab7a215a0e14a35bd348dda1"
+          }
+        ],
+        "checks": [
+          "repository contract passed; TypeScript/ESLint/build passed; 9 SSG pages/43 files verified",
+          "existing MineRush input regression passed",
+          "42 business tests passed including 8 new scoped delivery tests; fake FTP RETR only",
+          "uncommitted-source build refused before output creation",
+          "final committed-source package verified; HTML/JS/CSS match provisional browser-tested bytes",
+          "desktop real-browser click/reveal, flag mode, ArrowRight/F on unopened cell, reload reset passed; final package opened",
+          "production root/MineRush/privacy/contact/about HTTP200; sw.js install/activate only",
+          "original359 ledger events preserved; owner/old cloud/handoff unchanged",
+          "Read current instructions/policy/conventions/workflow and context --task; selected deployment/game/router/package evidence. Workflow hashes retained in receipt; hidden paths excluded from checkpoint contract."
+        ],
+        "next_step": "Integrate scoped build in next daily CI, run main read-only preflight and match FTP root/backup; then implement confined upload/rollback and verify real production before release.",
+        "unverified": [
+          "remote CI of scoped candidate",
+          "actual FTPS root and permissions",
+          "complete old dynamic dependency recovery",
+          "scoped uploader and rollback implementation",
+          "mobile width, real touch, Safari",
+          "production upload and post-delivery browser acceptance"
+        ]
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "a9b3e6110af22d13b265f5857dfece808178da7b87b46c176766c3d3a2e429f8",
+      "sha256": "989f4dcdf43071e270e6a4cc472e1b3c9a83f3114e93cb906730a75633f70fdb"
+    },
+    {
+      "revision": 363,
+      "at": 1792491184.5534246,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261020T1900-scoped",
+        "fence": 60,
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_delivery.py",
+            "sha256": "7a48caf6a26f1155e6b0ad96d86b007d123711b2640834140cbb78afdbf4cf9a"
+          },
+          {
+            "path": "business/tests/test_scoped_delivery.py",
+            "sha256": "250adb0eb0b1c5d26d976f3f188005fb4a8c068652334e8c3c8d45f3671c2a21"
+          },
+          {
+            "path": "scripts/build-scoped-minerush.mjs",
+            "sha256": "84f9478c3fb80704a8dbce085baa5affaa84c8bf8e43caea771f3c2e4f7f1df2"
+          },
+          {
+            "path": "web/scoped/minerush/index.html",
+            "sha256": "bc65bda8b1780765ea092bed7823d534bc28f7157867958db5eb1fefeb1ae9c7"
+          },
+          {
+            "path": "web/src/standalone/minerush.tsx",
+            "sha256": "be76edeedf0ae4b5129f2e18a7c543bbbe57fa4933fb6f89c9a449e22a681421"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "e20a75307abda616b09869280a8cfe64ac15628f0e4a3518143f9e49cc3ed9fe"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "4adb490e8013e23c2a2435fedb7446ed9be02eaef6ca34dcbdaa0768bed4f7fd"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-delivery.json",
+            "sha256": "09ed7ff256133a768b802b40259e0d575196ec5aab7a215a0e14a35bd348dda1"
+          }
+        ],
+        "checks": [
+          "repository contract passed; TypeScript/ESLint/build passed; 9 SSG pages/43 files verified",
+          "existing MineRush input regression passed",
+          "42 business tests passed including 8 new scoped delivery tests; fake FTP RETR only",
+          "uncommitted-source build refused before output creation",
+          "final committed-source package verified; HTML/JS/CSS match provisional browser-tested bytes",
+          "desktop real-browser click/reveal, flag mode, ArrowRight/F on unopened cell, reload reset passed; final package opened",
+          "production root/MineRush/privacy/contact/about HTTP200; sw.js install/activate only",
+          "original359 ledger events preserved; owner/old cloud/handoff unchanged",
+          "Read current instructions/policy/conventions/workflow and context --task; selected deployment/game/router/package evidence. Workflow hashes retained in receipt; hidden paths excluded from checkpoint contract."
+        ],
+        "next_step": "Integrate scoped build in next daily CI, run main read-only preflight and match FTP root/backup; then implement confined upload/rollback and verify real production before release.",
+        "unverified": [
+          "remote CI of scoped candidate",
+          "actual FTPS root and permissions",
+          "complete old dynamic dependency recovery",
+          "scoped uploader and rollback implementation",
+          "mobile width, real touch, Safari",
+          "production upload and post-delivery browser acceptance"
+        ]
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "989f4dcdf43071e270e6a4cc472e1b3c9a83f3114e93cb906730a75633f70fdb",
+      "sha256": "09bab2e139f98f8301d9e502a2801d18ac6c5c7815d815507411ef4c84b9a098"
+    },
+    {
+      "revision": 364,
+      "at": 1792504555.943954,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261020T2255-recovery",
+        "source": "user:automation:unity:2026-10-20:continuation-outside-slot"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "09bab2e139f98f8301d9e502a2801d18ac6c5c7815d815507411ef4c84b9a098",
+      "sha256": "87cc3b16c6ad93dea16832560d5c1f3a70be80ecbff794e5aea220b94bf38356"
+    },
+    {
+      "revision": 365,
+      "at": 1792504555.9849544,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261020T2255-recovery",
+        "task_id": "T-web-scoped-production-delivery-20261020"
+      },
+      "result": {
+        "run_id": "unity-20261020T2255-recovery",
+        "task_id": "T-web-scoped-production-delivery-20261020",
+        "fence": 61,
+        "expires_at": 1792506355.9849544
+      },
+      "previous": "87cc3b16c6ad93dea16832560d5c1f3a70be80ecbff794e5aea220b94bf38356",
+      "sha256": "6fcec9bd9c8325644e2498f7742ec3165b4386e1c38b13c22c4b91832e6deca3"
+    },
+    {
+      "revision": 366,
+      "at": 1792504747.1198814,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T2255-recovery",
+        "fence": 61,
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_delivery.py",
+            "sha256": "c9de841986429609bc40a91e47d436e71c2766a6724707bf94cfe811fb09857e"
+          },
+          {
+            "path": "business/tests/test_scoped_delivery.py",
+            "sha256": "52fa9c8a0228791c886eb43bb2fce49676883437535b42441cddc26ad62f6e6b"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "ad6b251e1ebf122a6464467cab213bed5d21ff5ca86410a843565cd6ec253396"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "b3bdb0bb4a94504ea09332e182d2010839765cc1f838d2af8d3d181dead8d8cc"
+          },
+          {
+            "path": "business/unity/evidence/scoped-recovery-20261020-2255.json",
+            "sha256": "9514653dd9287593d55c57b5c3a43f3580c46f1105b1042a076116706437e788"
+          }
+        ],
+        "checks": [
+          "49 business tests passed",
+          "repository contract passed: 4 preserved entries, 19 GUIDs",
+          "existing four-file scoped package verified",
+          "original363 events preserved; three protected paths unchanged in Git",
+          "Read current AGENTS/owner/STATE/policy/conventions/workflow, selected context and scoped source/tests/workflow only",
+          "HTTPS-only live static graph:208 files/1462036 bytes; no production writes; initial literal extraction false positives fixed and regression tested",
+          "No Web source changes; no redundant Web build or browser rerun"
+        ],
+        "next_step": "Integrate scoped candidate in next daily batch, verify exact-head CI and main read-only FTPS root/recovery; then implement and test confined upload/rollback before production acceptance.",
+        "unverified": [
+          "computed URLs and dependencies outside shared assets",
+          "remote CI and FTPS root",
+          "550 ambiguity",
+          "scoped upload and rollback",
+          "production gameplay after delivery"
+        ]
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "6fcec9bd9c8325644e2498f7742ec3165b4386e1c38b13c22c4b91832e6deca3",
+      "sha256": "dd176af31b3c0905f1c611f52746fd9800294603c892b12e8aff8529af23715a"
+    },
+    {
+      "revision": 367,
+      "at": 1792504747.1691282,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261020T2255-recovery",
+        "fence": 61,
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_delivery.py",
+            "sha256": "c9de841986429609bc40a91e47d436e71c2766a6724707bf94cfe811fb09857e"
+          },
+          {
+            "path": "business/tests/test_scoped_delivery.py",
+            "sha256": "52fa9c8a0228791c886eb43bb2fce49676883437535b42441cddc26ad62f6e6b"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "ad6b251e1ebf122a6464467cab213bed5d21ff5ca86410a843565cd6ec253396"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "b3bdb0bb4a94504ea09332e182d2010839765cc1f838d2af8d3d181dead8d8cc"
+          },
+          {
+            "path": "business/unity/evidence/scoped-recovery-20261020-2255.json",
+            "sha256": "9514653dd9287593d55c57b5c3a43f3580c46f1105b1042a076116706437e788"
+          }
+        ],
+        "checks": [
+          "49 business tests passed",
+          "repository contract passed: 4 preserved entries, 19 GUIDs",
+          "existing four-file scoped package verified",
+          "original363 events preserved; three protected paths unchanged in Git",
+          "Read current AGENTS/owner/STATE/policy/conventions/workflow, selected context and scoped source/tests/workflow only",
+          "HTTPS-only live static graph:208 files/1462036 bytes; no production writes; initial literal extraction false positives fixed and regression tested",
+          "No Web source changes; no redundant Web build or browser rerun"
+        ],
+        "next_step": "Integrate scoped candidate in next daily batch, verify exact-head CI and main read-only FTPS root/recovery; then implement and test confined upload/rollback before production acceptance.",
+        "unverified": [
+          "computed URLs and dependencies outside shared assets",
+          "remote CI and FTPS root",
+          "550 ambiguity",
+          "scoped upload and rollback",
+          "production gameplay after delivery"
+        ]
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "dd176af31b3c0905f1c611f52746fd9800294603c892b12e8aff8529af23715a",
+      "sha256": "749ae143e68c771cc1a1be73d547bcb0b8a934860edd960501b5fdbf52c30c5c"
+    },
+    {
+      "revision": 368,
+      "at": 1792504880.1636946,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-20:use-full-work-session",
+        "message": "３０分動かずに５分とかで終わっちゃうんだよね",
+        "next_step": "定期枠を原則25分の制作・検証と5分の保存へ変更し、早期yieldの条件と実稼働時間の記録を明確にする"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "749ae143e68c771cc1a1be73d547bcb0b8a934860edd960501b5fdbf52c30c5c",
+      "sha256": "e0393a36b05a11707d90c7489216916ade4872de1b09fa0b552a9c145a4f3f6f"
+    },
+    {
+      "revision": 369,
+      "at": 1792504880.2163785,
+      "action": "decision",
+      "data": {
+        "id": "D-full-work-session-20261020",
+        "source": "user:current-thread:2026-10-20:use-full-work-session",
+        "hypothesis": "時間上限だけでなく継続条件・保存開始・早期終了理由を定めると、短い確認だけで終了する運用を減らせる",
+        "next_step": "現行手順とpolicyを修正し既存配信工程を保持する"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "e0393a36b05a11707d90c7489216916ade4872de1b09fa0b552a9c145a4f3f6f",
+      "sha256": "4675abc327215e83fc5e8a6a58a17f2001d057eb19aecc0573deb25840f40a5c"
+    },
+    {
+      "revision": 370,
+      "at": 1792504880.2699375,
+      "action": "task",
+      "data": {
+        "id": "T-full-work-session-20261020",
+        "objective": "定期実行が短い確認やcheckpointで終了しない継続条件を整える",
+        "acceptance": [
+          "原則25分制作・検証、最後5分保存を明示",
+          "一区切り・当日PRマージ済み・CI待ちだけでは終了しない",
+          "早期終了には具体的障害と独立作業を進められない理由と実時間を記録",
+          "短い定期promptと既存配信タスクを維持"
+        ],
+        "outputs": [
+          "AGENTS.md",
+          "docs/autonomous-workflow.md",
+          "business/studio-policy.json"
+        ],
+        "checks": [
+          "現行3規約の整合",
+          "台帳イベント保全",
+          "差分とリポジトリ契約"
+        ],
+        "next_step": "規約と現在欄へ反映し保存",
+        "decision_id": "D-full-work-session-20261020",
+        "experiment_id": "E-unity-portal",
+        "pdca": "act",
+        "hypothesis": "継続判断を明確化し実制作時間を確保する",
+        "source": "user:current-thread:2026-10-20:use-full-work-session",
+        "priority": 0
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "4675abc327215e83fc5e8a6a58a17f2001d057eb19aecc0573deb25840f40a5c",
+      "sha256": "d975b3ae444a2d2d4ff6bf1d8ed460b26a87dcc630acc4f6647fed280901f92d"
+    },
+    {
+      "revision": 371,
+      "at": 1792504880.3222902,
+      "action": "start",
+      "data": {
+        "run_id": "manual-full-work-session-20261020",
+        "source": "user:current-thread:2026-10-20:use-full-work-session"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "d975b3ae444a2d2d4ff6bf1d8ed460b26a87dcc630acc4f6647fed280901f92d",
+      "sha256": "f38e91925ddcab1d87f3731e092416d16240aa87d8aef9d03162987aa16f2cbf"
+    },
+    {
+      "revision": 372,
+      "at": 1792504880.3761592,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-full-work-session-20261020",
+        "task_id": "T-full-work-session-20261020",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "manual-full-work-session-20261020",
+        "task_id": "T-full-work-session-20261020",
+        "fence": 62,
+        "expires_at": 1792506680.3761592
+      },
+      "previous": "f38e91925ddcab1d87f3731e092416d16240aa87d8aef9d03162987aa16f2cbf",
+      "sha256": "d0e2909316a4bdc95ef86ffca631915d607d716c5d726426e74cb0b447496b70"
+    },
+    {
+      "revision": 373,
+      "at": 1792504927.8048465,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "manual-full-work-session-20261020",
+        "fence": 62,
+        "artifacts": [
+          {
+            "path": "AGENTS.md",
+            "sha256": "0de8dfeff32c16e9f3682e5fec5fc78a93697e11064e03602fc7d39e1c2884ba"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "8dcb8e42b0ade7fe8ac7a16bd4f5b4d59c19fb4cfefa9f790bd9e3db10f9d09f"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "e75141f0380c43a031bc4ca41449d23f5afcb50d3a4331fab80a85c4d2674e7f"
+          },
+          {
+            "path": "docs/autonomous-workflow.md",
+            "sha256": "9a0295e22598fb0875056fcd9c0722de32e169339b4d4cb391656d020db73812"
+          },
+          {
+            "path": "docs/context-delivery-20261020.md",
+            "sha256": "6dc96634b46d9f0ac28e9843ea1478351e9a010d8df8cba08c6f8c95fe7b380c"
+          }
+        ],
+        "checks": [
+          "npm run check passed",
+          "git diff --check passed",
+          "367 prior events preserved; existing delivery task remains ready",
+          "AGENTS, workflow and policy align:25 productive minutes plus5 saving; no partial-result early exit",
+          "short automation prompt unchanged; no code change requiring repeated gameplay tests"
+        ],
+        "next_step": "既存T-web-scoped-production-delivery-20261020を新しい定期枠の継続条件で進め、次回の開始・終了・経過時間と終了理由を記録する",
+        "passed": true,
+        "work_session": {
+          "started_at": "2026-10-20T14:01:20.322290+00:00",
+          "ended_at": "2026-10-20T14:02:07.766863+00:00",
+          "elapsed_seconds": 47.44,
+          "exit_reason": "manual policy-correction request completed; scheduled development time budget does not apply"
+        }
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "d0e2909316a4bdc95ef86ffca631915d607d716c5d726426e74cb0b447496b70",
+      "sha256": "8e6ba53698f3beff1ecbe837571dfa0be2ff4d454a00f48056011dd1cac3db59"
+    },
+    {
+      "revision": 374,
+      "at": 1792504927.905196,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-full-work-session-20261020",
+        "fence": 62,
+        "artifacts": [
+          {
+            "path": "AGENTS.md",
+            "sha256": "0de8dfeff32c16e9f3682e5fec5fc78a93697e11064e03602fc7d39e1c2884ba"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "8dcb8e42b0ade7fe8ac7a16bd4f5b4d59c19fb4cfefa9f790bd9e3db10f9d09f"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "e75141f0380c43a031bc4ca41449d23f5afcb50d3a4331fab80a85c4d2674e7f"
+          },
+          {
+            "path": "docs/autonomous-workflow.md",
+            "sha256": "9a0295e22598fb0875056fcd9c0722de32e169339b4d4cb391656d020db73812"
+          },
+          {
+            "path": "docs/context-delivery-20261020.md",
+            "sha256": "6dc96634b46d9f0ac28e9843ea1478351e9a010d8df8cba08c6f8c95fe7b380c"
+          }
+        ],
+        "checks": [
+          "npm run check passed",
+          "git diff --check passed",
+          "367 prior events preserved; existing delivery task remains ready",
+          "AGENTS, workflow and policy align:25 productive minutes plus5 saving; no partial-result early exit",
+          "short automation prompt unchanged; no code change requiring repeated gameplay tests"
+        ],
+        "next_step": "既存T-web-scoped-production-delivery-20261020を新しい定期枠の継続条件で進め、次回の開始・終了・経過時間と終了理由を記録する",
+        "passed": true,
+        "work_session": {
+          "started_at": "2026-10-20T14:01:20.322290+00:00",
+          "ended_at": "2026-10-20T14:02:07.766863+00:00",
+          "elapsed_seconds": 47.44,
+          "exit_reason": "manual policy-correction request completed; scheduled development time budget does not apply"
+        }
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "8e6ba53698f3beff1ecbe837571dfa0be2ff4d454a00f48056011dd1cac3db59",
+      "sha256": "fdc1ee722e6f3bc673c002c59d15dc21c64cb733356d78dc17a06218d6f6efc0"
     }
   ],
-  "projection_sha256": "60dd6beb8a442639e61968efaab07e05631b1883753ab6c599a7c7c44044ebb2"
+  "projection_sha256": "ebedfadc34d8bcfe36a69b144d69e4658751258340d205593062b9288dd355be"
 }

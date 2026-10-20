@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "at": "2026-10-20T13:59:07.097566+00:00",
+  "runId": "unity-20261020T2255-recovery",
+  "deployed": false,
+  "checks": [
+    "49 business tests passed",
+    "repository contract passed: 4 preserved entries, 19 GUIDs",
+    "existing four-file scoped package verified",
+    "original363 events preserved; three protected paths unchanged in Git"
+  ],
+  "httpsObservation": {
+    "files": 208,
+    "bytes": 1462036,
+    "reportSha256": "fc2433888f7ef470efa15b6aad435a9ee54d2e2f53d87a52c364bdc9e676a411",
+    "acceptance": "HTTPS only; no FTPS or off-PC restore acceptance"
+  },
+  "unverified": [
+    "computed URLs and dependencies outside shared assets",
+    "remote CI and FTPS root",
+    "550 ambiguity",
+    "scoped upload and rollback",
+    "production gameplay after delivery"
+  ],
+  "artifacts": [
+    {
+      "path": "business/ops/scoped_delivery.py",
+      "sha256": "c9de841986429609bc40a91e47d436e71c2766a6724707bf94cfe811fb09857e"
+    },
+    {
+      "path": "business/tests/test_scoped_delivery.py",
+      "sha256": "52fa9c8a0228791c886eb43bb2fce49676883437535b42441cddc26ad62f6e6b"
+    },
+    {
+      "path": "docs/web-scoped-production-delivery.md",
+      "sha256": "ad6b251e1ebf122a6464467cab213bed5d21ff5ca86410a843565cd6ec253396"
+    },
+    {
+      "path": "STATE.md",
+      "sha256": "b3bdb0bb4a94504ea09332e182d2010839765cc1f838d2af8d3d181dead8d8cc"
+    }
+  ]
+}
