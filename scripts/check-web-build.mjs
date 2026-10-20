@@ -9,9 +9,13 @@ const dist = resolve(root, 'web/dist');
 const games = JSON.parse(readFileSync(resolve(root, 'web/src/portal/data/games.json'), 'utf8')).games;
 const unityGames = JSON.parse(readFileSync(resolve(root, 'web/src/portal/data/works.json'), 'utf8')).games;
 const portalPaths = ['index.html', 'about/index.html', 'contact/index.html', 'privacy-policy/index.html', ...unityGames.map(game => `${game.path.slice(1)}index.html`)];
+const sharedStylesheets = html => [...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g)].map(match => match[1]).sort();
+const mainStylesheets = sharedStylesheets(readFileSync(resolve(dist, 'index.html'), 'utf8'));
+assert(mainStylesheets.length > 0, 'Main stylesheets missing');
 for (const path of [...portalPaths, ...games.map(game => `games/${game.id}/index.html`)]) {
   const html = readFileSync(resolve(dist, path), 'utf8');
   assert(html.includes('<html'), `Missing HTML ${path}`);
+  assert.deepEqual(sharedStylesheets(html), mainStylesheets, `Shared stylesheets missing from direct entry: ${path}`);
   for (const [, asset] of html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)/g)) {
     assert(statSync(resolve(dist, asset.slice(1))).isFile(), `Missing ${asset} in ${path}`);
   }
