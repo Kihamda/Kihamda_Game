@@ -1,4 +1,5 @@
 import copy
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -43,3 +44,27 @@ class ScopedAcceptanceTest(unittest.TestCase):
         del self.before["contact/"]
         with self.assertRaisesRegex(ValueError, "incomplete"):
             acceptance.verify(self.fixture.package, self.before, self.http.__getitem__)
+
+    def test_recovery_checks_both_entry_urls_and_old_version(self):
+        journal = self.fixture.root / "journal.json"
+        state = {"schema": 1, "scope": delivery.SCOPE,
+                 "status": "entry-restored-awaiting-http-and-browser-acceptance",
+                 "oldHtmlHex": b"old entry".hex(), "oldVersionHex": b"old version".hex()}
+        journal.write_text(json.dumps(state), encoding="utf-8")
+        for path in (delivery.SCOPE, delivery.SCOPE + "index.html"):
+            self.http[path] = b"old entry"
+        self.http[delivery.SCOPE + "build-version.json"] = b"old version"
+        self.assertFalse(acceptance.verify_recovery(journal, self.before, self.http.__getitem__)["deployed"])
+        for path in (delivery.SCOPE, delivery.SCOPE + "index.html", delivery.SCOPE + "build-version.json"):
+            original = self.http[path]
+            self.http[path] = b"wrong"
+            with self.subTest(path=path), self.assertRaisesRegex(ValueError, "checksum mismatch"):
+                acceptance.verify_recovery(journal, self.before, self.http.__getitem__)
+            self.http[path] = original
+
+    def test_uncertain_journal_is_not_recovery_success(self):
+        journal = self.fixture.root / "journal.json"
+        journal.write_text(json.dumps({"schema": 1, "scope": delivery.SCOPE,
+                                      "status": "uncertain-reconcile-before-retry"}))
+        with self.assertRaisesRegex(ValueError, "not completed"):
+            acceptance.verify_recovery(journal, self.before, self.http.__getitem__)

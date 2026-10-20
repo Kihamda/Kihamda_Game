@@ -55,3 +55,7 @@
 復旧は保持した同一artifactを新しい隔離ディレクトリへ展開し、productionの同じFTPS接続設定で`python business/ops/scoped_upload.py recover <transaction.json>`を使う。その後に旧HTML・版・起動・操作・戻り導線を確認する。別PC復元と実サーバーのrename挙動はまだ未確認。自動復旧を無条件に再送しない。
 
 68のbusinessテストが成功。新規分は転送途中失敗、rename後の応答消失、rename拒否、外部更新、同名衝突、MLSD拒否、再送拒否、対象パス制限、全HTTPバイトと対象外URLの検査を含む。通常ビルド内のTypeScript/ESLint、9ページSSG、43ファイル検査、既存MineRush入力回帰も成功。存在しない`web`のcheckスクリプト呼出しは失敗したが、正規のルート`npm run check`とビルド内検査で確認した。実FTPSと本番配信はこの実装検査とは別に実施する。
+
+配信前の追加確認で、GitHub上から既存production secretsを使って条件付き復旧を起動する入口が必要と判断し、`scoped-production-recover.yml`を追加した。完了した同一リポジトリのmain限定配信runのartifactを取得し、journalのcommitも照合する。復旧後のHTTP検査は旧HTMLの両URL・存在していた旧版ファイル・対象外URLを照合する。関連2テストを加え70テストが成功した。
+
+単独HTMLには既存と同じGA4設定と共有画像のOG/Twitterメタデータを維持した。新しい計測先やイベントは追加せず、訪問・開始・完了などの事業指標は実集計がないため引き続きnullとする。service workerの変更・再登録は追加しない。初回統合のPR29後に発見した復旧入口と計測維持の不足は、安全に実配信するための訂正として扱う。記録だけを送るPRにはしない。
