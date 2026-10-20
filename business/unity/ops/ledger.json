@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 351,
+  "revision": 359,
   "business_id": "game-site",
-  "fence": 58,
+  "fence": 59,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -8330,6 +8330,189 @@
           "expires_at": 1792470401.940195
         }
       ]
+    },
+    "T-context-delivery-20261020": {
+      "id": "T-context-delivery-20261020",
+      "objective": "定期起動を短文化し現行規約と必要履歴から自律判断する流れを構築",
+      "acceptance": [
+        "固定promptに完了済み工程や判断履歴を含めない",
+        "台帳整合性を検証し未完了タスクとcheckpointを選択表示、指定時のみ関連判断を取得",
+        "既存履歴を保全し現行規約・状態・日次実デプロイ目標を分離",
+        "既存定期実行の時刻・モデル・通知を保持して更新し読戻す"
+      ],
+      "outputs": [
+        "AGENTS.md",
+        "docs/autonomous-workflow.md",
+        "docs/coding-conventions.md",
+        "business/ops/context.py"
+      ],
+      "checks": [
+        "コンテキスト選択・破損拒否・履歴保全テスト",
+        "台帳回帰とリポジトリ検査",
+        "定期設定読戻し"
+      ],
+      "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する",
+      "decision_id": "D-context-delivery-20261020",
+      "experiment_id": "E-unity-portal",
+      "pdca": "do",
+      "hypothesis": "必要情報の選択読込で制作と配信の進行を改善",
+      "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+      "priority": 1,
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "manual-context-delivery-20261020",
+          "fence": 59,
+          "artifacts": [
+            {
+              "path": "AGENTS.md",
+              "sha256": "44fdb048f2fdb85ee5d517a2ce8a841d10730c7f610d8f95f82fe339411ba7e4"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "17162deefa3f372777572ebeff30ac73ac772505a7eb21ed85b394a881bc2dd6"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "8111aedf09c9fff09dc973f5e46f77c807f7147f4dabe8f0ec34461b7ed18134"
+            },
+            {
+              "path": "business/ops/context.py",
+              "sha256": "fdb360e0d1b17b1f55e7e4b59a7cf2a4adc9f5b3289a99381e370812b6be9fac"
+            },
+            {
+              "path": "business/tests/test_context.py",
+              "sha256": "9516a9a90c97934f524207b0c31a89d6324492739d91f3079ffce0c8c25300c7"
+            },
+            {
+              "path": "docs/autonomous-workflow.md",
+              "sha256": "80cd4d488634419a2d45a88ef8409c0bddbbcec3699f74e30e15cc4e9bc18293"
+            },
+            {
+              "path": "docs/coding-conventions.md",
+              "sha256": "e13d869b24b6d2da641543838520132ca63d599811eb1479a0b6fcfd6f1061f0"
+            },
+            {
+              "path": "docs/context-delivery-20261020.md",
+              "sha256": "a6b756fe3d20dcbc34c718373763c6cf0694e6da1a4a06a9ed5ee505d49c014a"
+            },
+            {
+              "path": "docs/history/context-migration-20261020.json",
+              "sha256": "69f953bbdf82b5e5d52be8196f695c5551daf823f4d216d197f4d7d9b9383493"
+            },
+            {
+              "path": "business/unity/evidence/context-delivery-20261020.json",
+              "sha256": "2dd2de2b934646937696a1f6253a468b2c7c5e1ee7b15a70a4f3bdd4e68e8636"
+            }
+          ],
+          "checks": [
+            "34 business tests passed",
+            "npm run check passed",
+            "automation updated via app and readback verified: 3724 to 177 chars; schedule/model/notifications/target preserved",
+            "351 prior events and exact original archives preserved",
+            "owner instructions, legacy ledger and releases unchanged",
+            "read AGENTS, coding conventions, TypeScript/ESLint configs, canonical task and selected checkpoint; no unrelated decision replay",
+            "full diff reviewed; no public deployment"
+          ],
+          "next_step": "T-web-scoped-production-delivery-20261020で既存1作品の配信先と依存アセットを照合し、他作品とトップを置換しない最小配信を検証して実デプロイへ進める。",
+          "passed": true,
+          "at": 1792481267.9171221
+        },
+        {
+          "run_id": "manual-context-delivery-20261020",
+          "fence": 59,
+          "artifacts": [
+            {
+              "path": "AGENTS.md",
+              "sha256": "44fdb048f2fdb85ee5d517a2ce8a841d10730c7f610d8f95f82fe339411ba7e4"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "17162deefa3f372777572ebeff30ac73ac772505a7eb21ed85b394a881bc2dd6"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "8111aedf09c9fff09dc973f5e46f77c807f7147f4dabe8f0ec34461b7ed18134"
+            },
+            {
+              "path": "business/ops/context.py",
+              "sha256": "fdb360e0d1b17b1f55e7e4b59a7cf2a4adc9f5b3289a99381e370812b6be9fac"
+            },
+            {
+              "path": "business/tests/test_context.py",
+              "sha256": "9516a9a90c97934f524207b0c31a89d6324492739d91f3079ffce0c8c25300c7"
+            },
+            {
+              "path": "docs/autonomous-workflow.md",
+              "sha256": "80cd4d488634419a2d45a88ef8409c0bddbbcec3699f74e30e15cc4e9bc18293"
+            },
+            {
+              "path": "docs/coding-conventions.md",
+              "sha256": "e13d869b24b6d2da641543838520132ca63d599811eb1479a0b6fcfd6f1061f0"
+            },
+            {
+              "path": "docs/context-delivery-20261020.md",
+              "sha256": "a6b756fe3d20dcbc34c718373763c6cf0694e6da1a4a06a9ed5ee505d49c014a"
+            },
+            {
+              "path": "docs/history/context-migration-20261020.json",
+              "sha256": "69f953bbdf82b5e5d52be8196f695c5551daf823f4d216d197f4d7d9b9383493"
+            },
+            {
+              "path": "business/unity/evidence/context-delivery-20261020.json",
+              "sha256": "2dd2de2b934646937696a1f6253a468b2c7c5e1ee7b15a70a4f3bdd4e68e8636"
+            }
+          ],
+          "checks": [
+            "34 business tests passed",
+            "npm run check passed",
+            "automation updated via app and readback verified: 3724 to 177 chars; schedule/model/notifications/target preserved",
+            "351 prior events and exact original archives preserved",
+            "owner instructions, legacy ledger and releases unchanged",
+            "read AGENTS, coding conventions, TypeScript/ESLint configs, canonical task and selected checkpoint; no unrelated decision replay",
+            "full diff reviewed; no public deployment"
+          ],
+          "next_step": "T-web-scoped-production-delivery-20261020で既存1作品の配信先と依存アセットを照合し、他作品とトップを置換しない最小配信を検証して実デプロイへ進める。",
+          "passed": true,
+          "at": 1792481267.9712138
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "manual-context-delivery-20261020",
+          "task_id": "T-context-delivery-20261020",
+          "fence": 59,
+          "expires_at": 1792482675.1594555
+        }
+      ]
+    },
+    "T-web-scoped-production-delivery-20261020": {
+      "id": "T-web-scoped-production-delivery-20261020",
+      "objective": "既存Web1作品と必要アセットだけの配信経路を整え実デプロイする",
+      "acceptance": [
+        "本番の現行版と対象作品・共有アセット・配信先を照合し、トップや対象外作品を置換・削除しない",
+        "同版の必要検査・CI・復元元・SHA-256を照合し既存許可範囲の配信を行う",
+        "配信URLで版・起動・代表入力・保存と再読み込みを確認してから実デプロイ成功を記録。未確認や障害は具体的な証跡を残し成功としない"
+      ],
+      "outputs": [
+        "docs/web-scoped-production-delivery.md",
+        "business/unity/evidence/scoped-production-delivery.json"
+      ],
+      "checks": [
+        "現行本番と配信対象一覧の照合",
+        "必要検査とCI版・ハッシュ・復元の照合",
+        "配信後HTTP・版・実ブラウザ動作"
+      ],
+      "next_step": "既存CI保全索引と対象作品の本番HTML・依存アセットを調べ、最小の配信対象を確定する",
+      "decision_id": "D-context-delivery-20261020",
+      "experiment_id": "E-unity-portal",
+      "pdca": "do",
+      "hypothesis": "既存許可領域の最小配信なら全体置換を避けて検証済み改善を利用者へ届けられる",
+      "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+      "priority": 1,
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -8537,6 +8720,12 @@
       "source": "https://developers.google.com/search/docs/appearance/title-link",
       "hypothesis": "ページごとのタイトルと説明・正規URLが内容と一致すれば検索と往復で作品を区別できる。流入改善は未観測。",
       "next_step": "既存9ページの生成HTMLと実ブラウザ往復で照合し、実在する差異だけ修正する"
+    },
+    "D-context-delivery-20261020": {
+      "id": "D-context-delivery-20261020",
+      "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+      "hypothesis": "短い起動指示と現行規約・正本台帳の選択読込で判断の重複を減らし、検証済み改善の実デプロイを一日一回目安で進める",
+      "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する"
     }
   },
   "runs": {
@@ -8935,6 +9124,12 @@
       "source": "scheduled:game-site:2026-10-20T13:00:00+09:00",
       "status": "completed",
       "started_at": 1792468843.9387498
+    },
+    "manual-context-delivery-20261020": {
+      "run_id": "manual-context-delivery-20261020",
+      "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+      "status": "completed",
+      "started_at": 1792480875.1086485
     }
   },
   "experiments": {
@@ -9186,6 +9381,12 @@
       "message": "毎回６分程度しか働いていませんね。なんでもアクセスできるのだからもっと自律的に仕事してください。このリポジトリなら何でもアクセスしてもらって構いません。(勝手にPR通したりも)",
       "next_step": "Implement existing navigation task, validate and publish/merge checked PR",
       "at": 1791816143.6773832
+    },
+    {
+      "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+      "message": "良い感じに開発してますね。続行していってください意思決定の裁量もどんどん上げていっていいですからね。デプロイ頻度を上げましょう。一日一個目安。ただ、定期実行のたびにクソ長promptが送られてるのは気になります。実行時に、不要な意思決定の履歴を見ずに、適宜何を見ないといけないのかを判断させて、正規の履歴からちゃんと読ませ、ちゃんとコーディング規約を見せ、自分で分析する流れを構築してください",
+      "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する",
+      "at": 1792480874.954525
     }
   ],
   "approvals": [
@@ -21716,7 +21917,277 @@
       },
       "previous": "3d6c96e6f518889460ecbdffe287eb17b1cf3ebbbf8ceec055d7e2b3c93448d8",
       "sha256": "28072a80173ea08339919197c559bb6fe22c534d4a78beb90d5e7b08e73e8304"
+    },
+    {
+      "revision": 352,
+      "at": 1792480874.954525,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+        "message": "良い感じに開発してますね。続行していってください意思決定の裁量もどんどん上げていっていいですからね。デプロイ頻度を上げましょう。一日一個目安。ただ、定期実行のたびにクソ長promptが送られてるのは気になります。実行時に、不要な意思決定の履歴を見ずに、適宜何を見ないといけないのかを判断させて、正規の履歴からちゃんと読ませ、ちゃんとコーディング規約を見せ、自分で分析する流れを構築してください",
+        "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "28072a80173ea08339919197c559bb6fe22c534d4a78beb90d5e7b08e73e8304",
+      "sha256": "4bf112e23b3806d960af6b9663cd9af6f9ca0c5f30ac43a5a4a7638104a7fcca"
+    },
+    {
+      "revision": 353,
+      "at": 1792480875.004895,
+      "action": "decision",
+      "data": {
+        "id": "D-context-delivery-20261020",
+        "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+        "hypothesis": "短い起動指示と現行規約・正本台帳の選択読込で判断の重複を減らし、検証済み改善の実デプロイを一日一回目安で進める",
+        "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "4bf112e23b3806d960af6b9663cd9af6f9ca0c5f30ac43a5a4a7638104a7fcca",
+      "sha256": "d37cde6020ead38b8beb1dd8c0b7768c4a1537f8b35307f001e303233843623a"
+    },
+    {
+      "revision": 354,
+      "at": 1792480875.056339,
+      "action": "task",
+      "data": {
+        "id": "T-context-delivery-20261020",
+        "objective": "定期起動を短文化し現行規約と必要履歴から自律判断する流れを構築",
+        "acceptance": [
+          "固定promptに完了済み工程や判断履歴を含めない",
+          "台帳整合性を検証し未完了タスクとcheckpointを選択表示、指定時のみ関連判断を取得",
+          "既存履歴を保全し現行規約・状態・日次実デプロイ目標を分離",
+          "既存定期実行の時刻・モデル・通知を保持して更新し読戻す"
+        ],
+        "outputs": [
+          "AGENTS.md",
+          "docs/autonomous-workflow.md",
+          "docs/coding-conventions.md",
+          "business/ops/context.py"
+        ],
+        "checks": [
+          "コンテキスト選択・破損拒否・履歴保全テスト",
+          "台帳回帰とリポジトリ検査",
+          "定期設定読戻し"
+        ],
+        "next_step": "起動コンテキストを選択読込へ変更し、検証後に既存定期実行を短文化する",
+        "decision_id": "D-context-delivery-20261020",
+        "experiment_id": "E-unity-portal",
+        "pdca": "do",
+        "hypothesis": "必要情報の選択読込で制作と配信の進行を改善",
+        "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "d37cde6020ead38b8beb1dd8c0b7768c4a1537f8b35307f001e303233843623a",
+      "sha256": "a6b5a54528573743f74ae3526b28503716934f0a454fd367e9028b5b717b32c0"
+    },
+    {
+      "revision": 355,
+      "at": 1792480875.1086485,
+      "action": "start",
+      "data": {
+        "run_id": "manual-context-delivery-20261020",
+        "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "a6b5a54528573743f74ae3526b28503716934f0a454fd367e9028b5b717b32c0",
+      "sha256": "0870373f6eb61b7dafd0a85176c08628b74d6bfb881d85ddf62f0579dcca42dc"
+    },
+    {
+      "revision": 356,
+      "at": 1792480875.1594555,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-context-delivery-20261020",
+        "task_id": "T-context-delivery-20261020",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "manual-context-delivery-20261020",
+        "task_id": "T-context-delivery-20261020",
+        "fence": 59,
+        "expires_at": 1792482675.1594555
+      },
+      "previous": "0870373f6eb61b7dafd0a85176c08628b74d6bfb881d85ddf62f0579dcca42dc",
+      "sha256": "3d1ef95f8530092ad05e71dfda61bf684e6eff305c64d4054f2459679967a07f"
+    },
+    {
+      "revision": 357,
+      "at": 1792481267.9171221,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "manual-context-delivery-20261020",
+        "fence": 59,
+        "artifacts": [
+          {
+            "path": "AGENTS.md",
+            "sha256": "44fdb048f2fdb85ee5d517a2ce8a841d10730c7f610d8f95f82fe339411ba7e4"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "17162deefa3f372777572ebeff30ac73ac772505a7eb21ed85b394a881bc2dd6"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "8111aedf09c9fff09dc973f5e46f77c807f7147f4dabe8f0ec34461b7ed18134"
+          },
+          {
+            "path": "business/ops/context.py",
+            "sha256": "fdb360e0d1b17b1f55e7e4b59a7cf2a4adc9f5b3289a99381e370812b6be9fac"
+          },
+          {
+            "path": "business/tests/test_context.py",
+            "sha256": "9516a9a90c97934f524207b0c31a89d6324492739d91f3079ffce0c8c25300c7"
+          },
+          {
+            "path": "docs/autonomous-workflow.md",
+            "sha256": "80cd4d488634419a2d45a88ef8409c0bddbbcec3699f74e30e15cc4e9bc18293"
+          },
+          {
+            "path": "docs/coding-conventions.md",
+            "sha256": "e13d869b24b6d2da641543838520132ca63d599811eb1479a0b6fcfd6f1061f0"
+          },
+          {
+            "path": "docs/context-delivery-20261020.md",
+            "sha256": "a6b756fe3d20dcbc34c718373763c6cf0694e6da1a4a06a9ed5ee505d49c014a"
+          },
+          {
+            "path": "docs/history/context-migration-20261020.json",
+            "sha256": "69f953bbdf82b5e5d52be8196f695c5551daf823f4d216d197f4d7d9b9383493"
+          },
+          {
+            "path": "business/unity/evidence/context-delivery-20261020.json",
+            "sha256": "2dd2de2b934646937696a1f6253a468b2c7c5e1ee7b15a70a4f3bdd4e68e8636"
+          }
+        ],
+        "checks": [
+          "34 business tests passed",
+          "npm run check passed",
+          "automation updated via app and readback verified: 3724 to 177 chars; schedule/model/notifications/target preserved",
+          "351 prior events and exact original archives preserved",
+          "owner instructions, legacy ledger and releases unchanged",
+          "read AGENTS, coding conventions, TypeScript/ESLint configs, canonical task and selected checkpoint; no unrelated decision replay",
+          "full diff reviewed; no public deployment"
+        ],
+        "next_step": "T-web-scoped-production-delivery-20261020で既存1作品の配信先と依存アセットを照合し、他作品とトップを置換しない最小配信を検証して実デプロイへ進める。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "3d1ef95f8530092ad05e71dfda61bf684e6eff305c64d4054f2459679967a07f",
+      "sha256": "2e227dde7bdb9d3887f3abf173ebe312161b3beac7ed801e457e6b76a81e4820"
+    },
+    {
+      "revision": 358,
+      "at": 1792481267.9712138,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-context-delivery-20261020",
+        "fence": 59,
+        "artifacts": [
+          {
+            "path": "AGENTS.md",
+            "sha256": "44fdb048f2fdb85ee5d517a2ce8a841d10730c7f610d8f95f82fe339411ba7e4"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "17162deefa3f372777572ebeff30ac73ac772505a7eb21ed85b394a881bc2dd6"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "8111aedf09c9fff09dc973f5e46f77c807f7147f4dabe8f0ec34461b7ed18134"
+          },
+          {
+            "path": "business/ops/context.py",
+            "sha256": "fdb360e0d1b17b1f55e7e4b59a7cf2a4adc9f5b3289a99381e370812b6be9fac"
+          },
+          {
+            "path": "business/tests/test_context.py",
+            "sha256": "9516a9a90c97934f524207b0c31a89d6324492739d91f3079ffce0c8c25300c7"
+          },
+          {
+            "path": "docs/autonomous-workflow.md",
+            "sha256": "80cd4d488634419a2d45a88ef8409c0bddbbcec3699f74e30e15cc4e9bc18293"
+          },
+          {
+            "path": "docs/coding-conventions.md",
+            "sha256": "e13d869b24b6d2da641543838520132ca63d599811eb1479a0b6fcfd6f1061f0"
+          },
+          {
+            "path": "docs/context-delivery-20261020.md",
+            "sha256": "a6b756fe3d20dcbc34c718373763c6cf0694e6da1a4a06a9ed5ee505d49c014a"
+          },
+          {
+            "path": "docs/history/context-migration-20261020.json",
+            "sha256": "69f953bbdf82b5e5d52be8196f695c5551daf823f4d216d197f4d7d9b9383493"
+          },
+          {
+            "path": "business/unity/evidence/context-delivery-20261020.json",
+            "sha256": "2dd2de2b934646937696a1f6253a468b2c7c5e1ee7b15a70a4f3bdd4e68e8636"
+          }
+        ],
+        "checks": [
+          "34 business tests passed",
+          "npm run check passed",
+          "automation updated via app and readback verified: 3724 to 177 chars; schedule/model/notifications/target preserved",
+          "351 prior events and exact original archives preserved",
+          "owner instructions, legacy ledger and releases unchanged",
+          "read AGENTS, coding conventions, TypeScript/ESLint configs, canonical task and selected checkpoint; no unrelated decision replay",
+          "full diff reviewed; no public deployment"
+        ],
+        "next_step": "T-web-scoped-production-delivery-20261020で既存1作品の配信先と依存アセットを照合し、他作品とトップを置換しない最小配信を検証して実デプロイへ進める。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "2e227dde7bdb9d3887f3abf173ebe312161b3beac7ed801e457e6b76a81e4820",
+      "sha256": "8392cdfec539716b2ce0c6f070fd4f58f565c9e7cd5db3829b89fdca2bc9c46f"
+    },
+    {
+      "revision": 359,
+      "at": 1792481268.0241618,
+      "action": "task",
+      "data": {
+        "id": "T-web-scoped-production-delivery-20261020",
+        "objective": "既存Web1作品と必要アセットだけの配信経路を整え実デプロイする",
+        "acceptance": [
+          "本番の現行版と対象作品・共有アセット・配信先を照合し、トップや対象外作品を置換・削除しない",
+          "同版の必要検査・CI・復元元・SHA-256を照合し既存許可範囲の配信を行う",
+          "配信URLで版・起動・代表入力・保存と再読み込みを確認してから実デプロイ成功を記録。未確認や障害は具体的な証跡を残し成功としない"
+        ],
+        "outputs": [
+          "docs/web-scoped-production-delivery.md",
+          "business/unity/evidence/scoped-production-delivery.json"
+        ],
+        "checks": [
+          "現行本番と配信対象一覧の照合",
+          "必要検査とCI版・ハッシュ・復元の照合",
+          "配信後HTTP・版・実ブラウザ動作"
+        ],
+        "next_step": "既存CI保全索引と対象作品の本番HTML・依存アセットを調べ、最小の配信対象を確定する",
+        "decision_id": "D-context-delivery-20261020",
+        "experiment_id": "E-unity-portal",
+        "pdca": "do",
+        "hypothesis": "既存許可領域の最小配信なら全体置換を避けて検証済み改善を利用者へ届けられる",
+        "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "8392cdfec539716b2ce0c6f070fd4f58f565c9e7cd5db3829b89fdca2bc9c46f",
+      "sha256": "fbf85348fa154418e7d9db145bf6d507283634924b086b56d2cb7b36fffe2045"
     }
   ],
-  "projection_sha256": "5d821b5611163936332ed579a06ded861d0d3710f39b69019151699c396cfae5"
+  "projection_sha256": "5bf671ddfe9348c7bc7733f92ba74741bf24e36439d816bf0e753330d7a04a14"
 }

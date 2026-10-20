@@ -1,0 +1,14 @@
+{
+  "AGENTS.md": {
+    "archive": "docs/history/agents-through-20261020.md",
+    "sha256": "6841ebed226b489f6ba37bd097c6490ccefb9a396a20d2d54f95316328b4ac9f"
+  },
+  "STATE.md": {
+    "archive": "docs/history/state-through-20261020.md",
+    "sha256": "d0f01aaf6f95a22217416b946c3e6a17a2cb70c55a98eeada9393977e2fcd0f3"
+  },
+  "business/studio-policy.json": {
+    "archive": "docs/history/studio-policy-through-20261020.json",
+    "sha256": "4ef5f68edd89c5228abd1a47ac0d9fc38b61667277d1121828d0e1f6177a3e33"
+  }
+}

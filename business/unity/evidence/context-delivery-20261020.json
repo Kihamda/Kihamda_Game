@@ -1,0 +1,26 @@
+{
+  "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+  "automation": {
+    "id": "unity",
+    "updatedThrough": "codex-app automation_update",
+    "readbackVerified": true,
+    "promptBeforeCharacters": 3724,
+    "promptAfterCharacters": 177,
+    "promptSha256": "eaf2ead9e37d2f0afd4b6f258a1a33a53e6c94d9cf494157c64935056e49df7c",
+    "scheduleModelNotificationTargetPreserved": true
+  },
+  "checks": {
+    "businessTests": 34,
+    "repositoryContract": "passed",
+    "priorEventsPreserved": 351,
+    "archives": "docs/history/context-migration-20261020.json",
+    "ownerInstructionsLegacyLedgerAndReleasesUnchanged": true
+  },
+  "productionDeployment": {
+    "performed": false,
+    "reason": "既存全体FTPS経路は全体置換禁止と衝突するため、既存1作品と必要アセットだけの配信経路を次工程で検証する",
+    "existingWorkflowLastSuccessfulRun": 37882170230,
+    "repositoryVariablesObserved": []
+  },
+  "nextTask": "T-web-scoped-production-delivery-20261020"
+}

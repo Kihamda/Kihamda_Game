@@ -108,3 +108,9 @@ web/src/portal/InspectionPreview.tsx text eol=lf
 docs/web-preview-dialog-error-20261019.md text eol=lf
 business/blog/drafts/2026-10-19-image-error-guidance.md text eol=lf
 business/blog/drafts/2026-10-20-ci-restoration-before-merge.md -text
+# Context migration archives retain the original checkpoint bytes on every OS.
+docs/history/*-through-20261020.* -text whitespace=cr-at-eol
+docs/history/context-migration-20261020.json text eol=lf
+docs/autonomous-workflow.md text eol=lf
+docs/coding-conventions.md text eol=lf
+docs/context-delivery-20261020.md text eol=lf
