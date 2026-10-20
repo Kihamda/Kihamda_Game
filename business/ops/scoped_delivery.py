@@ -27,7 +27,7 @@ def asset_references(body, source):
     This is not a JavaScript interpreter: computed URLs remain unverified.
     Only shared /assets and this game's scoped assets are recovery dependencies.
     """
-    if not source.endswith((".html", ".js", ".css")):
+    if not source.endswith((".html", ".js", ".mjs", ".css")):
         return set()
     text = body.decode("utf-8", errors="strict")
     references = {match[1] for match in re.findall(r'''(["'])([^"'\s<>]+)\1''', text)}
@@ -59,6 +59,8 @@ def collect_recovery(baseline, ftp, http_read, progress=None):
     pending = asset_references(baseline[SCOPE + "index.html"], SCOPE + "index.html")
     edges = {}
     total = sum(len(body) for body in baseline.values())
+    if total > MAX_RECOVERY_BYTES:
+        raise ValueError("Recovery dependency byte limit exceeded")
     while pending:
         path = sorted(pending)[0]
         pending.remove(path)
@@ -131,12 +133,22 @@ def https_read(path):
     with urlopen(ORIGIN + "/" + path, timeout=30) as response:
         if response.url != ORIGIN + "/" + path:
             raise ValueError("Unexpected production redirect")
-        return response.read()
+        body = response.read(MAX_RECOVERY_BYTES + 1)
+        if len(body) > MAX_RECOVERY_BYTES:
+            raise ValueError("HTTPS response byte limit exceeded")
+        return body
 
 
 def ftp_read(ftp, path):
     chunks = []
-    ftp.retrbinary("RETR " + path, chunks.append)
+    total = 0
+    def receive(chunk):
+        nonlocal total
+        total += len(chunk)
+        if total > MAX_RECOVERY_BYTES:
+            raise ValueError("FTPS response byte limit exceeded")
+        chunks.append(chunk)
+    ftp.retrbinary("RETR " + path, receive)
     return b"".join(chunks)
 
 
