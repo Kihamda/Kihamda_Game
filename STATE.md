@@ -7,7 +7,7 @@
 - 制作正本: business/unity/ops/ledger.json。進行工程・lease・最新checkpointは`python business/ops/context.py`で確認する。ここにタスク状態を複製しない。
 - 既存Web入口と4作品の紹介・入力・保存品質を検証済み。PR28はhead e2dcca07c99d2606b9647f2017cc563aebd287eaのLinux/Windows CI成功後、2026-10-20 07:02:51JSTにc4f708dへマージ済み。本日追加PRは作らず、運用改善の成果はローカル保存して翌日分へ統合する。
 - 現行CI保全版: business/unity/evidence/delivery-web-dialog-error-final-20261020.json。これは実デプロイではない。作品のreleaseと事業指標はnull。実HTTP障害・実タッチ・Safari・人間評価・別PC復元は未確認。
-- 直近19時はMineRush限定配信を実装中。現行CI保全版は作品紹介ページであり、本番の遊べるページへそのまま上書きできないことを確認。既存ゲームを直接起動する4ファイルの専用ビルドと、FTPSルート・本番HTTPS・復元元を照合する読み取り専用検査を実装した。通常ビルド、既存ゲーム検査、42テスト、ローカル実ブラウザ操作が成功。詳細: docs/web-scoped-production-delivery.md、business/unity/evidence/scoped-production-delivery.json。
+- MineRush限定配信を実装中。現行CI保全版は作品紹介ページであり、本番の遊べるページへそのまま上書きできないことを確認。既存ゲームを直接起動する4ファイルの専用ビルドと、FTPSルート・本番HTTPS・復元元を照合する読み取り専用検査を実装した。19時の通常ビルド・既存ゲーム検査・ローカル実ブラウザ操作に加え、夜の継続で依存ファイルの再帰保存を実装し49テストが成功。本番HTTPSから静的参照208ファイルを取得したが、実FTPS照合・復元検証ではない。詳細: docs/web-scoped-production-delivery.md、business/unity/evidence/scoped-production-delivery.jsonとscoped-recovery-20261020-2255.json。
 - T-web-scoped-production-delivery-20261020を継続。次は新候補のCI統合とmain上の読み取り専用FTPS検査。実FTPSルート、限定アップロード・復旧処理と配信後検証は未完了で、実デプロイ件数へ算入しない。現行全体FTPS workflowは起動せず、release=nullを維持する。当日PRマージ済みという理由で既存検証版の配信を止める運用には戻さない。
 
 ## 直近の運用改善

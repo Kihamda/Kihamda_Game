@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ops"))
 import scoped_delivery as delivery
@@ -65,6 +66,76 @@ class ScopedDeliveryTest(unittest.TestCase):
         self.remote["index.html"] = b"another site"
         with self.assertRaisesRegex(ValueError, "root does not match"):
             delivery.inspect(self.package, self.root / "backup", ReadOnlyFTP(self.remote), self.http.__getitem__)
+        self.assertFalse((self.root / "backup").exists())
+
+    def graph(self):
+        files = {
+            "assets/old.js": b'import("./chunk.js");const preload=["assets/style.css"];',
+            "assets/chunk.js": b'export {x} from "./old.js";import("./nested/leaf.js");',
+            "assets/nested/leaf.js": b'import "../chunk.js";import("https://example.org/assets/other.js");',
+            "assets/style.css": b'@import "./nested/more.css";a{background:url(./image.png)}',
+            "assets/nested/more.css": b'@font-face{src:url("../font.woff2")}',
+            "assets/image.png": b"\x89PNG\xff",
+            "assets/font.woff2": b"\xfffont",
+        }
+        self.remote.update(files)
+        self.http.update(files)
+        return files
+
+    def test_transitive_graph_cycles_css_and_binary_recovery(self):
+        files = self.graph()
+        ftp = ReadOnlyFTP(copy.deepcopy(self.remote))
+        report = delivery.inspect(self.package, self.root / "backup", ftp, self.http.__getitem__)
+        for path, body in files.items():
+            self.assertEqual((self.root / "backup/before" / path).read_bytes(), body)
+            self.assertEqual(ftp.calls.count("RETR " + path), 2)
+        self.assertEqual(report["recoveryDependencies"]["assets/nested/leaf.js"], ["assets/chunk.js"])
+        self.assertIn("computed URLs", report["recoveryCoverage"])
+        self.assertTrue(all(command.startswith("RETR ") for command in ftp.calls))
+
+    def test_nested_dependency_mismatch_refused_without_partial_backup(self):
+        self.graph()
+        self.remote["assets/nested/leaf.js"] = b"different"
+        with self.assertRaisesRegex(ValueError, "differs"):
+            delivery.inspect(self.package, self.root / "backup", ReadOnlyFTP(self.remote), self.http.__getitem__)
+        self.assertFalse((self.root / "backup").exists())
+
+    def test_missing_nested_dependency_refused(self):
+        self.graph()
+        del self.remote["assets/nested/leaf.js"]
+        with self.assertRaises(error_perm):
+            delivery.inspect(self.package, self.root / "backup", ReadOnlyFTP(self.remote), self.http.__getitem__)
+        self.assertFalse((self.root / "backup").exists())
+
+    def test_graph_limits_refuse_without_backup(self):
+        self.graph()
+        for limit, value in (("MAX_RECOVERY_FILES", 3), ("MAX_RECOVERY_BYTES", 1)):
+            with self.subTest(limit=limit), patch.object(delivery, limit, value):
+                with self.assertRaisesRegex(ValueError, "limit exceeded"):
+                    delivery.inspect(self.package, self.root / "backup", ReadOnlyFTP(self.remote), self.http.__getitem__)
+                self.assertFalse((self.root / "backup").exists())
+
+    def test_unsafe_static_dependency_refused(self):
+        self.remote["assets/old.js"] = self.http["assets/old.js"] = b'import("/assets/%2e%2e/private.js")'
+        with self.assertRaisesRegex(ValueError, "Unsafe recovery"):
+            delivery.inspect(self.package, self.root / "backup", ReadOnlyFTP(self.remote), self.http.__getitem__)
+        self.assertFalse((self.root / "backup").exists())
+
+    def test_js_literals_are_not_bare_asset_paths(self):
+        body = b'''const extension=".css";const tag="button";const selector="link[rel=";import("./actual.js");'''
+        self.assertEqual(delivery.asset_references(body, "assets/entry.js"), {"assets/actual.js"})
+
+    def test_nested_dependency_change_during_inspection_refused(self):
+        self.graph()
+        ftp = ReadOnlyFTP(copy.deepcopy(self.remote))
+        original = ftp.retrbinary
+        def changing(command, callback):
+            if command == "RETR " + delivery.SCOPE + "assets/index-test.js":
+                ftp.files["assets/nested/leaf.js"] = b"changed after first read"
+            original(command, callback)
+        ftp.retrbinary = changing
+        with self.assertRaisesRegex(ValueError, "changed during preflight"):
+            delivery.inspect(self.package, self.root / "backup", ftp, self.http.__getitem__)
         self.assertFalse((self.root / "backup").exists())
 
     def test_collision_stops_without_backup(self):

@@ -12,10 +12,72 @@ import re
 import ssl
 from ftplib import FTP_TLS, error_perm
 from urllib.request import urlopen
+from urllib.parse import urljoin, urlsplit
 
 
 ORIGIN = "https://game.kihamda.net"
 SCOPE = "games/minerush/"
+MAX_RECOVERY_FILES = 256
+MAX_RECOVERY_BYTES = 64 * 1024 * 1024
+
+
+def asset_references(body, source):
+    """Conservative static inventory, including Vite preload maps and CSS URLs.
+
+    This is not a JavaScript interpreter: computed URLs remain unverified.
+    Only the existing shared /assets tree may be read as recovery dependencies.
+    """
+    if not source.endswith((".html", ".js", ".css")):
+        return set()
+    text = body.decode("utf-8", errors="strict")
+    references = {match[1] for match in re.findall(r'''(["'])([^"'\s<>]+)\1''', text)}
+    if source.endswith(".css"):
+        references.update(re.findall(r"url\(\s*([^\s\"'()]+)\s*\)", text))
+    result = set()
+    for reference in references:
+        if not re.search(r"\.(?:js|mjs|css|png|jpg|jpeg|gif|svg|webp|avif|ico|woff2?|ttf|otf|wasm|mp3|ogg|wav|mp4|webm)(?:[?#].*)?$", reference, re.I):
+            continue
+        if urlsplit(reference).path.rsplit("/", 1)[-1].startswith("."):
+            continue
+        # Vite preload maps may use assets/foo.js relative to the site root.
+        base = ORIGIN + "/" if reference.startswith("assets/") else ORIGIN + "/" + source
+        url = urlsplit(urljoin(base, reference))
+        if url.scheme != "https" or url.netloc != urlsplit(ORIGIN).netloc:
+            continue
+        path = url.path.lstrip("/")
+        if not path.startswith("assets/"):
+            continue
+        if (not re.fullmatch(r"assets/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_.-]+", path) or
+                any(part in (".", "..") for part in path.split("/"))):
+            raise ValueError("Unsafe recovery dependency")
+        result.add(path)
+    return result
+
+
+def collect_recovery(baseline, ftp, http_read):
+    """Read the reachable static asset graph without modifying the server."""
+    pending = asset_references(baseline[SCOPE + "index.html"], SCOPE + "index.html")
+    edges = {}
+    total = sum(len(body) for body in baseline.values())
+    while pending:
+        path = sorted(pending)[0]
+        pending.remove(path)
+        if path in baseline:
+            continue
+        if len(baseline) >= MAX_RECOVERY_FILES:
+            raise ValueError("Recovery dependency file limit exceeded")
+        public = http_read(path)
+        total += len(public)
+        if total > MAX_RECOVERY_BYTES:
+            raise ValueError("Recovery dependency byte limit exceeded")
+        remote = ftp_read(ftp, path)
+        if public != remote:
+            raise ValueError("Old bundle differs between FTPS and HTTPS")
+        baseline[path] = remote
+        dependencies = asset_references(remote, path)
+        edges[path] = sorted(dependencies)
+        pending.update(dependencies - baseline.keys())
+    return edges
 
 
 def sha(body):
@@ -89,15 +151,7 @@ def inspect(package, backup, ftp, http_read=https_read):
         if public != remote:
             raise ValueError("FTPS root does not match HTTPS production: " + path)
         baseline[path] = remote
-    # Preserve the old game's directly referenced bundles as recovery evidence.
-    old_html = baseline[SCOPE + "index.html"].decode("utf-8", errors="replace")
-    old_dependencies = set(re.findall(r'(?:src|href)=["\x27](/assets/[A-Za-z0-9_.-]+\.(?:js|css))["\x27]', old_html))
-    for path in sorted(old_dependencies):
-        public = http_read(path[1:])
-        remote = ftp_read(ftp, path[1:])
-        if public != remote:
-            raise ValueError("Old bundle differs between FTPS and HTTPS")
-        baseline[path[1:]] = remote
+    dependencies = collect_recovery(baseline, ftp, http_read)
     collisions = []
     for entry in manifest["files"]:
         if not entry["path"].startswith(SCOPE + "assets/"):
@@ -127,6 +181,8 @@ def inspect(package, backup, ftp, http_read=https_read):
               "packageManifestSha256": sha((Path(package) / "manifest.json").read_bytes()),
               "baseline": [{"path": path, "sha256": sha(body)} for path, body in baseline.items()],
               "assetChecks": collisions,
+              "recoveryDependencies": dependencies,
+              "recoveryCoverage": "reachable static shared assets only; computed URLs and off-PC restore unverified",
               "nextGate": "Review backup, resolve 550 ambiguity, recheck baseline before scoped upload"}
     (backup / "preflight.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return report

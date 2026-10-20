@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 363,
+  "revision": 367,
   "business_id": "game-site",
-  "fence": 60,
+  "fence": 61,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -8629,6 +8629,94 @@
             "production upload and post-delivery browser acceptance"
           ],
           "at": 1792491184.5534246
+        },
+        {
+          "run_id": "unity-20261020T2255-recovery",
+          "fence": 61,
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_delivery.py",
+              "sha256": "c9de841986429609bc40a91e47d436e71c2766a6724707bf94cfe811fb09857e"
+            },
+            {
+              "path": "business/tests/test_scoped_delivery.py",
+              "sha256": "52fa9c8a0228791c886eb43bb2fce49676883437535b42441cddc26ad62f6e6b"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "ad6b251e1ebf122a6464467cab213bed5d21ff5ca86410a843565cd6ec253396"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "b3bdb0bb4a94504ea09332e182d2010839765cc1f838d2af8d3d181dead8d8cc"
+            },
+            {
+              "path": "business/unity/evidence/scoped-recovery-20261020-2255.json",
+              "sha256": "9514653dd9287593d55c57b5c3a43f3580c46f1105b1042a076116706437e788"
+            }
+          ],
+          "checks": [
+            "49 business tests passed",
+            "repository contract passed: 4 preserved entries, 19 GUIDs",
+            "existing four-file scoped package verified",
+            "original363 events preserved; three protected paths unchanged in Git",
+            "Read current AGENTS/owner/STATE/policy/conventions/workflow, selected context and scoped source/tests/workflow only",
+            "HTTPS-only live static graph:208 files/1462036 bytes; no production writes; initial literal extraction false positives fixed and regression tested",
+            "No Web source changes; no redundant Web build or browser rerun"
+          ],
+          "next_step": "Integrate scoped candidate in next daily batch, verify exact-head CI and main read-only FTPS root/recovery; then implement and test confined upload/rollback before production acceptance.",
+          "unverified": [
+            "computed URLs and dependencies outside shared assets",
+            "remote CI and FTPS root",
+            "550 ambiguity",
+            "scoped upload and rollback",
+            "production gameplay after delivery"
+          ],
+          "at": 1792504747.1198814
+        },
+        {
+          "run_id": "unity-20261020T2255-recovery",
+          "fence": 61,
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_delivery.py",
+              "sha256": "c9de841986429609bc40a91e47d436e71c2766a6724707bf94cfe811fb09857e"
+            },
+            {
+              "path": "business/tests/test_scoped_delivery.py",
+              "sha256": "52fa9c8a0228791c886eb43bb2fce49676883437535b42441cddc26ad62f6e6b"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "ad6b251e1ebf122a6464467cab213bed5d21ff5ca86410a843565cd6ec253396"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "b3bdb0bb4a94504ea09332e182d2010839765cc1f838d2af8d3d181dead8d8cc"
+            },
+            {
+              "path": "business/unity/evidence/scoped-recovery-20261020-2255.json",
+              "sha256": "9514653dd9287593d55c57b5c3a43f3580c46f1105b1042a076116706437e788"
+            }
+          ],
+          "checks": [
+            "49 business tests passed",
+            "repository contract passed: 4 preserved entries, 19 GUIDs",
+            "existing four-file scoped package verified",
+            "original363 events preserved; three protected paths unchanged in Git",
+            "Read current AGENTS/owner/STATE/policy/conventions/workflow, selected context and scoped source/tests/workflow only",
+            "HTTPS-only live static graph:208 files/1462036 bytes; no production writes; initial literal extraction false positives fixed and regression tested",
+            "No Web source changes; no redundant Web build or browser rerun"
+          ],
+          "next_step": "Integrate scoped candidate in next daily batch, verify exact-head CI and main read-only FTPS root/recovery; then implement and test confined upload/rollback before production acceptance.",
+          "unverified": [
+            "computed URLs and dependencies outside shared assets",
+            "remote CI and FTPS root",
+            "550 ambiguity",
+            "scoped upload and rollback",
+            "production gameplay after delivery"
+          ],
+          "at": 1792504747.1691282
         }
       ],
       "claims": [
@@ -8637,6 +8725,12 @@
           "task_id": "T-web-scoped-production-delivery-20261020",
           "fence": 60,
           "expires_at": 1792492460.4150462
+        },
+        {
+          "run_id": "unity-20261020T2255-recovery",
+          "task_id": "T-web-scoped-production-delivery-20261020",
+          "fence": 61,
+          "expires_at": 1792506355.9849544
         }
       ]
     }
@@ -9263,6 +9357,12 @@
       "source": "scheduled:game-site:2026-10-20T19:00:00+09:00",
       "status": "checkpointed",
       "started_at": 1792490660.333541
+    },
+    "unity-20261020T2255-recovery": {
+      "run_id": "unity-20261020T2255-recovery",
+      "source": "user:automation:unity:2026-10-20:continuation-outside-slot",
+      "status": "checkpointed",
+      "started_at": 1792504555.943954
     }
   },
   "experiments": {
@@ -22488,7 +22588,144 @@
       },
       "previous": "989f4dcdf43071e270e6a4cc472e1b3c9a83f3114e93cb906730a75633f70fdb",
       "sha256": "09bab2e139f98f8301d9e502a2801d18ac6c5c7815d815507411ef4c84b9a098"
+    },
+    {
+      "revision": 364,
+      "at": 1792504555.943954,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261020T2255-recovery",
+        "source": "user:automation:unity:2026-10-20:continuation-outside-slot"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "09bab2e139f98f8301d9e502a2801d18ac6c5c7815d815507411ef4c84b9a098",
+      "sha256": "87cc3b16c6ad93dea16832560d5c1f3a70be80ecbff794e5aea220b94bf38356"
+    },
+    {
+      "revision": 365,
+      "at": 1792504555.9849544,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261020T2255-recovery",
+        "task_id": "T-web-scoped-production-delivery-20261020"
+      },
+      "result": {
+        "run_id": "unity-20261020T2255-recovery",
+        "task_id": "T-web-scoped-production-delivery-20261020",
+        "fence": 61,
+        "expires_at": 1792506355.9849544
+      },
+      "previous": "87cc3b16c6ad93dea16832560d5c1f3a70be80ecbff794e5aea220b94bf38356",
+      "sha256": "6fcec9bd9c8325644e2498f7742ec3165b4386e1c38b13c22c4b91832e6deca3"
+    },
+    {
+      "revision": 366,
+      "at": 1792504747.1198814,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T2255-recovery",
+        "fence": 61,
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_delivery.py",
+            "sha256": "c9de841986429609bc40a91e47d436e71c2766a6724707bf94cfe811fb09857e"
+          },
+          {
+            "path": "business/tests/test_scoped_delivery.py",
+            "sha256": "52fa9c8a0228791c886eb43bb2fce49676883437535b42441cddc26ad62f6e6b"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "ad6b251e1ebf122a6464467cab213bed5d21ff5ca86410a843565cd6ec253396"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "b3bdb0bb4a94504ea09332e182d2010839765cc1f838d2af8d3d181dead8d8cc"
+          },
+          {
+            "path": "business/unity/evidence/scoped-recovery-20261020-2255.json",
+            "sha256": "9514653dd9287593d55c57b5c3a43f3580c46f1105b1042a076116706437e788"
+          }
+        ],
+        "checks": [
+          "49 business tests passed",
+          "repository contract passed: 4 preserved entries, 19 GUIDs",
+          "existing four-file scoped package verified",
+          "original363 events preserved; three protected paths unchanged in Git",
+          "Read current AGENTS/owner/STATE/policy/conventions/workflow, selected context and scoped source/tests/workflow only",
+          "HTTPS-only live static graph:208 files/1462036 bytes; no production writes; initial literal extraction false positives fixed and regression tested",
+          "No Web source changes; no redundant Web build or browser rerun"
+        ],
+        "next_step": "Integrate scoped candidate in next daily batch, verify exact-head CI and main read-only FTPS root/recovery; then implement and test confined upload/rollback before production acceptance.",
+        "unverified": [
+          "computed URLs and dependencies outside shared assets",
+          "remote CI and FTPS root",
+          "550 ambiguity",
+          "scoped upload and rollback",
+          "production gameplay after delivery"
+        ]
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "6fcec9bd9c8325644e2498f7742ec3165b4386e1c38b13c22c4b91832e6deca3",
+      "sha256": "dd176af31b3c0905f1c611f52746fd9800294603c892b12e8aff8529af23715a"
+    },
+    {
+      "revision": 367,
+      "at": 1792504747.1691282,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261020T2255-recovery",
+        "fence": 61,
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_delivery.py",
+            "sha256": "c9de841986429609bc40a91e47d436e71c2766a6724707bf94cfe811fb09857e"
+          },
+          {
+            "path": "business/tests/test_scoped_delivery.py",
+            "sha256": "52fa9c8a0228791c886eb43bb2fce49676883437535b42441cddc26ad62f6e6b"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "ad6b251e1ebf122a6464467cab213bed5d21ff5ca86410a843565cd6ec253396"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "b3bdb0bb4a94504ea09332e182d2010839765cc1f838d2af8d3d181dead8d8cc"
+          },
+          {
+            "path": "business/unity/evidence/scoped-recovery-20261020-2255.json",
+            "sha256": "9514653dd9287593d55c57b5c3a43f3580c46f1105b1042a076116706437e788"
+          }
+        ],
+        "checks": [
+          "49 business tests passed",
+          "repository contract passed: 4 preserved entries, 19 GUIDs",
+          "existing four-file scoped package verified",
+          "original363 events preserved; three protected paths unchanged in Git",
+          "Read current AGENTS/owner/STATE/policy/conventions/workflow, selected context and scoped source/tests/workflow only",
+          "HTTPS-only live static graph:208 files/1462036 bytes; no production writes; initial literal extraction false positives fixed and regression tested",
+          "No Web source changes; no redundant Web build or browser rerun"
+        ],
+        "next_step": "Integrate scoped candidate in next daily batch, verify exact-head CI and main read-only FTPS root/recovery; then implement and test confined upload/rollback before production acceptance.",
+        "unverified": [
+          "computed URLs and dependencies outside shared assets",
+          "remote CI and FTPS root",
+          "550 ambiguity",
+          "scoped upload and rollback",
+          "production gameplay after delivery"
+        ]
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "dd176af31b3c0905f1c611f52746fd9800294603c892b12e8aff8529af23715a",
+      "sha256": "749ae143e68c771cc1a1be73d547bcb0b8a934860edd960501b5fdbf52c30c5c"
     }
   ],
-  "projection_sha256": "8b227d17890dc9cd71040a5ad14e1e3d2d725e5eeee763bfa7079d081aa51f87"
+  "projection_sha256": "162ed3d2af4cfb1ac13966ed606c437d71bfeed61c21253f549025051015a0e2"
 }
