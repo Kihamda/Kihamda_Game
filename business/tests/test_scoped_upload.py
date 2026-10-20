@@ -200,6 +200,46 @@ class ScopedUploadTest(unittest.TestCase):
                            {"transaction": "../invalid"}, self.journal)
         self.assertFalse(self.ftp.mutations)
 
+    def test_connection_loss_at_each_ftp_boundary_is_recoverable(self):
+        """Exercise failures before and after every server command, including ACK loss."""
+        methods = ("retrbinary", "mlsd", "mkd", "storbinary", "rename")
+        trace = []
+        originals = {name: getattr(self.ftp, name) for name in methods}
+        for name in methods:
+            def record(*args, method=name, **kwargs):
+                trace.append(method)
+                return originals[method](*args, **kwargs)
+            setattr(self.ftp, name, record)
+        self.deliver()
+        for name, method in originals.items():
+            setattr(self.ftp, name, method)
+        for boundary in range(len(trace)):
+            for after in (False, True):
+                with self.subTest(command=trace[boundary], boundary=boundary, after=after):
+                    ftp = WritableFTP(copy.deepcopy(self.fixture.remote))
+                    journal = self.fixture.root / f"fault-{boundary}-{after}.json"
+                    counter = [0]
+                    methods_before_fault = {name: getattr(ftp, name) for name in methods}
+                    for name in methods:
+                        def interrupt(*args, method=name, **kwargs):
+                            index = counter[0]
+                            counter[0] += 1
+                            if index == boundary and not after:
+                                raise ConnectionError("before command")
+                            result = methods_before_fault[method](*args, **kwargs)
+                            if index == boundary and after:
+                                raise ConnectionError("after command")
+                            return result
+                        setattr(ftp, name, interrupt)
+                    with self.assertRaises(ConnectionError):
+                        upload.deliver(self.package, self.backup, ftp, journal)
+                    for name, method in methods_before_fault.items():
+                        setattr(ftp, name, method)
+                    if journal.exists():
+                        upload.recover(ftp, journal)
+                    for path, body in self.fixture.remote.items():
+                        self.assertEqual(ftp.files[path], body)
+
 
 if __name__ == "__main__":
     unittest.main()
