@@ -61,10 +61,10 @@ function checkedSite(site, commit) {
     assert(html.includes('id="main"'), `Missing main: ${path}`);
     const starts = [...html.matchAll(/<a\b([^>]*)>作品を開始<\/a>/g)];
     const release = releases.find(item => item.path === pathname);
-    assert(!html.includes('<iframe') && (html.match(/作品を開始/g) ?? []).length === starts.length,
+    assert(!/<iframe\b/i.test(html) && (html.match(/作品を開始/g) ?? []).length === starts.length,
       `Unpublished player: ${path}`);
     assert.equal(starts.length, release ? 1 : 0, `Start link registration mismatch: ${path}`);
-    if (release) assert.equal(starts[0][1].match(/\bhref="([^"]+)"/)?.[1], release.url,
+    if (release) assert.equal(starts[0][1].match(/(?:^|\s)href="([^"]+)"/)?.[1], release.url,
       `Start link destination mismatch: ${path}`);
     return { path, title, canonical };
   });

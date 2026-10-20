@@ -67,10 +67,12 @@ try {
     cases.push(
       ['wrong-start', root => editSite(root, { [detail]: html => html.replace(start, '<a href="/games/other/">作品を開始</a>') }), 'Start link destination mismatch'],
       ['external-start', root => editSite(root, { [detail]: html => html.replace(start, '<a href="https://example.com/">作品を開始</a>') }), 'Start link destination mismatch'],
+      ['decoy-start-attribute', root => editSite(root, { [detail]: html => html.replace(start, `<a data-href="${release.url}" href="https://example.com/">作品を開始</a>`) }), 'Start link destination mismatch'],
       ['missing-start', root => editSite(root, { [detail]: html => html.replace(start, '') }), 'Start link registration mismatch'],
       ['duplicate-start', root => editSite(root, { [detail]: html => html.replace(start, value => value + value) }), 'Start link registration mismatch'],
       ['unregistered-start', root => editSite(root, { 'about/index.html': html => html.replace('</main>', '<a href="/games/minerush/">作品を開始</a></main>') }), 'Start link registration mismatch'],
       ['release-iframe', root => editSite(root, { [detail]: html => html.replace('</main>', '<iframe src="/games/minerush/"></iframe></main>') }), 'Unpublished player'],
+      ['uppercase-iframe', root => editSite(root, { [detail]: html => html.replace('</main>', '<IFRAME src="/games/minerush/"></IFRAME></main>') }), 'Unpublished player'],
       ['removed-registration', editReleases(version => { delete version.releases; }), 'Start link registration mismatch'],
       ['duplicate-registration', editReleases(version => { version.releases.push(version.releases[0]); }), 'Invalid packaged release registration'],
       ['unknown-registration', editReleases(version => { version.releases[0].path = '/works/unknown/'; }), 'Invalid packaged release registration'],
