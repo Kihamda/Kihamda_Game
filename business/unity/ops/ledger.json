@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": 376,
+  "revision": 377,
   "business_id": "game-site",
   "fence": 63,
   "lease": {
@@ -8722,6 +8722,57 @@
             "production gameplay after delivery"
           ],
           "at": 1792504747.1691282
+        },
+        {
+          "run_id": "unity-20261020T2355-delivery",
+          "next_step": "Reconcile delivery39445984592 and retained transaction journal, verify production bytes and browser gameplay before release; conditionally recover if needed.",
+          "artifacts": [
+            {
+              "path": "business/ops/scoped_upload.py",
+              "sha256": "cc3f4201f301075bbe84fd099b582e158b33ad5e418f8d01de9bc9e8c4dffc4b"
+            },
+            {
+              "path": "business/ops/scoped_acceptance.py",
+              "sha256": "6e08d8358fdc27788cfb35fa6014c11494dce925edce2689b0d59b59dd594005"
+            },
+            {
+              "path": "business/tests/test_scoped_upload.py",
+              "sha256": "40e566778235ac2c8ad99ef0f40e51efadac52f8d590afb480f0010996180c70"
+            },
+            {
+              "path": "business/tests/test_scoped_acceptance.py",
+              "sha256": "c0968d4dd6ad579d66ca79ca3b233b5f8d1b9765842fc57d7a9cddc626fddcb1"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "e1cf56ac79114f4a2dbebffc7df32b6ef780e7e6bac9760a64535cde345c7dbf"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "66cc5b465d9dd9b3d2f0faa7344a46333dac04f8dc4ca81018cf3569516fa949"
+            },
+            {
+              "path": "business/unity/evidence/scoped-delivery-20261021.json",
+              "sha256": "dc503e57359588b312f392bc66892c082c3df082a1391d3a6cfa8b13e567fab8"
+            }
+          ],
+          "fence": 63,
+          "checks": [
+            "Started clock observation 2026-10-20T23:56:10.3645680+09:00; productive work target until 2026-10-21T00:21:10+09:00, save by00:26:10",
+            "71 business tests, normal build and MineRush regression passed; PR29/30 final heads CI passed and matched-head merges; exact main2bc5d74 CI39445834759 passed",
+            "Read current owner AGENTS STATE policy conventions workflow and selected scoped source/tests/workflows; original374 events preserved, protected owner old ledger handoff unchanged",
+            "Live read-only FTPS39444847103 succeeded;209files1514538bytes downloaded and hashes matched; old game restored locally reveal6 then reload0 flags0",
+            "Downloaded exact main CI artifact inventory desktop and390px reveal flags F reload verified; no real touch Safari claim",
+            "Delivery39445984592 dispatched once, still preflight at last check; unknown outcome must be reconciled, never resend",
+            "Workflow hashes recorded in checks because hidden paths are disallowed as ledger artifacts: .github/workflows/scoped-production-upload.yml=6de98a1c7224fa9c49468d761eb932f9cf3d2c4cf87e7e7212f515571461cbd7 .github/workflows/scoped-production-recover.yml=9aa6cdc04332c599a691b24e5be9df5861c63e18e860eb8201bc066535afc26c"
+          ],
+          "unverified": [
+            "production upload outcome",
+            "server MLSD and rename",
+            "production browser acceptance",
+            "off-PC restore and real touch Safari"
+          ],
+          "at": 1792509356.1399786
         }
       ],
       "claims": [
@@ -23116,7 +23167,67 @@
       },
       "previous": "3a2d5ff48814c606a506831c1628a1edfe129e23631cf53e7d79ff3ff1c57260",
       "sha256": "f6c0383dcbfb2e4d9d0e7990400075c446cf6c34dfb350ffc4bddbdb7428de81"
+    },
+    {
+      "revision": 377,
+      "at": 1792509356.1399786,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261020T2355-delivery",
+        "next_step": "Reconcile delivery39445984592 and retained transaction journal, verify production bytes and browser gameplay before release; conditionally recover if needed.",
+        "artifacts": [
+          {
+            "path": "business/ops/scoped_upload.py",
+            "sha256": "cc3f4201f301075bbe84fd099b582e158b33ad5e418f8d01de9bc9e8c4dffc4b"
+          },
+          {
+            "path": "business/ops/scoped_acceptance.py",
+            "sha256": "6e08d8358fdc27788cfb35fa6014c11494dce925edce2689b0d59b59dd594005"
+          },
+          {
+            "path": "business/tests/test_scoped_upload.py",
+            "sha256": "40e566778235ac2c8ad99ef0f40e51efadac52f8d590afb480f0010996180c70"
+          },
+          {
+            "path": "business/tests/test_scoped_acceptance.py",
+            "sha256": "c0968d4dd6ad579d66ca79ca3b233b5f8d1b9765842fc57d7a9cddc626fddcb1"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "e1cf56ac79114f4a2dbebffc7df32b6ef780e7e6bac9760a64535cde345c7dbf"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "66cc5b465d9dd9b3d2f0faa7344a46333dac04f8dc4ca81018cf3569516fa949"
+          },
+          {
+            "path": "business/unity/evidence/scoped-delivery-20261021.json",
+            "sha256": "dc503e57359588b312f392bc66892c082c3df082a1391d3a6cfa8b13e567fab8"
+          }
+        ],
+        "fence": 63,
+        "checks": [
+          "Started clock observation 2026-10-20T23:56:10.3645680+09:00; productive work target until 2026-10-21T00:21:10+09:00, save by00:26:10",
+          "71 business tests, normal build and MineRush regression passed; PR29/30 final heads CI passed and matched-head merges; exact main2bc5d74 CI39445834759 passed",
+          "Read current owner AGENTS STATE policy conventions workflow and selected scoped source/tests/workflows; original374 events preserved, protected owner old ledger handoff unchanged",
+          "Live read-only FTPS39444847103 succeeded;209files1514538bytes downloaded and hashes matched; old game restored locally reveal6 then reload0 flags0",
+          "Downloaded exact main CI artifact inventory desktop and390px reveal flags F reload verified; no real touch Safari claim",
+          "Delivery39445984592 dispatched once, still preflight at last check; unknown outcome must be reconciled, never resend",
+          "Workflow hashes recorded in checks because hidden paths are disallowed as ledger artifacts: .github/workflows/scoped-production-upload.yml=6de98a1c7224fa9c49468d761eb932f9cf3d2c4cf87e7e7212f515571461cbd7 .github/workflows/scoped-production-recover.yml=9aa6cdc04332c599a691b24e5be9df5861c63e18e860eb8201bc066535afc26c"
+        ],
+        "unverified": [
+          "production upload outcome",
+          "server MLSD and rename",
+          "production browser acceptance",
+          "off-PC restore and real touch Safari"
+        ]
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "f6c0383dcbfb2e4d9d0e7990400075c446cf6c34dfb350ffc4bddbdb7428de81",
+      "sha256": "9bf26332fcf28c4c2c8fb72c1a07f772a499b7d9e08c29191ed52bc33dadc5a7"
     }
   ],
-  "projection_sha256": "92cae5c3c06e63a58f35a487718d9e5c4587e0ea4623423e2338a08574ca73d9"
+  "projection_sha256": "798554c049a11960f7ff12bc54e72a4153068f9c4f12c31211ed7535cbc7fb6b"
 }
