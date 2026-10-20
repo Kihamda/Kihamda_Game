@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ops"))
 import scoped_delivery as delivery
@@ -71,17 +72,99 @@ class ScopedUploadTest(unittest.TestCase):
         for path, body in old.items():
             if path != delivery.SCOPE + "index.html":
                 self.assertEqual(self.ftp.files[path], body)
-        recovered = upload.recover(self.ftp, self.journal)
+        recovered = upload.recover(self.ftp, self.journal, self.package, self.backup)
         self.assertTrue(recovered["retainedVersionMarker"])
         self.assertEqual(self.ftp.files[delivery.SCOPE + "index.html"], old[delivery.SCOPE + "index.html"])
-        self.assertEqual(upload.recover(self.ftp, self.journal)["status"], recovered["status"])
+        self.assertEqual(upload.recover(self.ftp, self.journal, self.package, self.backup)["status"], recovered["status"])
 
     def test_existing_version_is_restored(self):
         version = delivery.SCOPE + "build-version.json"
         self.ftp.files[version] = b"old version"
         self.deliver()
-        upload.recover(self.ftp, self.journal)
+        upload.recover(self.ftp, self.journal, self.package, self.backup)
         self.assertEqual(self.ftp.files[version], b"old version")
+
+    def test_changed_old_dependency_refuses_recovery_before_mutation(self):
+        self.deliver()
+        self.ftp.files["assets/old.js"] = b"externally changed dependency"
+        mutations = copy.deepcopy(self.ftp.mutations)
+        with self.assertRaisesRegex(ValueError, "baseline changed"):
+            upload.recover(self.ftp, self.journal, self.package, self.backup)
+        self.assertEqual(self.ftp.mutations, mutations)
+
+    def test_repeated_scoped_delivery_retains_assets_and_restores_old_version(self):
+        html = b'<script src="/games/minerush/assets/previous.js"></script>'
+        self.ftp.files[delivery.SCOPE + "index.html"] = html
+        old_assets = {delivery.SCOPE + "assets/previous.js": b'import "./previous.css";',
+                      delivery.SCOPE + "assets/previous.css": b"body{color:white}"}
+        self.ftp.files.update(old_assets)
+        self.ftp.files[delivery.SCOPE + "build-version.json"] = b"previous version"
+        self.ftp.directories.add(delivery.SCOPE + "assets")
+        backup = self.fixture.root / "next-backup"
+        def http(path):
+            return self.ftp.files["index.html" if path == "" else
+                                  delivery.SCOPE + "index.html" if path == delivery.SCOPE else path]
+        delivery.inspect(self.package, backup, self.ftp, http)
+        upload.deliver(self.package, backup, self.ftp, self.journal)
+        upload.recover(self.ftp, self.journal, self.package, backup)
+        self.assertEqual(self.ftp.files[delivery.SCOPE + "index.html"], html)
+        self.assertEqual(self.ftp.files[delivery.SCOPE + "build-version.json"], b"previous version")
+        for path, body in old_assets.items():
+            self.assertEqual((backup / "before" / path).read_bytes(), body)
+            self.assertEqual(self.ftp.files[path], body)
+
+    def test_modified_journal_cannot_supply_recovery_bytes(self):
+        self.deliver()
+        original = self.journal.read_bytes()
+        mutations = copy.deepcopy(self.ftp.mutations)
+        calls = len(self.ftp.calls)
+        for change in ({"oldHtmlHex": b"injected old entry".hex()},
+                       {"oldVersionHex": b"injected old version".hex()},
+                       {"commit": "b" * 40}, {"newHtmlSha256": "0" * 64}):
+            state = json.loads(original)
+            state.update(change)
+            self.journal.write_text(json.dumps(state))
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                upload.recover(self.ftp, self.journal, self.package, self.backup)
+            self.assertEqual(self.ftp.mutations, mutations)
+            self.assertEqual(len(self.ftp.calls), calls)
+
+    def test_wrong_backup_cannot_restore_entry(self):
+        self.deliver()
+        (self.backup / "before" / delivery.SCOPE / "index.html").write_bytes(b"wrong old entry")
+        mutations = copy.deepcopy(self.ftp.mutations)
+        calls = len(self.ftp.calls)
+        with self.assertRaisesRegex(ValueError, "Recovery checksum"):
+            upload.recover(self.ftp, self.journal, self.package, self.backup)
+        self.assertEqual(self.ftp.mutations, mutations)
+        self.assertEqual(len(self.ftp.calls), calls)
+
+    def test_recovery_cli_refuses_invalid_evidence_before_connection(self):
+        self.deliver()
+        state = json.loads(self.journal.read_text())
+        state["oldHtmlHex"] = b"wrong old entry".hex()
+        self.journal.write_text(json.dumps(state))
+        argv = ["scoped_upload.py", "recover", str(self.journal),
+                "--package", str(self.package), "--backup", str(self.backup)]
+        with patch.object(sys, "argv", argv), patch.object(upload, "FTP_TLS") as connect:
+            with self.assertRaisesRegex(ValueError, "Old entry"):
+                upload.main()
+            connect.assert_not_called()
+
+    def test_legacy_journal_cannot_restore_unretained_old_version(self):
+        self.ftp.files[delivery.SCOPE + "build-version.json"] = b"old version"
+        state = self.deliver()
+        (self.backup / ("transaction-" + state["transaction"] + ".json")).unlink()
+        mutations = copy.deepcopy(self.ftp.mutations)
+        with self.assertRaisesRegex(ValueError, "old version receipt required"):
+            upload.recover(self.ftp, self.journal, self.package, self.backup)
+        self.assertEqual(self.ftp.mutations, mutations)
+
+    def test_legacy_journal_with_absent_old_version_remains_recoverable(self):
+        state = self.deliver()
+        (self.backup / ("transaction-" + state["transaction"] + ".json")).unlink()
+        result = upload.recover(self.ftp, self.journal, self.package, self.backup)
+        self.assertTrue(result["retainedVersionMarker"])
 
     def test_preflight_package_or_backup_tamper_stops_before_write(self):
         (self.backup / "before/index.html").write_bytes(b"tampered")
@@ -129,7 +212,7 @@ class ScopedUploadTest(unittest.TestCase):
         self.assertIsNotNone(state["pending"])
         self.assertEqual(self.ftp.files[delivery.SCOPE + "index.html"], old)
         self.ftp.hook = lambda command: None
-        upload.recover(self.ftp, self.journal)
+        upload.recover(self.ftp, self.journal, self.package, self.backup)
 
     def test_lost_rename_ack_reconciles_actual_entry(self):
         old = self.ftp.files[delivery.SCOPE + "index.html"]
@@ -142,7 +225,7 @@ class ScopedUploadTest(unittest.TestCase):
         with self.assertRaises(ConnectionError):
             self.deliver()
         self.ftp.rename = original
-        upload.recover(self.ftp, self.journal)
+        upload.recover(self.ftp, self.journal, self.package, self.backup)
         self.assertEqual(self.ftp.files[delivery.SCOPE + "index.html"], old)
 
     def test_concurrent_change_during_asset_upload_does_not_switch_entry(self):
@@ -160,7 +243,7 @@ class ScopedUploadTest(unittest.TestCase):
         self.ftp.files[delivery.SCOPE + "index.html"] = b"later deployment"
         before = len(self.ftp.mutations)
         with self.assertRaisesRegex(ValueError, "changed externally"):
-            upload.recover(self.ftp, self.journal)
+            upload.recover(self.ftp, self.journal, self.package, self.backup)
         self.assertEqual(len(self.ftp.mutations), before)
 
     def test_transaction_cannot_be_replayed(self):
@@ -175,7 +258,7 @@ class ScopedUploadTest(unittest.TestCase):
         self.ftp.files[delivery.SCOPE + "build-version.json"] = b"later version"
         before = len(self.ftp.mutations)
         with self.assertRaisesRegex(ValueError, "Version changed externally"):
-            upload.recover(self.ftp, self.journal)
+            upload.recover(self.ftp, self.journal, self.package, self.backup)
         self.assertEqual(len(self.ftp.mutations), before)
 
     def test_rename_failure_never_removes_current_entry(self):
@@ -188,7 +271,7 @@ class ScopedUploadTest(unittest.TestCase):
             self.deliver()
         self.assertEqual(self.ftp.files[delivery.SCOPE + "index.html"], old)
         self.ftp.hook = lambda command: None
-        upload.recover(self.ftp, self.journal)
+        upload.recover(self.ftp, self.journal, self.package, self.backup)
 
     def test_unsafe_write_and_journal_identifier_refused(self):
         for path in ("index.html", delivery.SCOPE + "assets/../../index.html",
@@ -236,7 +319,47 @@ class ScopedUploadTest(unittest.TestCase):
                     for name, method in methods_before_fault.items():
                         setattr(ftp, name, method)
                     if journal.exists():
-                        upload.recover(ftp, journal)
+                        upload.recover(ftp, journal, self.package, self.backup)
+                    for path, body in self.fixture.remote.items():
+                        self.assertEqual(ftp.files[path], body)
+
+    def test_recovery_connection_loss_can_be_reconciled_at_each_boundary(self):
+        self.deliver()
+        uploaded = copy.deepcopy(self.ftp.files)
+        journal_bytes = self.journal.read_bytes()
+        methods = ("retrbinary", "mlsd", "storbinary", "rename")
+        trace = []
+        originals = {name: getattr(self.ftp, name) for name in methods}
+        for name in methods:
+            def record(*args, method=name, **kwargs):
+                trace.append(method)
+                return originals[method](*args, **kwargs)
+            setattr(self.ftp, name, record)
+        upload.recover(self.ftp, self.journal, self.package, self.backup)
+        for boundary in range(len(trace)):
+            for after in (False, True):
+                with self.subTest(boundary=boundary, after=after):
+                    ftp = WritableFTP(copy.deepcopy(uploaded))
+                    journal = self.fixture.root / f"recovery-fault-{boundary}-{after}.json"
+                    journal.write_bytes(journal_bytes)
+                    counter = [0]
+                    commands = {name: getattr(ftp, name) for name in methods}
+                    for name in methods:
+                        def interrupt(*args, method=name, **kwargs):
+                            index = counter[0]
+                            counter[0] += 1
+                            if index == boundary and not after:
+                                raise ConnectionError("before recovery command")
+                            result = commands[method](*args, **kwargs)
+                            if index == boundary and after:
+                                raise ConnectionError("after recovery command")
+                            return result
+                        setattr(ftp, name, interrupt)
+                    with self.assertRaises(ConnectionError):
+                        upload.recover(ftp, journal, self.package, self.backup)
+                    for name, command in commands.items():
+                        setattr(ftp, name, command)
+                    upload.recover(ftp, journal, self.package, self.backup)
                     for path, body in self.fixture.remote.items():
                         self.assertEqual(ftp.files[path], body)
 

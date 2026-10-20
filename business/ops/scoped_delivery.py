@@ -25,7 +25,7 @@ def asset_references(body, source):
     """Conservative static inventory, including Vite preload maps and CSS URLs.
 
     This is not a JavaScript interpreter: computed URLs remain unverified.
-    Only the existing shared /assets tree may be read as recovery dependencies.
+    Only shared /assets and this game's scoped assets are recovery dependencies.
     """
     if not source.endswith((".html", ".js", ".css")):
         return set()
@@ -45,9 +45,9 @@ def asset_references(body, source):
         if url.scheme != "https" or url.netloc != urlsplit(ORIGIN).netloc:
             continue
         path = url.path.lstrip("/")
-        if not path.startswith("assets/"):
+        if not path.startswith(("assets/", SCOPE + "assets/")):
             continue
-        if (not re.fullmatch(r"assets/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_.-]+", path) or
+        if (not re.fullmatch(r"(?:assets/|" + re.escape(SCOPE) + r"assets/)(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_.-]+", path) or
                 any(part in (".", "..") for part in path.split("/"))):
             raise ValueError("Unsafe recovery dependency")
         result.add(path)
@@ -190,7 +190,7 @@ def inspect(package, backup, ftp, http_read=https_read, progress=None):
               "baseline": [{"path": path, "sha256": sha(body)} for path, body in baseline.items()],
               "assetChecks": collisions,
               "recoveryDependencies": dependencies,
-              "recoveryCoverage": "reachable static shared assets only; computed URLs and off-PC restore unverified",
+              "recoveryCoverage": "reachable static shared and MineRush scoped assets; computed URLs and off-PC restore unverified",
               "nextGate": "Review backup, resolve 550 ambiguity, recheck baseline before scoped upload"}
     (backup / "preflight.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return report

@@ -14,6 +14,17 @@ for (const game of unityCatalog) {
   assert([`/games/${game.id}/`, `/works/${game.id}/`].includes(game.path));
   assert(!games.some(legacy => legacy.path === game.path), `Catalog/play route collision ${game.id}`);
   assert(game.title && game.description && game.tags.length, `Incomplete Unity catalog ${game.id}`);
+  if (game.release && game.origin === 'studio-web') {
+    const proofPath = game.release.verification;
+    assert(/^business\/unity\/evidence\/scoped-production-accepted-[0-9]{8}\.json$/.test(proofPath), `Missing scoped production receipt ${game.id}`);
+    const proof = JSON.parse(read(proofPath));
+    assert(proof.schema === 1 && proof.deployed === true && proof.ciConclusion === 'success', `Unaccepted scoped release ${game.id}`);
+    assert.equal(proof.scope, `games/${game.id}/`);
+    assert.equal(proof.url, `https://game.kihamda.net${game.release.url}`);
+    assert.equal(proof.commit, game.release.version, `Release commit differs from receipt ${game.id}`);
+    assert.equal(proof.manifestSha256, game.release.sha256, `Release digest differs from receipt ${game.id}`);
+    assert(Number.isSafeInteger(proof.deliveryRun) && Number.isSafeInteger(proof.ciRun), `Missing source runs ${game.id}`);
+  }
 }
 const previous = JSON.parse(read('docs/legacy-recovery/games-current-before.json')).games;
 const previousSources = JSON.parse(read('docs/legacy-recovery/game-source-paths-before.json'));

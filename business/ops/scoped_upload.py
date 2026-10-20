@@ -14,6 +14,7 @@ import ssl
 from uuid import uuid4
 
 from scoped_delivery import SCOPE, checked_package, ftp_read, sha
+from scoped_transaction import checked_transaction
 
 
 def listing(ftp, directory):
@@ -85,7 +86,7 @@ def deliver(package, backup, ftp, journal, progress=None):
     baseline = {}
     for entry in report["baseline"]:
         path = entry["path"]
-        if path not in ("index.html", SCOPE + "index.html") and not path.startswith("assets/"):
+        if path not in ("index.html", SCOPE + "index.html") and not path.startswith(("assets/", SCOPE + "assets/")):
             raise ValueError("Unsafe baseline path")
         if ".." in path.split("/") or "\\" in path or path.startswith("/"):
             raise ValueError("Unsafe baseline path")
@@ -119,6 +120,15 @@ def deliver(package, backup, ftp, journal, progress=None):
              "newHtmlSha256": sha((package / "site" / SCOPE / "index.html").read_bytes()),
              "newVersionSha256": sha((package / "site" / version).read_bytes()),
              "deployed": False}
+    # Keep the old version separately from the mutable progress journal. Older
+    # deliveries without a receipt may only recover an initially absent marker.
+    version_receipt = {"schema": 1, "transaction": state["transaction"],
+                       "commit": state["commit"], "oldVersionHex": state["oldVersionHex"]}
+    with (backup / ("transaction-" + state["transaction"] + ".json")).open("x", encoding="utf-8") as stream:
+        json.dump(version_receipt, stream, indent=2)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
     save(journal, state)
     def phase(name):
         state["status"] = name
@@ -157,18 +167,19 @@ def deliver(package, backup, ftp, journal, progress=None):
     return state
 
 
-def recover(ftp, journal):
+def recover(ftp, journal, package, backup):
     """Restore HTML only when its bytes are old or belong to this transaction.
 
     Assets and an initially absent version marker remain as harmless files;
     recovery does not delete files or overwrite a third party's later changes.
     """
     journal = Path(journal)
-    state = json.loads(journal.read_text(encoding="utf-8"))
-    if (state.get("schema") != 1 or state.get("scope") != SCOPE or
-            not re.fullmatch(r"[0-9a-f]{32}", state.get("transaction", ""))):
-        raise ValueError("Unrecognized recovery journal")
-    old_html = bytes.fromhex(state["oldHtmlHex"])
+    state, baseline = checked_transaction(package, backup, journal)
+    old_html = baseline[SCOPE + "index.html"]
+    # Restoring HTML must not re-enable an old dependency that changed since
+    # backup. Leave both current entry and version untouched on disagreement.
+    baseline_check(ftp, {path: body for path, body in baseline.items()
+                         if path != SCOPE + "index.html"})
     current = ftp_read(ftp, SCOPE + "index.html")
     if current != old_html and sha(current) != state["newHtmlSha256"]:
         raise ValueError("Entry changed externally; recovery refused")
@@ -197,8 +208,12 @@ def main():
     parser.add_argument("--package")
     parser.add_argument("--backup")
     args = parser.parse_args()
-    if args.action == "upload" and not (args.package and args.backup):
-        parser.error("upload requires --package and --backup")
+    if not (args.package and args.backup):
+        parser.error("upload and recover require --package and --backup")
+    if args.action == "recover":
+        # Refuse invalid local evidence before even opening an authenticated
+        # production connection. recover checks again at its operation boundary.
+        checked_transaction(args.package, args.backup, args.journal)
     with FTP_TLS(context=ssl.create_default_context(), timeout=30) as ftp:
         ftp.connect(os.environ["FTP_SERVER"], 21)
         ftp.login(os.environ["FTP_USERNAME"], os.environ["FTP_PASSWORD"])
@@ -206,7 +221,7 @@ def main():
         ftp.cwd(os.environ.get("FTP_SERVER_DIR") or ".")
         state = (deliver(args.package, args.backup, ftp, args.journal,
                          progress=lambda event: print(json.dumps(event), flush=True))
-                 if args.action == "upload" else recover(ftp, args.journal))
+                 if args.action == "upload" else recover(ftp, args.journal, args.package, args.backup))
     print(json.dumps({"status": state["status"], "deployed": False, "scope": SCOPE}))
 
 

@@ -6,14 +6,15 @@
 
 - 制作正本: business/unity/ops/ledger.json。進行工程・lease・最新checkpointは`python business/ops/context.py`で確認する。ここにタスク状態を複製しない。
 - 既存Web入口と4作品の紹介・入力・保存品質を検証済み。通常ポータルを本番全体へ置換せず、MineRush専用4ファイルの配信に限定する。
-- 現行CI保全版: business/unity/evidence/delivery-web-dialog-error-final-20261020.json。これは実デプロイではない。作品のreleaseと事業指標はnull。実HTTP障害・実タッチ・Safari・人間評価・別PC復元は未確認。
-- MineRush限定配信・条件付き復旧・HTTP照合を実装。PR29と実配信前の復旧入口・既存計測維持を補う訂正PR30を、それぞれ最新headのLinux/Windows CI成功後にマージした。最新mainは2bc5d74eef7386aecd1fc39fc42d177d817ad916、同版CI39445834759も成功。71のbusinessテスト、通常ビルド・既存入力回帰に成功し、同版専用artifactをローカルで操作検査した。390px幅で横はみ出しなし。実タッチ・Safariは未確認。
-- 実FTPS読み取り検査39444847103が成功し、旧本番209ファイル・1,514,538バイトをHTTPSと照合して保持。ダウンロード後の全ハッシュ、同じPCで旧MineRushの起動・開封・再読み込みを確認した。対象専用アセットの550は依然「不存在またはアクセス不可」。アップロード時にMLSD成功を必要とする。別PC復元・実サーバーrenameは未確認。
-- 最新mainの限定配信run39445984592を一度だけ起動。実FTPSの再照合が成功し、00:20:57JSTから限定転送処理へ進んだ。完了・本番操作は未確認。次回は同じrunの結果とjournalを先に照合し、重複dispatchしない。実デプロイ件数へまだ算入せず、release=nullを維持する。詳細: docs/web-scoped-production-delivery.md、business/unity/evidence/scoped-delivery-20261021.json。全体FTPS workflowは起動していない。
+- 通常ポータルのCI保全版: business/unity/evidence/delivery-web-dialog-error-final-20261020.json。これ自体は本番全体へ配信していない。
+- MineRushは2026-10-21に限定配信受入れ完了。URL: https://game.kihamda.net/games/minerush/ 。ソース2bc5d74eef7386aecd1fc39fc42d177d817ad916、成功CI39445834759、候補manifest SHA-256: 2ad053d3798d2996d3e0d795671c75d1fcbd55e7bcd4733bb9b9b4b7c6c5169f。配信run39445984592は最終照合途中にcancelledとなったが、元journalの4件書込記録と実HTTP全4ファイル・対象外5URL・旧baseline208件の一致、本番ブラウザ操作を別途照合した。重複dispatch・復旧書込みは行っていない。
+- 本番で開封、矢印・F・Enter・Space、旗モード、再読み込みで盤面・旗初期化、一覧への往復を確認。390px・1280pxで横はみ出しなし。ゲームオーバー表示・終了後セル無効化・リセットに加え、公開版のクリア状態（71マス・旗10）と再開始もDOMで確認した。実タッチ、Safari、人間評価、別PC復元、本番復旧書込みは未確認。利用・利益指標はnull。
+- 本日の実デプロイは1件。MineRushの公開登録・確認環境と中断後の読み取り専用照合workflow、配信job制限の修正は次回統合用のローカル変更。本番トップや対象外作品は置換していない。他4作品のreleaseはnullを維持。
+- 復元元: scoped-delivery-39445984592内scoped-recovery、ローカルartifacts/scoped-reconcile-20261021-0100/scoped-recovery。旧209件を保持。元journalのstatusは旧実装のcreating-assets-directoryのままなので成否判断に使わない。詳細: business/unity/evidence/scoped-production-accepted-20261021.json、docs/web-scoped-production-delivery.md。
 
 ## 直近の運用改善
 
-T-context-delivery-20261020の実装・検証完了。promptは3,724→177文字。現行規約と過去記録を分離し、正本台帳の検証付き選択読込を導入した。原本アーカイブの保全を検証済み。詳細はdocs/context-delivery-20261020.md。定期実行IDはunity、01/07/13/19時JSTとモデル・通知設定を維持する。定期枠は原則25分の制作・検証と5分の保存。今回の実時刻と終了理由はscoped-delivery-20261021.jsonと正本checkpointへ記録する。実FTPS照合の進捗可視化は次回統合用のローカル変更として保存し、72テストが成功した。
+現行規約と過去記録を分離し、正本台帳を検証して必要工程だけ読む手順を運用中。詳細はdocs/context-delivery-20261020.md。定期枠は原則25分の制作・検証と5分の保存。今回の実時刻・終了理由はscoped-recovery-proof-20261021.jsonと正本checkpointへ記録する。共通復元証跡の照合、CLI・workflow修正、公開登録と受入証跡の整合性検査を次回統合用に保存。86テストが成功した。実サーバーへの復旧は未実施。詳細はbusiness/unity/evidence/scoped-recovery-proof-20261021.json。
 
 ## 履歴を調べる場合
 

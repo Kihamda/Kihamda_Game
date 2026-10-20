@@ -169,7 +169,15 @@
         "パズル",
         "地雷探し"
       ],
-      "release": null,
+      "release": {
+        "url": "/games/minerush/",
+        "version": "2bc5d74eef7386aecd1fc39fc42d177d817ad916",
+        "platform": "Webブラウザ",
+        "sha256": "2ad053d3798d2996d3e0d795671c75d1fcbd55e7bcd4733bb9b9b4b7c6c5169f",
+        "verification": "business/unity/evidence/scoped-production-accepted-20261021.json",
+        "distributionPermission": "business/studio-policy.json: validated-free-games-in-existing-permitted-domain-only",
+        "recovery": "scoped-delivery-39445984592 / scoped-recovery; docs/web-scoped-production-delivery.md"
+      },
       "technology": "web",
       "origin": "studio-web",
       "status": "verification",
@@ -209,10 +217,18 @@
           }
         ],
         "saving": {
-          "status": "unverified",
-          "description": "公開する版での対応を確認中です。現在の実装は途中の盤面と旗を保存しません。再読み込みやリセットで最初から始まります。"
+          "status": "none",
+          "description": "途中の盤面と旗を保存しません。公開版でも、再読み込みやリセットで最初から始まります。"
         },
-        "environments": [],
+        "environments": [
+          {
+            "name": "PC版Chromium。390px幅は同じPCの表示幅変更による検査",
+            "input": "クリック、矢印キー、Fキー、旗モード、再読み込み、一覧への往復。実タッチとSafariは未確認",
+            "version": "2bc5d74eef7386aecd1fc39fc42d177d817ad916",
+            "artifactSha256": "2ad053d3798d2996d3e0d795671c75d1fcbd55e7bcd4733bb9b9b4b7c6c5169f",
+            "verification": "business/unity/evidence/scoped-production-accepted-20261021.json"
+          }
+        ],
         "screenshots": []
       }
     },

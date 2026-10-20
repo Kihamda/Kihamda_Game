@@ -55,7 +55,10 @@ jobs:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_SERVER_DIR: ${{ vars.FTP_SERVER_DIR }}
-        run: python business/ops/scoped_upload.py recover artifacts/recovery-source/transaction.json
+        run: |
+          python business/ops/scoped_upload.py recover artifacts/recovery-source/transaction.json \
+            --package artifacts/recovery-source/scoped-minerush \
+            --backup artifacts/recovery-source/scoped-recovery
       - name: Verify recovered HTTP bytes and unrelated URLs
         run: python business/ops/scoped_acceptance.py recovered artifacts/recovery-source/protected-before.json --journal artifacts/recovery-source/transaction.json > artifacts/recovery-http.json
       - name: Retain reconciliation evidence

@@ -68,6 +68,22 @@ class ScopedDeliveryTest(unittest.TestCase):
             delivery.inspect(self.package, self.root / "backup", ReadOnlyFTP(self.remote), self.http.__getitem__)
         self.assertFalse((self.root / "backup").exists())
 
+    def test_next_delivery_retains_current_scoped_assets_and_nested_imports(self):
+        html = b'<script src="/games/minerush/assets/previous.js"></script>'
+        self.remote[delivery.SCOPE + "index.html"] = self.http[delivery.SCOPE] = html
+        bodies = {delivery.SCOPE + "assets/previous.js": b'import "./previous.css"; import("/games/other/assets/private.js");',
+                  delivery.SCOPE + "assets/previous.css": b'a{background:url(./previous.png)}',
+                  delivery.SCOPE + "assets/previous.png": b"old scoped image"}
+        self.remote.update(bodies)
+        self.http.update(bodies)
+        ftp = ReadOnlyFTP(copy.deepcopy(self.remote))
+        report = delivery.inspect(self.package, self.root / "backup", ftp, self.http.__getitem__)
+        for path, body in bodies.items():
+            self.assertEqual((self.root / "backup/before" / path).read_bytes(), body)
+            self.assertEqual(ftp.calls.count("RETR " + path), 2)
+        self.assertEqual(len(report["baseline"]), 5)
+        self.assertFalse(any("games/other" in call for call in ftp.calls))
+
     def graph(self):
         files = {
             "assets/old.js": b'import("./chunk.js");const preload=["assets/style.css"];',

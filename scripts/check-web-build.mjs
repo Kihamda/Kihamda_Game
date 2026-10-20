@@ -39,7 +39,7 @@ assert(webDetail.includes('公開前の確認中') && webDetail.includes('行・
 const iceDetail = readFileSync(resolve(dist, 'works/iceslide/index.html'), 'utf8');
 assert(iceDetail.includes('全20ステージ') && iceDetail.includes('途中の盤面と手数は保存しません') && !iceDetail.includes('作品を開始'));
 const mineDetail = readFileSync(resolve(dist, 'works/minerush/index.html'), 'utf8');
-assert(mineDetail.includes('9×9マス') && mineDetail.includes('途中の盤面と旗を保存しません') && !mineDetail.includes('作品を開始'));
+assert(mineDetail.includes('9×9マス') && mineDetail.includes('途中の盤面と旗を保存しません') && mineDetail.includes('作品を開始') && mineDetail.includes('href="/games/minerush/"'));
 const minePlay = readFileSync(resolve(dist, 'games/minerush/index.html'), 'utf8');
 assert(!minePlay.includes('id="guide-title"'), 'MineRush introduction must not replace play route');
 const gravityDetail = readFileSync(resolve(dist, 'works/gravityball/index.html'), 'utf8');

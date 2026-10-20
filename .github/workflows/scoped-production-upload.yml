@@ -20,7 +20,9 @@ jobs:
   deliver:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # The 209-file FTPS baseline is intentionally read more than once. The
+    # measured first run switched HTML but timed out during the final re-read.
+    timeout-minutes: 45
     environment: production
     steps:
       - uses: actions/checkout@v4

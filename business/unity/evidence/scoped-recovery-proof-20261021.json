@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "source": "scheduled-parent:unity-20261021T0100-reconcile",
+  "task": "T-web-recovery-proof-20261021",
+  "status": "locally-implemented-and-verified-not-integrated",
+  "businessTests": 86,
+  "recoveryChanges": [
+    "Require candidate and backup for recover CLI and workflow",
+    "Bind candidate manifest, source SHA, old HTML hash, retained dependency closure and recovery inventory before FTP reads",
+    "Preserve old version in separate fsynced transaction receipt before production mutations; legacy absent marker remains recoverable",
+    "Reject changed journal and mismatched backup before opening authenticated CLI connection",
+    "Retain current scoped JS/CSS and their static imports for the next delivery, excluding unrelated games",
+    "Recheck retained dependency bytes before restoring HTML; stop before mutations if an old asset changed",
+    "Recovery connection loss tested before and after every FTP command boundary"
+  ],
+  "rehearsal": {
+    "status": "actual-retained-artifact-fake-FTP-recovery-passed",
+    "commit": "2bc5d74eef7386aecd1fc39fc42d177d817ad916",
+    "baselineFiles": 209,
+    "mutations": [
+      [
+        "STOR",
+        "games/minerush/index.html.pending-e22f884cb0f14b06b6d12ee2eb5c4524"
+      ],
+      [
+        "RENAME",
+        "games/minerush/index.html"
+      ]
+    ],
+    "result": {
+      "status": "recovered-http-bytes-verified-browser-acceptance-pending",
+      "deployed": false,
+      "oldHtmlSha256": "c407f1862f2e94339e52195ad53577d7049452dcdb3fd84ce93f9ff0c6fcd0f6",
+      "retainedVersionMarker": true
+    },
+    "originalJournalUnchanged": "424f577bd7cd091369a0137b22037908f4880fdc07da3163b3b28391b4ddbf27",
+    "realProductionWrite": false,
+    "realRollbackVerified": false
+  },
+  "workflowValidation": "3 YAML files parsed with installed js-yaml; no new GitHub run or production write",
+  "productionFollowup": {
+    "url": "https://game.kihamda.net/games/minerush/",
+    "observedAt": "2026-10-21T01:17:11.990362+09:00",
+    "method": "Real browser, visible labels and number constraints only; no hidden game state read or RNG mutation",
+    "status": "クリア！",
+    "opened": 71,
+    "flags": 10,
+    "reset": {
+      "unopened": 81,
+      "flags": 0,
+      "terminalStatuses": 0
+    },
+    "screenshot": "Capture returned a blank frame; not accepted as a visual win screenshot. DOM terminal state was observed. Existing390px screenshot is visually verified.",
+    "humanEvaluation": false
+  },
+  "unverified": [
+    "Linux/Windows CI for local new code",
+    "new workflow execution on main",
+    "real production rollback",
+    "physical touch Safari human evaluation"
+  ],
+  "nextStep": "Next daily batch includes local release registration and operational hardening; verify exact head CI before merge. No additional deployment needed today.",
+  "finalArtifactRehearsal": {
+    "status": "final-code-real-artifact-rehearsal-passed",
+    "restoredOldFiles": 209,
+    "nextBaselinePaths": [
+      "index.html",
+      "games/minerush/index.html",
+      "games/minerush/assets/index-CKnyUiaE.js",
+      "games/minerush/assets/index-XNNEyEEy.css"
+    ],
+    "realProductionWrite": false,
+    "fakeFtp": true,
+    "sourceTransaction": "e22f884cb0f14b06b6d12ee2eb5c4524"
+  },
+  "harnessCorrection": "An initial final-artifact rehearsal reused a mutable fake-FTP dictionary across restore and next-preflight checks. Isolated deep copies corrected the harness; final-v2 passed. No production write.",
+  "localChecks": [
+    "86 business tests passed",
+    "npm check and normal TypeScript/ESLint/build +9SSG43checksums passed",
+    "Portal SSR/public filter/work guides and MineRush input regression passed",
+    "Three workflows YAML parsed and embedded Python compiled",
+    "Protected owner/old ledger/handoff unchanged; original378event prefix preserved",
+    "Own preview4259 stopped; task browser tabs closed; temporary viewport reset"
+  ]
+}
