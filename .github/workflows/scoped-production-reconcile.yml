@@ -51,6 +51,8 @@ jobs:
               'id': run['id'], 'head_sha': run['head_sha'], 'conclusion': run['conclusion'],
               'html_url': run['html_url']}, indent=2) + '\n', encoding='utf-8')
           PY
+      - name: Rehearse retained evidence offline without production credentials
+        run: python business/tests/rehearse_scoped_artifact.py artifacts/reconciliation-source > artifacts/offline-rehearsal.json
       - name: Compare actual HTTP bytes without production credentials
         run: |
           python business/ops/scoped_acceptance.py reconcile artifacts/reconciliation-source/protected-before.json \

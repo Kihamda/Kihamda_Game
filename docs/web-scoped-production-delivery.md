@@ -47,6 +47,14 @@ package・preflight・journalのcommit、manifest hash、新旧HTML、復元前�
 
 scoped-production-reconcile.ymlも同じ処理を実行する。同一リポジトリの完了したmain配信runとjournalのcommitを照合し、production secretsを使わない。
 
+照合・復旧workflowでは、実通信の前に保持物のオフライン模擬検査を行う。手元でも同じコマンドを使用できる。
+
+```powershell
+python business/tests/rehearse_scoped_artifact.py <配信artifactの展開先>
+```
+
+候補・復元元・journalの照合後、隔離した一時領域とメモリ上の偽FTPで候補全ファイル、対象外baseline、旧HTMLと既存版マーカーの復元、次回preflightを確認する。元の保持物は変更せず、HTTP・FTPSへ接続しない。出力のdeployedとproductionWritesはfalseであり、実FTPのrename・実復旧・ブラウザ受入れの代替にはしない。
+
 ## 条件付き復旧
 
 復旧が必要と判断した場合だけ、保持した候補・復元元を明示する。
@@ -63,4 +71,8 @@ python business/ops/scoped_upload.py recover <展開先>/transaction.json --pack
 
 公開版登録と確認環境、中断後の読取り専用照合workflow、共通の復元証跡照合、recoverの必須引数、配信job制限20→45分は次の日次統合用のローカル変更。今日の追加PR・再デプロイは行わず、本番トップも変更していない。これらのworkflowと新しい復旧照合はまだmainにない。本番の配信版は引き続き2bc5d74。
 
-86のbusinessテストが成功。改変journal・誤った復元元・部分切替・第三者更新・配信と復旧それぞれの通信境界での切断を検査した。実保持artifactの旧209件と候補を使った偽FTPの復旧も確認した。実サーバーの復旧成功とは扱わない。検査数・実時刻・最終ハッシュは今回の証跡と正本checkpointを参照する。過去の部分実装はGit履歴とbusiness/unity/evidence/scoped-delivery-20261021.jsonに保全している。
+アップロード前にも共通checked_preflightで復元元の版・ハッシュ・件数・サイズ・重複・symlink・静的依存の欠落を検査し、不正な場合は認証接続前に止める。復元対象の.mjsも依存をたどり、HTTPS・FTPSの読込み中に1応答64MiBを超えた場合は停止する。HTML2件だけでも合計上限を検査する。
+
+通常ポータルの保管パッケージはbuild-version.jsonに公開登録を含め、その詳細ページに限り登録URLへの開始リンク1件を要求する。未登録・異なる宛先・重複・iframeは拒否する。登録のない過去パッケージは開始リンクなしの条件で検証できる。これは通常ポータルの保全・統合準備であり、本番全体を置換する許可ではない。
+
+改変journal・誤った復元元・部分切替・第三者更新・通信境界での切断を含む検査と、実保持artifactの旧209件を使った偽FTPの復旧を確認した。今回の検査数・実時刻・最終ハッシュはbusiness/unity/evidence/scoped-hardening-integration.jsonと正本checkpointを参照する。実サーバーの復旧成功とは扱わない。過去の部分実装はGit履歴とbusiness/unity/evidence/scoped-delivery-20261021.jsonに保全している。

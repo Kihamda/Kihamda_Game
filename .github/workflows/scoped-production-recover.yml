@@ -49,6 +49,8 @@ jobs:
           if state['commit'] != run['head_sha']:
               raise SystemExit('Journal does not match delivery run SHA')
           PY
+      - name: Rehearse retained evidence offline before opening production
+        run: python business/tests/rehearse_scoped_artifact.py artifacts/recovery-source > artifacts/offline-rehearsal.json
       - name: Reconcile actual bytes before restoring the old entry
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}

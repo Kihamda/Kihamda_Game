@@ -30,7 +30,7 @@ class WritableFTP(fixtures.ReadOnlyFTP):
                 entries[name] = {"type": "dir" if "/" in path[len(prefix):] else "file"}
         for path in self.directories:
             if path.startswith(prefix):
-                entries[path[len(prefix):]] = {"type": "dir"}
+                entries[path[len(prefix):].split("/")[0]] = {"type": "dir"}
         return entries.items()
 
     def mkd(self, directory):
