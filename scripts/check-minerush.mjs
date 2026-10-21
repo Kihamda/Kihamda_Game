@@ -59,7 +59,7 @@ function find(node, predicate) {
 }
 const cell = (r=1,c=1) => find(render(), n=>n.props?.['aria-label']?.startsWith(`セル ${r}-${c} `)).props;
 const button = cls => find(render(), n=>n.props?.className === cls).props;
-const click = {detail:1,preventDefault(){}};
+const click = {detail:1,nativeEvent:{},preventDefault(){}};
 const key = k => ({key:k,repeat:false,preventDefault(){}});
 const touch = {touches:[{}]};
 function fireTimers() {const pending=[...timers.values()]; timers.clear(); pending.forEach(fn=>fn());}
@@ -108,6 +108,8 @@ cell().onContextMenu({type:'contextmenu',nativeEvent:{pointerType:'mouse'},preve
 assert.match(cell()['aria-label'], /旗あり$/, 'a cancelled touch must not swallow a later mouse context menu');
 cell().onContextMenu({type:'contextmenu',nativeEvent:{pointerType:'mouse'},preventDefault(){}});
 assert.match(cell()['aria-label'], /未開封$/, 'mouse flag removal after a cancelled touch still works');
+cell().onClick({...click,nativeEvent:{pointerType:'mouse'}});
+assert.match(cell()['aria-label'], /開いたマス/, 'a real mouse click after cancellation must not be mistaken for a touch compatibility click');
 loadGame(createGame(9,9,10));
 assertSafeProgress();
 cell().onTouchStart(touch); fireTimers(); cell().onTouchEnd();

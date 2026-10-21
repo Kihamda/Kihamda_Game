@@ -209,7 +209,8 @@ export default function App() {
         key={`${row}-${col}`}
         className={className}
         onClick={(e) => {
-          if (e.detail !== 0 && suppressedTouchCells.current.has(`${row}-${col}`)) {
+          const touchClick = !("pointerType" in e.nativeEvent) || e.nativeEvent.pointerType === "touch";
+          if (e.detail !== 0 && touchClick && suppressedTouchCells.current.has(`${row}-${col}`)) {
             suppressedTouchCells.current.delete(`${row}-${col}`);
             return;
           }
