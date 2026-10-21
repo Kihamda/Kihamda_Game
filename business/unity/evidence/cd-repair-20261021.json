@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "status": "integration-complete-new-delivery-started",
+  "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
+  "failedRun": 39445984592,
+  "cause": "The job has exceeded the maximum execution time of 20m0s",
+  "timeoutBeforeMinutes": 20,
+  "timeoutAfterMinutes": 45,
+  "pullRequest": 31,
+  "prHead": "285d7094b0a471974e9d195cc6f3d633e3aa6b07",
+  "prCi": 39532711918,
+  "mainCommit": "e378aaaa8c9c90a3d9c61e1abf420f0783e0ce07",
+  "mainCi": 39532880849,
+  "mainCiConclusion": "success",
+  "readOnlyReconcileRun": 39532883070,
+  "candidateManifestSha256": "67d7787990f94dd9b50a80d37e4873f436af842ce56bc922d3e7419bc34d5329",
+  "localChecks": {
+    "businessTests": 98,
+    "oldArtifactRehearsalFiles": 209,
+    "oldProductionReconciledFiles": 208,
+    "repositoryContract": "passed",
+    "prRestoredPackage": "44files9pages verified",
+    "browser": "released filter1 -> MineRush detail -> start -> reload -> catalog return"
+  },
+  "newDeployment": false,
+  "note": "Existing delivery is HTTP-matched; waiting for independent main reconciliation before new deployment.",
+  "readOnlyReconcileConclusion": "success",
+  "deliveryRun": 39533122745
+}

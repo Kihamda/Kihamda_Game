@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "revision": 395,
+  "revision": 402,
   "business_id": "game-site",
-  "fence": 67,
+  "fence": 68,
   "lease": {
-    "run_id": "manual-cd-repair-20261021",
-    "task_id": "T-web-delivery-hardening-integration-20261021",
-    "fence": 67,
-    "expires_at": 1792551099.2860303
+    "run_id": "manual-cd-resume-20261021",
+    "task_id": "T-web-cd-resume-20261021",
+    "fence": 68,
+    "expires_at": 1792551486.3805983
   },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -9272,7 +9272,7 @@
       "experiment_id": "E-unity-portal",
       "source": "scheduled-parent:unity-20261021T0100-reconcile; daily PR already merged on2026-10-21; local source50c66d3",
       "next_step": "2026-10-22の日次統合でローカル50c66d3以降をまとめ、同版CIと復元検査後にhead指定マージ。今日の追加PRや再デプロイは不要。",
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "run_id": "unity-20261021T0656-integration",
@@ -9445,6 +9445,46 @@
           },
           "next_step": "Next2026-10-22 daily batch: exact-head GitHub CI, guarded merge, read-only reconciliation; no redispatch of original upload",
           "at": 1792534894.733265
+        },
+        {
+          "run_id": "manual-cd-repair-20261021",
+          "fence": 67,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/cd-repair-20261021.json",
+              "sha256": "452f1b80547df6ecdfe8264c95f0c1c4972119222f995b7a106dba34df74fadd"
+            }
+          ],
+          "checks": [
+            "PR31 exact-head CI success44s/49s; guarded merge e378aaaa",
+            "main exact-head CI39532880849 success",
+            "read-only workflow39532883070 success;208baseline preserved;209offline files restored",
+            "CI artifact44files9pages verified; browser released1/detail/start/reload/catalog return passed",
+            "original run check annotation explicitly confirms20m timeout"
+          ],
+          "next_step": "Observe new confined delivery39533122745; verify exact HTTP files and real browser behavior before acceptance",
+          "passed": true,
+          "at": 1792549686.1518898
+        },
+        {
+          "run_id": "manual-cd-repair-20261021",
+          "fence": 67,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/cd-repair-20261021.json",
+              "sha256": "452f1b80547df6ecdfe8264c95f0c1c4972119222f995b7a106dba34df74fadd"
+            }
+          ],
+          "checks": [
+            "PR31 exact-head CI success44s/49s; guarded merge e378aaaa",
+            "main exact-head CI39532880849 success",
+            "read-only workflow39532883070 success;208baseline preserved;209offline files restored",
+            "CI artifact44files9pages verified; browser released1/detail/start/reload/catalog return passed",
+            "original run check annotation explicitly confirms20m timeout"
+          ],
+          "next_step": "Observe new confined delivery39533122745; verify exact HTTP files and real browser behavior before acceptance",
+          "passed": true,
+          "at": 1792549686.208999
         }
       ],
       "claims": [
@@ -9459,6 +9499,40 @@
           "task_id": "T-web-delivery-hardening-integration-20261021",
           "fence": 67,
           "expires_at": 1792551099.2860303
+        }
+      ]
+    },
+    "T-web-cd-resume-20261021": {
+      "id": "T-web-cd-resume-20261021",
+      "objective": "修正版CDでMineRush限定配信を完了し本番動作を照合する",
+      "acceptance": [
+        "exact-main CI候補の限定配信workflowが成功",
+        "新4ファイル・版と対象外URLがHTTP照合に合格",
+        "公開版の入力・再読込・一覧往復を実ブラウザで確認し復元元と実結果を保存"
+      ],
+      "outputs": [
+        "business/unity/evidence/cd-delivery-accepted-20261021.json"
+      ],
+      "checks": [
+        "CI-bound confined delivery",
+        "exact HTTP hashes and protected URLs",
+        "production browser input/reload/return"
+      ],
+      "next_step": "Observe delivery39533122745; do not redispatch on ambiguous result",
+      "decision_id": "D-context-delivery-20261020",
+      "experiment_id": "E-unity-portal",
+      "pdca": "do",
+      "hypothesis": "実測に合わせた45分枠と正しい進捗・復元照合で限定CDを完走できる",
+      "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
+      "priority": 1,
+      "status": "running",
+      "checkpoints": [],
+      "claims": [
+        {
+          "run_id": "manual-cd-resume-20261021",
+          "task_id": "T-web-cd-resume-20261021",
+          "fence": 68,
+          "expires_at": 1792551486.3805983
         }
       ]
     }
@@ -10132,8 +10206,14 @@
     "manual-cd-repair-20261021": {
       "run_id": "manual-cd-repair-20261021",
       "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792549299.228013
+    },
+    "manual-cd-resume-20261021": {
+      "run_id": "manual-cd-resume-20261021",
+      "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
+      "status": "open",
+      "started_at": 1792549686.3236566
     }
   },
   "experiments": {
@@ -10461,6 +10541,14 @@
       "status": "approved",
       "target": "Kihamda/Kihamda_Game",
       "head_commit": "71f6f01a5debdb58786504f9d2c074b64923ccb9"
+    },
+    {
+      "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
+      "quote": "何かcd失敗してる。原因究明あんどデプロイ続行",
+      "action": "scoped-minerush-delivery-main-e378aaaa",
+      "artifact_sha256": "67d7787990f94dd9b50a80d37e4873f436af842ce56bc922d3e7419bc34d5329",
+      "status": "approved",
+      "scope": "Existing MineRush4files only; exact-main candidate selected under explicit deployment continuation"
     }
   ],
   "external": {
@@ -10573,6 +10661,17 @@
           }
         ]
       }
+    },
+    "github-scoped-delivery-39533122745": {
+      "id": "github-scoped-delivery-39533122745",
+      "action": "scoped-minerush-delivery-main-e378aaaa",
+      "artifact_sha256": "67d7787990f94dd9b50a80d37e4873f436af842ce56bc922d3e7419bc34d5329",
+      "run_id": "manual-cd-resume-20261021",
+      "fence": 68,
+      "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
+      "already_dispatched": true,
+      "external_url": "https://github.com/Kihamda/Kihamda_Game/actions/runs/39533122745",
+      "status": "unknown"
     }
   },
   "observations": [],
@@ -24538,7 +24637,169 @@
       },
       "previous": "1c707fde27f23df13e1b98b0535f59b50285466f6dbae1eafd5ed160a313980d",
       "sha256": "eca9472c2ca9a5fd0153d7a26b496c92ecb5fbf17b2ee32e73884a802df09697"
+    },
+    {
+      "revision": 396,
+      "at": 1792549686.1518898,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "manual-cd-repair-20261021",
+        "fence": 67,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/cd-repair-20261021.json",
+            "sha256": "452f1b80547df6ecdfe8264c95f0c1c4972119222f995b7a106dba34df74fadd"
+          }
+        ],
+        "checks": [
+          "PR31 exact-head CI success44s/49s; guarded merge e378aaaa",
+          "main exact-head CI39532880849 success",
+          "read-only workflow39532883070 success;208baseline preserved;209offline files restored",
+          "CI artifact44files9pages verified; browser released1/detail/start/reload/catalog return passed",
+          "original run check annotation explicitly confirms20m timeout"
+        ],
+        "next_step": "Observe new confined delivery39533122745; verify exact HTTP files and real browser behavior before acceptance",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "eca9472c2ca9a5fd0153d7a26b496c92ecb5fbf17b2ee32e73884a802df09697",
+      "sha256": "771c93f825d0f0ba28ee1acbc69654c4758a1801c106a5b9d0f7e00bccfde923"
+    },
+    {
+      "revision": 397,
+      "at": 1792549686.208999,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-cd-repair-20261021",
+        "fence": 67,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/cd-repair-20261021.json",
+            "sha256": "452f1b80547df6ecdfe8264c95f0c1c4972119222f995b7a106dba34df74fadd"
+          }
+        ],
+        "checks": [
+          "PR31 exact-head CI success44s/49s; guarded merge e378aaaa",
+          "main exact-head CI39532880849 success",
+          "read-only workflow39532883070 success;208baseline preserved;209offline files restored",
+          "CI artifact44files9pages verified; browser released1/detail/start/reload/catalog return passed",
+          "original run check annotation explicitly confirms20m timeout"
+        ],
+        "next_step": "Observe new confined delivery39533122745; verify exact HTTP files and real browser behavior before acceptance",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "771c93f825d0f0ba28ee1acbc69654c4758a1801c106a5b9d0f7e00bccfde923",
+      "sha256": "bbc7263189759ae011608a9f06d8dde534bcb2b9f582a76a8176e6e1aa426c57"
+    },
+    {
+      "revision": 398,
+      "at": 1792549686.2670536,
+      "action": "task",
+      "data": {
+        "id": "T-web-cd-resume-20261021",
+        "objective": "修正版CDでMineRush限定配信を完了し本番動作を照合する",
+        "acceptance": [
+          "exact-main CI候補の限定配信workflowが成功",
+          "新4ファイル・版と対象外URLがHTTP照合に合格",
+          "公開版の入力・再読込・一覧往復を実ブラウザで確認し復元元と実結果を保存"
+        ],
+        "outputs": [
+          "business/unity/evidence/cd-delivery-accepted-20261021.json"
+        ],
+        "checks": [
+          "CI-bound confined delivery",
+          "exact HTTP hashes and protected URLs",
+          "production browser input/reload/return"
+        ],
+        "next_step": "Observe delivery39533122745; do not redispatch on ambiguous result",
+        "decision_id": "D-context-delivery-20261020",
+        "experiment_id": "E-unity-portal",
+        "pdca": "do",
+        "hypothesis": "実測に合わせた45分枠と正しい進捗・復元照合で限定CDを完走できる",
+        "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
+        "priority": 1
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "bbc7263189759ae011608a9f06d8dde534bcb2b9f582a76a8176e6e1aa426c57",
+      "sha256": "2b4f3cb9fcde2c348b87d72afc6e9f7e6199da7f4240330867b65a78f75c3f88"
+    },
+    {
+      "revision": 399,
+      "at": 1792549686.3236566,
+      "action": "start",
+      "data": {
+        "run_id": "manual-cd-resume-20261021",
+        "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "2b4f3cb9fcde2c348b87d72afc6e9f7e6199da7f4240330867b65a78f75c3f88",
+      "sha256": "7c56c8470066dc334a554d59d0210775feb18a369fd62410f679209af4fa9989"
+    },
+    {
+      "revision": 400,
+      "at": 1792549686.3805983,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-cd-resume-20261021",
+        "task_id": "T-web-cd-resume-20261021",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "manual-cd-resume-20261021",
+        "task_id": "T-web-cd-resume-20261021",
+        "fence": 68,
+        "expires_at": 1792551486.3805983
+      },
+      "previous": "7c56c8470066dc334a554d59d0210775feb18a369fd62410f679209af4fa9989",
+      "sha256": "ae2e1ff94a5c79a010c4487d1ac1ecfb0fb8293a402825bd8ed23292030c0bbd"
+    },
+    {
+      "revision": 401,
+      "at": 1792549686.439919,
+      "action": "approval",
+      "data": {
+        "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
+        "quote": "何かcd失敗してる。原因究明あんどデプロイ続行",
+        "action": "scoped-minerush-delivery-main-e378aaaa",
+        "artifact_sha256": "67d7787990f94dd9b50a80d37e4873f436af842ce56bc922d3e7419bc34d5329",
+        "status": "approved",
+        "scope": "Existing MineRush4files only; exact-main candidate selected under explicit deployment continuation"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "ae2e1ff94a5c79a010c4487d1ac1ecfb0fb8293a402825bd8ed23292030c0bbd",
+      "sha256": "24d7d2d0cf6bfdaf6c13bf8340696b9a3464f52624699d935daec051941c5ca3"
+    },
+    {
+      "revision": 402,
+      "at": 1792549686.5040977,
+      "action": "prepare-external",
+      "data": {
+        "id": "github-scoped-delivery-39533122745",
+        "action": "scoped-minerush-delivery-main-e378aaaa",
+        "artifact_sha256": "67d7787990f94dd9b50a80d37e4873f436af842ce56bc922d3e7419bc34d5329",
+        "run_id": "manual-cd-resume-20261021",
+        "fence": 68,
+        "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
+        "already_dispatched": true,
+        "external_url": "https://github.com/Kihamda/Kihamda_Game/actions/runs/39533122745"
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "24d7d2d0cf6bfdaf6c13bf8340696b9a3464f52624699d935daec051941c5ca3",
+      "sha256": "bbc03af66c640b26921f8523d6f91d3bf6ca705b616401a8dbcc22bb5db68a63"
     }
   ],
-  "projection_sha256": "9918365ef413b3336fdf42800d25a17e2002dbdc0486556f2927e50923828f4d"
+  "projection_sha256": "10d1e6a20e56dcbab4ef0adad53464e02a1cccf73893106c34efe4aa2649086d"
 }
