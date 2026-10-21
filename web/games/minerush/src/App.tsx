@@ -24,7 +24,7 @@ export default function App() {
 
   const longPressTimer = useRef<number | null>(null);
   const activeTouchCell = useRef<string | null>(null);
-  const suppressedTouchCell = useRef<string | null>(null);
+  const suppressedTouchCells = useRef(new Set<string>());
   const [flagMode, setFlagMode] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -37,7 +37,7 @@ export default function App() {
   const interruptTouch = useCallback(() => {
     cancelLongPress();
     if (activeTouchCell.current !== null) {
-      suppressedTouchCell.current = activeTouchCell.current;
+      suppressedTouchCells.current.add(activeTouchCell.current);
       activeTouchCell.current = null;
     }
   }, [cancelLongPress]);
@@ -93,7 +93,7 @@ export default function App() {
   const handleReset = useCallback(() => {
     cancelLongPress();
     activeTouchCell.current = null;
-    suppressedTouchCell.current = null;
+    suppressedTouchCells.current.clear();
     setPopupText(null);
     clearParticles();
     setGame(createGame(ROWS, COLS, MINE_COUNT));
@@ -144,8 +144,8 @@ export default function App() {
         (activeTouchCell.current === cellKey ||
           ("pointerType" in e.nativeEvent && e.nativeEvent.pointerType === "touch"));
       if (touchMenu) {
-        if (suppressedTouchCell.current === cellKey) return;
-        suppressedTouchCell.current = cellKey;
+        if (suppressedTouchCells.current.has(cellKey)) return;
+        suppressedTouchCells.current.add(cellKey);
       }
       const cell = game.grid[row][col];
       if (game.status === "playing" && !cell.isRevealed) {
@@ -163,9 +163,9 @@ export default function App() {
     (row: number, col: number) => {
       cancelLongPress();
       activeTouchCell.current = `${row}-${col}`;
-      suppressedTouchCell.current = null;
+      suppressedTouchCells.current.clear();
       longPressTimer.current = window.setTimeout(() => {
-        suppressedTouchCell.current = `${row}-${col}`;
+        suppressedTouchCells.current.add(`${row}-${col}`);
         const cell = game.grid[row][col];
         if (game.status === "playing" && !cell.isRevealed) {
           setGame((prev) => toggleFlag(prev, row, col));
@@ -209,11 +209,11 @@ export default function App() {
         key={`${row}-${col}`}
         className={className}
         onClick={(e) => {
-          if (e.detail !== 0 && suppressedTouchCell.current === `${row}-${col}`) {
-            suppressedTouchCell.current = null;
+          if (e.detail !== 0 && suppressedTouchCells.current.has(`${row}-${col}`)) {
+            suppressedTouchCells.current.delete(`${row}-${col}`);
             return;
           }
-          suppressedTouchCell.current = null;
+          suppressedTouchCells.current.clear();
           if (flagMode) handleContextMenu(e, row, col);
           else handleCellClick(row, col);
         }}
@@ -238,12 +238,15 @@ export default function App() {
           if (e.touches.length === 1) handleTouchStart(row, col);
           else {
             cancelLongPress();
-            suppressedTouchCell.current = `${row}-${col}`;
+            if (activeTouchCell.current !== null) {
+              suppressedTouchCells.current.add(activeTouchCell.current);
+            }
+            suppressedTouchCells.current.add(`${row}-${col}`);
           }
         }}
         onTouchMove={() => {
           cancelLongPress();
-          suppressedTouchCell.current = `${row}-${col}`;
+          suppressedTouchCells.current.add(`${row}-${col}`);
         }}
         onTouchEnd={() => {
           cancelLongPress();
@@ -251,7 +254,7 @@ export default function App() {
         }}
         onTouchCancel={() => {
           cancelLongPress();
-          suppressedTouchCell.current = `${row}-${col}`;
+          suppressedTouchCells.current.add(`${row}-${col}`);
         }}
         disabled={game.status !== "playing" && !cell.isRevealed}
         aria-label={`セル ${row + 1}-${col + 1} ${cell.isRevealed ? cell.isMine ? "地雷" : `開いたマス ${cell.adjacentMines}` : cell.isFlagged ? "旗あり" : "未開封"}`}

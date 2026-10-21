@@ -105,6 +105,14 @@ assert.match(cell()['aria-label'], /旗あり$/, 'early native touch menu must f
 loadGame(createGame(9,9,10));
 cell().onTouchStart(touch); cell().onTouchMove(); cell().onTouchEnd(); cell().onContextMenu(touchMenu); fireTimers();
 assert.match(cell()['aria-label'], /未開封$/, 'native touch menu must not revive a cancelled gesture');
+loadGame(createGame(9,9,10));
+cell().onTouchStart(touch); cell(1,2).onTouchStart({touches:[{},{}]}); fireTimers();
+cell().onTouchEnd(); cell(1,2).onTouchEnd();
+cell().onClick(click); cell(1,2).onClick(click);
+assert.match(cell()['aria-label'], /未開封$/, 'multitouch on different cells must suppress the original cell click');
+assert.match(cell(1,2)['aria-label'], /未開封$/, 'multitouch on different cells must suppress the second cell click');
+cell().onTouchStart(touch); fireTimers(); cell().onTouchEnd(); cell().onClick(click);
+assert.match(cell()['aria-label'], /旗あり$/, 'a new single touch after multitouch still works');
 const originalRandom = Math.random;
 let initial;
 try {
