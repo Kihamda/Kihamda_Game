@@ -101,6 +101,14 @@ function assertSafeProgress() {
 }
 const touchMenu = {type:'contextmenu',nativeEvent:{pointerType:'touch'},preventDefault(){}};
 loadGame(createGame(9,9,10));
+cell().onTouchStart(touch); cell().onTouchCancel(); fireTimers();
+cell().onContextMenu(touchMenu);
+assert.match(cell()['aria-label'], /未開封$/, 'a native touch menu after cancellation must not flag');
+cell().onContextMenu({type:'contextmenu',nativeEvent:{pointerType:'mouse'},preventDefault(){}});
+assert.match(cell()['aria-label'], /旗あり$/, 'a cancelled touch must not swallow a later mouse context menu');
+cell().onContextMenu({type:'contextmenu',nativeEvent:{pointerType:'mouse'},preventDefault(){}});
+assert.match(cell()['aria-label'], /未開封$/, 'mouse flag removal after a cancelled touch still works');
+loadGame(createGame(9,9,10));
 assertSafeProgress();
 cell().onTouchStart(touch); fireTimers(); cell().onTouchEnd();
 cell().onContextMenu(touchMenu); cell().onClick(click);

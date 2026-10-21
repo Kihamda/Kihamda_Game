@@ -253,7 +253,7 @@ export default function App() {
           activeTouchCell.current = null;
         }}
         onTouchCancel={() => {
-          cancelLongPress();
+          interruptTouch();
           suppressedTouchCells.current.add(`${row}-${col}`);
         }}
         disabled={game.status !== "playing" && !cell.isRevealed}
