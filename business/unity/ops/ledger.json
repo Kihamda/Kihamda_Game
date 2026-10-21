@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 428,
+  "revision": 432,
   "business_id": "game-site",
-  "fence": 71,
+  "fence": 72,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -10076,8 +10076,148 @@
         "T-scoped-candidate-rehearsal-20261021"
       ],
       "status": "ready",
-      "checkpoints": [],
-      "claims": []
+      "checkpoints": [
+        {
+          "run_id": "unity-20261021T1300-final-provenance",
+          "fence": 72,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "59d11d2704d048a1127f3c84f4c53f40a95baa172f78ce298b22dbbd790d64f2"
+            },
+            {
+              "path": "business/unity/evidence/scoped-candidate-rehearsal-20261021.json",
+              "sha256": "d3c4cff373ca7af2d155e38adfabbdf8f0a9634d193ffe2b1556312f3d1063f4"
+            },
+            {
+              "path": "business/unity/evidence/minerush-first-play-20261021.json",
+              "sha256": "fc98ec93a4f151d2e5e81592d4d12d939ada4c2d183085226f5ec7575e6e3bfa"
+            },
+            {
+              "path": "business/unity/evidence/minerush-terminal-effects-20261021.json",
+              "sha256": "5f0545151acc8a372cefd494d416dd1a0e5fba0801e666b693c688f1139899a7"
+            },
+            {
+              "path": "business/tests/rehearse_scoped_artifact.py",
+              "sha256": "8a9698545ddc8e976c489625d0addc1520226e3ef33871a555a861985d8cdad2"
+            },
+            {
+              "path": "business/tests/test_scoped_rehearsal.py",
+              "sha256": "4a17d8e9ed4433ddc25e018a38ea6dcac3a19ba57d5304e54bcbc4f56bc72592"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "f9441f2adaa1df9f5bf445439b67f98f87845c41aa6c3408bf5d3117bb7b3eff"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.css",
+              "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+            },
+            {
+              "path": "business/unity/evidence/minerush-first-play-final-provenance-20261021.json",
+              "sha256": "ec070f71ebc2d79ad3afea8c3f4f49b3c3cf5638a516ff9301bff6837b08c39b"
+            }
+          ],
+          "checks": [
+            "元のCRLF混在bytesをignored領域に保全",
+            "LF sourceは既存HEAD blobと全バイト一致",
+            "既存全検査のsourceに意味の変更なし",
+            "GitHub CI・新候補配信は未実施。integrationは未完了。"
+          ],
+          "next_step": "2026-10-22の日次統合で最新head CI・限定成果物・main統合・本番preflight・限定配信・HTTP/ブラウザ受入れ。最終ハッシュは本checkpointとprovenance receiptを使う。",
+          "at": 1792556805.3435786
+        },
+        {
+          "run_id": "unity-20261021T1300-final-provenance",
+          "fence": 72,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "59d11d2704d048a1127f3c84f4c53f40a95baa172f78ce298b22dbbd790d64f2"
+            },
+            {
+              "path": "business/unity/evidence/scoped-candidate-rehearsal-20261021.json",
+              "sha256": "d3c4cff373ca7af2d155e38adfabbdf8f0a9634d193ffe2b1556312f3d1063f4"
+            },
+            {
+              "path": "business/unity/evidence/minerush-first-play-20261021.json",
+              "sha256": "fc98ec93a4f151d2e5e81592d4d12d939ada4c2d183085226f5ec7575e6e3bfa"
+            },
+            {
+              "path": "business/unity/evidence/minerush-terminal-effects-20261021.json",
+              "sha256": "5f0545151acc8a372cefd494d416dd1a0e5fba0801e666b693c688f1139899a7"
+            },
+            {
+              "path": "business/tests/rehearse_scoped_artifact.py",
+              "sha256": "8a9698545ddc8e976c489625d0addc1520226e3ef33871a555a861985d8cdad2"
+            },
+            {
+              "path": "business/tests/test_scoped_rehearsal.py",
+              "sha256": "4a17d8e9ed4433ddc25e018a38ea6dcac3a19ba57d5304e54bcbc4f56bc72592"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "f9441f2adaa1df9f5bf445439b67f98f87845c41aa6c3408bf5d3117bb7b3eff"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.css",
+              "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+            },
+            {
+              "path": "business/unity/evidence/minerush-first-play-final-provenance-20261021.json",
+              "sha256": "ec070f71ebc2d79ad3afea8c3f4f49b3c3cf5638a516ff9301bff6837b08c39b"
+            }
+          ],
+          "checks": [
+            "元のCRLF混在bytesをignored領域に保全",
+            "LF sourceは既存HEAD blobと全バイト一致",
+            "既存全検査のsourceに意味の変更なし",
+            "GitHub CI・新候補配信は未実施。integrationは未完了。"
+          ],
+          "next_step": "2026-10-22の日次統合で最新head CI・限定成果物・main統合・本番preflight・限定配信・HTTP/ブラウザ受入れ。最終ハッシュは本checkpointとprovenance receiptを使う。",
+          "at": 1792556805.4097009
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261021T1300-final-provenance",
+          "task_id": "T-minerush-first-play-integration-20261022",
+          "fence": 72,
+          "expires_at": 1792557105.259904
+        }
+      ]
     }
   },
   "decisions": {
@@ -10794,6 +10934,12 @@
       "source": "user:automation:unity:2026-10-21T13:00:00+09:00:sequential-child-of-unity-20261021T1300-first-play",
       "status": "completed",
       "started_at": 1792555939.6742072
+    },
+    "unity-20261021T1300-final-provenance": {
+      "run_id": "unity-20261021T1300-final-provenance",
+      "source": "user:automation:unity:2026-10-21T13:00:00+09:00:final-save-audit-child",
+      "status": "checkpointed",
+      "started_at": 1792556805.2009227
     }
   },
   "experiments": {
@@ -26327,7 +26473,189 @@
       },
       "previous": "f895247ba988cd015090652a8fed64bd4aec4c637a53a5642d0fa50b03624a63",
       "sha256": "b090e28bd760671fd0d7bea8835f66df15dd26fcb75b05058cc3f9b950e4b2f1"
+    },
+    {
+      "revision": 429,
+      "at": 1792556805.2009227,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261021T1300-final-provenance",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00:final-save-audit-child"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "b090e28bd760671fd0d7bea8835f66df15dd26fcb75b05058cc3f9b950e4b2f1",
+      "sha256": "6d4a83b64c11d8f438237e6f7587e4a71d3dd3bd5e376b57541703a2011166dd"
+    },
+    {
+      "revision": 430,
+      "at": 1792556805.259904,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261021T1300-final-provenance",
+        "task_id": "T-minerush-first-play-integration-20261022",
+        "ttl_seconds": 300
+      },
+      "result": {
+        "run_id": "unity-20261021T1300-final-provenance",
+        "task_id": "T-minerush-first-play-integration-20261022",
+        "fence": 72,
+        "expires_at": 1792557105.259904
+      },
+      "previous": "6d4a83b64c11d8f438237e6f7587e4a71d3dd3bd5e376b57541703a2011166dd",
+      "sha256": "cebbdaa2aeb492417120c18b6954d571a48070d6c7ffae95ee87404d1fad1758"
+    },
+    {
+      "revision": 431,
+      "at": 1792556805.3435786,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261021T1300-final-provenance",
+        "fence": 72,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "59d11d2704d048a1127f3c84f4c53f40a95baa172f78ce298b22dbbd790d64f2"
+          },
+          {
+            "path": "business/unity/evidence/scoped-candidate-rehearsal-20261021.json",
+            "sha256": "d3c4cff373ca7af2d155e38adfabbdf8f0a9634d193ffe2b1556312f3d1063f4"
+          },
+          {
+            "path": "business/unity/evidence/minerush-first-play-20261021.json",
+            "sha256": "fc98ec93a4f151d2e5e81592d4d12d939ada4c2d183085226f5ec7575e6e3bfa"
+          },
+          {
+            "path": "business/unity/evidence/minerush-terminal-effects-20261021.json",
+            "sha256": "5f0545151acc8a372cefd494d416dd1a0e5fba0801e666b693c688f1139899a7"
+          },
+          {
+            "path": "business/tests/rehearse_scoped_artifact.py",
+            "sha256": "8a9698545ddc8e976c489625d0addc1520226e3ef33871a555a861985d8cdad2"
+          },
+          {
+            "path": "business/tests/test_scoped_rehearsal.py",
+            "sha256": "4a17d8e9ed4433ddc25e018a38ea6dcac3a19ba57d5304e54bcbc4f56bc72592"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "f9441f2adaa1df9f5bf445439b67f98f87845c41aa6c3408bf5d3117bb7b3eff"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.css",
+            "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+          },
+          {
+            "path": "business/unity/evidence/minerush-first-play-final-provenance-20261021.json",
+            "sha256": "ec070f71ebc2d79ad3afea8c3f4f49b3c3cf5638a516ff9301bff6837b08c39b"
+          }
+        ],
+        "checks": [
+          "元のCRLF混在bytesをignored領域に保全",
+          "LF sourceは既存HEAD blobと全バイト一致",
+          "既存全検査のsourceに意味の変更なし",
+          "GitHub CI・新候補配信は未実施。integrationは未完了。"
+        ],
+        "next_step": "2026-10-22の日次統合で最新head CI・限定成果物・main統合・本番preflight・限定配信・HTTP/ブラウザ受入れ。最終ハッシュは本checkpointとprovenance receiptを使う。"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "cebbdaa2aeb492417120c18b6954d571a48070d6c7ffae95ee87404d1fad1758",
+      "sha256": "34cd2c4e3dd55493d833097a5d5f7c7471c8ad6560e9135d99f48814c8269a01"
+    },
+    {
+      "revision": 432,
+      "at": 1792556805.4097009,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261021T1300-final-provenance",
+        "fence": 72,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "59d11d2704d048a1127f3c84f4c53f40a95baa172f78ce298b22dbbd790d64f2"
+          },
+          {
+            "path": "business/unity/evidence/scoped-candidate-rehearsal-20261021.json",
+            "sha256": "d3c4cff373ca7af2d155e38adfabbdf8f0a9634d193ffe2b1556312f3d1063f4"
+          },
+          {
+            "path": "business/unity/evidence/minerush-first-play-20261021.json",
+            "sha256": "fc98ec93a4f151d2e5e81592d4d12d939ada4c2d183085226f5ec7575e6e3bfa"
+          },
+          {
+            "path": "business/unity/evidence/minerush-terminal-effects-20261021.json",
+            "sha256": "5f0545151acc8a372cefd494d416dd1a0e5fba0801e666b693c688f1139899a7"
+          },
+          {
+            "path": "business/tests/rehearse_scoped_artifact.py",
+            "sha256": "8a9698545ddc8e976c489625d0addc1520226e3ef33871a555a861985d8cdad2"
+          },
+          {
+            "path": "business/tests/test_scoped_rehearsal.py",
+            "sha256": "4a17d8e9ed4433ddc25e018a38ea6dcac3a19ba57d5304e54bcbc4f56bc72592"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "f9441f2adaa1df9f5bf445439b67f98f87845c41aa6c3408bf5d3117bb7b3eff"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.css",
+            "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+          },
+          {
+            "path": "business/unity/evidence/minerush-first-play-final-provenance-20261021.json",
+            "sha256": "ec070f71ebc2d79ad3afea8c3f4f49b3c3cf5638a516ff9301bff6837b08c39b"
+          }
+        ],
+        "checks": [
+          "元のCRLF混在bytesをignored領域に保全",
+          "LF sourceは既存HEAD blobと全バイト一致",
+          "既存全検査のsourceに意味の変更なし",
+          "GitHub CI・新候補配信は未実施。integrationは未完了。"
+        ],
+        "next_step": "2026-10-22の日次統合で最新head CI・限定成果物・main統合・本番preflight・限定配信・HTTP/ブラウザ受入れ。最終ハッシュは本checkpointとprovenance receiptを使う。"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "34cd2c4e3dd55493d833097a5d5f7c7471c8ad6560e9135d99f48814c8269a01",
+      "sha256": "02b92ba4083de207250689a150f986915485eefbbba1515c35a59d23d4b38259"
     }
   ],
-  "projection_sha256": "08070e22aeec0f46b2c8025055bac6a03218bf55b559a06aa1e098b3c9799695"
+  "projection_sha256": "2dbdd1044c70d2a847b258bb1b4326b395b5e622eda175e08067cc29b51897c6"
 }
