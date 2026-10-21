@@ -167,6 +167,22 @@ class ScopedNextCandidateRehearsalTest(unittest.TestCase):
                 rehearsal.rehearse_candidate(self.artifact, self.candidate)
         self.assertEqual(self.snapshot(), before)
 
+    def test_reconstructed_uploaded_asset_collision_is_refused(self):
+        site = self.candidate / "site" / SCOPE
+        (site / "assets/index-next.js").rename(site / "assets/index-test.js")
+        (site / "index.html").write_bytes(b'<script src="/games/minerush/assets/index-test.js"></script>')
+        manifest = json.loads((self.candidate / "manifest.json").read_text())
+        manifest["files"] = [{"path": path.relative_to(self.candidate / "site").as_posix(),
+                              "sha256": sha(path.read_bytes())}
+                             for path in site.rglob("*") if path.is_file()]
+        (self.candidate / "manifest.json").write_text(json.dumps(manifest))
+        before = self.snapshot()
+        with patch.object(rehearsal, "deliver") as upload_candidate:
+            with self.assertRaisesRegex(ValueError, "Scoped asset collision"):
+                rehearsal.rehearse_candidate(self.artifact, self.candidate)
+            upload_candidate.assert_not_called()
+        self.assertEqual(self.snapshot(), before)
+
 
 if __name__ == "__main__":
     unittest.main()

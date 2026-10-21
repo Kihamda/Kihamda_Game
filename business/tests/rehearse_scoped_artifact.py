@@ -90,6 +90,7 @@ def rehearse_candidate(artifact, candidate):
     if (state.get("status") != "uploaded-awaiting-http-and-browser-acceptance" or
             "pending" not in state or state["pending"] is not None or
             not isinstance(state.get("written"), list) or
+            any(not isinstance(path, str) for path in state["written"]) or
             not {SCOPE + "index.html", SCOPE + "build-version.json"} <= set(state["written"])):
         raise ValueError("Completed upload with no pending operation required")
     manifest = checked_package(candidate)
