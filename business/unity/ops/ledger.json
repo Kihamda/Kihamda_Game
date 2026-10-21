@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 405,
+  "revision": 428,
   "business_id": "game-site",
-  "fence": 68,
+  "fence": 71,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -9637,6 +9637,447 @@
           "expires_at": 1792551486.3805983
         }
       ]
+    },
+    "T-minerush-first-play-20261021": {
+      "id": "T-minerush-first-play-20261021",
+      "objective": "MineRushの初回ルール理解を助ける説明を実装・検証する",
+      "acceptance": [
+        "常時案内で目的と数字の意味を読める",
+        "詳細説明はキーボードで開閉可能",
+        "初手・旗・クリア条件が現行game.tsと一致",
+        "390/1280表示、旗・開封・リセット・再読込・一覧往復が動く",
+        "型・静的・ビルド・既存入力検査が成功"
+      ],
+      "outputs": [
+        "web/games/minerush/src/App.tsx",
+        "web/games/minerush/src/App.css",
+        "business/unity/evidence/minerush-first-play-20261021.json"
+      ],
+      "checks": [
+        "source-rule-audit",
+        "browser",
+        "check",
+        "build",
+        "check-web-build",
+        "check-minerush"
+      ],
+      "next_step": "既存配信を重複せず、翌日統合用の検証済み候補を作成する",
+      "decision_id": "D-minerush-first-play-20261021",
+      "experiment_id": "E-minerush-first-play",
+      "hypothesis": "盤面のそばの説明が初回理解を助ける",
+      "source": "user:automation:unity:2026-10-21T13:00:00+09:00",
+      "pdca": "do",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261021T1300-first-play",
+          "fence": 69,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/minerush-first-play-20261021.json",
+              "sha256": "fc98ec93a4f151d2e5e81592d4d12d939ada4c2d183085226f5ec7575e6e3bfa"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "501eb7774959ba8e026b6f713356f45818886e844606fcb72aa2fd5248891e53"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.css",
+              "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+            }
+          ],
+          "checks": [
+            "npm run check: 4legacy/19GUID",
+            "npm run build: TypeScript/ESLint/Vite/9SSG",
+            "check-web-build:43checksums",
+            "check-minerush:既存入力",
+            "business:98tests",
+            "1280x720/390x844:横溢れなし、ルール16px、summary45.59px、Enter/Space開閉",
+            "F/Enter/旗解除/初手開封/リセット/再読込81未開封0旗",
+            "公開中フィルター/MineRush検索/詳細開始/往復",
+            "限定4ファイル候補:旧一覧と相互移動",
+            "偽FTP候補配信・条件付き復元、retained4baseline/current5files一致"
+          ],
+          "next_step": "終了済みマスで終了演出が再発する既存処理を再現・修正する。説明候補は翌日の日次統合にまとめる。",
+          "at": 1792555747.0477993
+        },
+        {
+          "run_id": "unity-20261021T1300-first-play",
+          "fence": 69,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/minerush-first-play-20261021.json",
+              "sha256": "fc98ec93a4f151d2e5e81592d4d12d939ada4c2d183085226f5ec7575e6e3bfa"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "501eb7774959ba8e026b6f713356f45818886e844606fcb72aa2fd5248891e53"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.css",
+              "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+            }
+          ],
+          "checks": [
+            "npm run check: 4legacy/19GUID",
+            "npm run build: TypeScript/ESLint/Vite/9SSG",
+            "check-web-build:43checksums",
+            "check-minerush:既存入力",
+            "business:98tests",
+            "1280x720/390x844:横溢れなし、ルール16px、summary45.59px、Enter/Space開閉",
+            "F/Enter/旗解除/初手開封/リセット/再読込81未開封0旗",
+            "公開中フィルター/MineRush検索/詳細開始/往復",
+            "限定4ファイル候補:旧一覧と相互移動",
+            "偽FTP候補配信・条件付き復元、retained4baseline/current5files一致"
+          ],
+          "next_step": "終了済みマスで終了演出が再発する既存処理を再現・修正する。説明候補は翌日の日次統合にまとめる。",
+          "passed": true,
+          "at": 1792555747.1161718
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261021T1300-first-play",
+          "task_id": "T-minerush-first-play-20261021",
+          "fence": 69,
+          "expires_at": 1792557120.4432914
+        }
+      ]
+    },
+    "T-minerush-terminal-effects-20261021": {
+      "id": "T-minerush-terminal-effects-20261021",
+      "objective": "終了後の開封済みマスで音・終了演出を繰り返さない",
+      "acceptance": [
+        "修正前のAppで演出重複を検出",
+        "勝敗への遷移時は演出1回、終了後の再操作は追加なし",
+        "既存操作と説明が動く",
+        "型・静的・ビルド・既存検査が成功"
+      ],
+      "outputs": [
+        "web/games/minerush/src/App.tsx",
+        "scripts/check-minerush.mjs",
+        "business/unity/evidence/minerush-terminal-effects-20261021.json"
+      ],
+      "checks": [
+        "regression-before-after",
+        "build",
+        "browser"
+      ],
+      "next_step": "再現・修正・最終候補検証をして同じ日次ブランチへ保存する。",
+      "decision_id": "D-minerush-terminal-effects-20261021",
+      "experiment_id": "E-minerush-first-play",
+      "hypothesis": "無効入力の演出を抑え、終了結果を安定させる",
+      "source": "user:automation:unity:2026-10-21T13:00:00+09:00:child-of-unity-20261021T1300-first-play",
+      "pdca": "do",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261021T1300-terminal-effects",
+          "fence": 70,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/minerush-terminal-effects-20261021.json",
+              "sha256": "5f0545151acc8a372cefd494d416dd1a0e5fba0801e666b693c688f1139899a7"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+            }
+          ],
+          "checks": [
+            "実Appの勝敗遷移で演出1回・終了後は音と演出の追加なし",
+            "既存keyboard/flag/touch-cancel/reset/unmount回帰成功",
+            "TypeScript/ESLint/Vite/9SSG/43hash成功",
+            "実ブラウザ:見える数字だけからF/Enterで安全71マスを開きクリア、10旗",
+            "勝利後confetti0→再操作0/敗北後explosion0→再操作0、結果維持",
+            "限定4ファイル版の検証成功"
+          ],
+          "next_step": "候補を既存受入れartifactからオフライン検証する反復手順を再利用可能にする。",
+          "at": 1792555939.435495
+        },
+        {
+          "run_id": "unity-20261021T1300-terminal-effects",
+          "fence": 70,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/minerush-terminal-effects-20261021.json",
+              "sha256": "5f0545151acc8a372cefd494d416dd1a0e5fba0801e666b693c688f1139899a7"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+            }
+          ],
+          "checks": [
+            "実Appの勝敗遷移で演出1回・終了後は音と演出の追加なし",
+            "既存keyboard/flag/touch-cancel/reset/unmount回帰成功",
+            "TypeScript/ESLint/Vite/9SSG/43hash成功",
+            "実ブラウザ:見える数字だけからF/Enterで安全71マスを開きクリア、10旗",
+            "勝利後confetti0→再操作0/敗北後explosion0→再操作0、結果維持",
+            "限定4ファイル版の検証成功"
+          ],
+          "next_step": "候補を既存受入れartifactからオフライン検証する反復手順を再利用可能にする。",
+          "passed": true,
+          "at": 1792555939.4951444
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261021T1300-terminal-effects",
+          "task_id": "T-minerush-terminal-effects-20261021",
+          "fence": 70,
+          "expires_at": 1792556947.3561568
+        }
+      ]
+    },
+    "T-scoped-candidate-rehearsal-20261021": {
+      "id": "T-scoped-candidate-rehearsal-20261021",
+      "objective": "既存artifactから次の限定配信候補をオフライン検証できる再利用utilityを作る",
+      "acceptance": [
+        "socket/FTPS接続なし",
+        "元artifactとjournalを変更しない",
+        "元transaction未完了・pendingと候補改変を拒否",
+        "次候補配信と元版への条件付き復元を確認",
+        "既存CLIとbusiness全検査が成功"
+      ],
+      "outputs": [
+        "business/tests/rehearse_scoped_artifact.py",
+        "business/tests/test_scoped_rehearsal.py",
+        "business/unity/evidence/scoped-candidate-rehearsal-20261021.json"
+      ],
+      "checks": [
+        "unittest",
+        "retained-production-artifact",
+        "source-hash-preservation"
+      ],
+      "next_step": "utility実装・回帰・実artifactによる最終候補検証をして保存する。",
+      "decision_id": "D-scoped-candidate-rehearsal-20261021",
+      "experiment_id": "E-minerush-first-play",
+      "hypothesis": "正規検査utilityで候補受入れの手順を再利用する",
+      "source": "user:automation:unity:2026-10-21T13:00:00+09:00:sequential-child-of-unity-20261021T1300-first-play",
+      "pdca": "do",
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261021T1300-candidate-rehearsal",
+          "fence": 71,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "59d11d2704d048a1127f3c84f4c53f40a95baa172f78ce298b22dbbd790d64f2"
+            },
+            {
+              "path": "business/unity/evidence/scoped-candidate-rehearsal-20261021.json",
+              "sha256": "d3c4cff373ca7af2d155e38adfabbdf8f0a9634d193ffe2b1556312f3d1063f4"
+            },
+            {
+              "path": "business/unity/evidence/minerush-first-play-20261021.json",
+              "sha256": "fc98ec93a4f151d2e5e81592d4d12d939ada4c2d183085226f5ec7575e6e3bfa"
+            },
+            {
+              "path": "business/unity/evidence/minerush-terminal-effects-20261021.json",
+              "sha256": "5f0545151acc8a372cefd494d416dd1a0e5fba0801e666b693c688f1139899a7"
+            },
+            {
+              "path": "business/tests/rehearse_scoped_artifact.py",
+              "sha256": "8a9698545ddc8e976c489625d0addc1520226e3ef33871a555a861985d8cdad2"
+            },
+            {
+              "path": "business/tests/test_scoped_rehearsal.py",
+              "sha256": "5f9f68c20c3c1ecca505e1bcce8a7e2131459ccaad1a8b999a8368c2612c30ca"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "f9441f2adaa1df9f5bf445439b67f98f87845c41aa6c3408bf5d3117bb7b3eff"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.css",
+              "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+            }
+          ],
+          "checks": [
+            "Windows Python104tests passed",
+            "WSL Linux Python104tests passed",
+            "既存5rehearsal検査を維持し6検査を追加",
+            "元保持物・候補全バイトの不変とsocket接続禁止",
+            "未完了/pending/HTML未書込/候補改変/復元元改変/復元失敗/既存アップロードasset衝突を検出",
+            "Windows/Linuxの実保持物・最終候補リハーサル結果が全項目一致",
+            "元405events・本人指示・旧台帳・policy・handoffを保全",
+            {
+              "started_at": "2026-10-21T13:00:44.944356+09:00",
+              "ended_at": "2026-10-21T13:25:51.053742+09:00",
+              "elapsed_seconds": 1506.109,
+              "start_basis": "first explicit clock observation; initial preparation already underway; conservative measured duration",
+              "exit_reason": "Sequential implementation and acceptance completed through minute25; save verified candidate for next daily integration; today production delivery already accepted",
+              "parent_run": "unity-20261021T1300-first-play",
+              "artificial_waits": false
+            }
+          ],
+          "next_step": "2026-10-22日次統合へ説明・終了演出・再利用検査と既存公開記録をまとめ、最新head CI・限定成果物・main統合・本番preflight・限定配信・HTTP/ブラウザ受入れを行う。",
+          "at": 1792556751.0936425
+        },
+        {
+          "run_id": "unity-20261021T1300-candidate-rehearsal",
+          "fence": 71,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "59d11d2704d048a1127f3c84f4c53f40a95baa172f78ce298b22dbbd790d64f2"
+            },
+            {
+              "path": "business/unity/evidence/scoped-candidate-rehearsal-20261021.json",
+              "sha256": "d3c4cff373ca7af2d155e38adfabbdf8f0a9634d193ffe2b1556312f3d1063f4"
+            },
+            {
+              "path": "business/unity/evidence/minerush-first-play-20261021.json",
+              "sha256": "fc98ec93a4f151d2e5e81592d4d12d939ada4c2d183085226f5ec7575e6e3bfa"
+            },
+            {
+              "path": "business/unity/evidence/minerush-terminal-effects-20261021.json",
+              "sha256": "5f0545151acc8a372cefd494d416dd1a0e5fba0801e666b693c688f1139899a7"
+            },
+            {
+              "path": "business/tests/rehearse_scoped_artifact.py",
+              "sha256": "8a9698545ddc8e976c489625d0addc1520226e3ef33871a555a861985d8cdad2"
+            },
+            {
+              "path": "business/tests/test_scoped_rehearsal.py",
+              "sha256": "5f9f68c20c3c1ecca505e1bcce8a7e2131459ccaad1a8b999a8368c2612c30ca"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "f9441f2adaa1df9f5bf445439b67f98f87845c41aa6c3408bf5d3117bb7b3eff"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.tsx",
+              "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+            },
+            {
+              "path": "web/src/shared/components/GameShell.css",
+              "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+            }
+          ],
+          "checks": [
+            "Windows Python104tests passed",
+            "WSL Linux Python104tests passed",
+            "既存5rehearsal検査を維持し6検査を追加",
+            "元保持物・候補全バイトの不変とsocket接続禁止",
+            "未完了/pending/HTML未書込/候補改変/復元元改変/復元失敗/既存アップロードasset衝突を検出",
+            "Windows/Linuxの実保持物・最終候補リハーサル結果が全項目一致",
+            "元405events・本人指示・旧台帳・policy・handoffを保全",
+            {
+              "started_at": "2026-10-21T13:00:44.944356+09:00",
+              "ended_at": "2026-10-21T13:25:51.053742+09:00",
+              "elapsed_seconds": 1506.109,
+              "start_basis": "first explicit clock observation; initial preparation already underway; conservative measured duration",
+              "exit_reason": "Sequential implementation and acceptance completed through minute25; save verified candidate for next daily integration; today production delivery already accepted",
+              "parent_run": "unity-20261021T1300-first-play",
+              "artificial_waits": false
+            }
+          ],
+          "next_step": "2026-10-22日次統合へ説明・終了演出・再利用検査と既存公開記録をまとめ、最新head CI・限定成果物・main統合・本番preflight・限定配信・HTTP/ブラウザ受入れを行う。",
+          "passed": true,
+          "at": 1792556751.1634755
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261021T1300-candidate-rehearsal",
+          "task_id": "T-scoped-candidate-rehearsal-20261021",
+          "fence": 71,
+          "expires_at": 1792557139.735104
+        }
+      ]
+    },
+    "T-minerush-first-play-integration-20261022": {
+      "id": "T-minerush-first-play-integration-20261022",
+      "objective": "2026-10-22の日次統合でMineRush案内・終了演出・候補検査をCI後に限定配信する",
+      "acceptance": [
+        "最新PR headのGitHub Linux/Windows CIと同版成果物を確認",
+        "head指定マージ後のmain版と限定成果物を照合",
+        "本番preflightと復元元・対象外URLを確認",
+        "限定配信後の全ファイル・版・実ブラウザ操作・再読込・往復を受入れ",
+        "実配信後だけreleaseを更新し人間理解と事業指標の未観測を維持"
+      ],
+      "outputs": [
+        "限定配信成果物",
+        "公開受入れ証跡",
+        "web/src/portal/data/works.json"
+      ],
+      "checks": [
+        "exact-head-ci",
+        "guarded-merge",
+        "production-preflight",
+        "scoped-delivery",
+        "http-browser-acceptance"
+      ],
+      "next_step": "2026-10-22日次統合へ説明・終了演出・再利用検査と既存公開記録をまとめ、最新head CI・限定成果物・main統合・本番preflight・限定配信・HTTP/ブラウザ受入れを行う。",
+      "decision_id": "D-minerush-first-play-20261021",
+      "experiment_id": "E-minerush-first-play",
+      "hypothesis": "検証済み説明と終了操作の改善を利用者へ届ける",
+      "source": "user:automation:unity:2026-10-21T13:00:00+09:00:daily-batch-next-day",
+      "pdca": "do",
+      "priority": 10,
+      "depends_on": [
+        "T-minerush-first-play-20261021",
+        "T-minerush-terminal-effects-20261021",
+        "T-scoped-candidate-rehearsal-20261021"
+      ],
+      "status": "ready",
+      "checkpoints": [],
+      "claims": []
     }
   },
   "decisions": {
@@ -9856,6 +10297,24 @@
       "source": "user:current-thread:2026-10-20:use-full-work-session",
       "hypothesis": "時間上限だけでなく継続条件・保存開始・早期終了理由を定めると、短い確認だけで終了する運用を減らせる",
       "next_step": "現行手順とpolicyを修正し既存配信工程を保持する"
+    },
+    "D-minerush-first-play-20261021": {
+      "id": "D-minerush-first-play-20261021",
+      "source": "user:automation:unity:2026-10-21T13:00:00+09:00",
+      "hypothesis": "数字・旗・勝利条件を操作場所で説明すれば、初回に何を目指すか判断しやすくなる。効果は未観測。",
+      "next_step": "実装のルールと一致する常時案内と詳細説明を追加し、狭幅とキーボードで検証する。"
+    },
+    "D-minerush-terminal-effects-20261021": {
+      "id": "D-minerush-terminal-effects-20261021",
+      "source": "user:automation:unity:2026-10-21T13:00:00+09:00:child-of-unity-20261021T1300-first-play",
+      "hypothesis": "revealCellが同じ終了状態を返した際の演出再発を止め、終了後に盤面を押しても音と爆発・祝福を繰り返さない。",
+      "next_step": "実際のAppの演出呼び出しを数える回帰検査で再現してから修正する。"
+    },
+    "D-scoped-candidate-rehearsal-20261021": {
+      "id": "D-scoped-candidate-rehearsal-20261021",
+      "source": "user:automation:unity:2026-10-21T13:00:00+09:00:sequential-child-of-unity-20261021T1300-first-play",
+      "hypothesis": "本枠で繰り返した候補の偽FTP配信・復元を既存検査utilityへまとめれば、一時的な手書き検査の重複を減らせる。",
+      "next_step": "既存rehearse_scoped_artifact.pyに任意の次候補の検証を追加し、入力改変・未完了transactionを拒否する。"
     }
   },
   "runs": {
@@ -10316,6 +10775,25 @@
       "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
       "status": "completed",
       "started_at": 1792549686.3236566
+    },
+    "unity-20261021T1300-first-play": {
+      "run_id": "unity-20261021T1300-first-play",
+      "scheduled_at": "2026-10-21T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-21T13:00:00+09:00",
+      "status": "completed",
+      "started_at": 1792555320.345674
+    },
+    "unity-20261021T1300-terminal-effects": {
+      "run_id": "unity-20261021T1300-terminal-effects",
+      "source": "user:automation:unity:2026-10-21T13:00:00+09:00:child-of-unity-20261021T1300-first-play",
+      "status": "completed",
+      "started_at": 1792555747.2969267
+    },
+    "unity-20261021T1300-candidate-rehearsal": {
+      "run_id": "unity-20261021T1300-candidate-rehearsal",
+      "source": "user:automation:unity:2026-10-21T13:00:00+09:00:sequential-child-of-unity-20261021T1300-first-play",
+      "status": "completed",
+      "started_at": 1792555939.6742072
     }
   },
   "experiments": {
@@ -10508,6 +10986,64 @@
         }
       ],
       "release": null
+    },
+    "E-minerush-first-play": {
+      "id": "E-minerush-first-play",
+      "game_id": "minerush",
+      "decision_id": "D-minerush-first-play-20261021",
+      "source": "user:automation:unity:2026-10-21T13:00:00+09:00",
+      "hypothesis": "操作とルールの説明で初回理解を助ける",
+      "primary_metric": "unassisted_first_play_rule_understanding",
+      "quality_acceptance": [
+        "数字は周囲8マスの地雷数",
+        "最初に開くマスと周囲の安全",
+        "旗は印で安全マス全開封が勝利",
+        "390/1280表示と操作"
+      ],
+      "measurement_plan": "実ブラウザ検査と人間の未介助初回観察を区別し、未観測値はnull。公開後14/28日で利用状況を確認する。",
+      "next_step": "次の日次統合・exact-head CIと限定配信後、未介助の初回理解と14/28日の実測を確認する。",
+      "stage": "act",
+      "history": [
+        {
+          "id": "E-minerush-first-play",
+          "source": "user:automation:unity:2026-10-21T13:00:00+09:00",
+          "next_step": "次の日次統合・exact-head CIと限定配信後、未介助の初回理解と14/28日の実測を確認する。",
+          "stage": "do",
+          "evidence": [
+            "46f1b88:説明実装",
+            "98e2012:終了演出修正"
+          ],
+          "at": 1792556427.9802718,
+          "previous_stage": "plan"
+        },
+        {
+          "id": "E-minerush-first-play",
+          "source": "user:automation:unity:2026-10-21T13:00:00+09:00",
+          "next_step": "次の日次統合・exact-head CIと限定配信後、未介助の初回理解と14/28日の実測を確認する。",
+          "stage": "check",
+          "evidence": [
+            "business/unity/evidence/minerush-first-play-20261021.json",
+            "business/unity/evidence/minerush-terminal-effects-20261021.json",
+            "技術検査とブラウザの合格。人間の初回理解と事業指標は未観測。"
+          ],
+          "at": 1792556428.0426285,
+          "previous_stage": "do"
+        },
+        {
+          "id": "E-minerush-first-play",
+          "source": "user:automation:unity:2026-10-21T13:00:00+09:00",
+          "next_step": "次の日次統合・exact-head CIと限定配信後、未介助の初回理解と14/28日の実測を確認する。",
+          "stage": "act",
+          "judgment": "unobserved",
+          "evidence": [
+            "unassisted_first_play_rule_understanding=null",
+            "公開前のローカル検査で需要や利用効果を断定しない。"
+          ],
+          "at": 1792556428.1022215,
+          "previous_stage": "check"
+        }
+      ],
+      "release": null
     }
   },
   "slots": {
@@ -10555,7 +11091,8 @@
     "2026-10-20T07:00:00+09:00": "unity-20261020T0700-eba7fbfc",
     "2026-10-20T13:00:00+09:00": "unity-20261020T1300-06077b21",
     "2026-10-20T19:00:00+09:00": "unity-20261020T1900-scoped",
-    "2026-10-21T01:00:00+09:00": "unity-20261021T0100-reconcile"
+    "2026-10-21T01:00:00+09:00": "unity-20261021T0100-reconcile",
+    "2026-10-21T13:00:00+09:00": "unity-20261021T1300-first-play"
   },
   "feedback": [
     {
@@ -25059,7 +25596,738 @@
       },
       "previous": "a31fdb86e4494f6496354ce671fa66f3cf4125fbeec2161223504fda8ba73943",
       "sha256": "9272f85d32e3f96dca5891f6ff97193acf2c3c7850aa1901ef5d09cf0a3d90bc"
+    },
+    {
+      "revision": 406,
+      "at": 1792555320.1698399,
+      "action": "decision",
+      "data": {
+        "id": "D-minerush-first-play-20261021",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00",
+        "hypothesis": "数字・旗・勝利条件を操作場所で説明すれば、初回に何を目指すか判断しやすくなる。効果は未観測。",
+        "next_step": "実装のルールと一致する常時案内と詳細説明を追加し、狭幅とキーボードで検証する。"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "9272f85d32e3f96dca5891f6ff97193acf2c3c7850aa1901ef5d09cf0a3d90bc",
+      "sha256": "689cab5c2f10ce2c937cddb03e37fdcbaa45bb70a5cbb3f3c63a2535972889d1"
+    },
+    {
+      "revision": 407,
+      "at": 1792555320.2287557,
+      "action": "experiment",
+      "data": {
+        "id": "E-minerush-first-play",
+        "game_id": "minerush",
+        "decision_id": "D-minerush-first-play-20261021",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00",
+        "hypothesis": "操作とルールの説明で初回理解を助ける",
+        "primary_metric": "unassisted_first_play_rule_understanding",
+        "quality_acceptance": [
+          "数字は周囲8マスの地雷数",
+          "最初に開くマスと周囲の安全",
+          "旗は印で安全マス全開封が勝利",
+          "390/1280表示と操作"
+        ],
+        "measurement_plan": "実ブラウザ検査と人間の未介助初回観察を区別し、未観測値はnull。公開後14/28日で利用状況を確認する。",
+        "next_step": "説明を実装してローカル受入れ後、翌日の日次配信候補に保存する。"
+      },
+      "result": {
+        "recorded": "experiment"
+      },
+      "previous": "689cab5c2f10ce2c937cddb03e37fdcbaa45bb70a5cbb3f3c63a2535972889d1",
+      "sha256": "c2c8b8ee16885a03ac240a4b9b0de4e8862e5d0a8e01b60d34160534aa665c17"
+    },
+    {
+      "revision": 408,
+      "at": 1792555320.2873983,
+      "action": "task",
+      "data": {
+        "id": "T-minerush-first-play-20261021",
+        "objective": "MineRushの初回ルール理解を助ける説明を実装・検証する",
+        "acceptance": [
+          "常時案内で目的と数字の意味を読める",
+          "詳細説明はキーボードで開閉可能",
+          "初手・旗・クリア条件が現行game.tsと一致",
+          "390/1280表示、旗・開封・リセット・再読込・一覧往復が動く",
+          "型・静的・ビルド・既存入力検査が成功"
+        ],
+        "outputs": [
+          "web/games/minerush/src/App.tsx",
+          "web/games/minerush/src/App.css",
+          "business/unity/evidence/minerush-first-play-20261021.json"
+        ],
+        "checks": [
+          "source-rule-audit",
+          "browser",
+          "check",
+          "build",
+          "check-web-build",
+          "check-minerush"
+        ],
+        "next_step": "既存配信を重複せず、翌日統合用の検証済み候補を作成する",
+        "decision_id": "D-minerush-first-play-20261021",
+        "experiment_id": "E-minerush-first-play",
+        "hypothesis": "盤面のそばの説明が初回理解を助ける",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00",
+        "pdca": "do"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "c2c8b8ee16885a03ac240a4b9b0de4e8862e5d0a8e01b60d34160534aa665c17",
+      "sha256": "01ff920ad9e4d70a1ed8572d60da3710fdc20367865613bbeb83d1042ba0538c"
+    },
+    {
+      "revision": 409,
+      "at": 1792555320.345674,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261021T1300-first-play",
+        "scheduled_at": "2026-10-21T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "01ff920ad9e4d70a1ed8572d60da3710fdc20367865613bbeb83d1042ba0538c",
+      "sha256": "d133330d53a02c01437cedb1c497da5cf9c2ab9c15ca8a356d23967a7ba77a0b"
+    },
+    {
+      "revision": 410,
+      "at": 1792555320.4432914,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261021T1300-first-play",
+        "task_id": "T-minerush-first-play-20261021",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261021T1300-first-play",
+        "task_id": "T-minerush-first-play-20261021",
+        "fence": 69,
+        "expires_at": 1792557120.4432914
+      },
+      "previous": "d133330d53a02c01437cedb1c497da5cf9c2ab9c15ca8a356d23967a7ba77a0b",
+      "sha256": "ad2d436284804d5e978684bc61e6b78b1f8ca8d5882852ebeefdf35818435e59"
+    },
+    {
+      "revision": 411,
+      "at": 1792555747.0477993,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261021T1300-first-play",
+        "fence": 69,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/minerush-first-play-20261021.json",
+            "sha256": "fc98ec93a4f151d2e5e81592d4d12d939ada4c2d183085226f5ec7575e6e3bfa"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "501eb7774959ba8e026b6f713356f45818886e844606fcb72aa2fd5248891e53"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.css",
+            "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+          }
+        ],
+        "checks": [
+          "npm run check: 4legacy/19GUID",
+          "npm run build: TypeScript/ESLint/Vite/9SSG",
+          "check-web-build:43checksums",
+          "check-minerush:既存入力",
+          "business:98tests",
+          "1280x720/390x844:横溢れなし、ルール16px、summary45.59px、Enter/Space開閉",
+          "F/Enter/旗解除/初手開封/リセット/再読込81未開封0旗",
+          "公開中フィルター/MineRush検索/詳細開始/往復",
+          "限定4ファイル候補:旧一覧と相互移動",
+          "偽FTP候補配信・条件付き復元、retained4baseline/current5files一致"
+        ],
+        "next_step": "終了済みマスで終了演出が再発する既存処理を再現・修正する。説明候補は翌日の日次統合にまとめる。"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "ad2d436284804d5e978684bc61e6b78b1f8ca8d5882852ebeefdf35818435e59",
+      "sha256": "196cfc0b75a05152b8c73bd02dc1ee3a1e85d5fc7769de5fa090a6d256bbf2e6"
+    },
+    {
+      "revision": 412,
+      "at": 1792555747.1161718,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261021T1300-first-play",
+        "fence": 69,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/minerush-first-play-20261021.json",
+            "sha256": "fc98ec93a4f151d2e5e81592d4d12d939ada4c2d183085226f5ec7575e6e3bfa"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "501eb7774959ba8e026b6f713356f45818886e844606fcb72aa2fd5248891e53"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.css",
+            "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+          }
+        ],
+        "checks": [
+          "npm run check: 4legacy/19GUID",
+          "npm run build: TypeScript/ESLint/Vite/9SSG",
+          "check-web-build:43checksums",
+          "check-minerush:既存入力",
+          "business:98tests",
+          "1280x720/390x844:横溢れなし、ルール16px、summary45.59px、Enter/Space開閉",
+          "F/Enter/旗解除/初手開封/リセット/再読込81未開封0旗",
+          "公開中フィルター/MineRush検索/詳細開始/往復",
+          "限定4ファイル候補:旧一覧と相互移動",
+          "偽FTP候補配信・条件付き復元、retained4baseline/current5files一致"
+        ],
+        "next_step": "終了済みマスで終了演出が再発する既存処理を再現・修正する。説明候補は翌日の日次統合にまとめる。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "196cfc0b75a05152b8c73bd02dc1ee3a1e85d5fc7769de5fa090a6d256bbf2e6",
+      "sha256": "3c62e09403f251b9fb8e9398527d6a81ee9b024bbc6437ea7bb88ec4e9789dcb"
+    },
+    {
+      "revision": 413,
+      "at": 1792555747.1757998,
+      "action": "decision",
+      "data": {
+        "id": "D-minerush-terminal-effects-20261021",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00:child-of-unity-20261021T1300-first-play",
+        "hypothesis": "revealCellが同じ終了状態を返した際の演出再発を止め、終了後に盤面を押しても音と爆発・祝福を繰り返さない。",
+        "next_step": "実際のAppの演出呼び出しを数える回帰検査で再現してから修正する。"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "3c62e09403f251b9fb8e9398527d6a81ee9b024bbc6437ea7bb88ec4e9789dcb",
+      "sha256": "b68f3f9063c1add58465d13ac2d32fcf0c233a8d8ca3cc9d1e4d23444afe6efe"
+    },
+    {
+      "revision": 414,
+      "at": 1792555747.237976,
+      "action": "task",
+      "data": {
+        "id": "T-minerush-terminal-effects-20261021",
+        "objective": "終了後の開封済みマスで音・終了演出を繰り返さない",
+        "acceptance": [
+          "修正前のAppで演出重複を検出",
+          "勝敗への遷移時は演出1回、終了後の再操作は追加なし",
+          "既存操作と説明が動く",
+          "型・静的・ビルド・既存検査が成功"
+        ],
+        "outputs": [
+          "web/games/minerush/src/App.tsx",
+          "scripts/check-minerush.mjs",
+          "business/unity/evidence/minerush-terminal-effects-20261021.json"
+        ],
+        "checks": [
+          "regression-before-after",
+          "build",
+          "browser"
+        ],
+        "next_step": "再現・修正・最終候補検証をして同じ日次ブランチへ保存する。",
+        "decision_id": "D-minerush-terminal-effects-20261021",
+        "experiment_id": "E-minerush-first-play",
+        "hypothesis": "無効入力の演出を抑え、終了結果を安定させる",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00:child-of-unity-20261021T1300-first-play",
+        "pdca": "do"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "b68f3f9063c1add58465d13ac2d32fcf0c233a8d8ca3cc9d1e4d23444afe6efe",
+      "sha256": "656d7e22f3dd4dbc70714fbcabe6655c9992431466f536fb6da8d547c8761b7c"
+    },
+    {
+      "revision": 415,
+      "at": 1792555747.2969267,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261021T1300-terminal-effects",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00:child-of-unity-20261021T1300-first-play"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "656d7e22f3dd4dbc70714fbcabe6655c9992431466f536fb6da8d547c8761b7c",
+      "sha256": "4949fb27215f4441887f2608bcdeaa61431f48dd20ced6a8269c0336b466c457"
+    },
+    {
+      "revision": 416,
+      "at": 1792555747.3561568,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261021T1300-terminal-effects",
+        "task_id": "T-minerush-terminal-effects-20261021",
+        "ttl_seconds": 1200
+      },
+      "result": {
+        "run_id": "unity-20261021T1300-terminal-effects",
+        "task_id": "T-minerush-terminal-effects-20261021",
+        "fence": 70,
+        "expires_at": 1792556947.3561568
+      },
+      "previous": "4949fb27215f4441887f2608bcdeaa61431f48dd20ced6a8269c0336b466c457",
+      "sha256": "c11b22321bb2a4ab3c22ead3fe3d64a0f35bdaa76d4300082d8f260d4d3d7293"
+    },
+    {
+      "revision": 417,
+      "at": 1792555939.435495,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261021T1300-terminal-effects",
+        "fence": 70,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/minerush-terminal-effects-20261021.json",
+            "sha256": "5f0545151acc8a372cefd494d416dd1a0e5fba0801e666b693c688f1139899a7"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+          }
+        ],
+        "checks": [
+          "実Appの勝敗遷移で演出1回・終了後は音と演出の追加なし",
+          "既存keyboard/flag/touch-cancel/reset/unmount回帰成功",
+          "TypeScript/ESLint/Vite/9SSG/43hash成功",
+          "実ブラウザ:見える数字だけからF/Enterで安全71マスを開きクリア、10旗",
+          "勝利後confetti0→再操作0/敗北後explosion0→再操作0、結果維持",
+          "限定4ファイル版の検証成功"
+        ],
+        "next_step": "候補を既存受入れartifactからオフライン検証する反復手順を再利用可能にする。"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "c11b22321bb2a4ab3c22ead3fe3d64a0f35bdaa76d4300082d8f260d4d3d7293",
+      "sha256": "700bb6050250a6680924253f59ac16538038ac5212e37c2b896e683438ba8238"
+    },
+    {
+      "revision": 418,
+      "at": 1792555939.4951444,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261021T1300-terminal-effects",
+        "fence": 70,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/minerush-terminal-effects-20261021.json",
+            "sha256": "5f0545151acc8a372cefd494d416dd1a0e5fba0801e666b693c688f1139899a7"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+          }
+        ],
+        "checks": [
+          "実Appの勝敗遷移で演出1回・終了後は音と演出の追加なし",
+          "既存keyboard/flag/touch-cancel/reset/unmount回帰成功",
+          "TypeScript/ESLint/Vite/9SSG/43hash成功",
+          "実ブラウザ:見える数字だけからF/Enterで安全71マスを開きクリア、10旗",
+          "勝利後confetti0→再操作0/敗北後explosion0→再操作0、結果維持",
+          "限定4ファイル版の検証成功"
+        ],
+        "next_step": "候補を既存受入れartifactからオフライン検証する反復手順を再利用可能にする。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "700bb6050250a6680924253f59ac16538038ac5212e37c2b896e683438ba8238",
+      "sha256": "176e46c39f439d346f8cb2e6bdf0b68def90aa2749d8781f1de3d3bab915a1ac"
+    },
+    {
+      "revision": 419,
+      "at": 1792555939.5542245,
+      "action": "decision",
+      "data": {
+        "id": "D-scoped-candidate-rehearsal-20261021",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00:sequential-child-of-unity-20261021T1300-first-play",
+        "hypothesis": "本枠で繰り返した候補の偽FTP配信・復元を既存検査utilityへまとめれば、一時的な手書き検査の重複を減らせる。",
+        "next_step": "既存rehearse_scoped_artifact.pyに任意の次候補の検証を追加し、入力改変・未完了transactionを拒否する。"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "176e46c39f439d346f8cb2e6bdf0b68def90aa2749d8781f1de3d3bab915a1ac",
+      "sha256": "1aa84e7b81236806fa21755eadb1899011f897f41057ccc61557aab2c8be219a"
+    },
+    {
+      "revision": 420,
+      "at": 1792555939.6135428,
+      "action": "task",
+      "data": {
+        "id": "T-scoped-candidate-rehearsal-20261021",
+        "objective": "既存artifactから次の限定配信候補をオフライン検証できる再利用utilityを作る",
+        "acceptance": [
+          "socket/FTPS接続なし",
+          "元artifactとjournalを変更しない",
+          "元transaction未完了・pendingと候補改変を拒否",
+          "次候補配信と元版への条件付き復元を確認",
+          "既存CLIとbusiness全検査が成功"
+        ],
+        "outputs": [
+          "business/tests/rehearse_scoped_artifact.py",
+          "business/tests/test_scoped_rehearsal.py",
+          "business/unity/evidence/scoped-candidate-rehearsal-20261021.json"
+        ],
+        "checks": [
+          "unittest",
+          "retained-production-artifact",
+          "source-hash-preservation"
+        ],
+        "next_step": "utility実装・回帰・実artifactによる最終候補検証をして保存する。",
+        "decision_id": "D-scoped-candidate-rehearsal-20261021",
+        "experiment_id": "E-minerush-first-play",
+        "hypothesis": "正規検査utilityで候補受入れの手順を再利用する",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00:sequential-child-of-unity-20261021T1300-first-play",
+        "pdca": "do"
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "1aa84e7b81236806fa21755eadb1899011f897f41057ccc61557aab2c8be219a",
+      "sha256": "0c651f3d81195e7b13fa479b8aff9d50884f25aafd2f9531ed393c7162177781"
+    },
+    {
+      "revision": 421,
+      "at": 1792555939.6742072,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261021T1300-candidate-rehearsal",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00:sequential-child-of-unity-20261021T1300-first-play"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "0c651f3d81195e7b13fa479b8aff9d50884f25aafd2f9531ed393c7162177781",
+      "sha256": "04a0febefe7d7b8ef1aa3b81f74bbb4a08f674455a6ffc160becd464284cc99b"
+    },
+    {
+      "revision": 422,
+      "at": 1792555939.735104,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261021T1300-candidate-rehearsal",
+        "task_id": "T-scoped-candidate-rehearsal-20261021",
+        "ttl_seconds": 1200
+      },
+      "result": {
+        "run_id": "unity-20261021T1300-candidate-rehearsal",
+        "task_id": "T-scoped-candidate-rehearsal-20261021",
+        "fence": 71,
+        "expires_at": 1792557139.735104
+      },
+      "previous": "04a0febefe7d7b8ef1aa3b81f74bbb4a08f674455a6ffc160becd464284cc99b",
+      "sha256": "9f64b4037ac64477c737470155cfc8394974ff156ca90d4d10f34e486bfe02c7"
+    },
+    {
+      "revision": 423,
+      "at": 1792556427.9802718,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-minerush-first-play",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00",
+        "next_step": "次の日次統合・exact-head CIと限定配信後、未介助の初回理解と14/28日の実測を確認する。",
+        "stage": "do",
+        "evidence": [
+          "46f1b88:説明実装",
+          "98e2012:終了演出修正"
+        ]
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "9f64b4037ac64477c737470155cfc8394974ff156ca90d4d10f34e486bfe02c7",
+      "sha256": "4fed50b62c5a1dc578b16db813da07ab65cced4efd6b56ece3bc6683b8b35324"
+    },
+    {
+      "revision": 424,
+      "at": 1792556428.0426285,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-minerush-first-play",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00",
+        "next_step": "次の日次統合・exact-head CIと限定配信後、未介助の初回理解と14/28日の実測を確認する。",
+        "stage": "check",
+        "evidence": [
+          "business/unity/evidence/minerush-first-play-20261021.json",
+          "business/unity/evidence/minerush-terminal-effects-20261021.json",
+          "技術検査とブラウザの合格。人間の初回理解と事業指標は未観測。"
+        ]
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "4fed50b62c5a1dc578b16db813da07ab65cced4efd6b56ece3bc6683b8b35324",
+      "sha256": "21cc16f1d0a77e62ebfedef1d86579b395cdd32b9c64b4833e0dbbfc84cdf37e"
+    },
+    {
+      "revision": 425,
+      "at": 1792556428.1022215,
+      "action": "experiment-stage",
+      "data": {
+        "id": "E-minerush-first-play",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00",
+        "next_step": "次の日次統合・exact-head CIと限定配信後、未介助の初回理解と14/28日の実測を確認する。",
+        "stage": "act",
+        "judgment": "unobserved",
+        "evidence": [
+          "unassisted_first_play_rule_understanding=null",
+          "公開前のローカル検査で需要や利用効果を断定しない。"
+        ]
+      },
+      "result": {
+        "recorded": "experiment-stage"
+      },
+      "previous": "21cc16f1d0a77e62ebfedef1d86579b395cdd32b9c64b4833e0dbbfc84cdf37e",
+      "sha256": "abb4558806aab8f8c226dd2765ad0413b20581b56cc720d676cb38b9cfa6429f"
+    },
+    {
+      "revision": 426,
+      "at": 1792556751.0936425,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261021T1300-candidate-rehearsal",
+        "fence": 71,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "59d11d2704d048a1127f3c84f4c53f40a95baa172f78ce298b22dbbd790d64f2"
+          },
+          {
+            "path": "business/unity/evidence/scoped-candidate-rehearsal-20261021.json",
+            "sha256": "d3c4cff373ca7af2d155e38adfabbdf8f0a9634d193ffe2b1556312f3d1063f4"
+          },
+          {
+            "path": "business/unity/evidence/minerush-first-play-20261021.json",
+            "sha256": "fc98ec93a4f151d2e5e81592d4d12d939ada4c2d183085226f5ec7575e6e3bfa"
+          },
+          {
+            "path": "business/unity/evidence/minerush-terminal-effects-20261021.json",
+            "sha256": "5f0545151acc8a372cefd494d416dd1a0e5fba0801e666b693c688f1139899a7"
+          },
+          {
+            "path": "business/tests/rehearse_scoped_artifact.py",
+            "sha256": "8a9698545ddc8e976c489625d0addc1520226e3ef33871a555a861985d8cdad2"
+          },
+          {
+            "path": "business/tests/test_scoped_rehearsal.py",
+            "sha256": "5f9f68c20c3c1ecca505e1bcce8a7e2131459ccaad1a8b999a8368c2612c30ca"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "f9441f2adaa1df9f5bf445439b67f98f87845c41aa6c3408bf5d3117bb7b3eff"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.css",
+            "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+          }
+        ],
+        "checks": [
+          "Windows Python104tests passed",
+          "WSL Linux Python104tests passed",
+          "既存5rehearsal検査を維持し6検査を追加",
+          "元保持物・候補全バイトの不変とsocket接続禁止",
+          "未完了/pending/HTML未書込/候補改変/復元元改変/復元失敗/既存アップロードasset衝突を検出",
+          "Windows/Linuxの実保持物・最終候補リハーサル結果が全項目一致",
+          "元405events・本人指示・旧台帳・policy・handoffを保全",
+          {
+            "started_at": "2026-10-21T13:00:44.944356+09:00",
+            "ended_at": "2026-10-21T13:25:51.053742+09:00",
+            "elapsed_seconds": 1506.109,
+            "start_basis": "first explicit clock observation; initial preparation already underway; conservative measured duration",
+            "exit_reason": "Sequential implementation and acceptance completed through minute25; save verified candidate for next daily integration; today production delivery already accepted",
+            "parent_run": "unity-20261021T1300-first-play",
+            "artificial_waits": false
+          }
+        ],
+        "next_step": "2026-10-22日次統合へ説明・終了演出・再利用検査と既存公開記録をまとめ、最新head CI・限定成果物・main統合・本番preflight・限定配信・HTTP/ブラウザ受入れを行う。"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "abb4558806aab8f8c226dd2765ad0413b20581b56cc720d676cb38b9cfa6429f",
+      "sha256": "3815b01ace3caf1878bf28d784153391060a59aa5f33f628c6aaac5327930f9b"
+    },
+    {
+      "revision": 427,
+      "at": 1792556751.1634755,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261021T1300-candidate-rehearsal",
+        "fence": 71,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "59d11d2704d048a1127f3c84f4c53f40a95baa172f78ce298b22dbbd790d64f2"
+          },
+          {
+            "path": "business/unity/evidence/scoped-candidate-rehearsal-20261021.json",
+            "sha256": "d3c4cff373ca7af2d155e38adfabbdf8f0a9634d193ffe2b1556312f3d1063f4"
+          },
+          {
+            "path": "business/unity/evidence/minerush-first-play-20261021.json",
+            "sha256": "fc98ec93a4f151d2e5e81592d4d12d939ada4c2d183085226f5ec7575e6e3bfa"
+          },
+          {
+            "path": "business/unity/evidence/minerush-terminal-effects-20261021.json",
+            "sha256": "5f0545151acc8a372cefd494d416dd1a0e5fba0801e666b693c688f1139899a7"
+          },
+          {
+            "path": "business/tests/rehearse_scoped_artifact.py",
+            "sha256": "8a9698545ddc8e976c489625d0addc1520226e3ef33871a555a861985d8cdad2"
+          },
+          {
+            "path": "business/tests/test_scoped_rehearsal.py",
+            "sha256": "5f9f68c20c3c1ecca505e1bcce8a7e2131459ccaad1a8b999a8368c2612c30ca"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "f9441f2adaa1df9f5bf445439b67f98f87845c41aa6c3408bf5d3117bb7b3eff"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.tsx",
+            "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+          },
+          {
+            "path": "web/src/shared/components/GameShell.css",
+            "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+          }
+        ],
+        "checks": [
+          "Windows Python104tests passed",
+          "WSL Linux Python104tests passed",
+          "既存5rehearsal検査を維持し6検査を追加",
+          "元保持物・候補全バイトの不変とsocket接続禁止",
+          "未完了/pending/HTML未書込/候補改変/復元元改変/復元失敗/既存アップロードasset衝突を検出",
+          "Windows/Linuxの実保持物・最終候補リハーサル結果が全項目一致",
+          "元405events・本人指示・旧台帳・policy・handoffを保全",
+          {
+            "started_at": "2026-10-21T13:00:44.944356+09:00",
+            "ended_at": "2026-10-21T13:25:51.053742+09:00",
+            "elapsed_seconds": 1506.109,
+            "start_basis": "first explicit clock observation; initial preparation already underway; conservative measured duration",
+            "exit_reason": "Sequential implementation and acceptance completed through minute25; save verified candidate for next daily integration; today production delivery already accepted",
+            "parent_run": "unity-20261021T1300-first-play",
+            "artificial_waits": false
+          }
+        ],
+        "next_step": "2026-10-22日次統合へ説明・終了演出・再利用検査と既存公開記録をまとめ、最新head CI・限定成果物・main統合・本番preflight・限定配信・HTTP/ブラウザ受入れを行う。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "3815b01ace3caf1878bf28d784153391060a59aa5f33f628c6aaac5327930f9b",
+      "sha256": "f895247ba988cd015090652a8fed64bd4aec4c637a53a5642d0fa50b03624a63"
+    },
+    {
+      "revision": 428,
+      "at": 1792556751.240601,
+      "action": "task",
+      "data": {
+        "id": "T-minerush-first-play-integration-20261022",
+        "objective": "2026-10-22の日次統合でMineRush案内・終了演出・候補検査をCI後に限定配信する",
+        "acceptance": [
+          "最新PR headのGitHub Linux/Windows CIと同版成果物を確認",
+          "head指定マージ後のmain版と限定成果物を照合",
+          "本番preflightと復元元・対象外URLを確認",
+          "限定配信後の全ファイル・版・実ブラウザ操作・再読込・往復を受入れ",
+          "実配信後だけreleaseを更新し人間理解と事業指標の未観測を維持"
+        ],
+        "outputs": [
+          "限定配信成果物",
+          "公開受入れ証跡",
+          "web/src/portal/data/works.json"
+        ],
+        "checks": [
+          "exact-head-ci",
+          "guarded-merge",
+          "production-preflight",
+          "scoped-delivery",
+          "http-browser-acceptance"
+        ],
+        "next_step": "2026-10-22日次統合へ説明・終了演出・再利用検査と既存公開記録をまとめ、最新head CI・限定成果物・main統合・本番preflight・限定配信・HTTP/ブラウザ受入れを行う。",
+        "decision_id": "D-minerush-first-play-20261021",
+        "experiment_id": "E-minerush-first-play",
+        "hypothesis": "検証済み説明と終了操作の改善を利用者へ届ける",
+        "source": "user:automation:unity:2026-10-21T13:00:00+09:00:daily-batch-next-day",
+        "pdca": "do",
+        "priority": 10,
+        "depends_on": [
+          "T-minerush-first-play-20261021",
+          "T-minerush-terminal-effects-20261021",
+          "T-scoped-candidate-rehearsal-20261021"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "f895247ba988cd015090652a8fed64bd4aec4c637a53a5642d0fa50b03624a63",
+      "sha256": "b090e28bd760671fd0d7bea8835f66df15dd26fcb75b05058cc3f9b950e4b2f1"
     }
   ],
-  "projection_sha256": "5838e480e61c0ee4e035bbfdcc4e0d82b829aff716dabd8de98a922027e743bc"
+  "projection_sha256": "08070e22aeec0f46b2c8025055bac6a03218bf55b559a06aa1e098b3c9799695"
 }

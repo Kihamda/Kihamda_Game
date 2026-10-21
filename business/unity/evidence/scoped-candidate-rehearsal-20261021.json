@@ -1,0 +1,161 @@
+{
+  "schema": 1,
+  "status": "local-next-candidate-acceptance-passed-not-deployed",
+  "recorded_at": "2026-10-21T13:23:43.604972+09:00",
+  "implementation_commit": "bc09a244b79dcd07bc81114f69c9bdf904fdad1b",
+  "sources": [
+    {
+      "path": "business/tests/rehearse_scoped_artifact.py",
+      "sha256": "8a9698545ddc8e976c489625d0addc1520226e3ef33871a555a861985d8cdad2"
+    },
+    {
+      "path": "business/tests/test_scoped_rehearsal.py",
+      "sha256": "5f9f68c20c3c1ecca505e1bcce8a7e2131459ccaad1a8b999a8368c2612c30ca"
+    },
+    {
+      "path": "docs/web-scoped-production-delivery.md",
+      "sha256": "f9441f2adaa1df9f5bf445439b67f98f87845c41aa6c3408bf5d3117bb7b3eff"
+    },
+    {
+      "path": "web/games/minerush/src/App.tsx",
+      "sha256": "36bee278e5fd0c1b555d6c0a762e7b5433b911c434e6edc8f6da2aaea73d329f"
+    },
+    {
+      "path": "web/games/minerush/src/App.css",
+      "sha256": "64ff75448afc041e0a1c4de69ea0f89b6afc52758c4ac58aa3b387dcac53a4f3"
+    },
+    {
+      "path": "web/src/shared/components/GameShell.tsx",
+      "sha256": "644b9da1d4db9731832a11a5961ae25c8b86962c3074770c0af7cd9f94de6219"
+    },
+    {
+      "path": "web/src/shared/components/GameShell.css",
+      "sha256": "5dd5f291bb59615c9bbf2f450d3d6e0346a26b1d5f5e9249375573b3fa1829c2"
+    },
+    {
+      "path": "scripts/check-minerush.mjs",
+      "sha256": "97f05d59e56fd40a99a5d8bfd64480d04a002b9aec0acf5900abde833bcde5a9"
+    }
+  ],
+  "checks": [
+    "Windows Python104tests passed",
+    "WSL Linux Python104tests passed",
+    "既存5rehearsal検査を維持し6検査を追加",
+    "元保持物・候補全バイトの不変とsocket接続禁止",
+    "未完了/pending/HTML未書込/候補改変/復元元改変/復元失敗/既存アップロードasset衝突を検出",
+    "Windows/Linuxの実保持物・最終候補リハーサル結果が全項目一致",
+    "元405events・本人指示・旧台帳・policy・handoffを保全"
+  ],
+  "rehearsal": {
+    "schema": 1,
+    "status": "offline-next-candidate-rehearsal-passed",
+    "deployed": false,
+    "fakeFtp": true,
+    "productionWrites": false,
+    "liveAcceptanceVerified": false,
+    "sourceCommit": "e378aaaa8c9c90a3d9c61e1abf420f0783e0ce07",
+    "candidateCommit": "98e2012a4e54b7141b54c1d8f1f39330747cac9f",
+    "candidateManifestSha256": "b343486e291a6670684c24b8ca0840fc00274419e342ef301a64a17d4c182511",
+    "sourceJournalSha256": "5c4685e409c7d619a720f7b5a52e071f8c375d042dfe5f94c2a5bec2239bf130",
+    "candidateFiles": 4,
+    "baselineFiles": 4,
+    "restoredPreviousFiles": 5,
+    "recoveryStatus": "entry-restored-awaiting-http-and-browser-acceptance",
+    "retainedVersionMarker": false
+  },
+  "live_retained_version_http": {
+    "status": "http-bytes-verified-browser-acceptance-pending",
+    "deployed": false,
+    "commit": "e378aaaa8c9c90a3d9c61e1abf420f0783e0ce07",
+    "files": [
+      "games/minerush/assets/index-CKnyUiaE.js",
+      "games/minerush/assets/index-XNNEyEEy.css",
+      "games/minerush/build-version.json",
+      "games/minerush/index.html",
+      "games/minerush/"
+    ],
+    "protectedUrls": {
+      "": "e6d1e306846e55318bef69834b198da9fc273a03f3b87655304d85370730e5d4",
+      "privacy-policy/": "bb9d6dbd2883397417e41072603bca8ab6a288e62b1f87129ef1f52f2955fcf3",
+      "contact/": "137cc748836ef0552eee861dc29c6435e93a29467593d3b7f1c501710cbd3396",
+      "about/": "46acd05addc1d4abcee8eee965da02bc087fce3e6e59417c7c746c887e28b6a1",
+      "sw.js": "2370416e5fc7cb52627f11a2c2a4e5dff62ca9a2bf19e7edbd4ff64f15922849"
+    }
+  },
+  "images": [
+    {
+      "path": "artifacts/minerush-first-play-20261021/final-normal-loss-1280.jpg",
+      "width": 1280,
+      "height": 720,
+      "sha256": "b108d17489b0634af22bdbe0e8c3513d8cc2689b97db5ffcc9e5ecae6c3a52e1",
+      "mimeType": "image/jpeg",
+      "source_commit": "98e2012a4e54b7141b54c1d8f1f39330747cac9f",
+      "kind": "local-inspection-not-public-release"
+    },
+    {
+      "path": "artifacts/minerush-first-play-20261021/final-normal-win-1280.jpg",
+      "width": 1280,
+      "height": 720,
+      "sha256": "5f063d596c10de9a806c73b8c31c66cce1a0b04a5225a366e827ddabb7603619",
+      "mimeType": "image/jpeg",
+      "source_commit": "98e2012a4e54b7141b54c1d8f1f39330747cac9f",
+      "kind": "local-inspection-not-public-release"
+    },
+    {
+      "path": "artifacts/minerush-first-play-20261021/final-scoped-rules-320.jpg",
+      "width": 320,
+      "height": 568,
+      "sha256": "13b59a1418096b1eea9a52d27aeabf6d6ddf7605df8e1cb3b95ca7a8014736fd",
+      "mimeType": "image/jpeg",
+      "source_commit": "98e2012a4e54b7141b54c1d8f1f39330747cac9f",
+      "kind": "local-inspection-not-public-release"
+    },
+    {
+      "path": "artifacts/minerush-first-play-20261021/final-scoped-rules-390.jpg",
+      "width": 390,
+      "height": 844,
+      "sha256": "a0ff8cab6e6d372a5fabfcc595b39b4b84d7982fb0941efd536fbf44ad211787",
+      "mimeType": "image/jpeg",
+      "source_commit": "98e2012a4e54b7141b54c1d8f1f39330747cac9f",
+      "kind": "local-inspection-not-public-release"
+    }
+  ],
+  "image_provenance": "final-*画像は最終Webソース98e2012の検査版。先行receiptのrules-1280.png/rules-390.pngは定数化前の同表示prototype、scoped-rules-1280.pngは46f1b88の中間候補。先行画像は原本保持し最終版の証拠に使わない。先行.png名の画像も実体はJPEGであり、最終画像は拡張子を.jpgに合わせた。",
+  "additional_browser_checks": [
+    "320x568/390x844:説明16px・45.59pxsummary・横溢れなし・縦スクロール・盤面操作",
+    "961x360:Tabで一覧リンクがパネル内に現れる",
+    "説明開閉後も同じ42開封を維持",
+    "旧本番一覧fixtureと限定候補の往復、privacyページへの移動",
+    "他3作品の開始画面にrules用classを適用しない・390px横溢れなし"
+  ],
+  "production_writes": false,
+  "new_pull_requests": false,
+  "new_deployments": 0,
+  "release_changed": false,
+  "unverified": [
+    "新候補のGitHub CI/実配信",
+    "実タッチ",
+    "Safari",
+    "人間の初回理解と需要",
+    "別PC復元",
+    "本番復旧書込み"
+  ],
+  "read_context": [
+    "天啓.md/AGENTS.md/STATE.md/studio-policy/coding-conventions/autonomous-workflow:現行権限・規約",
+    "context.py:revision405/lease-null/未完了なし",
+    "MineRush App/game/GameShell/既存検査:説明と終了演出の根拠",
+    "rehearse utility/transaction:一時検査の重複削減",
+    "選択した受入れartifact:次候補の偽FTP検査元"
+  ],
+  "next_step": "2026-10-22日次統合へ説明・終了演出・再利用検査と既存公開記録をまとめ、最新head CI・限定成果物・main統合・本番preflight・限定配信・HTTP/ブラウザ受入れを行う。",
+  "fixture_limitations": "旧一覧のローカルfixtureは戻り・再入場の導線確認用。root専用CSSと一部thumbnailは未収録で404があり、旧一覧全体の見た目の証跡には使わない。限定候補のJS/CSSは全件一致して表示を確認。",
+  "work_session": {
+    "started_at": "2026-10-21T13:00:44.944356+09:00",
+    "ended_at": "2026-10-21T13:25:51.053742+09:00",
+    "elapsed_seconds": 1506.109,
+    "start_basis": "first explicit clock observation; initial preparation already underway; conservative measured duration",
+    "exit_reason": "Sequential implementation and acceptance completed through minute25; save verified candidate for next daily integration; today production delivery already accepted",
+    "parent_run": "unity-20261021T1300-first-play",
+    "artificial_waits": false
+  }
+}

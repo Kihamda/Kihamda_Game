@@ -1,0 +1,24 @@
+{
+  "status": "local-acceptance-passed-not-deployed",
+  "recorded_at": "2026-10-21T13:12:19.366683+09:00",
+  "source_commit": "98e2012a4e54b7141b54c1d8f1f39330747cac9f",
+  "reproduction": "修正前の実App検査で、敗北後の再クリックがexplosions1→2/tones10→11となりassert失敗。",
+  "fix": "revealCellが同じ状態を返した無効入力では、setGameと演出に進まない。",
+  "checks": [
+    "実Appの勝敗遷移で演出1回・終了後は音と演出の追加なし",
+    "既存keyboard/flag/touch-cancel/reset/unmount回帰成功",
+    "TypeScript/ESLint/Vite/9SSG/43hash成功",
+    "実ブラウザ:見える数字だけからF/Enterで安全71マスを開きクリア、10旗",
+    "勝利後confetti0→再操作0/敗北後explosion0→再操作0、結果維持",
+    "限定4ファイル版の検証成功"
+  ],
+  "evidence": "artifacts/minerush-first-play-20261021",
+  "manifest_sha256": "b343486e291a6670684c24b8ca0840fc00274419e342ef301a64a17d4c182511",
+  "unverified": [
+    "実タッチ",
+    "Safari",
+    "人間理解",
+    "最終候補のGitHub CI・本番配信"
+  ],
+  "next_step": "候補を既存受入れartifactからオフライン検証する反復手順を再利用可能にする。"
+}
