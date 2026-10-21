@@ -139,6 +139,14 @@ export default function App() {
     (e: React.SyntheticEvent, row: number, col: number) => {
       e.preventDefault();
       cancelLongPress();
+      const cellKey = `${row}-${col}`;
+      const touchMenu = e.type === "contextmenu" &&
+        (activeTouchCell.current === cellKey ||
+          ("pointerType" in e.nativeEvent && e.nativeEvent.pointerType === "touch"));
+      if (touchMenu) {
+        if (suppressedTouchCell.current === cellKey) return;
+        suppressedTouchCell.current = cellKey;
+      }
       const cell = game.grid[row][col];
       if (game.status === "playing" && !cell.isRevealed) {
         setGame((prev) => toggleFlag(prev, row, col));

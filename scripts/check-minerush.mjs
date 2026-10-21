@@ -93,6 +93,18 @@ function loadGame(game) {
   unmount(); slots = []; cursor = 0; render();
   slots[0] = game;
 }
+const touchMenu = {type:'contextmenu',nativeEvent:{pointerType:'touch'},preventDefault(){}};
+loadGame(createGame(9,9,10));
+cell().onTouchStart(touch); fireTimers(); cell().onTouchEnd();
+cell().onContextMenu(touchMenu); cell().onClick(click);
+assert.match(cell()['aria-label'], /旗あり$/, 'native touch menu after long press must not toggle a second time');
+cell().onContextMenu({type:'contextmenu',nativeEvent:{pointerType:'mouse'},preventDefault(){}});
+assert.match(cell()['aria-label'], /未開封$/, 'a later mouse context menu still toggles normally');
+cell().onTouchStart(touch); cell().onContextMenu(touchMenu); fireTimers(); cell().onTouchEnd(); cell().onClick(click);
+assert.match(cell()['aria-label'], /旗あり$/, 'early native touch menu must flag only once and suppress compatibility click');
+loadGame(createGame(9,9,10));
+cell().onTouchStart(touch); cell().onTouchMove(); cell().onTouchEnd(); cell().onContextMenu(touchMenu); fireTimers();
+assert.match(cell()['aria-label'], /未開封$/, 'native touch menu must not revive a cancelled gesture');
 const originalRandom = Math.random;
 let initial;
 try {
