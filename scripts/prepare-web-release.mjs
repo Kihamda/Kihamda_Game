@@ -1,15 +1,30 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
-import { isAbsolute, relative, resolve } from 'node:path';
+import { existsSync, realpathSync } from 'node:fs';
+import { basename, dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
+const inside = path => path && path !== '..' && !path.startsWith(`..${sep}`) && !isAbsolute(path);
 assert.equal(process.argv.length, 3, 'Usage: npm run release:prepare -- artifacts/<new-directory>');
 const output = resolve(root, process.argv[2]);
 const artifactPath = relative(resolve(root, 'artifacts'), output);
-assert(artifactPath && artifactPath !== '..' && !artifactPath.startsWith('..' + '/') &&
-  !artifactPath.startsWith('..' + '\\') && !isAbsolute(artifactPath), 'Output must be inside artifacts/');
+assert(inside(artifactPath), 'Output must be inside artifacts/');
+// Resolve existing parents too: a lexically confined path can cross a junction.
+const checkedOutput = () => {
+  let parent = output;
+  const missing = [];
+  while (!existsSync(parent)) {
+    missing.unshift(basename(parent));
+    const next = dirname(parent);
+    assert.notEqual(next, parent, 'Cannot resolve output parent');
+    parent = next;
+  }
+  const physical = resolve(realpathSync(parent), ...missing);
+  assert(inside(relative(resolve(realpathSync(root), 'artifacts'), physical)),
+    'Output resolves outside artifacts/');
+};
+checkedOutput();
 assert(!existsSync(output), 'Use a new output directory; retained packages must survive');
 assert(process.env.npm_execpath && existsSync(process.env.npm_execpath),
   'Run through npm run release:prepare to use the current npm CLI');
@@ -28,6 +43,7 @@ run([process.env.npm_execpath, 'run', 'build']);
 cleanSources();
 assert.equal(git(['rev-parse', 'HEAD']), commit, 'HEAD changed during preparation');
 run(['scripts/check-web-build.mjs']);
+checkedOutput();
 run(['scripts/web-release-package.mjs', 'create', 'web/dist', output, commit]);
 run(['scripts/web-release-package.mjs', 'verify', output]);
 cleanSources();

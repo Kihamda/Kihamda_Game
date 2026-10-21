@@ -37,6 +37,8 @@ jobs:
         run: dotnet run --project tests/CourierCore/CourierCore.csproj
       - name: Repository and Unity GUID contract
         run: npm run check
+      - name: Release coordinator failure and output boundaries
+        run: node scripts/check-release-preparation.mjs
       - name: Business history and concurrent execution
         run: |
           python -m unittest discover -s business/tests -v
@@ -44,7 +46,7 @@ jobs:
           python business/ops/flow.py status --ledger business/ops/ledger.json > /dev/null
       - name: Preserve legacy URLs and build
         run: |
-          npm run build
+          npm run release:prepare -- artifacts/web-release
           node scripts/check-web-build.mjs
           node scripts/check-portal-navigation.mjs
           node scripts/check-portal-work-guides.mjs
@@ -54,7 +56,6 @@ jobs:
           node scripts/check-ntiktaktoe.mjs
       - name: Prepare and verify Web release package
         run: |
-          node scripts/web-release-package.mjs create web/dist artifacts/web-release ${{ github.sha }}
           node scripts/web-release-package.mjs verify artifacts/web-release
           node scripts/check-web-release-package.mjs artifacts/web-release
           tar -czf artifacts/web-release.tar.gz -C artifacts/web-release .
@@ -91,6 +92,11 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Release coordinator failure and output boundaries
+        run: node scripts/check-release-preparation.mjs
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
