@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 436,
+  "revision": 438,
   "business_id": "game-site",
-  "fence": 73,
-  "lease": null,
+  "fence": 74,
+  "lease": {
+    "run_id": "unity-20261022T0100-daily-delivery",
+    "task_id": "T-minerush-first-play-integration-20261022",
+    "fence": 74,
+    "expires_at": 1792600351.1588035
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -10075,7 +10080,7 @@
         "T-minerush-terminal-effects-20261021",
         "T-scoped-candidate-rehearsal-20261021"
       ],
-      "status": "ready",
+      "status": "running",
       "checkpoints": [
         {
           "run_id": "unity-20261021T1300-final-provenance",
@@ -10294,6 +10299,12 @@
           "task_id": "T-minerush-first-play-integration-20261022",
           "fence": 73,
           "expires_at": 1792578676.4212224
+        },
+        {
+          "run_id": "unity-20261022T0100-daily-delivery",
+          "task_id": "T-minerush-first-play-integration-20261022",
+          "fence": 74,
+          "expires_at": 1792600351.1588035
         }
       ]
     }
@@ -11025,6 +11036,13 @@
       "source": "scheduled:game-site:2026-10-21T19:00:00+09:00",
       "status": "checkpointed",
       "started_at": 1792576876.3324933
+    },
+    "unity-20261022T0100-daily-delivery": {
+      "run_id": "unity-20261022T0100-daily-delivery",
+      "scheduled_at": "2026-10-22T01:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-22T01:00:00+09:00",
+      "status": "open",
+      "started_at": 1792598551.0408115
     }
   },
   "experiments": {
@@ -11324,7 +11342,8 @@
     "2026-10-20T19:00:00+09:00": "unity-20261020T1900-scoped",
     "2026-10-21T01:00:00+09:00": "unity-20261021T0100-reconcile",
     "2026-10-21T13:00:00+09:00": "unity-20261021T1300-first-play",
-    "2026-10-21T19:00:00+09:00": "unity-20261021T1900-input-acceptance"
+    "2026-10-21T19:00:00+09:00": "unity-20261021T1900-input-acceptance",
+    "2026-10-22T01:00:00+09:00": "unity-20261022T0100-daily-delivery"
   },
   "feedback": [
     {
@@ -26862,7 +26881,38 @@
       },
       "previous": "a8d8a2d279a84d2212bbd8e2c7048cfe5ce511e22faab61a565382a06d0a5509",
       "sha256": "90c6e4eeebff440aa3708f5628080497e00d9d49187647099f1f5c48a359afee"
+    },
+    {
+      "revision": 437,
+      "at": 1792598551.0408115,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261022T0100-daily-delivery",
+        "scheduled_at": "2026-10-22T01:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "90c6e4eeebff440aa3708f5628080497e00d9d49187647099f1f5c48a359afee",
+      "sha256": "0dd55a3b96894dc615355ed7b5a657e01218d8b1b0842f48385e24c4c2495517"
+    },
+    {
+      "revision": 438,
+      "at": 1792598551.1588035,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T0100-daily-delivery",
+        "task_id": "T-minerush-first-play-integration-20261022"
+      },
+      "result": {
+        "run_id": "unity-20261022T0100-daily-delivery",
+        "task_id": "T-minerush-first-play-integration-20261022",
+        "fence": 74,
+        "expires_at": 1792600351.1588035
+      },
+      "previous": "0dd55a3b96894dc615355ed7b5a657e01218d8b1b0842f48385e24c4c2495517",
+      "sha256": "0ccd705c68a45967e88d0a2a8600b78dee209bb1f54bbedaea4c355a3c3f73c9"
     }
   ],
-  "projection_sha256": "65fbeef0a144364fdfd0e708ccc7f21e781afa0fb1e9f467491699ae94565978"
+  "projection_sha256": "e73d6f11acfeab05751f419a1e3149745418f79aeeb7de0def3bfb5d1f9c0720"
 }
