@@ -6,17 +6,18 @@ const require = createRequire(new URL('../web/package.json', import.meta.url));
 const { build } = require('esbuild');
 const web = fileURLToPath(new URL('../web/', import.meta.url));
 const compiled = await build({
-  stdin: { contents: 'export {default as App} from "./games/minerush/src/App";', resolveDir: web },
+  stdin: { contents: 'export {default as App} from "./games/minerush/src/App"; export * from "./games/minerush/src/lib/game";', resolveDir: web },
   bundle: true, write: false, platform: 'node', format: 'cjs', jsx: 'automatic',
-  external: ['react', 'react/jsx-runtime'], loader: { '.css': 'empty' },
+  external: ['react', 'react/jsx-runtime', 'minerush-test-effects'], loader: { '.css': 'empty' },
   alias: { '@shared': `${web}src/shared` },
   plugins: [{ name: 'headless-effects', setup(builder) {
-    builder.onLoad({ filter: /shared[\\/]index\.ts$/ }, () => ({ contents: 'export const useAudio=()=>({playTone:()=>{}}); export const useParticles=()=>({particles:[],sparkle:()=>{},confetti:()=>{},explosion:()=>{}}); export const ScorePopup=()=>null; export const ParticleLayer=()=>null;', loader: 'ts' }));
+    builder.onLoad({ filter: /shared[\\/]index\.ts$/ }, () => ({ contents: 'import {effects} from "minerush-test-effects"; export const useAudio=()=>({playTone:()=>{effects.tones++;}}); export const useParticles=()=>({particles:[],sparkle:()=>{},confetti:()=>{effects.confetti++;},explosion:()=>{effects.explosions++;}}); export const ScorePopup=()=>null; export const ParticleLayer=()=>null;', loader: 'ts' }));
     builder.onLoad({ filter: /GameShell\.tsx$/ }, () => ({ contents: 'export const GameShell=()=>null;', loader: 'tsx' }));
   } }],
 });
 let slots = [], cursor = 0, timers = new Map(), id = 0;
 const cleanups = [];
+const effects = { tones: 0, confetti: 0, explosions: 0 };
 const react = {
   useRef(value) { const i = cursor++; if (!(i in slots)) slots[i] = {current:value}; return slots[i]; },
   useState(initial) { const i = cursor++; if (!(i in slots)) slots[i] = typeof initial === 'function' ? initial() : initial; return [slots[i], value => {slots[i] = typeof value === 'function' ? value(slots[i]) : value;}]; },
@@ -26,7 +27,7 @@ const react = {
 globalThis.window = {setTimeout(fn) {timers.set(++id, fn); return id;}};
 globalThis.clearTimeout = key => timers.delete(key);
 const module = {exports:{}};
-new Function('require', 'module', 'exports', compiled.outputFiles[0].text)(name => name === 'react' ? react : name === 'react/jsx-runtime' ? {jsx:(type,props)=>({type,props}),jsxs:(type,props)=>({type,props})} : require(name), module, module.exports);
+new Function('require', 'module', 'exports', compiled.outputFiles[0].text)(name => name === 'react' ? react : name === 'minerush-test-effects' ? {effects} : name === 'react/jsx-runtime' ? {jsx:(type,props)=>({type,props}),jsxs:(type,props)=>({type,props})} : require(name), module, module.exports);
 function render() {cursor=0; return module.exports.App();}
 function find(node, predicate) {
   if (!node || typeof node !== 'object') return undefined;
@@ -62,4 +63,50 @@ assert.match(cell(1,2)['aria-label'], /旗あり$/, 'long press must not swallow
 button('minerush-mode-btn').onClick(); cell(2,1).onClick({...click,detail:0});
 assert.match(cell(2,1)['aria-label'], /開いたマス/, 'first open stays safe');
 cell(9,9).onTouchStart(touch); cleanups.forEach(fn=>fn?.()); assert.equal(timers.size,0,'unmount clears timer');
-console.log('MineRush actual App input handlers: keyboard, flags, long press, drag/cancel, multitouch, reset, unmount passed');
+
+// Reach terminal states through the real rules, then invoke the actual App handlers.
+const { createGame, revealCell } = module.exports;
+function loadGame(game) {
+  slots = []; cursor = 0; cleanups.length = 0; render();
+  slots[0] = game;
+}
+const originalRandom = Math.random;
+let initial;
+try {
+  Math.random = () => 0.5;
+  initial = revealCell(createGame(9,9,10),4,4);
+} finally {
+  Math.random = originalRandom;
+}
+assert.equal(initial.status,'playing');
+let mine;
+for (let r=0;r<9;r++) for (let c=0;c<9;c++) if (initial.grid[r][c].isMine) mine=[r,c];
+assert(mine);
+loadGame(initial);
+let before = {...effects};
+cell(mine[0]+1,mine[1]+1).onClick(click);
+assert.equal(slots[0].status,'lost');
+assert.equal(effects.explosions,before.explosions+1,'losing transition has one explosion');
+assert.equal(effects.tones,before.tones+1,'losing transition has one tone');
+before = {...effects};
+cell(mine[0]+1,mine[1]+1).onClick(click);
+assert.deepEqual(effects,before,'clicking a revealed mine after losing must not replay effects');
+
+let winning = initial, finalCell;
+outer: for (let r=0;r<9;r++) for (let c=0;c<9;c++) {
+  if (winning.grid[r][c].isMine || winning.grid[r][c].isRevealed) continue;
+  const next = revealCell(winning,r,c);
+  if (next.status === 'won') { finalCell=[r,c]; break outer; }
+  winning = next;
+}
+assert(finalCell);
+loadGame(winning);
+before = {...effects};
+cell(finalCell[0]+1,finalCell[1]+1).onClick(click);
+assert.equal(slots[0].status,'won');
+assert.equal(effects.confetti,before.confetti+1,'winning transition has one celebration');
+assert.equal(effects.tones,before.tones+1,'winning transition has one tone');
+before = {...effects};
+cell(finalCell[0]+1,finalCell[1]+1).onClick(click);
+assert.deepEqual(effects,before,'clicking a revealed cell after winning must not replay effects');
+console.log('MineRush actual App input handlers: keyboard, flags, long press, drag/cancel, multitouch, reset, unmount, single terminal effects passed');

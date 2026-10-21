@@ -80,6 +80,7 @@ export default function App() {
     (row: number, col: number) => {
       const prevRevealedCount = game.revealedCount;
       const newGame = revealCell(game, row, col);
+      if (newGame === game) return;
       setGame(newGame);
       
       if (newGame.status === "won") {
