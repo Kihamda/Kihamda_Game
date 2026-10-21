@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "acceptedAt": "2026-10-22T01:10:03.183052+09:00",
+  "scope": "games/minerush/",
+  "url": "https://game.kihamda.net/games/minerush/",
+  "deployed": true,
+  "deploymentCountDateJst": "2026-10-22",
+  "commit": "5f9a1efab94d06b53a47182d954e3be9996a2889",
+  "pr": 32,
+  "prHead": "b75d400c82d3cc414219b285269391d3bf231c6e",
+  "prCiRun": 39631234390,
+  "prArtifactCommit": "cf172c20514473181668b0cccefa1ab79217f64c",
+  "ciRun": 39631400999,
+  "ciConclusion": "success",
+  "deliveryRun": 39631591189,
+  "workflowConclusion": "success",
+  "manifestSha256": "563afa3878bcc43b5a110a35c14fb0e5281d656a7d57860d9c9f771b6260fd69",
+  "transaction": "91c71b11ddcb4f92afb1d28329c4f3ad",
+  "originalJournalSha256": "147c0c92327e430cdf8729c967268a9f45869760ed6109569cbabf746dd3f49c",
+  "written": [
+    "games/minerush/assets/index-C8Qv7oA6.js",
+    "games/minerush/assets/index-CnnIaIR3.css",
+    "games/minerush/build-version.json",
+    "games/minerush/index.html"
+  ],
+  "pending": null,
+  "candidateFiles": [
+    {
+      "path": "games/minerush/assets/index-C8Qv7oA6.js",
+      "sha256": "b5bb59befdab39599e4b0cb2862ca49981518ffc93f50aa8b4220fd7f7354be4"
+    },
+    {
+      "path": "games/minerush/assets/index-CnnIaIR3.css",
+      "sha256": "03fa1bd21d3741f251cdda646c748f90c0c0c66c7b6df2db1803fc405b4bafd4"
+    },
+    {
+      "path": "games/minerush/build-version.json",
+      "sha256": "6350f87a0fe1de5e28357fba4923bea291cd7d0f760dc968e1090771746145df"
+    },
+    {
+      "path": "games/minerush/index.html",
+      "sha256": "7333473849c92e6d190718d3f8099cb983584cbd67bbc83a53d40ddeb821a7d3"
+    }
+  ],
+  "protectedUrls": {
+    "": "e6d1e306846e55318bef69834b198da9fc273a03f3b87655304d85370730e5d4",
+    "privacy-policy/": "bb9d6dbd2883397417e41072603bca8ab6a288e62b1f87129ef1f52f2955fcf3",
+    "contact/": "137cc748836ef0552eee861dc29c6435e93a29467593d3b7f1c501710cbd3396",
+    "about/": "46acd05addc1d4abcee8eee965da02bc087fce3e6e59417c7c746c887e28b6a1",
+    "sw.js": "2370416e5fc7cb52627f11a2c2a4e5dff62ca9a2bf19e7edbd4ff64f15922849"
+  },
+  "httpEvidenceSha256": "bc852f041987617c7ecea6f950502ec41534949be5c1924400d1cf8c34511c6b",
+  "recovery": {
+    "artifact": "scoped-delivery-39631591189/scoped-recovery",
+    "local": "artifacts\\daily-20261022-delivery\\scoped-recovery",
+    "preflightSha256": "76ecf56c7c6d3b03864191eb27cd66ecf336e46898949058ae62403cc381cd9c"
+  },
+  "browser": {
+    "engine": "PC Chromium in-app browser",
+    "win": "visible-number deduction with F and Enter;71safe/10flags;reset81unopened/0flags/no popup/no particles",
+    "keyboard": "F/rightclick/ArrowRight/Space;reload81unopened0flags",
+    "navigation": "original production catalog roundtrip loaded new rules",
+    "widths": "320/390 DOM no horizontal overflow;320 Enter reveal/reset passed;physical touch untested",
+    "screenshot": {
+      "localPath": "artifacts/daily-20261022-browser/production-rules-1280.jpg",
+      "sha256": "240e1627fb2cc9b56991a9c98912b04f6b81db73c50896e1e226f0438140f3ed"
+    },
+    "limitations": "390 screenshot repeated bottom pixels: rejected as visual proof. One320 post-resize locator click left board unchanged; keyboard reset81passed; viewport tooling click acceptance not claimed."
+  },
+  "unverified": [
+    "physical touch",
+    "Safari",
+    "human understanding/fun",
+    "off-PC restore",
+    "production rollback write"
+  ],
+  "metrics": null,
+  "errors": [
+    "Initial PR artifact lookup used head SHA instead of synthetic merge SHA;retrieved corrected artifact. Main exact-SHA package verified before dispatch."
+  ]
+}

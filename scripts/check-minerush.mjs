@@ -93,11 +93,19 @@ function loadGame(game) {
   unmount(); slots = []; cursor = 0; render();
   slots[0] = game;
 }
+function assertSafeProgress() {
+  const game = slots[0];
+  const safe = game.grid.flat().filter(cell => cell.isRevealed && !cell.isMine).length;
+  assert(find(render(), node => node.props?.['aria-label'] === `開いた安全マス ${safe} / 71`),
+    'progress must match revealed safe cells, excluding flags and exposed mines');
+}
 const touchMenu = {type:'contextmenu',nativeEvent:{pointerType:'touch'},preventDefault(){}};
 loadGame(createGame(9,9,10));
+assertSafeProgress();
 cell().onTouchStart(touch); fireTimers(); cell().onTouchEnd();
 cell().onContextMenu(touchMenu); cell().onClick(click);
 assert.match(cell()['aria-label'], /旗あり$/, 'native touch menu after long press must not toggle a second time');
+assertSafeProgress();
 cell().onContextMenu({type:'contextmenu',nativeEvent:{pointerType:'mouse'},preventDefault(){}});
 assert.match(cell()['aria-label'], /未開封$/, 'a later mouse context menu still toggles normally');
 cell().onTouchStart(touch); cell().onContextMenu(touchMenu); fireTimers(); cell().onTouchEnd(); cell().onClick(click);
@@ -126,9 +134,11 @@ let mine;
 for (let r=0;r<9;r++) for (let c=0;c<9;c++) if (initial.grid[r][c].isMine) mine=[r,c];
 assert(mine);
 loadGame(initial);
+assertSafeProgress();
 let before = {...effects};
 cell(mine[0]+1,mine[1]+1).onClick(click);
 assert.equal(slots[0].status,'lost');
+assertSafeProgress();
 assert.equal(effects.explosions,before.explosions+1,'losing transition has one explosion');
 assert.equal(effects.tones,before.tones+1,'losing transition has one tone');
 before = {...effects};
@@ -147,12 +157,14 @@ loadGame(winning);
 before = {...effects};
 cell(finalCell[0]+1,finalCell[1]+1).onClick(click);
 assert.equal(slots[0].status,'won');
+assertSafeProgress();
 assert.equal(effects.confetti,before.confetti+1,'winning transition has one celebration');
 assert.equal(effects.tones,before.tones+1,'winning transition has one tone');
 before = {...effects};
 cell(finalCell[0]+1,finalCell[1]+1).onClick(click);
 assert.deepEqual(effects,before,'clicking a revealed cell after winning must not replay effects');
 button('minerush-reset-btn').onClick();
+assertSafeProgress();
 assert.equal(find(render(), n=>Object.hasOwn(n.props ?? {}, 'popupKey')).props.text,null,
   'reset must immediately remove the previous round popup');
 assert.equal(effects.clears,before.clears+1,'reset must clear previous round particles');

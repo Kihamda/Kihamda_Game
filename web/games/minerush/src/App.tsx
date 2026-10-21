@@ -289,8 +289,13 @@ export default function App() {
       controlHints={["矢印キーで移動、クリック・Enterで開く", "F・右クリック・長押しで旗。旗モードならタップで切替", "途中の盤面は保存しません。再読み込みで最初から始まります。"]}>
       <div className="minerush-container">
         <header className="minerush-header">
-          <div className="minerush-info">
-            {game.status === "playing" ? <>💣 <span>{remainingMines}</span></> : <span role="status">{game.status === "won" ? "クリア！" : "ゲームオーバー"}</span>}
+          <div className="minerush-counters">
+            <div className="minerush-info">
+              {game.status === "playing" ? <>💣 <span>{remainingMines}</span></> : <span role="status">{game.status === "won" ? "クリア！" : "ゲームオーバー"}</span>}
+            </div>
+            <div className="minerush-progress" aria-label={`開いた安全マス ${game.revealedCount} / ${SAFE_CELL_COUNT}`}>
+              安全マス {game.revealedCount} / {SAFE_CELL_COUNT}
+            </div>
           </div>
           <button
             className="minerush-reset-btn"
