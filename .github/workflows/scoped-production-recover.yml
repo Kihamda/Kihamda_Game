@@ -49,13 +49,18 @@ jobs:
           if state['commit'] != run['head_sha']:
               raise SystemExit('Journal does not match delivery run SHA')
           PY
+      - name: Rehearse retained evidence offline before opening production
+        run: python business/tests/rehearse_scoped_artifact.py artifacts/recovery-source > artifacts/offline-rehearsal.json
       - name: Reconcile actual bytes before restoring the old entry
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_SERVER_DIR: ${{ vars.FTP_SERVER_DIR }}
-        run: python business/ops/scoped_upload.py recover artifacts/recovery-source/transaction.json
+        run: |
+          python business/ops/scoped_upload.py recover artifacts/recovery-source/transaction.json \
+            --package artifacts/recovery-source/scoped-minerush \
+            --backup artifacts/recovery-source/scoped-recovery
       - name: Verify recovered HTTP bytes and unrelated URLs
         run: python business/ops/scoped_acceptance.py recovered artifacts/recovery-source/protected-before.json --journal artifacts/recovery-source/transaction.json > artifacts/recovery-http.json
       - name: Retain reconciliation evidence

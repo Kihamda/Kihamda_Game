@@ -9,9 +9,13 @@ const dist = resolve(root, 'web/dist');
 const games = JSON.parse(readFileSync(resolve(root, 'web/src/portal/data/games.json'), 'utf8')).games;
 const unityGames = JSON.parse(readFileSync(resolve(root, 'web/src/portal/data/works.json'), 'utf8')).games;
 const portalPaths = ['index.html', 'about/index.html', 'contact/index.html', 'privacy-policy/index.html', ...unityGames.map(game => `${game.path.slice(1)}index.html`)];
+const sharedStylesheets = html => [...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/g)].map(match => match[1]).sort();
+const mainStylesheets = sharedStylesheets(readFileSync(resolve(dist, 'index.html'), 'utf8'));
+assert(mainStylesheets.length > 0, 'Main stylesheets missing');
 for (const path of [...portalPaths, ...games.map(game => `games/${game.id}/index.html`)]) {
   const html = readFileSync(resolve(dist, path), 'utf8');
   assert(html.includes('<html'), `Missing HTML ${path}`);
+  assert.deepEqual(sharedStylesheets(html), mainStylesheets, `Shared stylesheets missing from direct entry: ${path}`);
   for (const [, asset] of html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)/g)) {
     assert(statSync(resolve(dist, asset.slice(1))).isFile(), `Missing ${asset} in ${path}`);
   }
@@ -39,7 +43,7 @@ assert(webDetail.includes('公開前の確認中') && webDetail.includes('行・
 const iceDetail = readFileSync(resolve(dist, 'works/iceslide/index.html'), 'utf8');
 assert(iceDetail.includes('全20ステージ') && iceDetail.includes('途中の盤面と手数は保存しません') && !iceDetail.includes('作品を開始'));
 const mineDetail = readFileSync(resolve(dist, 'works/minerush/index.html'), 'utf8');
-assert(mineDetail.includes('9×9マス') && mineDetail.includes('途中の盤面と旗を保存しません') && !mineDetail.includes('作品を開始'));
+assert(mineDetail.includes('9×9マス') && mineDetail.includes('途中の盤面と旗を保存しません') && mineDetail.includes('作品を開始') && mineDetail.includes('href="/games/minerush/"'));
 const minePlay = readFileSync(resolve(dist, 'games/minerush/index.html'), 'utf8');
 assert(!minePlay.includes('id="guide-title"'), 'MineRush introduction must not replace play route');
 const gravityDetail = readFileSync(resolve(dist, 'works/gravityball/index.html'), 'utf8');
@@ -67,7 +71,10 @@ for (const work of unityGames) {
   }
 }
 assert(detail.includes('制作停止・保全中') && !detail.includes('作品を開始') && !detail.includes('<iframe'), 'Unreleased game must not expose a fake player');
-const version = { commit: process.env.GITHUB_SHA ?? 'local-uncommitted', gameCount: unityGames.length, legacyRouteCount: games.length, source: 'web', generatedAt: new Date().toISOString() };
+const releases = unityGames.filter(game => game.release).map(game => ({
+  path: game.path, url: game.release.url, version: game.release.version, sha256: game.release.sha256,
+}));
+const version = { commit: process.env.GITHUB_SHA ?? 'local-uncommitted', gameCount: unityGames.length, legacyRouteCount: games.length, source: 'web', releases, generatedAt: new Date().toISOString() };
 writeFileSync(resolve(dist, 'build-version.json'), JSON.stringify(version, null, 2) + '\n');
 function files(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {

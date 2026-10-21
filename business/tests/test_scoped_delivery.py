@@ -1,6 +1,7 @@
 import copy
 from ftplib import error_perm
 import hashlib
+import io
 import json
 from pathlib import Path
 import sys
@@ -68,6 +69,22 @@ class ScopedDeliveryTest(unittest.TestCase):
             delivery.inspect(self.package, self.root / "backup", ReadOnlyFTP(self.remote), self.http.__getitem__)
         self.assertFalse((self.root / "backup").exists())
 
+    def test_next_delivery_retains_current_scoped_assets_and_nested_imports(self):
+        html = b'<script src="/games/minerush/assets/previous.js"></script>'
+        self.remote[delivery.SCOPE + "index.html"] = self.http[delivery.SCOPE] = html
+        bodies = {delivery.SCOPE + "assets/previous.js": b'import "./previous.css"; import("/games/other/assets/private.js");',
+                  delivery.SCOPE + "assets/previous.css": b'a{background:url(./previous.png)}',
+                  delivery.SCOPE + "assets/previous.png": b"old scoped image"}
+        self.remote.update(bodies)
+        self.http.update(bodies)
+        ftp = ReadOnlyFTP(copy.deepcopy(self.remote))
+        report = delivery.inspect(self.package, self.root / "backup", ftp, self.http.__getitem__)
+        for path, body in bodies.items():
+            self.assertEqual((self.root / "backup/before" / path).read_bytes(), body)
+            self.assertEqual(ftp.calls.count("RETR " + path), 2)
+        self.assertEqual(len(report["baseline"]), 5)
+        self.assertFalse(any("games/other" in call for call in ftp.calls))
+
     def graph(self):
         files = {
             "assets/old.js": b'import("./chunk.js");const preload=["assets/style.css"];',
@@ -92,6 +109,19 @@ class ScopedDeliveryTest(unittest.TestCase):
         self.assertEqual(report["recoveryDependencies"]["assets/nested/leaf.js"], ["assets/chunk.js"])
         self.assertIn("computed URLs", report["recoveryCoverage"])
         self.assertTrue(all(command.startswith("RETR ") for command in ftp.calls))
+
+    def test_progress_exposes_counts_without_production_content(self):
+        self.remote["assets/old.js"] = self.http["assets/old.js"] = (
+            ";".join(f'import("./chunk{n}.js")' for n in range(18))).encode()
+        for n in range(18):
+            self.remote[f"assets/chunk{n}.js"] = self.http[f"assets/chunk{n}.js"] = b"private response body"
+        events = []
+        delivery.inspect(self.package, self.root / "backup", ReadOnlyFTP(self.remote),
+                         self.http.__getitem__, progress=events.append)
+        self.assertEqual({event["phase"] for event in events},
+                         {"production-root-matched", "recovery-inventory", "baseline-reread"})
+        self.assertNotIn("private response body", json.dumps(events))
+        self.assertNotIn("assets/", json.dumps(events))
 
     def test_nested_dependency_mismatch_refused_without_partial_backup(self):
         self.graph()
@@ -124,6 +154,59 @@ class ScopedDeliveryTest(unittest.TestCase):
     def test_js_literals_are_not_bare_asset_paths(self):
         body = b'''const extension=".css";const tag="button";const selector="link[rel=";import("./actual.js");'''
         self.assertEqual(delivery.asset_references(body, "assets/entry.js"), {"assets/actual.js"})
+
+    def test_mjs_dependencies_are_retained_transitively(self):
+        self.remote["assets/old.js"] = self.http["assets/old.js"] = b'import "./module.mjs";'
+        files = {"assets/module.mjs": b'import "./nested/leaf.mjs";',
+                 "assets/nested/leaf.mjs": b'import "../styles.css";',
+                 "assets/styles.css": b'body { background: url("./board.png"); }',
+                 "assets/board.png": bytes([0, 255, 128])}
+        self.remote.update(files)
+        self.http.update(files)
+        backup = self.root / "backup"
+        report = delivery.inspect(self.package, backup, ReadOnlyFTP(self.remote), self.http.__getitem__)
+        for path, body in files.items():
+            self.assertEqual((backup / "before" / path).read_bytes(), body)
+        self.assertEqual(report["recoveryDependencies"]["assets/module.mjs"], ["assets/nested/leaf.mjs"])
+
+    def test_https_read_is_bounded_and_accepts_exact_limit(self):
+        class Response(io.BytesIO):
+            url = delivery.ORIGIN + "/assets/bundle.js"
+            sizes = []
+            def read(self, size=-1):
+                self.sizes.append(size)
+                return super().read(size)
+        for body, succeeds in ((b"12345678", True), (b"1234567890", False)):
+            response = Response(body)
+            with self.subTest(succeeds=succeeds), patch.object(delivery, "MAX_RECOVERY_BYTES", 8), \
+                    patch.object(delivery, "urlopen", return_value=response):
+                if succeeds:
+                    self.assertEqual(delivery.https_read("assets/bundle.js"), body)
+                else:
+                    with self.assertRaisesRegex(ValueError, "HTTPS response byte limit"):
+                        delivery.https_read("assets/bundle.js")
+                self.assertEqual(response.sizes[-1], 9)
+
+    def test_ftp_read_stops_at_stream_limit(self):
+        chunks_received = []
+        class StreamingFTP:
+            def retrbinary(self, command, callback):
+                for chunk in (b"1234", b"5678", b"9", b"never read"):
+                    chunks_received.append(chunk)
+                    callback(chunk)
+        with patch.object(delivery, "MAX_RECOVERY_BYTES", 8):
+            self.assertEqual(delivery.ftp_read(ReadOnlyFTP({"asset": b"12345678"}), "asset"), b"12345678")
+            with self.assertRaisesRegex(ValueError, "FTPS response byte limit"):
+                delivery.ftp_read(StreamingFTP(), "asset")
+        self.assertEqual(chunks_received, [b"1234", b"5678", b"9"])
+
+    def test_combined_root_size_limit_without_dependencies(self):
+        self.remote[delivery.SCOPE + "index.html"] = self.http[delivery.SCOPE] = b"old game without assets"
+        limit = len(self.remote["index.html"]) + len(self.remote[delivery.SCOPE + "index.html"]) - 1
+        with patch.object(delivery, "MAX_RECOVERY_BYTES", limit):
+            with self.assertRaisesRegex(ValueError, "byte limit"):
+                delivery.inspect(self.package, self.root / "backup", ReadOnlyFTP(self.remote), self.http.__getitem__)
+        self.assertFalse((self.root / "backup").exists())
 
     def test_nested_dependency_change_during_inspection_refused(self):
         self.graph()

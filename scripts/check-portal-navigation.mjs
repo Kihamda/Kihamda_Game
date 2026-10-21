@@ -46,7 +46,7 @@ const webDetail = render('/works/ntiktaktoe/', '?q=Web');
 assert(webDetail.includes('href="/?q=Web#works"') && webDetail.includes('公開前の確認中'));
 assert(webDetail.includes('行・列を指定して選択') && webDetail.includes('設定と連勝履歴は残ります'));
 assert(!webDetail.includes('作品を開始') && !webDetail.includes('<iframe'));
-assert(!render('/', '?q=Web&filter=released').includes('class="work-card"'));
+assert.equal((render('/', '?q=Web&filter=released').match(/class="work-card"/g) || []).length, 1);
 console.log('Portal navigation SSR passed: state links, released filter, direct detail, unknown filter, escaped query, no fake start.');
 
 const iceDetail = render('/works/iceslide/', '?q=アイス');
@@ -60,10 +60,11 @@ const mineDetail = render('/works/minerush/', '?q=MineRush');
 assert(mineDetail.includes('9×9マス') && mineDetail.includes('地雷は10個'));
 assert(mineDetail.includes('途中の盤面と旗を保存しません') && mineDetail.includes('周囲8マス'));
 assert(mineDetail.includes('F / 右クリック / 旗モード') && mineDetail.includes('実端末での操作性は未確認'));
-assert(!mineDetail.includes('作品を開始') && !mineDetail.includes('<iframe'));
+assert(mineDetail.includes('作品を開始') && mineDetail.includes('href="/games/minerush/"') && !mineDetail.includes('<iframe'));
+assert(!mineDetail.includes('公開前検査版の実画面'));
 assert(mineDetail.includes('href="/?q=MineRush#works"'));
 assert(render('/', '?q=MineRush').includes('href="/works/minerush/?q=MineRush"'));
-assert(!render('/', '?q=MineRush&filter=released').includes('class="work-card"'));
+assert(render('/', '?q=MineRush&filter=released').includes('class="work-card"'));
 
 const gravityDetail = render('/works/gravityball/', '?q=GravityBall');
 assert(gravityDetail.includes('全5ステージ') && gravityDetail.includes('途中のステージや得点は保存しません'));
@@ -85,7 +86,7 @@ for (const [query, ids] of [
   assert.equal((html.match(/class="work-card"/g) || []).length, ids.length, query);
   for (const id of ids) assert(html.includes(`/${id}/?q=`), `${query}: ${id}`);
   assert(!html.includes('作品を開始'));
-  assert(!render('/', `?q=${encodeURIComponent(query)}&filter=released`).includes('class="work-card"'));
+  assert.equal((render('/', `?q=${encodeURIComponent(query)}&filter=released`).match(/class="work-card"/g) || []).length, ids.includes('minerush') ? 1 : 0);
 }
 const factsDetail = render('/works/iceslide/', '?q=' + encodeURIComponent('全20ステージ'));
 assert(factsDetail.includes('href="/?q=' + encodeURIComponent('全20ステージ') + '#works"'));
@@ -107,7 +108,7 @@ for (const [query, ids] of [
   assert.equal((html.match(/class="work-card"/g) || []).length, ids.length, query);
   for (const id of ids) assert(html.includes(`/${id}/?q=`), `${query}: ${id}`);
   assert(!html.includes('作品を開始'));
-  assert(!render('/', search + '&filter=released').includes('class="work-card"'));
+  assert.equal((render('/', search + '&filter=released').match(/class="work-card"/g) || []).length, ids.includes('minerush') ? 1 : 0);
 }
 assert(render('/', '').includes('aria-describedby="search-help"'));
 assert(render('/', '').includes('すべての語を含む作品を探せます'));

@@ -25,9 +25,9 @@ def asset_references(body, source):
     """Conservative static inventory, including Vite preload maps and CSS URLs.
 
     This is not a JavaScript interpreter: computed URLs remain unverified.
-    Only the existing shared /assets tree may be read as recovery dependencies.
+    Only shared /assets and this game's scoped assets are recovery dependencies.
     """
-    if not source.endswith((".html", ".js", ".css")):
+    if not source.endswith((".html", ".js", ".mjs", ".css")):
         return set()
     text = body.decode("utf-8", errors="strict")
     references = {match[1] for match in re.findall(r'''(["'])([^"'\s<>]+)\1''', text)}
@@ -45,20 +45,22 @@ def asset_references(body, source):
         if url.scheme != "https" or url.netloc != urlsplit(ORIGIN).netloc:
             continue
         path = url.path.lstrip("/")
-        if not path.startswith("assets/"):
+        if not path.startswith(("assets/", SCOPE + "assets/")):
             continue
-        if (not re.fullmatch(r"assets/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_.-]+", path) or
+        if (not re.fullmatch(r"(?:assets/|" + re.escape(SCOPE) + r"assets/)(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_.-]+", path) or
                 any(part in (".", "..") for part in path.split("/"))):
             raise ValueError("Unsafe recovery dependency")
         result.add(path)
     return result
 
 
-def collect_recovery(baseline, ftp, http_read):
+def collect_recovery(baseline, ftp, http_read, progress=None):
     """Read the reachable static asset graph without modifying the server."""
     pending = asset_references(baseline[SCOPE + "index.html"], SCOPE + "index.html")
     edges = {}
     total = sum(len(body) for body in baseline.values())
+    if total > MAX_RECOVERY_BYTES:
+        raise ValueError("Recovery dependency byte limit exceeded")
     while pending:
         path = sorted(pending)[0]
         pending.remove(path)
@@ -77,6 +79,9 @@ def collect_recovery(baseline, ftp, http_read):
         dependencies = asset_references(remote, path)
         edges[path] = sorted(dependencies)
         pending.update(dependencies - baseline.keys())
+        if progress and len(edges) % 16 == 0:
+            progress({"phase": "recovery-inventory", "checkedFiles": len(baseline),
+                      "checkedBytes": total, "pendingFiles": len(pending)})
     return edges
 
 
@@ -128,16 +133,26 @@ def https_read(path):
     with urlopen(ORIGIN + "/" + path, timeout=30) as response:
         if response.url != ORIGIN + "/" + path:
             raise ValueError("Unexpected production redirect")
-        return response.read()
+        body = response.read(MAX_RECOVERY_BYTES + 1)
+        if len(body) > MAX_RECOVERY_BYTES:
+            raise ValueError("HTTPS response byte limit exceeded")
+        return body
 
 
 def ftp_read(ftp, path):
     chunks = []
-    ftp.retrbinary("RETR " + path, chunks.append)
+    total = 0
+    def receive(chunk):
+        nonlocal total
+        total += len(chunk)
+        if total > MAX_RECOVERY_BYTES:
+            raise ValueError("FTPS response byte limit exceeded")
+        chunks.append(chunk)
+    ftp.retrbinary("RETR " + path, receive)
     return b"".join(chunks)
 
 
-def inspect(package, backup, ftp, http_read=https_read):
+def inspect(package, backup, ftp, http_read=https_read, progress=None):
     manifest = checked_package(package)
     backup = Path(backup)
     if backup.exists():
@@ -151,7 +166,9 @@ def inspect(package, backup, ftp, http_read=https_read):
         if public != remote:
             raise ValueError("FTPS root does not match HTTPS production: " + path)
         baseline[path] = remote
-    dependencies = collect_recovery(baseline, ftp, http_read)
+    if progress:
+        progress({"phase": "production-root-matched"})
+    dependencies = collect_recovery(baseline, ftp, http_read, progress)
     collisions = []
     for entry in manifest["files"]:
         if not entry["path"].startswith(SCOPE + "assets/"):
@@ -168,9 +185,12 @@ def inspect(package, backup, ftp, http_read=https_read):
             raise ValueError("Scoped asset collision; refuse overwrite")
         collisions.append({"path": entry["path"], "state": "identical"})
     # A second read catches changes during inspection; publication must check again.
-    for path, body in baseline.items():
+    for index, (path, body) in enumerate(baseline.items(), 1):
         if ftp_read(ftp, path) != body:
             raise ValueError("Production changed during preflight")
+        if progress and index % 16 == 0:
+            progress({"phase": "baseline-reread", "checkedFiles": index,
+                      "totalFiles": len(baseline)})
     backup.mkdir(parents=True)
     for path, body in baseline.items():
         target = backup / "before" / path
@@ -182,7 +202,7 @@ def inspect(package, backup, ftp, http_read=https_read):
               "baseline": [{"path": path, "sha256": sha(body)} for path, body in baseline.items()],
               "assetChecks": collisions,
               "recoveryDependencies": dependencies,
-              "recoveryCoverage": "reachable static shared assets only; computed URLs and off-PC restore unverified",
+              "recoveryCoverage": "reachable static shared and MineRush scoped assets; computed URLs and off-PC restore unverified",
               "nextGate": "Review backup, resolve 550 ambiguity, recheck baseline before scoped upload"}
     (backup / "preflight.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return report
@@ -205,7 +225,8 @@ def main():
         ftp.login(os.environ["FTP_USERNAME"], os.environ["FTP_PASSWORD"])
         ftp.prot_p()
         ftp.cwd(os.environ.get("FTP_SERVER_DIR") or ".")
-        result = inspect(args.package, args.backup, ftp)
+        result = inspect(args.package, args.backup, ftp,
+                         progress=lambda event: print(json.dumps(event), flush=True))
     print(json.dumps({"status": result["status"], "deployed": False, "scope": SCOPE}))
 
 

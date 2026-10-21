@@ -34,6 +34,20 @@ function checkedSite(site, commit) {
   assert.equal(version.source, 'web');
   const portalFiles = entries.filter(file => file.path.endsWith('index.html') && read(resolve(site, file.path)).toString('utf8').includes('id="main"')).map(file => file.path);
   assert.equal(portalFiles.length, version.gameCount + 4, 'Portal page count differs from checked catalog');
+  // Read the packaged build's release registrations, not today's working tree.
+  // Older packages without registrations must still contain no start links.
+  const releases = version.releases ?? [];
+  assert(Array.isArray(releases), 'Invalid packaged releases');
+  const releasedPaths = new Set();
+  for (const release of releases) {
+    assert(release && /^\/(?:works|games)\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(release.path)
+      && /^\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9]+)?\/?$/.test(release.url)
+      && release.path !== release.url && typeof release.version === 'string' && release.version.trim()
+      && /^[a-f0-9]{64}$/.test(release.sha256)
+      && !releasedPaths.has(release.path)
+      && portalFiles.includes(`${release.path.slice(1)}index.html`), 'Invalid packaged release registration');
+    releasedPaths.add(release.path);
+  }
   const requiredPages = ['index.html', 'about/index.html', 'contact/index.html', 'privacy-policy/index.html', 'games/ice-courier/index.html'];
   for (const required of requiredPages) assert(portalFiles.includes(required), `Missing portal page: ${required}`);
   const pages = [...requiredPages, ...portalFiles.filter(path => !requiredPages.includes(path))].map(path => {
@@ -45,7 +59,13 @@ function checkedSite(site, commit) {
     assert(html.includes(`rel="canonical" href="${canonical}"`) && html.includes(`property="og:url" content="${canonical}"`), `Canonical mismatch: ${path}`);
     assert.equal((html.match(/<h1(?:\s|>)/g) ?? []).length, 1, `Heading mismatch: ${path}`);
     assert(html.includes('id="main"'), `Missing main: ${path}`);
-    assert(!html.includes('作品を開始') && !html.includes('<iframe'), `Unpublished player: ${path}`);
+    const starts = [...html.matchAll(/<a\b([^>]*)>作品を開始<\/a>/g)];
+    const release = releases.find(item => item.path === pathname);
+    assert(!/<iframe\b/i.test(html) && (html.match(/作品を開始/g) ?? []).length === starts.length,
+      `Unpublished player: ${path}`);
+    assert.equal(starts.length, release ? 1 : 0, `Start link registration mismatch: ${path}`);
+    if (release) assert.equal(starts[0][1].match(/(?:^|\s)href="([^"]+)"/)?.[1], release.url,
+      `Start link destination mismatch: ${path}`);
     return { path, title, canonical };
   });
   return { files: entries, pages, version };

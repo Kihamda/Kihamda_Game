@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from scoped_delivery import SCOPE, checked_package, https_read, sha
+from scoped_transaction import checked_transaction
 
 
 PROTECTED_URLS = ("", "privacy-policy/", "contact/", "about/", "sw.js")
@@ -52,12 +53,40 @@ def verify_recovery(journal, before, http_read=https_read):
             "retainedVersionMarker": state.get("retainedVersionMarker", False)}
 
 
+def reconcile(package, backup, journal, before, http_read=https_read, progress=None):
+    """Read actual production after an interrupted run without replay or recovery.
+
+    A workflow cancellation is not proof of an absent delivery. Keep the original
+    journal immutable and bind its candidate and old entry to retained evidence.
+    Exact HTTP bytes still do not establish browser acceptance.
+    """
+    state, baseline = checked_transaction(package, backup, journal)
+    if before.get("") != sha(baseline["index.html"]):
+        raise ValueError("Protected snapshot does not match recovery")
+    # Verify local evidence before making network requests. Partial delivery and
+    # external changes fail closed; this function never writes production.
+    result = verify(package, before, http_read)
+    preserved = []
+    for path, body in baseline.items():
+        if path == SCOPE + "index.html":
+            continue
+        if http_read(path) != body:
+            raise ValueError("Retained production baseline changed: " + path)
+        preserved.append(path)
+        if progress and len(preserved) % 16 == 0:
+            progress({"phase": "reconciling-baseline", "checkedFiles": len(preserved)})
+    return dict(result, status="interrupted-delivery-http-reconciled-browser-acceptance-pending",
+                transaction=state["transaction"], journalStatus=state.get("status"),
+                preservedBaselineFiles=preserved, replayed=False)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("snapshot", "verify", "recovered"))
+    parser.add_argument("action", choices=("snapshot", "verify", "recovered", "reconcile"))
     parser.add_argument("snapshot_file")
     parser.add_argument("--package")
     parser.add_argument("--journal")
+    parser.add_argument("--backup")
     args = parser.parse_args()
     if args.action == "snapshot":
         with Path(args.snapshot_file).open("x", encoding="utf-8") as stream:
@@ -65,7 +94,11 @@ def main():
             stream.write("\n")
     else:
         before = json.loads(Path(args.snapshot_file).read_text(encoding="utf-8"))
-        if args.action == "verify":
+        if args.action == "reconcile":
+            if not (args.package and args.backup and args.journal):
+                parser.error("reconcile requires --package, --backup and --journal")
+            result = reconcile(args.package, args.backup, args.journal, before)
+        elif args.action == "verify":
             if not args.package:
                 parser.error("verify requires --package")
             result = verify(args.package, before)

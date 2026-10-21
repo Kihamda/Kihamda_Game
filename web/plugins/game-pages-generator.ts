@@ -19,7 +19,7 @@ interface GamesData {
 
 const BASE_URL = "https://game.kihamda.net";
 
-function generateGameHTML(game: Game, scriptSrc: string): string {
+function generateGameHTML(game: Game, scriptSrc: string, stylesheets: string): string {
   const gameUrl = `${BASE_URL}/games/${game.id}/`;
   const ogImage = `${BASE_URL}/thumbnails/${game.id}.svg`;
 
@@ -43,6 +43,7 @@ function generateGameHTML(game: Game, scriptSrc: string): string {
     <meta name="twitter:description" content="${game.description}" />
     <meta name="twitter:image" content="${ogImage}" />
     <link rel="canonical" href="${gameUrl}" />
+    ${stylesheets}
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -126,6 +127,11 @@ export default function gamePagesGenerator(): Plugin {
       }
 
       const scriptSrc = scriptMatch[1];
+      // A direct game load must keep the shared styles when SPA navigation
+      // returns to the portal; JavaScript imports do not add extracted CSS.
+      const stylesheets = [...mainHtml.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)]
+        .map(match => match[0]).join("\n    ");
+      if (!stylesheets) throw new Error("Game entry requires the main stylesheets");
       let generatedCount = 0;
 
       // Generate index.html for each game
@@ -138,7 +144,7 @@ export default function gamePagesGenerator(): Plugin {
         }
 
         const gameHtmlPath = resolve(gameDir, "index.html");
-        const html = generateGameHTML(game, scriptSrc);
+        const html = generateGameHTML(game, scriptSrc, stylesheets);
         writeFileSync(gameHtmlPath, html);
         generatedCount++;
       }

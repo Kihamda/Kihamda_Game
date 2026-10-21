@@ -1,0 +1,70 @@
+name: Scoped MineRush read-only reconciliation
+
+on:
+  workflow_dispatch:
+    inputs:
+      delivery_run_id:
+        description: Completed delivery run to inspect without retrying or restoring
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download the completed main delivery evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DELIVERY_RUN_ID: ${{ inputs.delivery_run_id }}
+        run: |
+          python - <<'PY'
+          import json, os, re, subprocess
+          from pathlib import Path
+          run_id = os.environ['DELIVERY_RUN_ID']
+          if not re.fullmatch(r'[0-9]+', run_id):
+              raise SystemExit('Invalid delivery run ID')
+          repo = os.environ['GITHUB_REPOSITORY']
+          run = json.loads(subprocess.check_output(['gh', 'api', f'repos/{repo}/actions/runs/{run_id}']))
+          if (run['status'] != 'completed' or run['path'] != '.github/workflows/scoped-production-upload.yml'
+                  or run['head_repository']['full_name'] != repo or run['head_branch'] != 'main'):
+              raise SystemExit('Completed main production delivery required')
+          subprocess.run(['gh', 'run', 'download', run_id, '--repo', repo, '--name',
+                          'scoped-delivery-' + run_id, '--dir', 'artifacts/reconciliation-source'], check=True)
+          state = json.loads(Path('artifacts/reconciliation-source/transaction.json').read_text('utf-8'))
+          if state['commit'] != run['head_sha']:
+              raise SystemExit('Journal does not match delivery run SHA')
+          Path('artifacts/delivery-run.json').write_text(json.dumps({
+              'id': run['id'], 'head_sha': run['head_sha'], 'conclusion': run['conclusion'],
+              'html_url': run['html_url']}, indent=2) + '\n', encoding='utf-8')
+          PY
+      - name: Rehearse retained evidence offline without production credentials
+        run: python business/tests/rehearse_scoped_artifact.py artifacts/reconciliation-source > artifacts/offline-rehearsal.json
+      - name: Compare actual HTTP bytes without production credentials
+        run: |
+          python business/ops/scoped_acceptance.py reconcile artifacts/reconciliation-source/protected-before.json \
+            --package artifacts/reconciliation-source/scoped-minerush \
+            --backup artifacts/reconciliation-source/scoped-recovery \
+            --journal artifacts/reconciliation-source/transaction.json > artifacts/http-reconciled.json
+      - name: Retain read-only reconciliation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scoped-reconciliation-${{ github.run_id }}
+          path: artifacts/
+          retention-days: 90
+          if-no-files-found: error
+      - run: echo 'HTTP reconciliation succeeded without upload or recovery. Real browser acceptance remains required.' >> "$GITHUB_STEP_SUMMARY"

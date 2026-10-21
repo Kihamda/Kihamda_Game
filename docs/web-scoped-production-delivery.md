@@ -1,61 +1,84 @@
-# MineRushの限定配信工程
+# MineRushの限定配信と復旧
 
-2026-10-20 19時の工程は部分完了。実デプロイは未実施。正本タスクT-web-scoped-production-delivery-20261020を継続する。
+## 現在の本番
 
-## 本番との差分と判断
+2026-10-21に受入れ済み。公開URLはhttps://game.kihamda.net/games/minerush/ 。ソースは2bc5d74eef7386aecd1fc39fc42d177d817ad916、成功CIは39445834759。候補manifest.jsonのSHA-256は2ad053d3798d2996d3e0d795671c75d1fcbd55e7bcd4733bb9b9b4b7c6c5169f。公開登録のsha256もこのmanifestを指し、ZIPのハッシュとは区別する。
 
-本番のトップと`/games/minerush/`はHTTP 200。トップは従来の多数のゲームを掲載し、MineRushは`/assets/index-BFkVebrj.js`を起動する。現行CI保全版は紹介ページを表示する構成で、App.tsxは同じ作品パスをportalルートとして先に解決する。そのHTMLをそのまま配信すると、既存の遊べるページを紹介ページへ置換する。全体FTPS workflowを起動する方法も対象外ページを巻き込むため採用しない。
+配信run39445984592は、旧本番の照合後、専用JS・CSS・build-version.json・index.htmlを書き込んだ。最終の旧baseline再読込み中に20分のjob制限でcancelledとなった。保持した元journalはwritten4件・pending=null、statusは旧実装のcreating-assets-directoryのままだった。workflowの終了状態とjournalのphaseだけで、本番の成否を判断してはいけない。
 
-既存のMineRush実装とGameShellを直接起動する別入口を追加した。通常のポータルやゲームルール、保存形式は変更していない。`node scripts/build-scoped-minerush.mjs <新しい出力先>`は、`site/games/minerush/`内にHTML、専用JS、専用CSS、build-version.jsonの4ファイルを作る。共有の`/assets/`、トップ、他作品、service workerには配信対象を作らない。ソース未コミット時と出力先の再利用は拒否する。
+同じrunから保持物を取得し、候補・成功CI・元journalを照合した。本番の新4ファイルと末尾スラッシュURLが候補SHA-256に一致し、トップ・privacy-policy・contact・about・sw.jsも配信前と一致した。旧baseline209件から置換対象HTMLだけを除いた208件もHTTPSで一致した。再dispatchや本番復旧書込みは実施していない。この独立照合と実ブラウザ受入れを根拠に、2026-10-21の実デプロイ1件とする。元workflowがsuccessになったとは記録しない。
 
-単独版は現行GameShellの操作・保存説明を含む。途中盤面を保存せず再読み込みで初期化する契約を維持する。旧HTMLのGoogle Analyticsとservice worker登録は単独入口に複製していない。実測値は引き続きnullであり、この候補の公開前に計測方針も確認する。本番sw.jsには現在fetchハンドラがなく、キャッシュを解除する変更は加えていない。
+本番のPC版Chromiumで、開封、矢印・F・Enter・Space、旗モード、再読み込みによる盤面・旗初期化、一覧への往復を確認した。390×844と1280×720で横はみ出しなし。ゲームオーバー表示、終了後セル無効化、リセットも確認した。初回遷移では旧表示が見えたが、意図的な再読み込み後と一覧からの再入場では新専用JSを読み込んだ。全キャッシュ環境での即時切替は保証しない。
 
-## 配信前検査の実装
+受入証跡はbusiness/unity/evidence/scoped-production-accepted-20261021.json。実タッチ、Safari、人間の初見理解・面白さ、別PC復元、本番への復旧書込みは未確認。後続の実ブラウザ検査ではクリア状態（71マス・旗10）とリセットをDOMで確認した。クリア時の画像は空フレームとなり、画像証跡には採用していない。詳細はbusiness/unity/evidence/scoped-recovery-proof-20261021.json。利益・訪問・開始・完了・再訪の指標はnull。
 
-`business/ops/scoped_delivery.py <package> --verify-only`はパス制限、全ファイルのSHA-256、版、一致しない在庫、symlink、HTMLの専用アセット参照を検査する。ネットワークへ接続しない。
+## 配信の範囲と前提
 
-`business/ops/scoped_delivery.py <package> <新しい復元先>`はGitHubの既存production secretsを環境変数から使用する読み取り専用FTPS検査。証明書を検証し、データ接続もTLSで暗号化する。FTP_SERVER_DIRまたはログインルートにあるトップと対象HTMLを本番HTTPSとバイト照合し、配信先を推測で確定しない。旧HTMLと直接参照された旧JS/CSSを保存し、同名アセット衝突と検査中の本番変更を検出する。550応答は「不存在またはアクセス不可」として区別する。アップロード、削除、rename、remote mkdirは実装していない。
+配信対象はgames/minerush/内のHTML、専用JS、専用CSS、build-version.jsonの4ファイルだけ。既存の共有/assets/、トップ、他作品、service workerを置換・削除しない。通常ポータルのHTMLをゲームURLへ配信すると紹介ページへ変わるため、既存MineRushとGameShellを起動するweb/src/standalone/minerush.tsxを別入口にする。
 
-新しい`.github/workflows/scoped-production-preflight.yml`はmain限定で、この読み取り専用検査と候補・復元証跡の保全を行う。既存の全体配信workflowは変更していない。通常CIには単独版ビルド・在庫検証・専用artifact保全を追加した。これらの新しいworkflowは今回ローカル保存のみで、GitHub上ではまだ実行していない。
+```powershell
+node scripts/build-scoped-minerush.mjs <新しい出力先>
+python business/ops/scoped_delivery.py <出力先> --verify-only
+```
 
-## 検証と保全
+未コミットの制作ソース、出力先の再利用、不正なパス、symlink、在庫・SHA-256・版・HTML参照の不一致を拒否する。単独HTMLは既存と同じGA4設定と共有画像のOG/Twitterメタデータを維持する。新しい計測先やイベント、service workerの変更・再登録は追加しない。途中盤面・旗を保存しない契約を維持する。
 
-- リポジトリ検査、TypeScript、ESLint、通常ビルド、9ページSSG、43ファイルの既存Web検査が成功。MineRushの既存入力回帰検査も成功。
-- businessの42テストが成功。配信追加分8テストで、誤ったFTPルート、同名アセット衝突、検査中の変更、パス逸脱、在庫外ファイル、改ざん、版不一致、復元先再利用を検査した。FTPはRETRだけを受け付ける偽物を使用しており、実FTPS接続成功を意味しない。
-- 初回の未コミット試作とソースcommit a965fe68a26584207bb64445af9089c6fd8ce5ccに固定した最終候補は、HTML・JS・CSSのSHA-256が一致。版ファイルだけが異なる。最終候補の在庫検証とブラウザ起動も成功。
-- ローカル実ブラウザで、開封、旗モード、矢印キー移動、Fキーで未開封セルへの旗、再読み込みによる盤面・旗初期化を確認。デスクトップ画面を目視確認した。携帯幅・実タッチ・Safari・本番配信後の操作検査は今回未実施。
-- 最終候補は`artifacts/scoped-minerush-20261020-1900-verified/`。本番HTTPSの初期値は同ディレクトリのhttp-before.jsonとhttp-before/へローカル保全。公開する証跡はbusiness/unity/evidence/scoped-production-delivery.jsonにハッシュと要約だけを保存する。
+scoped-production-upload.ymlはmain限定。成功した同一リポジトリ・同一head・Monorepo CIのrun IDを照合し、そのrunの専用artifactだけを使用する。既存の全体FTPS workflowは使用しない。PR29・PR30は最新headのLinux/Windows CI成功後にhead指定でマージ済み。
 
-## 次の一工程
+## 復元元と書込み手順
 
-同じタスクで、単独版と新しい配信前検査を次の日次統合に含め、最新headのLinux/Windows CIと対応する専用artifactを照合する。mainの読み取り専用workflowを実行し、本番FTPSルートと復元証跡を取得する。FTPSの550はディレクトリ照合等で解消し、旧ゲームの動的依存は既存共有アセットを維持する前提を確認する。この保存物だけで旧全サイトを復元できるとは扱わない。
+FTPS preflightは証明書とデータ接続のTLSを検証し、既存production secretsを環境変数で使用する。認証値は出力しない。FTPルートのトップと対象HTMLをHTTPSとバイト照合する。旧ゲームから静的に到達できる共有アセットとgames/minerush/assets/内の専用アセットを、JS import・Vite preload一覧・CSS URLから保存する。循環を重複取得せず、256件・64MiBを上限とする。動的に組み立てるURLや外部依存の完全解析ではない。
 
-この実測結果を使って、専用アセットを先に置きHTMLを最後に切り替える限定アップロードと復旧を実装・検査する。直前のbaseline再照合、対象外パス不変、候補の版・ハッシュ、実URLでの操作・再読み込み・一覧へ戻る導線を確認してからreleaseを登録する。実FTPS照合、新候補のremote CI、アップロード処理、実配信後検証は未完了。追加の本人確認待ちにはしない。
+旧209ファイル・1,514,538バイトを実FTPSとHTTPSで照合し、ダウンロード後にも全ハッシュを確認した。復元元はGitHub保持物scoped-delivery-39445984592内のscoped-recovery、ローカルはartifacts/scoped-reconcile-20261021-0100/scoped-recovery。保存・復元の検査は同じPCで実施した。別PCや本番復旧書込みの証明とは区別する。
 
-## 2026-10-20 夜の継続検証
+配信はbaselineを再照合し、MLSDが成功した場合だけ不存在を判定する。RETRの550は「不存在またはアクセス不可」であり、単独では不存在の証明にならない。同名アセットが異なる場合は停止する。専用アセット、版、入口HTMLの順で、同じ場所の一時ファイルへ転送・読戻し・rename・再読戻しを行う。既存HTMLの削除でrename拒否を回避しない。各書込み前にjournalを永続化する。
 
-読み取り専用の復元保存を、直接参照のJS/CSSから静的に到達できる共有アセットへ拡張した。JSの文字列で指定されたimport・Vite preload一覧、CSSのimport・urlから相対パスを解決し、循環参照を重複取得せず保存する。HTTPSとFTPSのバイト一致と、取得後のFTPS再照合を依存ファイルにも適用する。欠落、不一致、検査中変更、危険なパス、256ファイルまたは64MiB超過では復元先を作らず停止する。
+FTPは比較付き原子的更新を提供しないため、直前照合とrenameの間の別クライアント更新を完全には防げない。配信・復旧・照合workflowは同じdeploy-production concurrency groupを使い、手動配信と同時に動かさない。
 
-本番HTTPSのみの読み取り検証では、対象HTMLから208ファイル、1,462,036バイトを取得できた。旧入口は全作品を動的に呼び出す共通JSのため、静的参照の保存範囲には他作品の共有チャンクも含まれる。これは読み取り用の復元候補であり、配信対象は引き続きMineRush専用4ファイルに限定する。ローカル記録はartifacts/scoped-recovery-20261020-2255-http-v3/report.json。FTPSルート照合や別PCでの復元成功を示すものではない。
+## 中断後の読取り照合
 
-コード内の一般文字列をURLと解釈する問題は本番読み取り検査で検出し、拡張子と引用符の抽出条件を修正した。初期の試験フックは550例外より後に変更を実行していたため修正した。最終49テスト、リポジトリ検査、既存専用パッケージ検証が成功。Webアプリのソース変更がないため画面検査とWebビルドは再実行していない。
+保持した同一配信artifactを新しいディレクトリへ展開する。まず本番を書き換えずに結果を調べる。
 
-動的に組み立てるURL、外部URL、共有assets以外の依存、実FTPS接続、書き込み・復旧、配信後の操作は未確認。正規表現による静的参照の保存を完全な実行依存解析やサイト全体の復元保証とは扱わない。次は同じ工程の新候補を日次CIへ統合し、mainからFTPS読み取り検査を行う。実デプロイは未実施。
+```powershell
+python business/ops/scoped_acceptance.py reconcile <展開先>/protected-before.json --package <展開先>/scoped-minerush --backup <展開先>/scoped-recovery --journal <展開先>/transaction.json
+```
 
-## 2026-10-21 限定アップロードと復旧
+package・preflight・journalのcommit、manifest hash、新旧HTML、復元前ファイルのハッシュ、危険・重複パス、symlink、件数・バイト上限、静的依存の欠落を検査する。その後に本番の新ファイル・対象外URL・旧共有baselineを読む。元journalは変更せず、アップロード・復旧・再送も行わない。結果はHTTP照合済み・ブラウザ未受入れとし、実ブラウザの別証跡で受入れを判断する。
 
-`business/ops/scoped_upload.py`に限定配信と条件付き復旧を実装した。CI候補と復元レポートの結び付け、復元バイトのハッシュ、本番baselineを照合する。MLSDで対象ディレクトリを正常に列挙できた場合だけ未掲載ファイルを不存在と扱い、RETRの550だけから推測しない。既存アセットは同じバイトだけ受け入れる。書込み先はMineRush専用ファイルと同じ場所の一時ファイルに限定する。
+scoped-production-reconcile.ymlも同じ処理を実行する。同一リポジトリの完了したmain配信runとjournalのcommitを照合し、production secretsを使わない。
 
-専用アセット、版ファイル、入口HTMLの順で、一時ファイルへ転送・読戻し・rename・再読戻しを行う。各書込み前にローカルのtransaction journalを保存する。入口切替前にbaselineを再照合する。FTPには比較付きの原子的更新がないため、最終照合とrenameの間の別クライアント更新は完全には防げない。同じproduction concurrency groupを使い、別の手動配信と同時実行しない。サーバーが既存ファイルへのrenameを拒否した場合、既存HTMLの削除で回避せず、未確定として停止する。
+照合・復旧workflowでは、実通信の前に保持物のオフライン模擬検査を行う。手元でも同じコマンドを使用できる。
 
-切断・応答消失時は同じjournalを使う再送を拒否する。新しい接続で`recover`を実行し、本番HTMLと版が旧バイトかこのtransactionの新バイトであることを確認してから旧HTMLを戻す。第三者の更新は上書きしない。旧版ファイルが存在した場合はそのバイトも戻す。旧版ファイルがなかった場合、新しい版マーカーと未参照アセット・一時ファイルは残す。版マーカー単独を配信成功の証拠にしない。
+```powershell
+python business/tests/rehearse_scoped_artifact.py <配信artifactの展開先>
+```
 
-`.github/workflows/scoped-production-upload.yml`はmain限定。成功したMonorepo CIのrun ID、head SHA、workflow path、同一リポジトリを照合し、そのrunの専用artifactだけを使用する。新しいFTPS preflightを保存後に配信する。HTTP検査は全4ファイルと末尾スラッシュURLの一致、トップ・privacy-policy・contact・about・sw.jsの不変を確認する。HTTP成功も実ブラウザ受入れ前は`deployed=false`とする。途中失敗時も復元元とjournalをartifactへ保存する。
+候補・復元元・journalの照合後、隔離した一時領域とメモリ上の偽FTPで候補全ファイル、対象外baseline、旧HTMLと既存版マーカーの復元、次回preflightを確認する。元の保持物は変更せず、HTTP・FTPSへ接続しない。出力のdeployedとproductionWritesはfalseであり、実FTPのrename・実復旧・ブラウザ受入れの代替にはしない。
 
-復旧は保持した同一artifactを新しい隔離ディレクトリへ展開し、productionの同じFTPS接続設定で`python business/ops/scoped_upload.py recover <transaction.json>`を使う。その後に旧HTML・版・起動・操作・戻り導線を確認する。別PC復元と実サーバーのrename挙動はまだ未確認。自動復旧を無条件に再送しない。
+## 条件付き復旧
 
-68のbusinessテストが成功。新規分は転送途中失敗、rename後の応答消失、rename拒否、外部更新、同名衝突、MLSD拒否、再送拒否、対象パス制限、全HTTPバイトと対象外URLの検査を含む。通常ビルド内のTypeScript/ESLint、9ページSSG、43ファイル検査、既存MineRush入力回帰も成功。存在しない`web`のcheckスクリプト呼出しは失敗したが、正規のルート`npm run check`とビルド内検査で確認した。実FTPSと本番配信はこの実装検査とは別に実施する。
+復旧が必要と判断した場合だけ、保持した候補・復元元を明示する。
 
-配信前の追加確認で、GitHub上から既存production secretsを使って条件付き復旧を起動する入口が必要と判断し、`scoped-production-recover.yml`を追加した。完了した同一リポジトリのmain限定配信runのartifactを取得し、journalのcommitも照合する。復旧後のHTTP検査は旧HTMLの両URL・存在していた旧版ファイル・対象外URLを照合する。関連2テストを加え70テストが成功した。
+```powershell
+python business/ops/scoped_upload.py recover <展開先>/transaction.json --package <展開先>/scoped-minerush --backup <展開先>/scoped-recovery
+```
 
-単独HTMLには既存と同じGA4設定と共有画像のOG/Twitterメタデータを維持した。新しい計測先やイベントは追加せず、訪問・開始・完了などの事業指標は実集計がないため引き続きnullとする。service workerの変更・再登録は追加しない。初回統合のPR29後に発見した復旧入口と計測維持の不足は、安全に実配信するための訂正として扱う。記録だけを送るPRにはしない。
+共通のscoped_transaction.pyで保持物を照合し、旧HTMLはjournal単独から採用せず、ハッシュ確認済みの復元元から取得する。旧版マーカーも書込み前に別のtransaction receiptへ保全し、復旧前にjournalとの一致を要求する。旧形式でreceiptがない場合、oldVersionHex=nullのtransactionだけ互換を保つ。旧版が存在したのに独立した保全証跡がない場合は停止する。
+
+保持した旧依存アセットが本番で変わっていないことと、現在の本番HTML・版が旧バイトまたはそのtransactionの新バイトであることを確認してから戻す。第三者の更新は上書きしない。旧版ファイルが存在した場合はそのバイトも戻す。旧版ファイルがなかった場合、新しい版マーカー、未参照アセット、一時ファイルは残す。版マーカー単独を配信成功の証拠にしない。復旧後もHTTPの旧HTML両URL・旧版・対象外URLと、実ブラウザの操作確認が必要。
+
+## 今回のローカル改善と統合待ち
+
+公開版登録と確認環境、中断後の読取り専用照合workflow、共通の復元証跡照合、recoverの必須引数、配信job制限20→45分は次の日次統合用のローカル変更。今日の追加PR・再デプロイは行わず、本番トップも変更していない。これらのworkflowと新しい復旧照合はまだmainにない。本番の配信版は引き続き2bc5d74。
+
+アップロード前にも共通checked_preflightで復元元の版・ハッシュ・件数・サイズ・重複・symlink・静的依存の欠落を検査し、不正な場合は認証接続前に止める。復元対象の.mjsも依存をたどり、HTTPS・FTPSの読込み中に1応答64MiBを超えた場合は停止する。HTML2件だけでも合計上限を検査する。
+
+通常ポータルの保管パッケージはbuild-version.jsonに公開登録を含め、その詳細ページに限り登録URLへの開始リンク1件を要求する。未登録・異なる宛先・重複・iframeは拒否する。登録のない過去パッケージは開始リンクなしの条件で検証できる。これは通常ポータルの保全・統合準備であり、本番全体を置換する許可ではない。
+
+通常Web版のゲームHTML生成では、入口JSとともに共通CSSも引き継ぐ。従来はゲームURLを再読み込みすると共通CSSがなくなり、同一ページ内の遷移で作品一覧・紹介へ戻った際に表示が崩れた。9826105で修正し、4作品からの一覧復帰と、MineRushの390px・1280pxでの再読み込み・検索条件保持を確認した。専用配信版MineRushと本番トップのファイルは変更していない。
+
+改変journal・誤った復元元・部分切替・第三者更新・通信境界での切断を含む検査と、実保持artifactの旧209件を使った偽FTPの復旧を確認した。今回の検査数・実時刻・最終ハッシュはbusiness/unity/evidence/scoped-hardening-integration.jsonと正本checkpointを参照する。実サーバーの復旧成功とは扱わない。過去の部分実装はGit履歴とbusiness/unity/evidence/scoped-delivery-20261021.jsonに保全している。
+
+## 2026-10-21 CD継続の調査
+
+本人の原因調査・デプロイ続行依頼で、翌日統合待ちを解除した。run39445984592のGitHub check annotationは「The job has exceeded the maximum execution time of 20m0s」。job開始00:12:15JST、終了00:32:31JST、初回復元元照合は8分32秒だった。全4ファイルの書込み後に旧209件を再照合する実装に対して20分枠が不足した。ローカルの45分制限、段階別journal更新と進捗出力、オフライン保持物検査・読取り専用reconcileがmainに未統合だった。元runを再実行せず、修正のexact-head CI・main統合と現状照合を先に行い、新しいCI候補による限定配信を継続する。98テストと元209件のオフライン復旧検査が成功。GitHubでの新しい照合・配信結果は別証跡へ保存する。
