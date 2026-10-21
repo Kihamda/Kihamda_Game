@@ -14,6 +14,7 @@ import "./App.css";
 const ROWS = 9;
 const COLS = 9;
 const MINE_COUNT = 10;
+const SAFE_CELL_COUNT = ROWS * COLS - MINE_COUNT;
 const LONG_PRESS_DURATION = 400;
 
 export default function App() {
@@ -233,7 +234,20 @@ export default function App() {
   const remainingMines = game.mineCount - game.flaggedCount;
 
   return (
-    <GameShell gameId="minerush" layout="default" controlHints={["矢印キーで移動、クリック・Enterで開く", "F・右クリック・長押しで旗。旗モードならタップで切替", "途中の盤面は保存しません。再読み込みで最初から始まります。"]}>
+    <GameShell gameId="minerush" layout="default" mobileScroll
+      rules={<div className="minerush-rules">
+        <p>地雷を避けて、安全な{SAFE_CELL_COUNT}マスをすべて開くとクリア。数字は、斜めを含む周囲8マスの地雷の数です。</p>
+        <details>
+          <summary>初めて遊ぶときのヒント</summary>
+          <ul>
+            <li>最初に開くマスとその周囲には地雷がありません。好きなマスから始められます。</li>
+            <li>たとえば「1」の周囲には地雷が1個あります。数字を手がかりに、次に開くマスを考えます。</li>
+            <li>旗は地雷がありそうなマスに付ける目印です。旗のあるマスは開けません。もう一度旗を切り替えると外せます。</li>
+            <li>旗を付けるだけではクリアになりません。地雷以外のマスをすべて開きます。</li>
+          </ul>
+        </details>
+      </div>}
+      controlHints={["矢印キーで移動、クリック・Enterで開く", "F・右クリック・長押しで旗。旗モードならタップで切替", "途中の盤面は保存しません。再読み込みで最初から始まります。"]}>
       <div className="minerush-container">
         <header className="minerush-header">
           <div className="minerush-info">

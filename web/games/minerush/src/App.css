@@ -1,3 +1,29 @@
+.minerush-rules {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-main, #f8fafc);
+}
+
+.minerush-rules p {
+  margin: 0 0 8px;
+}
+
+.minerush-rules summary {
+  min-height: 44px;
+  padding: 10px 4px;
+  cursor: pointer;
+}
+
+.minerush-rules summary:focus-visible {
+  outline: 2px solid var(--text-main, #f8fafc);
+  outline-offset: 2px;
+}
+
+.minerush-rules details ul {
+  margin-top: 8px;
+  font-size: inherit;
+}
+
 .minerush-container {
   width: 420px;
   height: 500px;

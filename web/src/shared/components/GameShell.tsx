@@ -20,6 +20,7 @@ interface Props {
   layout?: "default" | "immersive";
   /** 作品固有の操作と保存条件 */
   controlHints?: string[];
+  rules?: ReactNode;
   mobileScroll?: boolean;
   statusMessage?: string;
   statusAction?: { label: string; onClick: () => void };
@@ -57,6 +58,7 @@ export function GameShell({
   minScale = 0.3,
   layout = "default",
   controlHints: providedControlHints,
+  rules,
   mobileScroll = false,
   statusMessage,
   statusAction,
@@ -151,7 +153,7 @@ export function GameShell({
     <div className={`game-shell-root game-shell-root--${layout}${mobileScroll ? " game-shell-root--scroll-mobile" : ""}`}>
       <div className={`game-shell-main game-shell-main--${layout}`}>
         <aside className="game-shell-panel" aria-label="ゲーム操作パネル">
-          <div className="game-shell-panel-inner">
+          <div className={`game-shell-panel-inner${rules ? " game-shell-panel-inner--with-rules" : ""}`}>
             <button
               type="button"
               className="game-shell-back-button"
@@ -162,6 +164,11 @@ export function GameShell({
 
             <h1 className="game-shell-title">{resolvedTitle}</h1>
             <p className="game-shell-description">{resolvedDescription}</p>
+
+            {rules && <section className="game-shell-section" aria-label="遊び方">
+              <h2>遊び方</h2>
+              {rules}
+            </section>}
 
             <section className="game-shell-section">
               <h2>主要操作</h2>
