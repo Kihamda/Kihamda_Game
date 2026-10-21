@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 450,
+  "revision": 454,
   "business_id": "game-site",
-  "fence": 76,
+  "fence": 77,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -10590,8 +10590,140 @@
         "T-web-release-preparation-command-20261022"
       ],
       "status": "ready",
-      "checkpoints": [],
-      "claims": []
+      "checkpoints": [
+        {
+          "run_id": "unity-20261022T0100-final-audit",
+          "fence": 77,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+            },
+            {
+              "path": "business/unity/evidence/release-preparation-20261022.json",
+              "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+              "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+            },
+            {
+              "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+              "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+            },
+            {
+              "path": "scripts/prepare-web-release.mjs",
+              "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "24fa9f84da81d956e5bf87f96085b98f58f1cd1b04aaf9f6e4dfcdb4e12e2c92"
+            },
+            {
+              "path": "package.json",
+              "sha256": "ecb2ec3c4865ca1a421af3c1fed273ef5bee044dd49df4ca07b9629c3feda4c3"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+            },
+            {
+              "path": "business/unity/evidence/final-provenance-20261022.json",
+              "sha256": "9918fa50fceed0a14966fd7426bddb9507ffbdf2c53c262664ce8a0e66cf6999"
+            }
+          ],
+          "checks": [
+            "11source hashes equal committed Git bytes;package.json CRLF provenance corrected to LF;no semantic change",
+            "Prior productive implementation/acceptance1532.553seconds followed by save/audit",
+            "Original436events and owner/policy/oldledger/workspace preserved;todayonePRoneaccepteddeploy",
+            "work_session={\"started_at\": \"2026-10-22T01:02:15.506288+09:00\", \"ended_at\": \"2026-10-22T01:29:54.003454+09:00\", \"elapsed_seconds\": 1658.497166, \"exit_reason\": \"Final save after productive work1532seconds;correct newline provenance and retain ready next integration.\"}"
+          ],
+          "next_step": "次の日次統合で進捗と保管コマンドをCI後に配信する。今日はCD39631591189受入れ済み、再dispatch/記録専用PRなし。",
+          "at": 1792600194.0296946
+        },
+        {
+          "run_id": "unity-20261022T0100-final-audit",
+          "fence": 77,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+            },
+            {
+              "path": "business/unity/evidence/release-preparation-20261022.json",
+              "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+              "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+            },
+            {
+              "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+              "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+            },
+            {
+              "path": "scripts/prepare-web-release.mjs",
+              "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "24fa9f84da81d956e5bf87f96085b98f58f1cd1b04aaf9f6e4dfcdb4e12e2c92"
+            },
+            {
+              "path": "package.json",
+              "sha256": "ecb2ec3c4865ca1a421af3c1fed273ef5bee044dd49df4ca07b9629c3feda4c3"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+            },
+            {
+              "path": "business/unity/evidence/final-provenance-20261022.json",
+              "sha256": "9918fa50fceed0a14966fd7426bddb9507ffbdf2c53c262664ce8a0e66cf6999"
+            }
+          ],
+          "checks": [
+            "11source hashes equal committed Git bytes;package.json CRLF provenance corrected to LF;no semantic change",
+            "Prior productive implementation/acceptance1532.553seconds followed by save/audit",
+            "Original436events and owner/policy/oldledger/workspace preserved;todayonePRoneaccepteddeploy",
+            "work_session={\"started_at\": \"2026-10-22T01:02:15.506288+09:00\", \"ended_at\": \"2026-10-22T01:29:54.003454+09:00\", \"elapsed_seconds\": 1658.497166, \"exit_reason\": \"Final save after productive work1532seconds;correct newline provenance and retain ready next integration.\"}"
+          ],
+          "next_step": "次の日次統合で進捗と保管コマンドをCI後に配信する。今日はCD39631591189受入れ済み、再dispatch/記録専用PRなし。",
+          "at": 1792600194.083626
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261022T0100-final-audit",
+          "task_id": "T-minerush-progress-daily-integration-20261023",
+          "fence": 77,
+          "expires_at": 1792600793.6610093
+        }
+      ]
     }
   },
   "decisions": {
@@ -11340,6 +11472,12 @@
       "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
       "status": "completed",
       "started_at": 1792599401.1346216
+    },
+    "unity-20261022T0100-final-audit": {
+      "run_id": "unity-20261022T0100-final-audit",
+      "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+      "status": "checkpointed",
+      "started_at": 1792600193.6044993
     }
   },
   "experiments": {
@@ -27613,7 +27751,181 @@
       },
       "previous": "17990c59334215329e5091caff49f7bb97be787414613e323561098781d380b1",
       "sha256": "cf5dec02cbe585928672be97cb1a6794a873f456f7439fddd278c973e36b8083"
+    },
+    {
+      "revision": 451,
+      "at": 1792600193.6044993,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261022T0100-final-audit",
+        "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "cf5dec02cbe585928672be97cb1a6794a873f456f7439fddd278c973e36b8083",
+      "sha256": "3c925c585219d7d3634842763da8de698994cb7d61135e386865bb04b48e6027"
+    },
+    {
+      "revision": 452,
+      "at": 1792600193.6610093,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T0100-final-audit",
+        "task_id": "T-minerush-progress-daily-integration-20261023",
+        "ttl_seconds": 600
+      },
+      "result": {
+        "run_id": "unity-20261022T0100-final-audit",
+        "task_id": "T-minerush-progress-daily-integration-20261023",
+        "fence": 77,
+        "expires_at": 1792600793.6610093
+      },
+      "previous": "3c925c585219d7d3634842763da8de698994cb7d61135e386865bb04b48e6027",
+      "sha256": "8ae37f40bddc757003e936113dd07766fb7ef5309f2e5eb8f28b1e5ded9a9ad6"
+    },
+    {
+      "revision": 453,
+      "at": 1792600194.0296946,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T0100-final-audit",
+        "fence": 77,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+          },
+          {
+            "path": "business/unity/evidence/release-preparation-20261022.json",
+            "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+            "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+          },
+          {
+            "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+            "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+          },
+          {
+            "path": "scripts/prepare-web-release.mjs",
+            "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "24fa9f84da81d956e5bf87f96085b98f58f1cd1b04aaf9f6e4dfcdb4e12e2c92"
+          },
+          {
+            "path": "package.json",
+            "sha256": "ecb2ec3c4865ca1a421af3c1fed273ef5bee044dd49df4ca07b9629c3feda4c3"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+          },
+          {
+            "path": "business/unity/evidence/final-provenance-20261022.json",
+            "sha256": "9918fa50fceed0a14966fd7426bddb9507ffbdf2c53c262664ce8a0e66cf6999"
+          }
+        ],
+        "checks": [
+          "11source hashes equal committed Git bytes;package.json CRLF provenance corrected to LF;no semantic change",
+          "Prior productive implementation/acceptance1532.553seconds followed by save/audit",
+          "Original436events and owner/policy/oldledger/workspace preserved;todayonePRoneaccepteddeploy",
+          "work_session={\"started_at\": \"2026-10-22T01:02:15.506288+09:00\", \"ended_at\": \"2026-10-22T01:29:54.003454+09:00\", \"elapsed_seconds\": 1658.497166, \"exit_reason\": \"Final save after productive work1532seconds;correct newline provenance and retain ready next integration.\"}"
+        ],
+        "next_step": "次の日次統合で進捗と保管コマンドをCI後に配信する。今日はCD39631591189受入れ済み、再dispatch/記録専用PRなし。"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "8ae37f40bddc757003e936113dd07766fb7ef5309f2e5eb8f28b1e5ded9a9ad6",
+      "sha256": "f2281bff85c50ff768d4cd9b25d4b7dae007059c298e21b80d9a42a48646f31c"
+    },
+    {
+      "revision": 454,
+      "at": 1792600194.083626,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261022T0100-final-audit",
+        "fence": 77,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+          },
+          {
+            "path": "business/unity/evidence/release-preparation-20261022.json",
+            "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+            "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+          },
+          {
+            "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+            "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+          },
+          {
+            "path": "scripts/prepare-web-release.mjs",
+            "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "24fa9f84da81d956e5bf87f96085b98f58f1cd1b04aaf9f6e4dfcdb4e12e2c92"
+          },
+          {
+            "path": "package.json",
+            "sha256": "ecb2ec3c4865ca1a421af3c1fed273ef5bee044dd49df4ca07b9629c3feda4c3"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+          },
+          {
+            "path": "business/unity/evidence/final-provenance-20261022.json",
+            "sha256": "9918fa50fceed0a14966fd7426bddb9507ffbdf2c53c262664ce8a0e66cf6999"
+          }
+        ],
+        "checks": [
+          "11source hashes equal committed Git bytes;package.json CRLF provenance corrected to LF;no semantic change",
+          "Prior productive implementation/acceptance1532.553seconds followed by save/audit",
+          "Original436events and owner/policy/oldledger/workspace preserved;todayonePRoneaccepteddeploy",
+          "work_session={\"started_at\": \"2026-10-22T01:02:15.506288+09:00\", \"ended_at\": \"2026-10-22T01:29:54.003454+09:00\", \"elapsed_seconds\": 1658.497166, \"exit_reason\": \"Final save after productive work1532seconds;correct newline provenance and retain ready next integration.\"}"
+        ],
+        "next_step": "次の日次統合で進捗と保管コマンドをCI後に配信する。今日はCD39631591189受入れ済み、再dispatch/記録専用PRなし。"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "f2281bff85c50ff768d4cd9b25d4b7dae007059c298e21b80d9a42a48646f31c",
+      "sha256": "2832e027dce6a7bdfa804012b01cf84af1a3674c92b7fea1c193d01ce0746557"
     }
   ],
-  "projection_sha256": "08bf2e5080c5c5c3b0a181d92ddd90b478211b5aeec122640631fd2c8e9df1eb"
+  "projection_sha256": "075f47c61f5bc726061676bd257ab0f4e18345df9b2fde33c066963dd89b3b1e"
 }
