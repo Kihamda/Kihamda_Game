@@ -55,6 +55,14 @@ python business/tests/rehearse_scoped_artifact.py <配信artifactの展開先>
 
 候補・復元元・journalの照合後、隔離した一時領域とメモリ上の偽FTPで候補全ファイル、対象外baseline、旧HTMLと既存版マーカーの復元、次回preflightを確認する。元の保持物は変更せず、HTTP・FTPSへ接続しない。出力のdeployedとproductionWritesはfalseであり、実FTPのrename・実復旧・ブラウザ受入れの代替にはしない。
 
+次の日次配信用パッケージを、保持したアップロード版へ重ねる検査には次の形式を使う。
+
+```powershell
+python business/tests/rehearse_scoped_artifact.py <配信artifactの展開先> --candidate <次候補のパッケージ>
+```
+
+元のjournalがアップロード完了・pendingなし・HTMLと版マーカーの書込み記録ありであることを要求する。保持物からアップロード後のバイトをメモリ上に再構成し、新候補用preflight、全候補ファイル、対象外の不変、元のアップロード版への条件付き復元を検査する。入力保持物を書き換えず、別候補のjournalと復元元は一時領域内に作る。元のjournalが本番HTTP・ブラウザ受入れを証明するとは扱わず、`liveAcceptanceVerified=false`を出力する。日次配信前の実サーバー照合とCIは別途必要。
+
 ## 条件付き復旧
 
 復旧が必要と判断した場合だけ、保持した候補・復元元を明示する。
