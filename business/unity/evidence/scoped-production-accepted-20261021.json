@@ -1,28 +1,27 @@
 {
   "schema": 1,
-  "acceptedAt": "2026-10-21T01:04:52.877619+09:00",
-  "startedAt": "2026-10-21T00:59:52.5693554+09:00",
+  "acceptedAt": "2026-10-21T11:30:32.744834+09:00",
   "scope": "games/minerush/",
   "url": "https://game.kihamda.net/games/minerush/",
   "deployed": true,
   "deploymentCountDateJst": "2026-10-21",
-  "commit": "2bc5d74eef7386aecd1fc39fc42d177d817ad916",
-  "ciRun": 39445834759,
+  "commit": "e378aaaa8c9c90a3d9c61e1abf420f0783e0ce07",
+  "ciRun": 39532880849,
   "ciConclusion": "success",
-  "deliveryRun": 39445984592,
-  "workflowConclusion": "cancelled",
-  "workflowCompletedAt": "2026-10-21T00:32:31+09:00",
-  "acceptanceBasis": "Workflow cancelled during final baseline read after all four files were written; independently reconciled exact live HTTP bytes and real browser behavior. No replay or recovery dispatch.",
-  "manifestSha256": "2ad053d3798d2996d3e0d795671c75d1fcbd55e7bcd4733bb9b9b4b7c6c5169f",
-  "transaction": "e22f884cb0f14b06b6d12ee2eb5c4524",
-  "originalJournalSha256": "424f577bd7cd091369a0137b22037908f4880fdc07da3163b3b28391b4ddbf27",
-  "originalJournalStatus": "creating-assets-directory",
+  "deliveryRun": 39533122745,
+  "workflowConclusion": "success",
+  "workflowStartedAt": "2026-10-21T02:27:36Z",
+  "workflowCompletedAt": "2026-10-21T02:28:40Z",
+  "workflowDurationSeconds": 64,
+  "manifestSha256": "67d7787990f94dd9b50a80d37e4873f436af842ce56bc922d3e7419bc34d5329",
+  "transaction": "d08a64e98e294caf9411602e9eb33c92",
+  "originalJournalSha256": "5c4685e409c7d619a720f7b5a52e071f8c375d042dfe5f94c2a5bec2239bf130",
+  "originalJournalStatus": "uploaded-awaiting-http-and-browser-acceptance",
   "written": [
-    "games/minerush/assets/index-CKnyUiaE.js",
-    "games/minerush/assets/index-XNNEyEEy.css",
     "games/minerush/build-version.json",
     "games/minerush/index.html"
   ],
+  "pending": null,
   "candidateFiles": [
     {
       "path": "games/minerush/assets/index-CKnyUiaE.js",
@@ -34,15 +33,15 @@
     },
     {
       "path": "games/minerush/build-version.json",
-      "sha256": "d2089caccc4b86366880b52717ce25462e6e2815ac4716ca04218668ad009050"
+      "sha256": "b57a0f5d5d492ec07f1b35d7e6f7e408ece8d11857c1e09660fc4cad6018d3f2"
     },
     {
       "path": "games/minerush/index.html",
       "sha256": "34901cc5207a0709102b58f2beda74962802f3691cc55eb7de5ed635156846ca"
     }
   ],
-  "httpEvidenceSha256": "428f5d3f49e36bf8393e94daffb1dc5af937da79a3ad1979b77616c5fb60b4ee",
-  "preservedBaselineFiles": 208,
+  "httpEvidenceSha256": "6d6bf49554864ea6ebb8b08aed0804d2db97ee96ab947d55fa44a099d0eda1e3",
+  "preservedBaselineFiles": 3,
   "protectedUrls": {
     "": "e6d1e306846e55318bef69834b198da9fc273a03f3b87655304d85370730e5d4",
     "privacy-policy/": "bb9d6dbd2883397417e41072603bca8ab6a288e62b1f87129ef1f52f2955fcf3",
@@ -52,61 +51,33 @@
   },
   "browser": {
     "engine": "desktop Chromium in-app browser",
-    "initialNavigation": "Initially displayed prior content; intentional reload loaded scoped candidate. Subsequent catalog reentry loaded candidate.",
-    "openedCells": 12,
-    "keyboard": "ArrowRight moved through row1 to1-4; F flagged1-4",
-    "flagMode": "Click mode then1-5: flags2",
-    "reload": {
-      "unopened": 81,
-      "opened": 0,
-      "flagged": 0
-    },
-    "viewport390": {
-      "width": 390,
-      "scrollWidth": 390
-    },
-    "viewport1280": {
-      "width": 1280,
-      "scrollWidth": 1280
-    },
-    "navigation": "Game list -> MineRush -> Back -> original production list succeeded",
+    "opened": "center5-5 opened51cells",
+    "keyboard": "F on1-1 flagged; flags1/mines9",
+    "reload": "all81cells unopened;flags0/mines10",
+    "navigation": "production game -> original production catalog -> MineRush passed",
     "screenshot": {
-      "localPath": "artifacts\\scoped-reconcile-20261021-0100\\production-390.png",
-      "sha256": "bd035d358fe0d5e73cfca5c9167517c0d386d36dd3c2214b126d4223f93fb3e7"
+      "localPath": "artifacts/cd-repair-20261021/production-accepted.png",
+      "sha256": "5f1ead74607db7032b33cdb17791c6456c14567bce71012d29c42fa3627ee7ac"
     },
-    "terminalRegression": {
-      "input": "Enter/Space opened cells; visible-number deductions and an ambiguous guess reached game over",
-      "openedAtLoss": 70,
-      "terminalStatus": "ゲームオーバー",
-      "remainingCellDisabled": true,
-      "reset": {
-        "unopened": 81,
-        "flagged": 0,
-        "terminalStatuses": 0
-      },
-      "winVerified": false
-    }
+    "sourceGameplayAndStyles": "Candidate JS/CSS/HTML byte-identical to initial accepted delivery; new version marker binds verified main"
   },
   "recovery": {
-    "localDirectory": "artifacts\\scoped-reconcile-20261021-0100\\scoped-recovery",
-    "preflightSha256": "aaf1a28583e1dc971e14ade32e7063c72aaad426c8adfc2aaabd4ebcbc81c785",
-    "retainedArtifact": "scoped-delivery-39445984592",
-    "files": 209,
-    "offPcRestoreVerified": false,
-    "productionRollbackVerified": false
+    "artifact": "scoped-delivery-39533122745/scoped-recovery",
+    "local": "artifacts/cd-repair-20261021/new-delivery/scoped-recovery",
+    "baselineFiles": 4,
+    "backupPreflightSha256": "7850c1df4157b6f2d38df23974a5aa854b424ad8670c64534eefbd2ecf1f5f32"
+  },
+  "initialAcceptedProof": {
+    "path": "business/unity/evidence/scoped-production-initial-accepted-20261021.json",
+    "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6",
+    "deliveryRun": 39445984592
   },
   "unverified": [
     "physical touch",
     "Safari",
-    "human first-play/fun",
+    "human evaluation",
     "off-PC restore",
-    "real production rollback"
+    "production rollback write"
   ],
-  "metrics": {
-    "visitors": null,
-    "playStarts": null,
-    "completionRate": null,
-    "returnRate": null,
-    "monthlyNetProfitJpy": null
-  }
+  "metrics": null
 }

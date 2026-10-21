@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 402,
+  "revision": 405,
   "business_id": "game-site",
   "fence": 68,
-  "lease": {
-    "run_id": "manual-cd-resume-20261021",
-    "task_id": "T-web-cd-resume-20261021",
-    "fence": 68,
-    "expires_at": 1792551486.3805983
-  },
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -9525,8 +9520,115 @@
       "hypothesis": "実測に合わせた45分枠と正しい進捗・復元照合で限定CDを完走できる",
       "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
       "priority": 1,
-      "status": "running",
-      "checkpoints": [],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "manual-cd-resume-20261021",
+          "fence": 68,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "f5893e66327b8208dcab93bacc82b2b2126804ef9e625096a7cb703397bc34f1"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "03f7f9e587000156a591ef1a0f30560bf7c207d5def54de541fb443b084e3c46"
+            },
+            {
+              "path": "business/unity/evidence/cd-delivery-accepted-20261021.json",
+              "sha256": "4b6f199bd775ff0026e57e00f0a3c7da01a37425f9bc74f0c29c194e95daa1f1"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261021.json",
+              "sha256": "4b6f199bd775ff0026e57e00f0a3c7da01a37425f9bc74f0c29c194e95daa1f1"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-initial-accepted-20261021.json",
+              "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "3a3803fbe9cab98048f477c24fcb0ecd6c6211c63bb41d89140afe4497de80b0"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "b29cd307a44a03e327e922af1fe5c619d208362eb8cc27259357c8fc3fa88976"
+            }
+          ],
+          "checks": [
+            "CD39533122745 success64seconds;45minute timeout live on main",
+            "exact-main CI39532880849 success; main read-only reconciliation39532883070 success",
+            "downloaded journal terminal uploaded-awaiting-http-and-browser-acceptance;pending null;version+entry written;assets reused identically",
+            "HTTP all4files,slash route,5protectedURLs and4retained baseline files matched independently",
+            "production browser center open51cells;F flag;reload81unopened0flags;catalog return/reentry passed",
+            "latest release receipt and initial byte archive checked;no full-site publication",
+            "npm check/build,typecheck,eslint,43hashes,4routes,guides8cases and navigation/search passed",
+            "Current task complete; no artificial waiting or redundant gameplay tests"
+          ],
+          "next_step": "次の日次統合で最新公開版登録・受入れ記録をまとめ、実測に基づく次の有意味な改善を選ぶ。新CDは成功しており元runを再送しない。",
+          "passed": true,
+          "work_session": {
+            "started_at": "2026-10-21T02:28:06.323657+00:00",
+            "ended_at": "2026-10-21T02:32:18.275029+00:00",
+            "elapsed_seconds": 251.95,
+            "exit_reason": "User-requested manual CD investigation, main integration, successful scoped production deployment and browser acceptance completed; scheduled-run minimum work window does not apply"
+          },
+          "at": 1792549938.3957303
+        },
+        {
+          "run_id": "manual-cd-resume-20261021",
+          "fence": 68,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "f5893e66327b8208dcab93bacc82b2b2126804ef9e625096a7cb703397bc34f1"
+            },
+            {
+              "path": "business/studio-policy.json",
+              "sha256": "03f7f9e587000156a591ef1a0f30560bf7c207d5def54de541fb443b084e3c46"
+            },
+            {
+              "path": "business/unity/evidence/cd-delivery-accepted-20261021.json",
+              "sha256": "4b6f199bd775ff0026e57e00f0a3c7da01a37425f9bc74f0c29c194e95daa1f1"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261021.json",
+              "sha256": "4b6f199bd775ff0026e57e00f0a3c7da01a37425f9bc74f0c29c194e95daa1f1"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-initial-accepted-20261021.json",
+              "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "3a3803fbe9cab98048f477c24fcb0ecd6c6211c63bb41d89140afe4497de80b0"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "b29cd307a44a03e327e922af1fe5c619d208362eb8cc27259357c8fc3fa88976"
+            }
+          ],
+          "checks": [
+            "CD39533122745 success64seconds;45minute timeout live on main",
+            "exact-main CI39532880849 success; main read-only reconciliation39532883070 success",
+            "downloaded journal terminal uploaded-awaiting-http-and-browser-acceptance;pending null;version+entry written;assets reused identically",
+            "HTTP all4files,slash route,5protectedURLs and4retained baseline files matched independently",
+            "production browser center open51cells;F flag;reload81unopened0flags;catalog return/reentry passed",
+            "latest release receipt and initial byte archive checked;no full-site publication",
+            "npm check/build,typecheck,eslint,43hashes,4routes,guides8cases and navigation/search passed",
+            "Current task complete; no artificial waiting or redundant gameplay tests"
+          ],
+          "next_step": "次の日次統合で最新公開版登録・受入れ記録をまとめ、実測に基づく次の有意味な改善を選ぶ。新CDは成功しており元runを再送しない。",
+          "passed": true,
+          "work_session": {
+            "started_at": "2026-10-21T02:28:06.323657+00:00",
+            "ended_at": "2026-10-21T02:32:18.275029+00:00",
+            "elapsed_seconds": 251.95,
+            "exit_reason": "User-requested manual CD investigation, main integration, successful scoped production deployment and browser acceptance completed; scheduled-run minimum work window does not apply"
+          },
+          "at": 1792549938.4565332
+        }
+      ],
       "claims": [
         {
           "run_id": "manual-cd-resume-20261021",
@@ -10212,7 +10314,7 @@
     "manual-cd-resume-20261021": {
       "run_id": "manual-cd-resume-20261021",
       "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792549686.3236566
     }
   },
@@ -10671,7 +10773,19 @@
       "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
       "already_dispatched": true,
       "external_url": "https://github.com/Kihamda/Kihamda_Game/actions/runs/39533122745",
-      "status": "unknown"
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "github-scoped-delivery-39533122745",
+        "status": "confirmed_success",
+        "source": "https://github.com/Kihamda/Kihamda_Game/actions/runs/39533122745",
+        "evidence": {
+          "workflow": "success",
+          "commit": "e378aaaa8c9c90a3d9c61e1abf420f0783e0ce07",
+          "receipt": "business/unity/evidence/cd-delivery-accepted-20261021.json",
+          "http": "all4files+5protectedURLs matched",
+          "browser": "open/F/reload/catalog return passed"
+        }
+      }
     }
   },
   "observations": [],
@@ -24799,7 +24913,153 @@
       },
       "previous": "24d7d2d0cf6bfdaf6c13bf8340696b9a3464f52624699d935daec051941c5ca3",
       "sha256": "bbc03af66c640b26921f8523d6f91d3bf6ca705b616401a8dbcc22bb5db68a63"
+    },
+    {
+      "revision": 403,
+      "at": 1792549938.2311263,
+      "action": "reconcile-external",
+      "data": {
+        "id": "github-scoped-delivery-39533122745",
+        "status": "confirmed_success",
+        "source": "https://github.com/Kihamda/Kihamda_Game/actions/runs/39533122745",
+        "evidence": {
+          "workflow": "success",
+          "commit": "e378aaaa8c9c90a3d9c61e1abf420f0783e0ce07",
+          "receipt": "business/unity/evidence/cd-delivery-accepted-20261021.json",
+          "http": "all4files+5protectedURLs matched",
+          "browser": "open/F/reload/catalog return passed"
+        }
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "bbc03af66c640b26921f8523d6f91d3bf6ca705b616401a8dbcc22bb5db68a63",
+      "sha256": "6d6d778a41d4431496a805454c268725074d86e5c70c4afdf10b0e159a1caada"
+    },
+    {
+      "revision": 404,
+      "at": 1792549938.3957303,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "manual-cd-resume-20261021",
+        "fence": 68,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "f5893e66327b8208dcab93bacc82b2b2126804ef9e625096a7cb703397bc34f1"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "03f7f9e587000156a591ef1a0f30560bf7c207d5def54de541fb443b084e3c46"
+          },
+          {
+            "path": "business/unity/evidence/cd-delivery-accepted-20261021.json",
+            "sha256": "4b6f199bd775ff0026e57e00f0a3c7da01a37425f9bc74f0c29c194e95daa1f1"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261021.json",
+            "sha256": "4b6f199bd775ff0026e57e00f0a3c7da01a37425f9bc74f0c29c194e95daa1f1"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-initial-accepted-20261021.json",
+            "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "3a3803fbe9cab98048f477c24fcb0ecd6c6211c63bb41d89140afe4497de80b0"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "b29cd307a44a03e327e922af1fe5c619d208362eb8cc27259357c8fc3fa88976"
+          }
+        ],
+        "checks": [
+          "CD39533122745 success64seconds;45minute timeout live on main",
+          "exact-main CI39532880849 success; main read-only reconciliation39532883070 success",
+          "downloaded journal terminal uploaded-awaiting-http-and-browser-acceptance;pending null;version+entry written;assets reused identically",
+          "HTTP all4files,slash route,5protectedURLs and4retained baseline files matched independently",
+          "production browser center open51cells;F flag;reload81unopened0flags;catalog return/reentry passed",
+          "latest release receipt and initial byte archive checked;no full-site publication",
+          "npm check/build,typecheck,eslint,43hashes,4routes,guides8cases and navigation/search passed",
+          "Current task complete; no artificial waiting or redundant gameplay tests"
+        ],
+        "next_step": "次の日次統合で最新公開版登録・受入れ記録をまとめ、実測に基づく次の有意味な改善を選ぶ。新CDは成功しており元runを再送しない。",
+        "passed": true,
+        "work_session": {
+          "started_at": "2026-10-21T02:28:06.323657+00:00",
+          "ended_at": "2026-10-21T02:32:18.275029+00:00",
+          "elapsed_seconds": 251.95,
+          "exit_reason": "User-requested manual CD investigation, main integration, successful scoped production deployment and browser acceptance completed; scheduled-run minimum work window does not apply"
+        }
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "6d6d778a41d4431496a805454c268725074d86e5c70c4afdf10b0e159a1caada",
+      "sha256": "a31fdb86e4494f6496354ce671fa66f3cf4125fbeec2161223504fda8ba73943"
+    },
+    {
+      "revision": 405,
+      "at": 1792549938.4565332,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-cd-resume-20261021",
+        "fence": 68,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "f5893e66327b8208dcab93bacc82b2b2126804ef9e625096a7cb703397bc34f1"
+          },
+          {
+            "path": "business/studio-policy.json",
+            "sha256": "03f7f9e587000156a591ef1a0f30560bf7c207d5def54de541fb443b084e3c46"
+          },
+          {
+            "path": "business/unity/evidence/cd-delivery-accepted-20261021.json",
+            "sha256": "4b6f199bd775ff0026e57e00f0a3c7da01a37425f9bc74f0c29c194e95daa1f1"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261021.json",
+            "sha256": "4b6f199bd775ff0026e57e00f0a3c7da01a37425f9bc74f0c29c194e95daa1f1"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-initial-accepted-20261021.json",
+            "sha256": "aebb9195c073f10eec87357c5172f10702e50afe71d064ddc64a5332c22e23a6"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "3a3803fbe9cab98048f477c24fcb0ecd6c6211c63bb41d89140afe4497de80b0"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "b29cd307a44a03e327e922af1fe5c619d208362eb8cc27259357c8fc3fa88976"
+          }
+        ],
+        "checks": [
+          "CD39533122745 success64seconds;45minute timeout live on main",
+          "exact-main CI39532880849 success; main read-only reconciliation39532883070 success",
+          "downloaded journal terminal uploaded-awaiting-http-and-browser-acceptance;pending null;version+entry written;assets reused identically",
+          "HTTP all4files,slash route,5protectedURLs and4retained baseline files matched independently",
+          "production browser center open51cells;F flag;reload81unopened0flags;catalog return/reentry passed",
+          "latest release receipt and initial byte archive checked;no full-site publication",
+          "npm check/build,typecheck,eslint,43hashes,4routes,guides8cases and navigation/search passed",
+          "Current task complete; no artificial waiting or redundant gameplay tests"
+        ],
+        "next_step": "次の日次統合で最新公開版登録・受入れ記録をまとめ、実測に基づく次の有意味な改善を選ぶ。新CDは成功しており元runを再送しない。",
+        "passed": true,
+        "work_session": {
+          "started_at": "2026-10-21T02:28:06.323657+00:00",
+          "ended_at": "2026-10-21T02:32:18.275029+00:00",
+          "elapsed_seconds": 251.95,
+          "exit_reason": "User-requested manual CD investigation, main integration, successful scoped production deployment and browser acceptance completed; scheduled-run minimum work window does not apply"
+        }
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "a31fdb86e4494f6496354ce671fa66f3cf4125fbeec2161223504fda8ba73943",
+      "sha256": "9272f85d32e3f96dca5891f6ff97193acf2c3c7850aa1901ef5d09cf0a3d90bc"
     }
   ],
-  "projection_sha256": "10d1e6a20e56dcbab4ef0adad53464e02a1cccf73893106c34efe4aa2649086d"
+  "projection_sha256": "5838e480e61c0ee4e035bbfdcc4e0d82b829aff716dabd8de98a922027e743bc"
 }

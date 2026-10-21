@@ -1,6 +1,6 @@
 # MineRushの限定配信と復旧
 
-## 現在の本番
+## 初回配信の受入れ
 
 2026-10-21に受入れ済み。公開URLはhttps://game.kihamda.net/games/minerush/ 。ソースは2bc5d74eef7386aecd1fc39fc42d177d817ad916、成功CIは39445834759。候補manifest.jsonのSHA-256は2ad053d3798d2996d3e0d795671c75d1fcbd55e7bcd4733bb9b9b4b7c6c5169f。公開登録のsha256もこのmanifestを指し、ZIPのハッシュとは区別する。
 
@@ -10,7 +10,7 @@
 
 本番のPC版Chromiumで、開封、矢印・F・Enter・Space、旗モード、再読み込みによる盤面・旗初期化、一覧への往復を確認した。390×844と1280×720で横はみ出しなし。ゲームオーバー表示、終了後セル無効化、リセットも確認した。初回遷移では旧表示が見えたが、意図的な再読み込み後と一覧からの再入場では新専用JSを読み込んだ。全キャッシュ環境での即時切替は保証しない。
 
-受入証跡はbusiness/unity/evidence/scoped-production-accepted-20261021.json。実タッチ、Safari、人間の初見理解・面白さ、別PC復元、本番への復旧書込みは未確認。後続の実ブラウザ検査ではクリア状態（71マス・旗10）とリセットをDOMで確認した。クリア時の画像は空フレームとなり、画像証跡には採用していない。詳細はbusiness/unity/evidence/scoped-recovery-proof-20261021.json。利益・訪問・開始・完了・再訪の指標はnull。
+初回の受入証跡はbusiness/unity/evidence/scoped-production-initial-accepted-20261021.json。実タッチ、Safari、人間の初見理解・面白さ、別PC復元、本番への復旧書込みは未確認。後続の実ブラウザ検査ではクリア状態（71マス・旗10）とリセットをDOMで確認した。クリア時の画像は空フレームとなり、画像証跡には採用していない。詳細はbusiness/unity/evidence/scoped-recovery-proof-20261021.json。利益・訪問・開始・完了・再訪の指標はnull。
 
 ## 配信の範囲と前提
 
@@ -67,9 +67,9 @@ python business/ops/scoped_upload.py recover <展開先>/transaction.json --pack
 
 保持した旧依存アセットが本番で変わっていないことと、現在の本番HTML・版が旧バイトまたはそのtransactionの新バイトであることを確認してから戻す。第三者の更新は上書きしない。旧版ファイルが存在した場合はそのバイトも戻す。旧版ファイルがなかった場合、新しい版マーカー、未参照アセット、一時ファイルは残す。版マーカー単独を配信成功の証拠にしない。復旧後もHTTPの旧HTML両URL・旧版・対象外URLと、実ブラウザの操作確認が必要。
 
-## 今回のローカル改善と統合待ち
+## 修正の統合経緯
 
-公開版登録と確認環境、中断後の読取り専用照合workflow、共通の復元証跡照合、recoverの必須引数、配信job制限20→45分は次の日次統合用のローカル変更。今日の追加PR・再デプロイは行わず、本番トップも変更していない。これらのworkflowと新しい復旧照合はまだmainにない。本番の配信版は引き続き2bc5d74。
+公開版登録と確認環境、中断後の読取り専用照合workflow、共通の復元証跡照合、recoverの必須引数、配信job制限20→45分は、本人の追加依頼に従ってPR31でmainへ統合した。本番トップは変更していない。統合と新配信の結果は末尾を参照する。
 
 アップロード前にも共通checked_preflightで復元元の版・ハッシュ・件数・サイズ・重複・symlink・静的依存の欠落を検査し、不正な場合は認証接続前に止める。復元対象の.mjsも依存をたどり、HTTPS・FTPSの読込み中に1応答64MiBを超えた場合は停止する。HTML2件だけでも合計上限を検査する。
 
@@ -82,3 +82,11 @@ python business/ops/scoped_upload.py recover <展開先>/transaction.json --pack
 ## 2026-10-21 CD継続の調査
 
 本人の原因調査・デプロイ続行依頼で、翌日統合待ちを解除した。run39445984592のGitHub check annotationは「The job has exceeded the maximum execution time of 20m0s」。job開始00:12:15JST、終了00:32:31JST、初回復元元照合は8分32秒だった。全4ファイルの書込み後に旧209件を再照合する実装に対して20分枠が不足した。ローカルの45分制限、段階別journal更新と進捗出力、オフライン保持物検査・読取り専用reconcileがmainに未統合だった。元runを再実行せず、修正のexact-head CI・main統合と現状照合を先に行い、新しいCI候補による限定配信を継続する。98テストと元209件のオフライン復旧検査が成功。GitHubでの新しい照合・配信結果は別証跡へ保存する。
+
+## 修正版CDの完了
+
+PR31のhead285d709はCI39532711918のLinux44秒・Windows49秒成功後、e378aaaaへhead指定でマージ。main CI39532880849と読取り専用照合39532883070も成功し、旧208依存の一致と209件のオフライン復旧を再確認した。
+
+新しい限定CD39533122745は2026-10-21 11:27:36〜11:28:40JSTの64秒でsuccess。今回は旧ゲームが既に独立バンドルへ切り替わっており、復元対象は旧209件から4件になった。45分枠への変更だけで高速化したという意味ではない。候補JS/CSS/HTMLは初回版と同一のためJS/CSSは再利用し、版マーカーとHTMLを更新した。mainの版e378aaaa、候補全4ファイル・末尾スラッシュURL、対象外5URLと新復元元の照合が成功した。元CDの再実行や本番の復旧書込みは行っていない。
+
+本番ブラウザで中央の通常開封51マス、Fキーで旗1、再読込みで未開封81・旗0、旧本番一覧からの再入場を確認。最新証跡はbusiness/unity/evidence/cd-delivery-accepted-20261021.jsonとscoped-production-accepted-20261021.json、初回の元証跡はscoped-production-initial-accepted-20261021.jsonへバイト一致で保全した。復元元はscoped-delivery-39533122745/scoped-recovery。公開登録と最新記録は次の日次統合用にローカル保存し、通常ポータル全体は本番へ配信しない。

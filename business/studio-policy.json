@@ -64,7 +64,7 @@
   "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
   "currentProject": "web-portal",
   "currentPriority": "verified-daily-delivery",
-  "nextStep": "選択読込の新手順で既存検証版と本番の差分・配信対象パスを照合し、サイト全体置換を避ける最小配信を実装・検証して実デプロイへ進める。",
+  "nextStep": "CD修正はmainへ統合しMineRushの限定配信39533122745と本番受入れが成功。次の日次統合で最新公開登録と配信記録をまとめ、実測から利用者に届く改善を一つ選ぶ。元配信を重複dispatchしない。",
   "workflow": "docs/autonomous-workflow.md",
   "codingConventions": "docs/coding-conventions.md",
   "startupContextCommand": "python business/ops/context.py",
