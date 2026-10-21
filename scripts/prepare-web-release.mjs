@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { existsSync, realpathSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, realpathSync, renameSync, rmSync } from 'node:fs';
 import { basename, dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -44,8 +44,22 @@ cleanSources();
 assert.equal(git(['rev-parse', 'HEAD']), commit, 'HEAD changed during preparation');
 run(['scripts/check-web-build.mjs']);
 checkedOutput();
-run(['scripts/web-release-package.mjs', 'create', 'web/dist', output, commit]);
-run(['scripts/web-release-package.mjs', 'verify', output]);
-cleanSources();
-assert.equal(git(['rev-parse', 'HEAD']), commit, 'HEAD changed during verification');
+const artifacts = resolve(root, 'artifacts');
+mkdirSync(artifacts, { recursive: true });
+const temporary = mkdtempSync(resolve(artifacts, '.release-prepare-'));
+try {
+  const candidate = resolve(temporary, 'package');
+  run(['scripts/web-release-package.mjs', 'create', 'web/dist', candidate, commit]);
+  run(['scripts/web-release-package.mjs', 'verify', candidate]);
+  cleanSources();
+  assert.equal(git(['rev-parse', 'HEAD']), commit, 'HEAD changed during verification');
+  checkedOutput();
+  assert(!existsSync(output), 'Use a new output directory; retained packages must survive');
+  mkdirSync(dirname(output), { recursive: true });
+  renameSync(candidate, output);
+} finally {
+  // Only this invocation's private staging directory is removed.
+  assert.equal(dirname(temporary), artifacts);
+  rmSync(temporary, { recursive: true, force: true });
+}
 console.log(`Prepared verified Web retention package ${output} from ${commit}. No deployment.`);

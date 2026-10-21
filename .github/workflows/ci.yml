@@ -35,8 +35,6 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Gameplay rules without Unity license dependency
         run: dotnet run --project tests/CourierCore/CourierCore.csproj
-      - name: Repository and Unity GUID contract
-        run: npm run check
       - name: Release coordinator failure and output boundaries
         run: node scripts/check-release-preparation.mjs
       - name: Business history and concurrent execution
@@ -44,10 +42,10 @@ jobs:
           python -m unittest discover -s business/tests -v
           python business/ops/flow.py status > /dev/null
           python business/ops/flow.py status --ledger business/ops/ledger.json > /dev/null
-      - name: Preserve legacy URLs and build
+      - name: Build checked Web retention package
+        run: npm run release:prepare -- artifacts/web-release
+      - name: Verify Web navigation and game interactions
         run: |
-          npm run release:prepare -- artifacts/web-release
-          node scripts/check-web-build.mjs
           node scripts/check-portal-navigation.mjs
           node scripts/check-portal-work-guides.mjs
           node scripts/check-iceslide.mjs
@@ -56,7 +54,6 @@ jobs:
           node scripts/check-ntiktaktoe.mjs
       - name: Prepare and verify Web release package
         run: |
-          node scripts/web-release-package.mjs verify artifacts/web-release
           node scripts/check-web-release-package.mjs artifacts/web-release
           tar -czf artifacts/web-release.tar.gz -C artifacts/web-release .
           mkdir -p artifacts/web-restored

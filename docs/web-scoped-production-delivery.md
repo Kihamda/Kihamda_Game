@@ -87,6 +87,8 @@ python business/ops/scoped_upload.py recover <展開先>/transaction.json --pack
 
 出力先は既存の親ディレクトリの実パスまで解決し、ジャンクションやシンボリックリンクを通してartifacts外へ出る指定も拒否する。ビルド後、パッケージ作成の直前にも確認する。`node scripts/check-release-preparation.mjs`は隔離したGitリポジトリで工程失敗、未コミット変更、途中のHEAD変更、出力先のリンク変更を検査する。子ツールはfixtureのため、実ビルドと成果物の復元検証を代替しない。CIではこの検査をLinux・Windowsで実行し、Linuxの実保管版作成もrelease:prepareを使う。ローカル変更の検査成功と、GitHub上でのCI成功は区別する。
 
+パッケージは実行ごとの一時ディレクトリで作成・検証し、最終のソースとHEADの照合後に指定先へ移す。検証失敗時は指定先へ完成品を出さず、その実行の一時ディレクトリだけを削除する。確定直前にも出力先の実パスと不存在を確認し、途中で別の出力が作られていた場合は上書きせず停止する。プロセスの強制終了や電源断で残った一時ディレクトリは、指定先の完成品とは区別する。
+
 通常Web版のゲームHTML生成では、入口JSとともに共通CSSも引き継ぐ。従来はゲームURLを再読み込みすると共通CSSがなくなり、同一ページ内の遷移で作品一覧・紹介へ戻った際に表示が崩れた。9826105で修正し、4作品からの一覧復帰と、MineRushの390px・1280pxでの再読み込み・検索条件保持を確認した。専用配信版MineRushと本番トップのファイルは変更していない。
 
 改変journal・誤った復元元・部分切替・第三者更新・通信境界での切断を含む検査と、実保持artifactの旧209件を使った偽FTPの復旧を確認した。今回の検査数・実時刻・最終ハッシュはbusiness/unity/evidence/scoped-hardening-integration.jsonと正本checkpointを参照する。実サーバーの復旧成功とは扱わない。過去の部分実装はGit履歴とbusiness/unity/evidence/scoped-delivery-20261021.jsonに保全している。
