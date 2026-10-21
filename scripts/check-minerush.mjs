@@ -100,6 +100,13 @@ function assertSafeProgress() {
     'progress must match revealed safe cells, excluding flags and exposed mines');
 }
 const touchMenu = {type:'contextmenu',nativeEvent:{pointerType:'touch'},preventDefault(){}};
+const touchClick = {...click,nativeEvent:{pointerType:'touch'}};
+loadGame(createGame(9,9,10));
+cell().onTouchStart(touch); cell().onTouchCancel(); fireTimers(); cell().onClick(touchClick);
+assert.match(cell()['aria-label'], /未開封$/, 'an explicit touch compatibility click after cancellation stays suppressed');
+loadGame(createGame(9,9,10));
+cell().onTouchStart(touch); fireTimers(); cell().onTouchEnd(); cell().onClick(touchClick);
+assert.match(cell()['aria-label'], /旗あり$/, 'an explicit touch compatibility click after a long press must not reveal or toggle again');
 loadGame(createGame(9,9,10));
 cell().onTouchStart(touch); cell().onTouchCancel(); fireTimers();
 cell().onContextMenu(touchMenu);
