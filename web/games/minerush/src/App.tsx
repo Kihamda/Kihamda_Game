@@ -23,6 +23,7 @@ export default function App() {
   );
 
   const longPressTimer = useRef<number | null>(null);
+  const activeTouchCell = useRef<string | null>(null);
   const suppressedTouchCell = useRef<string | null>(null);
   const [flagMode, setFlagMode] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -33,7 +34,26 @@ export default function App() {
       longPressTimer.current = null;
     }
   }, []);
-  useEffect(() => cancelLongPress, [cancelLongPress]);
+  const interruptTouch = useCallback(() => {
+    cancelLongPress();
+    if (activeTouchCell.current !== null) {
+      suppressedTouchCell.current = activeTouchCell.current;
+      activeTouchCell.current = null;
+    }
+  }, [cancelLongPress]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) interruptTouch();
+    };
+    window.addEventListener("blur", interruptTouch);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      cancelLongPress();
+      window.removeEventListener("blur", interruptTouch);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [cancelLongPress, interruptTouch]);
 
   // ScorePopup state
   const [popupText, setPopupText] = useState<string | null>(null);
@@ -52,7 +72,7 @@ export default function App() {
   );
 
   const { playTone } = useAudio();
-  const { particles, sparkle, confetti, explosion } = useParticles();
+  const { particles, sparkle, confetti, explosion, clear: clearParticles } = useParticles();
 
   const playReveal = useCallback(() => {
     playTone(600, 0.05, "sine");
@@ -72,9 +92,12 @@ export default function App() {
 
   const handleReset = useCallback(() => {
     cancelLongPress();
+    activeTouchCell.current = null;
     suppressedTouchCell.current = null;
+    setPopupText(null);
+    clearParticles();
     setGame(createGame(ROWS, COLS, MINE_COUNT));
-  }, [cancelLongPress]);
+  }, [cancelLongPress, clearParticles]);
 
   const handleCellClick = useCallback(
     (row: number, col: number) => {
@@ -131,6 +154,7 @@ export default function App() {
   const handleTouchStart = useCallback(
     (row: number, col: number) => {
       cancelLongPress();
+      activeTouchCell.current = `${row}-${col}`;
       suppressedTouchCell.current = null;
       longPressTimer.current = window.setTimeout(() => {
         suppressedTouchCell.current = `${row}-${col}`;
@@ -213,7 +237,10 @@ export default function App() {
           cancelLongPress();
           suppressedTouchCell.current = `${row}-${col}`;
         }}
-        onTouchEnd={cancelLongPress}
+        onTouchEnd={() => {
+          cancelLongPress();
+          activeTouchCell.current = null;
+        }}
         onTouchCancel={() => {
           cancelLongPress();
           suppressedTouchCell.current = `${row}-${col}`;

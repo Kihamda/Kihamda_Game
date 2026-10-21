@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { getEventListeners } from 'node:events';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
@@ -11,20 +12,42 @@ const compiled = await build({
   external: ['react', 'react/jsx-runtime', 'minerush-test-effects'], loader: { '.css': 'empty' },
   alias: { '@shared': `${web}src/shared` },
   plugins: [{ name: 'headless-effects', setup(builder) {
-    builder.onLoad({ filter: /shared[\\/]index\.ts$/ }, () => ({ contents: 'import {effects} from "minerush-test-effects"; export const useAudio=()=>({playTone:()=>{effects.tones++;}}); export const useParticles=()=>({particles:[],sparkle:()=>{},confetti:()=>{effects.confetti++;},explosion:()=>{effects.explosions++;}}); export const ScorePopup=()=>null; export const ParticleLayer=()=>null;', loader: 'ts' }));
+    builder.onLoad({ filter: /shared[\\/]index\.ts$/ }, () => ({ contents: 'import {effects} from "minerush-test-effects"; export const useAudio=()=>({playTone:()=>{effects.tones++;}}); export const useParticles=()=>({particles:[],sparkle:()=>{},confetti:()=>{effects.confetti++;},explosion:()=>{effects.explosions++;},clear:()=>{effects.clears++;}}); export const ScorePopup=()=>null; export const ParticleLayer=()=>null;', loader: 'ts' }));
     builder.onLoad({ filter: /GameShell\.tsx$/ }, () => ({ contents: 'export const GameShell=()=>null;', loader: 'tsx' }));
   } }],
 });
 let slots = [], cursor = 0, timers = new Map(), id = 0;
-const cleanups = [];
-const effects = { tones: 0, confetti: 0, explosions: 0 };
+const cleanups = new Map();
+function unmount() {
+  cleanups.forEach(effect => effect.cleanup?.());
+  cleanups.clear();
+}
+const effects = { tones: 0, confetti: 0, explosions: 0, clears: 0 };
 const react = {
   useRef(value) { const i = cursor++; if (!(i in slots)) slots[i] = {current:value}; return slots[i]; },
   useState(initial) { const i = cursor++; if (!(i in slots)) slots[i] = typeof initial === 'function' ? initial() : initial; return [slots[i], value => {slots[i] = typeof value === 'function' ? value(slots[i]) : value;}]; },
-  useCallback: fn => fn,
-  useEffect: fn => cleanups.push(fn()),
+  useCallback(fn, deps) {
+    const i = cursor++;
+    const previous = slots[i];
+    if (!previous || previous.deps.length !== deps.length ||
+        !deps.every((value,index) => Object.is(value,previous.deps[index]))) {
+      slots[i] = {value:fn,deps};
+    }
+    return slots[i].value;
+  },
+  useEffect(fn, deps) {
+    const i = cursor++;
+    const previous = cleanups.get(i);
+    if (previous && deps?.length === previous.deps?.length &&
+        deps?.every((value,index) => Object.is(value,previous.deps[index]))) return;
+    previous?.cleanup?.();
+    cleanups.set(i,{deps,cleanup:fn()});
+  },
 };
-globalThis.window = {setTimeout(fn) {timers.set(++id, fn); return id;}};
+globalThis.window = new EventTarget();
+window.setTimeout = fn => {timers.set(++id, fn); return id;};
+globalThis.document = new EventTarget();
+document.hidden = false;
 globalThis.clearTimeout = key => timers.delete(key);
 const module = {exports:{}};
 new Function('require', 'module', 'exports', compiled.outputFiles[0].text)(name => name === 'react' ? react : name === 'minerush-test-effects' ? {effects} : name === 'react/jsx-runtime' ? {jsx:(type,props)=>({type,props}),jsxs:(type,props)=>({type,props})} : require(name), module, module.exports);
@@ -62,12 +85,12 @@ cell().onTouchStart(touch); fireTimers(); cell(1,2).onClick(click);
 assert.match(cell(1,2)['aria-label'], /旗あり$/, 'long press must not swallow another cell click');
 button('minerush-mode-btn').onClick(); cell(2,1).onClick({...click,detail:0});
 assert.match(cell(2,1)['aria-label'], /開いたマス/, 'first open stays safe');
-cell(9,9).onTouchStart(touch); cleanups.forEach(fn=>fn?.()); assert.equal(timers.size,0,'unmount clears timer');
+cell(9,9).onTouchStart(touch); unmount(); assert.equal(timers.size,0,'unmount clears timer');
 
 // Reach terminal states through the real rules, then invoke the actual App handlers.
 const { createGame, revealCell } = module.exports;
 function loadGame(game) {
-  slots = []; cursor = 0; cleanups.length = 0; render();
+  unmount(); slots = []; cursor = 0; render();
   slots[0] = game;
 }
 const originalRandom = Math.random;
@@ -109,4 +132,35 @@ assert.equal(effects.tones,before.tones+1,'winning transition has one tone');
 before = {...effects};
 cell(finalCell[0]+1,finalCell[1]+1).onClick(click);
 assert.deepEqual(effects,before,'clicking a revealed cell after winning must not replay effects');
-console.log('MineRush actual App input handlers: keyboard, flags, long press, drag/cancel, multitouch, reset, unmount, single terminal effects passed');
+button('minerush-reset-btn').onClick();
+assert.equal(find(render(), n=>Object.hasOwn(n.props ?? {}, 'popupKey')).props.text,null,
+  'reset must immediately remove the previous round popup');
+assert.equal(effects.clears,before.clears+1,'reset must clear previous round particles');
+
+for (const interruption of ['blur','hidden']) {
+  loadGame(createGame(9,9,10));
+  cell().onTouchStart(touch);
+  cell();
+  assert.equal(timers.size,1,'ordinary rerender must preserve an active gesture');
+  assert.equal(getEventListeners(window,'blur').length,1,'rerender must not duplicate global handlers');
+  if (interruption === 'blur') window.dispatchEvent(new Event('blur'));
+  else { document.hidden = true; document.dispatchEvent(new Event('visibilitychange')); }
+  fireTimers();
+  assert.match(cell()['aria-label'], /未開封$/, `${interruption} must cancel the pending flag`);
+  cell().onTouchEnd();
+  cell().onClick(click);
+  assert.match(cell()['aria-label'], /未開封$/, `${interruption} must suppress the interrupted touch click`);
+  document.hidden = false;
+  document.dispatchEvent(new Event('visibilitychange'));
+  cell().onTouchStart(touch); fireTimers(); cell().onTouchEnd(); cell().onClick(click);
+  assert.match(cell()['aria-label'], /旗あり$/, 'a fresh gesture after interruption still flags once');
+  cell().onKeyDown(key('f'));
+  cell().onClick({...click,detail:0});
+  assert.match(cell()['aria-label'], /開いたマス/, 'keyboard activation remains available');
+}
+cell().onTouchStart(touch);
+unmount();
+assert.equal(timers.size,0,'unmount cancels the last pending gesture');
+assert.equal(getEventListeners(window,'blur').length,0,'unmount removes blur listener');
+assert.equal(getEventListeners(document,'visibilitychange').length,0,'unmount removes visibility listener');
+console.log('MineRush actual App input handlers: keyboard, flags, long press, drag/cancel, multitouch, reset effects, blur/visibility interruption, unmount, single terminal effects passed');
