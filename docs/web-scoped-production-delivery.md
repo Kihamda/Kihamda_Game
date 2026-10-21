@@ -78,3 +78,7 @@ python business/ops/scoped_upload.py recover <展開先>/transaction.json --pack
 通常Web版のゲームHTML生成では、入口JSとともに共通CSSも引き継ぐ。従来はゲームURLを再読み込みすると共通CSSがなくなり、同一ページ内の遷移で作品一覧・紹介へ戻った際に表示が崩れた。9826105で修正し、4作品からの一覧復帰と、MineRushの390px・1280pxでの再読み込み・検索条件保持を確認した。専用配信版MineRushと本番トップのファイルは変更していない。
 
 改変journal・誤った復元元・部分切替・第三者更新・通信境界での切断を含む検査と、実保持artifactの旧209件を使った偽FTPの復旧を確認した。今回の検査数・実時刻・最終ハッシュはbusiness/unity/evidence/scoped-hardening-integration.jsonと正本checkpointを参照する。実サーバーの復旧成功とは扱わない。過去の部分実装はGit履歴とbusiness/unity/evidence/scoped-delivery-20261021.jsonに保全している。
+
+## 2026-10-21 CD継続の調査
+
+本人の原因調査・デプロイ続行依頼で、翌日統合待ちを解除した。run39445984592のGitHub check annotationは「The job has exceeded the maximum execution time of 20m0s」。job開始00:12:15JST、終了00:32:31JST、初回復元元照合は8分32秒だった。全4ファイルの書込み後に旧209件を再照合する実装に対して20分枠が不足した。ローカルの45分制限、段階別journal更新と進捗出力、オフライン保持物検査・読取り専用reconcileがmainに未統合だった。元runを再実行せず、修正のexact-head CI・main統合と現状照合を先に行い、新しいCI候補による限定配信を継続する。98テストと元209件のオフライン復旧検査が成功。GitHubでの新しい照合・配信結果は別証跡へ保存する。

@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 392,
+  "revision": 395,
   "business_id": "game-site",
-  "fence": 66,
-  "lease": null,
+  "fence": 67,
+  "lease": {
+    "run_id": "manual-cd-repair-20261021",
+    "task_id": "T-web-delivery-hardening-integration-20261021",
+    "fence": 67,
+    "expires_at": 1792551099.2860303
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -9267,7 +9272,7 @@
       "experiment_id": "E-unity-portal",
       "source": "scheduled-parent:unity-20261021T0100-reconcile; daily PR already merged on2026-10-21; local source50c66d3",
       "next_step": "2026-10-22の日次統合でローカル50c66d3以降をまとめ、同版CIと復元検査後にhead指定マージ。今日の追加PRや再デプロイは不要。",
-      "status": "ready",
+      "status": "running",
       "checkpoints": [
         {
           "run_id": "unity-20261021T0656-integration",
@@ -9448,6 +9453,12 @@
           "task_id": "T-web-delivery-hardening-integration-20261021",
           "fence": 66,
           "expires_at": 1792535240.953846
+        },
+        {
+          "run_id": "manual-cd-repair-20261021",
+          "task_id": "T-web-delivery-hardening-integration-20261021",
+          "fence": 67,
+          "expires_at": 1792551099.2860303
         }
       ]
     }
@@ -10117,6 +10128,12 @@
       "source": "user:automation:unity:20261021-0700-arrived-early; no future slot claimed",
       "status": "checkpointed",
       "started_at": 1792533440.9077291
+    },
+    "manual-cd-repair-20261021": {
+      "run_id": "manual-cd-repair-20261021",
+      "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
+      "status": "open",
+      "started_at": 1792549299.228013
     }
   },
   "experiments": {
@@ -10382,6 +10399,12 @@
       "message": "３０分動かずに５分とかで終わっちゃうんだよね",
       "next_step": "定期枠を原則25分の制作・検証と5分の保存へ変更し、早期yieldの条件と実稼働時間の記録を明確にする",
       "at": 1792504880.1636946
+    },
+    {
+      "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
+      "message": "何かcd失敗してる。原因究明あんどデプロイ続行",
+      "next_step": "中断CDの実状態を照合し、既存修正をCI後mainへ統合して検証済み限定配信を続行する。今回の直接依頼に従い翌日日次統合待ちを解除する",
+      "at": 1792549299.1671946
     }
   ],
   "approvals": [
@@ -24468,7 +24491,54 @@
       },
       "previous": "42405cfe1317b5addc071825c7712ac09bf3697f89229980d74ee89eaab4eea4",
       "sha256": "c51b07d35c150e67bf7150859ef1764838b83f7bc3a53eb662e1ae4fdf9baa18"
+    },
+    {
+      "revision": 393,
+      "at": 1792549299.1671946,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment",
+        "message": "何かcd失敗してる。原因究明あんどデプロイ続行",
+        "next_step": "中断CDの実状態を照合し、既存修正をCI後mainへ統合して検証済み限定配信を続行する。今回の直接依頼に従い翌日日次統合待ちを解除する"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "c51b07d35c150e67bf7150859ef1764838b83f7bc3a53eb662e1ae4fdf9baa18",
+      "sha256": "59ce3c13d510b3c571822c0a1ded6ca8bb18570029240d7710f1bdcf5d447182"
+    },
+    {
+      "revision": 394,
+      "at": 1792549299.228013,
+      "action": "start",
+      "data": {
+        "run_id": "manual-cd-repair-20261021",
+        "source": "user:current-thread:2026-10-21:investigate-cd-and-continue-deployment"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "59ce3c13d510b3c571822c0a1ded6ca8bb18570029240d7710f1bdcf5d447182",
+      "sha256": "1c707fde27f23df13e1b98b0535f59b50285466f6dbae1eafd5ed160a313980d"
+    },
+    {
+      "revision": 395,
+      "at": 1792549299.2860303,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-cd-repair-20261021",
+        "task_id": "T-web-delivery-hardening-integration-20261021",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "manual-cd-repair-20261021",
+        "task_id": "T-web-delivery-hardening-integration-20261021",
+        "fence": 67,
+        "expires_at": 1792551099.2860303
+      },
+      "previous": "1c707fde27f23df13e1b98b0535f59b50285466f6dbae1eafd5ed160a313980d",
+      "sha256": "eca9472c2ca9a5fd0153d7a26b496c92ecb5fbf17b2ee32e73884a802df09697"
     }
   ],
-  "projection_sha256": "3f4b889550a5c88660cd1ce7a119319b6da28d2a9a501577eeda7f48d466cb94"
+  "projection_sha256": "9918365ef413b3336fdf42800d25a17e2002dbdc0486556f2927e50923828f4d"
 }

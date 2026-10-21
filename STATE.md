@@ -14,7 +14,7 @@
 
 ## 直近の運用改善
 
-現行規約と過去記録を分離し、正本台帳を検証して必要工程だけ読む手順を運用中。詳細はdocs/context-delivery-20261020.md。公開登録を含む保管パッケージの検査と、アップロード前の復元元検査を修正。保持物のオフライン模擬検査を再利用できるコマンドとworkflowへ追加した。ゲーム再読み込み後に一覧・紹介画面のCSSが失われる問題も修正し、4作品からの一覧復帰、390px・1280px、検索条件の保持を実ブラウザで確認。Windows・WSL Linux各98テスト、Linux Node.js22のクリーンビルド、保管・展開と18種類の不正ケース拒否が成功した。最新Webソース9826105。追加PR・本番書込みはなく、次の日次統合で最新headのGitHub CI・mainマージ・読取り専用workflow実行が残る。実サーバーへの復旧は未実施。今回の実時刻・ハッシュ・未確認事項はbusiness/unity/evidence/scoped-hardening-integration.jsonと正本checkpointへ保存する。
+現行規約と過去記録を分離し、正本台帳を検証して必要工程だけ読む手順を運用中。詳細はdocs/context-delivery-20261020.md。公開登録を含む保管パッケージの検査と、アップロード前の復元元検査を修正。保持物のオフライン模擬検査を再利用できるコマンドとworkflowへ追加した。ゲーム再読み込み後に一覧・紹介画面のCSSが失われる問題も修正し、4作品からの一覧復帰、390px・1280px、検索条件の保持を実ブラウザで確認。Windows・WSL Linux各98テスト、Linux Node.js22のクリーンビルド、保管・展開と18種類の不正ケース拒否が成功した。最新Webソース9826105。本人のCD原因調査・デプロイ続行依頼により翌日待ちを解除し、fix/scoped-cd-timeout-20261021で最新headのGitHub CI・main反映・中断runの読取り専用照合と限定再配信を進める。20分timeoutのannotationを確認済み。実サーバーへの復旧は未実施。今回の実時刻・ハッシュ・未確認事項はbusiness/unity/evidence/scoped-hardening-integration.jsonと正本checkpointへ保存する。
 
 ## 履歴を調べる場合
 
