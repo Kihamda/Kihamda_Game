@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 454,
+  "revision": 459,
   "business_id": "game-site",
-  "fence": 77,
+  "fence": 78,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -10714,6 +10714,116 @@
           ],
           "next_step": "次の日次統合で進捗と保管コマンドをCI後に配信する。今日はCD39631591189受入れ済み、再dispatch/記録専用PRなし。",
           "at": 1792600194.083626
+        },
+        {
+          "run_id": "unity-20261022T0656-package-acceptance",
+          "fence": 78,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/release-coordinator-input-20261022-0700.json",
+              "sha256": "08777f661f96c6015a0c708bb599f0f5c77f96e00cda1c1a561e8ea68a7178d0"
+            }
+          ],
+          "checks": [
+            "25coordinatorcases Windows/Linux;42contentfiles equal;finalWebsource7925ba0",
+            "Actualnormal/scoped mixedinput,win71/reset,320/390,no physicaltouch claim",
+            "Retained209fileoverlay browser roundtrip and local previous5f9 entry52opened/catalog accepted;fakeFTP recovery passed",
+            "Remote main/PR32/CD accepted independently read;live10URLs match;no newproductionwrites",
+            "Preserved original454events and owner/AGENTS/policy/legacyledger/workspace;only selected paths read",
+            "Partial checkpoint before final provenance/session save;continue final scope/recovery evidence review"
+          ],
+          "next_step": "Finalize same source provenance and measured session,then yield unfinished nextdailyintegration;no extra PR or deployment today.",
+          "at": 1792621143.2301352
+        },
+        {
+          "run_id": "unity-20261022T0656-package-acceptance",
+          "fence": 78,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "8d1d88e8fec1600e7adb0c7c50eb93f2862f6020e99bffa86967c557ca38d3b6"
+            },
+            {
+              "path": "business/unity/evidence/release-coordinator-input-20261022-0700.json",
+              "sha256": "04777301a28db7e483ba1fe85e498869dbb2bd714c77fe10b1f4a891586e8615"
+            },
+            {
+              "path": "scripts/prepare-web-release.mjs",
+              "sha256": "5e1b0e27d509668c0a971fb6a03ccad3a683fb6b318cf3cbc94ff905dcfa84cf"
+            },
+            {
+              "path": "scripts/check-release-preparation.mjs",
+              "sha256": "19b623fb6dd38593c5da82657c94bc7b0c6208c044eba1edb521ddc47b4a8677"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "13ecdcdfaaa315300cde47ac3d8b759e4e7282797e37563fd47db91634e881c9"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "357b7df8cf7f6fb07cca43b8f4a75e694f7b141a14f869a0814df3b45a3d91bd"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "8149fa0f701af36a6f96d9c00efb01dd18be8b397698edb6ce60248c2620bb75"
+            }
+          ],
+          "checks": [
+            "Current rules/context/selected task and relevant wrapper/CI/App/retained delivery evidence read",
+            "25coordinatorcases bothOS;44files9pages;42contentfiles and all non-time metadata equal;GitHubCI notrun",
+            "ActualApp regression oldfail/newpass;normal/scoped mixedinput,71safe10flags/reset,320/390;touch is synthetic",
+            "209fileoverlay navigation and local5f9 restore52opened/catalog accepted;fakeFTP recovery only;productionrollback untested",
+            "Read-only GitHub main5f9/PR32/CD39631591189 and live10URLs match;one dailydeploy;no newexternalwrites",
+            "Original454events and owner/AGENTS/policy/legacyledger/workspace preserved;hiddenpath source hashes inside receipt;guard notrelaxed",
+            "work_session={\"started_at\": \"2026-10-22T06:56:17.709378+09:00\", \"start_basis\": \"first explicit clock;startup reading began earlier\", \"ended_at\": \"2026-10-22T07:21:44.736129+09:00\", \"elapsed_seconds\": 1527.027, \"exit_reason\": \"Implementation, cross-platform real package parity, browser input/win/reset, retained overlay recovery and final provenance review completed; save same unfinished daily integration.\", \"artificial_waits\": false}"
+          ],
+          "next_step": "次の日次PRで進捗・タッチ中断後入力・保管版作成/CI/LF規約と公開記録をまとめ、exact-head Linux/Windows CI、mainCI、preflight、限定配信と実受入れ後だけrelease更新。本日CD再dispatch/記録専用PRなし。",
+          "at": 1792621304.774314
+        },
+        {
+          "run_id": "unity-20261022T0656-package-acceptance",
+          "fence": 78,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "8d1d88e8fec1600e7adb0c7c50eb93f2862f6020e99bffa86967c557ca38d3b6"
+            },
+            {
+              "path": "business/unity/evidence/release-coordinator-input-20261022-0700.json",
+              "sha256": "04777301a28db7e483ba1fe85e498869dbb2bd714c77fe10b1f4a891586e8615"
+            },
+            {
+              "path": "scripts/prepare-web-release.mjs",
+              "sha256": "5e1b0e27d509668c0a971fb6a03ccad3a683fb6b318cf3cbc94ff905dcfa84cf"
+            },
+            {
+              "path": "scripts/check-release-preparation.mjs",
+              "sha256": "19b623fb6dd38593c5da82657c94bc7b0c6208c044eba1edb521ddc47b4a8677"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "13ecdcdfaaa315300cde47ac3d8b759e4e7282797e37563fd47db91634e881c9"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "357b7df8cf7f6fb07cca43b8f4a75e694f7b141a14f869a0814df3b45a3d91bd"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "8149fa0f701af36a6f96d9c00efb01dd18be8b397698edb6ce60248c2620bb75"
+            }
+          ],
+          "checks": [
+            "Current rules/context/selected task and relevant wrapper/CI/App/retained delivery evidence read",
+            "25coordinatorcases bothOS;44files9pages;42contentfiles and all non-time metadata equal;GitHubCI notrun",
+            "ActualApp regression oldfail/newpass;normal/scoped mixedinput,71safe10flags/reset,320/390;touch is synthetic",
+            "209fileoverlay navigation and local5f9 restore52opened/catalog accepted;fakeFTP recovery only;productionrollback untested",
+            "Read-only GitHub main5f9/PR32/CD39631591189 and live10URLs match;one dailydeploy;no newexternalwrites",
+            "Original454events and owner/AGENTS/policy/legacyledger/workspace preserved;hiddenpath source hashes inside receipt;guard notrelaxed",
+            "work_session={\"started_at\": \"2026-10-22T06:56:17.709378+09:00\", \"start_basis\": \"first explicit clock;startup reading began earlier\", \"ended_at\": \"2026-10-22T07:21:44.736129+09:00\", \"elapsed_seconds\": 1527.027, \"exit_reason\": \"Implementation, cross-platform real package parity, browser input/win/reset, retained overlay recovery and final provenance review completed; save same unfinished daily integration.\", \"artificial_waits\": false}"
+          ],
+          "next_step": "次の日次PRで進捗・タッチ中断後入力・保管版作成/CI/LF規約と公開記録をまとめ、exact-head Linux/Windows CI、mainCI、preflight、限定配信と実受入れ後だけrelease更新。本日CD再dispatch/記録専用PRなし。",
+          "at": 1792621304.827531
         }
       ],
       "claims": [
@@ -10722,6 +10832,12 @@
           "task_id": "T-minerush-progress-daily-integration-20261023",
           "fence": 77,
           "expires_at": 1792600793.6610093
+        },
+        {
+          "run_id": "unity-20261022T0656-package-acceptance",
+          "task_id": "T-minerush-progress-daily-integration-20261023",
+          "fence": 78,
+          "expires_at": 1792621602.1617947
         }
       ]
     }
@@ -11478,6 +11594,12 @@
       "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
       "status": "checkpointed",
       "started_at": 1792600193.6044993
+    },
+    "unity-20261022T0656-package-acceptance": {
+      "run_id": "unity-20261022T0656-package-acceptance",
+      "source": "user:automation:unity:2026-10-22T07:00:00+09:00:early-start",
+      "status": "checkpointed",
+      "started_at": 1792619802.1123009
     }
   },
   "experiments": {
@@ -27925,7 +28047,175 @@
       },
       "previous": "f2281bff85c50ff768d4cd9b25d4b7dae007059c298e21b80d9a42a48646f31c",
       "sha256": "2832e027dce6a7bdfa804012b01cf84af1a3674c92b7fea1c193d01ce0746557"
+    },
+    {
+      "revision": 455,
+      "at": 1792619802.1123009,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261022T0656-package-acceptance",
+        "source": "user:automation:unity:2026-10-22T07:00:00+09:00:early-start"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "2832e027dce6a7bdfa804012b01cf84af1a3674c92b7fea1c193d01ce0746557",
+      "sha256": "8405c00765dc67023a1e1491b4904a4577a0df8bd965c65ba814d1dfaaa5d68b"
+    },
+    {
+      "revision": 456,
+      "at": 1792619802.1617947,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T0656-package-acceptance",
+        "task_id": "T-minerush-progress-daily-integration-20261023"
+      },
+      "result": {
+        "run_id": "unity-20261022T0656-package-acceptance",
+        "task_id": "T-minerush-progress-daily-integration-20261023",
+        "fence": 78,
+        "expires_at": 1792621602.1617947
+      },
+      "previous": "8405c00765dc67023a1e1491b4904a4577a0df8bd965c65ba814d1dfaaa5d68b",
+      "sha256": "82ddc7d18f903a51f588f07b09b63c42c27ac0ab4e81d89ead936946bea8d146"
+    },
+    {
+      "revision": 457,
+      "at": 1792621143.2301352,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T0656-package-acceptance",
+        "fence": 78,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/release-coordinator-input-20261022-0700.json",
+            "sha256": "08777f661f96c6015a0c708bb599f0f5c77f96e00cda1c1a561e8ea68a7178d0"
+          }
+        ],
+        "checks": [
+          "25coordinatorcases Windows/Linux;42contentfiles equal;finalWebsource7925ba0",
+          "Actualnormal/scoped mixedinput,win71/reset,320/390,no physicaltouch claim",
+          "Retained209fileoverlay browser roundtrip and local previous5f9 entry52opened/catalog accepted;fakeFTP recovery passed",
+          "Remote main/PR32/CD accepted independently read;live10URLs match;no newproductionwrites",
+          "Preserved original454events and owner/AGENTS/policy/legacyledger/workspace;only selected paths read",
+          "Partial checkpoint before final provenance/session save;continue final scope/recovery evidence review"
+        ],
+        "next_step": "Finalize same source provenance and measured session,then yield unfinished nextdailyintegration;no extra PR or deployment today."
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "82ddc7d18f903a51f588f07b09b63c42c27ac0ab4e81d89ead936946bea8d146",
+      "sha256": "99061d20059a0c49d08ed8dd46028cb11a16c0ec3880994142fd483870c290ef"
+    },
+    {
+      "revision": 458,
+      "at": 1792621304.774314,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T0656-package-acceptance",
+        "fence": 78,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "8d1d88e8fec1600e7adb0c7c50eb93f2862f6020e99bffa86967c557ca38d3b6"
+          },
+          {
+            "path": "business/unity/evidence/release-coordinator-input-20261022-0700.json",
+            "sha256": "04777301a28db7e483ba1fe85e498869dbb2bd714c77fe10b1f4a891586e8615"
+          },
+          {
+            "path": "scripts/prepare-web-release.mjs",
+            "sha256": "5e1b0e27d509668c0a971fb6a03ccad3a683fb6b318cf3cbc94ff905dcfa84cf"
+          },
+          {
+            "path": "scripts/check-release-preparation.mjs",
+            "sha256": "19b623fb6dd38593c5da82657c94bc7b0c6208c044eba1edb521ddc47b4a8677"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "13ecdcdfaaa315300cde47ac3d8b759e4e7282797e37563fd47db91634e881c9"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "357b7df8cf7f6fb07cca43b8f4a75e694f7b141a14f869a0814df3b45a3d91bd"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "8149fa0f701af36a6f96d9c00efb01dd18be8b397698edb6ce60248c2620bb75"
+          }
+        ],
+        "checks": [
+          "Current rules/context/selected task and relevant wrapper/CI/App/retained delivery evidence read",
+          "25coordinatorcases bothOS;44files9pages;42contentfiles and all non-time metadata equal;GitHubCI notrun",
+          "ActualApp regression oldfail/newpass;normal/scoped mixedinput,71safe10flags/reset,320/390;touch is synthetic",
+          "209fileoverlay navigation and local5f9 restore52opened/catalog accepted;fakeFTP recovery only;productionrollback untested",
+          "Read-only GitHub main5f9/PR32/CD39631591189 and live10URLs match;one dailydeploy;no newexternalwrites",
+          "Original454events and owner/AGENTS/policy/legacyledger/workspace preserved;hiddenpath source hashes inside receipt;guard notrelaxed",
+          "work_session={\"started_at\": \"2026-10-22T06:56:17.709378+09:00\", \"start_basis\": \"first explicit clock;startup reading began earlier\", \"ended_at\": \"2026-10-22T07:21:44.736129+09:00\", \"elapsed_seconds\": 1527.027, \"exit_reason\": \"Implementation, cross-platform real package parity, browser input/win/reset, retained overlay recovery and final provenance review completed; save same unfinished daily integration.\", \"artificial_waits\": false}"
+        ],
+        "next_step": "次の日次PRで進捗・タッチ中断後入力・保管版作成/CI/LF規約と公開記録をまとめ、exact-head Linux/Windows CI、mainCI、preflight、限定配信と実受入れ後だけrelease更新。本日CD再dispatch/記録専用PRなし。"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "99061d20059a0c49d08ed8dd46028cb11a16c0ec3880994142fd483870c290ef",
+      "sha256": "71a4c2f89c9821db5bb208cb2fc769a783260ac64dfb9bc80db4ebcdea3e6b1c"
+    },
+    {
+      "revision": 459,
+      "at": 1792621304.827531,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261022T0656-package-acceptance",
+        "fence": 78,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "8d1d88e8fec1600e7adb0c7c50eb93f2862f6020e99bffa86967c557ca38d3b6"
+          },
+          {
+            "path": "business/unity/evidence/release-coordinator-input-20261022-0700.json",
+            "sha256": "04777301a28db7e483ba1fe85e498869dbb2bd714c77fe10b1f4a891586e8615"
+          },
+          {
+            "path": "scripts/prepare-web-release.mjs",
+            "sha256": "5e1b0e27d509668c0a971fb6a03ccad3a683fb6b318cf3cbc94ff905dcfa84cf"
+          },
+          {
+            "path": "scripts/check-release-preparation.mjs",
+            "sha256": "19b623fb6dd38593c5da82657c94bc7b0c6208c044eba1edb521ddc47b4a8677"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "13ecdcdfaaa315300cde47ac3d8b759e4e7282797e37563fd47db91634e881c9"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "357b7df8cf7f6fb07cca43b8f4a75e694f7b141a14f869a0814df3b45a3d91bd"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "8149fa0f701af36a6f96d9c00efb01dd18be8b397698edb6ce60248c2620bb75"
+          }
+        ],
+        "checks": [
+          "Current rules/context/selected task and relevant wrapper/CI/App/retained delivery evidence read",
+          "25coordinatorcases bothOS;44files9pages;42contentfiles and all non-time metadata equal;GitHubCI notrun",
+          "ActualApp regression oldfail/newpass;normal/scoped mixedinput,71safe10flags/reset,320/390;touch is synthetic",
+          "209fileoverlay navigation and local5f9 restore52opened/catalog accepted;fakeFTP recovery only;productionrollback untested",
+          "Read-only GitHub main5f9/PR32/CD39631591189 and live10URLs match;one dailydeploy;no newexternalwrites",
+          "Original454events and owner/AGENTS/policy/legacyledger/workspace preserved;hiddenpath source hashes inside receipt;guard notrelaxed",
+          "work_session={\"started_at\": \"2026-10-22T06:56:17.709378+09:00\", \"start_basis\": \"first explicit clock;startup reading began earlier\", \"ended_at\": \"2026-10-22T07:21:44.736129+09:00\", \"elapsed_seconds\": 1527.027, \"exit_reason\": \"Implementation, cross-platform real package parity, browser input/win/reset, retained overlay recovery and final provenance review completed; save same unfinished daily integration.\", \"artificial_waits\": false}"
+        ],
+        "next_step": "次の日次PRで進捗・タッチ中断後入力・保管版作成/CI/LF規約と公開記録をまとめ、exact-head Linux/Windows CI、mainCI、preflight、限定配信と実受入れ後だけrelease更新。本日CD再dispatch/記録専用PRなし。"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "71a4c2f89c9821db5bb208cb2fc769a783260ac64dfb9bc80db4ebcdea3e6b1c",
+      "sha256": "cf994a071a9127acca0343b40ad9f0334dea0beb5a5767701375ff05ffdda461"
     }
   ],
-  "projection_sha256": "075f47c61f5bc726061676bd257ab0f4e18345df9b2fde33c066963dd89b3b1e"
+  "projection_sha256": "1a3918c0cae3008bf134f2c0e09c98c8c351176295f886b5e43fffdc20655d82"
 }

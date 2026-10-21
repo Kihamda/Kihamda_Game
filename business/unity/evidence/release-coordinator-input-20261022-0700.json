@@ -1,0 +1,157 @@
+{
+  "schema": 1,
+  "recordedAt": "2026-10-22T07:21:44.736129+09:00",
+  "status": "local-accepted-awaiting-daily-integration",
+  "sourceCommit": "7925ba00830ef1400b3592deb2a921e44771202e",
+  "deployed": false,
+  "productionVersion": "5f9a1efab94d06b53a47182d954e3be9996a2889",
+  "dailyDeploymentCount": 1,
+  "coordinator": {
+    "cases": 25,
+    "windowsNode": "24.8.0",
+    "linuxNode": "22.23.3",
+    "realPackageFiles": 44,
+    "pages": 9,
+    "matchingContentFiles": 42,
+    "excluded": [
+      "build-version.json",
+      "SHA256SUMS"
+    ],
+    "exclusionReason": "generatedAt timestamp and its dependent checksum",
+    "samePageAndReleaseMetadata": true
+  },
+  "changes": [
+    "Reject output escapes through junctions/symlinks before build, packaging and final output",
+    "Verify in invocation-private staging then expose requested output only after source/HEAD check;preserve concurrent output",
+    "Use actual release:prepare inCI and run coordinator fixtures onLinux/Windows;remoteCI not run for local commits",
+    "Publictext checkoutLF removes11CRLF-only build differences without changingGit content",
+    "Clear cancelled active touch and distinguish real mouse click from suppressed touch click"
+  ],
+  "reproductions": [
+    "Old coordinator unexpectedly succeeded through escaped junction;25final cases now pass",
+    "Actual App tests failed for mousecontextmenu and mouseclick after touchcancel;fixed",
+    "Oldbrowser package ignored rightclick after synthetic touchcancel;finalnormal/scoped packages flag/unflag/open correctly"
+  ],
+  "businessTests": {
+    "windows": 104,
+    "linux": 104,
+    "note": "Python sources unchanged since suites passed;final Web/coordinator source tested separately onbothOS"
+  },
+  "browser": {
+    "engine": "PC Chromium in-app browser",
+    "touchMechanism": "Synthetic TouchEvent/PointerEvent throughCDP;notphysicaltouch",
+    "normalFinalArchive": "mouse/F/Enter/visible-number solve71safe10flags;reset81unopened0flags/no oldpopup/particles;390px nooverflow",
+    "normalPortal": "fdba0b8 archive:releasedfilter/MineRushsearch/detail/start/reload/back/list retainsq/filterCSS;laterAppchanges onlyinput",
+    "scopedOverlay": "209retainedbytes+4candidatefiles;rootmatches liveproduction;oldcatalog/newcandidate roundtrip;0to12safe;syntheticcancel/rightclick/unflag/mouseopen0to24safe;320px nooverflow;syntheticlongpress+touchcontextmenu+touchclick1flag0safe",
+    "localPreviousEntry": "old5f9a1ef fourfiles restored over localoverlay;rootunchanged,newassetsretained;81buttons,no newprogress,52opened,oldcatalogreturn",
+    "screenshots": "Highlevel and boundedCDP Page.captureScreenshot timedout;no newimage accepted"
+  },
+  "gitHubReadOnly": {
+    "main": "5f9a1efab94d06b53a47182d954e3be9996a2889",
+    "pr32": "merged",
+    "cd39631591189": "success",
+    "newWrites": false
+  },
+  "artifacts": {
+    "artifacts/release-coordinator-20261022-0700/linux-result.json": "0e807c069ec539d64fa1e1047b1ef5de2c5a5d3277394e1e589fcb24a62c57e3",
+    "artifacts/release-coordinator-20261022-0700/linux-final-manifest.json": "83edb3ddc23249f1b516a85cfacb47a47d0aeaba491801ceab366c2ff34b59f2",
+    "artifacts/release-coordinator-20261022-0700/linux-business.log": "aacf51d0cfd8162420d63cc381e05bb816f03a15606cb4a5b7cf0fcf52713de3",
+    "artifacts/release-coordinator-20261022-0700/final-archive-result.json": "240e55e11b9e3c41e954e66f42d832418c1e1e128c0d3280579c2a9e0338913b",
+    "artifacts/release-coordinator-20261022-0700/final-rehearsal.json": "cf718554d05862219a4ba34e66a093a2846c007a94a8a68d1276239a5ee2b0f3",
+    "artifacts/release-coordinator-20261022-0700/production-http.json": "bec9307c89001a237e0094650dc0ba3813f0a71beef0299d81dca5655952b641",
+    "artifacts/release-coordinator-20261022-0700/rollback-overlay.json": "1806a643d940cee3c40c0af6173ac9c91cdab4325b3bef6c76b67240ff21c6f4",
+    "artifacts/release-coordinator-20261022-0700/final-parity.json": "86e9c86a8c6ebffd069fec7683ecb14ce297292c5c50ca106b712a8d1f6e8c86"
+  },
+  "preserved": [
+    {
+      "path": "天啓.md",
+      "worktreeSha256": "7e6f37f19a651e7a4ddd7b36c8f0db4e6dc25fa92d6918853d2a28697b747683",
+      "gitContentUnchanged": true
+    },
+    {
+      "path": "AGENTS.md",
+      "worktreeSha256": "0de8dfeff32c16e9f3682e5fec5fc78a93697e11064e03602fc7d39e1c2884ba",
+      "gitContentUnchanged": true
+    },
+    {
+      "path": "business/studio-policy.json",
+      "worktreeSha256": "03f7f9e587000156a591ef1a0f30560bf7c207d5def54de541fb443b084e3c46",
+      "gitContentUnchanged": true
+    },
+    {
+      "path": "business/ops/ledger.json",
+      "worktreeSha256": "5b206aa5596459db59f88ad1bab31ab31b618e7ede58fc72d6ce3f4fd9e73b41",
+      "gitContentUnchanged": true
+    },
+    {
+      "path": "business/workspace-projects.json",
+      "worktreeSha256": "2a87731cb7e1b3fa13c037d490dcc6a944a4f2235b01092d834ae0ba5908d016",
+      "gitContentUnchanged": true
+    }
+  ],
+  "unverified": [
+    "GitHubCI forlocalcommits",
+    "physicaltouch",
+    "Safari",
+    "humanunderstanding/fun",
+    "offPCrestore",
+    "productionrollbackwrite",
+    "businessmetrics"
+  ],
+  "errors": [
+    "Initial archive helper Python syntaxerror corrected before archive creation",
+    "InitialLinuxcomparison included sw.js CRLFdifference;fixed checkoutLF then42finalcontentfiles matched",
+    "InitialLinuxscript CRLFheredoc and no-artifacts fixture logging corrected",
+    "Gitstat metadata afterLFrestoration refreshed without contentchanges",
+    "AXcheckbox differed fromDOMbutton;used freshDOM",
+    "DOMbody brieflynull duringnavigation;nextobservation verifiedcatalog",
+    "Rawlegacyledger/GitLF preservation assertion replaced by normalized contentcomparison and emptygitdiff;legacyfile notmodified",
+    "Ledger correctly refused hidden-path artifacts for .gitattributes/.github;their committed-byte hashes retained inside receipt instead;guard unchanged"
+  ],
+  "candidateManifestSha256": "4dda9479f5ba9aefab4523be01df3d7245ebe860f9aacf3081d75f25aa5f75ec",
+  "sources": [
+    {
+      "path": ".gitattributes",
+      "sha256": "d822191cddf2a66119443f3cfbd8864e7d6240ca945d0a78c81300e76397eba3"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "27117f0af3206af905eeaaa4f89c02b57136195563a1527eb3fd2a850e785a87"
+    },
+    {
+      "path": "scripts/prepare-web-release.mjs",
+      "sha256": "5e1b0e27d509668c0a971fb6a03ccad3a683fb6b318cf3cbc94ff905dcfa84cf"
+    },
+    {
+      "path": "scripts/check-release-preparation.mjs",
+      "sha256": "19b623fb6dd38593c5da82657c94bc7b0c6208c044eba1edb521ddc47b4a8677"
+    },
+    {
+      "path": "scripts/check-minerush.mjs",
+      "sha256": "13ecdcdfaaa315300cde47ac3d8b759e4e7282797e37563fd47db91634e881c9"
+    },
+    {
+      "path": "web/games/minerush/src/App.tsx",
+      "sha256": "357b7df8cf7f6fb07cca43b8f4a75e694f7b141a14f869a0814df3b45a3d91bd"
+    },
+    {
+      "path": "docs/web-scoped-production-delivery.md",
+      "sha256": "8149fa0f701af36a6f96d9c00efb01dd18be8b397698edb6ce60248c2620bb75"
+    }
+  ],
+  "work_session": {
+    "started_at": "2026-10-22T06:56:17.709378+09:00",
+    "start_basis": "first explicit clock;startup reading began earlier",
+    "ended_at": "2026-10-22T07:21:44.736129+09:00",
+    "elapsed_seconds": 1527.027,
+    "exit_reason": "Implementation, cross-platform real package parity, browser input/win/reset, retained overlay recovery and final provenance review completed; save same unfinished daily integration.",
+    "artificial_waits": false
+  },
+  "cleanup": {
+    "taskServers4273through4277": "stopped after exact process-command verification",
+    "temporaryViewport": "cleared",
+    "taskTabs": "closed;initial error tab is turn-temporary",
+    "stagingDirectories": "none left"
+  },
+  "checkpointNote": "Final receipt supersedes interim checkpoint457; no completed task reopened."
+}
