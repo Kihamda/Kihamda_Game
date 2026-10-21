@@ -11,7 +11,7 @@ import sys
 import tempfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ops"))
-from scoped_delivery import SCOPE, inspect, sha
+from scoped_delivery import SCOPE, checked_package, inspect, sha
 from scoped_transaction import checked_preflight, checked_transaction
 from scoped_upload import deliver, recover
 from test_scoped_upload import WritableFTP
@@ -76,12 +76,78 @@ def rehearse(package, backup, journal):
                 "retainedVersionMarker": recovered["retainedVersionMarker"]}
 
 
+def rehearse_candidate(artifact, candidate):
+    """Reconstruct uploaded bytes locally, then test a distinct next package.
+
+    This does not assert the source transaction's live HTTP/browser acceptance.
+    The simulated server starts with retained bytes and the uploaded package.
+    """
+    artifact, candidate = Path(artifact), Path(candidate)
+    package, backup = artifact / "scoped-minerush", artifact / "scoped-recovery"
+    journal = artifact / "transaction.json"
+    original_journal = journal.read_bytes()
+    state, baseline = checked_transaction(package, backup, journal)
+    if (state.get("status") != "uploaded-awaiting-http-and-browser-acceptance" or
+            "pending" not in state or state["pending"] is not None or
+            not isinstance(state.get("written"), list) or
+            any(not isinstance(path, str) for path in state["written"]) or
+            not {SCOPE + "index.html", SCOPE + "build-version.json"} <= set(state["written"])):
+        raise ValueError("Completed upload with no pending operation required")
+    manifest = checked_package(candidate)
+    current = copy.deepcopy(baseline)
+    for entry in checked_package(package)["files"]:
+        current[entry["path"]] = (package / "site" / entry["path"]).read_bytes()
+    ftp = WritableFTP(copy.deepcopy(current))
+    ftp.directories.update(parent.as_posix() for path in current
+                           for parent in PurePosixPath(path).parents)
+    with tempfile.TemporaryDirectory(prefix="kihamda-next-candidate-") as directory:
+        temporary = Path(directory)
+        next_backup = temporary / "backup"
+
+        def http(path):
+            return current["index.html" if path == "" else
+                           SCOPE + "index.html" if path == SCOPE else path]
+
+        report = inspect(candidate, next_backup, ftp, http)
+        checked_preflight(candidate, next_backup)
+        next_journal = temporary / "transaction.json"
+        deliver(candidate, next_backup, ftp, next_journal)
+        candidate_paths = {entry["path"] for entry in manifest["files"]}
+        for entry in manifest["files"]:
+            if sha(ftp.files[entry["path"]]) != entry["sha256"]:
+                raise ValueError("Next candidate checksum mismatch")
+        for path, body in current.items():
+            if path not in candidate_paths and ftp.files[path] != body:
+                raise ValueError("Next delivery changed retained bytes")
+        recovered = recover(ftp, next_journal, candidate, next_backup)
+        if any(ftp.files[path] != body for path, body in current.items()):
+            raise ValueError("Next recovery changed previous uploaded bytes")
+        if any(not path.startswith(SCOPE) for _, path in ftp.mutations):
+            raise ValueError("Next candidate mutation escaped scope")
+        if journal.read_bytes() != original_journal:
+            raise ValueError("Source journal changed during next rehearsal")
+        return {"schema": 1, "status": "offline-next-candidate-rehearsal-passed",
+                "deployed": False, "fakeFtp": True, "productionWrites": False,
+                "liveAcceptanceVerified": False, "sourceCommit": state["commit"],
+                "candidateCommit": manifest["commit"],
+                "candidateManifestSha256": sha((candidate / "manifest.json").read_bytes()),
+                "sourceJournalSha256": sha(original_journal),
+                "candidateFiles": len(manifest["files"]),
+                "baselineFiles": len(report["baseline"]),
+                "restoredPreviousFiles": len(current),
+                "recoveryStatus": recovered["status"],
+                "retainedVersionMarker": recovered["retainedVersionMarker"]}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("artifact", type=Path, help="Retained scoped-delivery artifact directory")
+    parser.add_argument("--candidate", type=Path,
+                        help="Rehearse the next package against reconstructed uploaded bytes")
     args = parser.parse_args()
-    result = rehearse(args.artifact / "scoped-minerush", args.artifact / "scoped-recovery",
-                      args.artifact / "transaction.json")
+    result = (rehearse_candidate(args.artifact, args.candidate) if args.candidate else
+              rehearse(args.artifact / "scoped-minerush", args.artifact / "scoped-recovery",
+                       args.artifact / "transaction.json"))
     print(json.dumps(result, indent=2))
 
 

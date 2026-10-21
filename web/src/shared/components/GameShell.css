@@ -45,6 +45,14 @@
   gap: 8px;
 }
 
+.game-shell-panel-inner--with-rules {
+  overflow-y: auto;
+}
+
+.game-shell-panel-inner--with-rules > * {
+  flex-shrink: 0;
+}
+
 .game-shell-back-button,
 .game-shell-link-button {
   display: inline-flex;

@@ -14,6 +14,7 @@ import "./App.css";
 const ROWS = 9;
 const COLS = 9;
 const MINE_COUNT = 10;
+const SAFE_CELL_COUNT = ROWS * COLS - MINE_COUNT;
 const LONG_PRESS_DURATION = 400;
 
 export default function App() {
@@ -22,7 +23,8 @@ export default function App() {
   );
 
   const longPressTimer = useRef<number | null>(null);
-  const suppressedTouchCell = useRef<string | null>(null);
+  const activeTouchCell = useRef<string | null>(null);
+  const suppressedTouchCells = useRef(new Set<string>());
   const [flagMode, setFlagMode] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -32,7 +34,26 @@ export default function App() {
       longPressTimer.current = null;
     }
   }, []);
-  useEffect(() => cancelLongPress, [cancelLongPress]);
+  const interruptTouch = useCallback(() => {
+    cancelLongPress();
+    if (activeTouchCell.current !== null) {
+      suppressedTouchCells.current.add(activeTouchCell.current);
+      activeTouchCell.current = null;
+    }
+  }, [cancelLongPress]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) interruptTouch();
+    };
+    window.addEventListener("blur", interruptTouch);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      cancelLongPress();
+      window.removeEventListener("blur", interruptTouch);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [cancelLongPress, interruptTouch]);
 
   // ScorePopup state
   const [popupText, setPopupText] = useState<string | null>(null);
@@ -51,7 +72,7 @@ export default function App() {
   );
 
   const { playTone } = useAudio();
-  const { particles, sparkle, confetti, explosion } = useParticles();
+  const { particles, sparkle, confetti, explosion, clear: clearParticles } = useParticles();
 
   const playReveal = useCallback(() => {
     playTone(600, 0.05, "sine");
@@ -71,14 +92,18 @@ export default function App() {
 
   const handleReset = useCallback(() => {
     cancelLongPress();
-    suppressedTouchCell.current = null;
+    activeTouchCell.current = null;
+    suppressedTouchCells.current.clear();
+    setPopupText(null);
+    clearParticles();
     setGame(createGame(ROWS, COLS, MINE_COUNT));
-  }, [cancelLongPress]);
+  }, [cancelLongPress, clearParticles]);
 
   const handleCellClick = useCallback(
     (row: number, col: number) => {
       const prevRevealedCount = game.revealedCount;
       const newGame = revealCell(game, row, col);
+      if (newGame === game) return;
       setGame(newGame);
       
       if (newGame.status === "won") {
@@ -114,6 +139,14 @@ export default function App() {
     (e: React.SyntheticEvent, row: number, col: number) => {
       e.preventDefault();
       cancelLongPress();
+      const cellKey = `${row}-${col}`;
+      const touchMenu = e.type === "contextmenu" &&
+        (activeTouchCell.current === cellKey ||
+          ("pointerType" in e.nativeEvent && e.nativeEvent.pointerType === "touch"));
+      if (touchMenu) {
+        if (suppressedTouchCells.current.has(cellKey)) return;
+        suppressedTouchCells.current.add(cellKey);
+      }
       const cell = game.grid[row][col];
       if (game.status === "playing" && !cell.isRevealed) {
         setGame((prev) => toggleFlag(prev, row, col));
@@ -129,9 +162,10 @@ export default function App() {
   const handleTouchStart = useCallback(
     (row: number, col: number) => {
       cancelLongPress();
-      suppressedTouchCell.current = null;
+      activeTouchCell.current = `${row}-${col}`;
+      suppressedTouchCells.current.clear();
       longPressTimer.current = window.setTimeout(() => {
-        suppressedTouchCell.current = `${row}-${col}`;
+        suppressedTouchCells.current.add(`${row}-${col}`);
         const cell = game.grid[row][col];
         if (game.status === "playing" && !cell.isRevealed) {
           setGame((prev) => toggleFlag(prev, row, col));
@@ -175,11 +209,11 @@ export default function App() {
         key={`${row}-${col}`}
         className={className}
         onClick={(e) => {
-          if (e.detail !== 0 && suppressedTouchCell.current === `${row}-${col}`) {
-            suppressedTouchCell.current = null;
+          if (e.detail !== 0 && suppressedTouchCells.current.has(`${row}-${col}`)) {
+            suppressedTouchCells.current.delete(`${row}-${col}`);
             return;
           }
-          suppressedTouchCell.current = null;
+          suppressedTouchCells.current.clear();
           if (flagMode) handleContextMenu(e, row, col);
           else handleCellClick(row, col);
         }}
@@ -204,17 +238,23 @@ export default function App() {
           if (e.touches.length === 1) handleTouchStart(row, col);
           else {
             cancelLongPress();
-            suppressedTouchCell.current = `${row}-${col}`;
+            if (activeTouchCell.current !== null) {
+              suppressedTouchCells.current.add(activeTouchCell.current);
+            }
+            suppressedTouchCells.current.add(`${row}-${col}`);
           }
         }}
         onTouchMove={() => {
           cancelLongPress();
-          suppressedTouchCell.current = `${row}-${col}`;
+          suppressedTouchCells.current.add(`${row}-${col}`);
         }}
-        onTouchEnd={cancelLongPress}
+        onTouchEnd={() => {
+          cancelLongPress();
+          activeTouchCell.current = null;
+        }}
         onTouchCancel={() => {
           cancelLongPress();
-          suppressedTouchCell.current = `${row}-${col}`;
+          suppressedTouchCells.current.add(`${row}-${col}`);
         }}
         disabled={game.status !== "playing" && !cell.isRevealed}
         aria-label={`セル ${row + 1}-${col + 1} ${cell.isRevealed ? cell.isMine ? "地雷" : `開いたマス ${cell.adjacentMines}` : cell.isFlagged ? "旗あり" : "未開封"}`}
@@ -233,7 +273,20 @@ export default function App() {
   const remainingMines = game.mineCount - game.flaggedCount;
 
   return (
-    <GameShell gameId="minerush" layout="default" controlHints={["矢印キーで移動、クリック・Enterで開く", "F・右クリック・長押しで旗。旗モードならタップで切替", "途中の盤面は保存しません。再読み込みで最初から始まります。"]}>
+    <GameShell gameId="minerush" layout="default" mobileScroll
+      rules={<div className="minerush-rules">
+        <p>地雷を避けて、安全な{SAFE_CELL_COUNT}マスをすべて開くとクリア。数字は、斜めを含む周囲8マスの地雷の数です。</p>
+        <details>
+          <summary>初めて遊ぶときのヒント</summary>
+          <ul>
+            <li>最初に開くマスとその周囲には地雷がありません。好きなマスから始められます。</li>
+            <li>たとえば「1」の周囲には地雷が1個あります。数字を手がかりに、次に開くマスを考えます。</li>
+            <li>旗は地雷がありそうなマスに付ける目印です。旗のあるマスは開けません。もう一度旗を切り替えると外せます。</li>
+            <li>旗を付けるだけではクリアになりません。地雷以外のマスをすべて開きます。</li>
+          </ul>
+        </details>
+      </div>}
+      controlHints={["矢印キーで移動、クリック・Enterで開く", "F・右クリック・長押しで旗。旗モードならタップで切替", "途中の盤面は保存しません。再読み込みで最初から始まります。"]}>
       <div className="minerush-container">
         <header className="minerush-header">
           <div className="minerush-info">
