@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-21T16:16:41.007668+00:00",
+  "status": "local-accepted-not-deployed",
+  "source_commit": "6f269f4ab525876a52900d2409ffd79076bbc52f",
+  "manifestSha256": "e6c5288955d322d6c8d1d8b6ea909c55496fc83f00eaad788154e441d0962538",
+  "browser": {
+    "initial": "0/71; flag leaves0/71",
+    "opened": "40/71;47/71;66/71;69/71",
+    "won": "71/71 matches71safe cells10flags",
+    "lost": "42/71 unchanged after exposed mines",
+    "reset_reload": "0/71 with81unopened0flags",
+    "final_css": "20px;390width scale0.821 =>16.42CSSpx text;no overflow;961x360 header/grid fit",
+    "screenshot": {
+      "path": "artifacts/daily-20261022-browser/local-progress-final-390x720.jpg",
+      "sha256": "d6b08d254c854915ab1ae1c6ec538220bfd8d1aa1a440dcd5cef45b9c44c803e"
+    },
+    "old_screenshots": "390x844 repeated lower pixels rejected;390x720 final image visually accepted"
+  },
+  "checks": [
+    "TypeScript ESLint Vite passed",
+    "Actual App count vs independent revealed-safe grid at initial/flag/reveal/loss/win/reset passed",
+    "9SSG43checksums;44file normal package18rejections passed",
+    "104business tests passed",
+    "Actual today delivery artifact -> new4file candidate -> previous version conditional recovery passed with fakeFTP"
+  ],
+  "unverified": [
+    "remoteCI for this new source",
+    "newproduction",
+    "physicaltouch",
+    "Safari",
+    "human effect"
+  ],
+  "packaging_errors": "Initial manual sequence used local-uncommitted version;rebuild omitted checksum generator. Correct same-process GITHUB_SHA+check-web-build+package passed;guards unchanged."
+}

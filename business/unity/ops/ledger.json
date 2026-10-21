@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "revision": 443,
+  "revision": 447,
   "business_id": "game-site",
-  "fence": 75,
+  "fence": 76,
   "lease": {
-    "run_id": "unity-20261022T0100-safe-progress",
-    "task_id": "T-minerush-safe-progress-20261022",
-    "fence": 75,
-    "expires_at": 1792600226.873189
+    "run_id": "unity-20261022T0100-release-preparation",
+    "task_id": "T-web-release-preparation-command-20261022",
+    "fence": 76,
+    "expires_at": 1792600301.1900673
   },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -10385,14 +10385,80 @@
       "depends_on": [
         "T-minerush-first-play-integration-20261022"
       ],
-      "status": "running",
-      "checkpoints": [],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261022T0100-safe-progress",
+          "fence": 75,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+              "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+            }
+          ],
+          "checks": [
+            "Final20px progress:390 text16.42CSSpx;1280 and961x360fit",
+            "Browser0/71 flag unchanged;40->71;loss42 unchanged;reset/reload0",
+            "TypeScript ESLint build actualApp regression passed;104business tests;44file/18rejections;todayartifact recovery rehearsal passed",
+            "No additional PR/push/deploy; parent session continues with packaging efficiency child"
+          ],
+          "next_step": "次の日次統合で進捗表示をCI後配信。残り時間では今回の手動パッケージ順序ミスを防ぐ単一コマンドを実装・検証する。",
+          "passed": true,
+          "at": 1792599401.0313683
+        }
+      ],
       "claims": [
         {
           "run_id": "unity-20261022T0100-safe-progress",
           "task_id": "T-minerush-safe-progress-20261022",
           "fence": 75,
           "expires_at": 1792600226.873189
+        }
+      ]
+    },
+    "T-web-release-preparation-command-20261022": {
+      "id": "T-web-release-preparation-command-20261022",
+      "objective": "版指定とチェックサム生成の順序を単一コマンドにまとめる",
+      "acceptance": [
+        "未コミット制作ソースと既存出力先をビルド前に拒否",
+        "同じheadでbuild/checksum/create/verifyを順に実行",
+        "実際の44filepackageが版とSHA256に一致",
+        "Windowsで実実行、Linuxで構文・実行可能性を検査"
+      ],
+      "outputs": [
+        "scripts/prepare-web-release.mjs",
+        "package.json"
+      ],
+      "checks": [
+        "dirty-source-refusal",
+        "existing-output-refusal",
+        "real-package"
+      ],
+      "next_step": "npm実行のNode/npmCLIを使う小さいラッパーを追加し、今回のlocal-uncommittedとSHA256SUMS欠落を予防する。",
+      "decision_id": "D-minerush-first-play-20261021",
+      "experiment_id": "E-minerush-first-play",
+      "hypothesis": "版とchecksum生成の手順を一つにすれば有効な配布候補を手順ミスで拒否する再作業を減らせる。",
+      "pdca": "do",
+      "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+      "depends_on": [
+        "T-minerush-safe-progress-20261022"
+      ],
+      "status": "running",
+      "checkpoints": [],
+      "claims": [
+        {
+          "run_id": "unity-20261022T0100-release-preparation",
+          "task_id": "T-web-release-preparation-command-20261022",
+          "fence": 76,
+          "expires_at": 1792600301.1900673
         }
       ]
     }
@@ -11135,8 +11201,14 @@
     "unity-20261022T0100-safe-progress": {
       "run_id": "unity-20261022T0100-safe-progress",
       "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792599026.8226924
+    },
+    "unity-20261022T0100-release-preparation": {
+      "run_id": "unity-20261022T0100-release-preparation",
+      "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+      "status": "open",
+      "started_at": 1792599401.1346216
     }
   },
   "experiments": {
@@ -27144,7 +27216,113 @@
       },
       "previous": "8792d17976b9cbb03df7eac15d9efcf616ffced520063174ae5739e612246762",
       "sha256": "35a66d86d56d3f30bafdfdf1048e317a1a76963d57d860b3df3d2c3aa657d691"
+    },
+    {
+      "revision": 444,
+      "at": 1792599401.0313683,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261022T0100-safe-progress",
+        "fence": 75,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+            "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+          }
+        ],
+        "checks": [
+          "Final20px progress:390 text16.42CSSpx;1280 and961x360fit",
+          "Browser0/71 flag unchanged;40->71;loss42 unchanged;reset/reload0",
+          "TypeScript ESLint build actualApp regression passed;104business tests;44file/18rejections;todayartifact recovery rehearsal passed",
+          "No additional PR/push/deploy; parent session continues with packaging efficiency child"
+        ],
+        "next_step": "次の日次統合で進捗表示をCI後配信。残り時間では今回の手動パッケージ順序ミスを防ぐ単一コマンドを実装・検証する。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "35a66d86d56d3f30bafdfdf1048e317a1a76963d57d860b3df3d2c3aa657d691",
+      "sha256": "2b0eab0c326592bf5035556a3f414ac5f8c939097b1b2dc6aead3c682343bb5f"
+    },
+    {
+      "revision": 445,
+      "at": 1792599401.0851188,
+      "action": "task",
+      "data": {
+        "id": "T-web-release-preparation-command-20261022",
+        "objective": "版指定とチェックサム生成の順序を単一コマンドにまとめる",
+        "acceptance": [
+          "未コミット制作ソースと既存出力先をビルド前に拒否",
+          "同じheadでbuild/checksum/create/verifyを順に実行",
+          "実際の44filepackageが版とSHA256に一致",
+          "Windowsで実実行、Linuxで構文・実行可能性を検査"
+        ],
+        "outputs": [
+          "scripts/prepare-web-release.mjs",
+          "package.json"
+        ],
+        "checks": [
+          "dirty-source-refusal",
+          "existing-output-refusal",
+          "real-package"
+        ],
+        "next_step": "npm実行のNode/npmCLIを使う小さいラッパーを追加し、今回のlocal-uncommittedとSHA256SUMS欠落を予防する。",
+        "decision_id": "D-minerush-first-play-20261021",
+        "experiment_id": "E-minerush-first-play",
+        "hypothesis": "版とchecksum生成の手順を一つにすれば有効な配布候補を手順ミスで拒否する再作業を減らせる。",
+        "pdca": "do",
+        "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+        "depends_on": [
+          "T-minerush-safe-progress-20261022"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "2b0eab0c326592bf5035556a3f414ac5f8c939097b1b2dc6aead3c682343bb5f",
+      "sha256": "afe02e3e7d88aef943d0dcd25684e5180a42da896e274e0cec1557f9800530fc"
+    },
+    {
+      "revision": 446,
+      "at": 1792599401.1346216,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261022T0100-release-preparation",
+        "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "afe02e3e7d88aef943d0dcd25684e5180a42da896e274e0cec1557f9800530fc",
+      "sha256": "da663b4689b4ea81012fb7adbad6b9cc56d54ede428377e2292220f3363185c2"
+    },
+    {
+      "revision": 447,
+      "at": 1792599401.1900673,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T0100-release-preparation",
+        "task_id": "T-web-release-preparation-command-20261022",
+        "ttl_seconds": 900
+      },
+      "result": {
+        "run_id": "unity-20261022T0100-release-preparation",
+        "task_id": "T-web-release-preparation-command-20261022",
+        "fence": 76,
+        "expires_at": 1792600301.1900673
+      },
+      "previous": "da663b4689b4ea81012fb7adbad6b9cc56d54ede428377e2292220f3363185c2",
+      "sha256": "9d97ecf95c47b27facd51d7ccaf25821578d80d97c85d2d22d3852a0c9c1e4e5"
     }
   ],
-  "projection_sha256": "ea3eb947fd68c167c2f750e28c41f9e2fc81eedefc55ab244475a3ccae07987f"
+  "projection_sha256": "546d00d605a9a6faa2c5c8aff0e36d94237852f0b60ec5958a047b8c2fd2258f"
 }
