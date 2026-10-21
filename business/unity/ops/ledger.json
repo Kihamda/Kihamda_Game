@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 432,
+  "revision": 436,
   "business_id": "game-site",
-  "fence": 72,
+  "fence": 73,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -10208,6 +10208,78 @@
           ],
           "next_step": "2026-10-22の日次統合で最新head CI・限定成果物・main統合・本番preflight・限定配信・HTTP/ブラウザ受入れ。最終ハッシュは本checkpointとprovenance receiptを使う。",
           "at": 1792556805.4097009
+        },
+        {
+          "run_id": "unity-20261021T1900-input-acceptance",
+          "fence": 73,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "17d95b165ac793fddede8544a4f4b332a98ae6436e3036753cd9b5d645bce92a"
+            },
+            {
+              "path": "business/unity/evidence/minerush-interrupted-input-20261021.json",
+              "sha256": "63c28f8c263c668d9b751a187e2c9a9ec1cf0e5d434f9254de0e682c58f67391"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "89e67febd8ac6b842156c28b6883195fcf3d9dcb3221ee18d4371674f1a8e4aa"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "7909e4997fd54390fe0e06e7d5e430544221fd96b68c1e5309f4001f6077bbc7"
+            }
+          ],
+          "checks": [
+            "Repository4legacy19GUID passed",
+            "Node24.8.0 check/build TypeScript ESLint passed",
+            "Node22.23.3 actual App regression, TypeScript ESLint Vite passed;12JS/CSS bytes match Node24",
+            "9SSG43checksums; normal44file package and18negative cases passed",
+            "Windows104business tests and WSL Linux104tests passed",
+            "Final4file isolated package verified; Windows/Linux next-candidate restoration results identical",
+            "Original432event prefix preserved and final source bytes equal Git HEAD",
+            "work_session={\"started_at\": \"2026-10-21T19:00:37.2337564+09:00\", \"start_basis\": \"first explicit clock; preparation started earlier\", \"run_id\": \"unity-20261021T1900-input-acceptance\", \"artificial_waits\": false, \"ended_at\": \"2026-10-21T19:26:05.405006+09:00\", \"elapsed_seconds\": 1528.171, \"exit_reason\": \"Productive implementation and acceptance continued through minute25; save verified local candidate for next daily integration. Today production delivery already accepted.\"}",
+            "Read context: 天啓.md/AGENTS.md/STATE.md/policy/conventions/workflow:permissions; context.py --task T-minerush-first-play-integration-20261022:existing task/decision; App/game/useParticles/ScorePopup/check-minerush:input/reset behavior; scoped artifacts/rehearse/build/package verifier:version/recovery",
+            "Remote CI and new candidate production acceptance pending; task not complete."
+          ],
+          "next_step": "2026-10-22 daily batch: guidance/terminal/input fixes and public receipts; exact-head Linux/WindowsCI, scoped artifact, guarded merge, live preflight/delivery/HTTP/browser acceptance before release update.",
+          "at": 1792578365.4437928
+        },
+        {
+          "run_id": "unity-20261021T1900-input-acceptance",
+          "fence": 73,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "17d95b165ac793fddede8544a4f4b332a98ae6436e3036753cd9b5d645bce92a"
+            },
+            {
+              "path": "business/unity/evidence/minerush-interrupted-input-20261021.json",
+              "sha256": "63c28f8c263c668d9b751a187e2c9a9ec1cf0e5d434f9254de0e682c58f67391"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "89e67febd8ac6b842156c28b6883195fcf3d9dcb3221ee18d4371674f1a8e4aa"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "7909e4997fd54390fe0e06e7d5e430544221fd96b68c1e5309f4001f6077bbc7"
+            }
+          ],
+          "checks": [
+            "Repository4legacy19GUID passed",
+            "Node24.8.0 check/build TypeScript ESLint passed",
+            "Node22.23.3 actual App regression, TypeScript ESLint Vite passed;12JS/CSS bytes match Node24",
+            "9SSG43checksums; normal44file package and18negative cases passed",
+            "Windows104business tests and WSL Linux104tests passed",
+            "Final4file isolated package verified; Windows/Linux next-candidate restoration results identical",
+            "Original432event prefix preserved and final source bytes equal Git HEAD",
+            "work_session={\"started_at\": \"2026-10-21T19:00:37.2337564+09:00\", \"start_basis\": \"first explicit clock; preparation started earlier\", \"run_id\": \"unity-20261021T1900-input-acceptance\", \"artificial_waits\": false, \"ended_at\": \"2026-10-21T19:26:05.405006+09:00\", \"elapsed_seconds\": 1528.171, \"exit_reason\": \"Productive implementation and acceptance continued through minute25; save verified local candidate for next daily integration. Today production delivery already accepted.\"}",
+            "Read context: 天啓.md/AGENTS.md/STATE.md/policy/conventions/workflow:permissions; context.py --task T-minerush-first-play-integration-20261022:existing task/decision; App/game/useParticles/ScorePopup/check-minerush:input/reset behavior; scoped artifacts/rehearse/build/package verifier:version/recovery",
+            "Remote CI and new candidate production acceptance pending; task not complete."
+          ],
+          "next_step": "2026-10-22 daily batch: guidance/terminal/input fixes and public receipts; exact-head Linux/WindowsCI, scoped artifact, guarded merge, live preflight/delivery/HTTP/browser acceptance before release update.",
+          "at": 1792578365.494313
         }
       ],
       "claims": [
@@ -10216,6 +10288,12 @@
           "task_id": "T-minerush-first-play-integration-20261022",
           "fence": 72,
           "expires_at": 1792557105.259904
+        },
+        {
+          "run_id": "unity-20261021T1900-input-acceptance",
+          "task_id": "T-minerush-first-play-integration-20261022",
+          "fence": 73,
+          "expires_at": 1792578676.4212224
         }
       ]
     }
@@ -10940,6 +11018,13 @@
       "source": "user:automation:unity:2026-10-21T13:00:00+09:00:final-save-audit-child",
       "status": "checkpointed",
       "started_at": 1792556805.2009227
+    },
+    "unity-20261021T1900-input-acceptance": {
+      "run_id": "unity-20261021T1900-input-acceptance",
+      "scheduled_at": "2026-10-21T19:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-21T19:00:00+09:00",
+      "status": "checkpointed",
+      "started_at": 1792576876.3324933
     }
   },
   "experiments": {
@@ -11238,7 +11323,8 @@
     "2026-10-20T13:00:00+09:00": "unity-20261020T1300-06077b21",
     "2026-10-20T19:00:00+09:00": "unity-20261020T1900-scoped",
     "2026-10-21T01:00:00+09:00": "unity-20261021T0100-reconcile",
-    "2026-10-21T13:00:00+09:00": "unity-20261021T1300-first-play"
+    "2026-10-21T13:00:00+09:00": "unity-20261021T1300-first-play",
+    "2026-10-21T19:00:00+09:00": "unity-20261021T1900-input-acceptance"
   },
   "feedback": [
     {
@@ -26655,7 +26741,128 @@
       },
       "previous": "34cd2c4e3dd55493d833097a5d5f7c7471c8ad6560e9135d99f48814c8269a01",
       "sha256": "02b92ba4083de207250689a150f986915485eefbbba1515c35a59d23d4b38259"
+    },
+    {
+      "revision": 433,
+      "at": 1792576876.3324933,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261021T1900-input-acceptance",
+        "scheduled_at": "2026-10-21T19:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "02b92ba4083de207250689a150f986915485eefbbba1515c35a59d23d4b38259",
+      "sha256": "d4a1ba1304c1ba3e8dea37a224a2bb839fd0a7efedabe224447913156bc9200c"
+    },
+    {
+      "revision": 434,
+      "at": 1792576876.4212224,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261021T1900-input-acceptance",
+        "task_id": "T-minerush-first-play-integration-20261022"
+      },
+      "result": {
+        "run_id": "unity-20261021T1900-input-acceptance",
+        "task_id": "T-minerush-first-play-integration-20261022",
+        "fence": 73,
+        "expires_at": 1792578676.4212224
+      },
+      "previous": "d4a1ba1304c1ba3e8dea37a224a2bb839fd0a7efedabe224447913156bc9200c",
+      "sha256": "85e1a4e3fad006620ee0e3f63a64403770cc55a8c6097e5c821e8fb063ebf96f"
+    },
+    {
+      "revision": 435,
+      "at": 1792578365.4437928,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261021T1900-input-acceptance",
+        "fence": 73,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "17d95b165ac793fddede8544a4f4b332a98ae6436e3036753cd9b5d645bce92a"
+          },
+          {
+            "path": "business/unity/evidence/minerush-interrupted-input-20261021.json",
+            "sha256": "63c28f8c263c668d9b751a187e2c9a9ec1cf0e5d434f9254de0e682c58f67391"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "89e67febd8ac6b842156c28b6883195fcf3d9dcb3221ee18d4371674f1a8e4aa"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "7909e4997fd54390fe0e06e7d5e430544221fd96b68c1e5309f4001f6077bbc7"
+          }
+        ],
+        "checks": [
+          "Repository4legacy19GUID passed",
+          "Node24.8.0 check/build TypeScript ESLint passed",
+          "Node22.23.3 actual App regression, TypeScript ESLint Vite passed;12JS/CSS bytes match Node24",
+          "9SSG43checksums; normal44file package and18negative cases passed",
+          "Windows104business tests and WSL Linux104tests passed",
+          "Final4file isolated package verified; Windows/Linux next-candidate restoration results identical",
+          "Original432event prefix preserved and final source bytes equal Git HEAD",
+          "work_session={\"started_at\": \"2026-10-21T19:00:37.2337564+09:00\", \"start_basis\": \"first explicit clock; preparation started earlier\", \"run_id\": \"unity-20261021T1900-input-acceptance\", \"artificial_waits\": false, \"ended_at\": \"2026-10-21T19:26:05.405006+09:00\", \"elapsed_seconds\": 1528.171, \"exit_reason\": \"Productive implementation and acceptance continued through minute25; save verified local candidate for next daily integration. Today production delivery already accepted.\"}",
+          "Read context: 天啓.md/AGENTS.md/STATE.md/policy/conventions/workflow:permissions; context.py --task T-minerush-first-play-integration-20261022:existing task/decision; App/game/useParticles/ScorePopup/check-minerush:input/reset behavior; scoped artifacts/rehearse/build/package verifier:version/recovery",
+          "Remote CI and new candidate production acceptance pending; task not complete."
+        ],
+        "next_step": "2026-10-22 daily batch: guidance/terminal/input fixes and public receipts; exact-head Linux/WindowsCI, scoped artifact, guarded merge, live preflight/delivery/HTTP/browser acceptance before release update."
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "85e1a4e3fad006620ee0e3f63a64403770cc55a8c6097e5c821e8fb063ebf96f",
+      "sha256": "a8d8a2d279a84d2212bbd8e2c7048cfe5ce511e22faab61a565382a06d0a5509"
+    },
+    {
+      "revision": 436,
+      "at": 1792578365.494313,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261021T1900-input-acceptance",
+        "fence": 73,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "17d95b165ac793fddede8544a4f4b332a98ae6436e3036753cd9b5d645bce92a"
+          },
+          {
+            "path": "business/unity/evidence/minerush-interrupted-input-20261021.json",
+            "sha256": "63c28f8c263c668d9b751a187e2c9a9ec1cf0e5d434f9254de0e682c58f67391"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "89e67febd8ac6b842156c28b6883195fcf3d9dcb3221ee18d4371674f1a8e4aa"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "7909e4997fd54390fe0e06e7d5e430544221fd96b68c1e5309f4001f6077bbc7"
+          }
+        ],
+        "checks": [
+          "Repository4legacy19GUID passed",
+          "Node24.8.0 check/build TypeScript ESLint passed",
+          "Node22.23.3 actual App regression, TypeScript ESLint Vite passed;12JS/CSS bytes match Node24",
+          "9SSG43checksums; normal44file package and18negative cases passed",
+          "Windows104business tests and WSL Linux104tests passed",
+          "Final4file isolated package verified; Windows/Linux next-candidate restoration results identical",
+          "Original432event prefix preserved and final source bytes equal Git HEAD",
+          "work_session={\"started_at\": \"2026-10-21T19:00:37.2337564+09:00\", \"start_basis\": \"first explicit clock; preparation started earlier\", \"run_id\": \"unity-20261021T1900-input-acceptance\", \"artificial_waits\": false, \"ended_at\": \"2026-10-21T19:26:05.405006+09:00\", \"elapsed_seconds\": 1528.171, \"exit_reason\": \"Productive implementation and acceptance continued through minute25; save verified local candidate for next daily integration. Today production delivery already accepted.\"}",
+          "Read context: 天啓.md/AGENTS.md/STATE.md/policy/conventions/workflow:permissions; context.py --task T-minerush-first-play-integration-20261022:existing task/decision; App/game/useParticles/ScorePopup/check-minerush:input/reset behavior; scoped artifacts/rehearse/build/package verifier:version/recovery",
+          "Remote CI and new candidate production acceptance pending; task not complete."
+        ],
+        "next_step": "2026-10-22 daily batch: guidance/terminal/input fixes and public receipts; exact-head Linux/WindowsCI, scoped artifact, guarded merge, live preflight/delivery/HTTP/browser acceptance before release update."
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "a8d8a2d279a84d2212bbd8e2c7048cfe5ce511e22faab61a565382a06d0a5509",
+      "sha256": "90c6e4eeebff440aa3708f5628080497e00d9d49187647099f1f5c48a359afee"
     }
   ],
-  "projection_sha256": "2dbdd1044c70d2a847b258bb1b4326b395b5e622eda175e08067cc29b51897c6"
+  "projection_sha256": "65fbeef0a144364fdfd0e708ccc7f21e781afa0fb1e9f467491699ae94565978"
 }
