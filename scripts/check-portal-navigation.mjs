@@ -132,6 +132,10 @@ for (const pathname of ['/', '/about/', '/contact/', '/privacy-policy/', '/works
       `${pathname}: ${destination} loses catalog context: ${internal.join(', ')}`);
   }
   assert(html.includes(`href="${minePlayHref}"`), 'Live game entry must retain its verified URL');
+  const launchLinks = [...html.matchAll(/<a\b([^>]*data-live-game="true"[^>]*)>/g)];
+  assert(launchLinks.length > 0 && launchLinks.every(([, attributes]) =>
+    attributes.match(/(?:^|\s)href="([^"]+)"/)?.[1] === minePlayHref),
+  'Every live game link must use the accepted release hash without catalog query parameters');
   assert(html.includes('href="mailto:contact@kihamda.net"') === (pathname === '/contact/'));
 }
 for (const [search, expected] of [

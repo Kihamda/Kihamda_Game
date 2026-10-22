@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "recordedAt": "2026-10-22T22:16:13.717Z",
+  "status": "versioned-launch-local-accepted-not-deployed",
+  "sourceCommit": "2bd8b0cb953835ad118d5b0e2bb062dd52e9f313",
+  "productionWrites": false,
+  "homeLaunches": [
+    "/games/minerush/?v=c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+    "/games/minerush/?v=c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+    "/games/minerush/?v=c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba"
+  ],
+  "detailLaunches": [
+    "/games/minerush/?v=c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+    "/games/minerush/?v=c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba"
+  ],
+  "launchCells": 81,
+  "launchProgress": "開いた安全マス 43 / 71",
+  "launchReturn": {
+    "active": "遊んでみる ↗",
+    "href": "/games/minerush/?v=c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+    "url": "http://127.0.0.1:4294/?q=MineRush&filter=released"
+  },
+  "launchMobileOverflow": {
+    "overflow": false,
+    "width": 320
+  },
+  "mobileGame": {
+    "overflow": false,
+    "url": "http://127.0.0.1:4294/games/minerush/?v=c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+    "width": 320
+  },
+  "mobileUnopened": 81,
+  "mobileBack": {
+    "active": "作品を開始",
+    "url": "http://127.0.0.1:4294/works/minerush/?q=MineRush&filter=released"
+  },
+  "unverified": [
+    "production deployment of new portal links",
+    "Safari",
+    "physical touch"
+  ],
+  "note": "Initial wait for a grid role failed because this board uses cell buttons, not grid. Actual 81 cell buttons and visible game were used for acceptance."
+}

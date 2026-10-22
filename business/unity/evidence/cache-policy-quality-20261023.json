@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "sourceCommit": "2bd8b0cb953835ad118d5b0e2bb062dd52e9f313",
+  "productionWrites": false,
+  "windowsBusinessTests": 134,
+  "linuxBusinessTests": 134,
+  "webChecks": [
+    "repository",
+    "TypeScript",
+    "ESLint",
+    "Vite build",
+    "9 page SSG",
+    "web build checksum",
+    "portal SSR navigation and all launch URLs",
+    "native history router",
+    "44 file package",
+    "20 invalid package cases",
+    "prior production package legacy launch URL compatibility",
+    "tar extraction reverified44files9pages"
+  ],
+  "oldLedgerEventsPreserved": 506,
+  "ownerAndPolicyAndLegacyLedgerUnchanged": true,
+  "packageManifestSha256": "5d69ff26f7e8b73a72616c82dcf641fb632b9fd7ea55871a97be0b503f983243",
+  "archiveSha256": "e36e54e83b8049bef4e10d358cc32a9df1b20a14ba3d689dd5782889e182eebc",
+  "pending": [
+    "next daily integration and production browser acceptance of versioned launch links",
+    "root .htaccess scope answer and actual private inherited-config inspection",
+    "production mod_headers/nginx effect",
+    "Safari",
+    "physical touch"
+  ],
+  "rejectedEvidence": "cache-policy-apache-expires-20261023.json fixed-port process identity was not established; excluded from acceptance",
+  "readPaths": [
+    "天啓.md",
+    "AGENTS.md",
+    "STATE.md",
+    "business/studio-policy.json",
+    "docs/coding-conventions.md",
+    "docs/autonomous-workflow.md",
+    "business/ops/context.py selected current task and checkpoint",
+    "business/ops/flow.py",
+    "business/ops/portal_publish.py",
+    "business/ops/scoped_delivery.py",
+    "web/src/portal/catalog.ts",
+    "web/src/portal/App.tsx",
+    "web/src/portal/history-focus.ts",
+    "scripts/web-release-package.mjs",
+    "ui-ux-pro-max/SKILL.md React semantic navigation match"
+  ],
+  "noNewPushPrOrDeployment": true
+}

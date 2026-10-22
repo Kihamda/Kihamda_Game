@@ -162,7 +162,7 @@ DirectoryIndex index.html
                         target = site / path
                         target.write_text(f'<!doctype html><html><meta charset="utf-8"><title>Cache fixture</title><h1>Version {version}</h1><a href="/about/">Fixture links</a></html>', encoding="utf-8")
                         os.utime(target, (modified, modified))
-                (site / "about/index.html").write_text('<!doctype html><html><meta charset="utf-8"><title>Fixture links</title><a href="/games/minerush/">Revalidated game</a><a href="/unrelated/">Unchanged policy control</a></html>', encoding="utf-8")
+                (site / "about/index.html").write_text('<!doctype html><html><meta charset="utf-8"><title>Fixture links</title><a href="/games/minerush/">Revalidated game</a><a href="/unrelated/">Unchanged policy control</a><a href="/games/minerush/?v=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb">Versioned game</a></html>', encoding="utf-8")
                 write_version("A")
                 if args.legacy_browser_cache:
                     (site / ".htaccess").write_bytes(inherited)

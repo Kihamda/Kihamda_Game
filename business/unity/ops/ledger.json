@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 506,
+  "revision": 509,
   "business_id": "game-site",
-  "fence": 86,
+  "fence": 87,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -11403,6 +11403,88 @@
           ],
           "next_step": "Continue same cache-revisit task:confirm supported per-path HTML/version-marker response-header mechanism within existing publication scope;do not assume nginx header means origin type. Validate return/reload and retain existing games before next daily integration with locally saved accepted registration. Do not replay accepted portal/scoped CD or create record-only PR.",
           "at": 1792686290.0177257
+        },
+        {
+          "run_id": "unity-20261023T0700-cache",
+          "fence": 87,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "5303ec12802dd172ed7b80b851530e789e3dfa915ace2c89844189402a89de6f"
+            },
+            {
+              "path": "docs/web-cache-revalidation-20261023.md",
+              "sha256": "63f81c6d91af3bc5cadea6c9a424707a10923807b87d0ad61dc56e4726df30d0"
+            },
+            {
+              "path": "business/config/cache-revalidation.htaccess",
+              "sha256": "d6426be59487126ec66f20d77d19efc9c5d2585847034da95f3a7c13574d9ef4"
+            },
+            {
+              "path": "business/ops/cache_audit.py",
+              "sha256": "8a026bc579c2ba8b23e3ccac4bd9ea52bfa7eb8277760909df7d94835aad6fd5"
+            },
+            {
+              "path": "business/ops/cache_config_preflight.py",
+              "sha256": "00ea3c1102bc62802b36c43f9b8422103b01d4bb6b8e3705344f18e9c48c0ed1"
+            },
+            {
+              "path": "business/unity/evidence/cache-policy-audit-20261023-bound.json",
+              "sha256": "b8a7af3be438cc6613338a92d2bc20b683c36bf957ed861adad35f0b1b967335"
+            },
+            {
+              "path": "business/unity/evidence/cache-policy-quality-20261023.json",
+              "sha256": "673542dacb0f169453251bf76cb534321536edb3a787c524b2da969ea31ef18a"
+            },
+            {
+              "path": "business/unity/evidence/cache-policy-session-20261023.json",
+              "sha256": "215dc71e78a71572d4df8c5593ab779826db17a537dad6e9bbdbb715bebd222e"
+            },
+            {
+              "path": "business/unity/evidence/cache-policy-apache-preservation-20261023.json",
+              "sha256": "05b9a5c0d8b056e9d4e1e862c65ab62465dd6001b10bbb801b4fa29a2c8863a1"
+            },
+            {
+              "path": "business/unity/evidence/cache-policy-browser-20261023.json",
+              "sha256": "484b5f7e49905bf124658e54833a3f2d55422fbaae7c1d11f8f84a26a7716671"
+            },
+            {
+              "path": "business/unity/evidence/cache-policy-legacy-transition-20261023.json",
+              "sha256": "7e3fed61204a0ab5e1f24885f835d5707a33b26a1f26edb5745256e47455b05e"
+            },
+            {
+              "path": "business/unity/evidence/versioned-launch-browser-20261023.json",
+              "sha256": "e222751f24a0e24d58fa1a7513ffbde583d3f60c570d36acbd9e1e4c7a759dbf"
+            },
+            {
+              "path": "business/unity/evidence/versioned-launch-cache-key-20261023.json",
+              "sha256": "386b3a226d7c11a4e746b5dc67a9fa53e01942abcc83d5adecc341e579c60f79"
+            },
+            {
+              "path": "business/unity/evidence/versioned-launch-retention-full-20261023.json",
+              "sha256": "e5af81d2c6d42fbb3cb0b3b4ca7bed7e9434d4208f650fff47c73a7a098e24d6"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "4347dbbad8a94f8cf3720ccf1e53c2405b726b9105b2e5027cf70b03be414551"
+            },
+            {
+              "path": "web/src/portal/catalog.ts",
+              "sha256": "9414b5fb51b0f6e502592169e037bffa1b7e931ce8453da43f9e00a9e94a6c7b"
+            }
+          ],
+          "checks": [
+            "134 Windows/Linux business tests;TypeScript/ESLint/Vite/repository/SSG checks passed",
+            "22read-only HTTP policy requests and ETag/304;policy false is expected current production finding",
+            "Isolated identified Apache22selected11excluded/query/200/304/mod_expires/rewrite/33bytes preserved;initial port collision receipt rejected",
+            "Browser link revisit:B no-cache vs A disk-cache;legacyA->Bheader revisitA/reloadB/nextCrevisitC;newqueryB vs bareA",
+            "Versioned release links implemented in native anchors;PC81cells/Enter43safe/Back exactcardfocus+query;320px/nooverflow/reload81/Back exactstartfocus",
+            "44file9page package2bd8b0c,20negativecases,oldmain3416ea4 package accepted;tarrestore;known45file fakeFTP recovery/protect5+SW+oldscopeddeps",
+            "Original506events and owner/policy/legacyledger/handoff unchanged;noUnity/Atohitori/recoveryvault changes;metricsnull",
+            "source/read paths and quality receipt recorded;work_session={\"started_at\": \"2026-10-23T06:57:39.682277+09:00\", \"start_basis\": \"first explicit clock after startup reading\", \"ended_at\": \"2026-10-23T07:21:01.808033+09:00\", \"elapsed_seconds\": 1402.125756, \"exit_reason\": \"All independent local implementation, real Apache/browser comparisons, package recovery and Windows/Linux checks completed. Remaining production root-config write requires the pending scoped answer and actual inherited-config inspection in the existing secret-bearing environment; versioned launch links are retained for next daily batch. No other ready task under WIP1. No artificial waiting.\", \"early_exit_evidence_if_under_25_minutes\": [\"134 Windows and Linux tests;23 cache tests after resource cleanup\", \"22 live response paths;identified Apache22selected/11excluded;existing rewrite and33fixture bytes preserved\", \"real browser no-cache comparison, legacy-cache transition, query-key bypass,PC/320px native game focus/reload accepted\", \"44file archive restored;20 negative package cases;legacy production package verified;known45file fakeFTP rollback verified\", \"No local FTP environment was used;configuration preflight is tested but not executed on production. Root .htaccess remains outside current publisher allowlist. Pending answer is not approval.\", \"No extra push/PR/deployment;daily accepted delivery is not replayed\"], \"artificial_waits\": false}"
+          ],
+          "next_step": "Keep same cache task. Include validated versioned launch links and locally saved accepted registration in next daily integration;exacthead CI/merge/new artifact/additive portal deployment/browser acceptance. Root .htaccess candidate remains separate pending explicit scoped answer and real private inherited-config preflight;do not infer approval or relax current publication allowlists. Do not replay accepted CD or create record-only PR.",
+          "at": 1792707661.8701723
         }
       ],
       "claims": [
@@ -11411,6 +11493,12 @@
           "task_id": "T-web-html-cache-revisit-20261023",
           "fence": 86,
           "expires_at": 1792686609.289186
+        },
+        {
+          "run_id": "unity-20261023T0700-cache",
+          "task_id": "T-web-html-cache-revisit-20261023",
+          "fence": 87,
+          "expires_at": 1792708093.4935768
         }
       ]
     }
@@ -12228,6 +12316,12 @@
       "source": "user:automation:unity:2026-10-23:child-of-unity-20261023T0100-daily",
       "status": "checkpointed",
       "started_at": 1792686009.221227
+    },
+    "unity-20261023T0700-cache": {
+      "run_id": "unity-20261023T0700-cache",
+      "source": "user:automation:unity:2026-10-23:early-0700-start-no-slot",
+      "started_at": 1792706293.4209743,
+      "status": "checkpointed"
     }
   },
   "experiments": {
@@ -30126,7 +30220,131 @@
       },
       "previous": "877340a5c52825ad0d45be3c018d95e0b49617241eff633e58f1eaeafb413fbb",
       "sha256": "b4700118eeb6cb6db519a772d8a031b02758d6f3ea59b38793f13c9bbb0f1c62"
+    },
+    {
+      "revision": 507,
+      "at": 1792706293.4209743,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261023T0700-cache",
+        "source": "user:automation:unity:2026-10-23:early-0700-start-no-slot",
+        "started_at": "2026-10-23T06:57:39.6822779+09:00"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "b4700118eeb6cb6db519a772d8a031b02758d6f3ea59b38793f13c9bbb0f1c62",
+      "sha256": "de46b52242061defcece154b5555a78f40cabd3c6883b47d678e0f20f647d243"
+    },
+    {
+      "revision": 508,
+      "at": 1792706293.4935768,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261023T0700-cache",
+        "task_id": "T-web-html-cache-revisit-20261023",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261023T0700-cache",
+        "task_id": "T-web-html-cache-revisit-20261023",
+        "fence": 87,
+        "expires_at": 1792708093.4935768
+      },
+      "previous": "de46b52242061defcece154b5555a78f40cabd3c6883b47d678e0f20f647d243",
+      "sha256": "3ea76bcfc8bd60070317ec7e23194b1cbc2d39dd2ed322e4fee8d74de9d0502d"
+    },
+    {
+      "revision": 509,
+      "at": 1792707661.8701723,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261023T0700-cache",
+        "fence": 87,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "5303ec12802dd172ed7b80b851530e789e3dfa915ace2c89844189402a89de6f"
+          },
+          {
+            "path": "docs/web-cache-revalidation-20261023.md",
+            "sha256": "63f81c6d91af3bc5cadea6c9a424707a10923807b87d0ad61dc56e4726df30d0"
+          },
+          {
+            "path": "business/config/cache-revalidation.htaccess",
+            "sha256": "d6426be59487126ec66f20d77d19efc9c5d2585847034da95f3a7c13574d9ef4"
+          },
+          {
+            "path": "business/ops/cache_audit.py",
+            "sha256": "8a026bc579c2ba8b23e3ccac4bd9ea52bfa7eb8277760909df7d94835aad6fd5"
+          },
+          {
+            "path": "business/ops/cache_config_preflight.py",
+            "sha256": "00ea3c1102bc62802b36c43f9b8422103b01d4bb6b8e3705344f18e9c48c0ed1"
+          },
+          {
+            "path": "business/unity/evidence/cache-policy-audit-20261023-bound.json",
+            "sha256": "b8a7af3be438cc6613338a92d2bc20b683c36bf957ed861adad35f0b1b967335"
+          },
+          {
+            "path": "business/unity/evidence/cache-policy-quality-20261023.json",
+            "sha256": "673542dacb0f169453251bf76cb534321536edb3a787c524b2da969ea31ef18a"
+          },
+          {
+            "path": "business/unity/evidence/cache-policy-session-20261023.json",
+            "sha256": "215dc71e78a71572d4df8c5593ab779826db17a537dad6e9bbdbb715bebd222e"
+          },
+          {
+            "path": "business/unity/evidence/cache-policy-apache-preservation-20261023.json",
+            "sha256": "05b9a5c0d8b056e9d4e1e862c65ab62465dd6001b10bbb801b4fa29a2c8863a1"
+          },
+          {
+            "path": "business/unity/evidence/cache-policy-browser-20261023.json",
+            "sha256": "484b5f7e49905bf124658e54833a3f2d55422fbaae7c1d11f8f84a26a7716671"
+          },
+          {
+            "path": "business/unity/evidence/cache-policy-legacy-transition-20261023.json",
+            "sha256": "7e3fed61204a0ab5e1f24885f835d5707a33b26a1f26edb5745256e47455b05e"
+          },
+          {
+            "path": "business/unity/evidence/versioned-launch-browser-20261023.json",
+            "sha256": "e222751f24a0e24d58fa1a7513ffbde583d3f60c570d36acbd9e1e4c7a759dbf"
+          },
+          {
+            "path": "business/unity/evidence/versioned-launch-cache-key-20261023.json",
+            "sha256": "386b3a226d7c11a4e746b5dc67a9fa53e01942abcc83d5adecc341e579c60f79"
+          },
+          {
+            "path": "business/unity/evidence/versioned-launch-retention-full-20261023.json",
+            "sha256": "e5af81d2c6d42fbb3cb0b3b4ca7bed7e9434d4208f650fff47c73a7a098e24d6"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "4347dbbad8a94f8cf3720ccf1e53c2405b726b9105b2e5027cf70b03be414551"
+          },
+          {
+            "path": "web/src/portal/catalog.ts",
+            "sha256": "9414b5fb51b0f6e502592169e037bffa1b7e931ce8453da43f9e00a9e94a6c7b"
+          }
+        ],
+        "checks": [
+          "134 Windows/Linux business tests;TypeScript/ESLint/Vite/repository/SSG checks passed",
+          "22read-only HTTP policy requests and ETag/304;policy false is expected current production finding",
+          "Isolated identified Apache22selected11excluded/query/200/304/mod_expires/rewrite/33bytes preserved;initial port collision receipt rejected",
+          "Browser link revisit:B no-cache vs A disk-cache;legacyA->Bheader revisitA/reloadB/nextCrevisitC;newqueryB vs bareA",
+          "Versioned release links implemented in native anchors;PC81cells/Enter43safe/Back exactcardfocus+query;320px/nooverflow/reload81/Back exactstartfocus",
+          "44file9page package2bd8b0c,20negativecases,oldmain3416ea4 package accepted;tarrestore;known45file fakeFTP recovery/protect5+SW+oldscopeddeps",
+          "Original506events and owner/policy/legacyledger/handoff unchanged;noUnity/Atohitori/recoveryvault changes;metricsnull",
+          "source/read paths and quality receipt recorded;work_session={\"started_at\": \"2026-10-23T06:57:39.682277+09:00\", \"start_basis\": \"first explicit clock after startup reading\", \"ended_at\": \"2026-10-23T07:21:01.808033+09:00\", \"elapsed_seconds\": 1402.125756, \"exit_reason\": \"All independent local implementation, real Apache/browser comparisons, package recovery and Windows/Linux checks completed. Remaining production root-config write requires the pending scoped answer and actual inherited-config inspection in the existing secret-bearing environment; versioned launch links are retained for next daily batch. No other ready task under WIP1. No artificial waiting.\", \"early_exit_evidence_if_under_25_minutes\": [\"134 Windows and Linux tests;23 cache tests after resource cleanup\", \"22 live response paths;identified Apache22selected/11excluded;existing rewrite and33fixture bytes preserved\", \"real browser no-cache comparison, legacy-cache transition, query-key bypass,PC/320px native game focus/reload accepted\", \"44file archive restored;20 negative package cases;legacy production package verified;known45file fakeFTP rollback verified\", \"No local FTP environment was used;configuration preflight is tested but not executed on production. Root .htaccess remains outside current publisher allowlist. Pending answer is not approval.\", \"No extra push/PR/deployment;daily accepted delivery is not replayed\"], \"artificial_waits\": false}"
+        ],
+        "next_step": "Keep same cache task. Include validated versioned launch links and locally saved accepted registration in next daily integration;exacthead CI/merge/new artifact/additive portal deployment/browser acceptance. Root .htaccess candidate remains separate pending explicit scoped answer and real private inherited-config preflight;do not infer approval or relax current publication allowlists. Do not replay accepted CD or create record-only PR."
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "3ea76bcfc8bd60070317ec7e23194b1cbc2d39dd2ed322e4fee8d74de9d0502d",
+      "sha256": "9a5d226d15b4fd14ea6b15e673b1833f267c46b7f719d5fe3f0461e371bf107c"
     }
   ],
-  "projection_sha256": "92884be9ea7d1b1afa68c6a992528b95c6a84c0d9dd587b3164509c17be3aa50"
+  "projection_sha256": "947162ee91c026316f3bc00ad79b9619854f0b594d5f6690cc05ce0d40cccb0e"
 }
