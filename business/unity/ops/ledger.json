@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "revision": 501,
+  "revision": 505,
   "business_id": "game-site",
-  "fence": 85,
+  "fence": 86,
   "lease": {
-    "run_id": "unity-20261023T0111-scoped",
-    "task_id": "T-minerush-progress-daily-integration-20261023",
-    "fence": 85,
-    "expires_at": 1792686661.4453235
+    "run_id": "unity-20261023T0120-cache",
+    "task_id": "T-web-html-cache-revisit-20261023",
+    "fence": 86,
+    "expires_at": 1792686609.289186
   },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -10594,7 +10594,7 @@
         "T-minerush-safe-progress-20261022",
         "T-web-release-preparation-command-20261022"
       ],
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "run_id": "unity-20261022T0100-final-audit",
@@ -10890,6 +10890,37 @@
           ],
           "next_step": "次の日次配信でmain SHA/成功CIと本番変化を再照合し、確認済み4ファイル版の限定配信・HTTP/進捗/再読み込み/ホーム往復を受入れる。39722220503は成功済み読取専用検査で再送不要。統合PRのやり直しは不要。ポータル検索保持修正は次の日次PRへ併せる。",
           "at": 1792643422.8278646
+        },
+        {
+          "run_id": "unity-20261023T0111-scoped",
+          "fence": 85,
+          "passed": true,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "14d89a693099535141f6181c2d114f03471f5c3b160326d86c542b5de4d4e455"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261023.json",
+              "sha256": "90ba20bb813ea79c4dbf6a4d7d166a811611e68050487d62d77573df6f0a9c00"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "ca0a08c7870b12235ca7d245c7deb2648e0adff1264bcbfca6af23f9373f6fd0"
+            },
+            {
+              "path": "docs/daily-delivery-20261023.md",
+              "sha256": "f98a39d41dc398caff32c21276a2bfd749fe29a02ddaba060b3b5e58005d66b9"
+            }
+          ],
+          "checks": [
+            "MainCI39810473015 and freshpreflight39811295068 success;scoped39811894781 success",
+            "4files+slash/protected5/oldbaseline matched;actual71safe9flags/win/reset/reload/320/390Back passed",
+            "Registration sourcefdac761:44file package/18negative cases;111business tests;receiptciConclusion corrected without relaxing check",
+            "Actual combined-artifact wrongorder refused,correct42baseline restored;oldgame37opened/catalog4games/brand loaded in local browser"
+          ],
+          "next_step": "Investigate observed oldHTML on first revisit after deployment;production header/caching behavior and permitted response policy;registration waits next daily batch",
+          "at": 1792686009.08223
         }
       ],
       "claims": [
@@ -11297,6 +11328,41 @@
           "task_id": "T-portal-context-navigation-20261022",
           "fence": 84,
           "expires_at": 1792686582.0690997
+        }
+      ]
+    },
+    "T-web-html-cache-revisit-20261023": {
+      "id": "T-web-html-cache-revisit-20261023",
+      "objective": "配信直後の再訪で旧HTMLが表示される条件と更新方法を検証する",
+      "acceptance": [
+        "本番HTTPヘッダーとserviceworkerの有無を事実として保存",
+        "隔離した応答で通常再訪と再読み込み・再検証指定を比較",
+        "HTTPキャッシュと履歴復元を区別し本番原因未確定を保持",
+        "次の変更範囲と日次版登録同期を明示する"
+      ],
+      "outputs": [
+        "business/unity/evidence/html-cache-revisit-20261023.json"
+      ],
+      "checks": [
+        "live-headers",
+        "isolated-browser-cache",
+        "scope-review"
+      ],
+      "next_step": "本番で観測した旧JS再訪をヘッダーと隔離fixtureで検証し、日次統合前の安全な対応範囲を決める",
+      "decision_id": "D-portal-refresh-20261022",
+      "experiment_id": "E-unity-portal",
+      "pdca": "check",
+      "hypothesis": "HTMLに明示的な再検証方針がないと既訪問者へ旧版が再利用される可能性がある。実原因と利用指標は未確定。",
+      "source": "user:automation:unity:2026-10-23:observed-oldHTML-during-production-acceptance",
+      "priority": 95,
+      "status": "running",
+      "checkpoints": [],
+      "claims": [
+        {
+          "run_id": "unity-20261023T0120-cache",
+          "task_id": "T-web-html-cache-revisit-20261023",
+          "fence": 86,
+          "expires_at": 1792686609.289186
         }
       ]
     }
@@ -12106,8 +12172,14 @@
     "unity-20261023T0111-scoped": {
       "run_id": "unity-20261023T0111-scoped",
       "source": "user:automation:unity:2026-10-23:child-of-unity-20261023T0100-daily",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792685461.3776581
+    },
+    "unity-20261023T0120-cache": {
+      "run_id": "unity-20261023T0120-cache",
+      "source": "user:automation:unity:2026-10-23:child-of-unity-20261023T0100-daily",
+      "status": "open",
+      "started_at": 1792686009.221227
     }
   },
   "experiments": {
@@ -29838,7 +29910,114 @@
       },
       "previous": "dbc9b9aef2aa8d6c699917d12f0a31868f40248a8a7c493914761c6db626e26f",
       "sha256": "180f16ceae7c728b57ad891876e0f9402a7b5ffc3ba3a2e7f9ee60a50620ddf7"
+    },
+    {
+      "revision": 502,
+      "at": 1792686009.08223,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261023T0111-scoped",
+        "fence": 85,
+        "passed": true,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "14d89a693099535141f6181c2d114f03471f5c3b160326d86c542b5de4d4e455"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261023.json",
+            "sha256": "90ba20bb813ea79c4dbf6a4d7d166a811611e68050487d62d77573df6f0a9c00"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "ca0a08c7870b12235ca7d245c7deb2648e0adff1264bcbfca6af23f9373f6fd0"
+          },
+          {
+            "path": "docs/daily-delivery-20261023.md",
+            "sha256": "f98a39d41dc398caff32c21276a2bfd749fe29a02ddaba060b3b5e58005d66b9"
+          }
+        ],
+        "checks": [
+          "MainCI39810473015 and freshpreflight39811295068 success;scoped39811894781 success",
+          "4files+slash/protected5/oldbaseline matched;actual71safe9flags/win/reset/reload/320/390Back passed",
+          "Registration sourcefdac761:44file package/18negative cases;111business tests;receiptciConclusion corrected without relaxing check",
+          "Actual combined-artifact wrongorder refused,correct42baseline restored;oldgame37opened/catalog4games/brand loaded in local browser"
+        ],
+        "next_step": "Investigate observed oldHTML on first revisit after deployment;production header/caching behavior and permitted response policy;registration waits next daily batch"
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "180f16ceae7c728b57ad891876e0f9402a7b5ffc3ba3a2e7f9ee60a50620ddf7",
+      "sha256": "7b4b5ca93bddb1eb6dfe24e28164df3b9bfcdbe333a353a2b51f3d2d5c4ab9a2"
+    },
+    {
+      "revision": 503,
+      "at": 1792686009.1521182,
+      "action": "task",
+      "data": {
+        "id": "T-web-html-cache-revisit-20261023",
+        "objective": "配信直後の再訪で旧HTMLが表示される条件と更新方法を検証する",
+        "acceptance": [
+          "本番HTTPヘッダーとserviceworkerの有無を事実として保存",
+          "隔離した応答で通常再訪と再読み込み・再検証指定を比較",
+          "HTTPキャッシュと履歴復元を区別し本番原因未確定を保持",
+          "次の変更範囲と日次版登録同期を明示する"
+        ],
+        "outputs": [
+          "business/unity/evidence/html-cache-revisit-20261023.json"
+        ],
+        "checks": [
+          "live-headers",
+          "isolated-browser-cache",
+          "scope-review"
+        ],
+        "next_step": "本番で観測した旧JS再訪をヘッダーと隔離fixtureで検証し、日次統合前の安全な対応範囲を決める",
+        "decision_id": "D-portal-refresh-20261022",
+        "experiment_id": "E-unity-portal",
+        "pdca": "check",
+        "hypothesis": "HTMLに明示的な再検証方針がないと既訪問者へ旧版が再利用される可能性がある。実原因と利用指標は未確定。",
+        "source": "user:automation:unity:2026-10-23:observed-oldHTML-during-production-acceptance",
+        "priority": 95
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "7b4b5ca93bddb1eb6dfe24e28164df3b9bfcdbe333a353a2b51f3d2d5c4ab9a2",
+      "sha256": "b9f8812d0734baf92fe308ffad3135325bd881bc727eedde60c337fd47a7ca08"
+    },
+    {
+      "revision": 504,
+      "at": 1792686009.221227,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261023T0120-cache",
+        "source": "user:automation:unity:2026-10-23:child-of-unity-20261023T0100-daily"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "b9f8812d0734baf92fe308ffad3135325bd881bc727eedde60c337fd47a7ca08",
+      "sha256": "56eaef71f98235ee432d8d08e87f6eee59291d91126d22b0a6a154bfe163f124"
+    },
+    {
+      "revision": 505,
+      "at": 1792686009.289186,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261023T0120-cache",
+        "task_id": "T-web-html-cache-revisit-20261023",
+        "ttl_seconds": 600
+      },
+      "result": {
+        "run_id": "unity-20261023T0120-cache",
+        "task_id": "T-web-html-cache-revisit-20261023",
+        "fence": 86,
+        "expires_at": 1792686609.289186
+      },
+      "previous": "56eaef71f98235ee432d8d08e87f6eee59291d91126d22b0a6a154bfe163f124",
+      "sha256": "877340a5c52825ad0d45be3c018d95e0b49617241eff633e58f1eaeafb413fbb"
     }
   ],
-  "projection_sha256": "a12f0a71c993e6489744794b81c5de7b1c7619f3e745555f20cd4a3fbb663f27"
+  "projection_sha256": "4397d10db1de48e8d3107093b44987c3411a1a0fb31fb154021919248b749e2f"
 }

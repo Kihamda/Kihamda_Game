@@ -12,3 +12,5 @@
 - 新しい公開版登録は実受入れ後にweb/src/portal/data/works.jsonへ保存した。今回配信した紹介ページの確認版表示は前日登録のままで、次の日次統合で同期する。記録だけの追送PR・追加デプロイを行わない。
 - 今日は同じ日次改善をポータルとゲームの2トランザクションで配信した。再送なし。台帳・受入れ・版登録は今回のローカルcommitへ保存し、次の日次変更とまとめる。
 - 実タッチ、Safari、人間評価、別PC復元、本番復旧は未確認。利益・訪問・開始・完了・再訪はnull。詳細docs/daily-delivery-20261023.mdと正本checkpointを参照する。
+
+- 再訪時の旧HTMLを隔離fixtureで再現。明示的Cache-ControlなしではAを再利用、リロードでB、no-cache指定では通常再訪でもB。本番HTMLはCache-Controlなし、版マーカーはmax-age604800。再検証設定の反映経路は未確認で、現行配信対象を広げず調査を引き継ぐ。証跡business/unity/evidence/html-cache-revisit-20261023.json。新登録の44ファイル保管版・18不正ケースと実バージョン表示も確認済み。
