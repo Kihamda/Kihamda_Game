@@ -116,3 +116,28 @@ assert(render('/', '').includes('すべての語を含む作品を探せます')
 const combinedDetail = render('/works/iceslide/', '?q=Web+1人用');
 assert(combinedDetail.includes('href="/?q=Web+1%E4%BA%BA%E7%94%A8#works"'));
 console.log('Combined search passed: AND, word order, full-width/repeated whitespace, case, negative terms, empty, filter and return URL.');
+
+// Informational detours must retain the same catalog context as work details.
+for (const pathname of ['/', '/about/', '/contact/', '/privacy-policy/', '/works/minerush/', '/games/ice-courier/']) {
+  const html = render(pathname, '?q=Web+1人用&filter=released');
+  for (const destination of ['/', '/about/', '/contact/', '/privacy-policy/']) {
+    const links = [...html.matchAll(/href="([^"]+)"/g)].map(match => match[1]);
+    const internal = links.filter(href => href.split(/[?#]/)[0] === destination);
+    assert(internal.length > 0, `${pathname}: missing ${destination}`);
+    assert(internal.every(href => href.includes('?q=Web+1%E4%BA%BA%E7%94%A8&amp;filter=released')),
+      `${pathname}: ${destination} loses catalog context: ${internal.join(', ')}`);
+  }
+  assert(html.includes('href="/games/minerush/"'), 'Live game entry must retain its verified URL');
+  assert(html.includes('href="mailto:contact@kihamda.net"') === (pathname === '/contact/'));
+}
+for (const [search, expected] of [
+  ['', ''],
+  ['?filter=released', '?filter=released'],
+  ['?q=%3C%26%2B%22', '?q=%3C%26%2B%22'],
+  ['?q=Web&filter=unknown', '?q=Web'],
+  ['?q=%E3%81%82%E3%81%84%E3%81%86+%26+Web&filter=released', '?q=%E3%81%82%E3%81%84%E3%81%86+%26+Web&amp;filter=released'],
+]) {
+  const html = render('/privacy-policy/', search);
+  assert(html.includes(`href="/contact/${expected}"`), search);
+}
+console.log('Informational navigation passed: every portal destination retains query/filter; verified live and mail URLs remain exact.');
