@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "revision": 438,
+  "revision": 464,
   "business_id": "game-site",
-  "fence": 74,
+  "fence": 79,
   "lease": {
-    "run_id": "unity-20261022T0100-daily-delivery",
-    "task_id": "T-minerush-first-play-integration-20261022",
-    "fence": 74,
-    "expires_at": 1792600351.1588035
+    "run_id": "manual-portal-refresh-20261022-implementation",
+    "task_id": "T-portal-refresh-20261022",
+    "fence": 79,
+    "expires_at": 1792629450.8856316
   },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -10080,7 +10080,7 @@
         "T-minerush-terminal-effects-20261021",
         "T-scoped-candidate-rehearsal-20261021"
       ],
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "run_id": "unity-20261021T1300-final-provenance",
@@ -10285,6 +10285,56 @@
           ],
           "next_step": "2026-10-22 daily batch: guidance/terminal/input fixes and public receipts; exact-head Linux/WindowsCI, scoped artifact, guarded merge, live preflight/delivery/HTTP/browser acceptance before release update.",
           "at": 1792578365.494313
+        },
+        {
+          "run_id": "unity-20261022T0100-daily-delivery",
+          "fence": 74,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/daily-delivery-accepted-20261022.json",
+              "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "dc69faafc148207baa714844a8f1e32cabec78409c48738d84e56c263ccd60e1"
+            }
+          ],
+          "checks": [
+            "PR32 verified head Linux/Windows CI39631234390 success and guarded merge5f9a1ef",
+            "Exact main Linux/Windows CI39631400999 and package verified; offline previous-version restore passed",
+            "Production delivery39631591189 success; all4files+slashURL+5protectedURLs+old3baseline match",
+            "Real browser71safe10flags win/reset,keyboard,reload,catalog roundtrip passed; physical touch/Safari/human unobserved",
+            "Read startup policy/conventions/workflow and selected context --task; inspected App/GameShell/scoped build/rehearsal source",
+            "Parent automation session continues with sequential WIP1 child; not early exit"
+          ],
+          "next_step": "公開検査で目標71マスに対する現在の進捗が盤面横に見えないことを確認。次工程で安全マス進捗を追加し、翌日日次候補としてローカル検査する。",
+          "passed": true,
+          "at": 1792599003.2157924
+        },
+        {
+          "run_id": "unity-20261022T0100-daily-delivery",
+          "fence": 74,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/daily-delivery-accepted-20261022.json",
+              "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "dc69faafc148207baa714844a8f1e32cabec78409c48738d84e56c263ccd60e1"
+            }
+          ],
+          "checks": [
+            "PR32 verified head Linux/Windows CI39631234390 success and guarded merge5f9a1ef",
+            "Exact main Linux/Windows CI39631400999 and package verified; offline previous-version restore passed",
+            "Production delivery39631591189 success; all4files+slashURL+5protectedURLs+old3baseline match",
+            "Real browser71safe10flags win/reset,keyboard,reload,catalog roundtrip passed; physical touch/Safari/human unobserved",
+            "Read startup policy/conventions/workflow and selected context --task; inspected App/GameShell/scoped build/rehearsal source",
+            "Parent automation session continues with sequential WIP1 child; not early exit"
+          ],
+          "next_step": "公開検査で目標71マスに対する現在の進捗が盤面横に見えないことを確認。次工程で安全マス進捗を追加し、翌日日次候補としてローカル検査する。",
+          "passed": true,
+          "at": 1792599003.2670808
         }
       ],
       "claims": [
@@ -10305,6 +10355,533 @@
           "task_id": "T-minerush-first-play-integration-20261022",
           "fence": 74,
           "expires_at": 1792600351.1588035
+        }
+      ]
+    },
+    "T-minerush-safe-progress-20261022": {
+      "id": "T-minerush-safe-progress-20261022",
+      "objective": "安全マスの開封進捗を盤面と同時に読めるようにする",
+      "acceptance": [
+        "初期0/71、通常開封、旗による不変、敗北、勝利71/71、リセット0/71が実状態と一致",
+        "型・静的・ビルド・実App回帰と実ブラウザの画面/操作/再読込が成功",
+        "390px/1280pxと短い横画面で進捗と盤面が読める",
+        "本日の追加配信や追加PRを作らず次の日次候補として保存"
+      ],
+      "outputs": [
+        "web/games/minerush/src/App.tsx",
+        "business/unity/evidence/minerush-safe-progress-20261022.json"
+      ],
+      "checks": [
+        "actual-app-state",
+        "web-build",
+        "browser-progress-layout"
+      ],
+      "next_step": "安全マスの進捗を既存game.revealedCountから表示し、公開版の状態遷移と区別してローカル検証する。",
+      "decision_id": "D-minerush-first-play-20261021",
+      "experiment_id": "E-minerush-first-play",
+      "hypothesis": "目標71マスと現在の開封数を同時に示すと、旗数とは異なるクリア進捗が分かる。人間への効果は未観測。",
+      "pdca": "do",
+      "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+      "depends_on": [
+        "T-minerush-first-play-integration-20261022"
+      ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261022T0100-safe-progress",
+          "fence": 75,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+              "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+            }
+          ],
+          "checks": [
+            "Final20px progress:390 text16.42CSSpx;1280 and961x360fit",
+            "Browser0/71 flag unchanged;40->71;loss42 unchanged;reset/reload0",
+            "TypeScript ESLint build actualApp regression passed;104business tests;44file/18rejections;todayartifact recovery rehearsal passed",
+            "No additional PR/push/deploy; parent session continues with packaging efficiency child"
+          ],
+          "next_step": "次の日次統合で進捗表示をCI後配信。残り時間では今回の手動パッケージ順序ミスを防ぐ単一コマンドを実装・検証する。",
+          "passed": true,
+          "at": 1792599401.0313683
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261022T0100-safe-progress",
+          "task_id": "T-minerush-safe-progress-20261022",
+          "fence": 75,
+          "expires_at": 1792600226.873189
+        }
+      ]
+    },
+    "T-web-release-preparation-command-20261022": {
+      "id": "T-web-release-preparation-command-20261022",
+      "objective": "版指定とチェックサム生成の順序を単一コマンドにまとめる",
+      "acceptance": [
+        "未コミット制作ソースと既存出力先をビルド前に拒否",
+        "同じheadでbuild/checksum/create/verifyを順に実行",
+        "実際の44filepackageが版とSHA256に一致",
+        "Windowsで実実行、Linuxで構文・実行可能性を検査"
+      ],
+      "outputs": [
+        "scripts/prepare-web-release.mjs",
+        "package.json"
+      ],
+      "checks": [
+        "dirty-source-refusal",
+        "existing-output-refusal",
+        "real-package"
+      ],
+      "next_step": "npm実行のNode/npmCLIを使う小さいラッパーを追加し、今回のlocal-uncommittedとSHA256SUMS欠落を予防する。",
+      "decision_id": "D-minerush-first-play-20261021",
+      "experiment_id": "E-minerush-first-play",
+      "hypothesis": "版とchecksum生成の手順を一つにすれば有効な配布候補を手順ミスで拒否する再作業を減らせる。",
+      "pdca": "do",
+      "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+      "depends_on": [
+        "T-minerush-safe-progress-20261022"
+      ],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261022T0100-release-preparation",
+          "fence": 76,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+            },
+            {
+              "path": "business/unity/evidence/release-preparation-20261022.json",
+              "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+              "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+            },
+            {
+              "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+              "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+            },
+            {
+              "path": "scripts/prepare-web-release.mjs",
+              "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+            },
+            {
+              "path": "package.json",
+              "sha256": "5e23da3aa6f9c50e149a12b0733d1a4b3bcb45f4a421f61b4712792d2770b5de"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+            }
+          ],
+          "checks": [
+            "Windows/Linux wrapper real44file9page success;12JS/CSS bytes match;dirty/existing/outside/missing args failclosed",
+            "Official44file archive restore and real game25/71/catalog CSS passed;localPC only",
+            "Portal public1/queryfilter/detail/start/reload/back/list passed",
+            "Production synthetic interrupted/longpress-contextmenu/multitouch accepted separately from physical touch",
+            "Read startup policies and task/decision only;App/game/CSS/GameShell/checks/scoped workflow/package source selected",
+            "Original436event prefix and owner/oldledger/workspace unchanged",
+            "work_session={\"started_at\": \"2026-10-22T01:02:15.506288+09:00\", \"start_basis\": \"first explicit clock;startup reading started earlier\", \"ended_at\": \"2026-10-22T01:27:48.058993+09:00\", \"elapsed_seconds\": 1532.553, \"exit_reason\": \"Daily production delivery accepted;additional progress and release-preparation implementation accepted;save artifacts and next daily integration.\", \"artificial_waits\": false}"
+          ],
+          "next_step": "次の日次統合で進捗・単一保管版作成コマンド・公開受入れ記録をまとめる。最新headCI後、同版限定候補の配信と実受入れを行う。",
+          "passed": true,
+          "at": 1792600068.0887756
+        },
+        {
+          "run_id": "unity-20261022T0100-release-preparation",
+          "fence": 76,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+            },
+            {
+              "path": "business/unity/evidence/release-preparation-20261022.json",
+              "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+              "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+            },
+            {
+              "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+              "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+            },
+            {
+              "path": "scripts/prepare-web-release.mjs",
+              "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+            },
+            {
+              "path": "package.json",
+              "sha256": "5e23da3aa6f9c50e149a12b0733d1a4b3bcb45f4a421f61b4712792d2770b5de"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+            }
+          ],
+          "checks": [
+            "Windows/Linux wrapper real44file9page success;12JS/CSS bytes match;dirty/existing/outside/missing args failclosed",
+            "Official44file archive restore and real game25/71/catalog CSS passed;localPC only",
+            "Portal public1/queryfilter/detail/start/reload/back/list passed",
+            "Production synthetic interrupted/longpress-contextmenu/multitouch accepted separately from physical touch",
+            "Read startup policies and task/decision only;App/game/CSS/GameShell/checks/scoped workflow/package source selected",
+            "Original436event prefix and owner/oldledger/workspace unchanged",
+            "work_session={\"started_at\": \"2026-10-22T01:02:15.506288+09:00\", \"start_basis\": \"first explicit clock;startup reading started earlier\", \"ended_at\": \"2026-10-22T01:27:48.058993+09:00\", \"elapsed_seconds\": 1532.553, \"exit_reason\": \"Daily production delivery accepted;additional progress and release-preparation implementation accepted;save artifacts and next daily integration.\", \"artificial_waits\": false}"
+          ],
+          "next_step": "次の日次統合で進捗・単一保管版作成コマンド・公開受入れ記録をまとめる。最新headCI後、同版限定候補の配信と実受入れを行う。",
+          "passed": true,
+          "at": 1792600068.1411233
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261022T0100-release-preparation",
+          "task_id": "T-web-release-preparation-command-20261022",
+          "fence": 76,
+          "expires_at": 1792600301.1900673
+        }
+      ]
+    },
+    "T-minerush-progress-daily-integration-20261023": {
+      "id": "T-minerush-progress-daily-integration-20261023",
+      "objective": "安全マス進捗と保管版作成コマンドを次の日次統合で検証配信する",
+      "acceptance": [
+        "公開登録・進捗・保管版作成コマンドを日次PRへまとめる",
+        "最新headのGitHub Linux/Windows CIと同版限定成果物を確認",
+        "head指定マージとmain exactCI後に本番preflightと復元元を確認",
+        "限定配信のHTTP/版/進捗/操作/再読み込み/往復を実受入れ",
+        "実受入れ後だけrelease更新し未観測事業指標を保持"
+      ],
+      "outputs": [
+        "限定配信成果物",
+        "公開受入れ証跡",
+        "web/src/portal/data/works.json"
+      ],
+      "checks": [
+        "exact-head-ci",
+        "guarded-merge",
+        "scoped-delivery",
+        "browser-progress"
+      ],
+      "next_step": "本日PR32/CD39631591189は受入れ済み。次の日次統合でローカル進捗と保管版作成コマンドをCI後配信する。記録だけの追送PRや元CDの重複dispatchはしない。",
+      "decision_id": "D-minerush-first-play-20261021",
+      "experiment_id": "E-minerush-first-play",
+      "hypothesis": "旗数とは別に安全マス進捗を示すと勝利条件までの状況を判断しやすくなる。人間効果は未観測。",
+      "pdca": "do",
+      "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+      "depends_on": [
+        "T-minerush-safe-progress-20261022",
+        "T-web-release-preparation-command-20261022"
+      ],
+      "status": "ready",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261022T0100-final-audit",
+          "fence": 77,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+            },
+            {
+              "path": "business/unity/evidence/release-preparation-20261022.json",
+              "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+              "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+            },
+            {
+              "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+              "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+            },
+            {
+              "path": "scripts/prepare-web-release.mjs",
+              "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "24fa9f84da81d956e5bf87f96085b98f58f1cd1b04aaf9f6e4dfcdb4e12e2c92"
+            },
+            {
+              "path": "package.json",
+              "sha256": "ecb2ec3c4865ca1a421af3c1fed273ef5bee044dd49df4ca07b9629c3feda4c3"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+            },
+            {
+              "path": "business/unity/evidence/final-provenance-20261022.json",
+              "sha256": "9918fa50fceed0a14966fd7426bddb9507ffbdf2c53c262664ce8a0e66cf6999"
+            }
+          ],
+          "checks": [
+            "11source hashes equal committed Git bytes;package.json CRLF provenance corrected to LF;no semantic change",
+            "Prior productive implementation/acceptance1532.553seconds followed by save/audit",
+            "Original436events and owner/policy/oldledger/workspace preserved;todayonePRoneaccepteddeploy",
+            "work_session={\"started_at\": \"2026-10-22T01:02:15.506288+09:00\", \"ended_at\": \"2026-10-22T01:29:54.003454+09:00\", \"elapsed_seconds\": 1658.497166, \"exit_reason\": \"Final save after productive work1532seconds;correct newline provenance and retain ready next integration.\"}"
+          ],
+          "next_step": "次の日次統合で進捗と保管コマンドをCI後に配信する。今日はCD39631591189受入れ済み、再dispatch/記録専用PRなし。",
+          "at": 1792600194.0296946
+        },
+        {
+          "run_id": "unity-20261022T0100-final-audit",
+          "fence": 77,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+            },
+            {
+              "path": "business/unity/evidence/release-preparation-20261022.json",
+              "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+              "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+            },
+            {
+              "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+              "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+            },
+            {
+              "path": "scripts/prepare-web-release.mjs",
+              "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "24fa9f84da81d956e5bf87f96085b98f58f1cd1b04aaf9f6e4dfcdb4e12e2c92"
+            },
+            {
+              "path": "package.json",
+              "sha256": "ecb2ec3c4865ca1a421af3c1fed273ef5bee044dd49df4ca07b9629c3feda4c3"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+            },
+            {
+              "path": "web/games/minerush/src/App.css",
+              "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+            },
+            {
+              "path": "business/unity/evidence/final-provenance-20261022.json",
+              "sha256": "9918fa50fceed0a14966fd7426bddb9507ffbdf2c53c262664ce8a0e66cf6999"
+            }
+          ],
+          "checks": [
+            "11source hashes equal committed Git bytes;package.json CRLF provenance corrected to LF;no semantic change",
+            "Prior productive implementation/acceptance1532.553seconds followed by save/audit",
+            "Original436events and owner/policy/oldledger/workspace preserved;todayonePRoneaccepteddeploy",
+            "work_session={\"started_at\": \"2026-10-22T01:02:15.506288+09:00\", \"ended_at\": \"2026-10-22T01:29:54.003454+09:00\", \"elapsed_seconds\": 1658.497166, \"exit_reason\": \"Final save after productive work1532seconds;correct newline provenance and retain ready next integration.\"}"
+          ],
+          "next_step": "次の日次統合で進捗と保管コマンドをCI後に配信する。今日はCD39631591189受入れ済み、再dispatch/記録専用PRなし。",
+          "at": 1792600194.083626
+        },
+        {
+          "run_id": "unity-20261022T0656-package-acceptance",
+          "fence": 78,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/release-coordinator-input-20261022-0700.json",
+              "sha256": "08777f661f96c6015a0c708bb599f0f5c77f96e00cda1c1a561e8ea68a7178d0"
+            }
+          ],
+          "checks": [
+            "25coordinatorcases Windows/Linux;42contentfiles equal;finalWebsource7925ba0",
+            "Actualnormal/scoped mixedinput,win71/reset,320/390,no physicaltouch claim",
+            "Retained209fileoverlay browser roundtrip and local previous5f9 entry52opened/catalog accepted;fakeFTP recovery passed",
+            "Remote main/PR32/CD accepted independently read;live10URLs match;no newproductionwrites",
+            "Preserved original454events and owner/AGENTS/policy/legacyledger/workspace;only selected paths read",
+            "Partial checkpoint before final provenance/session save;continue final scope/recovery evidence review"
+          ],
+          "next_step": "Finalize same source provenance and measured session,then yield unfinished nextdailyintegration;no extra PR or deployment today.",
+          "at": 1792621143.2301352
+        },
+        {
+          "run_id": "unity-20261022T0656-package-acceptance",
+          "fence": 78,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "8d1d88e8fec1600e7adb0c7c50eb93f2862f6020e99bffa86967c557ca38d3b6"
+            },
+            {
+              "path": "business/unity/evidence/release-coordinator-input-20261022-0700.json",
+              "sha256": "04777301a28db7e483ba1fe85e498869dbb2bd714c77fe10b1f4a891586e8615"
+            },
+            {
+              "path": "scripts/prepare-web-release.mjs",
+              "sha256": "5e1b0e27d509668c0a971fb6a03ccad3a683fb6b318cf3cbc94ff905dcfa84cf"
+            },
+            {
+              "path": "scripts/check-release-preparation.mjs",
+              "sha256": "19b623fb6dd38593c5da82657c94bc7b0c6208c044eba1edb521ddc47b4a8677"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "13ecdcdfaaa315300cde47ac3d8b759e4e7282797e37563fd47db91634e881c9"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "357b7df8cf7f6fb07cca43b8f4a75e694f7b141a14f869a0814df3b45a3d91bd"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "8149fa0f701af36a6f96d9c00efb01dd18be8b397698edb6ce60248c2620bb75"
+            }
+          ],
+          "checks": [
+            "Current rules/context/selected task and relevant wrapper/CI/App/retained delivery evidence read",
+            "25coordinatorcases bothOS;44files9pages;42contentfiles and all non-time metadata equal;GitHubCI notrun",
+            "ActualApp regression oldfail/newpass;normal/scoped mixedinput,71safe10flags/reset,320/390;touch is synthetic",
+            "209fileoverlay navigation and local5f9 restore52opened/catalog accepted;fakeFTP recovery only;productionrollback untested",
+            "Read-only GitHub main5f9/PR32/CD39631591189 and live10URLs match;one dailydeploy;no newexternalwrites",
+            "Original454events and owner/AGENTS/policy/legacyledger/workspace preserved;hiddenpath source hashes inside receipt;guard notrelaxed",
+            "work_session={\"started_at\": \"2026-10-22T06:56:17.709378+09:00\", \"start_basis\": \"first explicit clock;startup reading began earlier\", \"ended_at\": \"2026-10-22T07:21:44.736129+09:00\", \"elapsed_seconds\": 1527.027, \"exit_reason\": \"Implementation, cross-platform real package parity, browser input/win/reset, retained overlay recovery and final provenance review completed; save same unfinished daily integration.\", \"artificial_waits\": false}"
+          ],
+          "next_step": "次の日次PRで進捗・タッチ中断後入力・保管版作成/CI/LF規約と公開記録をまとめ、exact-head Linux/Windows CI、mainCI、preflight、限定配信と実受入れ後だけrelease更新。本日CD再dispatch/記録専用PRなし。",
+          "at": 1792621304.774314
+        },
+        {
+          "run_id": "unity-20261022T0656-package-acceptance",
+          "fence": 78,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "8d1d88e8fec1600e7adb0c7c50eb93f2862f6020e99bffa86967c557ca38d3b6"
+            },
+            {
+              "path": "business/unity/evidence/release-coordinator-input-20261022-0700.json",
+              "sha256": "04777301a28db7e483ba1fe85e498869dbb2bd714c77fe10b1f4a891586e8615"
+            },
+            {
+              "path": "scripts/prepare-web-release.mjs",
+              "sha256": "5e1b0e27d509668c0a971fb6a03ccad3a683fb6b318cf3cbc94ff905dcfa84cf"
+            },
+            {
+              "path": "scripts/check-release-preparation.mjs",
+              "sha256": "19b623fb6dd38593c5da82657c94bc7b0c6208c044eba1edb521ddc47b4a8677"
+            },
+            {
+              "path": "scripts/check-minerush.mjs",
+              "sha256": "13ecdcdfaaa315300cde47ac3d8b759e4e7282797e37563fd47db91634e881c9"
+            },
+            {
+              "path": "web/games/minerush/src/App.tsx",
+              "sha256": "357b7df8cf7f6fb07cca43b8f4a75e694f7b141a14f869a0814df3b45a3d91bd"
+            },
+            {
+              "path": "docs/web-scoped-production-delivery.md",
+              "sha256": "8149fa0f701af36a6f96d9c00efb01dd18be8b397698edb6ce60248c2620bb75"
+            }
+          ],
+          "checks": [
+            "Current rules/context/selected task and relevant wrapper/CI/App/retained delivery evidence read",
+            "25coordinatorcases bothOS;44files9pages;42contentfiles and all non-time metadata equal;GitHubCI notrun",
+            "ActualApp regression oldfail/newpass;normal/scoped mixedinput,71safe10flags/reset,320/390;touch is synthetic",
+            "209fileoverlay navigation and local5f9 restore52opened/catalog accepted;fakeFTP recovery only;productionrollback untested",
+            "Read-only GitHub main5f9/PR32/CD39631591189 and live10URLs match;one dailydeploy;no newexternalwrites",
+            "Original454events and owner/AGENTS/policy/legacyledger/workspace preserved;hiddenpath source hashes inside receipt;guard notrelaxed",
+            "work_session={\"started_at\": \"2026-10-22T06:56:17.709378+09:00\", \"start_basis\": \"first explicit clock;startup reading began earlier\", \"ended_at\": \"2026-10-22T07:21:44.736129+09:00\", \"elapsed_seconds\": 1527.027, \"exit_reason\": \"Implementation, cross-platform real package parity, browser input/win/reset, retained overlay recovery and final provenance review completed; save same unfinished daily integration.\", \"artificial_waits\": false}"
+          ],
+          "next_step": "次の日次PRで進捗・タッチ中断後入力・保管版作成/CI/LF規約と公開記録をまとめ、exact-head Linux/Windows CI、mainCI、preflight、限定配信と実受入れ後だけrelease更新。本日CD再dispatch/記録専用PRなし。",
+          "at": 1792621304.827531
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261022T0100-final-audit",
+          "task_id": "T-minerush-progress-daily-integration-20261023",
+          "fence": 77,
+          "expires_at": 1792600793.6610093
+        },
+        {
+          "run_id": "unity-20261022T0656-package-acceptance",
+          "task_id": "T-minerush-progress-daily-integration-20261023",
+          "fence": 78,
+          "expires_at": 1792621602.1617947
+        }
+      ]
+    },
+    "T-portal-refresh-20261022": {
+      "id": "T-portal-refresh-20261022",
+      "objective": "スキューモーフィズムのホームと周辺UXを刷新し画像不具合を修正して本番配信",
+      "acceptance": [
+        "木の棚・紙ラベル・立体ボタンと作品別イラストでホームを刷新",
+        "保全中/不採用作品を一覧から外し現在の4作品を掲載。未公開を公開と偽らない",
+        "画像読込失敗/復帰と実ファイル配信を確認",
+        "320/390/1440pxで検索・詳細・公開版開始・戻る・キーボードと表示を検証",
+        "最新head CI後mainへ反映。既存ゲームを書換えずポータルを配信しHTTP版/画像/本番ブラウザを受入れ"
+      ],
+      "outputs": [
+        "web/src/portal/App.tsx",
+        "web/src/portal/App.css",
+        "business/unity/evidence/portal-refresh-20261022.json"
+      ],
+      "checks": [
+        "type/lint/build/repository",
+        "SSR navigation and image fallback",
+        "browser desktop/mobile",
+        "exact CI and additive portal deployment"
+      ],
+      "next_step": "実装と受入れを進める",
+      "decision_id": "D-portal-refresh-20261022",
+      "experiment_id": "E-unity-portal",
+      "pdca": "do",
+      "hypothesis": "情報整理と触感のある画面で発見・開始を分かりやすくする",
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "priority": 0,
+      "status": "running",
+      "checkpoints": [],
+      "claims": [
+        {
+          "run_id": "manual-portal-refresh-20261022-implementation",
+          "task_id": "T-portal-refresh-20261022",
+          "fence": 79,
+          "expires_at": 1792629450.8856316
         }
       ]
     }
@@ -10544,6 +11121,12 @@
       "source": "user:automation:unity:2026-10-21T13:00:00+09:00:sequential-child-of-unity-20261021T1300-first-play",
       "hypothesis": "本枠で繰り返した候補の偽FTP配信・復元を既存検査utilityへまとめれば、一時的な手書き検査の重複を減らせる。",
       "next_step": "既存rehearse_scoped_artifact.pyに任意の次候補の検証を追加し、入力改変・未完了transactionを拒否する。"
+    },
+    "D-portal-refresh-20261022": {
+      "id": "D-portal-refresh-20261022",
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "hypothesis": "4作品に絞った物理的な棚・紙ラベル・押下表現と分かりやすい公開状態、壊れない図版/画像で発見と開始を改善する。需要改善は未観測。",
+      "next_step": "ホーム/紹介/導線/画像の実装、PC/スマホ検証とCI後のポータル配信"
     }
   },
   "runs": {
@@ -11041,8 +11624,38 @@
       "run_id": "unity-20261022T0100-daily-delivery",
       "scheduled_at": "2026-10-22T01:00:00+09:00",
       "source": "scheduled:game-site:2026-10-22T01:00:00+09:00",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792598551.0408115
+    },
+    "unity-20261022T0100-safe-progress": {
+      "run_id": "unity-20261022T0100-safe-progress",
+      "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+      "status": "completed",
+      "started_at": 1792599026.8226924
+    },
+    "unity-20261022T0100-release-preparation": {
+      "run_id": "unity-20261022T0100-release-preparation",
+      "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+      "status": "completed",
+      "started_at": 1792599401.1346216
+    },
+    "unity-20261022T0100-final-audit": {
+      "run_id": "unity-20261022T0100-final-audit",
+      "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+      "status": "checkpointed",
+      "started_at": 1792600193.6044993
+    },
+    "unity-20261022T0656-package-acceptance": {
+      "run_id": "unity-20261022T0656-package-acceptance",
+      "source": "user:automation:unity:2026-10-22T07:00:00+09:00:early-start",
+      "status": "checkpointed",
+      "started_at": 1792619802.1123009
+    },
+    "manual-portal-refresh-20261022-implementation": {
+      "run_id": "manual-portal-refresh-20261022-implementation",
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "status": "open",
+      "started_at": 1792627650.8202338
     }
   },
   "experiments": {
@@ -11375,6 +11988,12 @@
       "message": "何かcd失敗してる。原因究明あんどデプロイ続行",
       "next_step": "中断CDの実状態を照合し、既存修正をCI後mainへ統合して検証済み限定配信を続行する。今回の直接依頼に従い翌日日次統合待ちを解除する",
       "at": 1792549299.1671946
+    },
+    {
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "message": "緊急要請。スキューモーフィズムをもとに楽しいホーム画面を完全刷新し、採用しないアプリはポータルから削除可。画像読込み不具合を直しPC/スマホ両方で快適なUXにして早急に完成する。",
+      "next_step": "日次統合待ちより緊急ポータル刷新を優先し、検証後トップ・作品紹介を本番へ反映する。ゲーム原本と公開済みMineRushは保全する",
+      "at": 1792627650.6252198
     }
   ],
   "approvals": [
@@ -26912,7 +27531,855 @@
       },
       "previous": "0dd55a3b96894dc615355ed7b5a657e01218d8b1b0842f48385e24c4c2495517",
       "sha256": "0ccd705c68a45967e88d0a2a8600b78dee209bb1f54bbedaea4c355a3c3f73c9"
+    },
+    {
+      "revision": 439,
+      "at": 1792599003.2157924,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T0100-daily-delivery",
+        "fence": 74,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/daily-delivery-accepted-20261022.json",
+            "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "dc69faafc148207baa714844a8f1e32cabec78409c48738d84e56c263ccd60e1"
+          }
+        ],
+        "checks": [
+          "PR32 verified head Linux/Windows CI39631234390 success and guarded merge5f9a1ef",
+          "Exact main Linux/Windows CI39631400999 and package verified; offline previous-version restore passed",
+          "Production delivery39631591189 success; all4files+slashURL+5protectedURLs+old3baseline match",
+          "Real browser71safe10flags win/reset,keyboard,reload,catalog roundtrip passed; physical touch/Safari/human unobserved",
+          "Read startup policy/conventions/workflow and selected context --task; inspected App/GameShell/scoped build/rehearsal source",
+          "Parent automation session continues with sequential WIP1 child; not early exit"
+        ],
+        "next_step": "公開検査で目標71マスに対する現在の進捗が盤面横に見えないことを確認。次工程で安全マス進捗を追加し、翌日日次候補としてローカル検査する。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "0ccd705c68a45967e88d0a2a8600b78dee209bb1f54bbedaea4c355a3c3f73c9",
+      "sha256": "d4236eca3ceae2c869e471f5c89e8c6305167389dc4679d07525a2fa90c7c17b"
+    },
+    {
+      "revision": 440,
+      "at": 1792599003.2670808,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261022T0100-daily-delivery",
+        "fence": 74,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/daily-delivery-accepted-20261022.json",
+            "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "dc69faafc148207baa714844a8f1e32cabec78409c48738d84e56c263ccd60e1"
+          }
+        ],
+        "checks": [
+          "PR32 verified head Linux/Windows CI39631234390 success and guarded merge5f9a1ef",
+          "Exact main Linux/Windows CI39631400999 and package verified; offline previous-version restore passed",
+          "Production delivery39631591189 success; all4files+slashURL+5protectedURLs+old3baseline match",
+          "Real browser71safe10flags win/reset,keyboard,reload,catalog roundtrip passed; physical touch/Safari/human unobserved",
+          "Read startup policy/conventions/workflow and selected context --task; inspected App/GameShell/scoped build/rehearsal source",
+          "Parent automation session continues with sequential WIP1 child; not early exit"
+        ],
+        "next_step": "公開検査で目標71マスに対する現在の進捗が盤面横に見えないことを確認。次工程で安全マス進捗を追加し、翌日日次候補としてローカル検査する。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "d4236eca3ceae2c869e471f5c89e8c6305167389dc4679d07525a2fa90c7c17b",
+      "sha256": "3154b468388dc3f51992f4ebdb0db786d003c57a629d7444a0a888e818e8a908"
+    },
+    {
+      "revision": 441,
+      "at": 1792599026.7721183,
+      "action": "task",
+      "data": {
+        "id": "T-minerush-safe-progress-20261022",
+        "objective": "安全マスの開封進捗を盤面と同時に読めるようにする",
+        "acceptance": [
+          "初期0/71、通常開封、旗による不変、敗北、勝利71/71、リセット0/71が実状態と一致",
+          "型・静的・ビルド・実App回帰と実ブラウザの画面/操作/再読込が成功",
+          "390px/1280pxと短い横画面で進捗と盤面が読める",
+          "本日の追加配信や追加PRを作らず次の日次候補として保存"
+        ],
+        "outputs": [
+          "web/games/minerush/src/App.tsx",
+          "business/unity/evidence/minerush-safe-progress-20261022.json"
+        ],
+        "checks": [
+          "actual-app-state",
+          "web-build",
+          "browser-progress-layout"
+        ],
+        "next_step": "安全マスの進捗を既存game.revealedCountから表示し、公開版の状態遷移と区別してローカル検証する。",
+        "decision_id": "D-minerush-first-play-20261021",
+        "experiment_id": "E-minerush-first-play",
+        "hypothesis": "目標71マスと現在の開封数を同時に示すと、旗数とは異なるクリア進捗が分かる。人間への効果は未観測。",
+        "pdca": "do",
+        "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+        "depends_on": [
+          "T-minerush-first-play-integration-20261022"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "3154b468388dc3f51992f4ebdb0db786d003c57a629d7444a0a888e818e8a908",
+      "sha256": "0d8c40a05c20cb908a81dff2e6a99f32967a6d8e0bcb4faacd0ac92d3006db2f"
+    },
+    {
+      "revision": 442,
+      "at": 1792599026.8226924,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261022T0100-safe-progress",
+        "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "0d8c40a05c20cb908a81dff2e6a99f32967a6d8e0bcb4faacd0ac92d3006db2f",
+      "sha256": "8792d17976b9cbb03df7eac15d9efcf616ffced520063174ae5739e612246762"
+    },
+    {
+      "revision": 443,
+      "at": 1792599026.873189,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T0100-safe-progress",
+        "task_id": "T-minerush-safe-progress-20261022",
+        "ttl_seconds": 1200
+      },
+      "result": {
+        "run_id": "unity-20261022T0100-safe-progress",
+        "task_id": "T-minerush-safe-progress-20261022",
+        "fence": 75,
+        "expires_at": 1792600226.873189
+      },
+      "previous": "8792d17976b9cbb03df7eac15d9efcf616ffced520063174ae5739e612246762",
+      "sha256": "35a66d86d56d3f30bafdfdf1048e317a1a76963d57d860b3df3d2c3aa657d691"
+    },
+    {
+      "revision": 444,
+      "at": 1792599401.0313683,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261022T0100-safe-progress",
+        "fence": 75,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+            "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+          }
+        ],
+        "checks": [
+          "Final20px progress:390 text16.42CSSpx;1280 and961x360fit",
+          "Browser0/71 flag unchanged;40->71;loss42 unchanged;reset/reload0",
+          "TypeScript ESLint build actualApp regression passed;104business tests;44file/18rejections;todayartifact recovery rehearsal passed",
+          "No additional PR/push/deploy; parent session continues with packaging efficiency child"
+        ],
+        "next_step": "次の日次統合で進捗表示をCI後配信。残り時間では今回の手動パッケージ順序ミスを防ぐ単一コマンドを実装・検証する。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "35a66d86d56d3f30bafdfdf1048e317a1a76963d57d860b3df3d2c3aa657d691",
+      "sha256": "2b0eab0c326592bf5035556a3f414ac5f8c939097b1b2dc6aead3c682343bb5f"
+    },
+    {
+      "revision": 445,
+      "at": 1792599401.0851188,
+      "action": "task",
+      "data": {
+        "id": "T-web-release-preparation-command-20261022",
+        "objective": "版指定とチェックサム生成の順序を単一コマンドにまとめる",
+        "acceptance": [
+          "未コミット制作ソースと既存出力先をビルド前に拒否",
+          "同じheadでbuild/checksum/create/verifyを順に実行",
+          "実際の44filepackageが版とSHA256に一致",
+          "Windowsで実実行、Linuxで構文・実行可能性を検査"
+        ],
+        "outputs": [
+          "scripts/prepare-web-release.mjs",
+          "package.json"
+        ],
+        "checks": [
+          "dirty-source-refusal",
+          "existing-output-refusal",
+          "real-package"
+        ],
+        "next_step": "npm実行のNode/npmCLIを使う小さいラッパーを追加し、今回のlocal-uncommittedとSHA256SUMS欠落を予防する。",
+        "decision_id": "D-minerush-first-play-20261021",
+        "experiment_id": "E-minerush-first-play",
+        "hypothesis": "版とchecksum生成の手順を一つにすれば有効な配布候補を手順ミスで拒否する再作業を減らせる。",
+        "pdca": "do",
+        "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+        "depends_on": [
+          "T-minerush-safe-progress-20261022"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "2b0eab0c326592bf5035556a3f414ac5f8c939097b1b2dc6aead3c682343bb5f",
+      "sha256": "afe02e3e7d88aef943d0dcd25684e5180a42da896e274e0cec1557f9800530fc"
+    },
+    {
+      "revision": 446,
+      "at": 1792599401.1346216,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261022T0100-release-preparation",
+        "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "afe02e3e7d88aef943d0dcd25684e5180a42da896e274e0cec1557f9800530fc",
+      "sha256": "da663b4689b4ea81012fb7adbad6b9cc56d54ede428377e2292220f3363185c2"
+    },
+    {
+      "revision": 447,
+      "at": 1792599401.1900673,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T0100-release-preparation",
+        "task_id": "T-web-release-preparation-command-20261022",
+        "ttl_seconds": 900
+      },
+      "result": {
+        "run_id": "unity-20261022T0100-release-preparation",
+        "task_id": "T-web-release-preparation-command-20261022",
+        "fence": 76,
+        "expires_at": 1792600301.1900673
+      },
+      "previous": "da663b4689b4ea81012fb7adbad6b9cc56d54ede428377e2292220f3363185c2",
+      "sha256": "9d97ecf95c47b27facd51d7ccaf25821578d80d97c85d2d22d3852a0c9c1e4e5"
+    },
+    {
+      "revision": 448,
+      "at": 1792600068.0887756,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T0100-release-preparation",
+        "fence": 76,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+          },
+          {
+            "path": "business/unity/evidence/release-preparation-20261022.json",
+            "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+            "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+          },
+          {
+            "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+            "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+          },
+          {
+            "path": "scripts/prepare-web-release.mjs",
+            "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+          },
+          {
+            "path": "package.json",
+            "sha256": "5e23da3aa6f9c50e149a12b0733d1a4b3bcb45f4a421f61b4712792d2770b5de"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+          }
+        ],
+        "checks": [
+          "Windows/Linux wrapper real44file9page success;12JS/CSS bytes match;dirty/existing/outside/missing args failclosed",
+          "Official44file archive restore and real game25/71/catalog CSS passed;localPC only",
+          "Portal public1/queryfilter/detail/start/reload/back/list passed",
+          "Production synthetic interrupted/longpress-contextmenu/multitouch accepted separately from physical touch",
+          "Read startup policies and task/decision only;App/game/CSS/GameShell/checks/scoped workflow/package source selected",
+          "Original436event prefix and owner/oldledger/workspace unchanged",
+          "work_session={\"started_at\": \"2026-10-22T01:02:15.506288+09:00\", \"start_basis\": \"first explicit clock;startup reading started earlier\", \"ended_at\": \"2026-10-22T01:27:48.058993+09:00\", \"elapsed_seconds\": 1532.553, \"exit_reason\": \"Daily production delivery accepted;additional progress and release-preparation implementation accepted;save artifacts and next daily integration.\", \"artificial_waits\": false}"
+        ],
+        "next_step": "次の日次統合で進捗・単一保管版作成コマンド・公開受入れ記録をまとめる。最新headCI後、同版限定候補の配信と実受入れを行う。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "9d97ecf95c47b27facd51d7ccaf25821578d80d97c85d2d22d3852a0c9c1e4e5",
+      "sha256": "8fb47d28279475e6e0aedf92551d6dafc908503323e8c3aa365107a31655a867"
+    },
+    {
+      "revision": 449,
+      "at": 1792600068.1411233,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261022T0100-release-preparation",
+        "fence": 76,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+          },
+          {
+            "path": "business/unity/evidence/release-preparation-20261022.json",
+            "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+            "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+          },
+          {
+            "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+            "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+          },
+          {
+            "path": "scripts/prepare-web-release.mjs",
+            "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+          },
+          {
+            "path": "package.json",
+            "sha256": "5e23da3aa6f9c50e149a12b0733d1a4b3bcb45f4a421f61b4712792d2770b5de"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+          }
+        ],
+        "checks": [
+          "Windows/Linux wrapper real44file9page success;12JS/CSS bytes match;dirty/existing/outside/missing args failclosed",
+          "Official44file archive restore and real game25/71/catalog CSS passed;localPC only",
+          "Portal public1/queryfilter/detail/start/reload/back/list passed",
+          "Production synthetic interrupted/longpress-contextmenu/multitouch accepted separately from physical touch",
+          "Read startup policies and task/decision only;App/game/CSS/GameShell/checks/scoped workflow/package source selected",
+          "Original436event prefix and owner/oldledger/workspace unchanged",
+          "work_session={\"started_at\": \"2026-10-22T01:02:15.506288+09:00\", \"start_basis\": \"first explicit clock;startup reading started earlier\", \"ended_at\": \"2026-10-22T01:27:48.058993+09:00\", \"elapsed_seconds\": 1532.553, \"exit_reason\": \"Daily production delivery accepted;additional progress and release-preparation implementation accepted;save artifacts and next daily integration.\", \"artificial_waits\": false}"
+        ],
+        "next_step": "次の日次統合で進捗・単一保管版作成コマンド・公開受入れ記録をまとめる。最新headCI後、同版限定候補の配信と実受入れを行う。",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "8fb47d28279475e6e0aedf92551d6dafc908503323e8c3aa365107a31655a867",
+      "sha256": "17990c59334215329e5091caff49f7bb97be787414613e323561098781d380b1"
+    },
+    {
+      "revision": 450,
+      "at": 1792600068.192979,
+      "action": "task",
+      "data": {
+        "id": "T-minerush-progress-daily-integration-20261023",
+        "objective": "安全マス進捗と保管版作成コマンドを次の日次統合で検証配信する",
+        "acceptance": [
+          "公開登録・進捗・保管版作成コマンドを日次PRへまとめる",
+          "最新headのGitHub Linux/Windows CIと同版限定成果物を確認",
+          "head指定マージとmain exactCI後に本番preflightと復元元を確認",
+          "限定配信のHTTP/版/進捗/操作/再読み込み/往復を実受入れ",
+          "実受入れ後だけrelease更新し未観測事業指標を保持"
+        ],
+        "outputs": [
+          "限定配信成果物",
+          "公開受入れ証跡",
+          "web/src/portal/data/works.json"
+        ],
+        "checks": [
+          "exact-head-ci",
+          "guarded-merge",
+          "scoped-delivery",
+          "browser-progress"
+        ],
+        "next_step": "本日PR32/CD39631591189は受入れ済み。次の日次統合でローカル進捗と保管版作成コマンドをCI後配信する。記録だけの追送PRや元CDの重複dispatchはしない。",
+        "decision_id": "D-minerush-first-play-20261021",
+        "experiment_id": "E-minerush-first-play",
+        "hypothesis": "旗数とは別に安全マス進捗を示すと勝利条件までの状況を判断しやすくなる。人間効果は未観測。",
+        "pdca": "do",
+        "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery",
+        "depends_on": [
+          "T-minerush-safe-progress-20261022",
+          "T-web-release-preparation-command-20261022"
+        ]
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "17990c59334215329e5091caff49f7bb97be787414613e323561098781d380b1",
+      "sha256": "cf5dec02cbe585928672be97cb1a6794a873f456f7439fddd278c973e36b8083"
+    },
+    {
+      "revision": 451,
+      "at": 1792600193.6044993,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261022T0100-final-audit",
+        "source": "user:automation:unity:2026-10-22T01:00:00+09:00:child-of-unity-20261022T0100-daily-delivery"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "cf5dec02cbe585928672be97cb1a6794a873f456f7439fddd278c973e36b8083",
+      "sha256": "3c925c585219d7d3634842763da8de698994cb7d61135e386865bb04b48e6027"
+    },
+    {
+      "revision": 452,
+      "at": 1792600193.6610093,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T0100-final-audit",
+        "task_id": "T-minerush-progress-daily-integration-20261023",
+        "ttl_seconds": 600
+      },
+      "result": {
+        "run_id": "unity-20261022T0100-final-audit",
+        "task_id": "T-minerush-progress-daily-integration-20261023",
+        "fence": 77,
+        "expires_at": 1792600793.6610093
+      },
+      "previous": "3c925c585219d7d3634842763da8de698994cb7d61135e386865bb04b48e6027",
+      "sha256": "8ae37f40bddc757003e936113dd07766fb7ef5309f2e5eb8f28b1e5ded9a9ad6"
+    },
+    {
+      "revision": 453,
+      "at": 1792600194.0296946,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T0100-final-audit",
+        "fence": 77,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+          },
+          {
+            "path": "business/unity/evidence/release-preparation-20261022.json",
+            "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+            "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+          },
+          {
+            "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+            "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+          },
+          {
+            "path": "scripts/prepare-web-release.mjs",
+            "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "24fa9f84da81d956e5bf87f96085b98f58f1cd1b04aaf9f6e4dfcdb4e12e2c92"
+          },
+          {
+            "path": "package.json",
+            "sha256": "ecb2ec3c4865ca1a421af3c1fed273ef5bee044dd49df4ca07b9629c3feda4c3"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+          },
+          {
+            "path": "business/unity/evidence/final-provenance-20261022.json",
+            "sha256": "9918fa50fceed0a14966fd7426bddb9507ffbdf2c53c262664ce8a0e66cf6999"
+          }
+        ],
+        "checks": [
+          "11source hashes equal committed Git bytes;package.json CRLF provenance corrected to LF;no semantic change",
+          "Prior productive implementation/acceptance1532.553seconds followed by save/audit",
+          "Original436events and owner/policy/oldledger/workspace preserved;todayonePRoneaccepteddeploy",
+          "work_session={\"started_at\": \"2026-10-22T01:02:15.506288+09:00\", \"ended_at\": \"2026-10-22T01:29:54.003454+09:00\", \"elapsed_seconds\": 1658.497166, \"exit_reason\": \"Final save after productive work1532seconds;correct newline provenance and retain ready next integration.\"}"
+        ],
+        "next_step": "次の日次統合で進捗と保管コマンドをCI後に配信する。今日はCD39631591189受入れ済み、再dispatch/記録専用PRなし。"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "8ae37f40bddc757003e936113dd07766fb7ef5309f2e5eb8f28b1e5ded9a9ad6",
+      "sha256": "f2281bff85c50ff768d4cd9b25d4b7dae007059c298e21b80d9a42a48646f31c"
+    },
+    {
+      "revision": 454,
+      "at": 1792600194.083626,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261022T0100-final-audit",
+        "fence": 77,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+          },
+          {
+            "path": "business/unity/evidence/release-preparation-20261022.json",
+            "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+            "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+          },
+          {
+            "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+            "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+          },
+          {
+            "path": "scripts/prepare-web-release.mjs",
+            "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "24fa9f84da81d956e5bf87f96085b98f58f1cd1b04aaf9f6e4dfcdb4e12e2c92"
+          },
+          {
+            "path": "package.json",
+            "sha256": "ecb2ec3c4865ca1a421af3c1fed273ef5bee044dd49df4ca07b9629c3feda4c3"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+          },
+          {
+            "path": "web/games/minerush/src/App.css",
+            "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+          },
+          {
+            "path": "business/unity/evidence/final-provenance-20261022.json",
+            "sha256": "9918fa50fceed0a14966fd7426bddb9507ffbdf2c53c262664ce8a0e66cf6999"
+          }
+        ],
+        "checks": [
+          "11source hashes equal committed Git bytes;package.json CRLF provenance corrected to LF;no semantic change",
+          "Prior productive implementation/acceptance1532.553seconds followed by save/audit",
+          "Original436events and owner/policy/oldledger/workspace preserved;todayonePRoneaccepteddeploy",
+          "work_session={\"started_at\": \"2026-10-22T01:02:15.506288+09:00\", \"ended_at\": \"2026-10-22T01:29:54.003454+09:00\", \"elapsed_seconds\": 1658.497166, \"exit_reason\": \"Final save after productive work1532seconds;correct newline provenance and retain ready next integration.\"}"
+        ],
+        "next_step": "次の日次統合で進捗と保管コマンドをCI後に配信する。今日はCD39631591189受入れ済み、再dispatch/記録専用PRなし。"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "f2281bff85c50ff768d4cd9b25d4b7dae007059c298e21b80d9a42a48646f31c",
+      "sha256": "2832e027dce6a7bdfa804012b01cf84af1a3674c92b7fea1c193d01ce0746557"
+    },
+    {
+      "revision": 455,
+      "at": 1792619802.1123009,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261022T0656-package-acceptance",
+        "source": "user:automation:unity:2026-10-22T07:00:00+09:00:early-start"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "2832e027dce6a7bdfa804012b01cf84af1a3674c92b7fea1c193d01ce0746557",
+      "sha256": "8405c00765dc67023a1e1491b4904a4577a0df8bd965c65ba814d1dfaaa5d68b"
+    },
+    {
+      "revision": 456,
+      "at": 1792619802.1617947,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T0656-package-acceptance",
+        "task_id": "T-minerush-progress-daily-integration-20261023"
+      },
+      "result": {
+        "run_id": "unity-20261022T0656-package-acceptance",
+        "task_id": "T-minerush-progress-daily-integration-20261023",
+        "fence": 78,
+        "expires_at": 1792621602.1617947
+      },
+      "previous": "8405c00765dc67023a1e1491b4904a4577a0df8bd965c65ba814d1dfaaa5d68b",
+      "sha256": "82ddc7d18f903a51f588f07b09b63c42c27ac0ab4e81d89ead936946bea8d146"
+    },
+    {
+      "revision": 457,
+      "at": 1792621143.2301352,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T0656-package-acceptance",
+        "fence": 78,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/release-coordinator-input-20261022-0700.json",
+            "sha256": "08777f661f96c6015a0c708bb599f0f5c77f96e00cda1c1a561e8ea68a7178d0"
+          }
+        ],
+        "checks": [
+          "25coordinatorcases Windows/Linux;42contentfiles equal;finalWebsource7925ba0",
+          "Actualnormal/scoped mixedinput,win71/reset,320/390,no physicaltouch claim",
+          "Retained209fileoverlay browser roundtrip and local previous5f9 entry52opened/catalog accepted;fakeFTP recovery passed",
+          "Remote main/PR32/CD accepted independently read;live10URLs match;no newproductionwrites",
+          "Preserved original454events and owner/AGENTS/policy/legacyledger/workspace;only selected paths read",
+          "Partial checkpoint before final provenance/session save;continue final scope/recovery evidence review"
+        ],
+        "next_step": "Finalize same source provenance and measured session,then yield unfinished nextdailyintegration;no extra PR or deployment today."
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "82ddc7d18f903a51f588f07b09b63c42c27ac0ab4e81d89ead936946bea8d146",
+      "sha256": "99061d20059a0c49d08ed8dd46028cb11a16c0ec3880994142fd483870c290ef"
+    },
+    {
+      "revision": 458,
+      "at": 1792621304.774314,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T0656-package-acceptance",
+        "fence": 78,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "8d1d88e8fec1600e7adb0c7c50eb93f2862f6020e99bffa86967c557ca38d3b6"
+          },
+          {
+            "path": "business/unity/evidence/release-coordinator-input-20261022-0700.json",
+            "sha256": "04777301a28db7e483ba1fe85e498869dbb2bd714c77fe10b1f4a891586e8615"
+          },
+          {
+            "path": "scripts/prepare-web-release.mjs",
+            "sha256": "5e1b0e27d509668c0a971fb6a03ccad3a683fb6b318cf3cbc94ff905dcfa84cf"
+          },
+          {
+            "path": "scripts/check-release-preparation.mjs",
+            "sha256": "19b623fb6dd38593c5da82657c94bc7b0c6208c044eba1edb521ddc47b4a8677"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "13ecdcdfaaa315300cde47ac3d8b759e4e7282797e37563fd47db91634e881c9"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "357b7df8cf7f6fb07cca43b8f4a75e694f7b141a14f869a0814df3b45a3d91bd"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "8149fa0f701af36a6f96d9c00efb01dd18be8b397698edb6ce60248c2620bb75"
+          }
+        ],
+        "checks": [
+          "Current rules/context/selected task and relevant wrapper/CI/App/retained delivery evidence read",
+          "25coordinatorcases bothOS;44files9pages;42contentfiles and all non-time metadata equal;GitHubCI notrun",
+          "ActualApp regression oldfail/newpass;normal/scoped mixedinput,71safe10flags/reset,320/390;touch is synthetic",
+          "209fileoverlay navigation and local5f9 restore52opened/catalog accepted;fakeFTP recovery only;productionrollback untested",
+          "Read-only GitHub main5f9/PR32/CD39631591189 and live10URLs match;one dailydeploy;no newexternalwrites",
+          "Original454events and owner/AGENTS/policy/legacyledger/workspace preserved;hiddenpath source hashes inside receipt;guard notrelaxed",
+          "work_session={\"started_at\": \"2026-10-22T06:56:17.709378+09:00\", \"start_basis\": \"first explicit clock;startup reading began earlier\", \"ended_at\": \"2026-10-22T07:21:44.736129+09:00\", \"elapsed_seconds\": 1527.027, \"exit_reason\": \"Implementation, cross-platform real package parity, browser input/win/reset, retained overlay recovery and final provenance review completed; save same unfinished daily integration.\", \"artificial_waits\": false}"
+        ],
+        "next_step": "次の日次PRで進捗・タッチ中断後入力・保管版作成/CI/LF規約と公開記録をまとめ、exact-head Linux/Windows CI、mainCI、preflight、限定配信と実受入れ後だけrelease更新。本日CD再dispatch/記録専用PRなし。"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "99061d20059a0c49d08ed8dd46028cb11a16c0ec3880994142fd483870c290ef",
+      "sha256": "71a4c2f89c9821db5bb208cb2fc769a783260ac64dfb9bc80db4ebcdea3e6b1c"
+    },
+    {
+      "revision": 459,
+      "at": 1792621304.827531,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261022T0656-package-acceptance",
+        "fence": 78,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "8d1d88e8fec1600e7adb0c7c50eb93f2862f6020e99bffa86967c557ca38d3b6"
+          },
+          {
+            "path": "business/unity/evidence/release-coordinator-input-20261022-0700.json",
+            "sha256": "04777301a28db7e483ba1fe85e498869dbb2bd714c77fe10b1f4a891586e8615"
+          },
+          {
+            "path": "scripts/prepare-web-release.mjs",
+            "sha256": "5e1b0e27d509668c0a971fb6a03ccad3a683fb6b318cf3cbc94ff905dcfa84cf"
+          },
+          {
+            "path": "scripts/check-release-preparation.mjs",
+            "sha256": "19b623fb6dd38593c5da82657c94bc7b0c6208c044eba1edb521ddc47b4a8677"
+          },
+          {
+            "path": "scripts/check-minerush.mjs",
+            "sha256": "13ecdcdfaaa315300cde47ac3d8b759e4e7282797e37563fd47db91634e881c9"
+          },
+          {
+            "path": "web/games/minerush/src/App.tsx",
+            "sha256": "357b7df8cf7f6fb07cca43b8f4a75e694f7b141a14f869a0814df3b45a3d91bd"
+          },
+          {
+            "path": "docs/web-scoped-production-delivery.md",
+            "sha256": "8149fa0f701af36a6f96d9c00efb01dd18be8b397698edb6ce60248c2620bb75"
+          }
+        ],
+        "checks": [
+          "Current rules/context/selected task and relevant wrapper/CI/App/retained delivery evidence read",
+          "25coordinatorcases bothOS;44files9pages;42contentfiles and all non-time metadata equal;GitHubCI notrun",
+          "ActualApp regression oldfail/newpass;normal/scoped mixedinput,71safe10flags/reset,320/390;touch is synthetic",
+          "209fileoverlay navigation and local5f9 restore52opened/catalog accepted;fakeFTP recovery only;productionrollback untested",
+          "Read-only GitHub main5f9/PR32/CD39631591189 and live10URLs match;one dailydeploy;no newexternalwrites",
+          "Original454events and owner/AGENTS/policy/legacyledger/workspace preserved;hiddenpath source hashes inside receipt;guard notrelaxed",
+          "work_session={\"started_at\": \"2026-10-22T06:56:17.709378+09:00\", \"start_basis\": \"first explicit clock;startup reading began earlier\", \"ended_at\": \"2026-10-22T07:21:44.736129+09:00\", \"elapsed_seconds\": 1527.027, \"exit_reason\": \"Implementation, cross-platform real package parity, browser input/win/reset, retained overlay recovery and final provenance review completed; save same unfinished daily integration.\", \"artificial_waits\": false}"
+        ],
+        "next_step": "次の日次PRで進捗・タッチ中断後入力・保管版作成/CI/LF規約と公開記録をまとめ、exact-head Linux/Windows CI、mainCI、preflight、限定配信と実受入れ後だけrelease更新。本日CD再dispatch/記録専用PRなし。"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "71a4c2f89c9821db5bb208cb2fc769a783260ac64dfb9bc80db4ebcdea3e6b1c",
+      "sha256": "cf994a071a9127acca0343b40ad9f0334dea0beb5a5767701375ff05ffdda461"
+    },
+    {
+      "revision": 460,
+      "at": 1792627650.6252198,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "message": "緊急要請。スキューモーフィズムをもとに楽しいホーム画面を完全刷新し、採用しないアプリはポータルから削除可。画像読込み不具合を直しPC/スマホ両方で快適なUXにして早急に完成する。",
+        "next_step": "日次統合待ちより緊急ポータル刷新を優先し、検証後トップ・作品紹介を本番へ反映する。ゲーム原本と公開済みMineRushは保全する"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "cf994a071a9127acca0343b40ad9f0334dea0beb5a5767701375ff05ffdda461",
+      "sha256": "8b811de662e90cc16b7571402668717e24de3ab100083a470ac5392a2c1f21ff"
+    },
+    {
+      "revision": 461,
+      "at": 1792627650.6896315,
+      "action": "decision",
+      "data": {
+        "id": "D-portal-refresh-20261022",
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "hypothesis": "4作品に絞った物理的な棚・紙ラベル・押下表現と分かりやすい公開状態、壊れない図版/画像で発見と開始を改善する。需要改善は未観測。",
+        "next_step": "ホーム/紹介/導線/画像の実装、PC/スマホ検証とCI後のポータル配信"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "8b811de662e90cc16b7571402668717e24de3ab100083a470ac5392a2c1f21ff",
+      "sha256": "af6553999e7417b94b2dd07eb529888199ddf3e748eafb6a9b1d73433d674f84"
+    },
+    {
+      "revision": 462,
+      "at": 1792627650.7551215,
+      "action": "task",
+      "data": {
+        "id": "T-portal-refresh-20261022",
+        "objective": "スキューモーフィズムのホームと周辺UXを刷新し画像不具合を修正して本番配信",
+        "acceptance": [
+          "木の棚・紙ラベル・立体ボタンと作品別イラストでホームを刷新",
+          "保全中/不採用作品を一覧から外し現在の4作品を掲載。未公開を公開と偽らない",
+          "画像読込失敗/復帰と実ファイル配信を確認",
+          "320/390/1440pxで検索・詳細・公開版開始・戻る・キーボードと表示を検証",
+          "最新head CI後mainへ反映。既存ゲームを書換えずポータルを配信しHTTP版/画像/本番ブラウザを受入れ"
+        ],
+        "outputs": [
+          "web/src/portal/App.tsx",
+          "web/src/portal/App.css",
+          "business/unity/evidence/portal-refresh-20261022.json"
+        ],
+        "checks": [
+          "type/lint/build/repository",
+          "SSR navigation and image fallback",
+          "browser desktop/mobile",
+          "exact CI and additive portal deployment"
+        ],
+        "next_step": "実装と受入れを進める",
+        "decision_id": "D-portal-refresh-20261022",
+        "experiment_id": "E-unity-portal",
+        "pdca": "do",
+        "hypothesis": "情報整理と触感のある画面で発見・開始を分かりやすくする",
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "priority": 0
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "af6553999e7417b94b2dd07eb529888199ddf3e748eafb6a9b1d73433d674f84",
+      "sha256": "bce01d19f1e193f5f2d3f9bd5045ba89637f6184dd5c92be2a1e08c6f3868147"
+    },
+    {
+      "revision": 463,
+      "at": 1792627650.8202338,
+      "action": "start",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-implementation",
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "bce01d19f1e193f5f2d3f9bd5045ba89637f6184dd5c92be2a1e08c6f3868147",
+      "sha256": "eacbaa00316eec0ac107ac1a6f5a0f6cca09f7ec793d285997a745e3571cd327"
+    },
+    {
+      "revision": 464,
+      "at": 1792627650.8856316,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-implementation",
+        "task_id": "T-portal-refresh-20261022",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "manual-portal-refresh-20261022-implementation",
+        "task_id": "T-portal-refresh-20261022",
+        "fence": 79,
+        "expires_at": 1792629450.8856316
+      },
+      "previous": "eacbaa00316eec0ac107ac1a6f5a0f6cca09f7ec793d285997a745e3571cd327",
+      "sha256": "d2f9e8d99bcda933b846c30ebb1f0b4aac2a3c84e03c6136e3fe88ffaa73c973"
     }
   ],
-  "projection_sha256": "e73d6f11acfeab05751f419a1e3149745418f79aeeb7de0def3bfb5d1f9c0720"
+  "projection_sha256": "ff22eb1b9b1a8085a995e212a38b18e6395d1e3ae83846406e1f74e13c6c97d6"
 }

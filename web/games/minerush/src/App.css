@@ -60,6 +60,19 @@
   font-variant-numeric: tabular-nums;
 }
 
+.minerush-counters {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.2;
+}
+
+.minerush-progress {
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 .minerush-reset-btn {
   min-width: 48px;
   min-height: 48px;

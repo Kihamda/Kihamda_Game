@@ -63,7 +63,7 @@ for (const work of unityGames) {
     const bytes = readFileSync(resolve(dist, preview.url.slice(1)));
     assert(createHash('sha256').update(bytes).digest('hex') === preview.imageSha256, `Inspection preview checksum mismatch: ${work.id}`);
     const page = readFileSync(resolve(dist, `${work.path.slice(1)}index.html`), 'utf8');
-    assert(work.release ? !page.includes(preview.url) : page.includes(preview.url) && page.includes('公開前検査版の実画面'), `Inspection preview publication mismatch: ${work.id}`);
+    assert(page.includes(preview.url) && page.includes(work.release ? '初期版の参考画面' : '公開前検査版の実画面'), `Inspection preview publication mismatch: ${work.id}`);
   }
   for (const shot of work.guide?.screenshots ?? []) {
     const screenshot = readFileSync(resolve(dist, shot.url.slice(1)));

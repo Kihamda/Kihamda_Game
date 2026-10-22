@@ -119,3 +119,14 @@ web/scoped/minerush/index.html text eol=lf
 web/src/standalone/minerush.tsx text eol=lf
 docs/web-scoped-production-delivery.md text eol=lf
 web/plugins/game-pages-generator.ts text eol=lf
+# Public text is copied verbatim by Vite; keep retention bytes portable.
+web/public/_headers text eol=lf
+web/public/_redirects text eol=lf
+web/public/*.html text eol=lf
+web/public/*.webmanifest text eol=lf
+web/public/*.txt text eol=lf
+web/public/*.xml text eol=lf
+web/public/*.js text eol=lf
+web/public/**/*.svg text eol=lf
+scripts/prepare-web-release.mjs text eol=lf
+scripts/check-release-preparation.mjs text eol=lf

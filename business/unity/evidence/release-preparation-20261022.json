@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-22T01:27:48.058993+09:00",
+  "sourceCommit": "373a0fdb2eba2edaa149680cd86ae26da1734a7b",
+  "status": "windows-linux-real-package-accepted-local-only",
+  "windows": {
+    "node": "24.8.0",
+    "package": "artifacts/web-release-one-command-20261022",
+    "packageFiles": 44,
+    "pages": 9,
+    "dirtySourceRefusedBeforeBuild": true,
+    "existingOutputRefused": true,
+    "outsideArtifactsRefused": true
+  },
+  "linux": {
+    "status": "linux-real-wrapper-and-four-refusals-passed",
+    "sourceCommit": "373a0fdb2eba2edaa149680cd86ae26da1734a7b",
+    "node": "22.23.3",
+    "nodeArchiveSha256": "df450af89261115ef9f9e3830c3eeb2cc9213b63c720b1af623cb5dcbe2e02de",
+    "negative": [
+      {
+        "args": [
+          "artifacts/linux-one-command"
+        ],
+        "refused": true,
+        "reason": "new output directory"
+      },
+      {
+        "args": [
+          "../escape"
+        ],
+        "refused": true,
+        "reason": "inside artifacts/"
+      },
+      {
+        "args": [],
+        "refused": true,
+        "reason": "Usage:"
+      },
+      {
+        "args": [
+          "artifacts/dirty-refusal"
+        ],
+        "refused": true,
+        "reason": "Commit Web"
+      }
+    ],
+    "matchingJsCss": 12,
+    "productionWrites": false
+  },
+  "linuxResultSha256": "9a133ef98e8e713fe9caf4840d01ddef015f0c37fa0a6054bd1bac19c51b4030",
+  "restoredArchive": {
+    "path": "artifacts/web-retention-20261022.tar.gz",
+    "sha256": "ce13088e05747a4b2eb06b908f318d2832af15ba4d5554c676dc308db0b43979",
+    "files": 45,
+    "noSymlinks": true,
+    "restoredAt": "artifacts/web-retention-restored-20261022",
+    "officialVerifierPassed": true,
+    "browser": "restored game25safe and progress25/71,styled catalog return passed; samePC"
+  },
+  "normalPortalBrowser": "released filter1/MineRush search/detail/start/reload/back/list retainsqfilterCSS;confirmed version5f9a1ef",
+  "productionSyntheticBrowser": {
+    "blurDuringLongPress": "0flags0opened",
+    "longPressThenTouchContextMenuAndCompatibilityClick": "1flag0opened",
+    "differentCellMultitouchCompatibilityClicks": "81unopened0flags",
+    "mechanism": "DOM TouchEvent/PointerEvent through CDP Runtime.evaluate;not physical touch",
+    "unsupported": "IAB Input.dispatchTouchEvent unavailable;touch emulation immediately disabled;no native event claimed"
+  },
+  "errors": "Initial PR artifact name corrected;manual package version/checksum sequence corrected without changing guards;temporary WSL directory unavailable in next call, reran in one isolated call and persisted result on Windows;initial prefix audit cp932 decode error corrected to explicitUTF8.",
+  "checks": [
+    "original436event prefix preserved",
+    "owner/AGENTS/policy/oldledger/workspace instructions unchanged",
+    "onePR32merged,one accepted daily deployment;codex labels unavailable",
+    "no new push/PR/production writes for local improvements"
+  ],
+  "work_session": {
+    "started_at": "2026-10-22T01:02:15.506288+09:00",
+    "start_basis": "first explicit clock;startup reading started earlier",
+    "ended_at": "2026-10-22T01:27:48.058993+09:00",
+    "elapsed_seconds": 1532.553,
+    "exit_reason": "Daily production delivery accepted;additional progress and release-preparation implementation accepted;save artifacts and next daily integration.",
+    "artificial_waits": false
+  }
+}

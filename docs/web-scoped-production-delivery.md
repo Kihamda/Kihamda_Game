@@ -83,6 +83,12 @@ python business/ops/scoped_upload.py recover <展開先>/transaction.json --pack
 
 通常ポータルの保管パッケージはbuild-version.jsonに公開登録を含め、その詳細ページに限り登録URLへの開始リンク1件を要求する。未登録・異なる宛先・重複・iframeは拒否する。登録のない過去パッケージは開始リンクなしの条件で検証できる。これは通常ポータルの保全・統合準備であり、本番全体を置換する許可ではない。
 
+制作ソースのコミット後、`npm run release:prepare -- artifacts/<新しい出力先>`で通常ポータルの保管版を作れる。未コミットのWeb・検査スクリプト・package設定、既存出力先、artifacts外の出力先はビルド前に拒否する。現在のHEADを子プロセスのGITHUB_SHAへ設定し、リポジトリ検査、ビルド、版とSHA256SUMSの生成、パッケージ作成、復元検証を順に実行する。実行前後のHEADと制作ソースも照合する。既存手順でGITHUB_SHAの指定やcheck-web-build.mjsを省くと、版不一致やSHA256SUMS欠落で停止するため、このコマンドを使う。専用MineRush候補の作成、GitHub CI、本番配信は別工程である。
+
+出力先は既存の親ディレクトリの実パスまで解決し、ジャンクションやシンボリックリンクを通してartifacts外へ出る指定も拒否する。ビルド後、パッケージ作成の直前にも確認する。`node scripts/check-release-preparation.mjs`は隔離したGitリポジトリで工程失敗、未コミット変更、途中のHEAD変更、出力先のリンク変更を検査する。子ツールはfixtureのため、実ビルドと成果物の復元検証を代替しない。CIではこの検査をLinux・Windowsで実行し、Linuxの実保管版作成もrelease:prepareを使う。ローカル変更の検査成功と、GitHub上でのCI成功は区別する。
+
+パッケージは実行ごとの一時ディレクトリで作成・検証し、最終のソースとHEADの照合後に指定先へ移す。検証失敗時は指定先へ完成品を出さず、その実行の一時ディレクトリだけを削除する。確定直前にも出力先の実パスと不存在を確認し、途中で別の出力が作られていた場合は上書きせず停止する。プロセスの強制終了や電源断で残った一時ディレクトリは、指定先の完成品とは区別する。
+
 通常Web版のゲームHTML生成では、入口JSとともに共通CSSも引き継ぐ。従来はゲームURLを再読み込みすると共通CSSがなくなり、同一ページ内の遷移で作品一覧・紹介へ戻った際に表示が崩れた。9826105で修正し、4作品からの一覧復帰と、MineRushの390px・1280pxでの再読み込み・検索条件保持を確認した。専用配信版MineRushと本番トップのファイルは変更していない。
 
 改変journal・誤った復元元・部分切替・第三者更新・通信境界での切断を含む検査と、実保持artifactの旧209件を使った偽FTPの復旧を確認した。今回の検査数・実時刻・最終ハッシュはbusiness/unity/evidence/scoped-hardening-integration.jsonと正本checkpointを参照する。実サーバーの復旧成功とは扱わない。過去の部分実装はGit履歴とbusiness/unity/evidence/scoped-delivery-20261021.jsonに保全している。
@@ -98,3 +104,9 @@ PR31のhead285d709はCI39532711918のLinux44秒・Windows49秒成功後、e378aa
 新しい限定CD39533122745は2026-10-21 11:27:36〜11:28:40JSTの64秒でsuccess。今回は旧ゲームが既に独立バンドルへ切り替わっており、復元対象は旧209件から4件になった。45分枠への変更だけで高速化したという意味ではない。候補JS/CSS/HTMLは初回版と同一のためJS/CSSは再利用し、版マーカーとHTMLを更新した。mainの版e378aaaa、候補全4ファイル・末尾スラッシュURL、対象外5URLと新復元元の照合が成功した。元CDの再実行や本番の復旧書込みは行っていない。
 
 本番ブラウザで中央の通常開封51マス、Fキーで旗1、再読込みで未開封81・旗0、旧本番一覧からの再入場を確認。最新証跡はbusiness/unity/evidence/cd-delivery-accepted-20261021.jsonとscoped-production-accepted-20261021.json、初回の元証跡はscoped-production-initial-accepted-20261021.jsonへバイト一致で保全した。復元元はscoped-delivery-39533122745/scoped-recovery。公開登録と最新記録は次の日次統合用にローカル保存し、通常ポータル全体は本番へ配信しない。
+
+## 2026-10-22の限定配信
+
+PR32のhead b75d400c82d3cc414219b285269391d3bf231c6eはLinux・Windows CI39631234390の成功後にhead指定でマージした。PRのartifact版は一時マージref cf172c20514473181668b0cccefa1ab79217f64cであり、headの名前では取得できない。配信にはmain 5f9a1efab94d06b53a47182d954e3be9996a2889の成功CI39631400999から取得した専用成果物を使用した。
+
+限定CD39631591189は01:05:23〜01:06:47JSTに成功した。遊び方の説明、長押し中断・複数タッチ・終了演出・リセットの改善を専用4ファイルで配信した。全4ファイル・末尾スラッシュURL・対象外5URLと旧依存3件のHTTP一致、実ブラウザの71マスクリア・旗10・リセット・キーボード・再読み込み・旧本番一覧への往復を確認した。manifest SHA-256は563afa3878bcc43b5a110a35c14fb0e5281d656a7d57860d9c9f771b6260fd69。復元元はscoped-delivery-39631591189/scoped-recovery。公開受入れはbusiness/unity/evidence/scoped-production-accepted-20261022.json、実配信件数はこの日1件。追加の安全マス進捗表示は別のローカル候補であり、この配信版には含まれない。実タッチ・Safari・人間評価と事業指標は未観測。

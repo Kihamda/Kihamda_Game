@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "at": "2026-10-22T01:29:54.003454+09:00",
+  "correction": "Prior checkpoint package.json hash used CRLF worktree;Git stored LF. Restored committed LF bytes without semantic/source changes. Other7hashes matched. Historical checkpoint retained;this final checkpoint supersedes source-byte acceptance.",
+  "work_session": {
+    "started_at": "2026-10-22T01:02:15.506288+09:00",
+    "ended_at": "2026-10-22T01:29:54.003454+09:00",
+    "elapsed_seconds": 1658.497166,
+    "exit_reason": "Final save after productive work1532seconds;correct newline provenance and retain ready next integration."
+  },
+  "sources": [
+    {
+      "path": "STATE.md",
+      "sha256": "922872794cba1f076d6d79c1732a0e320721b814cf708fdf784b6426e85ea892"
+    },
+    {
+      "path": "docs/web-scoped-production-delivery.md",
+      "sha256": "9bfef5bbb95611929ae308b5efdfcb735b8ab78896dc61bf752411d37f5ac39d"
+    },
+    {
+      "path": "business/unity/evidence/release-preparation-20261022.json",
+      "sha256": "609a936a20b741a2a35b999e081c5186c58e2f01e091bf602f252a2607ccde0b"
+    },
+    {
+      "path": "business/unity/evidence/scoped-production-accepted-20261022.json",
+      "sha256": "492dcab99e8aed0af68f5009565a4bf304124b3beec4881265799c00e36a9cd6"
+    },
+    {
+      "path": "business/unity/evidence/minerush-safe-progress-20261022.json",
+      "sha256": "ff722f0c71e2f1086a33a82c7e37ef97695eb1ffaf0b5ea3236820f11fc664a6"
+    },
+    {
+      "path": "scripts/prepare-web-release.mjs",
+      "sha256": "c5064225e55ff3cb458c4d2c0367174663b5afe821b2aa97cadde935cddeb9a3"
+    },
+    {
+      "path": "scripts/check-minerush.mjs",
+      "sha256": "24fa9f84da81d956e5bf87f96085b98f58f1cd1b04aaf9f6e4dfcdb4e12e2c92"
+    },
+    {
+      "path": "package.json",
+      "sha256": "ecb2ec3c4865ca1a421af3c1fed273ef5bee044dd49df4ca07b9629c3feda4c3"
+    },
+    {
+      "path": "web/src/portal/data/works.json",
+      "sha256": "22126dcd493694bd773eebb7c010afad1fb8e6991b0301cd52ca2c68904a5ddb"
+    },
+    {
+      "path": "web/games/minerush/src/App.tsx",
+      "sha256": "079296096509357256db4b7757438e6426ec83e0f4ecaca5b5ef3384f42b2c79"
+    },
+    {
+      "path": "web/games/minerush/src/App.css",
+      "sha256": "24501f3651d7f33e6318033caead0e34a3a223bb7f171c765e1720957ac3d2a7"
+    }
+  ]
+}

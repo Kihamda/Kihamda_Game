@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "npm --prefix web run dev",
     "build": "npm --prefix web run build",
+    "release:prepare": "node scripts/prepare-web-release.mjs",
     "lint": "npm --prefix web run lint",
     "check": "node scripts/check-repository.mjs"
   }

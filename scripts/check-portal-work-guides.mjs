@@ -38,7 +38,8 @@ for (const technology of ['web', 'unity']) for (const released of [false, true])
   assert(!home.includes('<iframe') && !detail.includes('<iframe') && !home.includes('<audio'));
   assert(!detail.includes('C</dt>') && !detail.includes('UNDO'));
   if (withGuide) {
-    assert.equal(home.includes('公開前検査版の実画面'), !released);
+    assert(!home.includes('公開前検査版の実画面'));
+    assert(home.includes('game-illustration'), 'Self-contained artwork survives missing screenshots');
     assert.equal(detail.includes('公開前検査版の実画面'), !released);
     for (const change of [p => { p.imageSha256 = 'invalid'; }, p => { p.sourceCommit = ''; }, p => { p.url = '//example.com/a.jpg'; }, p => { p.width = 0; }]) {
       const invalid = structuredClone(work); change(invalid.inspectionPreview);

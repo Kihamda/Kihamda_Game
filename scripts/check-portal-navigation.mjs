@@ -25,7 +25,8 @@ new Function('require', 'module', 'exports', result.outputFiles[0].text)(createR
 const { render } = module.exports;
 const home = render('/', '?q=Unity');
 assert(home.includes('value="Unity"'));
-assert(home.includes('href="/games/ice-courier/?q=Unity"'));
+assert(!home.includes('aria-label="Ice Courierの詳細"'), "Paused prototype is archived, not listed");
+assert(render('/', '').includes('ゲームの棚'));
 const detail = render('/games/ice-courier/', '?q=Unity&filter=released');
 assert(detail.includes('href="/?q=Unity&amp;filter=released#works"'));
 assert(!detail.includes('作品を開始') && !detail.includes('<iframe'));
@@ -76,7 +77,7 @@ assert(!render('/', '?q=GravityBall&filter=released').includes('class="work-card
 
 // Search the facts players can already read; never invent supported devices or release.
 for (const [query, ids] of [
-  ['1人用', ['ice-courier', 'iceslide', 'minerush', 'gravityball']],
+  ['1人用', ['iceslide', 'minerush', 'gravityball']],
   ['交代プレイ', ['ntiktaktoe']],
   ['全20ステージ', ['iceslide']],
   ['最高スコア', ['gravityball']],
@@ -98,10 +99,10 @@ for (const [query, ids] of [
   ['1人用 Web', ['iceslide', 'minerush', 'gravityball']],
   ['  WEB　 1人用  ', ['iceslide', 'minerush', 'gravityball']],
   ['Web\t1人用\n全20ステージ', ['iceslide']],
-  ['Unity 1人用', ['ice-courier']],
+  ['Unity 1人用', []],
   ['Web 交代プレイ', ['ntiktaktoe']],
   ['Web 見つからない単語', []],
-  ['　 ', ['ice-courier', 'ntiktaktoe', 'iceslide', 'minerush', 'gravityball']],
+  ['　 ', ['ntiktaktoe', 'iceslide', 'minerush', 'gravityball']],
 ]) {
   const search = '?q=' + encodeURIComponent(query);
   const html = render('/', search);
