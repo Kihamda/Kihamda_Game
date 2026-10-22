@@ -198,3 +198,5 @@ try {
   if (oldDocument === undefined) delete globalThis.document; else globalThis.document = oldDocument;
 }
 console.log('History focus boundaries passed: malformed state, duplicate link identity, escaped URL, unrelated state, missing/hidden/stale targets, no focus scroll.');
+
+await import('./check-portal-history.mjs');
