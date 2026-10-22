@@ -10,3 +10,7 @@
 - 朝の安全マス進捗・混合入力・保管版作成の既存成果は今回のブランチに保持。MineRushの独立配信は別工程で、今回のポータル配信では公開済みゲームを置換しない。
 - 詳細docs/portal-refresh-20261022.md、証跡business/unity/evidence/portal-refresh-20261022.json。以前の配信/復元はdocs/web-scoped-production-delivery.mdとGitに保全。
 - 実タッチ/Safari/人間評価/別PC復元/本番復旧は未確認。事業指標null。Atohitori対象外、Unity自律制作終了、WIP1・サブエージェント禁止を維持する。
+
+- 13時枠のローカル改善。案内ページ経由の検索条件消失と、検索ゼロ件解除後のフォーカス消失を修正。ソース120d0f2、Windows/Linuxの44ファイル保管版・18不正ケースと320px/復元版の実操作を確認。新しい修正は未配信で、次の日次統合へ含める。証跡business/unity/evidence/portal-context-navigation-20261022.json。本番ポータルとMineRushの公開登録は変更していない。
+
+- 引継ぎ工程を照合。朝の進捗表示・保管版作成・混合入力修正はポータル刷新時のmain1b37307へ統合済みで、CI39701017999のLinux/Windows成功と4ファイル限定成果物を確認。新ホームとのローカル重ね合わせで操作・進捗数・リセット・再読み込み・戻りと模擬復元を確認した。読取専用本番preflight39722220503も成功し、取得した4ファイル復元元とCI成果物のハッシュを確認。次は日次配信時の本番変化の再照合・限定配信・受入れで、統合PRのやり直しは不要。証跡business/unity/evidence/minerush-progress-main-ci-reconciled-20261022.json。

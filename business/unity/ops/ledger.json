@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "revision": 476,
+  "revision": 485,
   "business_id": "game-site",
-  "fence": 80,
+  "fence": 82,
   "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -10824,6 +10824,67 @@
           ],
           "next_step": "次の日次PRで進捗・タッチ中断後入力・保管版作成/CI/LF規約と公開記録をまとめ、exact-head Linux/Windows CI、mainCI、preflight、限定配信と実受入れ後だけrelease更新。本日CD再dispatch/記録専用PRなし。",
           "at": 1792621304.827531
+        },
+        {
+          "run_id": "unity-20261022T1300-main-ci-reconcile",
+          "fence": 82,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/minerush-progress-main-ci-reconciled-20261022.json",
+              "sha256": "b9594bee2547d2b7c834228cfd36db4df909f6f4b1a932cf31879e3c484f17a1"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "da40dfa61e0733bbdd2e6dbebc07a81b9ab3d032779446ae70211de930e1df5e"
+            }
+          ],
+          "checks": [
+            "Currentcontext selectedWIP and actualmainCI/pr35/scopedartifact read;old source d4a is ancestor ofmain1b",
+            "ExactmainCI39701017999 LinuxWindows success;4file manifest42b33f verified locally;notnew deploy",
+            "FakeFTP current35portal+5protected+2oldscopedassets:42paths preserved/recovered;preflightbaseline4;only scoped mutations",
+            "1280:0/30/70/losssame70/reset0/reload81;390:16progress16opened;homegamereversepassed",
+            "Original476events and owner/AGENTS/policy/legacyledger/workspace/release unchanged;no subagents/newPR/push/dispatch"
+          ],
+          "next_step": "次の日次配信でmainの現行SHA/成功CIを照合し、この4ファイル版の本番preflight・限定配信・HTTP/進捗/再読み込み/ホーム往復を受入れる。既存統合の重複PRは不要。ポータル検索保持修正は次の日次PRへ併せる。",
+          "at": 1792643027.6640956
+        },
+        {
+          "run_id": "unity-20261022T1300-main-ci-reconcile",
+          "fence": 82,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "889c792932a7576b25c30101ea165ff50e2ec708cf5ec954e31e3a9d0ec6737f"
+            },
+            {
+              "path": "business/unity/evidence/portal-context-navigation-20261022.json",
+              "sha256": "43a199e725e98cc8275ad2a15aad6743d119c83d97b03419dbdecd3ea3e60482"
+            },
+            {
+              "path": "business/unity/evidence/minerush-progress-main-ci-reconciled-20261022.json",
+              "sha256": "0276cbdc3acdfdf023acd239dacb0b602760ade06c1d6b76fa0286d48d37a73b"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "741bced4450f18f0f4f5969154ec093d9bf9abc269811259f9c40121f09a52fa"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "43c9c8b1bd4479573def4b793fb560081dac6ca5b7461e26d527cb578c0d6941"
+            }
+          ],
+          "checks": [
+            "Portal finalsource120d0f2:Windows/Linux44files42contentidentical,18package negatives each;111business tests bothOS withPythonunchanged afterward",
+            "Actual restored320px resetEnter->native search/public/about/list qfilter preserved;sourceSSR oldfail/fixedpass;JPEG signatures/dimensions corrected without image edits",
+            "Main1b CI39701017999 LinuxWindows success;4file42b33f identical preflightcandidate;runtime JS/CSS exactly match morning7925 acceptedcandidate",
+            "1280game30->70/lossremains70/reset/reload81;39016progress16DOMopened;rootreturn and fakeFTP42path recovery passed",
+            "Read-onlyFTPS39722220503 SUCCESS,main1b matchesCI;4baselinehashes+root/newportal/game5f9 matched;realartifact offline recovery5paths;550asset state remains ambiguous until MLSD",
+            "Original476events preserved;owner/AGENTS/policy/oldledger/handoff/release/metrics untouched;no subagents/newPR/push/deploy;only read-only workflow dispatched once",
+            "Taskservers4278-4281 stopped,tabsclosed,viewportreset;no physicaltouch/Safari/human/offPC/realrollback claims",
+            "work_session={\"started_at\": \"2026-10-22T13:05:25+09:00\", \"start_basis\": \"first explicit UTC clock; startup reading began earlier\", \"ended_at\": \"2026-10-22T13:30:22.700724+09:00\", \"elapsed_seconds\": 1497.701, \"exit_reason\": \"Completed two reproduced portal fixes, final cross-platform retained package and browser acceptance, exact-main CI/runtime reconciliation, actual read-only FTPS preflight and recovery rehearsal; save unfinished production gates.\", \"artificial_waits\": false}"
+          ],
+          "next_step": "次の日次配信でmain SHA/成功CIと本番変化を再照合し、確認済み4ファイル版の限定配信・HTTP/進捗/再読み込み/ホーム往復を受入れる。39722220503は成功済み読取専用検査で再送不要。統合PRのやり直しは不要。ポータル検索保持修正は次の日次PRへ併せる。",
+          "at": 1792643422.8278646
         }
       ],
       "claims": [
@@ -10838,6 +10899,12 @@
           "task_id": "T-minerush-progress-daily-integration-20261023",
           "fence": 78,
           "expires_at": 1792621602.1617947
+        },
+        {
+          "run_id": "unity-20261022T1300-main-ci-reconcile",
+          "task_id": "T-minerush-progress-daily-integration-20261023",
+          "fence": 82,
+          "expires_at": 1792644487.2457721
         }
       ]
     },
@@ -10964,6 +11031,108 @@
           "task_id": "T-portal-refresh-20261022",
           "fence": 80,
           "expires_at": 1792630621.6339326
+        }
+      ]
+    },
+    "T-portal-context-navigation-20261022": {
+      "id": "T-portal-context-navigation-20261022",
+      "objective": "案内ページ経由でも作品検索と公開フィルターを保持する",
+      "acceptance": [
+        "本番で消失を再現し内部リンクのみで条件を引き継ぐ",
+        "SSR回帰・Web規約・ビルドと実ブラウザの案内往復/再読み込みを確認",
+        "次の日次CI統合後に本番受入れする"
+      ],
+      "outputs": [
+        "web/src/portal/App.tsx",
+        "scripts/check-portal-navigation.mjs",
+        "business/unity/evidence/portal-context-navigation-20261022.json"
+      ],
+      "checks": [
+        "portal-navigation",
+        "web-build",
+        "browser-roundtrip"
+      ],
+      "next_step": "検索条件の失われる案内リンクを修正しローカル受入れ後、次の日次統合に含める",
+      "decision_id": "D-portal-refresh-20261022",
+      "experiment_id": "E-unity-portal",
+      "pdca": "do",
+      "hypothesis": "案内ページで検索状態を保持すれば一覧に戻った際の再入力を避けられる。利用改善は未観測。",
+      "source": "user:automation:unity:2026-10-22T13:00:00+09:00",
+      "priority": 90,
+      "status": "ready",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261022T1300-portal-context",
+          "fence": 81,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-context-navigation-20261022.json",
+              "sha256": "a1a595ad0d7d0984d1713d303dace9a9de80293a329dd2eca30322f8f3fdc387"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "45a652494f1e65c2cd114b5e08c6ba7b7a958ddf272c48d4914f8f53be5a477d"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "43c9c8b1bd4479573def4b793fb560081dac6ca5b7461e26d527cb578c0d6941"
+            }
+          ],
+          "checks": [
+            "Windows TypeScript/ESLint/build9SSG43checksums and repository contract passed",
+            "Windows/Linux111business tests each;LinuxNode22.23.3 portalSSR/releasewrapper/18package rejections passed",
+            "Desktop about->privacy->contact->reload->catalog preserved query/released1 and focuses works",
+            "320px privacy->contact->catalog preserves query/released1;document305px at inner320;canonical has no query",
+            "ReadonlyGitHub main/CD39701164525 success and seven live baseline URLs match",
+            "Real35filepackage fakeFTP publish16changes home-last,protect5,recover40previouspaths;no realFTP connection",
+            "CurrentAGENTS/workflow/conventions/context/selectedsource read;existing nextdailyMineRush integration retained."
+          ],
+          "next_step": "Finish restored-package browser acceptance;save local candidate for next daily integration without extraPR or productiondispatch.",
+          "at": 1792642423.7701006
+        },
+        {
+          "run_id": "unity-20261022T1300-portal-context",
+          "fence": 81,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-context-navigation-20261022.json",
+              "sha256": "d42c742a2aa3e1d1f3422f7da6c1a34a8f84c6755c0aeb931948218c4f94ef20"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "09fc374271ccb9e5bc973a0cbedd940dca186cfe9345849f810da3f0062b9efc"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "741bced4450f18f0f4f5969154ec093d9bf9abc269811259f9c40121f09a52fa"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "43c9c8b1bd4479573def4b793fb560081dac6ca5b7461e26d527cb578c0d6941"
+            }
+          ],
+          "checks": [
+            "Windows TypeScript/ESLint/build9SSG43checksums and repository contract passed",
+            "Windows/Linux111business tests each;LinuxNode22.23.3 portalSSR/releasewrapper/18package rejections passed",
+            "Desktop about->privacy->contact->reload->catalog preserved query/released1 and focuses works",
+            "320px privacy->contact->catalog preserves query/released1;document305px at inner320;canonical has no query",
+            "ReadonlyGitHub main/CD39701164525 success and seven live baseline URLs match",
+            "Real35filepackage fakeFTP publish16changes home-last,protect5,recover40previouspaths;no realFTP connection",
+            "Restored final120d0f2 archive:320px emptyreset Enter then native typing Web1人用/public/about/list preservesqfilter and worksfocus;final screenshot visually inspected",
+            "Final120d0f2 Windows/Linux44files42matching;18package negatives;Python unchanged since111tests each",
+            "Final35file package fakeFTP protects5/restores40/home-last;no liveFTPS connection",
+            "Partialrun continues sequentially into existing MineRush integration reconciliation;not end of scheduled session."
+          ],
+          "next_step": "次の日次統合でポータル検索保持/リセットフォーカスをexact-headCI後に追加型配信し本番往復を確認する。本日は再配信しない。",
+          "at": 1792642687.1144958
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261022T1300-portal-context",
+          "task_id": "T-portal-context-navigation-20261022",
+          "fence": 81,
+          "expires_at": 1792643818.9949622
         }
       ]
     }
@@ -11744,6 +11913,19 @@
       "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh;continuation-of-manual-portal-refresh-20261022-implementation",
       "status": "completed",
       "started_at": 1792628821.5675461
+    },
+    "unity-20261022T1300-portal-context": {
+      "run_id": "unity-20261022T1300-portal-context",
+      "scheduled_at": "2026-10-22T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-22T13:00:00+09:00",
+      "status": "checkpointed",
+      "started_at": 1792642018.7955494
+    },
+    "unity-20261022T1300-main-ci-reconcile": {
+      "run_id": "unity-20261022T1300-main-ci-reconcile",
+      "source": "user:automation:unity:2026-10-22T13:00:00+09:00:child-of-unity-20261022T1300-portal-context",
+      "status": "checkpointed",
+      "started_at": 1792642687.1803217
     }
   },
   "experiments": {
@@ -12044,7 +12226,8 @@
     "2026-10-21T01:00:00+09:00": "unity-20261021T0100-reconcile",
     "2026-10-21T13:00:00+09:00": "unity-20261021T1300-first-play",
     "2026-10-21T19:00:00+09:00": "unity-20261021T1900-input-acceptance",
-    "2026-10-22T01:00:00+09:00": "unity-20261022T0100-daily-delivery"
+    "2026-10-22T01:00:00+09:00": "unity-20261022T0100-daily-delivery",
+    "2026-10-22T13:00:00+09:00": "unity-20261022T1300-portal-context"
   },
   "feedback": [
     {
@@ -28773,7 +28956,267 @@
       },
       "previous": "70c86d116b63b477abbe0fd7e963ea21d0f7fab1d94b088e9219b1bd62205f1f",
       "sha256": "80e3f422704f4bc57ddd8a23bef5bd66c66610f21cb4d6084611e3e6c7886cbd"
+    },
+    {
+      "revision": 477,
+      "at": 1792642018.7955494,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261022T1300-portal-context",
+        "scheduled_at": "2026-10-22T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "80e3f422704f4bc57ddd8a23bef5bd66c66610f21cb4d6084611e3e6c7886cbd",
+      "sha256": "f3c3ccaf3b808fd1933f8172591053b220dc83f523858cc1661618e630873022"
+    },
+    {
+      "revision": 478,
+      "at": 1792642018.9298878,
+      "action": "task",
+      "data": {
+        "id": "T-portal-context-navigation-20261022",
+        "objective": "案内ページ経由でも作品検索と公開フィルターを保持する",
+        "acceptance": [
+          "本番で消失を再現し内部リンクのみで条件を引き継ぐ",
+          "SSR回帰・Web規約・ビルドと実ブラウザの案内往復/再読み込みを確認",
+          "次の日次CI統合後に本番受入れする"
+        ],
+        "outputs": [
+          "web/src/portal/App.tsx",
+          "scripts/check-portal-navigation.mjs",
+          "business/unity/evidence/portal-context-navigation-20261022.json"
+        ],
+        "checks": [
+          "portal-navigation",
+          "web-build",
+          "browser-roundtrip"
+        ],
+        "next_step": "検索条件の失われる案内リンクを修正しローカル受入れ後、次の日次統合に含める",
+        "decision_id": "D-portal-refresh-20261022",
+        "experiment_id": "E-unity-portal",
+        "pdca": "do",
+        "hypothesis": "案内ページで検索状態を保持すれば一覧に戻った際の再入力を避けられる。利用改善は未観測。",
+        "source": "user:automation:unity:2026-10-22T13:00:00+09:00",
+        "priority": 90
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "f3c3ccaf3b808fd1933f8172591053b220dc83f523858cc1661618e630873022",
+      "sha256": "98fed5631277f4a6e529b2a85b23892899299b644cb1b42cd84169546f91d974"
+    },
+    {
+      "revision": 479,
+      "at": 1792642018.9949622,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T1300-portal-context",
+        "task_id": "T-portal-context-navigation-20261022"
+      },
+      "result": {
+        "run_id": "unity-20261022T1300-portal-context",
+        "task_id": "T-portal-context-navigation-20261022",
+        "fence": 81,
+        "expires_at": 1792643818.9949622
+      },
+      "previous": "98fed5631277f4a6e529b2a85b23892899299b644cb1b42cd84169546f91d974",
+      "sha256": "37c5620d93d78619ca99ffacbfaae104ea868af8152506f6befac62681a38542"
+    },
+    {
+      "revision": 480,
+      "at": 1792642423.7701006,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T1300-portal-context",
+        "fence": 81,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-context-navigation-20261022.json",
+            "sha256": "a1a595ad0d7d0984d1713d303dace9a9de80293a329dd2eca30322f8f3fdc387"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "45a652494f1e65c2cd114b5e08c6ba7b7a958ddf272c48d4914f8f53be5a477d"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "43c9c8b1bd4479573def4b793fb560081dac6ca5b7461e26d527cb578c0d6941"
+          }
+        ],
+        "checks": [
+          "Windows TypeScript/ESLint/build9SSG43checksums and repository contract passed",
+          "Windows/Linux111business tests each;LinuxNode22.23.3 portalSSR/releasewrapper/18package rejections passed",
+          "Desktop about->privacy->contact->reload->catalog preserved query/released1 and focuses works",
+          "320px privacy->contact->catalog preserves query/released1;document305px at inner320;canonical has no query",
+          "ReadonlyGitHub main/CD39701164525 success and seven live baseline URLs match",
+          "Real35filepackage fakeFTP publish16changes home-last,protect5,recover40previouspaths;no realFTP connection",
+          "CurrentAGENTS/workflow/conventions/context/selectedsource read;existing nextdailyMineRush integration retained."
+        ],
+        "next_step": "Finish restored-package browser acceptance;save local candidate for next daily integration without extraPR or productiondispatch."
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "37c5620d93d78619ca99ffacbfaae104ea868af8152506f6befac62681a38542",
+      "sha256": "be4c8bc5c66ff285e4b01b670deed54ecba108fce2b6d54ec9b8f5dc4bad0d92"
+    },
+    {
+      "revision": 481,
+      "at": 1792642687.1144958,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261022T1300-portal-context",
+        "fence": 81,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-context-navigation-20261022.json",
+            "sha256": "d42c742a2aa3e1d1f3422f7da6c1a34a8f84c6755c0aeb931948218c4f94ef20"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "09fc374271ccb9e5bc973a0cbedd940dca186cfe9345849f810da3f0062b9efc"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "741bced4450f18f0f4f5969154ec093d9bf9abc269811259f9c40121f09a52fa"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "43c9c8b1bd4479573def4b793fb560081dac6ca5b7461e26d527cb578c0d6941"
+          }
+        ],
+        "checks": [
+          "Windows TypeScript/ESLint/build9SSG43checksums and repository contract passed",
+          "Windows/Linux111business tests each;LinuxNode22.23.3 portalSSR/releasewrapper/18package rejections passed",
+          "Desktop about->privacy->contact->reload->catalog preserved query/released1 and focuses works",
+          "320px privacy->contact->catalog preserves query/released1;document305px at inner320;canonical has no query",
+          "ReadonlyGitHub main/CD39701164525 success and seven live baseline URLs match",
+          "Real35filepackage fakeFTP publish16changes home-last,protect5,recover40previouspaths;no realFTP connection",
+          "Restored final120d0f2 archive:320px emptyreset Enter then native typing Web1人用/public/about/list preservesqfilter and worksfocus;final screenshot visually inspected",
+          "Final120d0f2 Windows/Linux44files42matching;18package negatives;Python unchanged since111tests each",
+          "Final35file package fakeFTP protects5/restores40/home-last;no liveFTPS connection",
+          "Partialrun continues sequentially into existing MineRush integration reconciliation;not end of scheduled session."
+        ],
+        "next_step": "次の日次統合でポータル検索保持/リセットフォーカスをexact-headCI後に追加型配信し本番往復を確認する。本日は再配信しない。"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "be4c8bc5c66ff285e4b01b670deed54ecba108fce2b6d54ec9b8f5dc4bad0d92",
+      "sha256": "15aafcf17026137871b5781579854050d259581ec861855278eddd2c25dbe246"
+    },
+    {
+      "revision": 482,
+      "at": 1792642687.1803217,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261022T1300-main-ci-reconcile",
+        "source": "user:automation:unity:2026-10-22T13:00:00+09:00:child-of-unity-20261022T1300-portal-context"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "15aafcf17026137871b5781579854050d259581ec861855278eddd2c25dbe246",
+      "sha256": "b50dd24cd11e8a5957ad7af1144ec8dd7c91a8de490e858d65f1c347f52ad577"
+    },
+    {
+      "revision": 483,
+      "at": 1792642687.2457721,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T1300-main-ci-reconcile",
+        "task_id": "T-minerush-progress-daily-integration-20261023"
+      },
+      "result": {
+        "run_id": "unity-20261022T1300-main-ci-reconcile",
+        "task_id": "T-minerush-progress-daily-integration-20261023",
+        "fence": 82,
+        "expires_at": 1792644487.2457721
+      },
+      "previous": "b50dd24cd11e8a5957ad7af1144ec8dd7c91a8de490e858d65f1c347f52ad577",
+      "sha256": "b79a02abfcc1d50d7f33fca2c75fb6cd9af844b5c33c65dfef6cf6f22b265082"
+    },
+    {
+      "revision": 484,
+      "at": 1792643027.6640956,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T1300-main-ci-reconcile",
+        "fence": 82,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/minerush-progress-main-ci-reconciled-20261022.json",
+            "sha256": "b9594bee2547d2b7c834228cfd36db4df909f6f4b1a932cf31879e3c484f17a1"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "da40dfa61e0733bbdd2e6dbebc07a81b9ab3d032779446ae70211de930e1df5e"
+          }
+        ],
+        "checks": [
+          "Currentcontext selectedWIP and actualmainCI/pr35/scopedartifact read;old source d4a is ancestor ofmain1b",
+          "ExactmainCI39701017999 LinuxWindows success;4file manifest42b33f verified locally;notnew deploy",
+          "FakeFTP current35portal+5protected+2oldscopedassets:42paths preserved/recovered;preflightbaseline4;only scoped mutations",
+          "1280:0/30/70/losssame70/reset0/reload81;390:16progress16opened;homegamereversepassed",
+          "Original476events and owner/AGENTS/policy/legacyledger/workspace/release unchanged;no subagents/newPR/push/dispatch"
+        ],
+        "next_step": "次の日次配信でmainの現行SHA/成功CIを照合し、この4ファイル版の本番preflight・限定配信・HTTP/進捗/再読み込み/ホーム往復を受入れる。既存統合の重複PRは不要。ポータル検索保持修正は次の日次PRへ併せる。"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "b79a02abfcc1d50d7f33fca2c75fb6cd9af844b5c33c65dfef6cf6f22b265082",
+      "sha256": "b65a70f8418f015e1a9889b35cc4b2446e5d085673aaca1a816d94507e38567a"
+    },
+    {
+      "revision": 485,
+      "at": 1792643422.8278646,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261022T1300-main-ci-reconcile",
+        "fence": 82,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "889c792932a7576b25c30101ea165ff50e2ec708cf5ec954e31e3a9d0ec6737f"
+          },
+          {
+            "path": "business/unity/evidence/portal-context-navigation-20261022.json",
+            "sha256": "43a199e725e98cc8275ad2a15aad6743d119c83d97b03419dbdecd3ea3e60482"
+          },
+          {
+            "path": "business/unity/evidence/minerush-progress-main-ci-reconciled-20261022.json",
+            "sha256": "0276cbdc3acdfdf023acd239dacb0b602760ade06c1d6b76fa0286d48d37a73b"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "741bced4450f18f0f4f5969154ec093d9bf9abc269811259f9c40121f09a52fa"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "43c9c8b1bd4479573def4b793fb560081dac6ca5b7461e26d527cb578c0d6941"
+          }
+        ],
+        "checks": [
+          "Portal finalsource120d0f2:Windows/Linux44files42contentidentical,18package negatives each;111business tests bothOS withPythonunchanged afterward",
+          "Actual restored320px resetEnter->native search/public/about/list qfilter preserved;sourceSSR oldfail/fixedpass;JPEG signatures/dimensions corrected without image edits",
+          "Main1b CI39701017999 LinuxWindows success;4file42b33f identical preflightcandidate;runtime JS/CSS exactly match morning7925 acceptedcandidate",
+          "1280game30->70/lossremains70/reset/reload81;39016progress16DOMopened;rootreturn and fakeFTP42path recovery passed",
+          "Read-onlyFTPS39722220503 SUCCESS,main1b matchesCI;4baselinehashes+root/newportal/game5f9 matched;realartifact offline recovery5paths;550asset state remains ambiguous until MLSD",
+          "Original476events preserved;owner/AGENTS/policy/oldledger/handoff/release/metrics untouched;no subagents/newPR/push/deploy;only read-only workflow dispatched once",
+          "Taskservers4278-4281 stopped,tabsclosed,viewportreset;no physicaltouch/Safari/human/offPC/realrollback claims",
+          "work_session={\"started_at\": \"2026-10-22T13:05:25+09:00\", \"start_basis\": \"first explicit UTC clock; startup reading began earlier\", \"ended_at\": \"2026-10-22T13:30:22.700724+09:00\", \"elapsed_seconds\": 1497.701, \"exit_reason\": \"Completed two reproduced portal fixes, final cross-platform retained package and browser acceptance, exact-main CI/runtime reconciliation, actual read-only FTPS preflight and recovery rehearsal; save unfinished production gates.\", \"artificial_waits\": false}"
+        ],
+        "next_step": "次の日次配信でmain SHA/成功CIと本番変化を再照合し、確認済み4ファイル版の限定配信・HTTP/進捗/再読み込み/ホーム往復を受入れる。39722220503は成功済み読取専用検査で再送不要。統合PRのやり直しは不要。ポータル検索保持修正は次の日次PRへ併せる。"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "b65a70f8418f015e1a9889b35cc4b2446e5d085673aaca1a816d94507e38567a",
+      "sha256": "fabbd33a0620476cd4242a1e570cf6bbd464d2926fc35e2515be31c5d2b71c6e"
     }
   ],
-  "projection_sha256": "3411e31e106138bbd906e8e54559c302d55a9f6a333ca227be2ff319985765fe"
+  "projection_sha256": "575d8fb3ea1ecc74666db719e463e0d8acfa498f99d3570efbfc337a676ab927"
 }
