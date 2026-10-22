@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 489,
+  "revision": 491,
   "business_id": "game-site",
-  "fence": 83,
-  "lease": null,
+  "fence": 84,
+  "lease": {
+    "run_id": "unity-20261023T0100-daily",
+    "task_id": "T-portal-context-navigation-20261022",
+    "fence": 84,
+    "expires_at": 1792686582.0690997
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -11059,7 +11064,7 @@
       "hypothesis": "案内ページで検索状態を保持すれば一覧に戻った際の再入力を避けられる。利用改善は未観測。",
       "source": "user:automation:unity:2026-10-22T13:00:00+09:00",
       "priority": 90,
-      "status": "ready",
+      "status": "running",
       "checkpoints": [
         {
           "run_id": "unity-20261022T1300-portal-context",
@@ -11243,6 +11248,12 @@
           "task_id": "T-portal-context-navigation-20261022",
           "fence": 83,
           "expires_at": 1792664869.8107946
+        },
+        {
+          "run_id": "unity-20261023T0100-daily",
+          "task_id": "T-portal-context-navigation-20261022",
+          "fence": 84,
+          "expires_at": 1792686582.0690997
         }
       ]
     }
@@ -12042,6 +12053,12 @@
       "started_at": 1792663069.6216211,
       "run_id": "unity-20261022T1856-navigation-acceptance",
       "status": "checkpointed"
+    },
+    "unity-20261023T0100-daily": {
+      "source": "user:automation:unity:2026-10-23:early-start-daily-publication",
+      "run_id": "unity-20261023T0100-daily",
+      "status": "open",
+      "started_at": 1792684781.8680038
     }
   },
   "experiments": {
@@ -29487,7 +29504,39 @@
       },
       "previous": "276ada9e61e6dda128c0be843dddfaa431797892c02dbe1a82276a5109b84d07",
       "sha256": "e9835103674ab9610f171c3c2b764dcc4088f11b7f4b4cac963bfb2c0b7e4194"
+    },
+    {
+      "revision": 490,
+      "at": 1792684781.8680038,
+      "action": "start",
+      "data": {
+        "source": "user:automation:unity:2026-10-23:early-start-daily-publication",
+        "run_id": "unity-20261023T0100-daily"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "e9835103674ab9610f171c3c2b764dcc4088f11b7f4b4cac963bfb2c0b7e4194",
+      "sha256": "fb14f0e502ce62f3220482c711967016a8712da2a9a633d5623ae686397fd68c"
+    },
+    {
+      "revision": 491,
+      "at": 1792684782.0690997,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261023T0100-daily",
+        "task_id": "T-portal-context-navigation-20261022",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261023T0100-daily",
+        "task_id": "T-portal-context-navigation-20261022",
+        "fence": 84,
+        "expires_at": 1792686582.0690997
+      },
+      "previous": "fb14f0e502ce62f3220482c711967016a8712da2a9a633d5623ae686397fd68c",
+      "sha256": "6f72c142f786f257b3d3472294b03099bfbfad514ba361a4097fadb73f884c46"
     }
   ],
-  "projection_sha256": "728f87b8adbd09643b4bbd4b79655c4535bc414d9f81f908668fcba84062f361"
+  "projection_sha256": "6015e6c6ac2668f6c14f87a02c1401cb665c5ebdf3420b04a842fd584ca84e23"
 }
