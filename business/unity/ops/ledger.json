@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 464,
+  "revision": 476,
   "business_id": "game-site",
-  "fence": 79,
-  "lease": {
-    "run_id": "manual-portal-refresh-20261022-implementation",
-    "task_id": "T-portal-refresh-20261022",
-    "fence": 79,
-    "expires_at": 1792629450.8856316
-  },
+  "fence": 80,
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -10874,14 +10869,101 @@
       "hypothesis": "情報整理と触感のある画面で発見・開始を分かりやすくする",
       "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
       "priority": 0,
-      "status": "running",
-      "checkpoints": [],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "manual-portal-refresh-20261022-implementation",
+          "fence": 79,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-refresh-20261022.json",
+              "sha256": "09cfb1f56bf87fc0f87c265c94a38fc6a4290980ed07577491df1010c5d35e33"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "bfbd8eecf5eb4f3ceb515eecc916a80f54f3d164554d46f17a61a02888470f82"
+            }
+          ],
+          "checks": [
+            "111business tests passed;7additive publication/recovery cases",
+            "PC1440/mobile320/390 no overflow;catalog4 excludespaused",
+            "real NetworkJPEG block/reload fallback then unblock/reload recovery",
+            "all4public reference JPEGs independently confirmed404 before publication",
+            "PR33 created; exact-head CI39699386743 running; no production writes yet"
+          ],
+          "next_step": "Complete PR33 CI, guarded merge, exact-main CI and protected portal publication; verify actual root/images and browser before complete",
+          "passed": false,
+          "at": 1792628719.9415524
+        },
+        {
+          "run_id": "manual-portal-refresh-20261022-implementation",
+          "fence": 79,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-refresh-20261022.json",
+              "sha256": "09cfb1f56bf87fc0f87c265c94a38fc6a4290980ed07577491df1010c5d35e33"
+            }
+          ],
+          "checks": [
+            "PR33 latest-head Linux51s/Windows58s CI passed; guarded merge a2a60f4 confirmed",
+            "implementation complete; package44files9pages verified;111business tests passed",
+            "main exact-head CI39699616537 in progress; no deployment dispatched yet",
+            "save implementation stage before publication; immediately continue same WIP under new bounded lease"
+          ],
+          "next_step": "Continue same urgent portal task in publication stage; exact-main package, protected additive upload and live browser acceptance remain",
+          "passed": false,
+          "at": 1792628821.5002806
+        },
+        {
+          "run_id": "manual-portal-refresh-20261022-publication",
+          "fence": 80,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-refresh-20261022.json",
+              "sha256": "09cfb1f56bf87fc0f87c265c94a38fc6a4290980ed07577491df1010c5d35e33"
+            }
+          ],
+          "checks": [
+            "main exact-head CI39699616537 success",
+            "package44files9pages verified;archive SHA matches;35portal targets exclude gameHTML and worker;4JPEGs included",
+            "publication39699825957 dispatched after recorded artifact-specific authorization;do not retry while unknown"
+          ],
+          "next_step": "Wait for publication result then verify root/35files,protected games,desktop/mobile/browser images and controls",
+          "passed": false,
+          "at": 1792628984.7204068
+        },
+        {
+          "run_id": "manual-portal-refresh-20261022-publication",
+          "fence": 80,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-refresh-20261022.json",
+              "sha256": "1ced8898dad4a44864f77aa0f5959bf49a787819273c7df06b138fab5c242b1b"
+            }
+          ],
+          "checks": [
+            "111 business tests and exact-main CI Linux/Windows success",
+            "35portalHTTPS targets match;5protected games unchanged;all4previous404JPEGs load",
+            "production 1440/390/320;search3/detail/back;filter1/zero/reset;game launch/cell/home;image dialog/Escape;Network failure/recovery",
+            "brandHTTP200;320pxsearch16px,brand44px;oldportal retained;actual touch/Safari unverified"
+          ],
+          "next_step": "Resume existing next work from canonical ledger;portal urgent acceptance complete;do not redo publication",
+          "passed": true,
+          "at": 1792630073.7312236
+        }
+      ],
       "claims": [
         {
           "run_id": "manual-portal-refresh-20261022-implementation",
           "task_id": "T-portal-refresh-20261022",
           "fence": 79,
           "expires_at": 1792629450.8856316
+        },
+        {
+          "run_id": "manual-portal-refresh-20261022-publication",
+          "task_id": "T-portal-refresh-20261022",
+          "fence": 80,
+          "expires_at": 1792630621.6339326
         }
       ]
     }
@@ -11654,8 +11736,14 @@
     "manual-portal-refresh-20261022-implementation": {
       "run_id": "manual-portal-refresh-20261022-implementation",
       "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
-      "status": "open",
+      "status": "checkpointed",
       "started_at": 1792627650.8202338
+    },
+    "manual-portal-refresh-20261022-publication": {
+      "run_id": "manual-portal-refresh-20261022-publication",
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh;continuation-of-manual-portal-refresh-20261022-implementation",
+      "status": "completed",
+      "started_at": 1792628821.5675461
     }
   },
   "experiments": {
@@ -12058,6 +12146,21 @@
       "artifact_sha256": "67d7787990f94dd9b50a80d37e4873f436af842ce56bc922d3e7419bc34d5329",
       "status": "approved",
       "scope": "Existing MineRush4files only; exact-main candidate selected under explicit deployment continuation"
+    },
+    {
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "quote": "見てて楽しいホーム画面を構築、改良工事の中で切り捨てられたアプリはポータルから消していいですだからこそ、改良工事を急ピッチで進めてください。完了は完全に刷新されUXが向上、既存のイメージが読めないバグなどを修正した状態で、快適にブラウザ(PC/スマホ両方対応)",
+      "action": "portal-refresh-production-main-a2a60f4",
+      "artifact_sha256": "403bf36e13d0033cb74db35a7f35cb6dce0aed2af0484e3ff985ae032443f4f9",
+      "status": "approved",
+      "scope": "Portal home/details/info/assets only;preserve all4game HTMLs and current MineRush version; no remote delete"
+    },
+    {
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "quote": "完了は完全に刷新されUXが向上、既存のイメージが読めないバグなどを修正した状態",
+      "action": "portal-refresh-production-main-1b37307",
+      "artifact_sha256": "36a489c0032b6052bdf4edd36a5803690a79d53e6b6d7054b2bef05281eb0bfc",
+      "status": "approved"
     }
   ],
   "external": {
@@ -12192,6 +12295,41 @@
           "http": "all4files+5protectedURLs matched",
           "browser": "open/F/reload/catalog return passed"
         }
+      }
+    },
+    "portal-refresh-main-a2a60f4-20261022": {
+      "id": "portal-refresh-main-a2a60f4-20261022",
+      "action": "portal-refresh-production-main-a2a60f4",
+      "artifact_sha256": "403bf36e13d0033cb74db35a7f35cb6dce0aed2af0484e3ff985ae032443f4f9",
+      "run_id": "manual-portal-refresh-20261022-publication",
+      "fence": 80,
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "ci_run": 39699616537,
+      "commit": "a2a60f454f265c06ce64a3e3b90d27bc9755f70e",
+      "status": "failed",
+      "reconciliation": {
+        "id": "portal-refresh-main-a2a60f4-20261022",
+        "status": "failed",
+        "source": "github:run:39699825957",
+        "evidence": "All35 FTPS writes completed, HTTP34/35 matched, icons/icon.svg404, protected5 HTTP bytes unchanged. artifacts/portal-refresh-20261022/first-http.json. Home is already new; no blind replay."
+      }
+    },
+    "portal-refresh-main-1b37307-20261022": {
+      "run_id": "manual-portal-refresh-20261022-publication",
+      "fence": 80,
+      "id": "portal-refresh-main-1b37307-20261022",
+      "action": "portal-refresh-production-main-1b37307",
+      "artifact_sha256": "36a489c0032b6052bdf4edd36a5803690a79d53e6b6d7054b2bef05281eb0bfc",
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "commit": "1b373077f55bc1a882497ff24b0f922161d4d713",
+      "ci_run_id": 39701017999,
+      "previous_result": "39699825957 reconciled failed: HTTP icon only; all35write/protected5 checked",
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "portal-refresh-main-1b37307-20261022",
+        "status": "confirmed_success",
+        "source": "github:run:39701164525",
+        "evidence": "CI39701017999 success;delivery success35HTTPS files;5protected unchanged against original backup;production final desktop/mobile/search/image/browser accepted;business/unity/evidence/portal-refresh-20261022.json"
       }
     }
   },
@@ -28379,7 +28517,263 @@
       },
       "previous": "eacbaa00316eec0ac107ac1a6f5a0f6cca09f7ec793d285997a745e3571cd327",
       "sha256": "d2f9e8d99bcda933b846c30ebb1f0b4aac2a3c84e03c6136e3fe88ffaa73c973"
+    },
+    {
+      "revision": 465,
+      "at": 1792628719.9415524,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-implementation",
+        "fence": 79,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-refresh-20261022.json",
+            "sha256": "09cfb1f56bf87fc0f87c265c94a38fc6a4290980ed07577491df1010c5d35e33"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "bfbd8eecf5eb4f3ceb515eecc916a80f54f3d164554d46f17a61a02888470f82"
+          }
+        ],
+        "checks": [
+          "111business tests passed;7additive publication/recovery cases",
+          "PC1440/mobile320/390 no overflow;catalog4 excludespaused",
+          "real NetworkJPEG block/reload fallback then unblock/reload recovery",
+          "all4public reference JPEGs independently confirmed404 before publication",
+          "PR33 created; exact-head CI39699386743 running; no production writes yet"
+        ],
+        "next_step": "Complete PR33 CI, guarded merge, exact-main CI and protected portal publication; verify actual root/images and browser before complete",
+        "passed": false
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "d2f9e8d99bcda933b846c30ebb1f0b4aac2a3c84e03c6136e3fe88ffaa73c973",
+      "sha256": "6c1882c9c1fcc86fbded851e6098692dd12be4eeea8ca87e4ac48e88699cb8b9"
+    },
+    {
+      "revision": 466,
+      "at": 1792628821.5002806,
+      "action": "yield",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-implementation",
+        "fence": 79,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-refresh-20261022.json",
+            "sha256": "09cfb1f56bf87fc0f87c265c94a38fc6a4290980ed07577491df1010c5d35e33"
+          }
+        ],
+        "checks": [
+          "PR33 latest-head Linux51s/Windows58s CI passed; guarded merge a2a60f4 confirmed",
+          "implementation complete; package44files9pages verified;111business tests passed",
+          "main exact-head CI39699616537 in progress; no deployment dispatched yet",
+          "save implementation stage before publication; immediately continue same WIP under new bounded lease"
+        ],
+        "next_step": "Continue same urgent portal task in publication stage; exact-main package, protected additive upload and live browser acceptance remain",
+        "passed": false
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "6c1882c9c1fcc86fbded851e6098692dd12be4eeea8ca87e4ac48e88699cb8b9",
+      "sha256": "8dbef251dc759729fb76e3db7defb2226335d739bf7528ec8143064ac8a4bd66"
+    },
+    {
+      "revision": 467,
+      "at": 1792628821.5675461,
+      "action": "start",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh;continuation-of-manual-portal-refresh-20261022-implementation"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "8dbef251dc759729fb76e3db7defb2226335d739bf7528ec8143064ac8a4bd66",
+      "sha256": "35127778a69954cf3a5d39436ce464127a10d820e24a101134a53c0cca6e7edc"
+    },
+    {
+      "revision": 468,
+      "at": 1792628821.6339326,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "task_id": "T-portal-refresh-20261022",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "task_id": "T-portal-refresh-20261022",
+        "fence": 80,
+        "expires_at": 1792630621.6339326
+      },
+      "previous": "35127778a69954cf3a5d39436ce464127a10d820e24a101134a53c0cca6e7edc",
+      "sha256": "e8ef752a938e6528438c63c5a0a6c452331ac832778f502b29dac87070aab8b6"
+    },
+    {
+      "revision": 469,
+      "at": 1792628867.116227,
+      "action": "approval",
+      "data": {
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "quote": "見てて楽しいホーム画面を構築、改良工事の中で切り捨てられたアプリはポータルから消していいですだからこそ、改良工事を急ピッチで進めてください。完了は完全に刷新されUXが向上、既存のイメージが読めないバグなどを修正した状態で、快適にブラウザ(PC/スマホ両方対応)",
+        "action": "portal-refresh-production-main-a2a60f4",
+        "artifact_sha256": "403bf36e13d0033cb74db35a7f35cb6dce0aed2af0484e3ff985ae032443f4f9",
+        "status": "approved",
+        "scope": "Portal home/details/info/assets only;preserve all4game HTMLs and current MineRush version; no remote delete"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "e8ef752a938e6528438c63c5a0a6c452331ac832778f502b29dac87070aab8b6",
+      "sha256": "0759a5688dd8d197a2b1743098219770b0126ffc652e1926bc980b99db0fcf5e"
+    },
+    {
+      "revision": 470,
+      "at": 1792628867.1818116,
+      "action": "prepare-external",
+      "data": {
+        "id": "portal-refresh-main-a2a60f4-20261022",
+        "action": "portal-refresh-production-main-a2a60f4",
+        "artifact_sha256": "403bf36e13d0033cb74db35a7f35cb6dce0aed2af0484e3ff985ae032443f4f9",
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "fence": 80,
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "ci_run": 39699616537,
+        "commit": "a2a60f454f265c06ce64a3e3b90d27bc9755f70e"
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "0759a5688dd8d197a2b1743098219770b0126ffc652e1926bc980b99db0fcf5e",
+      "sha256": "806c30f76597d3e3f7eff157d51e73103f3b0b3c28891c91c41b0c86446c8ba0"
+    },
+    {
+      "revision": 471,
+      "at": 1792628984.7204068,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "fence": 80,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-refresh-20261022.json",
+            "sha256": "09cfb1f56bf87fc0f87c265c94a38fc6a4290980ed07577491df1010c5d35e33"
+          }
+        ],
+        "checks": [
+          "main exact-head CI39699616537 success",
+          "package44files9pages verified;archive SHA matches;35portal targets exclude gameHTML and worker;4JPEGs included",
+          "publication39699825957 dispatched after recorded artifact-specific authorization;do not retry while unknown"
+        ],
+        "next_step": "Wait for publication result then verify root/35files,protected games,desktop/mobile/browser images and controls",
+        "passed": false
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "806c30f76597d3e3f7eff157d51e73103f3b0b3c28891c91c41b0c86446c8ba0",
+      "sha256": "375461a95b5b7b6aa50ddc271246f1949c6bcb743a19088f542e6bb9209dcc13"
+    },
+    {
+      "revision": 472,
+      "at": 1792629483.8821447,
+      "action": "reconcile-external",
+      "data": {
+        "id": "portal-refresh-main-a2a60f4-20261022",
+        "status": "failed",
+        "source": "github:run:39699825957",
+        "evidence": "All35 FTPS writes completed, HTTP34/35 matched, icons/icon.svg404, protected5 HTTP bytes unchanged. artifacts/portal-refresh-20261022/first-http.json. Home is already new; no blind replay."
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "375461a95b5b7b6aa50ddc271246f1949c6bcb743a19088f542e6bb9209dcc13",
+      "sha256": "ada8d0c6fdea55ed909fa68f9939629961018d3134d04e9b65a9824c4c576da7"
+    },
+    {
+      "revision": 473,
+      "at": 1792629669.7736015,
+      "action": "approval",
+      "data": {
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "quote": "完了は完全に刷新されUXが向上、既存のイメージが読めないバグなどを修正した状態",
+        "action": "portal-refresh-production-main-1b37307",
+        "artifact_sha256": "36a489c0032b6052bdf4edd36a5803690a79d53e6b6d7054b2bef05281eb0bfc",
+        "status": "approved"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "ada8d0c6fdea55ed909fa68f9939629961018d3134d04e9b65a9824c4c576da7",
+      "sha256": "dccaf12b3e273d4bd76288d28fdb86aae77d3506724be20aa481252754b82656"
+    },
+    {
+      "revision": 474,
+      "at": 1792629669.8393118,
+      "action": "prepare-external",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "fence": 80,
+        "id": "portal-refresh-main-1b37307-20261022",
+        "action": "portal-refresh-production-main-1b37307",
+        "artifact_sha256": "36a489c0032b6052bdf4edd36a5803690a79d53e6b6d7054b2bef05281eb0bfc",
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "commit": "1b373077f55bc1a882497ff24b0f922161d4d713",
+        "ci_run_id": 39701017999,
+        "previous_result": "39699825957 reconciled failed: HTTP icon only; all35write/protected5 checked"
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "dccaf12b3e273d4bd76288d28fdb86aae77d3506724be20aa481252754b82656",
+      "sha256": "979fc8d4464d5bfa38ceac9e58319728c64f7b5bfccfb2da0db3fc32bc2262b1"
+    },
+    {
+      "revision": 475,
+      "at": 1792630073.6594658,
+      "action": "reconcile-external",
+      "data": {
+        "id": "portal-refresh-main-1b37307-20261022",
+        "status": "confirmed_success",
+        "source": "github:run:39701164525",
+        "evidence": "CI39701017999 success;delivery success35HTTPS files;5protected unchanged against original backup;production final desktop/mobile/search/image/browser accepted;business/unity/evidence/portal-refresh-20261022.json"
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "979fc8d4464d5bfa38ceac9e58319728c64f7b5bfccfb2da0db3fc32bc2262b1",
+      "sha256": "70c86d116b63b477abbe0fd7e963ea21d0f7fab1d94b088e9219b1bd62205f1f"
+    },
+    {
+      "revision": 476,
+      "at": 1792630073.7312236,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "fence": 80,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-refresh-20261022.json",
+            "sha256": "1ced8898dad4a44864f77aa0f5959bf49a787819273c7df06b138fab5c242b1b"
+          }
+        ],
+        "checks": [
+          "111 business tests and exact-main CI Linux/Windows success",
+          "35portalHTTPS targets match;5protected games unchanged;all4previous404JPEGs load",
+          "production 1440/390/320;search3/detail/back;filter1/zero/reset;game launch/cell/home;image dialog/Escape;Network failure/recovery",
+          "brandHTTP200;320pxsearch16px,brand44px;oldportal retained;actual touch/Safari unverified"
+        ],
+        "next_step": "Resume existing next work from canonical ledger;portal urgent acceptance complete;do not redo publication",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "70c86d116b63b477abbe0fd7e963ea21d0f7fab1d94b088e9219b1bd62205f1f",
+      "sha256": "80e3f422704f4bc57ddd8a23bef5bd66c66610f21cb4d6084611e3e6c7886cbd"
     }
   ],
-  "projection_sha256": "ff22eb1b9b1a8085a995e212a38b18e6395d1e3ae83846406e1f74e13c6c97d6"
+  "projection_sha256": "3411e31e106138bbd906e8e54559c302d55a9f6a333ca227be2ff319985765fe"
 }
