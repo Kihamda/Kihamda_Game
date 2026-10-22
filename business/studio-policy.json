@@ -61,10 +61,10 @@
     ]
   },
   "currentWebRetentionSource": "business/unity/evidence/delivery-web-dialog-error-final-20261020.json",
-  "source": "user:current-thread:2026-10-20:autonomous-context-and-daily-deployment",
+  "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
   "currentProject": "web-portal",
-  "currentPriority": "verified-daily-delivery",
-  "nextStep": "CD修正はmainへ統合しMineRushの限定配信39533122745と本番受入れが成功。次の日次統合で最新公開登録と配信記録をまとめ、実測から利用者に届く改善を一つ選ぶ。元配信を重複dispatchしない。",
+  "currentPriority": "urgent-skeuomorphic-portal-refresh",
+  "nextStep": "緊急ポータル刷新を実装・検証し、CI後に本番へ追加型配信する。旧全体置換禁止/翌日待ちより本人の今回直接指示を優先する。",
   "workflow": "docs/autonomous-workflow.md",
   "codingConventions": "docs/coding-conventions.md",
   "startupContextCommand": "python business/ops/context.py",
@@ -104,5 +104,12 @@
       "early_exit_evidence_if_under_25_minutes"
     ],
     "noArtificialWaiting": true
+  },
+  "portalRefreshAuthorization": {
+    "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+    "replacePortal": true,
+    "removeRejectedFromListing": true,
+    "preserveGameSourcesAndLiveGameFiles": true,
+    "requireDesktopMobileAndImageAcceptance": true
   }
 }

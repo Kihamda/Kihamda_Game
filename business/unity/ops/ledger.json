@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 459,
+  "revision": 464,
   "business_id": "game-site",
-  "fence": 78,
-  "lease": null,
+  "fence": 79,
+  "lease": {
+    "run_id": "manual-portal-refresh-20261022-implementation",
+    "task_id": "T-portal-refresh-20261022",
+    "fence": 79,
+    "expires_at": 1792629450.8856316
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -10840,6 +10845,45 @@
           "expires_at": 1792621602.1617947
         }
       ]
+    },
+    "T-portal-refresh-20261022": {
+      "id": "T-portal-refresh-20261022",
+      "objective": "スキューモーフィズムのホームと周辺UXを刷新し画像不具合を修正して本番配信",
+      "acceptance": [
+        "木の棚・紙ラベル・立体ボタンと作品別イラストでホームを刷新",
+        "保全中/不採用作品を一覧から外し現在の4作品を掲載。未公開を公開と偽らない",
+        "画像読込失敗/復帰と実ファイル配信を確認",
+        "320/390/1440pxで検索・詳細・公開版開始・戻る・キーボードと表示を検証",
+        "最新head CI後mainへ反映。既存ゲームを書換えずポータルを配信しHTTP版/画像/本番ブラウザを受入れ"
+      ],
+      "outputs": [
+        "web/src/portal/App.tsx",
+        "web/src/portal/App.css",
+        "business/unity/evidence/portal-refresh-20261022.json"
+      ],
+      "checks": [
+        "type/lint/build/repository",
+        "SSR navigation and image fallback",
+        "browser desktop/mobile",
+        "exact CI and additive portal deployment"
+      ],
+      "next_step": "実装と受入れを進める",
+      "decision_id": "D-portal-refresh-20261022",
+      "experiment_id": "E-unity-portal",
+      "pdca": "do",
+      "hypothesis": "情報整理と触感のある画面で発見・開始を分かりやすくする",
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "priority": 0,
+      "status": "running",
+      "checkpoints": [],
+      "claims": [
+        {
+          "run_id": "manual-portal-refresh-20261022-implementation",
+          "task_id": "T-portal-refresh-20261022",
+          "fence": 79,
+          "expires_at": 1792629450.8856316
+        }
+      ]
     }
   },
   "decisions": {
@@ -11077,6 +11121,12 @@
       "source": "user:automation:unity:2026-10-21T13:00:00+09:00:sequential-child-of-unity-20261021T1300-first-play",
       "hypothesis": "本枠で繰り返した候補の偽FTP配信・復元を既存検査utilityへまとめれば、一時的な手書き検査の重複を減らせる。",
       "next_step": "既存rehearse_scoped_artifact.pyに任意の次候補の検証を追加し、入力改変・未完了transactionを拒否する。"
+    },
+    "D-portal-refresh-20261022": {
+      "id": "D-portal-refresh-20261022",
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "hypothesis": "4作品に絞った物理的な棚・紙ラベル・押下表現と分かりやすい公開状態、壊れない図版/画像で発見と開始を改善する。需要改善は未観測。",
+      "next_step": "ホーム/紹介/導線/画像の実装、PC/スマホ検証とCI後のポータル配信"
     }
   },
   "runs": {
@@ -11600,6 +11650,12 @@
       "source": "user:automation:unity:2026-10-22T07:00:00+09:00:early-start",
       "status": "checkpointed",
       "started_at": 1792619802.1123009
+    },
+    "manual-portal-refresh-20261022-implementation": {
+      "run_id": "manual-portal-refresh-20261022-implementation",
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "status": "open",
+      "started_at": 1792627650.8202338
     }
   },
   "experiments": {
@@ -11932,6 +11988,12 @@
       "message": "何かcd失敗してる。原因究明あんどデプロイ続行",
       "next_step": "中断CDの実状態を照合し、既存修正をCI後mainへ統合して検証済み限定配信を続行する。今回の直接依頼に従い翌日日次統合待ちを解除する",
       "at": 1792549299.1671946
+    },
+    {
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "message": "緊急要請。スキューモーフィズムをもとに楽しいホーム画面を完全刷新し、採用しないアプリはポータルから削除可。画像読込み不具合を直しPC/スマホ両方で快適なUXにして早急に完成する。",
+      "next_step": "日次統合待ちより緊急ポータル刷新を優先し、検証後トップ・作品紹介を本番へ反映する。ゲーム原本と公開済みMineRushは保全する",
+      "at": 1792627650.6252198
     }
   ],
   "approvals": [
@@ -28215,7 +28277,109 @@
       },
       "previous": "71a4c2f89c9821db5bb208cb2fc769a783260ac64dfb9bc80db4ebcdea3e6b1c",
       "sha256": "cf994a071a9127acca0343b40ad9f0334dea0beb5a5767701375ff05ffdda461"
+    },
+    {
+      "revision": 460,
+      "at": 1792627650.6252198,
+      "action": "feedback",
+      "data": {
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "message": "緊急要請。スキューモーフィズムをもとに楽しいホーム画面を完全刷新し、採用しないアプリはポータルから削除可。画像読込み不具合を直しPC/スマホ両方で快適なUXにして早急に完成する。",
+        "next_step": "日次統合待ちより緊急ポータル刷新を優先し、検証後トップ・作品紹介を本番へ反映する。ゲーム原本と公開済みMineRushは保全する"
+      },
+      "result": {
+        "recorded": "feedback"
+      },
+      "previous": "cf994a071a9127acca0343b40ad9f0334dea0beb5a5767701375ff05ffdda461",
+      "sha256": "8b811de662e90cc16b7571402668717e24de3ab100083a470ac5392a2c1f21ff"
+    },
+    {
+      "revision": 461,
+      "at": 1792627650.6896315,
+      "action": "decision",
+      "data": {
+        "id": "D-portal-refresh-20261022",
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "hypothesis": "4作品に絞った物理的な棚・紙ラベル・押下表現と分かりやすい公開状態、壊れない図版/画像で発見と開始を改善する。需要改善は未観測。",
+        "next_step": "ホーム/紹介/導線/画像の実装、PC/スマホ検証とCI後のポータル配信"
+      },
+      "result": {
+        "recorded": "decision"
+      },
+      "previous": "8b811de662e90cc16b7571402668717e24de3ab100083a470ac5392a2c1f21ff",
+      "sha256": "af6553999e7417b94b2dd07eb529888199ddf3e748eafb6a9b1d73433d674f84"
+    },
+    {
+      "revision": 462,
+      "at": 1792627650.7551215,
+      "action": "task",
+      "data": {
+        "id": "T-portal-refresh-20261022",
+        "objective": "スキューモーフィズムのホームと周辺UXを刷新し画像不具合を修正して本番配信",
+        "acceptance": [
+          "木の棚・紙ラベル・立体ボタンと作品別イラストでホームを刷新",
+          "保全中/不採用作品を一覧から外し現在の4作品を掲載。未公開を公開と偽らない",
+          "画像読込失敗/復帰と実ファイル配信を確認",
+          "320/390/1440pxで検索・詳細・公開版開始・戻る・キーボードと表示を検証",
+          "最新head CI後mainへ反映。既存ゲームを書換えずポータルを配信しHTTP版/画像/本番ブラウザを受入れ"
+        ],
+        "outputs": [
+          "web/src/portal/App.tsx",
+          "web/src/portal/App.css",
+          "business/unity/evidence/portal-refresh-20261022.json"
+        ],
+        "checks": [
+          "type/lint/build/repository",
+          "SSR navigation and image fallback",
+          "browser desktop/mobile",
+          "exact CI and additive portal deployment"
+        ],
+        "next_step": "実装と受入れを進める",
+        "decision_id": "D-portal-refresh-20261022",
+        "experiment_id": "E-unity-portal",
+        "pdca": "do",
+        "hypothesis": "情報整理と触感のある画面で発見・開始を分かりやすくする",
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "priority": 0
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "af6553999e7417b94b2dd07eb529888199ddf3e748eafb6a9b1d73433d674f84",
+      "sha256": "bce01d19f1e193f5f2d3f9bd5045ba89637f6184dd5c92be2a1e08c6f3868147"
+    },
+    {
+      "revision": 463,
+      "at": 1792627650.8202338,
+      "action": "start",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-implementation",
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "bce01d19f1e193f5f2d3f9bd5045ba89637f6184dd5c92be2a1e08c6f3868147",
+      "sha256": "eacbaa00316eec0ac107ac1a6f5a0f6cca09f7ec793d285997a745e3571cd327"
+    },
+    {
+      "revision": 464,
+      "at": 1792627650.8856316,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-implementation",
+        "task_id": "T-portal-refresh-20261022",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "manual-portal-refresh-20261022-implementation",
+        "task_id": "T-portal-refresh-20261022",
+        "fence": 79,
+        "expires_at": 1792629450.8856316
+      },
+      "previous": "eacbaa00316eec0ac107ac1a6f5a0f6cca09f7ec793d285997a745e3571cd327",
+      "sha256": "d2f9e8d99bcda933b846c30ebb1f0b4aac2a3c84e03c6136e3fe88ffaa73c973"
     }
   ],
-  "projection_sha256": "1a3918c0cae3008bf134f2c0e09c98c8c351176295f886b5e43fffdc20655d82"
+  "projection_sha256": "ff22eb1b9b1a8085a995e212a38b18e6395d1e3ae83846406e1f74e13c6c97d6"
 }

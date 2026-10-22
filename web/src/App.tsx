@@ -66,7 +66,7 @@ function App() {
 
       const anchor = target.closest("a[href]");
       if (!(anchor instanceof HTMLAnchorElement)) return;
-      if (anchor.target || anchor.hasAttribute("download")) return;
+      if (anchor.target || anchor.hasAttribute("download") || anchor.hasAttribute("data-live-game")) return;
 
       const url = new URL(anchor.href, window.location.origin);
       if (url.origin !== window.location.origin) return;
