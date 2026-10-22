@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 487,
+  "revision": 489,
   "business_id": "game-site",
   "fence": 83,
-  "lease": {
-    "run_id": "unity-20261022T1856-navigation-acceptance",
-    "task_id": "T-portal-context-navigation-20261022",
-    "fence": 83,
-    "expires_at": 1792664869.8107946
-  },
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -11064,7 +11059,7 @@
       "hypothesis": "案内ページで検索状態を保持すれば一覧に戻った際の再入力を避けられる。利用改善は未観測。",
       "source": "user:automation:unity:2026-10-22T13:00:00+09:00",
       "priority": 90,
-      "status": "running",
+      "status": "ready",
       "checkpoints": [
         {
           "run_id": "unity-20261022T1300-portal-context",
@@ -11130,6 +11125,110 @@
           ],
           "next_step": "次の日次統合でポータル検索保持/リセットフォーカスをexact-headCI後に追加型配信し本番往復を確認する。本日は再配信しない。",
           "at": 1792642687.1144958
+        },
+        {
+          "run_id": "unity-20261022T1856-navigation-acceptance",
+          "task_id": "T-portal-context-navigation-20261022",
+          "fence": 83,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-history-focus-20261022.json",
+              "sha256": "065a2c8f78be4bdd6c2d8675543d3b8de2c2e4732218585d68297d881fdcb96c"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "c881d214e8a0e89d635d65fa6cdcc466d9927b6109849cf8bb03981241d68328"
+            },
+            {
+              "path": "docs/portal-refresh-20261022.md",
+              "sha256": "c169af209254b52069329f4dc90162aaff48c685d6e5529a7b134d03cdc19a84"
+            },
+            {
+              "path": "web/src/App.tsx",
+              "sha256": "562c4ccf59867e7e0bfa844c578938d592ded2c0fe0552c11c1060164383729c"
+            },
+            {
+              "path": "web/src/portal/history-focus.ts",
+              "sha256": "6e984b0c914ed679b85b00b1e2642097d0d09f5f4b7da829bc9d161f573df919"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "eedd98d929c13eaad8061680264914614e0273ca97bbf71890500f25779196ee"
+            },
+            {
+              "path": "scripts/check-portal-history.mjs",
+              "sha256": "2d959d34899336254b883b11786d7b6327debd493c8c405434bd69e426c95d25"
+            }
+          ],
+          "checks": [
+            "Windows check/TypeScript/ESLint/build/9SSG43checksums",
+            "Windows/Linux44files;42contentfiles equal;18package rejections each",
+            "Actual router/history boundaries passed on Windows/Linux;native verified game navigation unchanged",
+            "Windows/Linux111business tests each;ledger projection and original events validated",
+            "Final restored package1280/320:exact source link,Tab order,game full navigation,reload,query/filter,footer Back/Forward,hash and skip",
+            "Public9HTTPfiles match retained portal/game;read-only only",
+            "FakeFTP35targets16writes home-last;protect5;recover42baseline byte equal",
+            "Local production5f9game overlay39opened,reload81unopened,Back retains query/filter and play focus",
+            "Retained oldportal baseline reconstruction4styledcards;oldMineRush81cells starts",
+            "Scoped candidate runtime JS/CSS identical to main CI39701017999 candidate;no new scoped delivery",
+            "Read selected current instructions and existing task via context.py;WIP1,no subagents,no future slot;daily local-save policy retained",
+            "Original485events/owner/AGENTS/policy/legacyledger/handoff/release/metrics preserved;5servers and5tabs closed,viewport reset",
+            "work_session={\"started_at\": \"2026-10-22T18:57:02.727991+09:00\", \"start_basis\": \"first explicit clock after initial startup reading;work began earlier\", \"ended_at\": \"2026-10-22T19:22:26.304087+09:00\", \"elapsed_seconds\": 1523.576, \"exit_reason\": \"Completed reproduced router/native history fixes, cross-platform build and actual-router regression, retained-package browser acceptance and additive publish/recovery rehearsal;save pending daily publication gates.\", \"artificial_waits\": false}"
+          ],
+          "next_step": "Next daily PR combines13slot portal context changes and history focus/router regression;exact-head CI,guarded merge,main artifact,additive portal publication and browser acceptance. Existing main MineRush progress source is already integrated;obtain a fresh scoped preflight after any portal change because39722220503 is bound to the old root. Never redispatch the accepted CD.",
+          "at": 1792664546.466833
+        },
+        {
+          "run_id": "unity-20261022T1856-navigation-acceptance",
+          "task_id": "T-portal-context-navigation-20261022",
+          "fence": 83,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-history-focus-20261022.json",
+              "sha256": "065a2c8f78be4bdd6c2d8675543d3b8de2c2e4732218585d68297d881fdcb96c"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "c881d214e8a0e89d635d65fa6cdcc466d9927b6109849cf8bb03981241d68328"
+            },
+            {
+              "path": "docs/portal-refresh-20261022.md",
+              "sha256": "c169af209254b52069329f4dc90162aaff48c685d6e5529a7b134d03cdc19a84"
+            },
+            {
+              "path": "web/src/App.tsx",
+              "sha256": "562c4ccf59867e7e0bfa844c578938d592ded2c0fe0552c11c1060164383729c"
+            },
+            {
+              "path": "web/src/portal/history-focus.ts",
+              "sha256": "6e984b0c914ed679b85b00b1e2642097d0d09f5f4b7da829bc9d161f573df919"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "eedd98d929c13eaad8061680264914614e0273ca97bbf71890500f25779196ee"
+            },
+            {
+              "path": "scripts/check-portal-history.mjs",
+              "sha256": "2d959d34899336254b883b11786d7b6327debd493c8c405434bd69e426c95d25"
+            }
+          ],
+          "checks": [
+            "Windows check/TypeScript/ESLint/build/9SSG43checksums",
+            "Windows/Linux44files;42contentfiles equal;18package rejections each",
+            "Actual router/history boundaries passed on Windows/Linux;native verified game navigation unchanged",
+            "Windows/Linux111business tests each;ledger projection and original events validated",
+            "Final restored package1280/320:exact source link,Tab order,game full navigation,reload,query/filter,footer Back/Forward,hash and skip",
+            "Public9HTTPfiles match retained portal/game;read-only only",
+            "FakeFTP35targets16writes home-last;protect5;recover42baseline byte equal",
+            "Local production5f9game overlay39opened,reload81unopened,Back retains query/filter and play focus",
+            "Retained oldportal baseline reconstruction4styledcards;oldMineRush81cells starts",
+            "Scoped candidate runtime JS/CSS identical to main CI39701017999 candidate;no new scoped delivery",
+            "Read selected current instructions and existing task via context.py;WIP1,no subagents,no future slot;daily local-save policy retained",
+            "Original485events/owner/AGENTS/policy/legacyledger/handoff/release/metrics preserved;5servers and5tabs closed,viewport reset",
+            "work_session={\"started_at\": \"2026-10-22T18:57:02.727991+09:00\", \"start_basis\": \"first explicit clock after initial startup reading;work began earlier\", \"ended_at\": \"2026-10-22T19:22:26.304087+09:00\", \"elapsed_seconds\": 1523.576, \"exit_reason\": \"Completed reproduced router/native history fixes, cross-platform build and actual-router regression, retained-package browser acceptance and additive publish/recovery rehearsal;save pending daily publication gates.\", \"artificial_waits\": false}"
+          ],
+          "next_step": "Next daily PR combines13slot portal context changes and history focus/router regression;exact-head CI,guarded merge,main artifact,additive portal publication and browser acceptance. Existing main MineRush progress source is already integrated;obtain a fresh scoped preflight after any portal change because39722220503 is bound to the old root. Never redispatch the accepted CD.",
+          "at": 1792664546.6596496
         }
       ],
       "claims": [
@@ -11942,7 +12041,7 @@
       "source": "user:automation:unity:2026-10-22T18:56:00+09:00",
       "started_at": 1792663069.6216211,
       "run_id": "unity-20261022T1856-navigation-acceptance",
-      "status": "open"
+      "status": "checkpointed"
     }
   },
   "experiments": {
@@ -29266,7 +29365,129 @@
       },
       "previous": "84f48394c2abc6bc29ca435c51eb608f46d669ac8e8deae8d9aa0bc36bfed854",
       "sha256": "690af76bc7ab45f4e007731b1a4981aae35ff84a1ce5b6b2c3cc560c2b34253a"
+    },
+    {
+      "revision": 488,
+      "at": 1792664546.466833,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T1856-navigation-acceptance",
+        "task_id": "T-portal-context-navigation-20261022",
+        "fence": 83,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-history-focus-20261022.json",
+            "sha256": "065a2c8f78be4bdd6c2d8675543d3b8de2c2e4732218585d68297d881fdcb96c"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "c881d214e8a0e89d635d65fa6cdcc466d9927b6109849cf8bb03981241d68328"
+          },
+          {
+            "path": "docs/portal-refresh-20261022.md",
+            "sha256": "c169af209254b52069329f4dc90162aaff48c685d6e5529a7b134d03cdc19a84"
+          },
+          {
+            "path": "web/src/App.tsx",
+            "sha256": "562c4ccf59867e7e0bfa844c578938d592ded2c0fe0552c11c1060164383729c"
+          },
+          {
+            "path": "web/src/portal/history-focus.ts",
+            "sha256": "6e984b0c914ed679b85b00b1e2642097d0d09f5f4b7da829bc9d161f573df919"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "eedd98d929c13eaad8061680264914614e0273ca97bbf71890500f25779196ee"
+          },
+          {
+            "path": "scripts/check-portal-history.mjs",
+            "sha256": "2d959d34899336254b883b11786d7b6327debd493c8c405434bd69e426c95d25"
+          }
+        ],
+        "checks": [
+          "Windows check/TypeScript/ESLint/build/9SSG43checksums",
+          "Windows/Linux44files;42contentfiles equal;18package rejections each",
+          "Actual router/history boundaries passed on Windows/Linux;native verified game navigation unchanged",
+          "Windows/Linux111business tests each;ledger projection and original events validated",
+          "Final restored package1280/320:exact source link,Tab order,game full navigation,reload,query/filter,footer Back/Forward,hash and skip",
+          "Public9HTTPfiles match retained portal/game;read-only only",
+          "FakeFTP35targets16writes home-last;protect5;recover42baseline byte equal",
+          "Local production5f9game overlay39opened,reload81unopened,Back retains query/filter and play focus",
+          "Retained oldportal baseline reconstruction4styledcards;oldMineRush81cells starts",
+          "Scoped candidate runtime JS/CSS identical to main CI39701017999 candidate;no new scoped delivery",
+          "Read selected current instructions and existing task via context.py;WIP1,no subagents,no future slot;daily local-save policy retained",
+          "Original485events/owner/AGENTS/policy/legacyledger/handoff/release/metrics preserved;5servers and5tabs closed,viewport reset",
+          "work_session={\"started_at\": \"2026-10-22T18:57:02.727991+09:00\", \"start_basis\": \"first explicit clock after initial startup reading;work began earlier\", \"ended_at\": \"2026-10-22T19:22:26.304087+09:00\", \"elapsed_seconds\": 1523.576, \"exit_reason\": \"Completed reproduced router/native history fixes, cross-platform build and actual-router regression, retained-package browser acceptance and additive publish/recovery rehearsal;save pending daily publication gates.\", \"artificial_waits\": false}"
+        ],
+        "next_step": "Next daily PR combines13slot portal context changes and history focus/router regression;exact-head CI,guarded merge,main artifact,additive portal publication and browser acceptance. Existing main MineRush progress source is already integrated;obtain a fresh scoped preflight after any portal change because39722220503 is bound to the old root. Never redispatch the accepted CD."
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "690af76bc7ab45f4e007731b1a4981aae35ff84a1ce5b6b2c3cc560c2b34253a",
+      "sha256": "276ada9e61e6dda128c0be843dddfaa431797892c02dbe1a82276a5109b84d07"
+    },
+    {
+      "revision": 489,
+      "at": 1792664546.6596496,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261022T1856-navigation-acceptance",
+        "task_id": "T-portal-context-navigation-20261022",
+        "fence": 83,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-history-focus-20261022.json",
+            "sha256": "065a2c8f78be4bdd6c2d8675543d3b8de2c2e4732218585d68297d881fdcb96c"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "c881d214e8a0e89d635d65fa6cdcc466d9927b6109849cf8bb03981241d68328"
+          },
+          {
+            "path": "docs/portal-refresh-20261022.md",
+            "sha256": "c169af209254b52069329f4dc90162aaff48c685d6e5529a7b134d03cdc19a84"
+          },
+          {
+            "path": "web/src/App.tsx",
+            "sha256": "562c4ccf59867e7e0bfa844c578938d592ded2c0fe0552c11c1060164383729c"
+          },
+          {
+            "path": "web/src/portal/history-focus.ts",
+            "sha256": "6e984b0c914ed679b85b00b1e2642097d0d09f5f4b7da829bc9d161f573df919"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "eedd98d929c13eaad8061680264914614e0273ca97bbf71890500f25779196ee"
+          },
+          {
+            "path": "scripts/check-portal-history.mjs",
+            "sha256": "2d959d34899336254b883b11786d7b6327debd493c8c405434bd69e426c95d25"
+          }
+        ],
+        "checks": [
+          "Windows check/TypeScript/ESLint/build/9SSG43checksums",
+          "Windows/Linux44files;42contentfiles equal;18package rejections each",
+          "Actual router/history boundaries passed on Windows/Linux;native verified game navigation unchanged",
+          "Windows/Linux111business tests each;ledger projection and original events validated",
+          "Final restored package1280/320:exact source link,Tab order,game full navigation,reload,query/filter,footer Back/Forward,hash and skip",
+          "Public9HTTPfiles match retained portal/game;read-only only",
+          "FakeFTP35targets16writes home-last;protect5;recover42baseline byte equal",
+          "Local production5f9game overlay39opened,reload81unopened,Back retains query/filter and play focus",
+          "Retained oldportal baseline reconstruction4styledcards;oldMineRush81cells starts",
+          "Scoped candidate runtime JS/CSS identical to main CI39701017999 candidate;no new scoped delivery",
+          "Read selected current instructions and existing task via context.py;WIP1,no subagents,no future slot;daily local-save policy retained",
+          "Original485events/owner/AGENTS/policy/legacyledger/handoff/release/metrics preserved;5servers and5tabs closed,viewport reset",
+          "work_session={\"started_at\": \"2026-10-22T18:57:02.727991+09:00\", \"start_basis\": \"first explicit clock after initial startup reading;work began earlier\", \"ended_at\": \"2026-10-22T19:22:26.304087+09:00\", \"elapsed_seconds\": 1523.576, \"exit_reason\": \"Completed reproduced router/native history fixes, cross-platform build and actual-router regression, retained-package browser acceptance and additive publish/recovery rehearsal;save pending daily publication gates.\", \"artificial_waits\": false}"
+        ],
+        "next_step": "Next daily PR combines13slot portal context changes and history focus/router regression;exact-head CI,guarded merge,main artifact,additive portal publication and browser acceptance. Existing main MineRush progress source is already integrated;obtain a fresh scoped preflight after any portal change because39722220503 is bound to the old root. Never redispatch the accepted CD."
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "276ada9e61e6dda128c0be843dddfaa431797892c02dbe1a82276a5109b84d07",
+      "sha256": "e9835103674ab9610f171c3c2b764dcc4088f11b7f4b4cac963bfb2c0b7e4194"
     }
   ],
-  "projection_sha256": "cb325599e46be09b56de0f40702c27f26b7a20a0b8b6342f3a060c84630156be"
+  "projection_sha256": "728f87b8adbd09643b4bbd4b79655c4535bc414d9f81f908668fcba84062f361"
 }
