@@ -171,12 +171,12 @@
       ],
       "release": {
         "url": "/games/minerush/",
-        "version": "5f9a1efab94d06b53a47182d954e3be9996a2889",
+        "version": "3416ea4e1f4db34db12debc63947f0689b2b6c18",
         "platform": "Webブラウザ",
-        "sha256": "563afa3878bcc43b5a110a35c14fb0e5281d656a7d57860d9c9f771b6260fd69",
-        "verification": "business/unity/evidence/scoped-production-accepted-20261022.json",
+        "sha256": "c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+        "verification": "business/unity/evidence/scoped-production-accepted-20261023.json",
         "distributionPermission": "business/studio-policy.json: validated-free-games-in-existing-permitted-domain-only",
-        "recovery": "scoped-delivery-39631591189 / scoped-recovery; docs/web-scoped-production-delivery.md"
+        "recovery": "scoped-delivery-39811894781 / scoped-recovery; docs/web-scoped-production-delivery.md"
       },
       "technology": "web",
       "origin": "studio-web",
@@ -224,9 +224,9 @@
           {
             "name": "PC版Chromium。390px幅は同じPCの表示幅変更による検査",
             "input": "クリック、矢印キー、Fキー、旗モード、再読み込み、一覧への往復。実タッチとSafariは未確認",
-            "version": "5f9a1efab94d06b53a47182d954e3be9996a2889",
-            "artifactSha256": "563afa3878bcc43b5a110a35c14fb0e5281d656a7d57860d9c9f771b6260fd69",
-            "verification": "business/unity/evidence/scoped-production-accepted-20261022.json"
+            "version": "3416ea4e1f4db34db12debc63947f0689b2b6c18",
+            "artifactSha256": "c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+            "verification": "business/unity/evidence/scoped-production-accepted-20261023.json"
           }
         ],
         "screenshots": []

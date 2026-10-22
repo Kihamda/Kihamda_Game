@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "revision": 491,
+  "revision": 501,
   "business_id": "game-site",
-  "fence": 84,
+  "fence": 85,
   "lease": {
-    "run_id": "unity-20261023T0100-daily",
-    "task_id": "T-portal-context-navigation-20261022",
-    "fence": 84,
-    "expires_at": 1792686582.0690997
+    "run_id": "unity-20261023T0111-scoped",
+    "task_id": "T-minerush-progress-daily-integration-20261023",
+    "fence": 85,
+    "expires_at": 1792686661.4453235
   },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -10594,7 +10594,7 @@
         "T-minerush-safe-progress-20261022",
         "T-web-release-preparation-command-20261022"
       ],
-      "status": "ready",
+      "status": "running",
       "checkpoints": [
         {
           "run_id": "unity-20261022T0100-final-audit",
@@ -10910,6 +10910,12 @@
           "task_id": "T-minerush-progress-daily-integration-20261023",
           "fence": 82,
           "expires_at": 1792644487.2457721
+        },
+        {
+          "run_id": "unity-20261023T0111-scoped",
+          "task_id": "T-minerush-progress-daily-integration-20261023",
+          "fence": 85,
+          "expires_at": 1792686661.4453235
         }
       ]
     },
@@ -11064,7 +11070,7 @@
       "hypothesis": "案内ページで検索状態を保持すれば一覧に戻った際の再入力を避けられる。利用改善は未観測。",
       "source": "user:automation:unity:2026-10-22T13:00:00+09:00",
       "priority": 90,
-      "status": "running",
+      "status": "done",
       "checkpoints": [
         {
           "run_id": "unity-20261022T1300-portal-context",
@@ -11234,6 +11240,43 @@
           ],
           "next_step": "Next daily PR combines13slot portal context changes and history focus/router regression;exact-head CI,guarded merge,main artifact,additive portal publication and browser acceptance. Existing main MineRush progress source is already integrated;obtain a fresh scoped preflight after any portal change because39722220503 is bound to the old root. Never redispatch the accepted CD.",
           "at": 1792664546.6596496
+        },
+        {
+          "run_id": "unity-20261023T0100-daily",
+          "fence": 84,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/daily-ci-20261023.json",
+              "sha256": "d013805f18c7f8ff3a696d985346c013601c8417c5801f38d7ec0ac0f26c76ab"
+            }
+          ],
+          "checks": [
+            "Exact-head PR36 Linux/Windows CI success;guarded merge3416ea4;mainCI39810473015success;two official artifacts verified",
+            "Portal workflow39810676603 dispatched once,known external operation recorded,do not replay",
+            "Local overlay native game Back/duplicate-link identity and320reset focus passed",
+            "WSL verification not run:node absent in default WSL PATH;GitHub LinuxCI independently passed"
+          ],
+          "next_step": "Reconcile portal39810676603 and actual35HTTP/protected5/browser acceptance,then claim existing MineRush limited-delivery task;fresh preflight after portal publication.",
+          "at": 1792685248.588529
+        },
+        {
+          "run_id": "unity-20261023T0100-daily",
+          "fence": 84,
+          "passed": true,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-context-production-20261023.json",
+              "sha256": "79acaa9e9b351eb2d27b352c1e5453e0304781bbf1137c36492b1cff634facbd"
+            }
+          ],
+          "checks": [
+            "Exact-head PR36 CI+guarded merge+mainCI39810473015success",
+            "Portal35HTTP/protected5/serviceworker/backup verified",
+            "Production1280/320context/reload/history/game81cells/return focus passed",
+            "Real game first navigation timing rejected;settled navigation81cells rechecked;no physicaltouch/Safari claims"
+          ],
+          "next_step": "Existing MineRush progress delivery:read-only preflight39811295068success;verify fresh root and CI artifact then limited upload",
+          "at": 1792685461.3020318
         }
       ],
       "claims": [
@@ -12057,8 +12100,14 @@
     "unity-20261023T0100-daily": {
       "source": "user:automation:unity:2026-10-23:early-start-daily-publication",
       "run_id": "unity-20261023T0100-daily",
-      "status": "open",
+      "status": "completed",
       "started_at": 1792684781.8680038
+    },
+    "unity-20261023T0111-scoped": {
+      "run_id": "unity-20261023T0111-scoped",
+      "source": "user:automation:unity:2026-10-23:child-of-unity-20261023T0100-daily",
+      "status": "open",
+      "started_at": 1792685461.3776581
     }
   },
   "experiments": {
@@ -12477,6 +12526,22 @@
       "action": "portal-refresh-production-main-1b37307",
       "artifact_sha256": "36a489c0032b6052bdf4edd36a5803690a79d53e6b6d7054b2bef05281eb0bfc",
       "status": "approved"
+    },
+    {
+      "source": "user:automation:unity:2026-10-23",
+      "quote": "自分で分析・判断して実装、検証、配信まで進めてください。",
+      "action": "portal-context-production-main-3416ea4",
+      "artifact_sha256": "88e67f86a2ad639fcbb7ddfde7a51851f079dd076e94885ece490a33761f1cf7",
+      "status": "approved",
+      "scope": "Validated portal only;protect4gameHTMLandMineRushversion;existing permitted free domain;no remote deletion"
+    },
+    {
+      "source": "user:automation:unity:2026-10-23",
+      "quote": "自分で分析・判断して実装、検証、配信まで進めてください。",
+      "action": "minerush-progress-main-3416ea4",
+      "artifact_sha256": "c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+      "status": "approved",
+      "scope": "Existing permitted free MineRush only;4files;current portal protected;baseline and same-sourceCI verified"
     }
   ],
   "external": {
@@ -12646,6 +12711,44 @@
         "status": "confirmed_success",
         "source": "github:run:39701164525",
         "evidence": "CI39701017999 success;delivery success35HTTPS files;5protected unchanged against original backup;production final desktop/mobile/search/image/browser accepted;business/unity/evidence/portal-refresh-20261022.json"
+      }
+    },
+    "portal-context-main-3416ea4-20261023": {
+      "run_id": "unity-20261023T0100-daily",
+      "fence": 84,
+      "id": "portal-context-main-3416ea4-20261023",
+      "action": "portal-context-production-main-3416ea4",
+      "artifact_sha256": "88e67f86a2ad639fcbb7ddfde7a51851f079dd076e94885ece490a33761f1cf7",
+      "source": "user:automation:unity:2026-10-23",
+      "commit": "3416ea4e1f4db34db12debc63947f0689b2b6c18",
+      "ci_run_id": 39810473015,
+      "already_dispatched": true,
+      "external_url": "https://github.com/Kihamda/Kihamda_Game/actions/runs/39810676603",
+      "note": "Initial local proof script stopped on cp932 decoding before ledger mutation;CLI dispatched once;known run recorded,not retried",
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "portal-context-main-3416ea4-20261023",
+        "status": "confirmed_success",
+        "source": "github:run:39810676603",
+        "evidence": "Workflow success;35HTTPS exactfiles;5protected+serviceworker unchanged;PC/320query/context/history/nativegame/keyboardreset accepted;business/unity/evidence/portal-context-production-20261023.json"
+      }
+    },
+    "minerush-progress-3416ea4-20261023": {
+      "run_id": "unity-20261023T0111-scoped",
+      "fence": 85,
+      "id": "minerush-progress-3416ea4-20261023",
+      "action": "minerush-progress-main-3416ea4",
+      "artifact_sha256": "c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+      "source": "user:automation:unity:2026-10-23",
+      "commit": "3416ea4e1f4db34db12debc63947f0689b2b6c18",
+      "ci_run": 39810473015,
+      "preflight_run": 39811295068,
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "minerush-progress-3416ea4-20261023",
+        "status": "confirmed_success",
+        "source": "github:run:39811894781",
+        "evidence": "CI/main/source and fresh preflight matched;uploadsuccess;4files+slash+protected5+oldbaseline HTTPverified;real71safewin/reset/reload/320/390progress/nativeBack accepted;business/unity/evidence/scoped-production-accepted-20261023.json"
       }
     }
   },
@@ -29536,7 +29639,206 @@
       },
       "previous": "fb14f0e502ce62f3220482c711967016a8712da2a9a633d5623ae686397fd68c",
       "sha256": "6f72c142f786f257b3d3472294b03099bfbfad514ba361a4097fadb73f884c46"
+    },
+    {
+      "revision": 492,
+      "at": 1792685042.0248785,
+      "action": "approval",
+      "data": {
+        "source": "user:automation:unity:2026-10-23",
+        "quote": "自分で分析・判断して実装、検証、配信まで進めてください。",
+        "action": "portal-context-production-main-3416ea4",
+        "artifact_sha256": "88e67f86a2ad639fcbb7ddfde7a51851f079dd076e94885ece490a33761f1cf7",
+        "status": "approved",
+        "scope": "Validated portal only;protect4gameHTMLandMineRushversion;existing permitted free domain;no remote deletion"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "6f72c142f786f257b3d3472294b03099bfbfad514ba361a4097fadb73f884c46",
+      "sha256": "67bf83aa90a523d2945487154ebb8c432643285acc9112d8f4722906f3a3e5d7"
+    },
+    {
+      "revision": 493,
+      "at": 1792685042.092381,
+      "action": "prepare-external",
+      "data": {
+        "run_id": "unity-20261023T0100-daily",
+        "fence": 84,
+        "id": "portal-context-main-3416ea4-20261023",
+        "action": "portal-context-production-main-3416ea4",
+        "artifact_sha256": "88e67f86a2ad639fcbb7ddfde7a51851f079dd076e94885ece490a33761f1cf7",
+        "source": "user:automation:unity:2026-10-23",
+        "commit": "3416ea4e1f4db34db12debc63947f0689b2b6c18",
+        "ci_run_id": 39810473015,
+        "already_dispatched": true,
+        "external_url": "https://github.com/Kihamda/Kihamda_Game/actions/runs/39810676603",
+        "note": "Initial local proof script stopped on cp932 decoding before ledger mutation;CLI dispatched once;known run recorded,not retried"
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "67bf83aa90a523d2945487154ebb8c432643285acc9112d8f4722906f3a3e5d7",
+      "sha256": "9fda5ad831f6f7ae531f47187c86f11b64d886f3b6b7164892c7806783f566f0"
+    },
+    {
+      "revision": 494,
+      "at": 1792685248.588529,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261023T0100-daily",
+        "fence": 84,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/daily-ci-20261023.json",
+            "sha256": "d013805f18c7f8ff3a696d985346c013601c8417c5801f38d7ec0ac0f26c76ab"
+          }
+        ],
+        "checks": [
+          "Exact-head PR36 Linux/Windows CI success;guarded merge3416ea4;mainCI39810473015success;two official artifacts verified",
+          "Portal workflow39810676603 dispatched once,known external operation recorded,do not replay",
+          "Local overlay native game Back/duplicate-link identity and320reset focus passed",
+          "WSL verification not run:node absent in default WSL PATH;GitHub LinuxCI independently passed"
+        ],
+        "next_step": "Reconcile portal39810676603 and actual35HTTP/protected5/browser acceptance,then claim existing MineRush limited-delivery task;fresh preflight after portal publication."
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "9fda5ad831f6f7ae531f47187c86f11b64d886f3b6b7164892c7806783f566f0",
+      "sha256": "27d2d875e757efe1f5b952366e1b65493871a4c36f9dac81036ecdaa8b047d06"
+    },
+    {
+      "revision": 495,
+      "at": 1792685461.215935,
+      "action": "reconcile-external",
+      "data": {
+        "id": "portal-context-main-3416ea4-20261023",
+        "status": "confirmed_success",
+        "source": "github:run:39810676603",
+        "evidence": "Workflow success;35HTTPS exactfiles;5protected+serviceworker unchanged;PC/320query/context/history/nativegame/keyboardreset accepted;business/unity/evidence/portal-context-production-20261023.json"
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "27d2d875e757efe1f5b952366e1b65493871a4c36f9dac81036ecdaa8b047d06",
+      "sha256": "65f593f6f7723ddf9be8181733b9369262fe761471887922c9d38a6ee7494128"
+    },
+    {
+      "revision": 496,
+      "at": 1792685461.3020318,
+      "action": "complete",
+      "data": {
+        "run_id": "unity-20261023T0100-daily",
+        "fence": 84,
+        "passed": true,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-context-production-20261023.json",
+            "sha256": "79acaa9e9b351eb2d27b352c1e5453e0304781bbf1137c36492b1cff634facbd"
+          }
+        ],
+        "checks": [
+          "Exact-head PR36 CI+guarded merge+mainCI39810473015success",
+          "Portal35HTTP/protected5/serviceworker/backup verified",
+          "Production1280/320context/reload/history/game81cells/return focus passed",
+          "Real game first navigation timing rejected;settled navigation81cells rechecked;no physicaltouch/Safari claims"
+        ],
+        "next_step": "Existing MineRush progress delivery:read-only preflight39811295068success;verify fresh root and CI artifact then limited upload"
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "65f593f6f7723ddf9be8181733b9369262fe761471887922c9d38a6ee7494128",
+      "sha256": "6ee43652db61410cde51d48c24174868e1eda80389f1e4daf7d8015d10b0cdb9"
+    },
+    {
+      "revision": 497,
+      "at": 1792685461.3776581,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261023T0111-scoped",
+        "source": "user:automation:unity:2026-10-23:child-of-unity-20261023T0100-daily"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "6ee43652db61410cde51d48c24174868e1eda80389f1e4daf7d8015d10b0cdb9",
+      "sha256": "c0f7cc5cb430a7bc9ae0e820d1a0a63551c4f3a17f20e4f1e3edf76ee681d546"
+    },
+    {
+      "revision": 498,
+      "at": 1792685461.4453235,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261023T0111-scoped",
+        "task_id": "T-minerush-progress-daily-integration-20261023",
+        "ttl_seconds": 1200
+      },
+      "result": {
+        "run_id": "unity-20261023T0111-scoped",
+        "task_id": "T-minerush-progress-daily-integration-20261023",
+        "fence": 85,
+        "expires_at": 1792686661.4453235
+      },
+      "previous": "c0f7cc5cb430a7bc9ae0e820d1a0a63551c4f3a17f20e4f1e3edf76ee681d546",
+      "sha256": "2e92f9a1e1ad1e8e54e6929f4263837fe58254f5ace6ed9fd137cce1750fcf8a"
+    },
+    {
+      "revision": 499,
+      "at": 1792685492.962885,
+      "action": "approval",
+      "data": {
+        "source": "user:automation:unity:2026-10-23",
+        "quote": "自分で分析・判断して実装、検証、配信まで進めてください。",
+        "action": "minerush-progress-main-3416ea4",
+        "artifact_sha256": "c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+        "status": "approved",
+        "scope": "Existing permitted free MineRush only;4files;current portal protected;baseline and same-sourceCI verified"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "2e92f9a1e1ad1e8e54e6929f4263837fe58254f5ace6ed9fd137cce1750fcf8a",
+      "sha256": "f4516f8ba6b46a0c5fa2d33fff6f4a2dc567c39528c5140614795df52ae59736"
+    },
+    {
+      "revision": 500,
+      "at": 1792685493.0297155,
+      "action": "prepare-external",
+      "data": {
+        "run_id": "unity-20261023T0111-scoped",
+        "fence": 85,
+        "id": "minerush-progress-3416ea4-20261023",
+        "action": "minerush-progress-main-3416ea4",
+        "artifact_sha256": "c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+        "source": "user:automation:unity:2026-10-23",
+        "commit": "3416ea4e1f4db34db12debc63947f0689b2b6c18",
+        "ci_run": 39810473015,
+        "preflight_run": 39811295068
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "f4516f8ba6b46a0c5fa2d33fff6f4a2dc567c39528c5140614795df52ae59736",
+      "sha256": "dbc9b9aef2aa8d6c699917d12f0a31868f40248a8a7c493914761c6db626e26f"
+    },
+    {
+      "revision": 501,
+      "at": 1792685834.010111,
+      "action": "reconcile-external",
+      "data": {
+        "id": "minerush-progress-3416ea4-20261023",
+        "status": "confirmed_success",
+        "source": "github:run:39811894781",
+        "evidence": "CI/main/source and fresh preflight matched;uploadsuccess;4files+slash+protected5+oldbaseline HTTPverified;real71safewin/reset/reload/320/390progress/nativeBack accepted;business/unity/evidence/scoped-production-accepted-20261023.json"
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "dbc9b9aef2aa8d6c699917d12f0a31868f40248a8a7c493914761c6db626e26f",
+      "sha256": "180f16ceae7c728b57ad891876e0f9402a7b5ffc3ba3a2e7f9ee60a50620ddf7"
     }
   ],
-  "projection_sha256": "6015e6c6ac2668f6c14f87a02c1401cb665c5ebdf3420b04a842fd584ca84e23"
+  "projection_sha256": "a12f0a71c993e6489744794b81c5de7b1c7619f3e745555f20cd4a3fbb663f27"
 }

@@ -1,0 +1,190 @@
+{
+  "schema": 1,
+  "acceptedAt": "2026-10-22T16:15:53.100104+00:00",
+  "deployed": true,
+  "url": "https://game.kihamda.net/games/minerush/",
+  "scope": "games/minerush/",
+  "commit": "3416ea4e1f4db34db12debc63947f0689b2b6c18",
+  "pr": 36,
+  "ciRun": 39810473015,
+  "deliveryRun": 39811894781,
+  "workflowConclusion": "success",
+  "preflightRun": 39811295068,
+  "manifestSha256": "c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+  "transaction": "100753c29b894e689d74a17bf4753bc4",
+  "journalSha256": "ae897e09cc3b2360867f2978be3726a73060e35e4f19f5e25051ac89fb3239f2",
+  "written": [
+    "games/minerush/assets/index-aNh-WmpN.css",
+    "games/minerush/assets/index-ClKvIRpv.js",
+    "games/minerush/build-version.json",
+    "games/minerush/index.html"
+  ],
+  "candidateFiles": [
+    {
+      "path": "games/minerush/assets/index-aNh-WmpN.css",
+      "sha256": "ba3f85e24e0a72cbadae1c9010e0a7e54fa88446478bb80fd714a6e93deb829a"
+    },
+    {
+      "path": "games/minerush/assets/index-ClKvIRpv.js",
+      "sha256": "3c60ab27edf52f7bda61184014beb70fa77558f44c06a186f26e3566ea0eb4e0"
+    },
+    {
+      "path": "games/minerush/build-version.json",
+      "sha256": "00817505bf106358b8c2c3aae6512faa9bf6944497b8983d54d18ebfd2b160e2"
+    },
+    {
+      "path": "games/minerush/index.html",
+      "sha256": "a5dca60e6c19ae26d2017f7c6f05a72e7ae87c412c376acf2f3ef860ac83077c"
+    }
+  ],
+  "http": {
+    "status": "interrupted-delivery-http-reconciled-browser-acceptance-pending",
+    "deployed": false,
+    "commit": "3416ea4e1f4db34db12debc63947f0689b2b6c18",
+    "files": [
+      "games/minerush/assets/index-aNh-WmpN.css",
+      "games/minerush/assets/index-ClKvIRpv.js",
+      "games/minerush/build-version.json",
+      "games/minerush/index.html",
+      "games/minerush/"
+    ],
+    "protectedUrls": {
+      "": "213ad6845b86a71b8840dad11fa94426f06b2ef632fd1bc1573e4155f8a77517",
+      "privacy-policy/": "cfa151a655dd214f21b97f328dda6703fdf3974d749483d9c1436563727162e1",
+      "contact/": "3420207112bf7982924c84f353888df0a51c8f666d060a5b514b7c3bf48b85b1",
+      "about/": "19a168e051c914f4d4f78f087b796b67e97e2ec19f7c4c950dccffd2a56118d5",
+      "sw.js": "2370416e5fc7cb52627f11a2c2a4e5dff62ca9a2bf19e7edbd4ff64f15922849"
+    },
+    "transaction": "100753c29b894e689d74a17bf4753bc4",
+    "journalStatus": "uploaded-awaiting-http-and-browser-acceptance",
+    "preservedBaselineFiles": [
+      "index.html",
+      "games/minerush/assets/index-C8Qv7oA6.js",
+      "games/minerush/assets/index-CnnIaIR3.css"
+    ],
+    "replayed": false
+  },
+  "recovery": {
+    "artifact": "scoped-delivery-39811894781/scoped-recovery",
+    "local": "artifacts/daily-20261023/scoped-delivery/scoped-recovery",
+    "baselineFiles": 4,
+    "combined": {
+      "status": "offline-combined-recovery-passed",
+      "fakeFtp": true,
+      "productionWrites": false,
+      "sourceJournalsUnchanged": true,
+      "wrongOrderRefusedWithoutMutations": true,
+      "order": [
+        "recover MineRush to5f9a1ef while newportal3416 retained",
+        "recover portal to1b37307 after game protection matches"
+      ],
+      "restoredBaselineFiles": 42,
+      "retainedUnreferencedFiles": 8,
+      "portalRecoveryStatus": "portal-restored-awaiting-http-and-browser-acceptance",
+      "gameRecoveryStatus": "entry-restored-awaiting-http-and-browser-acceptance",
+      "sourceHashes": {
+        "artifacts\\daily-20261023\\portal-delivery\\portal-transaction.json": "662c7d44a5c3c7cdfe70dae92ce9fe62883985034b85a42aa4bbc4a633184057",
+        "artifacts\\daily-20261023\\scoped-delivery\\transaction.json": "ae897e09cc3b2360867f2978be3726a73060e35e4f19f5e25051ac89fb3239f2"
+      },
+      "realRollbackTested": false
+    }
+  },
+  "browser": {
+    "accepted": true,
+    "engine": "Windows Chromium",
+    "observations": [
+      {
+        "flags": 1,
+        "progress": "安全マス 0 / 71",
+        "test": "flag does not advance safe progress"
+      },
+      {
+        "opened": 30,
+        "progress": "安全マス 30 / 71",
+        "test": "keyboard center reveal matches progress"
+      },
+      {
+        "flags": 9,
+        "opened": 71,
+        "progress": "安全マス 71 / 71",
+        "test": "visible-number deduction result",
+        "text": "クリア！\n安全マス 71 / 71\n😎\n🚩\n9\n開くモード：押すと開く\n1\n🚩\n🚩\n1\n1\n2\n2\n1\n1\n1\n1\n2\n🚩\n2\n1\n2\n2\n1\n2\n🚩\n2\n1\n🚩\n🚩\n2\n1\n1\n1\n1\n1\n3\n4\n🚩\n2\n1\n1\n🚩\n3\n🚩\n2\n1\n1\n1\n2\n2\n1\n🎉 YOU WIN!",
+        "win": true
+      },
+      {
+        "flags": 0,
+        "oldWin": false,
+        "progress": "安全マス 0 / 71",
+        "test": "reset after win",
+        "unopened": 81
+      },
+      {
+        "progress": "安全マス 0 / 71",
+        "test": "reload resets board/progress",
+        "unopened": 81
+      },
+      {
+        "documentWidth": 390,
+        "font": "20px",
+        "opened": 54,
+        "progress": "安全マス 54 / 71",
+        "progressBox": {
+          "bottom": 459.0562438964844,
+          "height": 19.704010009765625,
+          "left": 56.140010833740234,
+          "right": 177.12205123901367,
+          "top": 439.3522338867187,
+          "width": 120.98204040527344,
+          "x": 56.140010833740234,
+          "y": 439.3522338867187
+        },
+        "test": "390 keyboard/progress/layout",
+        "width": 390
+      },
+      {
+        "buttonsDisabled": false,
+        "containerText": "ゲームオーバー\n安全マス 62 / 71\n😵\n🚩\n0\n開くモード：押すと開く\n1\n1\n1\n1\n💣\n1\n💣\n1\n1\n1\n1\n1\n1\n1\n1\n1\n💣\n1\n3\n1\n1\n💣\n💣\n1\n1\n2\n2\n1\n💣\n2\n1\n1\n💣\n💣\n💣\n1\n1\n2\n3\n1\n1\n💣\n+1",
+        "opened": 62,
+        "progress": "安全マス 62 / 71",
+        "test": "loss progress counts only safe cells"
+      },
+      {
+        "documentWidth": 320,
+        "flags": 1,
+        "oldLoss": false,
+        "progress": "安全マス 0 / 71",
+        "test": "320 rightclick flag and layout",
+        "width": 320
+      },
+      {
+        "documentWidth": 320,
+        "opened": 39,
+        "progress": "安全マス 39 / 71",
+        "test": "320 open progress",
+        "width": 320
+      },
+      {
+        "focus": "遊んでみる ↗",
+        "query": "Web 1人用",
+        "test": "320 new game/reload/native Back",
+        "url": "https://game.kihamda.net/?q=Web+1%E4%BA%BA%E7%94%A8&filter=released"
+      }
+    ],
+    "win": "visible-number inference with F/Enter;71safe9flags,win and reset;no hidden board read",
+    "reload": "new bundle index-ClKvIRpv,81unopened0progress",
+    "initialOldDocument": "First revisit during deployment showed previously visited index-C8Qv7oA6;normal reload loaded new bundle;old result excluded",
+    "automationBoundaries": "Extra key attempt after win/defeat refused on disabled unopened cell;Japanese terminal label and71/62DOMsafe counts checked;no product failure inferred"
+  },
+  "screenshots": {
+    "minerush-win-desktop.jpg": "6adcaebf863b0c72ea0a12baa85d8cdb0f3184eb1a23f7c66062905b01726e16",
+    "minerush-progress-mobile.jpg": "d9ba71ee3890509fe04b750d07c392ee78337eb2bcd30b0f6661585957901493"
+  },
+  "metrics": null,
+  "unverified": [
+    "physical touch",
+    "Safari",
+    "human outcomes",
+    "off-PC restore",
+    "production rollback"
+  ]
+}
