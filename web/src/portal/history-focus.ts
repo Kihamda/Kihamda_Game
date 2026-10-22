@@ -11,6 +11,13 @@ export function readPortalReturnFocus(state: unknown): PortalReturnFocus | null 
   return { href: target.href, index: target.index };
 }
 
+export function initialPortalReturnFocus(): PortalReturnFocus | null {
+  const navigation = window.performance.getEntriesByType("navigation")[0];
+  // A normal visit or reload must keep its existing initial-focus behavior.
+  return navigation && "type" in navigation && navigation.type === "back_forward"
+    ? readPortalReturnFocus(window.history.state) : null;
+}
+
 export function rememberPortalReturnFocus(anchor: HTMLAnchorElement): void {
   const href = anchor.getAttribute("href");
   if (!href) return;

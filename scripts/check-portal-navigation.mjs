@@ -11,7 +11,7 @@ const result = await build({
       import { renderToStaticMarkup } from 'react-dom/server';
       import PortalApp from './src/portal/App';
       import { readCatalogState } from './src/portal/navigation';
-      export { readPortalReturnFocus, rememberPortalReturnFocus, restorePortalReturnFocus } from './src/portal/history-focus';
+      export { initialPortalReturnFocus, readPortalReturnFocus, rememberPortalReturnFocus, restorePortalReturnFocus } from './src/portal/history-focus';
       export function render(pathname, search) {
         return renderToStaticMarkup(React.createElement(PortalApp, { pathname, catalogState: readCatalogState(search) }));
       }`,
@@ -145,7 +145,7 @@ console.log('Informational navigation passed: every portal destination retains q
 
 // History entries can outlive a render or contain unrelated state. Restore the exact
 // duplicate link, not an interpolated selector or the first link to the same work.
-const { readPortalReturnFocus, rememberPortalReturnFocus, restorePortalReturnFocus } = module.exports;
+const { initialPortalReturnFocus, readPortalReturnFocus, rememberPortalReturnFocus, restorePortalReturnFocus } = module.exports;
 for (const state of [null, undefined, 'old', 42, {}, { kihamdaPortalReturnFocus: null },
   { kihamdaPortalReturnFocus: { href: '', index: 0 } },
   { kihamdaPortalReturnFocus: { href: '/', index: -1 } },
@@ -176,6 +176,12 @@ try {
   assert.deepEqual(window.history.state.otherOwner, { retained: true });
   const saved = readPortalReturnFocus(window.history.state);
   assert.deepEqual(saved, { href, index: 2 });
+  for (const navigation of [[], [{ type: 'navigate' }], [{ type: 'reload' }], [{}]]) {
+    window.performance = { getEntriesByType(type) { assert.equal(type, 'navigation'); return navigation; } };
+    assert.equal(initialPortalReturnFocus(), null);
+  }
+  window.performance = { getEntriesByType() { return [{ type: 'back_forward' }]; } };
+  assert.deepEqual(initialPortalReturnFocus(), saved);
   assert.equal(restorePortalReturnFocus(saved), true);
   assert.equal(document.activeElement, guide);
   // Missing, hidden, stale, or unmounted links must not steal focus.

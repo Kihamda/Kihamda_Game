@@ -5,7 +5,7 @@ import "./app/AppShell.css";
 import { getGameById } from "./games/metadata";
 import { gameComponents, hasGameComponent } from "./games/registry";
 import { catalogSearch, readCatalogState, type CatalogState } from "./portal/navigation";
-import { readPortalReturnFocus, rememberPortalReturnFocus, restorePortalReturnFocus, type PortalReturnFocus } from "./portal/history-focus";
+import { initialPortalReturnFocus, readPortalReturnFocus, rememberPortalReturnFocus, restorePortalReturnFocus, type PortalReturnFocus } from "./portal/history-focus";
 
 type Route =
   | { type: "home" }
@@ -44,7 +44,7 @@ function parseRoute(pathname: string): Route {
 }
 
 function App() {
-  const [location, setLocation] = useState<AppLocation>(() => ({ pathname: window.location.pathname, search: window.location.search, hash: window.location.hash, returnFocus: null }));
+  const [location, setLocation] = useState<AppLocation>(() => ({ pathname: window.location.pathname, search: window.location.search, hash: window.location.hash, returnFocus: initialPortalReturnFocus() }));
   const { pathname, search, hash, returnFocus } = location;
   const catalogState = readCatalogState(search);
   const onCatalogChange = (state: CatalogState) => {
@@ -69,7 +69,7 @@ function App() {
 
       const anchor = target.closest("a[href]");
       if (!(anchor instanceof HTMLAnchorElement)) return;
-      if (anchor.target || anchor.hasAttribute("download") || anchor.hasAttribute("data-live-game")) return;
+      if (anchor.target || anchor.hasAttribute("download")) return;
 
       const url = new URL(anchor.href, window.location.origin);
       if (url.origin !== window.location.origin) return;
@@ -78,10 +78,11 @@ function App() {
       const nextRoute = parseRoute(url.pathname);
       if (nextRoute.type === "notFound") return;
 
-      event.preventDefault();
       if (isPortalPath(window.location.pathname) || window.location.pathname === "/") {
         rememberPortalReturnFocus(anchor);
       }
+      if (anchor.hasAttribute("data-live-game")) return;
+      event.preventDefault();
       window.history.pushState(
         {},
         "",
