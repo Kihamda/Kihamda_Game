@@ -1,9 +1,14 @@
 {
   "schema": 1,
-  "revision": 485,
+  "revision": 487,
   "business_id": "game-site",
-  "fence": 82,
-  "lease": null,
+  "fence": 83,
+  "lease": {
+    "run_id": "unity-20261022T1856-navigation-acceptance",
+    "task_id": "T-portal-context-navigation-20261022",
+    "fence": 83,
+    "expires_at": 1792664869.8107946
+  },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -11059,7 +11064,7 @@
       "hypothesis": "案内ページで検索状態を保持すれば一覧に戻った際の再入力を避けられる。利用改善は未観測。",
       "source": "user:automation:unity:2026-10-22T13:00:00+09:00",
       "priority": 90,
-      "status": "ready",
+      "status": "running",
       "checkpoints": [
         {
           "run_id": "unity-20261022T1300-portal-context",
@@ -11133,6 +11138,12 @@
           "task_id": "T-portal-context-navigation-20261022",
           "fence": 81,
           "expires_at": 1792643818.9949622
+        },
+        {
+          "run_id": "unity-20261022T1856-navigation-acceptance",
+          "task_id": "T-portal-context-navigation-20261022",
+          "fence": 83,
+          "expires_at": 1792664869.8107946
         }
       ]
     }
@@ -11926,6 +11937,12 @@
       "source": "user:automation:unity:2026-10-22T13:00:00+09:00:child-of-unity-20261022T1300-portal-context",
       "status": "checkpointed",
       "started_at": 1792642687.1803217
+    },
+    "unity-20261022T1856-navigation-acceptance": {
+      "source": "user:automation:unity:2026-10-22T18:56:00+09:00",
+      "started_at": 1792663069.6216211,
+      "run_id": "unity-20261022T1856-navigation-acceptance",
+      "status": "open"
     }
   },
   "experiments": {
@@ -29216,7 +29233,40 @@
       },
       "previous": "b65a70f8418f015e1a9889b35cc4b2446e5d085673aaca1a816d94507e38567a",
       "sha256": "fabbd33a0620476cd4242a1e570cf6bbd464d2926fc35e2515be31c5d2b71c6e"
+    },
+    {
+      "revision": 486,
+      "at": 1792663069.6216211,
+      "action": "start",
+      "data": {
+        "source": "user:automation:unity:2026-10-22T18:56:00+09:00",
+        "started_at": "2026-10-22T18:56:00+09:00",
+        "run_id": "unity-20261022T1856-navigation-acceptance"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "fabbd33a0620476cd4242a1e570cf6bbd464d2926fc35e2515be31c5d2b71c6e",
+      "sha256": "84f48394c2abc6bc29ca435c51eb608f46d669ac8e8deae8d9aa0bc36bfed854"
+    },
+    {
+      "revision": 487,
+      "at": 1792663069.8107946,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T1856-navigation-acceptance",
+        "ttl_seconds": 1800,
+        "task_id": "T-portal-context-navigation-20261022"
+      },
+      "result": {
+        "run_id": "unity-20261022T1856-navigation-acceptance",
+        "task_id": "T-portal-context-navigation-20261022",
+        "fence": 83,
+        "expires_at": 1792664869.8107946
+      },
+      "previous": "84f48394c2abc6bc29ca435c51eb608f46d669ac8e8deae8d9aa0bc36bfed854",
+      "sha256": "690af76bc7ab45f4e007731b1a4981aae35ff84a1ce5b6b2c3cc560c2b34253a"
     }
   ],
-  "projection_sha256": "575d8fb3ea1ecc74666db719e463e0d8acfa498f99d3570efbfc337a676ab927"
+  "projection_sha256": "cb325599e46be09b56de0f40702c27f26b7a20a0b8b6342f3a060c84630156be"
 }
