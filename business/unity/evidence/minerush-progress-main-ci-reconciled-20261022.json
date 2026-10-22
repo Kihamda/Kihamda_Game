@@ -1,0 +1,184 @@
+{
+  "schema": 1,
+  "recordedAt": "2026-10-22T04:27:14.518962+00:00",
+  "status": "main-ci-live-preflight-and-local-overlay-accepted-awaiting-daily-production",
+  "deployed": false,
+  "candidateCommit": "1b373077f55bc1a882497ff24b0f922161d4d713",
+  "ciRun": 39701017999,
+  "ciConclusion": "success",
+  "ciJobs": [
+    "repository-and-web:success",
+    "windows-business:success"
+  ],
+  "mergedPr": 35,
+  "mergedHead": "1de943c0fd10eb67be069d7d21892239dd7e9d92",
+  "sourceAncestor": "d4a258ec2c5601e463fb6822a2197f9ebbb2b45c",
+  "sourceAncestorVerified": true,
+  "candidateManifestSha256": "42b33fde609319ed1471ffa710a040e0ebe2deaeca57d5c6ffc1c510380bd2cb",
+  "candidateFiles": 4,
+  "productionGameCommit": "5f9a1efab94d06b53a47182d954e3be9996a2889",
+  "productionPortalCommit": "1b373077f55bc1a882497ff24b0f922161d4d713",
+  "browser": {
+    "engine": "Windows Chromium",
+    "desktop": "1280:initial0,flag0progress,Enter30;19visible-number keyboard actions70safe9flags;last uncertain guesshitmine and progressremained70;reset0/reload81unopened0flags;rootreturnmatchesrefreshedportal",
+    "mobile": "390width390scrollWidth;Enter16 and16DOMopened;20px computedprogressfont before parent scale;scrolledboard screenshot inspected",
+    "win": "Not reached inthisrun;not claimed",
+    "touch": "No physical touch or synthetic touch test thisrun"
+  },
+  "rehearsal": {
+    "schema": 1,
+    "fakeFtp": true,
+    "productionWrites": false,
+    "deployed": false,
+    "candidateCommit": "1b373077f55bc1a882497ff24b0f922161d4d713",
+    "candidateManifestSha256": "42b33fde609319ed1471ffa710a040e0ebe2deaeca57d5c6ffc1c510380bd2cb",
+    "baselineFiles": 42,
+    "preflightBaselineFiles": 4,
+    "rootMatchesAcceptedPortal": true,
+    "limitedMutationsOnly": true,
+    "previousFilesRestored": 42,
+    "livePreflightPerformed": false
+  },
+  "acceptanceProgress": {
+    "sourceIntegration": "already-satisfied-by-urgent-portal-integration",
+    "exactMainCiAndArtifact": "satisfied",
+    "livePreflightAndRecoveryBaseline": "success snapshot39722220503;recheck before later productionwrite",
+    "scopedProductionDeliveryAndBrowser": "pending",
+    "releaseUpdate": "pending-after-actual-acceptance"
+  },
+  "nextStep": "次の日次配信でmain SHA/成功CIと本番変化を再照合し、確認済み4ファイル版の限定配信・HTTP/進捗/再読み込み/ホーム往復を受入れる。39722220503は成功済み読取専用検査で再送不要。統合PRのやり直しは不要。ポータル検索保持修正は次の日次PRへ併せる。",
+  "unverified": [
+    "Actual production release of progress candidate",
+    "Physicaltouch",
+    "Safari",
+    "OffPCrestore",
+    "Productionrollback",
+    "Businessmetrics",
+    "FTP550 assets remain missing-or-inaccessible until authenticated MLSD at actual upload"
+  ],
+  "localEvidence": {
+    "artifacts/portal-context-20261022/live-preflight-status.json": "0967e88ca92ee44b941436cd1bdebab4c451574afcab9001183664bd40ee7b64",
+    "artifacts/portal-context-20261022/live-preflight-verified.json": "b6393a6b7ba9cc614c935e90962ff38ce24acc44f938f3d459e7c8d755740898",
+    "artifacts/portal-context-20261022/main-ci-status.json": "e02b3a822e4a33892a07cf3772686d59810208c011eadf9c6fa2a890178195e9",
+    "artifacts/portal-context-20261022/main-live-preflight-rehearsal.json": "e2b2ea524551d9861b6f8370bfa5cb97f5947e0ef2e777be6f95f79e27fe7710",
+    "artifacts/portal-context-20261022/main-overlay-rehearsal.json": "77f9df22bc9c32d0be6af01d4d6cdab0ee9bdf57aadce4eb871e44b6210238e8",
+    "artifacts/portal-context-20261022/main-runtime-equivalence.json": "ba9b7009e5a7d9957b816638080389daddbe218a4daed3039d7dfe880ee0be54",
+    "artifacts/portal-context-20261022/main-scoped-390-opened.jpg": "7e9a5916c88719f656e22c443b4496cabdf27b6526edf1e8c31f2372be57c453",
+    "artifacts/portal-context-20261022/main-scoped-390.jpg": "e32a36866a4463612d0eaa4832dcbd914e5876dee3217e3ec08e40bdf6a4905d",
+    "artifacts/portal-context-20261022/main-scoped-progress.jpg": "979c975af68f2aa2cad1176c537abb9473b210ac8b8f97d46f3027e183ddd989",
+    "artifacts/portal-context-20261022/merged-pr35.json": "28333f1d513d39aa7e1cd26ef798c0f09d2ae2d5957f1b824b25dd843cd4b095"
+  },
+  "runtimeEquivalence": {
+    "mainCommit": "1b373077f55bc1a882497ff24b0f922161d4d713",
+    "priorCommit": "7925ba00830ef1400b3592deb2a921e44771202e",
+    "mainAssets": {
+      ".css": "ba3f85e24e0a72cbadae1c9010e0a7e54fa88446478bb80fd714a6e93deb829a",
+      ".js": "3c60ab27edf52f7bda61184014beb70fa77558f44c06a186f26e3566ea0eb4e0"
+    },
+    "priorAssets": {
+      ".css": "ba3f85e24e0a72cbadae1c9010e0a7e54fa88446478bb80fd714a6e93deb829a",
+      ".js": "3c60ab27edf52f7bda61184014beb70fa77558f44c06a186f26e3566ea0eb4e0"
+    },
+    "identicalRuntimeAssets": true
+  },
+  "livePreflight": {
+    "schema": 1,
+    "run": 39722220503,
+    "conclusion": "success",
+    "headSha": "1b373077f55bc1a882497ff24b0f922161d4d713",
+    "manifestIdenticalToMainCi": true,
+    "candidateManifestSha256": "42b33fde609319ed1471ffa710a040e0ebe2deaeca57d5c6ffc1c510380bd2cb",
+    "baselineFiles": 4,
+    "baseline": [
+      {
+        "path": "index.html",
+        "sha256": "d9a8fc67845d5bded461385ea0cefb9154e1bd159679b842ea718e75bcffa853"
+      },
+      {
+        "path": "games/minerush/index.html",
+        "sha256": "7333473849c92e6d190718d3f8099cb983584cbd67bbc83a53d40ddeb821a7d3"
+      },
+      {
+        "path": "games/minerush/assets/index-C8Qv7oA6.js",
+        "sha256": "b5bb59befdab39599e4b0cb2862ca49981518ffc93f50aa8b4220fd7f7354be4"
+      },
+      {
+        "path": "games/minerush/assets/index-CnnIaIR3.css",
+        "sha256": "03fa1bd21d3741f251cdda646c748f90c0c0c66c7b6df2db1803fc405b4bafd4"
+      }
+    ],
+    "assetChecks": [
+      {
+        "path": "games/minerush/assets/index-aNh-WmpN.css",
+        "state": "missing-or-inaccessible"
+      },
+      {
+        "path": "games/minerush/assets/index-ClKvIRpv.js",
+        "state": "missing-or-inaccessible"
+      }
+    ],
+    "preflightSha256": "904aa73c51c18518dcc8a2a13e3bc96dadbfa4744272b5b12dbc700853381499",
+    "productionWrites": false,
+    "rootMatchesRefreshedPortal": true,
+    "gameMatchesAccepted5f9": true,
+    "recheckBeforeFutureWrite": true
+  },
+  "actualPreflightArtifactRehearsal": {
+    "schema": 1,
+    "status": "live-readonly-preflight-artifact-offline-delivery-recovery-passed",
+    "preflightRun": 39722220503,
+    "fakeFtp": true,
+    "productionWrites": false,
+    "restoredPaths": 5,
+    "retainedVersionSource": "accepted delivery39631591189; live HTTPS matched earlier thisrun",
+    "preflightSha256": "904aa73c51c18518dcc8a2a13e3bc96dadbfa4744272b5b12dbc700853381499",
+    "originalEvidenceUnchanged": true,
+    "scopedMutationsOnly": true,
+    "recoveryStatus": "entry-restored-awaiting-http-and-browser-acceptance"
+  },
+  "cleanup": {
+    "taskServersStopped": [
+      4278,
+      4279,
+      4280,
+      4281
+    ],
+    "temporaryTabsClosed": true,
+    "viewportReset": true
+  },
+  "screenshotFormat": "JPEG bytes returned by screenshot API;extensions corrected without modifying image bytes",
+  "screenshotDimensions": {
+    "catalog-roundtrip-320.jpg": [
+      305,
+      705
+    ],
+    "catalog-roundtrip.jpg": [
+      1265,
+      712
+    ],
+    "final-restored-320.jpg": [
+      305,
+      705
+    ],
+    "main-scoped-390-opened.jpg": [
+      390,
+      740
+    ],
+    "main-scoped-390.jpg": [
+      390,
+      740
+    ],
+    "main-scoped-progress.jpg": [
+      1280,
+      720
+    ]
+  },
+  "workSession": {
+    "started_at": "2026-10-22T13:05:25+09:00",
+    "start_basis": "first explicit UTC clock; startup reading began earlier",
+    "ended_at": "2026-10-22T13:30:22.700724+09:00",
+    "elapsed_seconds": 1497.701,
+    "exit_reason": "Completed two reproduced portal fixes, final cross-platform retained package and browser acceptance, exact-main CI/runtime reconciliation, actual read-only FTPS preflight and recovery rehearsal; save unfinished production gates.",
+    "artificial_waits": false
+  }
+}

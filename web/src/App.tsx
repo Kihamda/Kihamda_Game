@@ -5,12 +5,15 @@ import "./app/AppShell.css";
 import { getGameById } from "./games/metadata";
 import { gameComponents, hasGameComponent } from "./games/registry";
 import { catalogSearch, readCatalogState, type CatalogState } from "./portal/navigation";
+import { initialPortalReturnFocus, readPortalReturnFocus, rememberPortalReturnFocus, restorePortalReturnFocus, type PortalReturnFocus } from "./portal/history-focus";
 
 type Route =
   | { type: "home" }
   | { type: "portal"; pathname: string }
   | { type: "game"; gameId: string }
   | { type: "notFound" };
+
+type AppLocation = { pathname: string; search: string; hash: string; returnFocus: PortalReturnFocus | null };
 
 function normalizePathname(pathname: string): string {
   const withSlash = pathname.startsWith("/") ? pathname : `/${pathname}`;
@@ -41,8 +44,8 @@ function parseRoute(pathname: string): Route {
 }
 
 function App() {
-  const [location, setLocation] = useState(() => ({ pathname: window.location.pathname, search: window.location.search, hash: window.location.hash }));
-  const { pathname, search, hash } = location;
+  const [location, setLocation] = useState<AppLocation>(() => ({ pathname: window.location.pathname, search: window.location.search, hash: window.location.hash, returnFocus: initialPortalReturnFocus() }));
+  const { pathname, search, hash, returnFocus } = location;
   const catalogState = readCatalogState(search);
   const onCatalogChange = (state: CatalogState) => {
     const next = { ...location, search: catalogSearch(state) };
@@ -53,7 +56,7 @@ function App() {
 
   useEffect(() => {
     const onPopState = () => {
-      setLocation({ pathname: window.location.pathname, search: window.location.search, hash: window.location.hash });
+      setLocation({ pathname: window.location.pathname, search: window.location.search, hash: window.location.hash, returnFocus: readPortalReturnFocus(window.history.state) });
     };
 
     const onDocumentClick = (event: MouseEvent) => {
@@ -66,7 +69,7 @@ function App() {
 
       const anchor = target.closest("a[href]");
       if (!(anchor instanceof HTMLAnchorElement)) return;
-      if (anchor.target || anchor.hasAttribute("download") || anchor.hasAttribute("data-live-game")) return;
+      if (anchor.target || anchor.hasAttribute("download")) return;
 
       const url = new URL(anchor.href, window.location.origin);
       if (url.origin !== window.location.origin) return;
@@ -75,13 +78,17 @@ function App() {
       const nextRoute = parseRoute(url.pathname);
       if (nextRoute.type === "notFound") return;
 
+      if (isPortalPath(window.location.pathname) || window.location.pathname === "/") {
+        rememberPortalReturnFocus(anchor);
+      }
+      if (anchor.hasAttribute("data-live-game")) return;
       event.preventDefault();
       window.history.pushState(
         {},
         "",
         `${url.pathname}${url.search}${url.hash}`,
       );
-      setLocation({ pathname: url.pathname, search: url.search, hash: url.hash });
+      setLocation({ pathname: url.pathname, search: url.search, hash: url.hash, returnFocus: null });
     };
 
     window.addEventListener("popstate", onPopState);
@@ -108,6 +115,7 @@ function App() {
       document.querySelector('link[rel="canonical"]')?.setAttribute("href", url);
       document.querySelector('meta[property="og:url"]')?.setAttribute("content", url);
     }
+    if (page && returnFocus && restorePortalReturnFocus(returnFocus)) return;
     if (hash) {
       document.getElementById(hash.slice(1))?.scrollIntoView();
     } else {
@@ -115,7 +123,7 @@ function App() {
       if (page) document.getElementById("main")?.focus({ preventScroll: true });
     }
     if (hash) document.getElementById(hash.slice(1))?.focus({ preventScroll: true });
-  }, [pathname, hash]);
+  }, [pathname, hash, returnFocus]);
 
   useEffect(() => {
     const isGameRoute = route.type === "game";

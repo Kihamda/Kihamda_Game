@@ -1,13 +1,13 @@
 {
   "schema": 1,
-  "revision": 464,
+  "revision": 491,
   "business_id": "game-site",
-  "fence": 79,
+  "fence": 84,
   "lease": {
-    "run_id": "manual-portal-refresh-20261022-implementation",
-    "task_id": "T-portal-refresh-20261022",
-    "fence": 79,
-    "expires_at": 1792629450.8856316
+    "run_id": "unity-20261023T0100-daily",
+    "task_id": "T-portal-context-navigation-20261022",
+    "fence": 84,
+    "expires_at": 1792686582.0690997
   },
   "tasks": {
     "T-ice-courier-unity-evaluation": {
@@ -10829,6 +10829,67 @@
           ],
           "next_step": "次の日次PRで進捗・タッチ中断後入力・保管版作成/CI/LF規約と公開記録をまとめ、exact-head Linux/Windows CI、mainCI、preflight、限定配信と実受入れ後だけrelease更新。本日CD再dispatch/記録専用PRなし。",
           "at": 1792621304.827531
+        },
+        {
+          "run_id": "unity-20261022T1300-main-ci-reconcile",
+          "fence": 82,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/minerush-progress-main-ci-reconciled-20261022.json",
+              "sha256": "b9594bee2547d2b7c834228cfd36db4df909f6f4b1a932cf31879e3c484f17a1"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "da40dfa61e0733bbdd2e6dbebc07a81b9ab3d032779446ae70211de930e1df5e"
+            }
+          ],
+          "checks": [
+            "Currentcontext selectedWIP and actualmainCI/pr35/scopedartifact read;old source d4a is ancestor ofmain1b",
+            "ExactmainCI39701017999 LinuxWindows success;4file manifest42b33f verified locally;notnew deploy",
+            "FakeFTP current35portal+5protected+2oldscopedassets:42paths preserved/recovered;preflightbaseline4;only scoped mutations",
+            "1280:0/30/70/losssame70/reset0/reload81;390:16progress16opened;homegamereversepassed",
+            "Original476events and owner/AGENTS/policy/legacyledger/workspace/release unchanged;no subagents/newPR/push/dispatch"
+          ],
+          "next_step": "次の日次配信でmainの現行SHA/成功CIを照合し、この4ファイル版の本番preflight・限定配信・HTTP/進捗/再読み込み/ホーム往復を受入れる。既存統合の重複PRは不要。ポータル検索保持修正は次の日次PRへ併せる。",
+          "at": 1792643027.6640956
+        },
+        {
+          "run_id": "unity-20261022T1300-main-ci-reconcile",
+          "fence": 82,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "889c792932a7576b25c30101ea165ff50e2ec708cf5ec954e31e3a9d0ec6737f"
+            },
+            {
+              "path": "business/unity/evidence/portal-context-navigation-20261022.json",
+              "sha256": "43a199e725e98cc8275ad2a15aad6743d119c83d97b03419dbdecd3ea3e60482"
+            },
+            {
+              "path": "business/unity/evidence/minerush-progress-main-ci-reconciled-20261022.json",
+              "sha256": "0276cbdc3acdfdf023acd239dacb0b602760ade06c1d6b76fa0286d48d37a73b"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "741bced4450f18f0f4f5969154ec093d9bf9abc269811259f9c40121f09a52fa"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "43c9c8b1bd4479573def4b793fb560081dac6ca5b7461e26d527cb578c0d6941"
+            }
+          ],
+          "checks": [
+            "Portal finalsource120d0f2:Windows/Linux44files42contentidentical,18package negatives each;111business tests bothOS withPythonunchanged afterward",
+            "Actual restored320px resetEnter->native search/public/about/list qfilter preserved;sourceSSR oldfail/fixedpass;JPEG signatures/dimensions corrected without image edits",
+            "Main1b CI39701017999 LinuxWindows success;4file42b33f identical preflightcandidate;runtime JS/CSS exactly match morning7925 acceptedcandidate",
+            "1280game30->70/lossremains70/reset/reload81;39016progress16DOMopened;rootreturn and fakeFTP42path recovery passed",
+            "Read-onlyFTPS39722220503 SUCCESS,main1b matchesCI;4baselinehashes+root/newportal/game5f9 matched;realartifact offline recovery5paths;550asset state remains ambiguous until MLSD",
+            "Original476events preserved;owner/AGENTS/policy/oldledger/handoff/release/metrics untouched;no subagents/newPR/push/deploy;only read-only workflow dispatched once",
+            "Taskservers4278-4281 stopped,tabsclosed,viewportreset;no physicaltouch/Safari/human/offPC/realrollback claims",
+            "work_session={\"started_at\": \"2026-10-22T13:05:25+09:00\", \"start_basis\": \"first explicit UTC clock; startup reading began earlier\", \"ended_at\": \"2026-10-22T13:30:22.700724+09:00\", \"elapsed_seconds\": 1497.701, \"exit_reason\": \"Completed two reproduced portal fixes, final cross-platform retained package and browser acceptance, exact-main CI/runtime reconciliation, actual read-only FTPS preflight and recovery rehearsal; save unfinished production gates.\", \"artificial_waits\": false}"
+          ],
+          "next_step": "次の日次配信でmain SHA/成功CIと本番変化を再照合し、確認済み4ファイル版の限定配信・HTTP/進捗/再読み込み/ホーム往復を受入れる。39722220503は成功済み読取専用検査で再送不要。統合PRのやり直しは不要。ポータル検索保持修正は次の日次PRへ併せる。",
+          "at": 1792643422.8278646
         }
       ],
       "claims": [
@@ -10843,6 +10904,12 @@
           "task_id": "T-minerush-progress-daily-integration-20261023",
           "fence": 78,
           "expires_at": 1792621602.1617947
+        },
+        {
+          "run_id": "unity-20261022T1300-main-ci-reconcile",
+          "task_id": "T-minerush-progress-daily-integration-20261023",
+          "fence": 82,
+          "expires_at": 1792644487.2457721
         }
       ]
     },
@@ -10874,14 +10941,319 @@
       "hypothesis": "情報整理と触感のある画面で発見・開始を分かりやすくする",
       "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
       "priority": 0,
-      "status": "running",
-      "checkpoints": [],
+      "status": "done",
+      "checkpoints": [
+        {
+          "run_id": "manual-portal-refresh-20261022-implementation",
+          "fence": 79,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-refresh-20261022.json",
+              "sha256": "09cfb1f56bf87fc0f87c265c94a38fc6a4290980ed07577491df1010c5d35e33"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "bfbd8eecf5eb4f3ceb515eecc916a80f54f3d164554d46f17a61a02888470f82"
+            }
+          ],
+          "checks": [
+            "111business tests passed;7additive publication/recovery cases",
+            "PC1440/mobile320/390 no overflow;catalog4 excludespaused",
+            "real NetworkJPEG block/reload fallback then unblock/reload recovery",
+            "all4public reference JPEGs independently confirmed404 before publication",
+            "PR33 created; exact-head CI39699386743 running; no production writes yet"
+          ],
+          "next_step": "Complete PR33 CI, guarded merge, exact-main CI and protected portal publication; verify actual root/images and browser before complete",
+          "passed": false,
+          "at": 1792628719.9415524
+        },
+        {
+          "run_id": "manual-portal-refresh-20261022-implementation",
+          "fence": 79,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-refresh-20261022.json",
+              "sha256": "09cfb1f56bf87fc0f87c265c94a38fc6a4290980ed07577491df1010c5d35e33"
+            }
+          ],
+          "checks": [
+            "PR33 latest-head Linux51s/Windows58s CI passed; guarded merge a2a60f4 confirmed",
+            "implementation complete; package44files9pages verified;111business tests passed",
+            "main exact-head CI39699616537 in progress; no deployment dispatched yet",
+            "save implementation stage before publication; immediately continue same WIP under new bounded lease"
+          ],
+          "next_step": "Continue same urgent portal task in publication stage; exact-main package, protected additive upload and live browser acceptance remain",
+          "passed": false,
+          "at": 1792628821.5002806
+        },
+        {
+          "run_id": "manual-portal-refresh-20261022-publication",
+          "fence": 80,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-refresh-20261022.json",
+              "sha256": "09cfb1f56bf87fc0f87c265c94a38fc6a4290980ed07577491df1010c5d35e33"
+            }
+          ],
+          "checks": [
+            "main exact-head CI39699616537 success",
+            "package44files9pages verified;archive SHA matches;35portal targets exclude gameHTML and worker;4JPEGs included",
+            "publication39699825957 dispatched after recorded artifact-specific authorization;do not retry while unknown"
+          ],
+          "next_step": "Wait for publication result then verify root/35files,protected games,desktop/mobile/browser images and controls",
+          "passed": false,
+          "at": 1792628984.7204068
+        },
+        {
+          "run_id": "manual-portal-refresh-20261022-publication",
+          "fence": 80,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-refresh-20261022.json",
+              "sha256": "1ced8898dad4a44864f77aa0f5959bf49a787819273c7df06b138fab5c242b1b"
+            }
+          ],
+          "checks": [
+            "111 business tests and exact-main CI Linux/Windows success",
+            "35portalHTTPS targets match;5protected games unchanged;all4previous404JPEGs load",
+            "production 1440/390/320;search3/detail/back;filter1/zero/reset;game launch/cell/home;image dialog/Escape;Network failure/recovery",
+            "brandHTTP200;320pxsearch16px,brand44px;oldportal retained;actual touch/Safari unverified"
+          ],
+          "next_step": "Resume existing next work from canonical ledger;portal urgent acceptance complete;do not redo publication",
+          "passed": true,
+          "at": 1792630073.7312236
+        }
+      ],
       "claims": [
         {
           "run_id": "manual-portal-refresh-20261022-implementation",
           "task_id": "T-portal-refresh-20261022",
           "fence": 79,
           "expires_at": 1792629450.8856316
+        },
+        {
+          "run_id": "manual-portal-refresh-20261022-publication",
+          "task_id": "T-portal-refresh-20261022",
+          "fence": 80,
+          "expires_at": 1792630621.6339326
+        }
+      ]
+    },
+    "T-portal-context-navigation-20261022": {
+      "id": "T-portal-context-navigation-20261022",
+      "objective": "案内ページ経由でも作品検索と公開フィルターを保持する",
+      "acceptance": [
+        "本番で消失を再現し内部リンクのみで条件を引き継ぐ",
+        "SSR回帰・Web規約・ビルドと実ブラウザの案内往復/再読み込みを確認",
+        "次の日次CI統合後に本番受入れする"
+      ],
+      "outputs": [
+        "web/src/portal/App.tsx",
+        "scripts/check-portal-navigation.mjs",
+        "business/unity/evidence/portal-context-navigation-20261022.json"
+      ],
+      "checks": [
+        "portal-navigation",
+        "web-build",
+        "browser-roundtrip"
+      ],
+      "next_step": "検索条件の失われる案内リンクを修正しローカル受入れ後、次の日次統合に含める",
+      "decision_id": "D-portal-refresh-20261022",
+      "experiment_id": "E-unity-portal",
+      "pdca": "do",
+      "hypothesis": "案内ページで検索状態を保持すれば一覧に戻った際の再入力を避けられる。利用改善は未観測。",
+      "source": "user:automation:unity:2026-10-22T13:00:00+09:00",
+      "priority": 90,
+      "status": "running",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261022T1300-portal-context",
+          "fence": 81,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-context-navigation-20261022.json",
+              "sha256": "a1a595ad0d7d0984d1713d303dace9a9de80293a329dd2eca30322f8f3fdc387"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "45a652494f1e65c2cd114b5e08c6ba7b7a958ddf272c48d4914f8f53be5a477d"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "43c9c8b1bd4479573def4b793fb560081dac6ca5b7461e26d527cb578c0d6941"
+            }
+          ],
+          "checks": [
+            "Windows TypeScript/ESLint/build9SSG43checksums and repository contract passed",
+            "Windows/Linux111business tests each;LinuxNode22.23.3 portalSSR/releasewrapper/18package rejections passed",
+            "Desktop about->privacy->contact->reload->catalog preserved query/released1 and focuses works",
+            "320px privacy->contact->catalog preserves query/released1;document305px at inner320;canonical has no query",
+            "ReadonlyGitHub main/CD39701164525 success and seven live baseline URLs match",
+            "Real35filepackage fakeFTP publish16changes home-last,protect5,recover40previouspaths;no realFTP connection",
+            "CurrentAGENTS/workflow/conventions/context/selectedsource read;existing nextdailyMineRush integration retained."
+          ],
+          "next_step": "Finish restored-package browser acceptance;save local candidate for next daily integration without extraPR or productiondispatch.",
+          "at": 1792642423.7701006
+        },
+        {
+          "run_id": "unity-20261022T1300-portal-context",
+          "fence": 81,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-context-navigation-20261022.json",
+              "sha256": "d42c742a2aa3e1d1f3422f7da6c1a34a8f84c6755c0aeb931948218c4f94ef20"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "09fc374271ccb9e5bc973a0cbedd940dca186cfe9345849f810da3f0062b9efc"
+            },
+            {
+              "path": "web/src/portal/App.tsx",
+              "sha256": "741bced4450f18f0f4f5969154ec093d9bf9abc269811259f9c40121f09a52fa"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "43c9c8b1bd4479573def4b793fb560081dac6ca5b7461e26d527cb578c0d6941"
+            }
+          ],
+          "checks": [
+            "Windows TypeScript/ESLint/build9SSG43checksums and repository contract passed",
+            "Windows/Linux111business tests each;LinuxNode22.23.3 portalSSR/releasewrapper/18package rejections passed",
+            "Desktop about->privacy->contact->reload->catalog preserved query/released1 and focuses works",
+            "320px privacy->contact->catalog preserves query/released1;document305px at inner320;canonical has no query",
+            "ReadonlyGitHub main/CD39701164525 success and seven live baseline URLs match",
+            "Real35filepackage fakeFTP publish16changes home-last,protect5,recover40previouspaths;no realFTP connection",
+            "Restored final120d0f2 archive:320px emptyreset Enter then native typing Web1人用/public/about/list preservesqfilter and worksfocus;final screenshot visually inspected",
+            "Final120d0f2 Windows/Linux44files42matching;18package negatives;Python unchanged since111tests each",
+            "Final35file package fakeFTP protects5/restores40/home-last;no liveFTPS connection",
+            "Partialrun continues sequentially into existing MineRush integration reconciliation;not end of scheduled session."
+          ],
+          "next_step": "次の日次統合でポータル検索保持/リセットフォーカスをexact-headCI後に追加型配信し本番往復を確認する。本日は再配信しない。",
+          "at": 1792642687.1144958
+        },
+        {
+          "run_id": "unity-20261022T1856-navigation-acceptance",
+          "task_id": "T-portal-context-navigation-20261022",
+          "fence": 83,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-history-focus-20261022.json",
+              "sha256": "065a2c8f78be4bdd6c2d8675543d3b8de2c2e4732218585d68297d881fdcb96c"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "c881d214e8a0e89d635d65fa6cdcc466d9927b6109849cf8bb03981241d68328"
+            },
+            {
+              "path": "docs/portal-refresh-20261022.md",
+              "sha256": "c169af209254b52069329f4dc90162aaff48c685d6e5529a7b134d03cdc19a84"
+            },
+            {
+              "path": "web/src/App.tsx",
+              "sha256": "562c4ccf59867e7e0bfa844c578938d592ded2c0fe0552c11c1060164383729c"
+            },
+            {
+              "path": "web/src/portal/history-focus.ts",
+              "sha256": "6e984b0c914ed679b85b00b1e2642097d0d09f5f4b7da829bc9d161f573df919"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "eedd98d929c13eaad8061680264914614e0273ca97bbf71890500f25779196ee"
+            },
+            {
+              "path": "scripts/check-portal-history.mjs",
+              "sha256": "2d959d34899336254b883b11786d7b6327debd493c8c405434bd69e426c95d25"
+            }
+          ],
+          "checks": [
+            "Windows check/TypeScript/ESLint/build/9SSG43checksums",
+            "Windows/Linux44files;42contentfiles equal;18package rejections each",
+            "Actual router/history boundaries passed on Windows/Linux;native verified game navigation unchanged",
+            "Windows/Linux111business tests each;ledger projection and original events validated",
+            "Final restored package1280/320:exact source link,Tab order,game full navigation,reload,query/filter,footer Back/Forward,hash and skip",
+            "Public9HTTPfiles match retained portal/game;read-only only",
+            "FakeFTP35targets16writes home-last;protect5;recover42baseline byte equal",
+            "Local production5f9game overlay39opened,reload81unopened,Back retains query/filter and play focus",
+            "Retained oldportal baseline reconstruction4styledcards;oldMineRush81cells starts",
+            "Scoped candidate runtime JS/CSS identical to main CI39701017999 candidate;no new scoped delivery",
+            "Read selected current instructions and existing task via context.py;WIP1,no subagents,no future slot;daily local-save policy retained",
+            "Original485events/owner/AGENTS/policy/legacyledger/handoff/release/metrics preserved;5servers and5tabs closed,viewport reset",
+            "work_session={\"started_at\": \"2026-10-22T18:57:02.727991+09:00\", \"start_basis\": \"first explicit clock after initial startup reading;work began earlier\", \"ended_at\": \"2026-10-22T19:22:26.304087+09:00\", \"elapsed_seconds\": 1523.576, \"exit_reason\": \"Completed reproduced router/native history fixes, cross-platform build and actual-router regression, retained-package browser acceptance and additive publish/recovery rehearsal;save pending daily publication gates.\", \"artificial_waits\": false}"
+          ],
+          "next_step": "Next daily PR combines13slot portal context changes and history focus/router regression;exact-head CI,guarded merge,main artifact,additive portal publication and browser acceptance. Existing main MineRush progress source is already integrated;obtain a fresh scoped preflight after any portal change because39722220503 is bound to the old root. Never redispatch the accepted CD.",
+          "at": 1792664546.466833
+        },
+        {
+          "run_id": "unity-20261022T1856-navigation-acceptance",
+          "task_id": "T-portal-context-navigation-20261022",
+          "fence": 83,
+          "artifacts": [
+            {
+              "path": "business/unity/evidence/portal-history-focus-20261022.json",
+              "sha256": "065a2c8f78be4bdd6c2d8675543d3b8de2c2e4732218585d68297d881fdcb96c"
+            },
+            {
+              "path": "STATE.md",
+              "sha256": "c881d214e8a0e89d635d65fa6cdcc466d9927b6109849cf8bb03981241d68328"
+            },
+            {
+              "path": "docs/portal-refresh-20261022.md",
+              "sha256": "c169af209254b52069329f4dc90162aaff48c685d6e5529a7b134d03cdc19a84"
+            },
+            {
+              "path": "web/src/App.tsx",
+              "sha256": "562c4ccf59867e7e0bfa844c578938d592ded2c0fe0552c11c1060164383729c"
+            },
+            {
+              "path": "web/src/portal/history-focus.ts",
+              "sha256": "6e984b0c914ed679b85b00b1e2642097d0d09f5f4b7da829bc9d161f573df919"
+            },
+            {
+              "path": "scripts/check-portal-navigation.mjs",
+              "sha256": "eedd98d929c13eaad8061680264914614e0273ca97bbf71890500f25779196ee"
+            },
+            {
+              "path": "scripts/check-portal-history.mjs",
+              "sha256": "2d959d34899336254b883b11786d7b6327debd493c8c405434bd69e426c95d25"
+            }
+          ],
+          "checks": [
+            "Windows check/TypeScript/ESLint/build/9SSG43checksums",
+            "Windows/Linux44files;42contentfiles equal;18package rejections each",
+            "Actual router/history boundaries passed on Windows/Linux;native verified game navigation unchanged",
+            "Windows/Linux111business tests each;ledger projection and original events validated",
+            "Final restored package1280/320:exact source link,Tab order,game full navigation,reload,query/filter,footer Back/Forward,hash and skip",
+            "Public9HTTPfiles match retained portal/game;read-only only",
+            "FakeFTP35targets16writes home-last;protect5;recover42baseline byte equal",
+            "Local production5f9game overlay39opened,reload81unopened,Back retains query/filter and play focus",
+            "Retained oldportal baseline reconstruction4styledcards;oldMineRush81cells starts",
+            "Scoped candidate runtime JS/CSS identical to main CI39701017999 candidate;no new scoped delivery",
+            "Read selected current instructions and existing task via context.py;WIP1,no subagents,no future slot;daily local-save policy retained",
+            "Original485events/owner/AGENTS/policy/legacyledger/handoff/release/metrics preserved;5servers and5tabs closed,viewport reset",
+            "work_session={\"started_at\": \"2026-10-22T18:57:02.727991+09:00\", \"start_basis\": \"first explicit clock after initial startup reading;work began earlier\", \"ended_at\": \"2026-10-22T19:22:26.304087+09:00\", \"elapsed_seconds\": 1523.576, \"exit_reason\": \"Completed reproduced router/native history fixes, cross-platform build and actual-router regression, retained-package browser acceptance and additive publish/recovery rehearsal;save pending daily publication gates.\", \"artificial_waits\": false}"
+          ],
+          "next_step": "Next daily PR combines13slot portal context changes and history focus/router regression;exact-head CI,guarded merge,main artifact,additive portal publication and browser acceptance. Existing main MineRush progress source is already integrated;obtain a fresh scoped preflight after any portal change because39722220503 is bound to the old root. Never redispatch the accepted CD.",
+          "at": 1792664546.6596496
+        }
+      ],
+      "claims": [
+        {
+          "run_id": "unity-20261022T1300-portal-context",
+          "task_id": "T-portal-context-navigation-20261022",
+          "fence": 81,
+          "expires_at": 1792643818.9949622
+        },
+        {
+          "run_id": "unity-20261022T1856-navigation-acceptance",
+          "task_id": "T-portal-context-navigation-20261022",
+          "fence": 83,
+          "expires_at": 1792664869.8107946
+        },
+        {
+          "run_id": "unity-20261023T0100-daily",
+          "task_id": "T-portal-context-navigation-20261022",
+          "fence": 84,
+          "expires_at": 1792686582.0690997
         }
       ]
     }
@@ -11654,8 +12026,39 @@
     "manual-portal-refresh-20261022-implementation": {
       "run_id": "manual-portal-refresh-20261022-implementation",
       "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
-      "status": "open",
+      "status": "checkpointed",
       "started_at": 1792627650.8202338
+    },
+    "manual-portal-refresh-20261022-publication": {
+      "run_id": "manual-portal-refresh-20261022-publication",
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh;continuation-of-manual-portal-refresh-20261022-implementation",
+      "status": "completed",
+      "started_at": 1792628821.5675461
+    },
+    "unity-20261022T1300-portal-context": {
+      "run_id": "unity-20261022T1300-portal-context",
+      "scheduled_at": "2026-10-22T13:00:00+09:00",
+      "source": "scheduled:game-site:2026-10-22T13:00:00+09:00",
+      "status": "checkpointed",
+      "started_at": 1792642018.7955494
+    },
+    "unity-20261022T1300-main-ci-reconcile": {
+      "run_id": "unity-20261022T1300-main-ci-reconcile",
+      "source": "user:automation:unity:2026-10-22T13:00:00+09:00:child-of-unity-20261022T1300-portal-context",
+      "status": "checkpointed",
+      "started_at": 1792642687.1803217
+    },
+    "unity-20261022T1856-navigation-acceptance": {
+      "source": "user:automation:unity:2026-10-22T18:56:00+09:00",
+      "started_at": 1792663069.6216211,
+      "run_id": "unity-20261022T1856-navigation-acceptance",
+      "status": "checkpointed"
+    },
+    "unity-20261023T0100-daily": {
+      "source": "user:automation:unity:2026-10-23:early-start-daily-publication",
+      "run_id": "unity-20261023T0100-daily",
+      "status": "open",
+      "started_at": 1792684781.8680038
     }
   },
   "experiments": {
@@ -11956,7 +12359,8 @@
     "2026-10-21T01:00:00+09:00": "unity-20261021T0100-reconcile",
     "2026-10-21T13:00:00+09:00": "unity-20261021T1300-first-play",
     "2026-10-21T19:00:00+09:00": "unity-20261021T1900-input-acceptance",
-    "2026-10-22T01:00:00+09:00": "unity-20261022T0100-daily-delivery"
+    "2026-10-22T01:00:00+09:00": "unity-20261022T0100-daily-delivery",
+    "2026-10-22T13:00:00+09:00": "unity-20261022T1300-portal-context"
   },
   "feedback": [
     {
@@ -12058,6 +12462,21 @@
       "artifact_sha256": "67d7787990f94dd9b50a80d37e4873f436af842ce56bc922d3e7419bc34d5329",
       "status": "approved",
       "scope": "Existing MineRush4files only; exact-main candidate selected under explicit deployment continuation"
+    },
+    {
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "quote": "見てて楽しいホーム画面を構築、改良工事の中で切り捨てられたアプリはポータルから消していいですだからこそ、改良工事を急ピッチで進めてください。完了は完全に刷新されUXが向上、既存のイメージが読めないバグなどを修正した状態で、快適にブラウザ(PC/スマホ両方対応)",
+      "action": "portal-refresh-production-main-a2a60f4",
+      "artifact_sha256": "403bf36e13d0033cb74db35a7f35cb6dce0aed2af0484e3ff985ae032443f4f9",
+      "status": "approved",
+      "scope": "Portal home/details/info/assets only;preserve all4game HTMLs and current MineRush version; no remote delete"
+    },
+    {
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "quote": "完了は完全に刷新されUXが向上、既存のイメージが読めないバグなどを修正した状態",
+      "action": "portal-refresh-production-main-1b37307",
+      "artifact_sha256": "36a489c0032b6052bdf4edd36a5803690a79d53e6b6d7054b2bef05281eb0bfc",
+      "status": "approved"
     }
   ],
   "external": {
@@ -12192,6 +12611,41 @@
           "http": "all4files+5protectedURLs matched",
           "browser": "open/F/reload/catalog return passed"
         }
+      }
+    },
+    "portal-refresh-main-a2a60f4-20261022": {
+      "id": "portal-refresh-main-a2a60f4-20261022",
+      "action": "portal-refresh-production-main-a2a60f4",
+      "artifact_sha256": "403bf36e13d0033cb74db35a7f35cb6dce0aed2af0484e3ff985ae032443f4f9",
+      "run_id": "manual-portal-refresh-20261022-publication",
+      "fence": 80,
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "ci_run": 39699616537,
+      "commit": "a2a60f454f265c06ce64a3e3b90d27bc9755f70e",
+      "status": "failed",
+      "reconciliation": {
+        "id": "portal-refresh-main-a2a60f4-20261022",
+        "status": "failed",
+        "source": "github:run:39699825957",
+        "evidence": "All35 FTPS writes completed, HTTP34/35 matched, icons/icon.svg404, protected5 HTTP bytes unchanged. artifacts/portal-refresh-20261022/first-http.json. Home is already new; no blind replay."
+      }
+    },
+    "portal-refresh-main-1b37307-20261022": {
+      "run_id": "manual-portal-refresh-20261022-publication",
+      "fence": 80,
+      "id": "portal-refresh-main-1b37307-20261022",
+      "action": "portal-refresh-production-main-1b37307",
+      "artifact_sha256": "36a489c0032b6052bdf4edd36a5803690a79d53e6b6d7054b2bef05281eb0bfc",
+      "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+      "commit": "1b373077f55bc1a882497ff24b0f922161d4d713",
+      "ci_run_id": 39701017999,
+      "previous_result": "39699825957 reconciled failed: HTTP icon only; all35write/protected5 checked",
+      "status": "confirmed_success",
+      "reconciliation": {
+        "id": "portal-refresh-main-1b37307-20261022",
+        "status": "confirmed_success",
+        "source": "github:run:39701164525",
+        "evidence": "CI39701017999 success;delivery success35HTTPS files;5protected unchanged against original backup;production final desktop/mobile/search/image/browser accepted;business/unity/evidence/portal-refresh-20261022.json"
       }
     }
   },
@@ -28379,7 +28833,710 @@
       },
       "previous": "eacbaa00316eec0ac107ac1a6f5a0f6cca09f7ec793d285997a745e3571cd327",
       "sha256": "d2f9e8d99bcda933b846c30ebb1f0b4aac2a3c84e03c6136e3fe88ffaa73c973"
+    },
+    {
+      "revision": 465,
+      "at": 1792628719.9415524,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-implementation",
+        "fence": 79,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-refresh-20261022.json",
+            "sha256": "09cfb1f56bf87fc0f87c265c94a38fc6a4290980ed07577491df1010c5d35e33"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "bfbd8eecf5eb4f3ceb515eecc916a80f54f3d164554d46f17a61a02888470f82"
+          }
+        ],
+        "checks": [
+          "111business tests passed;7additive publication/recovery cases",
+          "PC1440/mobile320/390 no overflow;catalog4 excludespaused",
+          "real NetworkJPEG block/reload fallback then unblock/reload recovery",
+          "all4public reference JPEGs independently confirmed404 before publication",
+          "PR33 created; exact-head CI39699386743 running; no production writes yet"
+        ],
+        "next_step": "Complete PR33 CI, guarded merge, exact-main CI and protected portal publication; verify actual root/images and browser before complete",
+        "passed": false
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "d2f9e8d99bcda933b846c30ebb1f0b4aac2a3c84e03c6136e3fe88ffaa73c973",
+      "sha256": "6c1882c9c1fcc86fbded851e6098692dd12be4eeea8ca87e4ac48e88699cb8b9"
+    },
+    {
+      "revision": 466,
+      "at": 1792628821.5002806,
+      "action": "yield",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-implementation",
+        "fence": 79,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-refresh-20261022.json",
+            "sha256": "09cfb1f56bf87fc0f87c265c94a38fc6a4290980ed07577491df1010c5d35e33"
+          }
+        ],
+        "checks": [
+          "PR33 latest-head Linux51s/Windows58s CI passed; guarded merge a2a60f4 confirmed",
+          "implementation complete; package44files9pages verified;111business tests passed",
+          "main exact-head CI39699616537 in progress; no deployment dispatched yet",
+          "save implementation stage before publication; immediately continue same WIP under new bounded lease"
+        ],
+        "next_step": "Continue same urgent portal task in publication stage; exact-main package, protected additive upload and live browser acceptance remain",
+        "passed": false
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "6c1882c9c1fcc86fbded851e6098692dd12be4eeea8ca87e4ac48e88699cb8b9",
+      "sha256": "8dbef251dc759729fb76e3db7defb2226335d739bf7528ec8143064ac8a4bd66"
+    },
+    {
+      "revision": 467,
+      "at": 1792628821.5675461,
+      "action": "start",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh;continuation-of-manual-portal-refresh-20261022-implementation"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "8dbef251dc759729fb76e3db7defb2226335d739bf7528ec8143064ac8a4bd66",
+      "sha256": "35127778a69954cf3a5d39436ce464127a10d820e24a101134a53c0cca6e7edc"
+    },
+    {
+      "revision": 468,
+      "at": 1792628821.6339326,
+      "action": "claim",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "task_id": "T-portal-refresh-20261022",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "task_id": "T-portal-refresh-20261022",
+        "fence": 80,
+        "expires_at": 1792630621.6339326
+      },
+      "previous": "35127778a69954cf3a5d39436ce464127a10d820e24a101134a53c0cca6e7edc",
+      "sha256": "e8ef752a938e6528438c63c5a0a6c452331ac832778f502b29dac87070aab8b6"
+    },
+    {
+      "revision": 469,
+      "at": 1792628867.116227,
+      "action": "approval",
+      "data": {
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "quote": "見てて楽しいホーム画面を構築、改良工事の中で切り捨てられたアプリはポータルから消していいですだからこそ、改良工事を急ピッチで進めてください。完了は完全に刷新されUXが向上、既存のイメージが読めないバグなどを修正した状態で、快適にブラウザ(PC/スマホ両方対応)",
+        "action": "portal-refresh-production-main-a2a60f4",
+        "artifact_sha256": "403bf36e13d0033cb74db35a7f35cb6dce0aed2af0484e3ff985ae032443f4f9",
+        "status": "approved",
+        "scope": "Portal home/details/info/assets only;preserve all4game HTMLs and current MineRush version; no remote delete"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "e8ef752a938e6528438c63c5a0a6c452331ac832778f502b29dac87070aab8b6",
+      "sha256": "0759a5688dd8d197a2b1743098219770b0126ffc652e1926bc980b99db0fcf5e"
+    },
+    {
+      "revision": 470,
+      "at": 1792628867.1818116,
+      "action": "prepare-external",
+      "data": {
+        "id": "portal-refresh-main-a2a60f4-20261022",
+        "action": "portal-refresh-production-main-a2a60f4",
+        "artifact_sha256": "403bf36e13d0033cb74db35a7f35cb6dce0aed2af0484e3ff985ae032443f4f9",
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "fence": 80,
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "ci_run": 39699616537,
+        "commit": "a2a60f454f265c06ce64a3e3b90d27bc9755f70e"
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "0759a5688dd8d197a2b1743098219770b0126ffc652e1926bc980b99db0fcf5e",
+      "sha256": "806c30f76597d3e3f7eff157d51e73103f3b0b3c28891c91c41b0c86446c8ba0"
+    },
+    {
+      "revision": 471,
+      "at": 1792628984.7204068,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "fence": 80,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-refresh-20261022.json",
+            "sha256": "09cfb1f56bf87fc0f87c265c94a38fc6a4290980ed07577491df1010c5d35e33"
+          }
+        ],
+        "checks": [
+          "main exact-head CI39699616537 success",
+          "package44files9pages verified;archive SHA matches;35portal targets exclude gameHTML and worker;4JPEGs included",
+          "publication39699825957 dispatched after recorded artifact-specific authorization;do not retry while unknown"
+        ],
+        "next_step": "Wait for publication result then verify root/35files,protected games,desktop/mobile/browser images and controls",
+        "passed": false
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "806c30f76597d3e3f7eff157d51e73103f3b0b3c28891c91c41b0c86446c8ba0",
+      "sha256": "375461a95b5b7b6aa50ddc271246f1949c6bcb743a19088f542e6bb9209dcc13"
+    },
+    {
+      "revision": 472,
+      "at": 1792629483.8821447,
+      "action": "reconcile-external",
+      "data": {
+        "id": "portal-refresh-main-a2a60f4-20261022",
+        "status": "failed",
+        "source": "github:run:39699825957",
+        "evidence": "All35 FTPS writes completed, HTTP34/35 matched, icons/icon.svg404, protected5 HTTP bytes unchanged. artifacts/portal-refresh-20261022/first-http.json. Home is already new; no blind replay."
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "375461a95b5b7b6aa50ddc271246f1949c6bcb743a19088f542e6bb9209dcc13",
+      "sha256": "ada8d0c6fdea55ed909fa68f9939629961018d3134d04e9b65a9824c4c576da7"
+    },
+    {
+      "revision": 473,
+      "at": 1792629669.7736015,
+      "action": "approval",
+      "data": {
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "quote": "完了は完全に刷新されUXが向上、既存のイメージが読めないバグなどを修正した状態",
+        "action": "portal-refresh-production-main-1b37307",
+        "artifact_sha256": "36a489c0032b6052bdf4edd36a5803690a79d53e6b6d7054b2bef05281eb0bfc",
+        "status": "approved"
+      },
+      "result": {
+        "recorded": "approval"
+      },
+      "previous": "ada8d0c6fdea55ed909fa68f9939629961018d3134d04e9b65a9824c4c576da7",
+      "sha256": "dccaf12b3e273d4bd76288d28fdb86aae77d3506724be20aa481252754b82656"
+    },
+    {
+      "revision": 474,
+      "at": 1792629669.8393118,
+      "action": "prepare-external",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "fence": 80,
+        "id": "portal-refresh-main-1b37307-20261022",
+        "action": "portal-refresh-production-main-1b37307",
+        "artifact_sha256": "36a489c0032b6052bdf4edd36a5803690a79d53e6b6d7054b2bef05281eb0bfc",
+        "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+        "commit": "1b373077f55bc1a882497ff24b0f922161d4d713",
+        "ci_run_id": 39701017999,
+        "previous_result": "39699825957 reconciled failed: HTTP icon only; all35write/protected5 checked"
+      },
+      "result": {
+        "recorded": "prepare-external"
+      },
+      "previous": "dccaf12b3e273d4bd76288d28fdb86aae77d3506724be20aa481252754b82656",
+      "sha256": "979fc8d4464d5bfa38ceac9e58319728c64f7b5bfccfb2da0db3fc32bc2262b1"
+    },
+    {
+      "revision": 475,
+      "at": 1792630073.6594658,
+      "action": "reconcile-external",
+      "data": {
+        "id": "portal-refresh-main-1b37307-20261022",
+        "status": "confirmed_success",
+        "source": "github:run:39701164525",
+        "evidence": "CI39701017999 success;delivery success35HTTPS files;5protected unchanged against original backup;production final desktop/mobile/search/image/browser accepted;business/unity/evidence/portal-refresh-20261022.json"
+      },
+      "result": {
+        "recorded": "reconcile-external"
+      },
+      "previous": "979fc8d4464d5bfa38ceac9e58319728c64f7b5bfccfb2da0db3fc32bc2262b1",
+      "sha256": "70c86d116b63b477abbe0fd7e963ea21d0f7fab1d94b088e9219b1bd62205f1f"
+    },
+    {
+      "revision": 476,
+      "at": 1792630073.7312236,
+      "action": "complete",
+      "data": {
+        "run_id": "manual-portal-refresh-20261022-publication",
+        "fence": 80,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-refresh-20261022.json",
+            "sha256": "1ced8898dad4a44864f77aa0f5959bf49a787819273c7df06b138fab5c242b1b"
+          }
+        ],
+        "checks": [
+          "111 business tests and exact-main CI Linux/Windows success",
+          "35portalHTTPS targets match;5protected games unchanged;all4previous404JPEGs load",
+          "production 1440/390/320;search3/detail/back;filter1/zero/reset;game launch/cell/home;image dialog/Escape;Network failure/recovery",
+          "brandHTTP200;320pxsearch16px,brand44px;oldportal retained;actual touch/Safari unverified"
+        ],
+        "next_step": "Resume existing next work from canonical ledger;portal urgent acceptance complete;do not redo publication",
+        "passed": true
+      },
+      "result": {
+        "recorded": "complete"
+      },
+      "previous": "70c86d116b63b477abbe0fd7e963ea21d0f7fab1d94b088e9219b1bd62205f1f",
+      "sha256": "80e3f422704f4bc57ddd8a23bef5bd66c66610f21cb4d6084611e3e6c7886cbd"
+    },
+    {
+      "revision": 477,
+      "at": 1792642018.7955494,
+      "action": "slot",
+      "data": {
+        "run_id": "unity-20261022T1300-portal-context",
+        "scheduled_at": "2026-10-22T13:00:00+09:00"
+      },
+      "result": {
+        "recorded": "slot"
+      },
+      "previous": "80e3f422704f4bc57ddd8a23bef5bd66c66610f21cb4d6084611e3e6c7886cbd",
+      "sha256": "f3c3ccaf3b808fd1933f8172591053b220dc83f523858cc1661618e630873022"
+    },
+    {
+      "revision": 478,
+      "at": 1792642018.9298878,
+      "action": "task",
+      "data": {
+        "id": "T-portal-context-navigation-20261022",
+        "objective": "案内ページ経由でも作品検索と公開フィルターを保持する",
+        "acceptance": [
+          "本番で消失を再現し内部リンクのみで条件を引き継ぐ",
+          "SSR回帰・Web規約・ビルドと実ブラウザの案内往復/再読み込みを確認",
+          "次の日次CI統合後に本番受入れする"
+        ],
+        "outputs": [
+          "web/src/portal/App.tsx",
+          "scripts/check-portal-navigation.mjs",
+          "business/unity/evidence/portal-context-navigation-20261022.json"
+        ],
+        "checks": [
+          "portal-navigation",
+          "web-build",
+          "browser-roundtrip"
+        ],
+        "next_step": "検索条件の失われる案内リンクを修正しローカル受入れ後、次の日次統合に含める",
+        "decision_id": "D-portal-refresh-20261022",
+        "experiment_id": "E-unity-portal",
+        "pdca": "do",
+        "hypothesis": "案内ページで検索状態を保持すれば一覧に戻った際の再入力を避けられる。利用改善は未観測。",
+        "source": "user:automation:unity:2026-10-22T13:00:00+09:00",
+        "priority": 90
+      },
+      "result": {
+        "recorded": "task"
+      },
+      "previous": "f3c3ccaf3b808fd1933f8172591053b220dc83f523858cc1661618e630873022",
+      "sha256": "98fed5631277f4a6e529b2a85b23892899299b644cb1b42cd84169546f91d974"
+    },
+    {
+      "revision": 479,
+      "at": 1792642018.9949622,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T1300-portal-context",
+        "task_id": "T-portal-context-navigation-20261022"
+      },
+      "result": {
+        "run_id": "unity-20261022T1300-portal-context",
+        "task_id": "T-portal-context-navigation-20261022",
+        "fence": 81,
+        "expires_at": 1792643818.9949622
+      },
+      "previous": "98fed5631277f4a6e529b2a85b23892899299b644cb1b42cd84169546f91d974",
+      "sha256": "37c5620d93d78619ca99ffacbfaae104ea868af8152506f6befac62681a38542"
+    },
+    {
+      "revision": 480,
+      "at": 1792642423.7701006,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T1300-portal-context",
+        "fence": 81,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-context-navigation-20261022.json",
+            "sha256": "a1a595ad0d7d0984d1713d303dace9a9de80293a329dd2eca30322f8f3fdc387"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "45a652494f1e65c2cd114b5e08c6ba7b7a958ddf272c48d4914f8f53be5a477d"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "43c9c8b1bd4479573def4b793fb560081dac6ca5b7461e26d527cb578c0d6941"
+          }
+        ],
+        "checks": [
+          "Windows TypeScript/ESLint/build9SSG43checksums and repository contract passed",
+          "Windows/Linux111business tests each;LinuxNode22.23.3 portalSSR/releasewrapper/18package rejections passed",
+          "Desktop about->privacy->contact->reload->catalog preserved query/released1 and focuses works",
+          "320px privacy->contact->catalog preserves query/released1;document305px at inner320;canonical has no query",
+          "ReadonlyGitHub main/CD39701164525 success and seven live baseline URLs match",
+          "Real35filepackage fakeFTP publish16changes home-last,protect5,recover40previouspaths;no realFTP connection",
+          "CurrentAGENTS/workflow/conventions/context/selectedsource read;existing nextdailyMineRush integration retained."
+        ],
+        "next_step": "Finish restored-package browser acceptance;save local candidate for next daily integration without extraPR or productiondispatch."
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "37c5620d93d78619ca99ffacbfaae104ea868af8152506f6befac62681a38542",
+      "sha256": "be4c8bc5c66ff285e4b01b670deed54ecba108fce2b6d54ec9b8f5dc4bad0d92"
+    },
+    {
+      "revision": 481,
+      "at": 1792642687.1144958,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261022T1300-portal-context",
+        "fence": 81,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-context-navigation-20261022.json",
+            "sha256": "d42c742a2aa3e1d1f3422f7da6c1a34a8f84c6755c0aeb931948218c4f94ef20"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "09fc374271ccb9e5bc973a0cbedd940dca186cfe9345849f810da3f0062b9efc"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "741bced4450f18f0f4f5969154ec093d9bf9abc269811259f9c40121f09a52fa"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "43c9c8b1bd4479573def4b793fb560081dac6ca5b7461e26d527cb578c0d6941"
+          }
+        ],
+        "checks": [
+          "Windows TypeScript/ESLint/build9SSG43checksums and repository contract passed",
+          "Windows/Linux111business tests each;LinuxNode22.23.3 portalSSR/releasewrapper/18package rejections passed",
+          "Desktop about->privacy->contact->reload->catalog preserved query/released1 and focuses works",
+          "320px privacy->contact->catalog preserves query/released1;document305px at inner320;canonical has no query",
+          "ReadonlyGitHub main/CD39701164525 success and seven live baseline URLs match",
+          "Real35filepackage fakeFTP publish16changes home-last,protect5,recover40previouspaths;no realFTP connection",
+          "Restored final120d0f2 archive:320px emptyreset Enter then native typing Web1人用/public/about/list preservesqfilter and worksfocus;final screenshot visually inspected",
+          "Final120d0f2 Windows/Linux44files42matching;18package negatives;Python unchanged since111tests each",
+          "Final35file package fakeFTP protects5/restores40/home-last;no liveFTPS connection",
+          "Partialrun continues sequentially into existing MineRush integration reconciliation;not end of scheduled session."
+        ],
+        "next_step": "次の日次統合でポータル検索保持/リセットフォーカスをexact-headCI後に追加型配信し本番往復を確認する。本日は再配信しない。"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "be4c8bc5c66ff285e4b01b670deed54ecba108fce2b6d54ec9b8f5dc4bad0d92",
+      "sha256": "15aafcf17026137871b5781579854050d259581ec861855278eddd2c25dbe246"
+    },
+    {
+      "revision": 482,
+      "at": 1792642687.1803217,
+      "action": "start",
+      "data": {
+        "run_id": "unity-20261022T1300-main-ci-reconcile",
+        "source": "user:automation:unity:2026-10-22T13:00:00+09:00:child-of-unity-20261022T1300-portal-context"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "15aafcf17026137871b5781579854050d259581ec861855278eddd2c25dbe246",
+      "sha256": "b50dd24cd11e8a5957ad7af1144ec8dd7c91a8de490e858d65f1c347f52ad577"
+    },
+    {
+      "revision": 483,
+      "at": 1792642687.2457721,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T1300-main-ci-reconcile",
+        "task_id": "T-minerush-progress-daily-integration-20261023"
+      },
+      "result": {
+        "run_id": "unity-20261022T1300-main-ci-reconcile",
+        "task_id": "T-minerush-progress-daily-integration-20261023",
+        "fence": 82,
+        "expires_at": 1792644487.2457721
+      },
+      "previous": "b50dd24cd11e8a5957ad7af1144ec8dd7c91a8de490e858d65f1c347f52ad577",
+      "sha256": "b79a02abfcc1d50d7f33fca2c75fb6cd9af844b5c33c65dfef6cf6f22b265082"
+    },
+    {
+      "revision": 484,
+      "at": 1792643027.6640956,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T1300-main-ci-reconcile",
+        "fence": 82,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/minerush-progress-main-ci-reconciled-20261022.json",
+            "sha256": "b9594bee2547d2b7c834228cfd36db4df909f6f4b1a932cf31879e3c484f17a1"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "da40dfa61e0733bbdd2e6dbebc07a81b9ab3d032779446ae70211de930e1df5e"
+          }
+        ],
+        "checks": [
+          "Currentcontext selectedWIP and actualmainCI/pr35/scopedartifact read;old source d4a is ancestor ofmain1b",
+          "ExactmainCI39701017999 LinuxWindows success;4file manifest42b33f verified locally;notnew deploy",
+          "FakeFTP current35portal+5protected+2oldscopedassets:42paths preserved/recovered;preflightbaseline4;only scoped mutations",
+          "1280:0/30/70/losssame70/reset0/reload81;390:16progress16opened;homegamereversepassed",
+          "Original476events and owner/AGENTS/policy/legacyledger/workspace/release unchanged;no subagents/newPR/push/dispatch"
+        ],
+        "next_step": "次の日次配信でmainの現行SHA/成功CIを照合し、この4ファイル版の本番preflight・限定配信・HTTP/進捗/再読み込み/ホーム往復を受入れる。既存統合の重複PRは不要。ポータル検索保持修正は次の日次PRへ併せる。"
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "b79a02abfcc1d50d7f33fca2c75fb6cd9af844b5c33c65dfef6cf6f22b265082",
+      "sha256": "b65a70f8418f015e1a9889b35cc4b2446e5d085673aaca1a816d94507e38567a"
+    },
+    {
+      "revision": 485,
+      "at": 1792643422.8278646,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261022T1300-main-ci-reconcile",
+        "fence": 82,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "889c792932a7576b25c30101ea165ff50e2ec708cf5ec954e31e3a9d0ec6737f"
+          },
+          {
+            "path": "business/unity/evidence/portal-context-navigation-20261022.json",
+            "sha256": "43a199e725e98cc8275ad2a15aad6743d119c83d97b03419dbdecd3ea3e60482"
+          },
+          {
+            "path": "business/unity/evidence/minerush-progress-main-ci-reconciled-20261022.json",
+            "sha256": "0276cbdc3acdfdf023acd239dacb0b602760ade06c1d6b76fa0286d48d37a73b"
+          },
+          {
+            "path": "web/src/portal/App.tsx",
+            "sha256": "741bced4450f18f0f4f5969154ec093d9bf9abc269811259f9c40121f09a52fa"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "43c9c8b1bd4479573def4b793fb560081dac6ca5b7461e26d527cb578c0d6941"
+          }
+        ],
+        "checks": [
+          "Portal finalsource120d0f2:Windows/Linux44files42contentidentical,18package negatives each;111business tests bothOS withPythonunchanged afterward",
+          "Actual restored320px resetEnter->native search/public/about/list qfilter preserved;sourceSSR oldfail/fixedpass;JPEG signatures/dimensions corrected without image edits",
+          "Main1b CI39701017999 LinuxWindows success;4file42b33f identical preflightcandidate;runtime JS/CSS exactly match morning7925 acceptedcandidate",
+          "1280game30->70/lossremains70/reset/reload81;39016progress16DOMopened;rootreturn and fakeFTP42path recovery passed",
+          "Read-onlyFTPS39722220503 SUCCESS,main1b matchesCI;4baselinehashes+root/newportal/game5f9 matched;realartifact offline recovery5paths;550asset state remains ambiguous until MLSD",
+          "Original476events preserved;owner/AGENTS/policy/oldledger/handoff/release/metrics untouched;no subagents/newPR/push/deploy;only read-only workflow dispatched once",
+          "Taskservers4278-4281 stopped,tabsclosed,viewportreset;no physicaltouch/Safari/human/offPC/realrollback claims",
+          "work_session={\"started_at\": \"2026-10-22T13:05:25+09:00\", \"start_basis\": \"first explicit UTC clock; startup reading began earlier\", \"ended_at\": \"2026-10-22T13:30:22.700724+09:00\", \"elapsed_seconds\": 1497.701, \"exit_reason\": \"Completed two reproduced portal fixes, final cross-platform retained package and browser acceptance, exact-main CI/runtime reconciliation, actual read-only FTPS preflight and recovery rehearsal; save unfinished production gates.\", \"artificial_waits\": false}"
+        ],
+        "next_step": "次の日次配信でmain SHA/成功CIと本番変化を再照合し、確認済み4ファイル版の限定配信・HTTP/進捗/再読み込み/ホーム往復を受入れる。39722220503は成功済み読取専用検査で再送不要。統合PRのやり直しは不要。ポータル検索保持修正は次の日次PRへ併せる。"
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "b65a70f8418f015e1a9889b35cc4b2446e5d085673aaca1a816d94507e38567a",
+      "sha256": "fabbd33a0620476cd4242a1e570cf6bbd464d2926fc35e2515be31c5d2b71c6e"
+    },
+    {
+      "revision": 486,
+      "at": 1792663069.6216211,
+      "action": "start",
+      "data": {
+        "source": "user:automation:unity:2026-10-22T18:56:00+09:00",
+        "started_at": "2026-10-22T18:56:00+09:00",
+        "run_id": "unity-20261022T1856-navigation-acceptance"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "fabbd33a0620476cd4242a1e570cf6bbd464d2926fc35e2515be31c5d2b71c6e",
+      "sha256": "84f48394c2abc6bc29ca435c51eb608f46d669ac8e8deae8d9aa0bc36bfed854"
+    },
+    {
+      "revision": 487,
+      "at": 1792663069.8107946,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261022T1856-navigation-acceptance",
+        "ttl_seconds": 1800,
+        "task_id": "T-portal-context-navigation-20261022"
+      },
+      "result": {
+        "run_id": "unity-20261022T1856-navigation-acceptance",
+        "task_id": "T-portal-context-navigation-20261022",
+        "fence": 83,
+        "expires_at": 1792664869.8107946
+      },
+      "previous": "84f48394c2abc6bc29ca435c51eb608f46d669ac8e8deae8d9aa0bc36bfed854",
+      "sha256": "690af76bc7ab45f4e007731b1a4981aae35ff84a1ce5b6b2c3cc560c2b34253a"
+    },
+    {
+      "revision": 488,
+      "at": 1792664546.466833,
+      "action": "checkpoint",
+      "data": {
+        "run_id": "unity-20261022T1856-navigation-acceptance",
+        "task_id": "T-portal-context-navigation-20261022",
+        "fence": 83,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-history-focus-20261022.json",
+            "sha256": "065a2c8f78be4bdd6c2d8675543d3b8de2c2e4732218585d68297d881fdcb96c"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "c881d214e8a0e89d635d65fa6cdcc466d9927b6109849cf8bb03981241d68328"
+          },
+          {
+            "path": "docs/portal-refresh-20261022.md",
+            "sha256": "c169af209254b52069329f4dc90162aaff48c685d6e5529a7b134d03cdc19a84"
+          },
+          {
+            "path": "web/src/App.tsx",
+            "sha256": "562c4ccf59867e7e0bfa844c578938d592ded2c0fe0552c11c1060164383729c"
+          },
+          {
+            "path": "web/src/portal/history-focus.ts",
+            "sha256": "6e984b0c914ed679b85b00b1e2642097d0d09f5f4b7da829bc9d161f573df919"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "eedd98d929c13eaad8061680264914614e0273ca97bbf71890500f25779196ee"
+          },
+          {
+            "path": "scripts/check-portal-history.mjs",
+            "sha256": "2d959d34899336254b883b11786d7b6327debd493c8c405434bd69e426c95d25"
+          }
+        ],
+        "checks": [
+          "Windows check/TypeScript/ESLint/build/9SSG43checksums",
+          "Windows/Linux44files;42contentfiles equal;18package rejections each",
+          "Actual router/history boundaries passed on Windows/Linux;native verified game navigation unchanged",
+          "Windows/Linux111business tests each;ledger projection and original events validated",
+          "Final restored package1280/320:exact source link,Tab order,game full navigation,reload,query/filter,footer Back/Forward,hash and skip",
+          "Public9HTTPfiles match retained portal/game;read-only only",
+          "FakeFTP35targets16writes home-last;protect5;recover42baseline byte equal",
+          "Local production5f9game overlay39opened,reload81unopened,Back retains query/filter and play focus",
+          "Retained oldportal baseline reconstruction4styledcards;oldMineRush81cells starts",
+          "Scoped candidate runtime JS/CSS identical to main CI39701017999 candidate;no new scoped delivery",
+          "Read selected current instructions and existing task via context.py;WIP1,no subagents,no future slot;daily local-save policy retained",
+          "Original485events/owner/AGENTS/policy/legacyledger/handoff/release/metrics preserved;5servers and5tabs closed,viewport reset",
+          "work_session={\"started_at\": \"2026-10-22T18:57:02.727991+09:00\", \"start_basis\": \"first explicit clock after initial startup reading;work began earlier\", \"ended_at\": \"2026-10-22T19:22:26.304087+09:00\", \"elapsed_seconds\": 1523.576, \"exit_reason\": \"Completed reproduced router/native history fixes, cross-platform build and actual-router regression, retained-package browser acceptance and additive publish/recovery rehearsal;save pending daily publication gates.\", \"artificial_waits\": false}"
+        ],
+        "next_step": "Next daily PR combines13slot portal context changes and history focus/router regression;exact-head CI,guarded merge,main artifact,additive portal publication and browser acceptance. Existing main MineRush progress source is already integrated;obtain a fresh scoped preflight after any portal change because39722220503 is bound to the old root. Never redispatch the accepted CD."
+      },
+      "result": {
+        "recorded": "checkpoint"
+      },
+      "previous": "690af76bc7ab45f4e007731b1a4981aae35ff84a1ce5b6b2c3cc560c2b34253a",
+      "sha256": "276ada9e61e6dda128c0be843dddfaa431797892c02dbe1a82276a5109b84d07"
+    },
+    {
+      "revision": 489,
+      "at": 1792664546.6596496,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261022T1856-navigation-acceptance",
+        "task_id": "T-portal-context-navigation-20261022",
+        "fence": 83,
+        "artifacts": [
+          {
+            "path": "business/unity/evidence/portal-history-focus-20261022.json",
+            "sha256": "065a2c8f78be4bdd6c2d8675543d3b8de2c2e4732218585d68297d881fdcb96c"
+          },
+          {
+            "path": "STATE.md",
+            "sha256": "c881d214e8a0e89d635d65fa6cdcc466d9927b6109849cf8bb03981241d68328"
+          },
+          {
+            "path": "docs/portal-refresh-20261022.md",
+            "sha256": "c169af209254b52069329f4dc90162aaff48c685d6e5529a7b134d03cdc19a84"
+          },
+          {
+            "path": "web/src/App.tsx",
+            "sha256": "562c4ccf59867e7e0bfa844c578938d592ded2c0fe0552c11c1060164383729c"
+          },
+          {
+            "path": "web/src/portal/history-focus.ts",
+            "sha256": "6e984b0c914ed679b85b00b1e2642097d0d09f5f4b7da829bc9d161f573df919"
+          },
+          {
+            "path": "scripts/check-portal-navigation.mjs",
+            "sha256": "eedd98d929c13eaad8061680264914614e0273ca97bbf71890500f25779196ee"
+          },
+          {
+            "path": "scripts/check-portal-history.mjs",
+            "sha256": "2d959d34899336254b883b11786d7b6327debd493c8c405434bd69e426c95d25"
+          }
+        ],
+        "checks": [
+          "Windows check/TypeScript/ESLint/build/9SSG43checksums",
+          "Windows/Linux44files;42contentfiles equal;18package rejections each",
+          "Actual router/history boundaries passed on Windows/Linux;native verified game navigation unchanged",
+          "Windows/Linux111business tests each;ledger projection and original events validated",
+          "Final restored package1280/320:exact source link,Tab order,game full navigation,reload,query/filter,footer Back/Forward,hash and skip",
+          "Public9HTTPfiles match retained portal/game;read-only only",
+          "FakeFTP35targets16writes home-last;protect5;recover42baseline byte equal",
+          "Local production5f9game overlay39opened,reload81unopened,Back retains query/filter and play focus",
+          "Retained oldportal baseline reconstruction4styledcards;oldMineRush81cells starts",
+          "Scoped candidate runtime JS/CSS identical to main CI39701017999 candidate;no new scoped delivery",
+          "Read selected current instructions and existing task via context.py;WIP1,no subagents,no future slot;daily local-save policy retained",
+          "Original485events/owner/AGENTS/policy/legacyledger/handoff/release/metrics preserved;5servers and5tabs closed,viewport reset",
+          "work_session={\"started_at\": \"2026-10-22T18:57:02.727991+09:00\", \"start_basis\": \"first explicit clock after initial startup reading;work began earlier\", \"ended_at\": \"2026-10-22T19:22:26.304087+09:00\", \"elapsed_seconds\": 1523.576, \"exit_reason\": \"Completed reproduced router/native history fixes, cross-platform build and actual-router regression, retained-package browser acceptance and additive publish/recovery rehearsal;save pending daily publication gates.\", \"artificial_waits\": false}"
+        ],
+        "next_step": "Next daily PR combines13slot portal context changes and history focus/router regression;exact-head CI,guarded merge,main artifact,additive portal publication and browser acceptance. Existing main MineRush progress source is already integrated;obtain a fresh scoped preflight after any portal change because39722220503 is bound to the old root. Never redispatch the accepted CD."
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "276ada9e61e6dda128c0be843dddfaa431797892c02dbe1a82276a5109b84d07",
+      "sha256": "e9835103674ab9610f171c3c2b764dcc4088f11b7f4b4cac963bfb2c0b7e4194"
+    },
+    {
+      "revision": 490,
+      "at": 1792684781.8680038,
+      "action": "start",
+      "data": {
+        "source": "user:automation:unity:2026-10-23:early-start-daily-publication",
+        "run_id": "unity-20261023T0100-daily"
+      },
+      "result": {
+        "recorded": "start"
+      },
+      "previous": "e9835103674ab9610f171c3c2b764dcc4088f11b7f4b4cac963bfb2c0b7e4194",
+      "sha256": "fb14f0e502ce62f3220482c711967016a8712da2a9a633d5623ae686397fd68c"
+    },
+    {
+      "revision": 491,
+      "at": 1792684782.0690997,
+      "action": "claim",
+      "data": {
+        "run_id": "unity-20261023T0100-daily",
+        "task_id": "T-portal-context-navigation-20261022",
+        "ttl_seconds": 1800
+      },
+      "result": {
+        "run_id": "unity-20261023T0100-daily",
+        "task_id": "T-portal-context-navigation-20261022",
+        "fence": 84,
+        "expires_at": 1792686582.0690997
+      },
+      "previous": "fb14f0e502ce62f3220482c711967016a8712da2a9a633d5623ae686397fd68c",
+      "sha256": "6f72c142f786f257b3d3472294b03099bfbfad514ba361a4097fadb73f884c46"
     }
   ],
-  "projection_sha256": "ff22eb1b9b1a8085a995e212a38b18e6395d1e3ae83846406e1f74e13c6c97d6"
+  "projection_sha256": "6015e6c6ac2668f6c14f87a02c1401cb665c5ebdf3420b04a842fd584ca84e23"
 }

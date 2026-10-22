@@ -11,6 +11,7 @@ const result = await build({
       import { renderToStaticMarkup } from 'react-dom/server';
       import PortalApp from './src/portal/App';
       import { readCatalogState } from './src/portal/navigation';
+      export { initialPortalReturnFocus, readPortalReturnFocus, rememberPortalReturnFocus, restorePortalReturnFocus } from './src/portal/history-focus';
       export function render(pathname, search) {
         return renderToStaticMarkup(React.createElement(PortalApp, { pathname, catalogState: readCatalogState(search) }));
       }`,
@@ -116,3 +117,86 @@ assert(render('/', '').includes('すべての語を含む作品を探せます')
 const combinedDetail = render('/works/iceslide/', '?q=Web+1人用');
 assert(combinedDetail.includes('href="/?q=Web+1%E4%BA%BA%E7%94%A8#works"'));
 console.log('Combined search passed: AND, word order, full-width/repeated whitespace, case, negative terms, empty, filter and return URL.');
+
+// Informational detours must retain the same catalog context as work details.
+for (const pathname of ['/', '/about/', '/contact/', '/privacy-policy/', '/works/minerush/', '/games/ice-courier/']) {
+  const html = render(pathname, '?q=Web+1人用&filter=released');
+  for (const destination of ['/', '/about/', '/contact/', '/privacy-policy/']) {
+    const links = [...html.matchAll(/href="([^"]+)"/g)].map(match => match[1]);
+    const internal = links.filter(href => href.split(/[?#]/)[0] === destination);
+    assert(internal.length > 0, `${pathname}: missing ${destination}`);
+    assert(internal.every(href => href.includes('?q=Web+1%E4%BA%BA%E7%94%A8&amp;filter=released')),
+      `${pathname}: ${destination} loses catalog context: ${internal.join(', ')}`);
+  }
+  assert(html.includes('href="/games/minerush/"'), 'Live game entry must retain its verified URL');
+  assert(html.includes('href="mailto:contact@kihamda.net"') === (pathname === '/contact/'));
+}
+for (const [search, expected] of [
+  ['', ''],
+  ['?filter=released', '?filter=released'],
+  ['?q=%3C%26%2B%22', '?q=%3C%26%2B%22'],
+  ['?q=Web&filter=unknown', '?q=Web'],
+  ['?q=%E3%81%82%E3%81%84%E3%81%86+%26+Web&filter=released', '?q=%E3%81%82%E3%81%84%E3%81%86+%26+Web&amp;filter=released'],
+]) {
+  const html = render('/privacy-policy/', search);
+  assert(html.includes(`href="/contact/${expected}"`), search);
+}
+console.log('Informational navigation passed: every portal destination retains query/filter; verified live and mail URLs remain exact.');
+
+// History entries can outlive a render or contain unrelated state. Restore the exact
+// duplicate link, not an interpolated selector or the first link to the same work.
+const { initialPortalReturnFocus, readPortalReturnFocus, rememberPortalReturnFocus, restorePortalReturnFocus } = module.exports;
+for (const state of [null, undefined, 'old', 42, {}, { kihamdaPortalReturnFocus: null },
+  { kihamdaPortalReturnFocus: { href: '', index: 0 } },
+  { kihamdaPortalReturnFocus: { href: '/', index: -1 } },
+  { kihamdaPortalReturnFocus: { href: '/', index: 0.5 } },
+  { kihamdaPortalReturnFocus: { href: '/', index: Number.MAX_VALUE } },
+  { kihamdaPortalReturnFocus: { href: '/', index: '0' } }]) {
+  assert.equal(readPortalReturnFocus(state), null);
+}
+let links = [], replacements = 0;
+const oldWindow = globalThis.window, oldDocument = globalThis.document;
+try {
+  const href = '/works/iceslide/?q=%22%5D%23&filter=released';
+  const makeLink = (url, visible = true) => ({
+    getAttribute(name) { assert.equal(name, 'href'); return url; },
+    getClientRects() { return visible ? [{}] : []; },
+    focus(options) { assert.deepEqual(options, { preventScroll: true }); document.activeElement = this; },
+  });
+  const first = makeLink(href), title = makeLink(href), guide = makeLink(href);
+  const other = makeLink('/about/'), hidden = makeLink('/hidden/', false);
+  links = [other, first, title, guide, hidden];
+  globalThis.document = { querySelectorAll(selector) { assert.equal(selector, 'a[href]'); return links; }, activeElement: null };
+  globalThis.window = { history: {
+    state: { otherOwner: { retained: true } },
+    replaceState(state, title, url) { assert.equal(title, ''); assert.equal(url, undefined); this.state = state; replacements++; },
+  } };
+  rememberPortalReturnFocus(guide);
+  assert.equal(replacements, 1);
+  assert.deepEqual(window.history.state.otherOwner, { retained: true });
+  const saved = readPortalReturnFocus(window.history.state);
+  assert.deepEqual(saved, { href, index: 2 });
+  for (const navigation of [[], [{ type: 'navigate' }], [{ type: 'reload' }], [{}]]) {
+    window.performance = { getEntriesByType(type) { assert.equal(type, 'navigation'); return navigation; } };
+    assert.equal(initialPortalReturnFocus(), null);
+  }
+  window.performance = { getEntriesByType() { return [{ type: 'back_forward' }]; } };
+  assert.deepEqual(initialPortalReturnFocus(), saved);
+  assert.equal(restorePortalReturnFocus(saved), true);
+  assert.equal(document.activeElement, guide);
+  // Missing, hidden, stale, or unmounted links must not steal focus.
+  for (const target of [{ href: '/missing/', index: 0 }, { href: '/hidden/', index: 0 }, { href, index: 3 }]) {
+    assert.equal(restorePortalReturnFocus(target), false);
+    assert.equal(document.activeElement, guide);
+  }
+  links = [];
+  assert.equal(restorePortalReturnFocus(saved), false);
+  rememberPortalReturnFocus(guide);
+  assert.equal(replacements, 1);
+} finally {
+  if (oldWindow === undefined) delete globalThis.window; else globalThis.window = oldWindow;
+  if (oldDocument === undefined) delete globalThis.document; else globalThis.document = oldDocument;
+}
+console.log('History focus boundaries passed: malformed state, duplicate link identity, escaped URL, unrelated state, missing/hidden/stale targets, no focus scroll.');
+
+await import('./check-portal-history.mjs');

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "local-acceptance-passed-ci-and-production-pending",
+  "status": "production-delivered-and-browser-accepted",
   "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
   "design": "paper,wooden game boards,embossed boxes,pressed buttons;self-contained CSS illustrations",
   "listedGames": [
@@ -28,24 +28,59 @@
   "checks": {
     "businessTests": 111,
     "repository": "passed",
-    "typeLintBuild": "passed before final text-only polish;final CI pending",
+    "typeLintBuild": "exact-main CI39701017999 passed",
     "navigation": "SSR and browser Web1人用 query3,detail/backURL preserved",
     "mobile": "320/390 no horizontal overflow",
     "desktop": "1440 no horizontal overflow",
     "imageFailure": "real Network blocked JPEG ->illustration+status;unblocked+reload ->image loaded",
     "publisherTests": 7,
-    "recovery": "fakeFTP oldhome restore;thirdparty/tampered backup refused;no production rollback"
+    "recovery": "fakeFTP oldhome restore;thirdparty/tampered backup refused;no production rollback",
+    "productionPrechecks": "all4JPEG loaded;search3/publicfilter1/zeroresult/reset;MineRush launch cell open and home;image dialog Escape/focus;real Network JPEGblock and unblock reload restored",
+    "finalBrowser": "1440px4cards;320pxnooverflow,search16px/brand44px;390pxscreenshot;final search3/detail loaded932px/back query retained"
   },
   "screenshots": {
     "local-desktop.png": "6e8fea2a6e37e286cf85e5b132688187a3d2bc82417f0e4b81d6710c830fcf09",
-    "local-shelf.png": "a77231c8b4195067d17221dcce8cc96518ec533e0258af90cff91c0e70da2b43"
+    "local-shelf.png": "a77231c8b4195067d17221dcce8cc96518ec533e0258af90cff91c0e70da2b43",
+    "production-desktop.png": "35f5f7e2a2b7a4457907fee452d612d45891fd4e532fbf8031745ea9fdc70c7c",
+    "production-mobile.png": "98fc39a63c22fd1d0327ecf063b8f45be3f64017f09664a966820ff44a6e3c84"
   },
   "publicationPlan": "exact-main CI package;assets/images first;home last;no remote delete;protect4gameHTML+MineRush version",
   "unverified": [
-    "GitHub CI for final head",
-    "production portal/images/UX",
     "physical touch",
     "Safari",
-    "human response"
-  ]
+    "human response",
+    "production rollback"
+  ],
+  "sourceCommit": "1b373077f55bc1a882497ff24b0f922161d4d713",
+  "ci": {
+    "run": 39701017999,
+    "status": "success",
+    "platforms": [
+      "ubuntu",
+      "windows"
+    ]
+  },
+  "delivery": {
+    "run": 39701164525,
+    "status": "success",
+    "manifestSha256": "36a489c0032b6052bdf4edd36a5803690a79d53e6b6d7054b2bef05281eb0bfc",
+    "fileCount": 35,
+    "httpsMatched": 35,
+    "protectedUnchanged": 5,
+    "backupArtifact": "portal-delivery-39701164525",
+    "originalPortalBackupArtifact": "portal-delivery-39699825957",
+    "url": "https://game.kihamda.net/",
+    "acceptedAt": "2026-10-22T09:47:53.606970+09:00"
+  },
+  "firstDelivery": {
+    "run": 39699825957,
+    "result": "failed HTTP verification: icons/icon.svg404; all35 FTPS writes completed,other34 HTTPS files and protected5 matched",
+    "fix": "move manifest brand SVG to /brand/icon.svg; preserve original35write journal and old portal backup"
+  },
+  "execution": {
+    "startedAt": 1792627650.8202338,
+    "acceptedAt": 1792630073.6254761,
+    "elapsedSeconds": 2423,
+    "reason": "User urgent request completed through implementation,CI,production and browser acceptance;publication lease renewed once without duplicate task"
+  }
 }
