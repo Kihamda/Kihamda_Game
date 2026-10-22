@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "status": "local-acceptance-passed-ci-and-production-pending",
+  "source": "user:current-thread:2026-10-22:urgent-skeuomorphic-portal-refresh",
+  "design": "paper,wooden game boards,embossed boxes,pressed buttons;self-contained CSS illustrations",
+  "listedGames": [
+    "minerush",
+    "ntiktaktoe",
+    "iceslide",
+    "gravityball"
+  ],
+  "pausedPrototypeHidden": true,
+  "preserveSourcesAndGameUrls": true,
+  "image404Before": {
+    "/media/inspection/minerush-20261018.jpg": {
+      "status": 404
+    },
+    "/media/inspection/iceslide-20261018.jpg": {
+      "status": 404
+    },
+    "/media/inspection/gravityball-20261018.jpg": {
+      "status": 404
+    },
+    "/media/inspection/ntiktaktoe-20261018.jpg": {
+      "status": 404
+    }
+  },
+  "checks": {
+    "businessTests": 111,
+    "repository": "passed",
+    "typeLintBuild": "passed before final text-only polish;final CI pending",
+    "navigation": "SSR and browser Web1人用 query3,detail/backURL preserved",
+    "mobile": "320/390 no horizontal overflow",
+    "desktop": "1440 no horizontal overflow",
+    "imageFailure": "real Network blocked JPEG ->illustration+status;unblocked+reload ->image loaded",
+    "publisherTests": 7,
+    "recovery": "fakeFTP oldhome restore;thirdparty/tampered backup refused;no production rollback"
+  },
+  "screenshots": {
+    "local-desktop.png": "6e8fea2a6e37e286cf85e5b132688187a3d2bc82417f0e4b81d6710c830fcf09",
+    "local-shelf.png": "a77231c8b4195067d17221dcce8cc96518ec533e0258af90cff91c0e70da2b43"
+  },
+  "publicationPlan": "exact-main CI package;assets/images first;home last;no remote delete;protect4gameHTML+MineRush version",
+  "unverified": [
+    "GitHub CI for final head",
+    "production portal/images/UX",
+    "physical touch",
+    "Safari",
+    "human response"
+  ]
+}

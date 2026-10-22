@@ -19,7 +19,7 @@ export default function InspectionPreview({ work, expandable = false }: { work: 
   return <figure className="inspection-preview">
     {failedUrl === preview.url ? <p className="preview-fallback" role="status">実画面を読み込めませんでした。ルールと操作方法は本文で確認できます。</p>
       : <img src={preview.url} alt={preview.alt} width={preview.width} height={preview.height} loading="lazy" onError={() => setFailedUrl(preview.url)} />}
-    <figcaption>公開前検査版の実画面<span>{preview.version}。公開版の動作確認は未完了です。</span></figcaption>
+    <figcaption>公開前検査版の実画面<span>開発中の参考画面です。公開時に変わる場合があります。</span></figcaption>
     {expandable && failedUrl !== preview.url && <>
       <button ref={trigger} type="button" className="preview-expand" onClick={() => {
         dialog.current?.showModal();
@@ -32,7 +32,7 @@ export default function InspectionPreview({ work, expandable = false }: { work: 
         }
       }}>
         <div className="preview-dialog-header"><p>公開前検査版の実画面</p><button ref={closeButton} type="button" autoFocus onClick={() => dialog.current?.close()}>閉じる</button></div>
-        <p>{preview.version}。公開版の動作確認は未完了です。</p>
+        <p>開発中の参考画面です。公開時に変わる場合があります。</p>
         <p>{enlargedFailedUrl === preview.url ? "拡大画像を読み込めませんでした。閉じて本文のルールと操作方法を確認してください。" : "画像をスクロールして全体を確認できます。"}</p>
         <div ref={imageScroll} className="preview-image-scroll" tabIndex={0} role="region" aria-label={enlargedFailedUrl === preview.url ? "拡大画像の読み込み状況" : "拡大画像。矢印キーでスクロール"}>
           {enlargedFailedUrl === preview.url ? <p className="preview-fallback" role="status">拡大画像を表示できません。</p> : <img src={preview.url} alt={preview.alt} width={preview.width} height={preview.height} onLoad={resetImagePosition} onError={() => setEnlargedFailedUrl(preview.url)} />}

@@ -2,6 +2,7 @@ import { catalogHref, catalogSearch, type CatalogState } from "./navigation";
 import data from "./data/works.json";
 import { parseCatalog, technologyLabel, statusLabel, releaseNote } from "./catalog";
 const catalog = { games: parseCatalog(data) };
+const featured = catalog.games.find(game => game.release !== null);
 import "./App.css";
 import UnityPlayer from "./UnityPlayer";
 import WorkGuide from "./WorkGuide";
@@ -23,7 +24,7 @@ function Header({ pathname, state }: { pathname: string; state: CatalogState }) 
   return <header className="site-header"><div className="header-inner">
     <a href="/" className="brand" aria-label="Kihamda.NET ホーム"><span className="brand-mark" aria-hidden="true">k<span>✦</span></span><span>Kihamda<span className="brand-dot">.NET</span><small>THE LITTLE GAME SHOP</small></span></a>
     <nav aria-label="メイン"><a href={catalogHref(state)} aria-current={pathname === "/" ? "page" : undefined}>ゲームの棚</a><a href="/about/" aria-current={pathname.startsWith("/about") ? "page" : undefined}>このお店について</a></nav>
-    <a className="header-play" href="/games/minerush/" data-live-game="true"><span aria-hidden="true">▶</span> ひと遊びする</a>
+    {featured?.release && <a className="header-play" href={featured.release.url} data-live-game="true"><span aria-hidden="true">▶</span> ひと遊びする</a>}
   </div></header>;
 }
 
@@ -41,7 +42,7 @@ function Home({ state, onChange }: { state: CatalogState; onChange: (state: Cata
   }).sort((a, b) => Number(!!b.release) - Number(!!a.release));
   return <>
     <section className="home-hero" aria-labelledby="hero-title">
-      <div className="hero-copy"><p className="eyebrow"><span className="open-light" /> A LITTLE PLAY, A LITTLE DISCOVERY</p><h1 id="hero-title">ひらめきは、<br /><span>あそびの中に。</span></h1><p className="hero-description">考えたり、迷ったり、思わず笑ったり。<br />小さなゲームに、大きな寄り道を。</p><div className="hero-actions"><a href="/games/minerush/" data-live-game="true" className="button primary"><span aria-hidden="true">▶</span> MineRushで遊ぶ <span aria-hidden="true">↗</span></a><a href="#works" className="hero-browse">ゲームの棚を見る <span aria-hidden="true">↓</span></a></div><p className="hero-note"><span aria-hidden="true">✓</span> 登録いらず <span aria-hidden="true">·</span> インストールいらず <span aria-hidden="true">·</span> 無料でひと遊び</p></div>
+      <div className="hero-copy"><p className="eyebrow"><span className="open-light" /> A LITTLE PLAY, A LITTLE DISCOVERY</p><h1 id="hero-title">ひらめきは、<br /><span>あそびの中に。</span></h1><p className="hero-description">考えたり、迷ったり、思わず笑ったり。<br />小さなゲームに、大きな寄り道を。</p><div className="hero-actions">{featured?.release ? <a href={featured.release.url} data-live-game="true" className="button primary"><span aria-hidden="true">▶</span> {featured.title}で遊ぶ <span aria-hidden="true">↗</span></a> : <a href="#works" className="button primary">ゲームの棚を見る</a>}<a href="#works" className="hero-browse">ゲームの棚を見る <span aria-hidden="true">↓</span></a></div><p className="hero-note"><span aria-hidden="true">✓</span> 登録いらず <span aria-hidden="true">·</span> インストールいらず <span aria-hidden="true">·</span> 無料でひと遊び</p></div>
       <div className="hero-display"><div className="paper-note"><span>本日のひと遊び</span><strong>数字の向こうに、<br />ひらめきが隠れてる。</strong><span className="note-arrow" aria-hidden="true">↙</span></div><div className="hero-game-box"><div className="box-heading"><span>THE PUZZLE COLLECTION</span><span>No. 01</span></div><h2>MINE<span>RUSH</span></h2><GameIllustration id="minerush" title="MineRush" /><div className="box-bottom"><span>9 × 9 / THINK SLOW, PLAY HAPPY</span><i aria-hidden="true">✦</i></div></div><span className="hero-round-stamp">いつでも<br /><strong>ひらめき日和</strong><br />PLAY A LITTLE</span></div>
     </section>
     <div className="shop-ribbon"><span>WELCOME TO YOUR LITTLE PLAYROOM</span><span aria-hidden="true">✦</span><p>気になったひと箱から、どうぞ。</p><span aria-hidden="true">✦</span><span>NO DOWNLOAD. JUST PLAY.</span></div>

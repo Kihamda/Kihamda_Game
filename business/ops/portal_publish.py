@@ -164,11 +164,60 @@ def publish(package, backup, journal, ftp, http_read=https_read):
     return state
 
 
+def recover(package, backup, journal, ftp):
+    """Restore retained targets only if live bytes still belong to this publication."""
+    manifest, files = candidate(package)
+    backup, journal = Path(backup), Path(journal)
+    state = json.loads(journal.read_text("utf-8"))
+    receipt = json.loads((backup / "receipt.json").read_text("utf-8"))
+    if (state.get("schema") != 1 or not re.fullmatch(r"[0-9a-f]{32}", state.get("transaction", ""))
+            or state.get("commit") != manifest["sourceCommit"] or state.get("transaction") != receipt.get("transaction")
+            or state.get("packageManifestSha256") != sha((Path(package) / "manifest.json").read_bytes())
+            or state.get("before") != receipt.get("before") or state.get("protected") != receipt.get("protected")
+            or set(state["before"]) != set(files) or set(state["protected"]) != set(PROTECTED)):
+        raise ValueError("Recovery evidence differs")
+    previous = {}
+    for path, digest in state["before"].items():
+        if digest is not None:
+            file = backup / "before" / path
+            if any(p.is_symlink() for p in (file, *file.parents)) or sha(file.read_bytes()) != digest:
+                raise ValueError("Retained old bytes differ")
+            previous[path] = file.read_bytes()
+    for path, digest in state["protected"].items():
+        if sha(ftp_read(ftp, path)) != digest:
+            raise ValueError("Protected game changed; recovery refused")
+    for path, body in files.items():
+        current = existing(ftp, path)
+        if current != body and current != previous.get(path):
+            raise ValueError("Target changed externally; recovery refused")
+    # Old hash-named assets were never replaced or deleted, so the old home can
+    # be restored first. Newly added files remain; no remote delete is allowed.
+    for path in sorted(previous, key=lambda name: (name != "index.html", name)):
+        body = previous[path]
+        if existing(ftp, path) == body:
+            continue
+        temporary = path + ".pending-recovery-" + state["transaction"]
+        state.update(status="restoring-portal", pending={"path": path, "temporary": temporary})
+        save(journal, state)
+        ftp.storbinary("STOR " + temporary, io.BytesIO(body))
+        if ftp_read(ftp, temporary) != body or existing(ftp, path) != files[path]:
+            raise ValueError("Recovery target changed during staging")
+        ftp.rename(temporary, path)
+        if ftp_read(ftp, path) != body:
+            raise ValueError("Restored bytes differ")
+        state["pending"] = None
+        save(journal, state)
+    state["status"] = "portal-restored-awaiting-http-and-browser-acceptance"
+    save(journal, state)
+    return state
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("package")
     parser.add_argument("backup")
     parser.add_argument("journal")
+    parser.add_argument("--recover", action="store_true")
     args = parser.parse_args()
     candidate(args.package)  # Reject invalid evidence before authentication.
     with FTP_TLS(context=ssl.create_default_context(), timeout=30) as ftp:
@@ -176,9 +225,10 @@ def main():
         ftp.login(os.environ["FTP_USERNAME"], os.environ["FTP_PASSWORD"])
         ftp.prot_p()
         ftp.cwd(os.environ.get("FTP_SERVER_DIR") or ".")
-        state = publish(args.package, args.backup, args.journal, ftp)
+        state = (recover(args.package, args.backup, args.journal, ftp) if args.recover else
+                 publish(args.package, args.backup, args.journal, ftp))
     print(json.dumps({"status": state["status"], "commit": state["commit"],
-                      "publishedFiles": state["publishedFiles"], "deployed": False}))
+                      "publishedFiles": state.get("publishedFiles", 0), "deployed": False}))
 
 
 if __name__ == "__main__":

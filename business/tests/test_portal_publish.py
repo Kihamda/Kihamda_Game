@@ -127,6 +127,25 @@ class PortalPublishTest(unittest.TestCase):
         state = json.loads((self.root / "journal.json").read_text())
         self.assertEqual(state["status"], "uncertain-reconcile-before-retry")
 
+    def test_recovery_restores_old_home_and_keeps_games_and_new_assets(self):
+        self.publish()
+        state = portal.recover(self.package, self.root / "backup", self.root / "journal.json", self.ftp)
+        self.assertEqual(self.ftp.files["index.html"], self.before["index.html"])
+        for path in portal.PROTECTED:
+            self.assertEqual(self.ftp.files[path], self.before[path])
+        self.assertEqual(self.ftp.files["assets/app-test.js"], b"new asset")
+        self.assertEqual(state["status"], "portal-restored-awaiting-http-and-browser-acceptance")
+
+    def test_recovery_does_not_overwrite_third_party_or_tampered_backup(self):
+        self.publish()
+        self.ftp.files["index.html"] = b"external new home"
+        with self.assertRaisesRegex(ValueError, "externally"):
+            portal.recover(self.package, self.root / "backup", self.root / "journal.json", self.ftp)
+        self.ftp.files["index.html"] = self.files["index.html"]
+        (self.root / "backup/before/index.html").write_bytes(b"tampered")
+        with self.assertRaisesRegex(ValueError, "old bytes"):
+            portal.recover(self.package, self.root / "backup", self.root / "journal.json", self.ftp)
+
 
 if __name__ == "__main__":
     unittest.main()
