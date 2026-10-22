@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "recordedAt": "2026-10-22T22:11:51.747Z",
+  "status": "isolated-old-cache-transition-observed",
+  "productionWrites": false,
+  "initial": "Version A with max-age=604800",
+  "afterServerBAndNoCachePolicy": "Version A",
+  "normalReload": "Version B updated",
+  "afterServerCOrdinaryRevisit": "Version C further updated",
+  "cacheDisabled": false,
+  "historyBackUsed": false,
+  "events": [
+    {
+      "url": "http://127.0.0.1:4293/games/minerush/",
+      "status": 200,
+      "fromDiskCache": false,
+      "cacheControl": "max-age=604800"
+    },
+    {
+      "url": "http://127.0.0.1:4293/about/",
+      "status": 200,
+      "fromDiskCache": true,
+      "cacheControl": "max-age=604800"
+    },
+    {
+      "url": "http://127.0.0.1:4293/games/minerush/",
+      "status": 200,
+      "fromDiskCache": true,
+      "cacheControl": "max-age=604800"
+    },
+    {
+      "url": "http://127.0.0.1:4293/games/minerush/",
+      "status": 200,
+      "fromDiskCache": false,
+      "cacheControl": "no-cache"
+    },
+    {
+      "url": "http://127.0.0.1:4293/about/",
+      "status": 200,
+      "fromDiskCache": true,
+      "cacheControl": "max-age=604800"
+    },
+    {
+      "url": "http://127.0.0.1:4293/games/minerush/",
+      "status": 200,
+      "fromDiskCache": false,
+      "cacheControl": "no-cache"
+    }
+  ],
+  "truncated": false,
+  "interpretation": "New origin response headers do not invalidate a still-fresh previously cached response. After normal reload obtains no-cache, a later ordinary-link revisit fetches the new representation. Isolated evidence, not production historical causation."
+}

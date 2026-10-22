@@ -1,0 +1,11 @@
+# Proposed managed block only. Not a replacement for the production .htaccess.
+# Publication requires separately approved configuration scope and retained old bytes.
+# Only current portal pages, MineRush HTML, and the two version markers are selected.
+<IfModule mod_headers.c>
+    <If "%{REQUEST_URI} =~ m#^/(?:index[.]html|(?:about|contact|privacy-policy|works/(?:minerush|iceslide|ntiktaktoe|gravityball)|games/(?:ice-courier|minerush))/(?:index[.]html)?|(?:games/minerush/)?build-version[.]json)?$#">
+        Header onsuccess unset Cache-Control
+        Header always set Cache-Control "no-cache"
+        Header onsuccess unset Expires
+        Header always unset Expires
+    </If>
+</IfModule>

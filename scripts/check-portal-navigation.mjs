@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { build } from '../web/node_modules/esbuild/lib/main.js';
@@ -24,6 +25,8 @@ const result = await build({
 const module = { exports: {} };
 new Function('require', 'module', 'exports', result.outputFiles[0].text)(createRequire(`${web}package.json`), module, module.exports);
 const { render } = module.exports;
+const mineRelease = JSON.parse(readFileSync(new URL('../web/src/portal/data/works.json', import.meta.url))).games.find(game => game.id === 'minerush').release;
+const minePlayHref = `${mineRelease.url}?v=${mineRelease.sha256}`;
 const home = render('/', '?q=Unity');
 assert(home.includes('value="Unity"'));
 assert(!home.includes('aria-label="Ice Courierの詳細"'), "Paused prototype is archived, not listed");
@@ -62,7 +65,7 @@ const mineDetail = render('/works/minerush/', '?q=MineRush');
 assert(mineDetail.includes('9×9マス') && mineDetail.includes('地雷は10個'));
 assert(mineDetail.includes('途中の盤面と旗を保存しません') && mineDetail.includes('周囲8マス'));
 assert(mineDetail.includes('F / 右クリック / 旗モード') && mineDetail.includes('実端末での操作性は未確認'));
-assert(mineDetail.includes('作品を開始') && mineDetail.includes('href="/games/minerush/"') && !mineDetail.includes('<iframe'));
+assert(mineDetail.includes('作品を開始') && mineDetail.includes(`href="${minePlayHref}"`) && !mineDetail.includes('<iframe'));
 assert(!mineDetail.includes('公開前検査版の実画面'));
 assert(mineDetail.includes('href="/?q=MineRush#works"'));
 assert(render('/', '?q=MineRush').includes('href="/works/minerush/?q=MineRush"'));
@@ -128,7 +131,7 @@ for (const pathname of ['/', '/about/', '/contact/', '/privacy-policy/', '/works
     assert(internal.every(href => href.includes('?q=Web+1%E4%BA%BA%E7%94%A8&amp;filter=released')),
       `${pathname}: ${destination} loses catalog context: ${internal.join(', ')}`);
   }
-  assert(html.includes('href="/games/minerush/"'), 'Live game entry must retain its verified URL');
+  assert(html.includes(`href="${minePlayHref}"`), 'Live game entry must retain its verified URL');
   assert(html.includes('href="mailto:contact@kihamda.net"') === (pathname === '/contact/'));
 }
 for (const [search, expected] of [

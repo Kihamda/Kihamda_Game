@@ -42,6 +42,7 @@ function checkedSite(site, commit) {
   for (const release of releases) {
     assert(release && /^\/(?:works|games)\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(release.path)
       && /^\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9]+)?\/?$/.test(release.url)
+      && (release.launchUrl === undefined || release.launchUrl === `${release.url}?v=${release.sha256}`)
       && release.path !== release.url && typeof release.version === 'string' && release.version.trim()
       && /^[a-f0-9]{64}$/.test(release.sha256)
       && !releasedPaths.has(release.path)
@@ -64,7 +65,7 @@ function checkedSite(site, commit) {
     assert(!/<iframe\b/i.test(html) && (html.match(/作品を開始/g) ?? []).length === starts.length,
       `Unpublished player: ${path}`);
     assert.equal(starts.length, release ? 1 : 0, `Start link registration mismatch: ${path}`);
-    if (release) assert.equal(starts[0][1].match(/(?:^|\s)href="([^"]+)"/)?.[1], release.url,
+    if (release) assert.equal(starts[0][1].match(/(?:^|\s)href="([^"]+)"/)?.[1], release.launchUrl ?? release.url,
       `Start link destination mismatch: ${path}`);
     return { path, title, canonical };
   });

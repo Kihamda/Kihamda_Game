@@ -1,0 +1,282 @@
+{
+  "schema": 1,
+  "status": "isolated-apache-passed",
+  "productionWrites": false,
+  "configurationSha256": "d6426be59487126ec66f20d77d19efc9c5d2585847034da95f3a7c13574d9ef4",
+  "apacheVersion": "Server version: Apache/2.4.58 (Ubuntu)\nServer built:   2026-10-08T19:58:01",
+  "syntax": "Syntax OK",
+  "selected": 22,
+  "excluded": 11,
+  "queryPassed": true,
+  "paths": [
+    {
+      "path": "",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "0cbb2ae31ca453c44ac646a10ed15bbb78175f18ac2f73ab4dd71a93b564fc6a"
+    },
+    {
+      "path": "index.html",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "0cbb2ae31ca453c44ac646a10ed15bbb78175f18ac2f73ab4dd71a93b564fc6a"
+    },
+    {
+      "path": "about/",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "d602a26c1e976e0651b2ab41e0b8e8e6b657717b9382d1b403fa1b4c02f1b084"
+    },
+    {
+      "path": "about/index.html",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "d602a26c1e976e0651b2ab41e0b8e8e6b657717b9382d1b403fa1b4c02f1b084"
+    },
+    {
+      "path": "contact/",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "2f54f2d9f99015d0e56dca4d64a696a4e66c6bb28c9a2782e4635a0086556cab"
+    },
+    {
+      "path": "contact/index.html",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "2f54f2d9f99015d0e56dca4d64a696a4e66c6bb28c9a2782e4635a0086556cab"
+    },
+    {
+      "path": "privacy-policy/",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "03364509fda9b83ccd17c250ed78c582f49352e19f4d9bef9cbc34cc3b6925f7"
+    },
+    {
+      "path": "privacy-policy/index.html",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "03364509fda9b83ccd17c250ed78c582f49352e19f4d9bef9cbc34cc3b6925f7"
+    },
+    {
+      "path": "works/minerush/",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "f16a5de3072d54fe8a1ca7fe40c435ace0e31ace7c940ca0e7df5fa33102a658"
+    },
+    {
+      "path": "works/minerush/index.html",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "f16a5de3072d54fe8a1ca7fe40c435ace0e31ace7c940ca0e7df5fa33102a658"
+    },
+    {
+      "path": "build-version.json",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "9e36d35e878069a59f4e373a116750804008ee1ff0b174657013c0065e8b494f"
+    },
+    {
+      "path": "works/iceslide/",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "1730a90a9bb8c5c839649cb77310cf6d171a45f3ecc6644aac10c5d25757d604"
+    },
+    {
+      "path": "works/iceslide/index.html",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "1730a90a9bb8c5c839649cb77310cf6d171a45f3ecc6644aac10c5d25757d604"
+    },
+    {
+      "path": "works/ntiktaktoe/",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "00e3a6b9154b0a63d77dac6a04ecfdbcf696fbb98da7e15f0e96ef83f900d222"
+    },
+    {
+      "path": "works/ntiktaktoe/index.html",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "00e3a6b9154b0a63d77dac6a04ecfdbcf696fbb98da7e15f0e96ef83f900d222"
+    },
+    {
+      "path": "works/gravityball/",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "789c89b11a0b58fd244c25d6ebf1297f29c0a62bd3aa99a9d55ef587bf814721"
+    },
+    {
+      "path": "works/gravityball/index.html",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "789c89b11a0b58fd244c25d6ebf1297f29c0a62bd3aa99a9d55ef587bf814721"
+    },
+    {
+      "path": "games/ice-courier/",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "72cacc50b7ee76d09c2d530e25921126158c67aa360853de9c6b246b20f1ffd7"
+    },
+    {
+      "path": "games/ice-courier/index.html",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "72cacc50b7ee76d09c2d530e25921126158c67aa360853de9c6b246b20f1ffd7"
+    },
+    {
+      "path": "games/minerush/",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "3b3c304b393951ffe38110e67b380a62ad7fbf03995f323f2dc255557c78ff26"
+    },
+    {
+      "path": "games/minerush/index.html",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "3b3c304b393951ffe38110e67b380a62ad7fbf03995f323f2dc255557c78ff26"
+    },
+    {
+      "path": "games/minerush/build-version.json",
+      "policy": [
+        "no-cache"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "e38f65ad252f4b2a4abf4d6e671e64e2a5605d81100cf6cd1ef412962c5e3927"
+    },
+    {
+      "path": "games/iceslide/index.html",
+      "policy": [
+        "max-age=604800"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "9751bbfa24b7e9ae738a27a4820464a685c56d7fb35fc50d8e1d56959b2dc539"
+    },
+    {
+      "path": "games/ntiktaktoe/index.html",
+      "policy": [
+        "max-age=604800"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "01ab2bb1d0b6778159bdcee118dc40da243b0f8d53f796bd86110d792fb6371c"
+    },
+    {
+      "path": "games/gravityball/index.html",
+      "policy": [
+        "max-age=604800"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "4618be01da2b057f7b456da941d5d2e60e1df5d7aff2686e12eb8831eacc2b11"
+    },
+    {
+      "path": "assets/old.js",
+      "policy": [
+        "max-age=604800"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "2ab118ef1622cfe84dafc2a28c6da1a114a6216b3a3c60d52a2fe6030223e4c9"
+    },
+    {
+      "path": "assets/new.css",
+      "policy": [
+        "max-age=604800"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "bd7a20b9f95efdc94c06f7229b9a87e2a4febc45f6feb4f15f114bd29da5cce8"
+    },
+    {
+      "path": "games/minerush/assets/current.js",
+      "policy": [
+        "max-age=604800"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "747b029027f83ce38d31d2a1f2082e489d0028bbd339dec89e3a54fc14bcb492"
+    },
+    {
+      "path": "sw.js",
+      "policy": [
+        "max-age=604800"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "658938fe5b09b7ed51af4718700c9f244d9d58d4a10efeeb5cb3616237a21842"
+    },
+    {
+      "path": "brand/icon.svg",
+      "policy": [
+        "max-age=604800"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "1e85f69552fb08b85a893d403f126305e2b834fc809eca63187f210030a36038"
+    },
+    {
+      "path": "unrelated/index.html",
+      "policy": [
+        "max-age=604800"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "26d0b02e5b088a888f98537256c81a9bba0deb9a179af6e6c6b24269cc75a93f"
+    },
+    {
+      "path": "works/minerush-extra/index.html",
+      "policy": [
+        "max-age=604800"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "684fc9f8bef6d1be0e3fa17dfa462200f0ceaa3c12b5ba8f11b3baa05b376ba3"
+    },
+    {
+      "path": "games/minerush/build-version.json.extra",
+      "policy": [
+        "max-age=604800"
+      ],
+      "conditionalStatus": 304,
+      "sha256": "dc28fbb061c3f4c70d4e2cea00dac0961c0e6bcd556b5cd6eaf114df0da44d33"
+    }
+  ],
+  "unverified": [
+    "production mod_headers and AllowOverride",
+    "production existing config integration",
+    "browser revisit after production update"
+  ]
+}

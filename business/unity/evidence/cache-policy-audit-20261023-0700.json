@@ -1,0 +1,433 @@
+{
+  "schema": 1,
+  "recordedAt": "2026-10-22T21:59:37.530197+00:00",
+  "origin": "https://game.kihamda.net",
+  "productionWrites": false,
+  "browserAcceptance": false,
+  "requestCacheControl": "no-cache",
+  "policyPassed": false,
+  "aliasBytesMatch": true,
+  "paths": {
+    "": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": null,
+        "Expires": null,
+        "ETag": "\"37a4-65e7014a1c783\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:08:55 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:37 GMT",
+        "Vary": "Accept-Encoding"
+      },
+      "sha256": "213ad6845b86a71b8840dad11fa94426f06b2ef632fd1bc1573e4155f8a77517",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"37a4-65e7014a1c783\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": null,
+          "Expires": null,
+          "ETag": "\"37a4-65e7014a1c783\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:08:55 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:37 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "index.html": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": null,
+        "Expires": null,
+        "ETag": "\"37a4-65e7014a1c783\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:08:55 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:37 GMT",
+        "Vary": "Accept-Encoding"
+      },
+      "sha256": "213ad6845b86a71b8840dad11fa94426f06b2ef632fd1bc1573e4155f8a77517",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"37a4-65e7014a1c783\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": null,
+          "Expires": null,
+          "ETag": "\"37a4-65e7014a1c783\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:08:55 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:37 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "about/": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": null,
+        "Expires": null,
+        "ETag": "\"f0c-65e700fa2e7ae\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:07:31 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:37 GMT",
+        "Vary": "Accept-Encoding"
+      },
+      "sha256": "19a168e051c914f4d4f78f087b796b67e97e2ec19f7c4c950dccffd2a56118d5",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"f0c-65e700fa2e7ae\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": null,
+          "Expires": null,
+          "ETag": "\"f0c-65e700fa2e7ae\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:07:31 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:37 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "about/index.html": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": null,
+        "Expires": null,
+        "ETag": "\"f0c-65e700fa2e7ae\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:07:31 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:37 GMT",
+        "Vary": "Accept-Encoding"
+      },
+      "sha256": "19a168e051c914f4d4f78f087b796b67e97e2ec19f7c4c950dccffd2a56118d5",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"f0c-65e700fa2e7ae\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": null,
+          "Expires": null,
+          "ETag": "\"f0c-65e700fa2e7ae\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:07:31 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:37 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "contact/": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": null,
+        "Expires": null,
+        "ETag": "\"d66-65e7010247bae\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:07:40 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:37 GMT",
+        "Vary": "Accept-Encoding"
+      },
+      "sha256": "3420207112bf7982924c84f353888df0a51c8f666d060a5b514b7c3bf48b85b1",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"d66-65e7010247bae\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": null,
+          "Expires": null,
+          "ETag": "\"d66-65e7010247bae\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:07:40 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:37 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "contact/index.html": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": null,
+        "Expires": null,
+        "ETag": "\"d66-65e7010247bae\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:07:40 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:37 GMT",
+        "Vary": "Accept-Encoding"
+      },
+      "sha256": "3420207112bf7982924c84f353888df0a51c8f666d060a5b514b7c3bf48b85b1",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"d66-65e7010247bae\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": null,
+          "Expires": null,
+          "ETag": "\"d66-65e7010247bae\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:07:40 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:37 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "privacy-policy/": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": null,
+        "Expires": null,
+        "ETag": "\"f56-65e701153d437\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:08:00 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+        "Vary": "Accept-Encoding"
+      },
+      "sha256": "cfa151a655dd214f21b97f328dda6703fdf3974d749483d9c1436563727162e1",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"f56-65e701153d437\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": null,
+          "Expires": null,
+          "ETag": "\"f56-65e701153d437\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:08:00 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "privacy-policy/index.html": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": null,
+        "Expires": null,
+        "ETag": "\"f56-65e701153d437\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:08:00 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+        "Vary": "Accept-Encoding"
+      },
+      "sha256": "cfa151a655dd214f21b97f328dda6703fdf3974d749483d9c1436563727162e1",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"f56-65e701153d437\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": null,
+          "Expires": null,
+          "ETag": "\"f56-65e701153d437\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:08:00 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "works/minerush/": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": null,
+        "Expires": null,
+        "ETag": "\"1561-65e701343ecaf\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:08:32 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+        "Vary": "Accept-Encoding"
+      },
+      "sha256": "712b62449fc35e46cbe77970cfa18b60ed4c5387e0670d3170174662a0af60f6",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"1561-65e701343ecaf\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": null,
+          "Expires": null,
+          "ETag": "\"1561-65e701343ecaf\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:08:32 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "works/minerush/index.html": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": null,
+        "Expires": null,
+        "ETag": "\"1561-65e701343ecaf\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:08:32 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+        "Vary": "Accept-Encoding"
+      },
+      "sha256": "712b62449fc35e46cbe77970cfa18b60ed4c5387e0670d3170174662a0af60f6",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"1561-65e701343ecaf\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": null,
+          "Expires": null,
+          "ETag": "\"1561-65e701343ecaf\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:08:32 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "build-version.json": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": "max-age=604800",
+        "Expires": "Thu, 29 Oct 2026 21:59:38 GMT",
+        "ETag": "\"19a-65e700d47c0da\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:06:52 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+        "Vary": null
+      },
+      "sha256": "94f2e516d9ef0afa67b5f74b9839e19a517949e6b7cb8e849923d59a88d53197",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"19a-65e700d47c0da\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": "max-age=604800",
+          "Expires": "Thu, 29 Oct 2026 21:59:38 GMT",
+          "ETag": "\"19a-65e700d47c0da\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:06:52 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "games/minerush/": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": null,
+        "Expires": null,
+        "ETag": "\"625-65e70226682dc\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:12:46 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+        "Vary": "Accept-Encoding"
+      },
+      "sha256": "a5dca60e6c19ae26d2017f7c6f05a72e7ae87c412c376acf2f3ef860ac83077c",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"625-65e70226682dc\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": null,
+          "Expires": null,
+          "ETag": "\"625-65e70226682dc\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:12:46 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "games/minerush/index.html": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": null,
+        "Expires": null,
+        "ETag": "\"625-65e70226682dc\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:12:46 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+        "Vary": "Accept-Encoding"
+      },
+      "sha256": "a5dca60e6c19ae26d2017f7c6f05a72e7ae87c412c376acf2f3ef860ac83077c",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"625-65e70226682dc\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": null,
+          "Expires": null,
+          "ETag": "\"625-65e70226682dc\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:12:46 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+          "Vary": null
+        }
+      }
+    },
+    "games/minerush/build-version.json": {
+      "status": 200,
+      "headers": {
+        "Cache-Control": "max-age=604800",
+        "Expires": "Thu, 29 Oct 2026 21:59:38 GMT",
+        "ETag": "\"63-65e7021ec70c0\"",
+        "Last-Modified": "Thu, 22 Oct 2026 16:12:38 GMT",
+        "Age": null,
+        "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+        "Vary": null
+      },
+      "sha256": "00817505bf106358b8c2c3aae6512faa9bf6944497b8983d54d18ebfd2b160e2",
+      "explicitRevalidation": false,
+      "conditional": {
+        "request": {
+          "If-None-Match": "\"63-65e7021ec70c0\""
+        },
+        "status": 304,
+        "sameRepresentation": true,
+        "headers": {
+          "Cache-Control": "max-age=604800",
+          "Expires": "Thu, 29 Oct 2026 21:59:38 GMT",
+          "ETag": "\"63-65e7021ec70c0\"",
+          "Last-Modified": "Thu, 22 Oct 2026 16:12:38 GMT",
+          "Age": null,
+          "Date": "Thu, 22 Oct 2026 21:59:38 GMT",
+          "Vary": null
+        }
+      }
+    }
+  },
+  "interpretation": "Origin policy and conditional GET evidence only; does not reproduce a browser cache or establish the historical stale-page cause."
+}

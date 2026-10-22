@@ -17,6 +17,9 @@ export type Work = {
   inspectionPreview?: BuildEvidence & { url: string; alt: string; imageSha256: string; sourceCommit: string; width: number; height: number };
   guide?: WorkGuide;
 };
+export function releaseHref(release: Release) {
+  return `${release.url}?v=${release.sha256}`;
+}
 export type BuildEvidence = { version: string; artifactSha256: string; verification: string };
 export type WorkGuide = {
   controls?: { input: string; action: string }[];

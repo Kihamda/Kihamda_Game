@@ -66,6 +66,8 @@ try {
     });
     cases.push(
       ['wrong-start', root => editSite(root, { [detail]: html => html.replace(start, '<a href="/games/other/">作品を開始</a>') }), 'Start link destination mismatch'],
+      ['wrong-launch-version', root => editSite(root, { [detail]: html => html.replace(start, `<a href="${release.url}?v=${'0'.repeat(64)}">作品を開始</a>`) }), 'Start link destination mismatch'],
+      ['invalid-launch-registration', editReleases(version => { version.releases[0].launchUrl = `${release.url}?v=wrong`; }), 'Invalid packaged release registration'],
       ['external-start', root => editSite(root, { [detail]: html => html.replace(start, '<a href="https://example.com/">作品を開始</a>') }), 'Start link destination mismatch'],
       ['decoy-start-attribute', root => editSite(root, { [detail]: html => html.replace(start, `<a data-href="${release.url}" href="https://example.com/">作品を開始</a>`) }), 'Start link destination mismatch'],
       ['missing-start', root => editSite(root, { [detail]: html => html.replace(start, '') }), 'Start link registration mismatch'],
