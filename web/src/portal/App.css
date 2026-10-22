@@ -286,3 +286,5 @@
 @media (max-width:700px) { .filter-group button { min-height: 44px; }.header-inner nav a { min-height: 44px; display: inline-flex; align-items: center; }.hero-browse { min-height: 44px; display: inline-flex; align-items: center; }.footer-inner nav a { min-height: 44px; display: inline-flex; align-items: center; } }
 
 .verification-detail { margin-top: 8px; font-size: 12px; }.verification-detail summary { min-height: 44px; display: list-item; cursor: pointer; padding-block: 10px; }.verification-detail code { overflow-wrap: anywhere; }
+
+@media (max-width:700px) { .search-label input { font-size: 16px; }.brand { min-height: 44px; } }
