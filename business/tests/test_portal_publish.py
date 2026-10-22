@@ -59,7 +59,7 @@ class PortalPublishTest(unittest.TestCase):
         self.site = self.package / "site"
         self.files = {"index.html": b"new portal", "build-version.json":
                       json.dumps({"commit": "a" * 40}).encode(),
-                      "assets/app-test.js": b"new asset", "works/minerush/index.html": b"detail",
+                      "brand/icon.svg": b"brand image", "assets/app-test.js": b"new asset", "works/minerush/index.html": b"detail",
                       "media/inspection/minerush-test.jpg": b"image bytes",
                       "games/minerush/index.html": b"MUST NEVER BE UPLOADED", "sw.js": b"skip worker"}
         for path, body in self.files.items():

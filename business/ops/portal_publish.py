@@ -22,7 +22,7 @@ def allowed(path):
         r"(?:index\.html|build-version\.json|robots\.txt|sitemap\.xml|manifest\.webmanifest|"
         r"(?:about|contact|privacy-policy)/index\.html|works/(?:minerush|iceslide|ntiktaktoe|gravityball)/index\.html|"
         r"games/ice-courier/index\.html|assets/[A-Za-z0-9_-]+\.(?:js|css)|"
-        r"media/inspection/[a-z0-9-]+\.jpg|(?:icons|thumbnails)/[a-z0-9-]+\.svg)", path))
+        r"media/inspection/[a-z0-9-]+\.jpg|(?:brand|thumbnails)/[a-z0-9-]+\.svg)", path))
 
 
 def candidate(package):
@@ -150,7 +150,11 @@ def publish(package, backup, journal, ftp, http_read=https_read):
         state["status"] = "verifying-http"
         save(journal, state)
         for path, body in files.items():
-            if http_read("" if path == "index.html" else path) != body:
+            try:
+                actual = http_read("" if path == "index.html" else path)
+            except Exception as error:
+                raise ValueError("Public read failed: " + path) from error
+            if actual != body:
                 raise ValueError("Public bytes differ: " + path)
         for path, body in protected.items():
             if ftp_read(ftp, path) != body or http_read(path) != body:

@@ -19,7 +19,7 @@ function checkedSite(site, commit) {
   const files = inventory(site);
   const entries = files.map(file => ({ path: relative(site, file.path).replaceAll('\\', '/'), size: file.size, sha256: file.sha256 }));
   for (const file of entries) {
-    assert(/^(?:assets\/[a-zA-Z0-9_.-]+|media\/inspection\/[a-z0-9-]+\.jpg|(?:icons|thumbnails|work-evidence)\/[a-zA-Z0-9_./-]+\.(?:svg|png|jpg|webp)|(?:(?:games|works)\/[a-zA-Z0-9-]+\/)?index\.html|(?:about|contact|privacy-policy)\/index\.html|robots\.txt|sitemap\.xml|_headers|_redirects|adsense-readiness\.html|manifest\.webmanifest|sw\.js|build-version\.json|SHA256SUMS)$/.test(file.path), `Unexpected publication file: ${file.path}`);
+    assert(/^(?:assets\/[a-zA-Z0-9_.-]+|media\/inspection\/[a-z0-9-]+\.jpg|(?:icons|brand|thumbnails|work-evidence)\/[a-zA-Z0-9_./-]+\.(?:svg|png|jpg|webp)|(?:(?:games|works)\/[a-zA-Z0-9-]+\/)?index\.html|(?:about|contact|privacy-policy)\/index\.html|robots\.txt|sitemap\.xml|_headers|_redirects|adsense-readiness\.html|manifest\.webmanifest|sw\.js|build-version\.json|SHA256SUMS)$/.test(file.path), `Unexpected publication file: ${file.path}`);
     assert(!/WebGL|__local-unity|runner\.html|\.map$/.test(file.path), `Local artifact refused: ${file.path}`);
   }
   const sums = read(resolve(site, 'SHA256SUMS')).toString('utf8').trim().split('\n').map(line => {
