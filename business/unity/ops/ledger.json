@@ -1,14 +1,9 @@
 {
   "schema": 1,
-  "revision": 505,
+  "revision": 506,
   "business_id": "game-site",
   "fence": 86,
-  "lease": {
-    "run_id": "unity-20261023T0120-cache",
-    "task_id": "T-web-html-cache-revisit-20261023",
-    "fence": 86,
-    "expires_at": 1792686609.289186
-  },
+  "lease": null,
   "tasks": {
     "T-ice-courier-unity-evaluation": {
       "id": "T-ice-courier-unity-evaluation",
@@ -11355,8 +11350,61 @@
       "hypothesis": "HTMLに明示的な再検証方針がないと既訪問者へ旧版が再利用される可能性がある。実原因と利用指標は未確定。",
       "source": "user:automation:unity:2026-10-23:observed-oldHTML-during-production-acceptance",
       "priority": 95,
-      "status": "running",
-      "checkpoints": [],
+      "status": "ready",
+      "checkpoints": [
+        {
+          "run_id": "unity-20261023T0120-cache",
+          "fence": 86,
+          "artifacts": [
+            {
+              "path": "STATE.md",
+              "sha256": "91779ca3802e6199e763ead8d3b7f5ec8bc763f2402a1d89e0f1e2a25dc7de07"
+            },
+            {
+              "path": "docs/daily-delivery-20261023.md",
+              "sha256": "f3ff6da46218a279697a5510f4ca69ff15de08b589a449254e6d2e4dc6f2beac"
+            },
+            {
+              "path": "business/unity/evidence/daily-ci-20261023.json",
+              "sha256": "d013805f18c7f8ff3a696d985346c013601c8417c5801f38d7ec0ac0f26c76ab"
+            },
+            {
+              "path": "business/unity/evidence/portal-context-production-20261023.json",
+              "sha256": "79acaa9e9b351eb2d27b352c1e5453e0304781bbf1137c36492b1cff634facbd"
+            },
+            {
+              "path": "business/unity/evidence/scoped-production-accepted-20261023.json",
+              "sha256": "90ba20bb813ea79c4dbf6a4d7d166a811611e68050487d62d77573df6f0a9c00"
+            },
+            {
+              "path": "business/unity/evidence/daily-retention-20261023.json",
+              "sha256": "200856a7f9ad35635289a8958f282bff3e4dc779f600ef6ee06551f74e15a9cf"
+            },
+            {
+              "path": "business/unity/evidence/html-cache-revisit-20261023.json",
+              "sha256": "9e39757cd21803f3ee0e380069fc1c2d2d9ee570f8175da9bc5d96418b2e7bdf"
+            },
+            {
+              "path": "web/src/portal/data/works.json",
+              "sha256": "ca0a08c7870b12235ca7d245c7deb2648e0adff1264bcbfca6af23f9373f6fd0"
+            }
+          ],
+          "checks": [
+            "PR36 exacthead5675995 Linux/WindowsCI39810169627;guarded main3416ea4 and exactmainCI39810473015success",
+            "Portal39810676603accepted35files/protect5;scoped39811894781accepted4files/slash/protect5;freshpreflight39811295068;all dispatched once",
+            "Production1280/320portal context/nativegame Back;MineRush71safewin9flags/reset/reload/loss62/32039/39054DOMprogress",
+            "Actual combined artifact recovery wrongorder refused no mutation;correct42oldbaseline;new8assets retained;sourcejournals unchanged;localoldgame37/catalog4;not realrollback",
+            "Registered actualacceptedversion onlyafterbrowseracceptance;fdac76144file9page/18negative package;tarrestoration;newversionvisible;no extraPR/push/deploy",
+            "Final combined45HTTPfiles exact;111business tests;8currentartifact HEAD/worktree bytes equal;original489events preserved",
+            "Controlled ordinarylink cachefixture A->serverB->revisitA/reloadB;no-cache variantrevisitB;RFC9111primarysource;currentHTMLnoexplicitcache/versionmark604800;productioncause notconfirmed",
+            "Owner/AGENTS/policy/legacyledger/handoff Git blobs unchanged;legacyworkCRLF normalized match;no Unity/Atohitori/recoveryvault work;metrics null",
+            "Own4servers stopped,3tabsclosed,viewportreset;localcombinedfixtureSW404 outside42journalpaths recorded;productionSW separatelyunchanged",
+            "work_session={\"started_at\": \"2026-10-23T00:59:12.467417+09:00\", \"start_basis\": \"first explicit clock after initial startup reading;work began earlier\", \"ended_at\": \"2026-10-23T01:24:49.983590+09:00\", \"elapsed_seconds\": 1537.516173, \"exit_reason\": \"Completed both daily production acceptances,reverse-order recovery/browser proof,registration archive verification and isolated oldHTML/no-cache comparison;save pending supported production header mechanism\", \"artificial_waits\": false}"
+          ],
+          "next_step": "Continue same cache-revisit task:confirm supported per-path HTML/version-marker response-header mechanism within existing publication scope;do not assume nginx header means origin type. Validate return/reload and retain existing games before next daily integration with locally saved accepted registration. Do not replay accepted portal/scoped CD or create record-only PR.",
+          "at": 1792686290.0177257
+        }
+      ],
       "claims": [
         {
           "run_id": "unity-20261023T0120-cache",
@@ -12178,7 +12226,7 @@
     "unity-20261023T0120-cache": {
       "run_id": "unity-20261023T0120-cache",
       "source": "user:automation:unity:2026-10-23:child-of-unity-20261023T0100-daily",
-      "status": "open",
+      "status": "checkpointed",
       "started_at": 1792686009.221227
     }
   },
@@ -30017,7 +30065,68 @@
       },
       "previous": "56eaef71f98235ee432d8d08e87f6eee59291d91126d22b0a6a154bfe163f124",
       "sha256": "877340a5c52825ad0d45be3c018d95e0b49617241eff633e58f1eaeafb413fbb"
+    },
+    {
+      "revision": 506,
+      "at": 1792686290.0177257,
+      "action": "yield",
+      "data": {
+        "run_id": "unity-20261023T0120-cache",
+        "fence": 86,
+        "artifacts": [
+          {
+            "path": "STATE.md",
+            "sha256": "91779ca3802e6199e763ead8d3b7f5ec8bc763f2402a1d89e0f1e2a25dc7de07"
+          },
+          {
+            "path": "docs/daily-delivery-20261023.md",
+            "sha256": "f3ff6da46218a279697a5510f4ca69ff15de08b589a449254e6d2e4dc6f2beac"
+          },
+          {
+            "path": "business/unity/evidence/daily-ci-20261023.json",
+            "sha256": "d013805f18c7f8ff3a696d985346c013601c8417c5801f38d7ec0ac0f26c76ab"
+          },
+          {
+            "path": "business/unity/evidence/portal-context-production-20261023.json",
+            "sha256": "79acaa9e9b351eb2d27b352c1e5453e0304781bbf1137c36492b1cff634facbd"
+          },
+          {
+            "path": "business/unity/evidence/scoped-production-accepted-20261023.json",
+            "sha256": "90ba20bb813ea79c4dbf6a4d7d166a811611e68050487d62d77573df6f0a9c00"
+          },
+          {
+            "path": "business/unity/evidence/daily-retention-20261023.json",
+            "sha256": "200856a7f9ad35635289a8958f282bff3e4dc779f600ef6ee06551f74e15a9cf"
+          },
+          {
+            "path": "business/unity/evidence/html-cache-revisit-20261023.json",
+            "sha256": "9e39757cd21803f3ee0e380069fc1c2d2d9ee570f8175da9bc5d96418b2e7bdf"
+          },
+          {
+            "path": "web/src/portal/data/works.json",
+            "sha256": "ca0a08c7870b12235ca7d245c7deb2648e0adff1264bcbfca6af23f9373f6fd0"
+          }
+        ],
+        "checks": [
+          "PR36 exacthead5675995 Linux/WindowsCI39810169627;guarded main3416ea4 and exactmainCI39810473015success",
+          "Portal39810676603accepted35files/protect5;scoped39811894781accepted4files/slash/protect5;freshpreflight39811295068;all dispatched once",
+          "Production1280/320portal context/nativegame Back;MineRush71safewin9flags/reset/reload/loss62/32039/39054DOMprogress",
+          "Actual combined artifact recovery wrongorder refused no mutation;correct42oldbaseline;new8assets retained;sourcejournals unchanged;localoldgame37/catalog4;not realrollback",
+          "Registered actualacceptedversion onlyafterbrowseracceptance;fdac76144file9page/18negative package;tarrestoration;newversionvisible;no extraPR/push/deploy",
+          "Final combined45HTTPfiles exact;111business tests;8currentartifact HEAD/worktree bytes equal;original489events preserved",
+          "Controlled ordinarylink cachefixture A->serverB->revisitA/reloadB;no-cache variantrevisitB;RFC9111primarysource;currentHTMLnoexplicitcache/versionmark604800;productioncause notconfirmed",
+          "Owner/AGENTS/policy/legacyledger/handoff Git blobs unchanged;legacyworkCRLF normalized match;no Unity/Atohitori/recoveryvault work;metrics null",
+          "Own4servers stopped,3tabsclosed,viewportreset;localcombinedfixtureSW404 outside42journalpaths recorded;productionSW separatelyunchanged",
+          "work_session={\"started_at\": \"2026-10-23T00:59:12.467417+09:00\", \"start_basis\": \"first explicit clock after initial startup reading;work began earlier\", \"ended_at\": \"2026-10-23T01:24:49.983590+09:00\", \"elapsed_seconds\": 1537.516173, \"exit_reason\": \"Completed both daily production acceptances,reverse-order recovery/browser proof,registration archive verification and isolated oldHTML/no-cache comparison;save pending supported production header mechanism\", \"artificial_waits\": false}"
+        ],
+        "next_step": "Continue same cache-revisit task:confirm supported per-path HTML/version-marker response-header mechanism within existing publication scope;do not assume nginx header means origin type. Validate return/reload and retain existing games before next daily integration with locally saved accepted registration. Do not replay accepted portal/scoped CD or create record-only PR."
+      },
+      "result": {
+        "recorded": "yield"
+      },
+      "previous": "877340a5c52825ad0d45be3c018d95e0b49617241eff633e58f1eaeafb413fbb",
+      "sha256": "b4700118eeb6cb6db519a772d8a031b02758d6f3ea59b38793f13c9bbb0f1c62"
     }
   ],
-  "projection_sha256": "4397d10db1de48e8d3107093b44987c3411a1a0fb31fb154021919248b749e2f"
+  "projection_sha256": "92884be9ea7d1b1afa68c6a992528b95c6a84c0d9dd587b3164509c17be3aa50"
 }
