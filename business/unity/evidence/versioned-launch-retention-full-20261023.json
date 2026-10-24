@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "status": "retained-current-baseline-fake-ftp-passed",
+  "sourceCommit": "2bd8b0cb953835ad118d5b0e2bb062dd52e9f313",
+  "productionWrites": false,
+  "protectedFiles": 5,
+  "baselineFiles": 45,
+  "restoredBaselineFiles": 45,
+  "serviceWorkerAndOldScopedDependenciesPreserved": true,
+  "rootConfigUploaded": false,
+  "sourceJournalSha256": {
+    "artifacts\\daily-20261023\\portal-delivery\\portal-transaction.json": "662c7d44a5c3c7cdfe70dae92ce9fe62883985034b85a42aa4bbc4a633184057",
+    "artifacts\\daily-20261023\\scoped-delivery\\transaction.json": "ae897e09cc3b2360867f2978be3726a73060e35e4f19f5e25051ac89fb3239f2"
+  },
+  "newUnreferencedAssetsRetained": true,
+  "coverage": "45 reconstructed known files, not whole origin or real rollback"
+}

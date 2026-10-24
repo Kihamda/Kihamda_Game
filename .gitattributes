@@ -130,3 +130,6 @@ web/public/*.js text eol=lf
 web/public/**/*.svg text eol=lf
 scripts/prepare-web-release.mjs text eol=lf
 scripts/check-release-preparation.mjs text eol=lf
+docs/daily-delivery-20261023.md text eol=lf
+docs/web-cache-revalidation-20261023.md text eol=lf
+business/config/*.htaccess text eol=lf

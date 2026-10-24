@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "productionWrites": false,
+  "url": "https://game.kihamda.net/games/minerush/?v=c7ae5a866b5af35e40dd07d933621716817cdb7e8f7ff7074ee2bf16d553deba",
+  "sha256": "a5dca60e6c19ae26d2017f7c6f05a72e7ae87c412c376acf2f3ef860ac83077c",
+  "matchesUnversionedEntry": true,
+  "interpretation": "Read-only query routing verification, not deployment or historical browser cache proof"
+}

@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "status": "retained-current-baseline-fake-ftp-passed",
+  "sourceCommit": "2bd8b0cb953835ad118d5b0e2bb062dd52e9f313",
+  "productionWrites": false,
+  "protectedFiles": 5,
+  "baselineFiles": 42,
+  "restoredBaselineFiles": 42,
+  "rootConfigUploaded": false,
+  "newVersionLinkPresent": true,
+  "sourceJournalsModified": false,
+  "newUnreferencedAssetsRetained": true
+}

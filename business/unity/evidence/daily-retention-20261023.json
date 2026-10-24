@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "sourceCommit": "fdac761bab8fb7b70eedecaa5b81494fb5284fa7",
+  "status": "local-registration-package-accepted-not-deployed",
+  "productionCommit": "3416ea4e1f4db34db12debc63947f0689b2b6c18",
+  "packageManifestSha256": "8cac832775a2d9dfcb955bad458fb94af2f7fb02ec78717c06bf88c6e1ebbc08",
+  "packageFiles": 44,
+  "portalPages": 9,
+  "negativeCases": 18,
+  "businessTests": 111,
+  "registrationBrowser": {
+    "acceptedVersionVisible": true,
+    "documentWidth": 1265,
+    "imageLoaded": true,
+    "newDigestVisible": false,
+    "playHref": "/games/minerush/",
+    "url": "http://127.0.0.1:4289/works/minerush/?q=Web&filter=released",
+    "width": 1280
+  },
+  "combinedRecoveryBrowser": {
+    "cells": 81,
+    "newProgressAbsent": true,
+    "oldBundle": "/games/minerush/assets/index-C8Qv7oA6.js",
+    "opened": 37,
+    "url": "http://127.0.0.1:4288/games/minerush/"
+  },
+  "note": "Only accepted version text is rendered;full manifest digest is verified in data/package,not displayed. No new CI/push/PR/deployment for this postmerge registration.",
+  "initialGateFailure": "Missing ciConclusion in new receipt rejected repository check;actual verified success added;no guard relaxation",
+  "cacheInvestigation": "business/unity/evidence/html-cache-revisit-20261023.json",
+  "archiveSha256": "cf31976c79af5408932029a32c4bdb8fef7d91982a109c868180c70e60526ec0",
+  "archiveRestoredVerified": true,
+  "finalCombinedHttpCount": 45,
+  "finalCombinedHttpSha256": "00d9342d4d2770752fa8063653a7fe5920736bcf1fc2b9e7ee94ec70199bbef5",
+  "preservation": "owner/AGENTS/policy/legacyledger/workspace Git blobs unchanged;work matches with existingCRLF normalization",
+  "combinedFixtureCoverage": "42 retained journal baseline paths plus8additive assets;local sw.js request404 because SW outside reconstructed journal scope. ProductionSW independently HTTP verified unchanged,not a complete hosted-origin restoration."
+}

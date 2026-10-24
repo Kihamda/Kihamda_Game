@@ -1,0 +1,325 @@
+{
+  "schema": 1,
+  "acceptedAt": "2026-10-22T16:11:01.159827+00:00",
+  "deployed": true,
+  "url": "https://game.kihamda.net/",
+  "commit": "3416ea4e1f4db34db12debc63947f0689b2b6c18",
+  "pr": 36,
+  "prHead": "56759950c16371a91f5086146d14d3ebee10e2bc",
+  "prCi": 39810169627,
+  "ciRun": 39810473015,
+  "deliveryRun": 39810676603,
+  "workflowConclusion": "success",
+  "manifestSha256": "88e67f86a2ad639fcbb7ddfde7a51851f079dd076e94885ece490a33761f1cf7",
+  "archiveSha256": "9f90097c23343d9e53e6348430806aa938c85af2da0f7936f904274a389dec38",
+  "http": {
+    "commit": "3416ea4e1f4db34db12debc63947f0689b2b6c18",
+    "manifestSha256": "88e67f86a2ad639fcbb7ddfde7a51851f079dd076e94885ece490a33761f1cf7",
+    "files": [
+      {
+        "path": "about/index.html",
+        "sha256": "19a168e051c914f4d4f78f087b796b67e97e2ec19f7c4c950dccffd2a56118d5",
+        "matched": true
+      },
+      {
+        "path": "assets/App-7Vg3EMtI.css",
+        "sha256": "eeeef76032727218be5b125ae69618a7d698670694650a4dc649f67c8f3bb78c",
+        "matched": true
+      },
+      {
+        "path": "assets/App-B5UNeCUW.css",
+        "sha256": "ccaec1a307cf5216bd51b3aeb6207d8d6d0cb20d9c2d18d1ca57eaaffd0ec1e8",
+        "matched": true
+      },
+      {
+        "path": "assets/App-B67CSeuF.js",
+        "sha256": "a03587a9d0834e4a11f87d8b596cfc9cfceaf56543091f9684ffcaed5cada018",
+        "matched": true
+      },
+      {
+        "path": "assets/App-ByhTl4vi.css",
+        "sha256": "90fa4abb98d8cace55978ddad9b53f1283559e29e0a6f15180f83035a12ec20e",
+        "matched": true
+      },
+      {
+        "path": "assets/App-C-iHCU67.js",
+        "sha256": "5c9ed98abed01fb0eb9706d3cbf273beaeea499394dd8143a3a2aa735ff5d16b",
+        "matched": true
+      },
+      {
+        "path": "assets/App-CeOQ9dPP.js",
+        "sha256": "0c24dba9823adb097830cdb5b2930e72ebd8170d537ea9877ae98338f85b9acb",
+        "matched": true
+      },
+      {
+        "path": "assets/App-DeECvmPy.css",
+        "sha256": "3d250170bbd003f039b3dda1204e1639cb0c0ca34709eca25deb1eedc97e8047",
+        "matched": true
+      },
+      {
+        "path": "assets/App-DzalAO2w.js",
+        "sha256": "e2a104098e485b13f3d6e01123393ce23818fbd6c0abd9598b759d7d9ce2629b",
+        "matched": true
+      },
+      {
+        "path": "assets/ScreenShake-DJGALZ4J.css",
+        "sha256": "9cbd80aee753a8408b342f9ee670f8f6a82e5953123cfc95a44bf7bef72c63cb",
+        "matched": true
+      },
+      {
+        "path": "assets/ScreenShake-D_eOjQkW.js",
+        "sha256": "3b44cb7a98cda81b9b3465c7059af2d29b157ccedf7288dc146d922c0817469c",
+        "matched": true
+      },
+      {
+        "path": "assets/index-DdXh35G8.js",
+        "sha256": "5626027389f3ca0809947f326804054a261a34cb4643af09cbcc886ac9e535da",
+        "matched": true
+      },
+      {
+        "path": "assets/index-Kx4-OfLs.css",
+        "sha256": "68353310ae305798ce3cd7ad4f8c15966bd3ab6108b4853f90f1f00a21dd9517",
+        "matched": true
+      },
+      {
+        "path": "brand/icon.svg",
+        "sha256": "53368ea63fec74f86bd0b792f0f177354a288494b99b3f6bd1c040845172a0b6",
+        "matched": true
+      },
+      {
+        "path": "build-version.json",
+        "sha256": "94f2e516d9ef0afa67b5f74b9839e19a517949e6b7cb8e849923d59a88d53197",
+        "matched": true
+      },
+      {
+        "path": "contact/index.html",
+        "sha256": "3420207112bf7982924c84f353888df0a51c8f666d060a5b514b7c3bf48b85b1",
+        "matched": true
+      },
+      {
+        "path": "games/ice-courier/index.html",
+        "sha256": "250dc67db9d9e5172ad8092e8a0d58c65a4e4147430a9fa2124547621570a18e",
+        "matched": true
+      },
+      {
+        "path": "index.html",
+        "sha256": "213ad6845b86a71b8840dad11fa94426f06b2ef632fd1bc1573e4155f8a77517",
+        "matched": true
+      },
+      {
+        "path": "manifest.webmanifest",
+        "sha256": "8829abfc3e5525ebb4a764f07bca857571e38941cc856b226f532d30983bc834",
+        "matched": true
+      },
+      {
+        "path": "media/inspection/gravityball-20261018.jpg",
+        "sha256": "8e0f08aef125316a4a86215f27fc2962d74c6ac60bed65fe809ebca6f9f5b195",
+        "matched": true
+      },
+      {
+        "path": "media/inspection/iceslide-20261018.jpg",
+        "sha256": "8f5b3f7e8ef9bb18623cd448e13d4991245f47b53340d5d16018fcb03158982e",
+        "matched": true
+      },
+      {
+        "path": "media/inspection/minerush-20261018.jpg",
+        "sha256": "e57ba2dd4aa73340739244b853f6dd8362c662e25086cd3bf688fb9e7bb62cd1",
+        "matched": true
+      },
+      {
+        "path": "media/inspection/ntiktaktoe-20261018.jpg",
+        "sha256": "8e5ce4ba5b5618cad8d11fc63cec57453e1a8fc6a2c65bb897abfd2a6b56a492",
+        "matched": true
+      },
+      {
+        "path": "privacy-policy/index.html",
+        "sha256": "cfa151a655dd214f21b97f328dda6703fdf3974d749483d9c1436563727162e1",
+        "matched": true
+      },
+      {
+        "path": "robots.txt",
+        "sha256": "294dcd12d410ee60ca9ad95da5fa774c963073028a679a756092fc3f98927626",
+        "matched": true
+      },
+      {
+        "path": "sitemap.xml",
+        "sha256": "615c056b9d6ea218b3f292130ba4d63f94fab1fd66073ebb9031b0ed2113323a",
+        "matched": true
+      },
+      {
+        "path": "thumbnails/gravityball.svg",
+        "sha256": "2f47d6f99791374a384d36595f4b7264cac0ed6a1206cb297954c7484423f38f",
+        "matched": true
+      },
+      {
+        "path": "thumbnails/iceslide.svg",
+        "sha256": "f2216565f4b48b989c33a013805b127ae540a354a069753aa380c9a205e3a484",
+        "matched": true
+      },
+      {
+        "path": "thumbnails/minerush.svg",
+        "sha256": "af7d94da66a391a6922bd19276e11a53dff4def7863d91afdbee8ad76904ef8b",
+        "matched": true
+      },
+      {
+        "path": "thumbnails/ntiktaktoe.svg",
+        "sha256": "4ad898c77228ffc4afe4eb9ec465aa1518b351f264e7a511b589f8bd2c8d0d41",
+        "matched": true
+      },
+      {
+        "path": "thumbnails/ogp-default.svg",
+        "sha256": "25063410cc571a90a9b7ba3bab7b20229aaf0cbd34592b8b304246888964fd6d",
+        "matched": true
+      },
+      {
+        "path": "works/gravityball/index.html",
+        "sha256": "e8b67670505fdb06e45718b355490f2dfae29b57c1f9f5feeef6b68ac0e5d471",
+        "matched": true
+      },
+      {
+        "path": "works/iceslide/index.html",
+        "sha256": "141055e9998fb042fc8f1091ff39e62149934d1c5942b6fc16742a101cfc495c",
+        "matched": true
+      },
+      {
+        "path": "works/minerush/index.html",
+        "sha256": "712b62449fc35e46cbe77970cfa18b60ed4c5387e0670d3170174662a0af60f6",
+        "matched": true
+      },
+      {
+        "path": "works/ntiktaktoe/index.html",
+        "sha256": "4695a8c12dcfb719fcc7ad98108de9cf649d74e70faa6a99e31d7ff15ca3a6d7",
+        "matched": true
+      }
+    ],
+    "protected": [
+      {
+        "path": "games/minerush/index.html",
+        "sha256": "7333473849c92e6d190718d3f8099cb983584cbd67bbc83a53d40ddeb821a7d3",
+        "matched": true
+      },
+      {
+        "path": "games/iceslide/index.html",
+        "sha256": "0bb785035008dfb95e67b315f0c2850caa79a97d823e480f3d95e95a742779df",
+        "matched": true
+      },
+      {
+        "path": "games/ntiktaktoe/index.html",
+        "sha256": "00b88fd5d957d630d36cd8c8368a753def6d87183495ac4606787a1e5106afd1",
+        "matched": true
+      },
+      {
+        "path": "games/gravityball/index.html",
+        "sha256": "52a5879adacc64c0f290c0f1e7774d13833d73b56be58e6a0580844c6b711d14",
+        "matched": true
+      },
+      {
+        "path": "games/minerush/build-version.json",
+        "sha256": "6350f87a0fe1de5e28357fba4923bea291cd7d0f760dc968e1090771746145df",
+        "matched": true
+      }
+    ],
+    "serviceWorkerUnchanged": true,
+    "transaction": "60548515157b44ce9d8bbc368e952ffe",
+    "written": [
+      "assets/App-B67CSeuF.js",
+      "assets/App-C-iHCU67.js",
+      "assets/App-CeOQ9dPP.js",
+      "assets/App-DzalAO2w.js",
+      "assets/ScreenShake-D_eOjQkW.js",
+      "assets/index-DdXh35G8.js",
+      "build-version.json",
+      "about/index.html",
+      "contact/index.html",
+      "games/ice-courier/index.html",
+      "privacy-policy/index.html",
+      "works/gravityball/index.html",
+      "works/iceslide/index.html",
+      "works/minerush/index.html",
+      "works/ntiktaktoe/index.html",
+      "index.html"
+    ],
+    "pending": null,
+    "homeLast": true,
+    "backupVerified": true,
+    "status": "http-verified-browser-pending"
+  },
+  "browser": {
+    "accepted": true,
+    "engine": "Windows Chromium",
+    "observations": [
+      {
+        "documentWidth": 1265,
+        "query": "Web 1人用",
+        "test": "about/reload/list preserves context",
+        "url": "https://game.kihamda.net/?q=Web+1%E4%BA%BA%E7%94%A8&filter=released#works",
+        "width": 1280
+      },
+      {
+        "focus": "MineRush",
+        "href": "/works/minerush/?q=Web+1%E4%BA%BA%E7%94%A8&filter=released",
+        "test": "exact title link Back",
+        "url": "https://game.kihamda.net/?q=Web+1%E4%BA%BA%E7%94%A8&filter=released#works",
+        "y": 988
+      },
+      {
+        "documentWidth": 1265,
+        "focus": "遊んでみる ↗",
+        "href": "/games/minerush/",
+        "test": "native game Back",
+        "url": "https://game.kihamda.net/?q=Web+1%E4%BA%BA%E7%94%A8&filter=released#works",
+        "width": 1280,
+        "accepted": false,
+        "reason": "native navigation not settled before measurement"
+      },
+      {
+        "focus": "遊んでみる ↗",
+        "href": "/games/minerush/",
+        "test": "settled native game81cells then Back",
+        "url": "https://game.kihamda.net/?q=Web+1%E4%BA%BA%E7%94%A8&filter=released#works"
+      },
+      {
+        "documentWidth": 305,
+        "focus": "INPUT",
+        "test": "320 empty reset keyboard",
+        "url": "https://game.kihamda.net/#works",
+        "width": 320
+      },
+      {
+        "documentWidth": 305,
+        "query": "Web 1人用",
+        "test": "320 contact/reload/privacy/contact/home",
+        "url": "https://game.kihamda.net/?q=Web+1%E4%BA%BA%E7%94%A8&filter=released",
+        "width": 320
+      },
+      {
+        "documentWidth": 305,
+        "focus": "遊んでみる ↗",
+        "href": "/games/minerush/",
+        "test": "320 native game Back",
+        "url": "https://game.kihamda.net/?q=Web+1%E4%BA%BA%E7%94%A8&filter=released",
+        "width": 320
+      }
+    ],
+    "physicalTouch": false,
+    "Safari": false
+  },
+  "recovery": {
+    "artifact": "portal-delivery-39810676603/portal-recovery",
+    "local": "artifacts/daily-20261023/portal-delivery/portal-recovery",
+    "retainedOldPortalCommit": "1b373077f55bc1a882497ff24b0f922161d4d713",
+    "realRollbackTested": false
+  },
+  "screenshots": {
+    "portal-desktop.jpg": "407c343ecab0b34ed54df22b506096c788a9bb170c5b23bc99a4130b459c012b",
+    "portal-mobile.jpg": "713c909672d48cc5763eb11be1f8bb1fd097a9e713bf9ee72490523fb1f7707a"
+  },
+  "metrics": null,
+  "unverified": [
+    "physical touch",
+    "Safari",
+    "human outcomes",
+    "off-PC restore",
+    "production rollback"
+  ]
+}
