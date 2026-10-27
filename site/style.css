@@ -17,3 +17,5 @@
 .board.slide{grid-template-columns:repeat(3,minmax(0,1fr));max-width:380px}.board .slide-empty{background:#f2ece8;opacity:1}.board .slide-movable{background:#f9c96e}
 
 .record{margin:0 0 16px;font-weight:700;color:#5e5869}.record[hidden]{display:none}
+
+.copy-result{margin:0 0 16px;padding:10px 18px;min-height:44px;border:2px solid #29243e;border-radius:99px;background:transparent;color:#29243e;font-weight:800}.copy-result[hidden]{display:none}

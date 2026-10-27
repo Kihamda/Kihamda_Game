@@ -2,10 +2,20 @@ const params = new URLSearchParams(location.search);
 const id = document.body.dataset.game || params.get('game');
 const board = document.querySelector('#board'), status = document.querySelector('#status'), announcement = document.querySelector('#announcement');
 const title = document.querySelector('#title'), instructions = document.querySelector('#instructions');
-const category = document.querySelector('#category'), controls = document.querySelector('#controls'), record = document.querySelector('#record');
+const category = document.querySelector('#category'), controls = document.querySelector('#controls'), record = document.querySelector('#record'), copyResult = document.querySelector('#copy-result'), copyFeedback = document.querySelector('#copy-feedback');
 let cleanup = () => {};
 const shuffle = values => { const a = [...values]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 function button(label, action) { const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.addEventListener('click', action); board.append(b); return b; }
+function offerResultCopy(game, date, moves) {
+  if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) return;
+  const text = `${gameCatalog[game].title} ${date} ${moves}手\nhttps://game.kihamda.net/play-${game}.html${game === 'lights' ? '?mode=daily' : ''}`;
+  copyResult.hidden = false;
+  copyResult.onclick = async () => {
+    try { await navigator.clipboard.writeText(text); copyFeedback.textContent = '結果をコピーしたよ'; }
+    catch (_) { copyFeedback.textContent = 'コピーできなかったよ'; }
+    copyFeedback.hidden = false;
+  };
+}
 function dailyProgress(game, date) {
   const key = `kihamda-daily-${game}`;
   return {
@@ -23,14 +33,14 @@ function dailyProgress(game, date) {
 const games = {
   lights(reset) {
     category.textContent = 'パズル';
-    let cells = Array(16).fill(false), moves = 0, progress = null;
+    let cells = Array(16).fill(false), moves = 0, progress = null, dailyDate = null;
     const toggle = i => { const x = i % 4, y = Math.floor(i / 4); [[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy]) => { const a=x+dx,b=y+dy; if(a>=0&&a<4&&b>=0&&b<4) cells[b*4+a]=!cells[b*4+a]; }); };
     if (params.get('mode') === 'daily') {
       const parts = new Intl.DateTimeFormat('en-US', {timeZone:'Asia/Tokyo', year:'numeric', month:'2-digit', day:'2-digit'}).formatToParts(new Date());
       const part = type => parts.find(item => item.type === type).value;
       const date = `${part('year')}-${part('month')}-${part('day')}`;
       category.textContent = `今日のパズル ${date}`;
-      progress = dailyProgress('lights', date);
+      progress = dailyProgress('lights', date); dailyDate = date;
       let seed = Number(date.replace(/\D/g, '')) >>> 0;
       const indices = [...Array(16).keys()];
       for (let i = indices.length - 1; i > 0; i--) {
@@ -49,7 +59,7 @@ const games = {
       if (saved) { cells = saved.cells; moves = saved.moves; }
     }
     const buttons = cells.map((_,i) => button('', () => { if (!cells.some(Boolean)) return; toggle(i); moves++; progress?.save(cells, moves); render(); }));
-    function render() { cells.forEach((on,i) => { buttons[i].className = on ? 'on' : ''; buttons[i].textContent = on ? '✦' : '·'; buttons[i].setAttribute('aria-label', `${Math.floor(i/4)+1}行${i%4+1}列 ${on?'点灯':'消灯'}`); }); status.textContent = cells.some(Boolean) ? `${moves}手` : `クリア！ ${moves}手で消せたよ`; } render();
+    function render() { cells.forEach((on,i) => { buttons[i].className = on ? 'on' : ''; buttons[i].textContent = on ? '✦' : '·'; buttons[i].setAttribute('aria-label', `${Math.floor(i/4)+1}行${i%4+1}列 ${on?'点灯':'消灯'}`); }); status.textContent = cells.some(Boolean) ? `${moves}手` : `クリア！ ${moves}手で消せたよ`; if(progress && !cells.some(Boolean)) offerResultCopy('lights', dailyDate, moves); } render();
   },
   memory() {
     category.textContent = '記憶';
@@ -144,6 +154,7 @@ const games = {
       won=cells.every((on,i)=>Number(on)===((solution>>i)&1));
       cells.forEach((on,i)=>{const b=buttons[i];b.className=on?'on':'';b.textContent=on?'✿':'·';b.setAttribute('aria-pressed',String(on));b.setAttribute('aria-label',`${Math.floor(i/4)+1}行${i%4+1}列 ${on?'花あり':'空き'}、行の目標 ${rows[Math.floor(i/4)]}、列の目標 ${cols[i%4]}`);});
       status.textContent=won?`クリア！ ${moves}手で咲かせたよ`:`${moves}手`;
+      if(won) offerResultCopy('garden', date, moves);
     }
     render();
   },
@@ -164,5 +175,5 @@ const games = {
     draw();status.textContent='スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;startButton.hidden=true;alive=true;last=0;frame=requestAnimationFrame(loop);});cleanup=()=>{alive=false;startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',stopMoving); for(const [el,down] of [[left,downL],[right,downR]]){el.replaceWith(el.cloneNode(true));}};
   }
 };
-function start(reset=false){cleanup();cleanup=()=>{};document.body.classList.remove('dodge-mode');announcement.textContent='';record.hidden=true;record.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide');board.style.display='';controls.hidden=true;if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;games[id](reset);document.title=`${title.textContent} | Kihamda Games`;}
+function start(reset=false){cleanup();cleanup=()=>{};document.body.classList.remove('dodge-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide');board.style.display='';controls.hidden=true;if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;games[id](reset);document.title=`${title.textContent} | Kihamda Games`;}
 document.querySelector('#restart').addEventListener('click',()=>start(true));start();

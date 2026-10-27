@@ -10,7 +10,7 @@ function run(game) {
     constructor(){this.children=[];this.events={};this.style={};this.classList={add(){},remove(){}};this.hidden=false;this.disabled=false;this.textContent='';}
     addEventListener(n,f){this.events[n]=f} removeEventListener(){} setAttribute(){} append(e){this.children.push(e)} after(e){this.afterElement=e} remove(){} replaceChildren(){this.children=[]} replaceWith(){} cloneNode(){return new Element()} click(){if(!this.disabled)this.events.click?.()} getContext(){return {clearRect(){},beginPath(){},arc(){},fill(){},fillText(){}}}
   }
-  const els=Object.fromEntries(['board','status','announcement','title','instructions','category','controls','record','left','right','restart'].map(x=>[x,new Element()]));
+  const els=Object.fromEntries(['board','status','announcement','title','instructions','category','controls','record','copy-result','copy-feedback','left','right','restart'].map(x=>[x,new Element()]));
   const document={body:Object.assign(new Element(),{dataset:{}}),querySelector:s=>els[s.slice(1)],createElement:()=>new Element(),addEventListener(){},removeEventListener(){},title:''};
   const context={document,window:{addEventListener(){},removeEventListener(){}},location:{search:'?game='+game},URLSearchParams,performance:{now:()=>1234},setTimeout,clearTimeout,requestAnimationFrame:()=>1,cancelAnimationFrame(){},Math};
   vm.runInNewContext(catalog + '\n' + source,context); return els;
