@@ -34,6 +34,52 @@ function dailyProgress(game, date, count=16) {
     clear() { try { window.localStorage.removeItem(key); } catch (_) {} }
   };
 }
+function generateSumPuzzle(year, month, dayOfMonth) {
+  const day=Math.floor(Date.UTC(year,month-1,dayOfMonth)/86400000);
+  let seed=(day ^ 0x9e3779b9) >>> 0;
+  if(!seed) seed=1;
+  const random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return seed>>>0;};
+  const pool=Array.from({length:15},(_,i)=>i+1);
+  for(let i=pool.length-1;i>0;i--){const j=random()%(i+1);[pool[i],pool[j]]=[pool[j],pool[i]];}
+  const values=pool.slice(0,9),counts=new Map();
+  for(let i=0;i<9;i++)for(let j=i+1;j<9;j++)for(let k=j+1;k<9;k++){
+    const total=values[i]+values[j]+values[k];counts.set(total,(counts.get(total)||0)+1);
+  }
+  let targets=[...counts].filter(([,count])=>count>=2&&count<=5).map(([value])=>value).sort((a,b)=>a-b);
+  if(!targets.length) targets=[...counts.keys()].sort((a,b)=>a-b);
+  return {values,target:targets[random()%targets.length]};
+}
+function pathNeighbors(index) {
+  return [index-4,index+4,...(index%4?[index-1]:[]),...(index%4<3?[index+1]:[])].filter(i=>i>=0&&i<16);
+}
+const pathPuzzlesByStart=new Map();
+function generatePathPuzzle(year, month, dayOfMonth) {
+  const day=Math.floor(Date.UTC(year,month-1,dayOfMonth)/86400000);
+  let seed=day>>>0;
+  seed=Math.imul(seed^(seed>>>16),0x7feb352d);
+  seed=Math.imul(seed^(seed>>>15),0x846ca68b);
+  seed=(seed^(seed>>>16))>>>0 || 1;
+  const start=((day%16)+16)%16;
+  if(!pathPuzzlesByStart.has(start)){
+    const path=[start],boards=new Map();
+    function enumerate(visited){
+      if(path.length===16){
+        const checkpoints=[path[4],path[8],path[12]],goal=path[15];
+        const key=[...checkpoints,goal].join(',');
+        if(!boards.has(key))boards.set(key,{start,checkpoints,goal,solution:[...path]});
+        return;
+      }
+      for(const next of pathNeighbors(path[path.length-1])){
+        if(visited&(1<<next))continue;
+        path.push(next);enumerate(visited|(1<<next));path.pop();
+      }
+    }
+    enumerate(1<<start);
+    pathPuzzlesByStart.set(start,[...boards.values()]);
+  }
+  const boards=pathPuzzlesByStart.get(start);
+  return boards[seed%boards.length];
+}
 const games = {
   lights(reset) {
     category.textContent = 'パズル';
@@ -113,19 +159,8 @@ const games = {
     const part=type=>Number(parts.find(item=>item.type===type).value);
     const date=`${part('year')}-${String(part('month')).padStart(2,'0')}-${String(part('day')).padStart(2,'0')}`;
     category.textContent=`今日のパズル ${date}`;
-    const day=Math.floor(Date.UTC(part('year'),part('month')-1,part('day'))/86400000);
-    let seed=(day ^ 0x9e3779b9) >>> 0;
-    if(!seed) seed=1;
-    const random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return seed>>>0;};
-    const pool=Array.from({length:15},(_,i)=>i+1);
-    for(let i=pool.length-1;i>0;i--){const j=random()%(i+1);[pool[i],pool[j]]=[pool[j],pool[i]];}
-    const values=pool.slice(0,9),counts=new Map();
-    for(let i=0;i<9;i++)for(let j=i+1;j<9;j++)for(let k=j+1;k<9;k++){
-      const total=values[i]+values[j]+values[k];counts.set(total,(counts.get(total)||0)+1);
-    }
-    let targets=[...counts].filter(([,count])=>count>=2&&count<=5).map(([value])=>value).sort((a,b)=>a-b);
-    if(!targets.length) targets=[...counts.keys()].sort((a,b)=>a-b);
-    const target=targets[random()%targets.length],progress=dailyProgress('sum',date,9);
+    const {values,target}=generateSumPuzzle(part('year'),part('month'),part('day'));
+    const progress=dailyProgress('sum',date,9);
     let selected=Array(9).fill(false),moves=0,won=false;
     if(reset)progress.clear();
     const saved=progress.load();
@@ -141,6 +176,63 @@ const games = {
       buttons.forEach((b,i)=>{b.className=selected[i]?'on':'';b.setAttribute('aria-pressed',String(selected[i]));});
       status.textContent=won?`クリア！ 目標 ${target}`:`目標 ${target}　選択 ${chosen.length}枚　合計 ${total}`;
       if(won)offerResultCopy('sum',date,moves);
+    }
+    render();
+  },
+  path(reset) {
+    const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+    const part=type=>Number(parts.find(item=>item.type===type).value);
+    const date=`${part('year')}-${String(part('month')).padStart(2,'0')}-${String(part('day')).padStart(2,'0')}`;
+    category.textContent=`今日のパズル ${date}`;
+    const puzzle=generatePathPuzzle(part('year'),part('month'),part('day'));
+    const key='kihamda-daily-path';
+    let route=[puzzle.start],moves=0;
+    const validRoute=route=>Array.isArray(route)&&route.length>=1&&route.length<=16&&route[0]===puzzle.start&&route.every((cell,i)=>{
+      if(!Number.isInteger(cell)||cell<0||cell>15||route.indexOf(cell)!==i)return false;
+      if(i&&!pathNeighbors(route[i-1]).includes(cell))return false;
+      const checkpoint=puzzle.checkpoints.indexOf(cell);
+      if(checkpoint>=0&&puzzle.checkpoints.slice(0,checkpoint).some(item=>!route.slice(0,i).includes(item)))return false;
+      if(i===15 && cell!==puzzle.goal)return false;
+      return cell!==puzzle.goal||(i===15&&puzzle.checkpoints.every(item=>route.includes(item)));
+    });
+    try {
+      if(reset)window.localStorage.removeItem(key);
+      const saved=JSON.parse(window.localStorage.getItem(key));
+      if(saved?.date===date&&validRoute(saved.route)&&Number.isSafeInteger(saved.moves)&&saved.moves>=0){route=saved.route;moves=saved.moves;}
+    } catch (_) {}
+    const buttons=Array.from({length:16},(_,index)=>button('',()=>{
+      if(route.length===16)return;
+      if(route.length>1&&index===route[route.length-2])route.pop();
+      else {
+        const candidate=[...route,index];
+        if(!validRoute(candidate)){
+          const checkpoint=puzzle.checkpoints.indexOf(index);
+          if(route.includes(index))status.textContent='通ったマスには戻れないよ。1つ前のマスを押してね。';
+          else if(!pathNeighbors(route[route.length-1]).includes(index))status.textContent='上下左右の隣のマスを押してね。';
+          else if(checkpoint>=0&&puzzle.checkpoints.slice(0,checkpoint).some(item=>!route.includes(item)))status.textContent='数字は1から順番に通ろう。';
+          else if(index===puzzle.goal)status.textContent='数字とほかのマスをすべて通ってからゴールしよう。';
+          else status.textContent='最後はゴールのマスへ進もう。';
+          return;
+        }
+        route=candidate;
+      }
+      moves++;
+      try {window.localStorage.setItem(key,JSON.stringify({date,route,moves}));} catch (_) {}
+      render();
+    }));
+    function render(){
+      const won=route.length===16&&route[15]===puzzle.goal;
+      buttons.forEach((b,i)=>{
+        const checkpoint=puzzle.checkpoints.indexOf(i),position=route.indexOf(i);
+        const label=i===puzzle.start?'スタート':i===puzzle.goal?'ゴール':checkpoint>=0?`数字${checkpoint+1}`:'マス';
+        b.textContent=i===puzzle.start?'始':i===puzzle.goal?'終':checkpoint>=0?String(checkpoint+1):position>=0?'・':'';
+        b.className=`path-cell${position>=0?' on':''}${i===route[route.length-1]?' path-current':''}`;
+        b.dataset.step=position>=0?String(position+1):'';
+        b.setAttribute('aria-label',`${Math.floor(i/4)+1}行${i%4+1}列 ${label}${position>=0?` 通過${position+1}番目`:''}${i===route[route.length-1]?' 現在地':''}`);
+        b.setAttribute('aria-pressed',String(position>=0));
+      });
+      status.textContent=won?`クリア！ ${moves}手`:`${route.length} / 16マス`;
+      if(won)offerResultCopy('path',date,moves);
     }
     render();
   },
