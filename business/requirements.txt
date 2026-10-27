@@ -1,2 +1,0 @@
-# Windows does not ship an IANA zoneinfo database.
-tzdata==2025.2
