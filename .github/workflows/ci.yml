@@ -2,8 +2,6 @@ name: Game site CI
 on:
   pull_request:
     branches: [main]
-  push:
-    branches: [dev]
 permissions:
   contents: read
 jobs:
@@ -19,8 +17,9 @@ jobs:
           node --check site/game.js
           node ops/check-games.cjs
       - name: Install browser test dependencies
+        timeout-minutes: 3
         run: |
-          npm install --no-save --no-package-lock playwright
-          npx playwright install --with-deps chromium
+          npm install --no-save --no-package-lock --fetch-retries=1 --fetch-timeout=30000 playwright
+          npx playwright install --only-shell chromium
       - name: Exercise games in a browser
         run: node ops/browser-check.cjs
