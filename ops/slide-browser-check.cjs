@@ -41,7 +41,12 @@ function solve(start) {
       await cells.nth(invalid).click(); assert.equal(await board(),start); assert.equal(await page.locator('#status').textContent(),'0手');
       const moves=solve(start);
       for(const [n,index] of moves.entries()) {
-        if(n===0){await cells.nth(index).focus(); await page.keyboard.press('Space');}
+        if(n===0 || n===moves.length-1){
+          const before=await board(), destination=before.indexOf('0'), tile=before[index];
+          await cells.nth(index).focus(); await page.keyboard.press('Space');
+          if(n===moves.length-1) assert(await page.locator('#restart').evaluate(el=>el===document.activeElement));
+          else {assert.equal((await board())[destination],tile);assert(await cells.nth(destination).evaluate(el=>el===document.activeElement));}
+        }
         else if(width===320) await cells.nth(index).tap(); else await cells.nth(index).click();
       }
       assert.equal(await board(),'123456780'); assert((await page.locator('#status').textContent()).includes('クリア'));

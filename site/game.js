@@ -116,12 +116,14 @@ const games = {
       [tiles[empty],tiles[next]]=[tiles[next],tiles[empty]];
       previous=empty; empty=next;
     }
-    const buttons=tiles.map((_,index)=>button('',()=>{
+    const buttons=tiles.map((_,index)=>button('',e=>{
       if(won || !neighbors(empty).includes(index)) return;
+      const needsFocus=e?.detail===0 && document.activeElement===buttons[index], destination=empty;
       [tiles[empty],tiles[index]]=[tiles[index],tiles[empty]];
       empty=index; moves++;
       won=tiles.every((tile,i)=>tile===solved[i]);
       render();
+      if(needsFocus) (won ? document.querySelector('#restart') : buttons[destination]).focus();
     }));
     function render() {
       buttons.forEach((b,index)=>{
