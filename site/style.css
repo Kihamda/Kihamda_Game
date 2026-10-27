@@ -19,3 +19,15 @@
 .record{margin:0 0 16px;font-weight:700;color:#5e5869}.record[hidden]{display:none}
 
 .copy-result{margin:0 0 16px;padding:10px 18px;min-height:44px;border:2px solid #29243e;border-radius:99px;background:transparent;color:#29243e;font-weight:800}.copy-result[hidden]{display:none}
+
+@media(max-width:480px) and (max-height:700px){
+  .slide-mode header{padding-top:10px;padding-bottom:10px}
+  .slide-mode .play{padding-top:8px}
+  .slide-mode .back{display:none}
+  .slide-mode .play-heading{margin:8px 0;flex-direction:row;align-items:center}
+  .slide-mode .play-heading h1{font-size:1.5rem}
+  .slide-mode .play-heading p{font-size:.85rem;margin:4px 0}
+  .slide-mode .play-heading .button{padding:10px 16px}
+  .slide-mode .status{margin:8px 0}
+  .slide-mode .board{width:min(100%,380px,max(200px,calc(100svh - 230px)))}
+}

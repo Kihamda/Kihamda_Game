@@ -34,6 +34,7 @@ function solve(start) {
       await page.goto(`${origin}/game.html?game=slide`);
       const cells=page.locator('#board button');
       assert.equal(await cells.count(),9);
+      if(width===320) assert(await page.evaluate(()=>document.querySelector('#board').getBoundingClientRect().bottom <= innerHeight),'all tiles should fit in the initial viewport');
       const board=async()=>(await cells.allTextContents()).map(s=>s||'0').join('');
       const start=await board(); assert.notEqual(start,'123456780');
       const empty=start.indexOf('0'); assert(await cells.nth(empty).isDisabled());

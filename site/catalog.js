@@ -17,7 +17,7 @@ const gameCatalog = {
   },
   "slide": {
     "title": "ならべてタイル",
-    "instructions": "空きマスの隣の数字を動かして、1から8まで順番に並べよう。"
+    "instructions": "数字を空きマスへ動かして、1から8まで並べよう。"
   },
   "garden": {
     "title": "かずの花壇",
