@@ -11,14 +11,13 @@
 
 - 公開先：https://game.kihamda.net/
 - GitHub：Kihamda/Kihamda_Game、main。
-- 新サイトは `rebuild/initial-20261027` の `new-site/` に保存済み。作業正本はWorkingの `site/`。公開前に両方の差分を照合する。
-- ブランチの `new-site/check-games.cjs` は旧パスを参照する。修正済みのローカル `ops/check-games.cjs` と同期する。
-- 既存CDは `.github/workflows/build-and-deploy.yml` の手動実行。mainと同じSHAの成功済みMonorepo CIの成果物を検証し、FTPで配置する。設定名は秘密の `FTP_SERVER`、`FTP_USERNAME`、`FTP_PASSWORD` と変数 `FTP_SERVER_DIR`。値は記録しない。
-- 旧CDは旧Webビルド専用のファイル一覧を検証する。`site/` はそのままでは公開されない。新サイトを公開するため、ビルド・検証・配置を新成果物に合わせる必要がある。
-- ローカルの `gh auth status` は認証失敗。GitHub接続アプリはブランチへの書き込みに成功したが、workflow_dispatch機能を提供していない。ローカル認証の復旧または安全なCD実行経路の確保が必要。
+- `dev` から `main` へのPR #38で新サイトとCDを導入中。作業正本は `site/`。
+- PRのCIは4ゲームの基本動作とPC・スマートフォン幅のChromium操作を検査する。`main`へのpushで `.github/workflows/deploy.yml` がFTPS配信する。
+- CDは旧トップをActions成果物へ保存し、版別ディレクトリに依存ファイルを配置・HTTPS照合した後、トップを切り替える。設定名は秘密の `FTP_SERVER`、`FTP_USERNAME`、`FTP_PASSWORD` と変数 `FTP_SERVER_DIR`。値は記録しない。
+- `gh` はサンドボックス外で認証済み。GitHub Actionsの結果と本番の実際の表示は未確認。
 
 ## 次回最初の行動
 
 `python ops/run-lock.py` を標準入力が開いたセッションで実行し、実行終了まで保持する。競合時は変更しない。取得後は前回の記録と実行中のActionsを確認する。プロセス終了時にOSがロックを解放するため、残った `run.lock` だけでは再開を妨げない。終了時はセッションへ改行を送り解放する。
 
-初回4本のブラウザ操作を検証する。その後、新サイトを既存CDに接続し、mainへの反映とCD実行、本番の4本の動作確認まで進める。
+PR #38のCIを確認し、成功後にmainへマージする。CDと本番URLを確認し、問題があれば修正する。

@@ -18,6 +18,7 @@ home = (source / 'index.html').read_text(encoding='utf-8')
 for name in ('style.css', 'game.html', 'about.html'):
     home = home.replace(f'href="{name}', f'href="/{prefix}/{name}')
 home = home.encode('utf-8')
+files['index.html'] = home
 
 def read_ftp(ftp, path):
     out = io.BytesIO()
