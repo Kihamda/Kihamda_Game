@@ -17,11 +17,22 @@ jobs:
           node --check site/game.js
           node ops/check-games.cjs
       - name: Check deployment and rollback
-        run: python3 ops/test_deploy.py
+        run: |
+          python3 ops/test_deploy.py
+          python3 ops/test_promote.py
+          python3 ops/test_fixed_pages.py
       - name: Install browser test dependencies
         timeout-minutes: 3
         run: |
           npm install --no-save --no-package-lock --fetch-retries=1 --fetch-timeout=30000 playwright
           npx playwright install --only-shell chromium
       - name: Exercise games in a browser
-        run: node ops/browser-check.cjs
+        run: |
+          node ops/browser-check.cjs
+          node ops/daily-browser-check.cjs
+          node ops/slide-browser-check.cjs
+          node ops/record-browser-check.cjs
+          node ops/share-browser-check.cjs
+          node ops/layout-browser-check.cjs
+          python3 ops/build_preview.py
+          node ops/fixed-browser-check.cjs

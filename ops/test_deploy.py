@@ -12,11 +12,12 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 SHA = 'a' * 40
 OLD_HOME = b'previous home'
+OLD_SITEMAP = b'previous sitemap'
 
 
 class FakeFTP:
     def __init__(self, *args, **kwargs):
-        self.files = {'index.html': OLD_HOME}
+        self.files = {'index.html': OLD_HOME, 'sitemap.xml': b'previous sitemap'}
         self.events = []
 
     def __enter__(self): return self
@@ -26,6 +27,10 @@ class FakeFTP:
     def prot_p(self): pass
     def cwd(self, *args): pass
     def mkd(self, *args): pass
+    def nlst(self): return list(self.files)
+    def delete(self, name):
+        self.events.append(('delete', name))
+        del self.files[name]
     def retrbinary(self, command, callback): callback(self.files[command[5:]])
     def storbinary(self, command, stream):
         self.events.append(('store', command[5:]))
@@ -67,16 +72,25 @@ class DeployTest(unittest.TestCase):
     def test_publishes_versioned_files_before_home(self):
         ftp = self.exercise(False)
         self.assertNotEqual(ftp.files['index.html'], OLD_HOME)
-        self.assertIn(f'/kg-releases/{SHA}/game.html'.encode(), ftp.files['index.html'])
-        for name in ('index.html', 'game.html', 'game.js', 'style.css', 'about.html'):
+        self.assertIn(b'href="/play-lights.html?mode=daily"', ftp.files['index.html'])
+        self.assertIn(b'href="/play-lights.html"', ftp.files['index.html'])
+        self.assertIn(b'/play-lights.html', ftp.files['sitemap.xml'])
+        self.assertIn(b'/site-info.html', ftp.files['sitemap.xml'])
+        self.assertIn(b'href="/site-info.html"', ftp.files['index.html'])
+        self.assertIn('site-info.html', ftp.files)
+        for name in ('index.html', 'game.html', 'catalog.js', 'game.js', 'style.css', 'about.html'):
             self.assertIn(f'kg-releases/{SHA}/{name}', ftp.files)
             self.assertIn(('store', f'kg-releases/{SHA}/{name}'), ftp.events[:-1])
-        self.assertEqual(ftp.events[-1], (f'index.html.pending-{SHA}', 'index.html'))
+        self.assertEqual(ftp.events[-1][1], 'sitemap.xml')
+        for name in ('lights', 'memory', 'order', 'dodge', 'slide', 'garden'):
+            self.assertIn(f'play-{name}.html', ftp.files)
 
     def test_restores_home_when_published_home_fails_verification(self):
         ftp = self.exercise(True)
         self.assertEqual(ftp.files['index.html'], OLD_HOME)
-        self.assertEqual(ftp.events[-1], (f'index.html.restore-{SHA}', 'index.html'))
+        self.assertEqual(ftp.files['sitemap.xml'], OLD_SITEMAP)
+        self.assertFalse(any(name.startswith('play-') for name in ftp.files))
+        self.assertFalse(any('.pending-' in name or '.restore-' in name for name in ftp.files))
 
 
 if __name__ == '__main__':

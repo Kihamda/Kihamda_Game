@@ -18,7 +18,7 @@ const server = http.createServer((req, res) => {
     for (const width of [320, 375, 1280]) {
       const page = await browser.newPage({ viewport: {width, height: width === 320 ? 568 : width === 375 ? 667 : 800}, hasTouch: width <= 375 });
       const errors = []; page.on('pageerror', e => errors.push(e.message));
-      await page.goto(origin); assert.equal(await page.locator('.card').count(), 5);
+      await page.goto(origin); assert.equal(await page.locator('.card').count(), 6);
       await page.getByRole('link', {name:'このサイトについて'}).click();
       assert.equal(await page.getByRole('link', {name:'Kihamda.NETのお問い合わせフォーム'}).getAttribute('href'), 'https://kihamda.net/form');
       assert.equal(await page.getByRole('link', {name:'Kihamda.NETのプライバシーポリシー'}).getAttribute('href'), 'https://kihamda.net/privacy-policy');
@@ -35,9 +35,10 @@ const server = http.createServer((req, res) => {
       await page.reload();
       assert.deepEqual(await page.locator('#board button').allTextContents(), dailyBoard);
       assert.equal(await page.locator('.back').getAttribute('href'), '/#games');
-      for (const id of ['lights','memory','order','dodge','garden']) {
+      for (const id of ['lights','memory','order','dodge','slide','garden']) {
         await page.goto(`${origin}/game.html?game=${id}`);
         assert(await page.locator('#title').textContent());
+        if(width===320 && id!=='dodge') assert(await page.evaluate(()=>document.querySelector('#board').getBoundingClientRect().bottom<=innerHeight),`${id}: board should fit in the initial viewport`);
         if (id === 'lights') { await page.locator('#board button').first().click(); assert((await page.locator('#status').textContent()).includes('1手')); }
         if (id === 'memory') { await page.locator('#board button').first().click(); assert.notEqual(await page.locator('#board button').first().textContent(), '？'); }
         if (id === 'order') { for(let n=1;n<=16;n++) await page.getByRole('button',{name:String(n),exact:true}).click(); assert((await page.locator('#status').textContent()).includes('ゴール')); }
@@ -162,8 +163,12 @@ const server = http.createServer((req, res) => {
       const indices=symbols.flatMap((s,i)=>s===symbol?[i]:[]);
       await completionPage.locator('#board button').nth(indices[0]).click();
       assert((await completionPage.locator('#board button').nth(indices[0]).getAttribute('aria-label')).includes(names[symbol]));
-      await completionPage.locator('#board button').nth(indices[1]).click();
+      await completionPage.locator('#board button').nth(indices[1]).focus();
+      await completionPage.keyboard.press('Space');
+      assert(await completionPage.locator('#board button').nth(indices[1]).isDisabled());
+      assert(await completionPage.evaluate(() => document.activeElement.tagName === 'BUTTON' && !document.activeElement.disabled), 'focus must move to another available control');
     }
+    assert(await completionPage.locator('#restart').evaluate(el=>el===document.activeElement));
     assert((await completionPage.locator('#status').textContent()).includes('クリア'));
     assert((await completionPage.locator('#board button').first().getAttribute('aria-label')).includes('そろったカード'));
     await completionPage.close();

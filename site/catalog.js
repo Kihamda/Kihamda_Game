@@ -1,0 +1,26 @@
+const gameCatalog = {
+  "lights": {
+    "title": "ひかりのスイッチ",
+    "instructions": "押したマスと上下左右の灯りが切り替わるよ。すべて消そう。"
+  },
+  "memory": {
+    "title": "ペアをさがせ",
+    "instructions": "カードを2枚ずつめくって、同じ絵をそろえよう。"
+  },
+  "order": {
+    "title": "数字のかけっこ",
+    "instructions": "1から16まで順番に押そう。最初のタップで計測開始！"
+  },
+  "dodge": {
+    "title": "ほしよけステップ",
+    "instructions": "左右のボタンか矢印キーで動いて、星をよけよう。"
+  },
+  "slide": {
+    "title": "ならべてタイル",
+    "instructions": "数字を空きマスへ動かして、1から8まで並べよう。"
+  },
+  "garden": {
+    "title": "かずの花壇",
+    "instructions": "マスを押して、各行と各列の数字と同じ数だけ花を咲かせよう。"
+  }
+};
