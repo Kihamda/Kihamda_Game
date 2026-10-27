@@ -1,4 +1,5 @@
-const id = new URLSearchParams(location.search).get('game');
+const params = new URLSearchParams(location.search);
+const id = params.get('game');
 const board = document.querySelector('#board'), status = document.querySelector('#status');
 const title = document.querySelector('#title'), instructions = document.querySelector('#instructions');
 const category = document.querySelector('#category'), controls = document.querySelector('#controls');
@@ -10,7 +11,23 @@ const games = {
     category.textContent = 'パズル'; title.textContent = 'ひかりのスイッチ'; instructions.textContent = '押したマスと上下左右の灯りが切り替わるよ。すべて消そう。';
     let cells = Array(16).fill(false), moves = 0;
     const toggle = i => { const x = i % 4, y = Math.floor(i / 4); [[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy]) => { const a=x+dx,b=y+dy; if(a>=0&&a<4&&b>=0&&b<4) cells[b*4+a]=!cells[b*4+a]; }); };
-    do { cells.fill(false); shuffle([...Array(16).keys()]).slice(0,8).forEach(toggle); } while (!cells.some(Boolean));
+    if (params.get('mode') === 'daily') {
+      const parts = new Intl.DateTimeFormat('en-US', {timeZone:'Asia/Tokyo', year:'numeric', month:'2-digit', day:'2-digit'}).formatToParts(new Date());
+      const part = type => parts.find(item => item.type === type).value;
+      const date = `${part('year')}-${part('month')}-${part('day')}`;
+      category.textContent = `今日のパズル ${date}`;
+      let seed = Number(date.replace(/\D/g, '')) >>> 0;
+      const indices = [...Array(16).keys()];
+      for (let i = indices.length - 1; i > 0; i--) {
+        seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+        const j = seed % (i + 1);
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+      indices.slice(0, 8).forEach(toggle);
+      if (!cells.some(Boolean)) toggle(0);
+    } else {
+      do { cells.fill(false); shuffle([...Array(16).keys()]).slice(0,8).forEach(toggle); } while (!cells.some(Boolean));
+    }
     const buttons = cells.map((_,i) => button('', () => { if (!cells.some(Boolean)) return; toggle(i); moves++; render(); }));
     function render() { cells.forEach((on,i) => { buttons[i].className = on ? 'on' : ''; buttons[i].textContent = on ? '✦' : '·'; buttons[i].setAttribute('aria-label', `${Math.floor(i/4)+1}行${i%4+1}列 ${on?'点灯':'消灯'}`); }); status.textContent = cells.some(Boolean) ? `${moves}手` : `クリア！ ${moves}手で消せたよ`; } render();
   },

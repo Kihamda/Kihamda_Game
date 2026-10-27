@@ -19,6 +19,15 @@ const server = http.createServer((req, res) => {
       const page = await browser.newPage({ viewport: {width, height: 800} });
       const errors = []; page.on('pageerror', e => errors.push(e.message));
       await page.goto(origin); assert.equal(await page.locator('.card').count(), 4);
+      await page.locator('.daily-link').click();
+      assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
+      const dailyBoard = await page.locator('#board button').allTextContents();
+      await page.locator('#board button').first().click();
+      await page.locator('#restart').click();
+      assert.deepEqual(await page.locator('#board button').allTextContents(), dailyBoard);
+      await page.reload();
+      assert.deepEqual(await page.locator('#board button').allTextContents(), dailyBoard);
+      assert.equal(await page.locator('.back').getAttribute('href'), '/#games');
       for (const id of ['lights','memory','order','dodge']) {
         await page.goto(`${origin}/game.html?game=${id}`);
         assert(await page.locator('#title').textContent());
