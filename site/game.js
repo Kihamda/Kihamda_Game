@@ -80,6 +80,28 @@ function generatePathPuzzle(year, month, dayOfMonth) {
   const boards=pathPuzzlesByStart.get(start);
   return boards[seed%boards.length];
 }
+// Each reverse step is the inverse of a legal forward move.
+function generateSortPuzzle(random = Math.random) {
+  let tubes;
+  do {
+    tubes = [[0,0,0],[1,1,1],[2,2,2],[]];
+    let previous = '';
+    for (let step=0;step<24;step++) {
+      const options=[];
+      for(let from=0;from<4;from++) for(let to=0;to<4;to++) {
+        const source=tubes[from], target=tubes[to];
+        if(from===to || !source.length || target.length===3) continue;
+        if(source.length>1 && source[source.length-2]!==source[source.length-1]) continue;
+        if(`${to},${from}`===previous) continue;
+        options.push([from,to]);
+      }
+      if(!options.length) break;
+      const [from,to]=options[Math.floor(random()*options.length)];
+      tubes[to].push(tubes[from].pop()); previous=`${from},${to}`;
+    }
+  } while (tubes.filter(t=>new Set(t).size>1).length<2);
+  return tubes;
+}
 const games = {
   lights(reset) {
     category.textContent = 'パズル';
@@ -237,6 +259,49 @@ const games = {
     }
     render();
   },
+  sort() {
+    category.textContent='パズル';
+    board.classList.add('sort');
+    const names=['あか','あお','きいろ'], symbols=['●','▲','◆'];
+    let tubes=generateSortPuzzle(), selected=null, moves=0, history=[], won=false;
+    const buttons=Array.from({length:4},(_,index)=>button('',()=>{
+      if(won)return;
+      if(selected===null) {
+        if(!tubes[index].length){status.textContent='玉のあるボトルを選んでね';return;}
+        selected=index;
+      } else if(selected===index) selected=null;
+      else {
+        const source=tubes[selected], target=tubes[index], color=source[source.length-1];
+        if(target.length===3 || (target.length && target[target.length-1]!==color)) {
+          status.textContent='空きか、同じ色の上に移してね';return;
+        }
+        history.push(tubes.map(t=>[...t]));target.push(source.pop());selected=null;moves++;
+        won=tubes.every(t=>!t.length || (t.length===3 && t.every(c=>c===t[0])));
+      }
+      render();
+    }));
+    const undo=button('一手戻す',()=>{
+      if(!history.length)return;
+      tubes=history.pop();selected=null;moves--;won=false;render();
+    });
+    undo.className='sort-undo';
+    function render(){
+      buttons.forEach((b,index)=>{
+        const tube=tubes[index];b.replaceChildren();
+        for(let slot=2;slot>=0;slot--){
+          const span=document.createElement('span'), color=tube[slot];
+          span.className=color===undefined?'sort-slot':`sort-slot sort-color-${color}`;
+          span.textContent=color===undefined?'':symbols[color];b.append(span);
+        }
+        b.className=selected===index?'sort-selected':'';
+        b.setAttribute('aria-pressed',String(selected===index));
+        b.setAttribute('aria-label',`${index+1}番のボトル ${tube.length ? `下から${tube.map(c=>names[c]).join('、')}` : '空'}${selected===index?' 選択中':''}`);
+      });
+      undo.setAttribute('aria-disabled',String(!history.length));
+      status.textContent=won?`クリア！ ${moves}手でそろえたよ`:selected===null?`${moves}手`: `${selected+1}番を選択中。移す先を押してね`;
+    }
+    render();
+  },
   slide() {
     category.textContent='パズル';
     board.classList.add('slide');
@@ -317,5 +382,5 @@ const games = {
     draw();status.textContent='スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;startButton.hidden=true;alive=true;last=0;frame=requestAnimationFrame(loop);});cleanup=()=>{alive=false;startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',stopMoving); for(const [el,down] of [[left,downL],[right,downR]]){el.replaceWith(el.cloneNode(true));}};
   }
 };
-function start(reset=false){runGeneration++;cleanup();cleanup=()=>{};document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path');board.style.display='';controls.hidden=true;if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;}
+function start(reset=false){runGeneration++;cleanup();cleanup=()=>{};document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort');board.style.display='';controls.hidden=true;if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;}
 document.querySelector('#restart').addEventListener('click',()=>start(true));start();

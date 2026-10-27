@@ -1,0 +1,6 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const source=fs.readFileSync('site/game.js','utf8');
+const generator=source.slice(source.indexOf('function generateSortPuzzle'),source.indexOf('const games = {'));
+const context={};vm.runInNewContext(`${generator}\nthis.generateSortPuzzle=generateSortPuzzle`,context);
+function solve(start){const key=t=>t.map(x=>x.join('')).join('|'),queue=[start],seen=new Set([key(start)]);for(let n=0;n<queue.length;n++){const t=queue[n];if(t.every(x=>!x.length||(x.length===3&&x.every(c=>c===x[0]))))return true;for(let i=0;i<4;i++)for(let j=0;j<4;j++){if(i===j||!t[i].length||t[j].length===3||(t[j].length&&t[j].at(-1)!==t[i].at(-1)))continue;const next=t.map(a=>[...a]);next[j].push(next[i].pop());const k=key(next);if(!seen.has(k)){seen.add(k);queue.push(next);}}}return false;}
+const unique=new Set();for(let i=0;i<200;i++){const t=Array.from(context.generateSortPuzzle(),x=>Array.from(x));assert.deepEqual(t.flat().sort(),[0,0,0,1,1,1,2,2,2]);assert(t.every(x=>x.length<=3));assert(t.filter(x=>new Set(x).size>1).length>=2);assert(solve(t));unique.add(JSON.stringify(t));}assert(unique.size>30);console.log(`Sort: 200 generated boards solvable, ${unique.size} distinct`);

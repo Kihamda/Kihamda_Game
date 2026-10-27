@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
     await page.getByRole('link', {name:/まいにち道つなぎ/}).click();
     assert.equal(new URL(page.url()).pathname, '/play-path.html');
     assert.equal(await page.locator('#board button').count(), 16);
-    for (const [id, title] of [['lights','ひかりのスイッチ'], ['memory','ペアをさがせ'], ['order','数字のかけっこ'], ['dodge','ほしよけステップ'], ['sum','ぴったり3枚'], ['slide','ならべてタイル'], ['garden','かずの花壇'], ['path','まいにち道つなぎ']]) {
+    for (const [id, title] of [['lights','ひかりのスイッチ'], ['memory','ペアをさがせ'], ['order','数字のかけっこ'], ['dodge','ほしよけステップ'], ['sum','ぴったり3枚'], ['slide','ならべてタイル'], ['garden','かずの花壇'], ['path','まいにち道つなぎ'], ['sort','いろわけボトル']]) {
       await page.goto(`${origin}/play-${id}.html?game=invalid`);
       assert.equal(await page.locator('#title').textContent(), title);
       assert(await page.locator('#board button, #board canvas').count());
@@ -48,7 +48,7 @@ const server = http.createServer((req, res) => {
     assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
     const noJs = await browser.newContext({javaScriptEnabled:false});
     const plain = await noJs.newPage();
-    for (const id of ['lights','memory','order','dodge','slide','sum','garden','path']) {
+    for (const id of ['lights','memory','order','dodge','slide','sum','garden','path','sort']) {
       await plain.goto(`${origin}/play-${id}.html`);
       assert(await plain.locator('#instructions').isVisible());
       assert(await plain.locator('noscript p').isVisible());

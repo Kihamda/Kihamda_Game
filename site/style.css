@@ -56,3 +56,13 @@
   .grid-mode .board button{min-height:0}
   .grid-mode .board.garden{gap:6px}
 }
+
+.board.sort{max-width:440px;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start}
+.board.sort>button:not(.sort-undo){aspect-ratio:auto;min-height:0;padding:10px 5px;display:flex;flex-direction:column;gap:5px;background:#eee8f4;border:2px solid #d0c7dd}
+.board.sort .sort-selected{outline:3px solid #5323a3;outline-offset:2px}
+.sort-slot{display:grid;place-items:center;width:100%;height:clamp(32px,9vw,65px);border-radius:50%;font-size:clamp(1.1rem,5vw,2rem);line-height:1}
+.sort-color-0{background:#f4a4a5;color:#582733}.sort-color-1{background:#9ec9ef;color:#153d66}.sort-color-2{background:#f9d575;color:#584012}
+.board.sort .sort-undo{grid-column:1 / -1;justify-self:start;aspect-ratio:auto;min-height:44px;padding:8px 18px;font-size:1rem;border-radius:99px}
+@media(max-height:500px){.sort-slot{height:32px}.board.sort>button:not(.sort-undo){padding:5px;gap:3px}}
+
+.board.sort .sort-undo[aria-disabled=true]{opacity:.5}
