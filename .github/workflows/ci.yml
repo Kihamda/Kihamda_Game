@@ -1,27 +1,26 @@
-name: CI — Lint & Build
-
+name: Game site CI
 on:
   pull_request:
     branches: [main]
-  workflow_dispatch:
-
+  push:
+    branches: [dev]
+permissions:
+  contents: read
 jobs:
-  lint-and-build:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Build
-        run: npm run build
+          node-version: '22'
+      - name: Check game logic
+        run: |
+          node --check site/game.js
+          node ops/check-games.cjs
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Exercise games in a browser
+        run: node ops/browser-check.cjs
