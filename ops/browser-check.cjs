@@ -162,8 +162,12 @@ const server = http.createServer((req, res) => {
       const indices=symbols.flatMap((s,i)=>s===symbol?[i]:[]);
       await completionPage.locator('#board button').nth(indices[0]).click();
       assert((await completionPage.locator('#board button').nth(indices[0]).getAttribute('aria-label')).includes(names[symbol]));
-      await completionPage.locator('#board button').nth(indices[1]).click();
+      await completionPage.locator('#board button').nth(indices[1]).focus();
+      await completionPage.keyboard.press('Space');
+      assert(await completionPage.locator('#board button').nth(indices[1]).isDisabled());
+      assert(await completionPage.evaluate(() => document.activeElement.tagName === 'BUTTON' && !document.activeElement.disabled), 'focus must move to another available control');
     }
+    assert(await completionPage.locator('#restart').evaluate(el=>el===document.activeElement));
     assert((await completionPage.locator('#status').textContent()).includes('クリア'));
     assert((await completionPage.locator('#board button').first().getAttribute('aria-label')).includes('そろったカード'));
     await completionPage.close();
