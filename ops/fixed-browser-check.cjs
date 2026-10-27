@@ -19,6 +19,9 @@ const server = http.createServer((req, res) => {
     const errors = []; page.on('pageerror', error => errors.push(error.message));
     for(const width of [320,375,1280]) {
       await page.setViewportSize({width,height:800});await page.goto(`${origin}/index.html`);
+      assert.equal(await page.title(),'無料ブラウザゲーム | Kihamda Games');
+      assert.equal(await page.locator('link[rel=canonical]').getAttribute('href'),'https://game.kihamda.net/');
+      assert((await page.locator('meta[name=description]').getAttribute('content')).includes('日替わりパズル'));
       const links=page.locator('.daily-link');assert.equal(await links.count(),5);
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
       const rects=await links.evaluateAll(items=>items.map(el=>{const r=el.getBoundingClientRect();return [r.width,r.height,r.right]}));
