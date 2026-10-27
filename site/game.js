@@ -74,14 +74,14 @@ const games = {
   dodge() {
     document.body.classList.add('dodge-mode');status.setAttribute('aria-live','off');category.textContent='アクション';title.textContent='ほしよけステップ';instructions.textContent='左右のボタンか矢印キーで動いて、星をよけよう。'; controls.hidden=false;
     const canvas=document.createElement('canvas');canvas.width=400;canvas.height=400;canvas.setAttribute('aria-label','星をよけるゲーム画面'); board.style.display='block'; board.append(canvas); const ctx=canvas.getContext('2d');
-    let x=200, items=[], ticks=0, last=0, elapsed=0, frame=0, alive=false, dir=0, pointerDir=0;
-    const keys=new Set(); const updateDirection=()=>{dir=pointerDir || Number(keys.has('ArrowRight'))-Number(keys.has('ArrowLeft'));};
+    let x=200, items=[], ticks=0, last=0, elapsed=0, frame=0, alive=false, dir=0;
+    const keys=new Set(), pointers=new Map(); const updateDirection=()=>{const held=[...pointers.values()];dir=held.length?Number(held.includes(1))-Number(held.includes(-1)):Number(keys.has('ArrowRight'))-Number(keys.has('ArrowLeft'));};
     const startButton=document.createElement('button'); startButton.type='button'; startButton.className='button dodge-start'; startButton.textContent='スタート'; board.append(startButton);
     function move(e){if(!alive)return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();if(e.type==='keydown')keys.add(e.key);else keys.delete(e.key);updateDirection();}}
-    const stopMoving=()=>{keys.clear();pointerDir=0;updateDirection();};
+    const stopMoving=()=>{keys.clear();pointers.clear();updateDirection();};
     document.addEventListener('keydown',move);document.addEventListener('keyup',move);window.addEventListener('blur',stopMoving);document.addEventListener('visibilitychange',stopMoving);
     const left=document.querySelector('#left'),right=document.querySelector('#right');
-    const downL=()=>{if(alive){pointerDir=-1;updateDirection();}}, downR=()=>{if(alive){pointerDir=1;updateDirection();}}, up=()=>{pointerDir=0;updateDirection();};
+    const downL=e=>{if(alive){pointers.set(e.pointerId,-1);updateDirection();}}, downR=e=>{if(alive){pointers.set(e.pointerId,1);updateDirection();}}, up=e=>{pointers.delete(e.pointerId);updateDirection();};
     for(const [el,down] of [[left,downL],[right,downR]]){el.addEventListener('pointerdown',down);el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);el.addEventListener('pointerleave',up);el.addEventListener('click',()=>{if(!alive)return;x=Math.max(15,Math.min(385,x+(el===left?-30:30)));});}
     function draw(){ctx.clearRect(0,0,400,400);ctx.fillStyle='#a9dfc8';ctx.beginPath();ctx.arc(x,365,14,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f9c96e';ctx.font='26px sans-serif';for(const p of items)ctx.fillText('✦',p.x-12,p.y+8);}
     function loop(t){if(!alive)return;const dt=last?Math.min((t-last)/1000,.05):0;last=t;elapsed+=dt;ticks+=dt;x=Math.max(15,Math.min(385,x+dir*230*dt));if(ticks>.55){ticks=0;items.push({x:15+Math.random()*370,y:-15,s:110+Math.random()*80+elapsed*2});}for(const p of items){p.y+=p.s*dt;if(Math.abs(p.x-x)<22&&Math.abs(p.y-365)<22)alive=false;}items=items.filter(p=>p.y<420);draw();status.textContent=alive?`${elapsed.toFixed(1)}秒`:`ゲームオーバー！ ${elapsed.toFixed(1)}秒`;if(alive)frame=requestAnimationFrame(loop);else announcement.textContent=status.textContent;}

@@ -93,6 +93,17 @@ const server = http.createServer((req, res) => {
             await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
             await page.waitForTimeout(50); const released=await playerX();
             await page.waitForTimeout(100); assert.equal(await playerX(),released,'release should stop movement');
+            const leftRect=await page.locator('#left').boundingBox();
+            const leftPoint={x:leftRect.x+leftRect.width/2,y:leftRect.y+leftRect.height/2,id:11};
+            const rightPoint={...point,id:12};
+            await client.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[leftPoint]});
+            await client.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[leftPoint,rightPoint]});
+            await page.waitForTimeout(50); const both=await playerX();
+            await page.waitForTimeout(100); assert.equal(await playerX(),both,'opposite touches should cancel');
+            await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[leftPoint]});
+            await page.waitForTimeout(50); const one=await playerX();
+            await page.waitForTimeout(150); assert((await playerX())>one,'remaining touch should move right');
+            await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
             await client.detach();
           }
           await page.keyboard.down('ArrowLeft'); await page.waitForTimeout(100);
