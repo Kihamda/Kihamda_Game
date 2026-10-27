@@ -22,7 +22,10 @@ const server = http.createServer((req, res) => {
       await page.getByRole('link', {name:'このサイトについて'}).click();
       assert.equal(await page.getByRole('link', {name:'Kihamda.NETのお問い合わせフォーム'}).getAttribute('href'), 'https://kihamda.net/form');
       await page.goto(origin);
-      await page.locator('.daily-link').click();
+      await page.getByRole('link',{name:'今日のかずの花壇 ↗'}).click();
+      assert.equal(await page.locator('#title').textContent(), 'かずの花壇');
+      await page.goto(origin);
+      await page.getByRole('link',{name:'今日のひかりのスイッチ ↗'}).click();
       assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
       const dailyBoard = await page.locator('#board button').allTextContents();
       await page.locator('#board button').first().click();
@@ -79,6 +82,19 @@ const server = http.createServer((req, res) => {
           assert(before !== null && after !== null && after < before, 'player should move left after starting');
           if(width<=375) await page.locator('#right').tap(); else await page.locator('#right').click(); await page.waitForTimeout(50);
           assert((await playerX()) > after, 'right button should move player right');
+          if(width<=375) {
+            const client=await page.context().newCDPSession(page);
+            const rect=await page.locator('#right').boundingBox();
+            const point={x:rect.x+rect.width/2,y:rect.y+rect.height/2};
+            const holdBefore=await playerX();
+            await client.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[point]});
+            await page.waitForTimeout(200); const holding=await playerX();
+            assert(holding>holdBefore, 'touch hold should move right');
+            await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+            await page.waitForTimeout(50); const released=await playerX();
+            await page.waitForTimeout(100); assert.equal(await playerX(),released,'release should stop movement');
+            await client.detach();
+          }
           await page.keyboard.down('ArrowLeft'); await page.waitForTimeout(100);
           await page.evaluate(() => window.dispatchEvent(new Event('blur')));
           await page.waitForTimeout(50); const stopped = await playerX();
