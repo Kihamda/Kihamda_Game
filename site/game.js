@@ -67,7 +67,7 @@ const games = {
     let open=[], matched=0, turns=0, timer=0, locked=false;
     const names={'●':'まる','◆':'ひし形','▲':'さんかく','★':'ほし','♥':'ハート','☀':'たいよう','✿':'はな','■':'しかく'};
     const cardLabel=(i,value)=>`${Math.floor(i/4)+1}行${i%4+1}列 ${value}`;
-    const buttons=symbols.map((s,i)=>button('？',()=>{ if(locked || buttons[i].disabled || open.includes(i)) return; buttons[i].textContent=s; buttons[i].className='flipped'; buttons[i].setAttribute('aria-label',cardLabel(i,names[s])); open.push(i); if(open.length===2){ turns++; if(symbols[open[0]]===symbols[open[1]]) { const focused=buttons.indexOf(document.activeElement); const needsFocus=open.includes(focused); open.forEach(j=>{buttons[j].disabled=true;buttons[j].className='matched';buttons[j].setAttribute('aria-label',cardLabel(j,`${names[symbols[j]]} そろったカード`));}); matched++;open=[];status.textContent=matched===8?`クリア！ ${turns}回でそろえたよ`:`${matched}組 / 8組`; if(needsFocus){const remaining=buttons.slice(focused+1).concat(buttons.slice(0,focused)).find(b=>!b.disabled);(remaining || document.querySelector('#restart')).focus();} } else {locked=true; timer=setTimeout(()=>{open.forEach(j=>{buttons[j].textContent='？';buttons[j].className='';buttons[j].setAttribute('aria-label',cardLabel(j,'伏せたカード'));});open=[];locked=false;},700);} } })); buttons.forEach((b,i)=>b.setAttribute('aria-label',cardLabel(i,'伏せたカード'))); status.textContent='0組 / 8組'; cleanup=()=>clearTimeout(timer);
+    const buttons=symbols.map((s,i)=>button('？',e=>{ if(locked || buttons[i].disabled || open.includes(i)) return; buttons[i].textContent=s; buttons[i].className='flipped'; buttons[i].setAttribute('aria-label',cardLabel(i,names[s])); open.push(i); if(open.length===2){ turns++; if(symbols[open[0]]===symbols[open[1]]) { const focused=buttons.indexOf(document.activeElement); const needsFocus=e?.detail===0 && open.includes(focused); open.forEach(j=>{buttons[j].disabled=true;buttons[j].className='matched';buttons[j].setAttribute('aria-label',cardLabel(j,`${names[symbols[j]]} そろったカード`));}); matched++;open=[];status.textContent=matched===8?`クリア！ ${turns}回でそろえたよ`:`${matched}組 / 8組`; if(needsFocus){const remaining=buttons.slice(focused+1).concat(buttons.slice(0,focused)).find(b=>!b.disabled);(remaining || document.querySelector('#restart')).focus();} } else {locked=true; timer=setTimeout(()=>{open.forEach(j=>{buttons[j].textContent='？';buttons[j].className='';buttons[j].setAttribute('aria-label',cardLabel(j,'伏せたカード'));});open=[];locked=false;},700);} } })); buttons.forEach((b,i)=>b.setAttribute('aria-label',cardLabel(i,'伏せたカード'))); status.textContent='0組 / 8組'; cleanup=()=>clearTimeout(timer);
   },
   order() {
     category.textContent='スピード';
@@ -79,9 +79,10 @@ const games = {
     const showBest=()=>{record.hidden=best===null;record.textContent=best===null?'':`自己ベスト ${best.toFixed(2)}秒`;};
     showBest();
     const nums=shuffle([...Array(16)].map((_,i)=>i+1));
-    nums.forEach(n=>{
-      const b=button(n,()=>{
+    const buttons=nums.map(n=>{
+      const b=button(n,e=>{
         if(n!==next)return;
+        const needsFocus=e?.detail===0 && document.activeElement===b;
         if(next===1)start=performance.now();
         b.disabled=true;b.className='matched';next++;
         if(next===17){
@@ -93,7 +94,13 @@ const games = {
             showBest();
           }
         } else status.textContent=`次は ${next}`;
+        if(needsFocus){
+          const index=buttons.indexOf(b);
+          const remaining=buttons.slice(index+1).concat(buttons.slice(0,index)).find(item=>!item.disabled);
+          (remaining || document.querySelector('#restart')).focus();
+        }
       });
+      return b;
     });
     status.textContent='次は 1';
   },

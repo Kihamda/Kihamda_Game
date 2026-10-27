@@ -14,10 +14,15 @@ const server = http.createServer((req,res)=>{
     const context=await browser.newContext();
     await context.addInitScript(()=>{let t=0;Object.defineProperty(performance,'now',{value:()=>{t+=window.testStep||1000;return t}})});
     const page=await context.newPage();
-    const finish=async()=>{for(let n=1;n<=16;n++)await page.getByRole('button',{name:String(n),exact:true}).click()};
+    const finish=async()=>{for(let n=1;n<=15;n++)await page.getByRole('button',{name:String(n),exact:true}).click();await page.getByRole('button',{name:'16',exact:true}).focus();await page.keyboard.press('Space')};
     await page.goto(`${origin}/game.html?game=order`);
     assert(await page.locator('#record').isHidden());
+    await page.getByRole('button',{name:'1',exact:true}).focus();
+    await page.keyboard.press('Space');
+    assert(await page.evaluate(()=>document.activeElement.tagName==='BUTTON' && !document.activeElement.disabled));
+    await page.locator('#restart').click();
     await finish(); assert.equal(await page.locator('#record').textContent(),'自己ベスト 1.00秒');
+    assert(await page.locator('#restart').evaluate(el=>el===document.activeElement));
     await page.locator('#restart').click(); await page.evaluate(()=>window.testStep=2000); await finish();
     assert.equal(await page.locator('#record').textContent(),'自己ベスト 1.00秒');
     await page.locator('#restart').click(); await page.evaluate(()=>window.testStep=500); await finish();
