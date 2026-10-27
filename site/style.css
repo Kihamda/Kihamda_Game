@@ -67,6 +67,6 @@
 
 .board.sort .sort-undo[aria-disabled=true]{opacity:.5}
 
-header>a,footer a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}
+header>a,footer a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}.brand{gap:.22em}
 @media(max-width:480px) and (max-height:700px){.grid-mode header,.dodge-mode header{padding-top:4px;padding-bottom:4px}}
 @media(max-height:500px) and (min-width:481px){.grid-mode header,.dodge-mode header{padding-top:0;padding-bottom:0}}
