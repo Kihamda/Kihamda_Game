@@ -7,7 +7,7 @@ import os
 import re
 import ssl
 import time
-from fixed_pages import fixed_home, fixed_pages
+from fixed_pages import fixed_home, fixed_info, fixed_pages
 from promote import promote
 
 commit = os.environ['GITHUB_SHA']
@@ -22,7 +22,7 @@ files['index.html'] = home
 sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
            + ''.join(f'  <url><loc>https://game.kihamda.net/{name}</loc></url>\n'
-                     for name in ['', *pages]) + '</urlset>\n').encode('utf-8')
+                     for name in ['', *pages, 'site-info.html']) + '</urlset>\n').encode('utf-8')
 
 def read_ftp(ftp, path):
     out = io.BytesIO()
@@ -69,5 +69,5 @@ with FTP_TLS(context=ssl.create_default_context(), timeout=30) as ftp:
         verify_http(name, body)
         if name == 'index.html':
             verify_http('', body)
-    promote(ftp, {**pages, 'index.html': home, 'sitemap.xml': sitemap}, verify_root_file, read_ftp)
+    promote(ftp, {'site-info.html': fixed_info(source, commit), **pages, 'index.html': home, 'sitemap.xml': sitemap}, verify_root_file, read_ftp)
 print('Published and verified', commit)

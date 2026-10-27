@@ -23,12 +23,18 @@ const server = http.createServer((req, res) => {
     assert.equal(new URL(page.url()).searchParams.get('mode'), 'daily');
     await page.waitForFunction(() => document.querySelector('#category').textContent.startsWith('今日のパズル'));
     await page.goto(`${origin}/index.html`);
+    await page.getByRole('link', {name:'このサイトについて'}).click();
+    assert.equal(new URL(page.url()).pathname, '/site-info.html');
+    assert.equal(await page.getByRole('link',{name:'Kihamda.NETのお問い合わせフォーム'}).getAttribute('href'),'https://kihamda.net/form');
+    assert.equal(await page.getByRole('link',{name:'Kihamda.NETのプライバシーポリシー'}).getAttribute('href'),'https://kihamda.net/privacy-policy');
+    await page.goto(`${origin}/index.html`);
     await page.getByRole('link', {name:/ペアをさがせ/}).click();
     assert.equal(new URL(page.url()).pathname, '/play-memory.html');
     for (const [id, title] of [['lights','ひかりのスイッチ'], ['memory','ペアをさがせ'], ['order','数字のかけっこ'], ['dodge','ほしよけステップ'], ['slide','ならべてタイル'], ['garden','かずの花壇']]) {
       await page.goto(`${origin}/play-${id}.html?game=invalid`);
       assert.equal(await page.locator('#title').textContent(), title);
       assert(await page.locator('#board button, #board canvas').count());
+      assert.equal(await page.getByRole('link',{name:'このサイトについて'}).getAttribute('href'), '/site-info.html');
       assert.equal(await page.locator('link[rel=canonical]').getAttribute('href'), `https://game.kihamda.net/play-${id}.html`);
       assert.equal(await page.locator('meta[name=description]').getAttribute('content'), await page.locator('#instructions').textContent());
       await page.locator('#restart').click();

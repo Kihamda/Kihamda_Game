@@ -75,6 +75,9 @@ class DeployTest(unittest.TestCase):
         self.assertIn(b'href="/play-lights.html?mode=daily"', ftp.files['index.html'])
         self.assertIn(b'href="/play-lights.html"', ftp.files['index.html'])
         self.assertIn(b'/play-lights.html', ftp.files['sitemap.xml'])
+        self.assertIn(b'/site-info.html', ftp.files['sitemap.xml'])
+        self.assertIn(b'href="/site-info.html"', ftp.files['index.html'])
+        self.assertIn('site-info.html', ftp.files)
         for name in ('index.html', 'game.html', 'catalog.js', 'game.js', 'style.css', 'about.html'):
             self.assertIn(f'kg-releases/{SHA}/{name}', ftp.files)
             self.assertIn(('store', f'kg-releases/{SHA}/{name}'), ftp.events[:-1])
