@@ -21,6 +21,7 @@ const server = http.createServer((req, res) => {
       await page.goto(origin); assert.equal(await page.locator('.card').count(), 5);
       await page.getByRole('link', {name:'このサイトについて'}).click();
       assert.equal(await page.getByRole('link', {name:'Kihamda.NETのお問い合わせフォーム'}).getAttribute('href'), 'https://kihamda.net/form');
+      assert.equal(await page.getByRole('link', {name:'Kihamda.NETのプライバシーポリシー'}).getAttribute('href'), 'https://kihamda.net/privacy-policy');
       await page.goto(origin);
       await page.getByRole('link',{name:'今日のかずの花壇 ↗'}).click();
       assert.equal(await page.locator('#title').textContent(), 'かずの花壇');
