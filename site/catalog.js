@@ -15,6 +15,10 @@ const gameCatalog = {
     "title": "ほしよけステップ",
     "instructions": "左右のボタンか矢印キーで動いて、星をよけよう。"
   },
+  "sum": {
+    "title": "ぴったり3枚",
+    "instructions": "3枚の数字を選び、合計を目標の数に合わせよう。"
+  },
   "slide": {
     "title": "ならべてタイル",
     "instructions": "数字を空きマスへ動かして、1から8まで並べよう。"

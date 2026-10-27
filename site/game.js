@@ -20,13 +20,13 @@ function offerResultCopy(game, date, moves) {
     copyFeedback.hidden = false;
   };
 }
-function dailyProgress(game, date) {
+function dailyProgress(game, date, count=16) {
   const key = `kihamda-daily-${game}`;
   return {
     load() {
       try {
         const saved = JSON.parse(window.localStorage.getItem(key));
-        if (saved?.date === date && Array.isArray(saved.cells) && saved.cells.length === 16 && saved.cells.every(value => typeof value === 'boolean') && Number.isSafeInteger(saved.moves) && saved.moves >= 0) return saved;
+        if (saved?.date === date && Array.isArray(saved.cells) && saved.cells.length === count && saved.cells.every(value => typeof value === 'boolean') && Number.isSafeInteger(saved.moves) && saved.moves >= 0) return saved;
       } catch (_) { /* Storage can be disabled or contain invalid data. */ }
       return null;
     },
@@ -108,6 +108,42 @@ const games = {
     });
     status.textContent='次は 1';
   },
+  sum(reset) {
+    const parts = new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+    const part=type=>Number(parts.find(item=>item.type===type).value);
+    const date=`${part('year')}-${String(part('month')).padStart(2,'0')}-${String(part('day')).padStart(2,'0')}`;
+    category.textContent=`今日のパズル ${date}`;
+    const day=Math.floor(Date.UTC(part('year'),part('month')-1,part('day'))/86400000);
+    let seed=(day ^ 0x9e3779b9) >>> 0;
+    if(!seed) seed=1;
+    const random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return seed>>>0;};
+    const pool=Array.from({length:15},(_,i)=>i+1);
+    for(let i=pool.length-1;i>0;i--){const j=random()%(i+1);[pool[i],pool[j]]=[pool[j],pool[i]];}
+    const values=pool.slice(0,9),counts=new Map();
+    for(let i=0;i<9;i++)for(let j=i+1;j<9;j++)for(let k=j+1;k<9;k++){
+      const total=values[i]+values[j]+values[k];counts.set(total,(counts.get(total)||0)+1);
+    }
+    let targets=[...counts].filter(([,count])=>count>=2&&count<=5).map(([value])=>value).sort((a,b)=>a-b);
+    if(!targets.length) targets=[...counts.keys()].sort((a,b)=>a-b);
+    const target=targets[random()%targets.length],progress=dailyProgress('sum',date,9);
+    let selected=Array(9).fill(false),moves=0,won=false;
+    if(reset)progress.clear();
+    const saved=progress.load();
+    if(saved && saved.cells.filter(Boolean).length<=3){selected=saved.cells;moves=saved.moves;}
+    board.classList.add('sum');
+    const buttons=values.map((value,index)=>button(String(value),()=>{
+      if(won || (!selected[index] && selected.filter(Boolean).length===3))return;
+      selected[index]=!selected[index];moves++;progress.save(selected,moves);render();
+    }));
+    function render(){
+      const chosen=values.filter((_,i)=>selected[i]),total=chosen.reduce((a,n)=>a+n,0);
+      won=chosen.length===3&&total===target;
+      buttons.forEach((b,i)=>{b.className=selected[i]?'on':'';b.setAttribute('aria-pressed',String(selected[i]));});
+      status.textContent=won?`クリア！ 目標 ${target}`:`目標 ${target}　選択 ${chosen.length}枚　合計 ${total}`;
+      if(won)offerResultCopy('sum',date,moves);
+    }
+    render();
+  },
   slide() {
     category.textContent='パズル';
     board.classList.add('slide');
@@ -188,5 +224,5 @@ const games = {
     draw();status.textContent='スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;startButton.hidden=true;alive=true;last=0;frame=requestAnimationFrame(loop);});cleanup=()=>{alive=false;startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',stopMoving); for(const [el,down] of [[left,downL],[right,downR]]){el.replaceWith(el.cloneNode(true));}};
   }
 };
-function start(reset=false){runGeneration++;cleanup();cleanup=()=>{};document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide');board.style.display='';controls.hidden=true;if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;}
+function start(reset=false){runGeneration++;cleanup();cleanup=()=>{};document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum');board.style.display='';controls.hidden=true;if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;}
 document.querySelector('#restart').addEventListener('click',()=>start(true));start();

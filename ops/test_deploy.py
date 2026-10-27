@@ -82,7 +82,7 @@ class DeployTest(unittest.TestCase):
             self.assertIn(f'kg-releases/{SHA}/{name}', ftp.files)
             self.assertIn(('store', f'kg-releases/{SHA}/{name}'), ftp.events[:-1])
         self.assertEqual(ftp.events[-1][1], 'sitemap.xml')
-        for name in ('lights', 'memory', 'order', 'dodge', 'slide', 'garden'):
+        for name in ('lights', 'memory', 'order', 'dodge', 'slide', 'sum', 'garden'):
             self.assertIn(f'play-{name}.html', ftp.files)
 
     def test_restores_home_when_published_home_fails_verification(self):
