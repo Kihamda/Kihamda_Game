@@ -28,7 +28,7 @@ def fixed_pages(site, release):
                             f'<p id="instructions">{instructions}</p><noscript><p>このゲームはJavaScriptを使います。</p></noscript>')
         for name in ('style.css', 'catalog.js', 'game.js', 'about.html'):
             page = page.replace(f'"{name}"', f'"/kg-releases/{release}/{name}"')
-        page = page.replace('</head>', f'<link rel="canonical" href="https://game.kihamda.net/play-{game}.html"></head>')
+        page = page.replace('</head>', f'<meta name="description" content="{instructions}"><link rel="canonical" href="https://game.kihamda.net/play-{game}.html"></head>')
         result[f'play-{game}.html'] = page.encode('utf-8')
     return result
 

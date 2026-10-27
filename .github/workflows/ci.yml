@@ -20,6 +20,7 @@ jobs:
         run: |
           python3 ops/test_deploy.py
           python3 ops/test_promote.py
+          python3 ops/test_fixed_pages.py
       - name: Install browser test dependencies
         timeout-minutes: 3
         run: |

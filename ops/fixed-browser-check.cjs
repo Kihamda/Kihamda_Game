@@ -30,6 +30,7 @@ const server = http.createServer((req, res) => {
       assert.equal(await page.locator('#title').textContent(), title);
       assert(await page.locator('#board button, #board canvas').count());
       assert.equal(await page.locator('link[rel=canonical]').getAttribute('href'), `https://game.kihamda.net/play-${id}.html`);
+      assert.equal(await page.locator('meta[name=description]').getAttribute('content'), await page.locator('#instructions').textContent());
       await page.locator('#restart').click();
       assert.equal(await page.locator('#title').textContent(), title);
     }
