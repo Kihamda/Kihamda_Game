@@ -8,17 +8,18 @@ const shuffle = values => { const a = [...values]; for (let i = a.length - 1; i 
 function button(label, action) { const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.addEventListener('click', action); board.append(b); return b; }
 function offerResultCopy(game, date, moves) {
   if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) return;
-  const text = `${gameCatalog[game].title} ${date} ${moves}手\nhttps://game.kihamda.net/play-${game}.html${game === 'lights' ? '?mode=daily' : ''}`;
+  const text = `${gameCatalog[game].title} ${date} ${moves}手\nhttps://game.kihamda.net/play-${game}.html${['lights','sort'].includes(game) ? '?mode=daily' : ''}`;
   copyResult.hidden = false;
-  copyResult.onclick = async () => {
+  const copyHandler = async () => {
     const generation = runGeneration;
     let message;
     try { await navigator.clipboard.writeText(text); message = '結果をコピーしたよ'; }
     catch (_) { message = 'コピーできなかったよ'; }
-    if (generation !== runGeneration) return;
+    if (generation !== runGeneration || copyResult.onclick !== copyHandler || copyResult.hidden) return;
     copyFeedback.textContent = message;
     copyFeedback.hidden = false;
   };
+  copyResult.onclick = copyHandler;
 }
 function dailyProgress(game, date, count=16) {
   const key = `kihamda-daily-${game}`;
@@ -101,6 +102,16 @@ function generateSortPuzzle(random = Math.random) {
     }
   } while (tubes.filter(t=>new Set(t).size>1).length<2);
   return tubes;
+}
+function generateDailySortPuzzle(year, month, dayOfMonth) {
+  // Templates were enumerated from winning states; each needs at least five moves.
+  const patterns = ["000121122","001012221","001120122","001201122","001211220","001221102","002021211","002112102","002121201","002211012","010012122","010102212","010122021","010210212","010220121","011010222","011100222","011200212","011210202","011221020","012010212","012021210","012102102","012120021","012200121","012210120","012221001","020021211","020111202","020121021","020210112","020221101","021011202","021021210","021102210","021121002","021201102","021210201","021221010","022012101","022101210","022111200","022201101","100012221","100120212","100201221","100212120","100221210","101020212","101102202","101201202","101212002","101222010","102011022","102020211","102101202","102120021","102201012","102210210","102221100","110022012","110120220","110202102","110220021","111200022","112002201","112020120","112102002","112200210","120001122","120012012","120021210","120102201","120121020","120202011","120211200","121000212","121010220","121021020","121120020","121202010","122001012","122010102","122021001","122102010","122210001","200021121","200111022","200121012","200210121","201001212","201012021","201021120","201101220","201120012","201201012","201212001","202001121","202012110","202101201","202111020","202201011","210001221","210012102","210022101","210102201","210120120","210201012","210212010","211001202","211012020","211022010","211122000","211212000","212002101","212012010","212100201","212120010","212210100","220011210","220101021","220110120","220201011","221001120","221011002","221021100","221102100","221210001"];
+  const day = Math.floor(Date.UTC(year,month-1,dayOfMonth)/86400000);
+  const index=((day%patterns.length)+patterns.length)%patterns.length;
+  const rotation=((Math.floor(day/patterns.length)%4)+4)%4;
+  const tubes=patterns[index].match(/.{3}/g).map(group=>Array.from(group,Number));
+  tubes.push([]);
+  return [...tubes.slice(rotation),...tubes.slice(0,rotation)];
 }
 const games = {
   lights(reset) {
@@ -259,11 +270,36 @@ const games = {
     }
     render();
   },
-  sort() {
-    category.textContent='パズル';
+  sort(reset) {
+    const daily=params.get('mode')==='daily';
+    let date=null, initial;
+    if(daily){
+      const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+      const part=type=>Number(parts.find(item=>item.type===type).value);
+      date=`${part('year')}-${String(part('month')).padStart(2,'0')}-${String(part('day')).padStart(2,'0')}`;
+      category.textContent=`今日のパズル ${date}`;
+      initial=generateDailySortPuzzle(part('year'),part('month'),part('day'));
+    } else {category.textContent='パズル';initial=generateSortPuzzle();}
     board.classList.add('sort');
-    const names=['あか','あお','きいろ'], symbols=['●','▲','◆'];
-    let tubes=generateSortPuzzle(), selected=null, moves=0, history=[], won=false;
+    const names=['あか','あお','きいろ'], symbols=['●','▲','◆'], key='kihamda-daily-sort';
+    let tubes=initial.map(t=>[...t]), selected=null, history=[], actions=[], won=false;
+    const isWon=state=>state.every(t=>!t.length || (t.length===3 && t.every(c=>c===t[0])));
+    const canMove=(state,from,to)=>Number.isInteger(from)&&Number.isInteger(to)&&from>=0&&from<4&&to>=0&&to<4&&from!==to&&state[from].length>0&&state[to].length<3&&(!state[to].length||state[to].at(-1)===state[from].at(-1));
+    if(daily){
+      try{
+        if(reset)window.localStorage.removeItem(key);
+        const saved=JSON.parse(window.localStorage.getItem(key));
+        if(saved?.date===date&&Array.isArray(saved.actions)&&saved.actions.length<=10000){
+          const state=initial.map(t=>[...t]), past=[];
+          const valid=saved.actions.every(action=>{
+            if(!Array.isArray(action)||action.length!==2||isWon(state)||!canMove(state,action[0],action[1]))return false;
+            past.push(state.map(t=>[...t]));state[action[1]].push(state[action[0]].pop());return true;
+          });
+          if(valid){tubes=state;history=past;actions=saved.actions.map(a=>[...a]);}
+        }
+      }catch(_){}
+    }
+    const save=()=>{if(daily)try{window.localStorage.setItem(key,JSON.stringify({date,actions}));}catch(_){}};
     const buttons=Array.from({length:4},(_,index)=>button('',()=>{
       if(won)return;
       if(selected===null) {
@@ -271,21 +307,19 @@ const games = {
         selected=index;
       } else if(selected===index) selected=null;
       else {
-        const source=tubes[selected], target=tubes[index], color=source[source.length-1];
-        if(target.length===3 || (target.length && target[target.length-1]!==color)) {
-          status.textContent='空きか、同じ色の上に移してね';return;
-        }
-        history.push(tubes.map(t=>[...t]));target.push(source.pop());selected=null;moves++;
-        won=tubes.every(t=>!t.length || (t.length===3 && t.every(c=>c===t[0])));
+        if(!canMove(tubes,selected,index)) {status.textContent='空きか、同じ色の上に移してね';return;}
+        history.push(tubes.map(t=>[...t]));actions.push([selected,index]);
+        tubes[index].push(tubes[selected].pop());selected=null;save();
       }
       render();
     }));
     const undo=button('一手戻す',()=>{
       if(!history.length)return;
-      tubes=history.pop();selected=null;moves--;won=false;render();
+      tubes=history.pop();actions.pop();selected=null;save();render();
     });
     undo.className='sort-undo';
     function render(){
+      won=isWon(tubes);
       buttons.forEach((b,index)=>{
         const tube=tubes[index];b.replaceChildren();
         for(let slot=2;slot>=0;slot--){
@@ -298,7 +332,9 @@ const games = {
         b.setAttribute('aria-label',`${index+1}番のボトル ${tube.length ? `下から${tube.map(c=>names[c]).join('、')}` : '空'}${selected===index?' 選択中':''}`);
       });
       undo.setAttribute('aria-disabled',String(!history.length));
-      status.textContent=won?`クリア！ ${moves}手でそろえたよ`:selected===null?`${moves}手`: `${selected+1}番を選択中。移す先を押してね`;
+      status.textContent=won?`クリア！ ${actions.length}手でそろえたよ`:selected===null?`${actions.length}手`: `${selected+1}番を選択中。移す先を押してね`;
+      if(won&&daily)offerResultCopy('sort',date,actions.length);
+      else {copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';}
     }
     render();
   },
