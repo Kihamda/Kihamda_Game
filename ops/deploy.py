@@ -7,18 +7,22 @@ import os
 import re
 import ssl
 import time
+from fixed_pages import fixed_home, fixed_pages
+from promote import promote
 
 commit = os.environ['GITHUB_SHA']
 if not re.fullmatch(r'[a-f0-9]{40}', commit):
     raise SystemExit('Invalid commit SHA')
 prefix = f'kg-releases/{commit}'
 source = Path('site')
-files = {name: (source / name).read_bytes() for name in ('game.html', 'game.js', 'style.css', 'about.html')}
-home = (source / 'index.html').read_text(encoding='utf-8')
-for name in ('style.css', 'game.html', 'about.html'):
-    home = home.replace(f'href="{name}', f'href="/{prefix}/{name}')
-home = home.encode('utf-8')
+files = {name: (source / name).read_bytes() for name in ('game.html', 'catalog.js', 'game.js', 'style.css', 'about.html')}
+pages = fixed_pages(source, commit)
+home = fixed_home(source, commit, pages)
 files['index.html'] = home
+sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+           + ''.join(f'  <url><loc>https://game.kihamda.net/{name}</loc></url>\n'
+                     for name in ['', *pages]) + '</urlset>\n').encode('utf-8')
 
 def read_ftp(ftp, path):
     out = io.BytesIO()
@@ -60,20 +64,10 @@ with FTP_TLS(context=ssl.create_default_context(), timeout=30) as ftp:
         if read_ftp(ftp, target) != body:
             raise RuntimeError('FTP verification failed: ' + target)
         verify_http(target, body)
-    temporary = f'index.html.pending-{commit}'
-    ftp.storbinary('STOR ' + temporary, io.BytesIO(home))
-    if read_ftp(ftp, temporary) != home or read_ftp(ftp, 'index.html') != old:
-        raise RuntimeError('Home changed during staging')
-    ftp.rename(temporary, 'index.html')
-    try:
-        if read_ftp(ftp, 'index.html') != home:
-            raise RuntimeError('Published FTP home differs')
-        verify_http('', home)
-    except Exception:
-        if read_ftp(ftp, 'index.html') == home:
-            restore = f'index.html.restore-{commit}'
-            ftp.storbinary('STOR ' + restore, io.BytesIO(old))
-            if read_ftp(ftp, restore) == old:
-                ftp.rename(restore, 'index.html')
-        raise
+    # Each fixed page refers to immutable assets, so old and new pages can coexist.
+    def verify_root_file(name, body):
+        verify_http(name, body)
+        if name == 'index.html':
+            verify_http('', body)
+    promote(ftp, {**pages, 'index.html': home, 'sitemap.xml': sitemap}, verify_root_file, read_ftp)
 print('Published and verified', commit)
