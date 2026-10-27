@@ -23,10 +23,10 @@ const server = http.createServer((req, res) => {
       assert.equal(await page.getByRole('link', {name:'Kihamda.NETのお問い合わせフォーム'}).getAttribute('href'), 'https://kihamda.net/form');
       assert.equal(await page.getByRole('link', {name:'Kihamda.NETのプライバシーポリシー'}).getAttribute('href'), 'https://kihamda.net/privacy-policy');
       await page.goto(origin);
-      await page.getByRole('link',{name:'今日のかずの花壇 ↗'}).click();
+      await page.getByRole('link',{name:'かずの花壇 ↗'}).click();
       assert.equal(await page.locator('#title').textContent(), 'かずの花壇');
       await page.goto(origin);
-      await page.getByRole('link',{name:'今日のひかりのスイッチ ↗'}).click();
+      await page.getByRole('link',{name:'ひかりのスイッチ ↗'}).click();
       assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
       const dailyBoard = await page.locator('#board button').allTextContents();
       await page.locator('#board button').first().click();
