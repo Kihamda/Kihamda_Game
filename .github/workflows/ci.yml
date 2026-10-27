@@ -32,5 +32,6 @@ jobs:
           node ops/slide-browser-check.cjs
           node ops/record-browser-check.cjs
           node ops/share-browser-check.cjs
+          node ops/layout-browser-check.cjs
           python3 ops/build_preview.py
           node ops/fixed-browser-check.cjs
