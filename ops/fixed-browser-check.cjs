@@ -26,11 +26,11 @@ const server = http.createServer((req, res) => {
     }
     await page.setViewportSize({width:375,height:667});
     await page.goto(`${origin}/index.html`);
-    await page.getByRole('link', {name:'今日のひかりのスイッチ ↗'}).click();
+    await page.getByRole('link', {name:'ひかりのスイッチ ↗'}).click();
     assert.equal(new URL(page.url()).pathname, '/play-lights.html');
     assert.equal(new URL(page.url()).searchParams.get('mode'), 'daily');
     await page.waitForFunction(() => document.querySelector('#category').textContent.startsWith('今日のパズル'));
-    for (const [label,id] of [['今日のかずの花壇 ↗','garden'],['今日のぴったり3枚 ↗','sum'],['今日のまいにち道つなぎ ↗','path']]) {
+    for (const [label,id] of [['かずの花壇 ↗','garden'],['ぴったり3枚 ↗','sum'],['まいにち道つなぎ ↗','path']]) {
       await page.goto(`${origin}/index.html`);await page.getByRole('link',{name:label}).click();
       assert.equal(new URL(page.url()).pathname,`/play-${id}.html`);
       assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
