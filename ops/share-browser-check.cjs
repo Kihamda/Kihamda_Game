@@ -37,6 +37,13 @@ async function solve(page,game){
     await context.close();
     const denied=await browser.newContext();await denied.addInitScript(()=>Object.defineProperty(navigator,'clipboard',{value:{writeText:()=>Promise.reject(new Error('denied'))}}));const p=await denied.newPage();
     await p.goto(`${origin}/game.html?game=garden`);await solve(p,'garden');await p.locator('#copy-result').click();await p.locator('#copy-feedback').waitFor({state:'visible'});assert.equal(await p.locator('#copy-feedback').textContent(),'コピーできなかったよ');await denied.close();
+    const slow=await browser.newContext();
+    await slow.addInitScript(()=>Object.defineProperty(navigator,'clipboard',{value:{writeText:()=>new Promise(resolve=>{window.finishCopy=resolve})}}));
+    const pending=await slow.newPage();await pending.goto(`${origin}/game.html?game=garden`);await solve(pending,'garden');
+    await pending.locator('#copy-result').click();await pending.locator('#restart').click();
+    await pending.evaluate(()=>window.finishCopy());await pending.waitForTimeout(50);
+    assert(await pending.locator('#copy-feedback').isHidden(),'old copy result should not appear after restart');
+    await slow.close();
     console.log('Daily result copy: hidden before completion, clipboard, reload, restart, denied permission passed');
   } finally {await browser.close();server.close()}
 })().catch(e=>{console.error(e);server.close();process.exitCode=1});

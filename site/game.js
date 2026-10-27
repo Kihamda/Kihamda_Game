@@ -3,7 +3,7 @@ const id = document.body.dataset.game || params.get('game');
 const board = document.querySelector('#board'), status = document.querySelector('#status'), announcement = document.querySelector('#announcement');
 const title = document.querySelector('#title'), instructions = document.querySelector('#instructions');
 const category = document.querySelector('#category'), controls = document.querySelector('#controls'), record = document.querySelector('#record'), copyResult = document.querySelector('#copy-result'), copyFeedback = document.querySelector('#copy-feedback');
-let cleanup = () => {};
+let cleanup = () => {}, runGeneration = 0;
 const shuffle = values => { const a = [...values]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 function button(label, action) { const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.addEventListener('click', action); board.append(b); return b; }
 function offerResultCopy(game, date, moves) {
@@ -11,8 +11,12 @@ function offerResultCopy(game, date, moves) {
   const text = `${gameCatalog[game].title} ${date} ${moves}手\nhttps://game.kihamda.net/play-${game}.html${game === 'lights' ? '?mode=daily' : ''}`;
   copyResult.hidden = false;
   copyResult.onclick = async () => {
-    try { await navigator.clipboard.writeText(text); copyFeedback.textContent = '結果をコピーしたよ'; }
-    catch (_) { copyFeedback.textContent = 'コピーできなかったよ'; }
+    const generation = runGeneration;
+    let message;
+    try { await navigator.clipboard.writeText(text); message = '結果をコピーしたよ'; }
+    catch (_) { message = 'コピーできなかったよ'; }
+    if (generation !== runGeneration) return;
+    copyFeedback.textContent = message;
     copyFeedback.hidden = false;
   };
 }
@@ -184,5 +188,5 @@ const games = {
     draw();status.textContent='スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;startButton.hidden=true;alive=true;last=0;frame=requestAnimationFrame(loop);});cleanup=()=>{alive=false;startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',stopMoving); for(const [el,down] of [[left,downL],[right,downR]]){el.replaceWith(el.cloneNode(true));}};
   }
 };
-function start(reset=false){cleanup();cleanup=()=>{};document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide');board.style.display='';controls.hidden=true;if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;}
+function start(reset=false){runGeneration++;cleanup();cleanup=()=>{};document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide');board.style.display='';controls.hidden=true;if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;}
 document.querySelector('#restart').addEventListener('click',()=>start(true));start();
