@@ -16,6 +16,8 @@ jobs:
         run: |
           node --check site/game.js
           node ops/check-games.cjs
+      - name: Check deployment and rollback
+        run: python3 ops/test_deploy.py
       - name: Install browser test dependencies
         timeout-minutes: 3
         run: |
