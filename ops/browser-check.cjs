@@ -15,8 +15,8 @@ const server = http.createServer((req, res) => {
   const origin = `http://127.0.0.1:${server.address().port}`;
   const browser = await chromium.launch({headless:true, ...(process.env.CHROME_PATH ? {executablePath:process.env.CHROME_PATH} : {})});
   try {
-    for (const width of [375, 1280]) {
-      const page = await browser.newPage({ viewport: {width, height: width === 375 ? 667 : 800}, hasTouch: width === 375 });
+    for (const width of [320, 375, 1280]) {
+      const page = await browser.newPage({ viewport: {width, height: width === 320 ? 568 : width === 375 ? 667 : 800}, hasTouch: width <= 375 });
       const errors = []; page.on('pageerror', e => errors.push(e.message));
       await page.goto(origin); assert.equal(await page.locator('.card').count(), 5);
       await page.getByRole('link', {name:'このサイトについて'}).click();
@@ -77,7 +77,7 @@ const server = http.createServer((req, res) => {
           await page.keyboard.down('ArrowLeft'); await page.waitForTimeout(200); await page.keyboard.up('ArrowLeft');
           const after = await playerX();
           assert(before !== null && after !== null && after < before, 'player should move left after starting');
-          if(width===375) await page.locator('#right').tap(); else await page.locator('#right').click(); await page.waitForTimeout(50);
+          if(width<=375) await page.locator('#right').tap(); else await page.locator('#right').click(); await page.waitForTimeout(50);
           assert((await playerX()) > after, 'right button should move player right');
           await page.keyboard.down('ArrowLeft'); await page.waitForTimeout(100);
           await page.evaluate(() => window.dispatchEvent(new Event('blur')));
@@ -119,7 +119,23 @@ const server = http.createServer((req, res) => {
     assert.equal(await completionPage.locator('#board button').nth(1).getAttribute('aria-label'), '1行2列 伏せたカード');
     const symbols=['●','◆','▲','★','♥','☀','✿','■','●','◆','▲','★','♥','☀','✿','■'];
     for(let i=symbols.length-1;i>0;i--){const j=Math.floor(.25*(i+1));[symbols[i],symbols[j]]=[symbols[j],symbols[i]];}
-    for(const symbol of new Set(symbols)) for(const i of symbols.flatMap((s,i)=>s===symbol?[i]:[])) await completionPage.locator('#board button').nth(i).click();
+    const mismatch=symbols.findIndex(s=>s!==symbols[0]);
+    const third=symbols.findIndex((_,i)=>i!==0 && i!==mismatch);
+    await completionPage.locator('#board button').nth(0).click();
+    await completionPage.locator('#board button').nth(mismatch).click();
+    await completionPage.locator('#board button').nth(third).click();
+    assert.equal(await completionPage.locator('#board button').nth(third).textContent(),'？');
+    await completionPage.locator('#restart').click();
+    await completionPage.waitForTimeout(750);
+    assert((await completionPage.locator('#board button').allTextContents()).every(v=>v==='？'));
+    assert.equal(await completionPage.locator('#status').textContent(),'0組 / 8組');
+    const names={'●':'まる','◆':'ひし形','▲':'さんかく','★':'ほし','♥':'ハート','☀':'たいよう','✿':'はな','■':'しかく'};
+    for(const symbol of new Set(symbols)) {
+      const indices=symbols.flatMap((s,i)=>s===symbol?[i]:[]);
+      await completionPage.locator('#board button').nth(indices[0]).click();
+      assert((await completionPage.locator('#board button').nth(indices[0]).getAttribute('aria-label')).includes(names[symbol]));
+      await completionPage.locator('#board button').nth(indices[1]).click();
+    }
     assert((await completionPage.locator('#status').textContent()).includes('クリア'));
     assert((await completionPage.locator('#board button').first().getAttribute('aria-label')).includes('そろったカード'));
     await completionPage.close();
