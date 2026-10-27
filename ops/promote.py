@@ -27,7 +27,15 @@ def promote(ftp, changes, verify_http, read_ftp):
             current = read_ftp(ftp, name) if name in current_names else None
             if current != previous[name]:
                 raise RuntimeError('File changed during staging: ' + name)
-            ftp.rename(pending[name], name)
+            try:
+                ftp.rename(pending[name], name)
+            except Exception:
+                # A lost response does not prove that the rename failed.
+                current_names = {item.rsplit('/', 1)[-1] for item in ftp.nlst()}
+                if name in current_names and read_ftp(ftp, name) == body:
+                    promoted.append(name)
+                    attempted.discard(pending[name])
+                raise
             attempted.discard(pending[name])
             promoted.append(name)
             if read_ftp(ftp, name) != body:

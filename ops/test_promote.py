@@ -51,6 +51,16 @@ class PromoteTest(unittest.TestCase):
         with self.assertRaisesRegex(OSError, 'rename failed'):
             promote(self.ftp, self.changes, lambda name, body: None, read)
         self.check_restored()
+    def test_lost_rename_response_is_rolled_back(self):
+        class LostResponseFTP(FTP):
+            def rename(self, source, target):
+                super().rename(source, target)
+                if target == 'play-memory.html' and '.pending-' in source:
+                    raise OSError('rename response lost')
+        self.ftp = LostResponseFTP()
+        with self.assertRaisesRegex(OSError, 'rename response lost'):
+            promote(self.ftp, self.changes, lambda name, body: None, read)
+        self.check_restored()
     def test_http_failure_restores_all_existing_and_removes_new(self):
         def verify(name, body):
             if name == 'sitemap.xml': raise RuntimeError('HTTP mismatch')
