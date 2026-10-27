@@ -6,6 +6,7 @@ const elements = new Map();
 const context = {URLSearchParams,location:{search:'?game=unknown'},document:{body:{dataset:{},classList:{remove(){}}},querySelector(s){if(!elements.has(s))elements.set(s,element());return elements.get(s)}}};
 vm.runInNewContext(fs.readFileSync('site/game.js','utf8'),context);
 let previous;
+const boardCounts=new Map();
 for(let n=0;n<3653;n++){
   const d=new Date(Date.UTC(2026,0,1)+n*86400000),args=[d.getUTCFullYear(),d.getUTCMonth()+1,d.getUTCDate()];
   const puzzle=JSON.parse(JSON.stringify(context.generatePathPuzzle(...args)));
@@ -30,5 +31,9 @@ for(let n=0;n<3653;n++){
   assert(solutions>=1&&solutions<=6,`${d.toISOString()}: ${solutions} solutions`);
   if(previous)assert.notDeepEqual([puzzle.start,puzzle.checkpoints,puzzle.goal],previous);
   previous=[puzzle.start,puzzle.checkpoints,puzzle.goal];
+  const key=JSON.stringify(previous);
+  boardCounts.set(key,(boardCounts.get(key)||0)+1);
 }
-console.log('Daily path: 3653 deterministic puzzles, 1-6 solutions and distinct consecutive boards passed');
+assert(boardCounts.size>=500,`Only ${boardCounts.size} distinct boards`);
+assert(Math.max(...boardCounts.values())<=20,'A board repeats too frequently');
+console.log(`Daily path: 3653 puzzles, ${boardCounts.size} boards, 1-6 solutions and distinct consecutive boards passed`);

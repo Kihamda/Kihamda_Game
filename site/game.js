@@ -52,20 +52,33 @@ function generateSumPuzzle(year, month, dayOfMonth) {
 function pathNeighbors(index) {
   return [index-4,index+4,...(index%4?[index-1]:[]),...(index%4<3?[index+1]:[])].filter(i=>i>=0&&i<16);
 }
+const pathPuzzlesByStart=new Map();
 function generatePathPuzzle(year, month, dayOfMonth) {
   const day=Math.floor(Date.UTC(year,month-1,dayOfMonth)/86400000);
-  let seed=(day^0x85ebca6b)>>>0 || 1;
-  const random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return seed>>>0;};
-  const path=[((day%16)+16)%16];
-  function extend() {
-    if(path.length===16)return true;
-    const choices=pathNeighbors(path[path.length-1]).filter(i=>!path.includes(i));
-    for(let i=choices.length-1;i>0;i--){const j=random()%(i+1);[choices[i],choices[j]]=[choices[j],choices[i]];}
-    for(const next of choices){path.push(next);if(extend())return true;path.pop();}
-    return false;
+  let seed=day>>>0;
+  seed=Math.imul(seed^(seed>>>16),0x7feb352d);
+  seed=Math.imul(seed^(seed>>>15),0x846ca68b);
+  seed=(seed^(seed>>>16))>>>0 || 1;
+  const start=((day%16)+16)%16;
+  if(!pathPuzzlesByStart.has(start)){
+    const path=[start],boards=new Map();
+    function enumerate(visited){
+      if(path.length===16){
+        const checkpoints=[path[4],path[8],path[12]],goal=path[15];
+        const key=[...checkpoints,goal].join(',');
+        if(!boards.has(key))boards.set(key,{start,checkpoints,goal,solution:[...path]});
+        return;
+      }
+      for(const next of pathNeighbors(path[path.length-1])){
+        if(visited&(1<<next))continue;
+        path.push(next);enumerate(visited|(1<<next));path.pop();
+      }
+    }
+    enumerate(1<<start);
+    pathPuzzlesByStart.set(start,[...boards.values()]);
   }
-  extend();
-  return {start:path[0], checkpoints:[path[4],path[8],path[12]], goal:path[15], solution:path};
+  const boards=pathPuzzlesByStart.get(start);
+  return boards[seed%boards.length];
 }
 const games = {
   lights(reset) {
