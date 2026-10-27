@@ -37,6 +37,8 @@
 @media(max-width:480px) and (max-height:500px){
   .grid-mode .board.path{width:min(100%,380px,max(200px,calc(100svh - 270px)))}
   .grid-mode .board.path button{min-height:0}
+  .grid-mode .board.garden{width:min(100%,380px,max(246px,calc(100svh - 230px)))}
+  .grid-mode .board.garden button{min-height:0}
 }
 
 @media(min-width:481px) and (max-height:500px){
