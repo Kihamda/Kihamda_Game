@@ -39,6 +39,7 @@ jobs:
           node ops/record-browser-check.cjs
           node ops/share-browser-check.cjs
           node ops/layout-browser-check.cjs
+          node ops/nav-browser-check.cjs
           node ops/sum-browser-check.cjs
           node ops/path-browser-check.cjs
           node ops/sort-browser-check.cjs
