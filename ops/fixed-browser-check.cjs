@@ -19,7 +19,7 @@ const server = http.createServer((req, res) => {
     const errors = []; page.on('pageerror', error => errors.push(error.message));
     for(const width of [320,375,1280]) {
       await page.setViewportSize({width,height:800});await page.goto(`${origin}/index.html`);
-      const links=page.locator('.daily-link');assert.equal(await links.count(),4);
+      const links=page.locator('.daily-link');assert.equal(await links.count(),5);
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
       const rects=await links.evaluateAll(items=>items.map(el=>{const r=el.getBoundingClientRect();return [r.width,r.height,r.right]}));
       assert(rects.every(([w,h,right])=>w>=44&&h>=44&&right<=width));
@@ -30,7 +30,7 @@ const server = http.createServer((req, res) => {
     assert.equal(new URL(page.url()).pathname, '/play-lights.html');
     assert.equal(new URL(page.url()).searchParams.get('mode'), 'daily');
     await page.waitForFunction(() => document.querySelector('#category').textContent.startsWith('今日のパズル'));
-    for (const [label,id] of [['かずの花壇 ↗','garden'],['ぴったり3枚 ↗','sum'],['まいにち道つなぎ ↗','path']]) {
+    for (const [label,id] of [['かずの花壇 ↗','garden'],['ぴったり3枚 ↗','sum'],['まいにち道つなぎ ↗','path'],['いろわけボトル ↗','sort']]) {
       await page.goto(`${origin}/index.html`);await page.getByRole('link',{name:label}).click();
       assert.equal(new URL(page.url()).pathname,`/play-${id}.html`);
       assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
