@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const values=new Map(), localStorage={getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)};
-const element=()=>({classList:{remove(){}},style:{},replaceChildren(){},setAttribute(){},addEventListener(){}}),elements=new Map();
-const context={URLSearchParams,window:{localStorage},location:{search:'?game=unknown'},document:{body:{dataset:{},classList:{remove(){}}},querySelector(s){if(!elements.has(s))elements.set(s,element());return elements.get(s)}}};
+const element=()=>({classList:{add(){},remove(){}},style:{},replaceChildren(){},setAttribute(){},addEventListener(){}}),elements=new Map();
+const context={URLSearchParams,window:{localStorage},location:{search:'?game=unknown'},document:{body:{dataset:{},classList:{add(){},remove(){}}},querySelector(s){if(!elements.has(s))elements.set(s,element());return elements.get(s)}}};
 vm.runInNewContext(fs.readFileSync('site/game.js','utf8'),context);
 const storage=date=>context.dailyStorage('test',date), get=name=>JSON.parse(values.get('kihamda-daily-test'+name));
 values.set('kihamda-daily-test',JSON.stringify({date:'2026-10-27',moves:5}));

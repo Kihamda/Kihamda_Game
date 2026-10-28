@@ -17,8 +17,9 @@ const server = http.createServer((req, res) => {
     const origin = `http://127.0.0.1:${server.address().port}`;
     const page = await browser.newPage({viewport:{width:375,height:667},hasTouch:true});
     const errors = []; page.on('pageerror', error => errors.push(error.message));
+    async function checkIcon(){const icon=await page.locator('link[rel=icon]').getAttribute('href');assert(icon.startsWith('data:image/svg+xml,'));assert(await page.evaluate(async url=>{const svg=new DOMParser().parseFromString(await (await fetch(url)).text(),'image/svg+xml');return svg.documentElement.localName==='svg'&&!!svg.querySelector('rect')&&!!svg.querySelector('path')},icon));}
     for(const width of [320,375,1280]) {
-      await page.setViewportSize({width,height:800});await page.goto(`${origin}/index.html`);
+      await page.setViewportSize({width,height:800});await page.goto(`${origin}/index.html`);await checkIcon();
       assert.equal(await page.title(),'無料ブラウザゲーム | Kihamda Games');
       assert.equal(await page.locator('link[rel=canonical]').getAttribute('href'),'https://game.kihamda.net/');
       assert((await page.locator('meta[name=description]').getAttribute('content')).includes('日替わりパズル'));
@@ -28,6 +29,11 @@ const server = http.createServer((req, res) => {
       assert(rects.every(([w,h,right])=>w>=44&&h>=44&&right<=width));
     }
     await page.setViewportSize({width:375,height:667});
+    await page.goto(`${origin}/index.html`);
+    await page.getByRole('button',{name:'記憶',exact:true}).click();
+    assert.equal(await page.locator('.card').filter({visible:true}).count(),2);
+    await page.locator('.card').filter({hasText:'ぎゃくからメモリー'}).click();
+    assert.equal(new URL(page.url()).pathname,'/play-recall.html');
     await page.goto(`${origin}/index.html`);
     await page.getByRole('link', {name:'ひかりのスイッチ ↗'}).click();
     assert.equal(new URL(page.url()).pathname, '/play-lights.html');
@@ -40,7 +46,7 @@ const server = http.createServer((req, res) => {
     }
     await page.goto(`${origin}/index.html`);
     await page.getByRole('link', {name:'このサイトについて'}).click();
-    assert.equal(new URL(page.url()).pathname, '/site-info.html');
+    assert.equal(new URL(page.url()).pathname, '/site-info.html');await checkIcon();
     assert.equal(await page.getByRole('link',{name:'Kihamda.NETのお問い合わせフォーム'}).getAttribute('href'),'https://kihamda.net/form');
     assert.equal(await page.getByRole('link',{name:'Kihamda.NETのプライバシーポリシー'}).getAttribute('href'),'https://kihamda.net/privacy-policy');
     await page.goto(`${origin}/index.html`);
@@ -50,8 +56,8 @@ const server = http.createServer((req, res) => {
     await page.locator('.card').filter({hasText:'まいにち道つなぎ'}).click();
     assert.equal(new URL(page.url()).pathname, '/play-path.html');
     assert.equal(await page.locator('#board button').count(), 16);
-    for (const [id, title] of [['circuit','くるくる回路'], ['lights','ひかりのスイッチ'], ['memory','ペアをさがせ'], ['order','数字のかけっこ'], ['dodge','ほしよけステップ'], ['sum','ぴったり3枚'], ['slide','ならべてタイル'], ['garden','かずの花壇'], ['path','まいにち道つなぎ'], ['sort','いろわけボトル']]) {
-      await page.goto(`${origin}/play-${id}.html?game=invalid`);
+    for (const [id, title] of [['recall','ぎゃくからメモリー'], ['timing','5秒ぴったり'], ['circuit','くるくる回路'], ['lights','ひかりのスイッチ'], ['memory','ペアをさがせ'], ['order','数字のかけっこ'], ['dodge','ほしよけステップ'], ['sum','ぴったり3枚'], ['slide','ならべてタイル'], ['garden','かずの花壇'], ['path','まいにち道つなぎ'], ['sort','いろわけボトル']]) {
+      await page.goto(`${origin}/play-${id}.html?game=invalid`);await checkIcon();
       assert.equal(await page.locator('#title').textContent(), title);
       assert(await page.locator('#board button, #board canvas').count());
       assert.equal(await page.getByRole('link',{name:'このサイトについて'}).getAttribute('href'), '/site-info.html');
@@ -64,7 +70,7 @@ const server = http.createServer((req, res) => {
     assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
     const noJs = await browser.newContext({javaScriptEnabled:false});
     const plain = await noJs.newPage();
-    for (const id of ['circuit','lights','memory','order','dodge','slide','sum','garden','path','sort']) {
+    for (const id of ['recall','timing','circuit','lights','memory','order','dodge','slide','sum','garden','path','sort']) {
       await plain.goto(`${origin}/play-${id}.html`);
       assert(await plain.locator('#instructions').isVisible());
       assert(await plain.locator('noscript p').isVisible());
