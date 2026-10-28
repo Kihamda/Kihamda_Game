@@ -21,18 +21,47 @@ function offerResultCopy(game, date, moves) {
   };
   copyResult.onclick = copyHandler;
 }
-function dailyProgress(game, date, count=16) {
-  const key = `kihamda-daily-${game}`;
+// Keep the newest day and one earlier day without letting an old tab replace newer progress.
+function dailyStorage(game, date) {
+  const key=`kihamda-daily-${game}`, previousKey=`${key}-previous`;
+  function read(name) {
+    try {return JSON.parse(window.localStorage.getItem(name));} catch (_) {return null;}
+  }
+  const validDate=value=>typeof value==='string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
   return {
     load() {
+      const current=read(key), previous=read(previousKey);
+      return current?.date===date ? current : previous?.date===date ? previous : null;
+    },
+    save(value) {
       try {
-        const saved = JSON.parse(window.localStorage.getItem(key));
-        if (saved?.date === date && Array.isArray(saved.cells) && saved.cells.length === count && saved.cells.every(value => typeof value === 'boolean') && Number.isSafeInteger(saved.moves) && saved.moves >= 0) return saved;
-      } catch (_) { /* Storage can be disabled or contain invalid data. */ }
+        const records=new Map();
+        for(const item of [read(previousKey),read(key)]) if(validDate(item?.date)) records.set(item.date,item);
+        records.set(date,{...value,date});
+        const newest=[...records.keys()].sort().reverse().slice(0,2);
+        if(newest.length>1) window.localStorage.setItem(previousKey,JSON.stringify(records.get(newest[1])));
+        else window.localStorage.removeItem(previousKey);
+        window.localStorage.setItem(key,JSON.stringify(records.get(newest[0])));
+      } catch (_) {}
+    },
+    clear() {
+      try {
+        if(read(key)?.date===date) window.localStorage.removeItem(key);
+        if(read(previousKey)?.date===date) window.localStorage.removeItem(previousKey);
+      } catch (_) {}
+    }
+  };
+}
+function dailyProgress(game, date, count=16) {
+  const storage=dailyStorage(game,date);
+  return {
+    load() {
+      const saved=storage.load();
+      if (saved && Array.isArray(saved.cells) && saved.cells.length === count && saved.cells.every(value => typeof value === 'boolean') && Number.isSafeInteger(saved.moves) && saved.moves >= 0) return saved;
       return null;
     },
-    save(cells, moves) { try { window.localStorage.setItem(key, JSON.stringify({date, cells, moves})); } catch (_) {} },
-    clear() { try { window.localStorage.removeItem(key); } catch (_) {} }
+    save(cells, moves) { storage.save({cells,moves}); },
+    clear() { storage.clear(); }
   };
 }
 function generateSumPuzzle(year, month, dayOfMonth) {
@@ -254,7 +283,7 @@ const games = {
     const date=`${part('year')}-${String(part('month')).padStart(2,'0')}-${String(part('day')).padStart(2,'0')}`;
     category.textContent=`今日のパズル ${date}`;
     const puzzle=generatePathPuzzle(part('year'),part('month'),part('day'));
-    const key='kihamda-daily-path';
+    const storage=dailyStorage('path',date);
     let route=[puzzle.start],moves=0;
     const validRoute=route=>Array.isArray(route)&&route.length>=1&&route.length<=16&&route[0]===puzzle.start&&route.every((cell,i)=>{
       if(!Number.isInteger(cell)||cell<0||cell>15||route.indexOf(cell)!==i)return false;
@@ -265,9 +294,9 @@ const games = {
       return cell!==puzzle.goal||(i===15&&puzzle.checkpoints.every(item=>route.includes(item)));
     });
     try {
-      if(reset)window.localStorage.removeItem(key);
-      const saved=JSON.parse(window.localStorage.getItem(key));
-      if(saved?.date===date&&validRoute(saved.route)&&Number.isSafeInteger(saved.moves)&&saved.moves>=0){route=saved.route;moves=saved.moves;}
+      if(reset)storage.clear();
+      const saved=storage.load();
+      if(saved&&validRoute(saved.route)&&Number.isSafeInteger(saved.moves)&&saved.moves>=0){route=saved.route;moves=saved.moves;}
     } catch (_) {}
     const buttons=Array.from({length:16},(_,index)=>button('',()=>{
       if(route.length===16)return;
@@ -286,7 +315,7 @@ const games = {
         route=candidate;
       }
       moves++;
-      try {window.localStorage.setItem(key,JSON.stringify({date,route,moves}));} catch (_) {}
+      storage.save({route,moves});
       render();
     }));
     function render(){
@@ -311,11 +340,11 @@ const games = {
     const date=`${part('year')}-${String(part('month')).padStart(2,'0')}-${String(part('day')).padStart(2,'0')}`;
     category.textContent=`今日のパズル ${date}`;
     const {masks,turns:initial}=generateCircuitPuzzle(part('year'),part('month'),part('day'));
-    const key='kihamda-daily-circuit'; let turns=[...initial], moves=0;
+    const storage=dailyStorage('circuit',date); let turns=[...initial], moves=0;
     try {
-      if(reset) window.localStorage.removeItem(key);
-      const saved=JSON.parse(window.localStorage.getItem(key));
-      if(saved?.date===date && Array.isArray(saved.turns) && saved.turns.length===9 && saved.turns.every(n=>Number.isInteger(n)&&n>=0&&n<4) && Number.isSafeInteger(saved.moves) && saved.moves>=0) {
+      if(reset) storage.clear();
+      const saved=storage.load();
+      if(saved && Array.isArray(saved.turns) && saved.turns.length===9 && saved.turns.every(n=>Number.isInteger(n)&&n>=0&&n<4) && Number.isSafeInteger(saved.moves) && saved.moves>=0) {
         turns=[...saved.turns]; moves=saved.moves;
       }
     } catch (_) {}
@@ -324,7 +353,7 @@ const games = {
     const buttons=turns.map((_,i)=>button('',()=>{
       if(circuitSolved(masks.map((mask,j)=>rotateCircuit(mask,turns[j])))) return;
       turns[i]=(turns[i]+1)%4; moves++;
-      try {window.localStorage.setItem(key,JSON.stringify({date,turns,moves}));} catch (_) {}
+      storage.save({turns,moves});
       render();
     }));
     function render(){
@@ -357,15 +386,15 @@ const games = {
       initial=generateDailySortPuzzle(part('year'),part('month'),part('day'));
     } else {category.textContent='パズル';initial=generateSortPuzzle();}
     board.classList.add('sort');
-    const names=['あか','あお','きいろ'], symbols=['●','▲','◆'], key='kihamda-daily-sort';
+    const names=['あか','あお','きいろ'], symbols=['●','▲','◆'], storage=daily ? dailyStorage('sort',date) : null;
     let tubes=initial.map(t=>[...t]), selected=null, history=[], actions=[], won=false;
     const isWon=state=>state.every(t=>!t.length || (t.length===3 && t.every(c=>c===t[0])));
     const canMove=(state,from,to)=>Number.isInteger(from)&&Number.isInteger(to)&&from>=0&&from<4&&to>=0&&to<4&&from!==to&&state[from].length>0&&state[to].length<3&&(!state[to].length||state[to].at(-1)===state[from].at(-1));
     if(daily){
       try{
-        if(reset)window.localStorage.removeItem(key);
-        const saved=JSON.parse(window.localStorage.getItem(key));
-        if(saved?.date===date&&Array.isArray(saved.actions)&&saved.actions.length<=10000){
+        if(reset)storage.clear();
+        const saved=storage.load();
+        if(saved&&Array.isArray(saved.actions)&&saved.actions.length<=10000){
           const state=initial.map(t=>[...t]), past=[];
           const valid=saved.actions.every(action=>{
             if(!Array.isArray(action)||action.length!==2||isWon(state)||!canMove(state,action[0],action[1]))return false;
@@ -375,7 +404,7 @@ const games = {
         }
       }catch(_){}
     }
-    const save=()=>{if(daily)try{window.localStorage.setItem(key,JSON.stringify({date,actions}));}catch(_){}};
+    const save=()=>storage?.save({actions});
     const buttons=Array.from({length:4},(_,index)=>button('',()=>{
       if(won)return;
       if(selected===null) {

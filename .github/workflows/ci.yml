@@ -19,6 +19,7 @@ jobs:
           node ops/sum-generator-check.cjs
           node ops/path-check.cjs
           node ops/circuit-check.cjs
+          node ops/daily-storage-check.cjs
           node ops/sort-check.cjs
           node ops/sort-daily-check.cjs
       - name: Check deployment and rollback
@@ -36,6 +37,7 @@ jobs:
           node ops/browser-check.cjs
           node ops/dodge-browser-check.cjs
           node ops/daily-browser-check.cjs
+          node ops/daily-cross-day-check.cjs
           node ops/slide-browser-check.cjs
           node ops/record-browser-check.cjs
           node ops/share-browser-check.cjs
