@@ -33,7 +33,7 @@ function solve(start){
   assert.equal(await buttons.nth(invalid[0]).getAttribute('aria-pressed'),'true',`invalid move should keep source selected: ${JSON.stringify({viewport,initial,invalid,events:await page.evaluate(()=>window.sortInputTrace)})}`);
   await buttons.nth(invalid[0]).tap();
   assert.equal(await buttons.nth(invalid[0]).getAttribute('aria-pressed'),'false',`tapping selected source should deselect: ${JSON.stringify({viewport,initial,invalid,events:await page.evaluate(()=>window.sortInputTrace)})}`);
-  const [a,b]=solution[0];await buttons.nth(a).focus();
+  const [a,b]=solution[0];await page.locator('#restart').focus();await buttons.nth(a).focus();
   const focused=await buttons.evaluateAll(bs=>bs.indexOf(document.activeElement));
   assert.equal(focused,a,`source focus failed: ${JSON.stringify({viewport,initial,invalid,firstMove:solution[0],events:await page.evaluate(()=>window.sortInputTrace)})}`);
   await page.keyboard.press('Space');
