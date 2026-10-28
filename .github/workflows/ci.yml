@@ -39,6 +39,7 @@ jobs:
           node ops/daily-browser-check.cjs
           node ops/daily-cross-day-check.cjs
           node ops/daily-same-day-check.cjs
+          node ops/daily-storage-error-check.cjs
           node ops/daily-rollover-check.cjs
           node ops/slide-browser-check.cjs
           node ops/record-browser-check.cjs

@@ -26,7 +26,9 @@ function dailyStorage(game, date) {
   const key=`kihamda-daily-${game}`, previousKey=`${key}-previous`;
   let snapshot=null, tracking=false;
   function read(name) {
-    try {return JSON.parse(window.localStorage.getItem(name));} catch (_) {return null;}
+    let raw;
+    try {raw=window.localStorage.getItem(name);} catch (_) {showStorageUnavailable();return null;}
+    try {return JSON.parse(raw);} catch (_) {return null;}
   }
   const validDate=value=>typeof value==='string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
   function currentRecord() {
@@ -48,16 +50,21 @@ function dailyStorage(game, date) {
         else window.localStorage.removeItem(previousKey);
         window.localStorage.setItem(key,JSON.stringify(records.get(newest[0])));
         snapshot=JSON.stringify(currentRecord()); tracking=true;
-      } catch (_) {}
+      } catch (_) {showStorageUnavailable();}
       return true;
     },
     clear() {
       try {
         if(read(key)?.date===date) window.localStorage.removeItem(key);
         if(read(previousKey)?.date===date) window.localStorage.removeItem(previousKey);
-      } catch (_) {}
+      } catch (_) {showStorageUnavailable();}
     }
   };
+}
+function showStorageUnavailable() {
+  document.body.classList.add('storage-unavailable');
+  record.textContent='進行状況を保存できないよ';
+  record.hidden=false;
 }
 function dailyProgress(game, date, count=16) {
   const storage=dailyStorage(game,date);
@@ -594,7 +601,7 @@ function start(reset=false){
   runGeneration++;cleanup();cleanup=()=>{};
   if(dailyTimer!==null){window.clearInterval(dailyTimer);dailyTimer=null;}
   activeDailyDate=null;isStaleDaily=false;restart.textContent='もう一度';
-  document.body.classList.remove('daily-stale');
+  document.body.classList.remove('daily-stale','storage-unavailable');
   document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit');board.style.display='';controls.hidden=true;
   if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}
   title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;board.setAttribute('aria-describedby',Object.hasOwn(gridColumns,id)?'grid-keyboard-help':'');if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
