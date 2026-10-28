@@ -538,6 +538,24 @@ const games = {
     draw();status.textContent='スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;startButton.hidden=true;alive=true;last=0;frame=requestAnimationFrame(loop);});cleanup=()=>{alive=false;startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',stopMoving);window.removeEventListener('pointerup',clearReleased);window.removeEventListener('pointercancel',clearReleased); for(const el of [left,right]){el.replaceWith(el.cloneNode(true));}};
   }
 };
+const gridColumns={lights:4,memory:4,order:4,garden:4,path:4,sum:3,slide:3,circuit:3};
+board.addEventListener('keydown',event=>{
+  const columns=Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
+  const directions={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
+  const direction=Object.hasOwn(directions,event.key) ? directions[event.key] : null;
+  if(!columns || !direction)return;
+  const cells=Array.from(board.querySelectorAll(':scope > button'));
+  const index=cells.indexOf(event.target);
+  if(index<0)return;
+  event.preventDefault();
+  let row=Math.floor(index/columns),col=index%columns;
+  while(true) {
+    row+=direction[0];col+=direction[1];
+    if(row<0||col<0||col>=columns||row>=Math.ceil(cells.length/columns))return;
+    const target=cells[row*columns+col];
+    if(target&&!target.disabled){target.focus();return;}
+  }
+});
 let activeDailyDate=null, dailyTimer=null, isStaleDaily=false;
 const restart=document.querySelector('#restart');
 function todayInTokyo() {
@@ -561,7 +579,7 @@ function start(reset=false){
   document.body.classList.remove('daily-stale');
   document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit');board.style.display='';controls.hidden=true;
   if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}
-  title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
+  title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;board.setAttribute('aria-describedby',Object.hasOwn(gridColumns,id)?'grid-keyboard-help':'');if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
   activeDailyDate=category.textContent.match(/^今日のパズル (\d{4}-\d{2}-\d{2})$/)?.[1] || null;
   if(activeDailyDate){refreshDailyDate();dailyTimer=window.setInterval(refreshDailyDate,30000);}
 }
