@@ -90,6 +90,12 @@ const server = http.createServer((req,res)=>{
         assert(controls.y+controls.height<=480,'Dodge controls must fit at 320×480');
       }
     }
+    for(const height of [480,501,568]){
+      await page.setViewportSize({width:320,height});await page.clock.setFixedTime(new Date('2026-10-27T03:00:00Z'));await page.goto(`http://127.0.0.1:${server.address().port}/game.html?game=path`);await page.locator('#restart').tap();
+      const rect=await page.locator('#board').boundingBox();assert(rect.y+rect.height<=height,`path exceeds 320x${height}`);
+      const sizes=await cells.evaluateAll(items=>items.map(el=>{const r=el.getBoundingClientRect();return [r.width,r.height]}));
+      assert(sizes.every(([w,h])=>w>=44&&h>=44));await cells.nth(puzzle.solution[1]).tap();assert((await page.locator('#status').textContent()).includes('2 / 16'));
+    }
     assert.deepEqual(errors,[]);await context.close();
     console.log('Daily path: touch, keyboard, invalid move, undo, save, solve, copy, restart and date change passed');
   } finally {await browser.close();server.close();}

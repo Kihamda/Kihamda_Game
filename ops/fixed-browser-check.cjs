@@ -35,6 +35,9 @@ const server = http.createServer((req, res) => {
     await page.locator('.card').filter({hasText:'ぎゃくからメモリー'}).click();
     assert.equal(new URL(page.url()).pathname,'/play-recall.html');
     await page.goto(`${origin}/index.html`);
+    await page.locator('.card').filter({hasText:'かたちの暗号'}).click();
+    assert.equal(new URL(page.url()).pathname,'/play-code.html');
+    await page.goto(`${origin}/index.html`);
     await page.getByRole('link', {name:'ひかりのスイッチ ↗'}).click();
     assert.equal(new URL(page.url()).pathname, '/play-lights.html');
     assert.equal(new URL(page.url()).searchParams.get('mode'), 'daily');
@@ -56,7 +59,7 @@ const server = http.createServer((req, res) => {
     await page.locator('.card').filter({hasText:'まいにち道つなぎ'}).click();
     assert.equal(new URL(page.url()).pathname, '/play-path.html');
     assert.equal(await page.locator('#board button').count(), 16);
-    for (const [id, title] of [['recall','ぎゃくからメモリー'], ['timing','5秒ぴったり'], ['circuit','くるくる回路'], ['lights','ひかりのスイッチ'], ['memory','ペアをさがせ'], ['order','数字のかけっこ'], ['dodge','ほしよけステップ'], ['sum','ぴったり3枚'], ['slide','ならべてタイル'], ['garden','かずの花壇'], ['path','まいにち道つなぎ'], ['sort','いろわけボトル']]) {
+    for (const [id, title] of [['code','かたちの暗号'], ['recall','ぎゃくからメモリー'], ['timing','5秒ぴったり'], ['circuit','くるくる回路'], ['lights','ひかりのスイッチ'], ['memory','ペアをさがせ'], ['order','数字のかけっこ'], ['dodge','ほしよけステップ'], ['sum','ぴったり3枚'], ['slide','ならべてタイル'], ['garden','かずの花壇'], ['path','まいにち道つなぎ'], ['sort','いろわけボトル']]) {
       await page.goto(`${origin}/play-${id}.html?game=invalid`);await checkIcon();
       assert.equal(await page.locator('#title').textContent(), title);
       assert(await page.locator('#board button, #board canvas').count());
@@ -70,7 +73,7 @@ const server = http.createServer((req, res) => {
     assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
     const noJs = await browser.newContext({javaScriptEnabled:false});
     const plain = await noJs.newPage();
-    for (const id of ['recall','timing','circuit','lights','memory','order','dodge','slide','sum','garden','path','sort']) {
+    for (const id of ['code','recall','timing','circuit','lights','memory','order','dodge','slide','sum','garden','path','sort']) {
       await plain.goto(`${origin}/play-${id}.html`);
       assert(await plain.locator('#instructions').isVisible());
       assert(await plain.locator('noscript p').isVisible());

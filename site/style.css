@@ -99,3 +99,27 @@ header>a,footer a{display:inline-flex;align-items:center;justify-content:center;
 .filters[hidden],.card[hidden]{display:none}
 .filters button{min-height:44px;padding:8px 15px;border:1px solid #bcb1c5;border-radius:99px;background:#fff;color:#302542;font-weight:700}
 .filters button[aria-pressed=true]{background:#29243e;color:#fff;border-color:#29243e}
+
+.board.code{grid-template-columns:repeat(4,minmax(0,1fr));max-width:440px;gap:8px}
+.board.code .code-selected,.board.code .code-history{grid-column:1 / -1;margin:0;font-size:.9rem;line-height:1.5}
+.board.code .code-choice{min-height:48px;aspect-ratio:auto;font-size:1.5rem}
+.board.code .code-choice[aria-pressed=true]{outline:3px solid #5323a3;outline-offset:1px}
+.board.code .code-submit{grid-column:1 / -1;aspect-ratio:auto;min-height:44px;font-size:1rem}
+.board.code .code-history{padding-left:1.5em;text-align:left}
+.board.code [hidden]{display:none}
+@media(max-width:480px) and (min-height:501px){.dodge-mode .board{width:min(100%,500px,max(150px,calc(100svh - 336px)))}}
+
+@media(max-width:340px) and (max-height:700px){
+  .path-mode .play-heading h1,.lights-mode .play-heading h1{font-size:1.15rem}
+  .path-mode .play-heading .eyebrow,.lights-mode .play-heading .eyebrow{font-size:.7rem;letter-spacing:0}
+  .path-mode .play-heading p,.lights-mode .play-heading p{font-size:.8rem}
+  .path-mode .board.path,.grid-mode.lights-mode .board{width:min(100%,380px,max(200px,calc(100svh - 300px)))}
+  .grid-mode.lights-mode .board button{min-height:44px}
+}
+@media(max-width:340px) and (max-height:500px){
+  .grid-mode .play-heading h1{font-size:1.15rem}
+  .grid-mode .play-heading .eyebrow{font-size:.7rem;letter-spacing:0}
+  .grid-mode .play-heading p{font-size:.8rem}
+  .grid-mode .board:not(.garden):not(.sort):not(.circuit):not(.path):not(.code):not(.recall):not(.timing){width:min(100%,380px,max(200px,calc(100svh - 300px)))}
+  .grid-mode .board:not(.timing):not(.recall):not(.code):not(.sort) button{min-height:44px}
+}

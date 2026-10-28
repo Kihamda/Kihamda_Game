@@ -52,6 +52,12 @@ const server = http.createServer((req, res) => {
     }
     assert.deepEqual(errors, []);
     await blocked.close();
+    for(const height of [480,501,568]) for(const mode of ['', '&mode=daily']){
+      const c=await browser.newContext({viewport:{width:320,height},hasTouch:true}),p=await c.newPage();await p.goto(`${origin}/game.html?game=lights${mode}`);
+      const box=await p.locator('#board').boundingBox();assert(box.y+box.height<=height,`lights exceeds 320x${height}`);
+      const sizes=await p.locator('#board button').evaluateAll(items=>items.map(el=>{const r=el.getBoundingClientRect();return [r.width,r.height]}));assert(sizes.every(([w,h])=>w>=44&&h>=44));
+      await p.locator('#board button').first().tap();assert((await p.locator('#status').textContent()).includes('1手'));await c.close();
+    }
     console.log('Daily progress: reload, restart, next date and unavailable storage passed');
   } finally { await browser.close(); server.close(); }
 })().catch(error => { console.error(error); server.close(); process.exitCode = 1; });

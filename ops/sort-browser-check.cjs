@@ -24,7 +24,7 @@ function solve(start){
   await buttons.evaluateAll(bs=>{
     window.sortInputTrace=[];
     bs.forEach((button,index)=>['pointerdown','pointerup','focus','blur','keydown','keyup','click'].forEach(type=>button.addEventListener(type,event=>{
-      window.sortInputTrace.push({type,index,key:event.key||null,pointerType:event.pointerType||null,detail:event.detail,active:bs.indexOf(document.activeElement),selected:bs.map(b=>b.getAttribute('aria-pressed'))});
+      window.sortInputTrace.push({type,index,key:event.key||null,pointerType:event.pointerType||null,detail:event.detail,active:bs.indexOf(document.activeElement),selected:bs.map(b=>b.getAttribute('aria-pressed')),documentFocused:document.hasFocus(),visibility:document.visibilityState,disabled:button.disabled,defaultPrevented:event.defaultPrevented,time:Math.round(performance.now())});
     })));
   });
   let invalid;
@@ -38,7 +38,8 @@ function solve(start){
   assert.equal(focused,a,`source focus failed: ${JSON.stringify({viewport,initial,invalid,firstMove:solution[0],events:await page.evaluate(()=>window.sortInputTrace)})}`);
   await page.keyboard.press('Space');
   const selected=await buttons.evaluateAll(bs=>bs.map(b=>b.getAttribute('aria-pressed')));
-  assert.equal(selected[a],'true',`keyboard selection failed: ${JSON.stringify({viewport,initial,invalid,firstMove:solution[0],focused,selected,status:await page.locator('#status').textContent(),events:await page.evaluate(()=>window.sortInputTrace)})}`);assert((await page.locator('#board').boundingBox()).y+(await page.locator('#board').boundingBox()).height<=viewport.height,'selected message layout');await buttons.nth(b).tap();assert((await page.locator('#status').textContent()).includes('1手'));await undo.tap();assert.deepEqual(await board(),initial);assert.equal(await undo.getAttribute('aria-disabled'),'true');
+  let enterProbe=null;if(selected[a]!=='true'){await page.keyboard.press('Enter');enterProbe=await buttons.nth(a).getAttribute('aria-pressed');}
+  assert.equal(selected[a],'true',`keyboard selection failed: ${JSON.stringify({viewport,initial,invalid,firstMove:solution[0],focused,selected,enterProbe,status:await page.locator('#status').textContent(),events:await page.evaluate(()=>window.sortInputTrace)})}`);assert((await page.locator('#board').boundingBox()).y+(await page.locator('#board').boundingBox()).height<=viewport.height,'selected message layout');await buttons.nth(b).tap();assert((await page.locator('#status').textContent()).includes('1手'));await undo.tap();assert.deepEqual(await board(),initial);assert.equal(await undo.getAttribute('aria-disabled'),'true');
   for(const [from,to] of solution){await buttons.nth(from).tap();await buttons.nth(to).tap();}assert((await page.locator('#status').textContent()).includes('クリア'));
   await undo.tap();assert(!(await page.locator('#status').textContent()).includes('クリア'));await page.locator('#restart').tap();assert.equal(await page.locator('#status').textContent(),'0手');assert.deepEqual(errors,[]);await page.close();
  }

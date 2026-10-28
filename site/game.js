@@ -206,6 +206,43 @@ function circuitTrace(masks) {
 }
 function circuitSolved(masks) { return circuitTrace(masks).won; }
 const games = {
+  code() {
+    category.textContent='推理';board.classList.add('code');status.setAttribute('aria-live','off');
+    const symbols=['●','▲','◆','■'], names=['まる','さんかく','ひし形','しかく'];
+    const answer=shuffle([0,1,2,3]).slice(0,3), selection=[], attempts=[];
+    let finished=false;
+    const selected=document.createElement('p');selected.className='code-selected';board.append(selected);
+    const choices=symbols.map((symbol,i)=>{
+      const b=button(symbol,()=>{
+        if(finished)return;
+        const index=selection.indexOf(i);
+        if(index>=0)selection.splice(index,1);else if(selection.length<3)selection.push(i);
+        render();
+      });
+      b.className='code-choice';b.setAttribute('aria-label',names[i]);return b;
+    });
+    const submit=button('答える',e=>{
+      if(finished||selection.length!==3)return;
+      const exact=selection.filter((value,i)=>answer[i]===value).length;
+      const present=selection.filter(value=>answer.includes(value)).length-exact;
+      attempts.push({values:[...selection],exact,present});selection.length=0;
+      finished=exact===3||attempts.length===6;
+      render();
+      announcement.textContent=`位置も同じ ${exact}、形だけ同じ ${present}。${status.textContent}`;
+      if(e?.detail===0)(finished?restart:choices[0]).focus();
+    });submit.className='code-submit';
+    const history=document.createElement('ol');history.className='code-history';history.setAttribute('aria-label','回答の履歴');board.append(history);
+    function render(){
+      selected.hidden=finished;
+      selected.textContent=selection.length?`選んだ順：${selection.map(i=>names[i]).join('・')}`:'形を3つ選んでね';
+      choices.forEach((b,i)=>{b.setAttribute('aria-pressed',String(selection.includes(i)));b.hidden=finished;b.disabled=finished||(selection.length===3&&!selection.includes(i));});
+      submit.hidden=finished;submit.disabled=finished||selection.length!==3;
+      history.replaceChildren();
+      attempts.forEach(({values,exact,present})=>{const li=document.createElement('li');li.textContent=`${values.map(i=>names[i]).join('・')}：位置も同じ ${exact}、形だけ同じ ${present}`;history.append(li)});
+      status.textContent=finished?(attempts.at(-1).exact===3?`正解！ ${attempts.length}回で当てたよ`:`答えは ${answer.map(i=>names[i]).join('・')} だったよ`):`あと ${6-attempts.length}回`;
+    }
+    render();
+  },
   recall() {
     category.textContent='記憶';board.classList.add('recall');
     const symbols=['●','▲','◆','■'],names=['まる','さんかく','ひし形','しかく'];
@@ -675,9 +712,9 @@ function start(reset=false){
   if(dailyTimer!==null){window.clearInterval(dailyTimer);dailyTimer=null;}
   activeDailyDate=null;isStaleDaily=false;restart.textContent='もう一度';
   document.body.classList.remove('daily-stale','storage-unavailable');
-  document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall');board.style.display='';controls.hidden=true;
+  document.body.classList.remove('dodge-mode','grid-mode','path-mode','lights-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall','code');board.style.display='';controls.hidden=true;
   if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}
-  title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;board.setAttribute('aria-describedby',Object.hasOwn(gridColumns,id)?'grid-keyboard-help':'');if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
+  title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;board.setAttribute('aria-describedby',Object.hasOwn(gridColumns,id)?'grid-keyboard-help':'');if(id!=='dodge')document.body.classList.add('grid-mode');if(id==='path')document.body.classList.add('path-mode');if(id==='lights')document.body.classList.add('lights-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
   activeDailyDate=category.textContent.match(/^今日のパズル (\d{4}-\d{2}-\d{2})$/)?.[1] || null;
   if(activeDailyDate){refreshDailyDate();dailyTimer=window.setInterval(refreshDailyDate,30000);}
 }

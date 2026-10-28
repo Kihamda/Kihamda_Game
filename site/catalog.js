@@ -1,4 +1,8 @@
 const gameCatalog = {
+  "code": {
+    "title": "かたちの暗号",
+    "instructions": "4つの形から3つを順に選ぼう。位置も同じ数と形だけ同じ数を手がかりに、6回以内に当てよう。"
+  },
   "recall": {
     "title": "ぎゃくからメモリー",
     "instructions": "図形の並びを覚えて、右から逆の順番に押そう。"
