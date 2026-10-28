@@ -3,12 +3,15 @@ const id = document.body.dataset.game || params.get('game');
 const board = document.querySelector('#board'), status = document.querySelector('#status'), announcement = document.querySelector('#announcement');
 const title = document.querySelector('#title'), instructions = document.querySelector('#instructions');
 const category = document.querySelector('#category'), controls = document.querySelector('#controls'), record = document.querySelector('#record'), copyResult = document.querySelector('#copy-result'), copyFeedback = document.querySelector('#copy-feedback');
-let cleanup = () => {}, runGeneration = 0;
+let cleanup = () => {}, runGeneration = 0, currentDailyStorage = null;
 const shuffle = values => { const a = [...values]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 function button(label, action) { const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.addEventListener('click', action); board.append(b); return b; }
 function offerResultCopy(game, date, moves) {
-  if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) return;
   const text = `${gameCatalog[game].title} ${date} ${moves}手\nhttps://game.kihamda.net/play-${game}.html${['lights','sort'].includes(game) ? '?mode=daily' : ''}`;
+  offerCopy(text);
+}
+function offerCopy(text) {
+  if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) return;
   copyResult.hidden = false;
   const copyHandler = async () => {
     const generation = runGeneration;
@@ -24,10 +27,10 @@ function offerResultCopy(game, date, moves) {
 // Keep the newest day and one earlier day without letting an old tab replace newer progress.
 function dailyStorage(game, date) {
   const key=`kihamda-daily-${game}`, previousKey=`${key}-previous`;
-  let snapshot=null, tracking=false;
+  let snapshot=null, tracking=false, readFailed=false;
   function read(name) {
     let raw;
-    try {raw=window.localStorage.getItem(name);} catch (_) {showStorageUnavailable();return null;}
+    try {raw=window.localStorage.getItem(name);} catch (_) {readFailed=true;showStorageUnavailable();return null;}
     try {return JSON.parse(raw);} catch (_) {return null;}
   }
   const validDate=value=>typeof value==='string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
@@ -35,17 +38,26 @@ function dailyStorage(game, date) {
     const current=read(key), previous=read(previousKey);
     return current?.date===date ? current : previous?.date===date ? previous : null;
   }
+  function hasConflict() {
+    readFailed=false;
+    const saved=currentRecord();
+    return tracking && !readFailed && JSON.stringify(saved)!==snapshot;
+  }
   return {
     load() {
-      const saved=currentRecord(); snapshot=JSON.stringify(saved); tracking=true; return saved;
+      const saved=currentRecord(); snapshot=JSON.stringify(saved); tracking=true; currentDailyStorage=this; return saved;
     },
+    isCurrent() { return !hasConflict(); },
     save(value) {
       try {
-        if(tracking && JSON.stringify(currentRecord())!==snapshot) return false;
+        if(hasConflict()) return false;
+        if(readFailed) return true;
         const records=new Map();
         for(const item of [read(previousKey),read(key)]) if(validDate(item?.date)) records.set(item.date,item);
+        if(readFailed) return true;
         records.set(date,{...value,date});
         const newest=[...records.keys()].sort().reverse().slice(0,2);
+        if(!newest.includes(date)){showStorageUnavailable('この日の記録は保存できないよ');return true;}
         if(newest.length>1) window.localStorage.setItem(previousKey,JSON.stringify(records.get(newest[1])));
         else window.localStorage.removeItem(previousKey);
         window.localStorage.setItem(key,JSON.stringify(records.get(newest[0])));
@@ -61,9 +73,9 @@ function dailyStorage(game, date) {
     }
   };
 }
-function showStorageUnavailable() {
+function showStorageUnavailable(message='進行状況を保存できないよ') {
   document.body.classList.add('storage-unavailable');
-  record.textContent='進行状況を保存できないよ';
+  record.textContent=message;
   record.hidden=false;
 }
 function dailyProgress(game, date, count=16) {
@@ -194,6 +206,67 @@ function circuitTrace(masks) {
 }
 function circuitSolved(masks) { return circuitTrace(masks).won; }
 const games = {
+  recall() {
+    category.textContent='記憶';board.classList.add('recall');
+    const symbols=['●','▲','◆','■'],names=['まる','さんかく','ひし形','しかく'];
+    const sequence=[];
+    function extend(){
+      const previous=sequence.at(-1),choice=Math.floor(Math.random()*(sequence.length?3:4));
+      sequence.push(sequence.length && choice>=previous ? choice+1 : choice);
+    }
+    for(let i=0;i<3;i++)extend();
+    let position=0, mistakes=0, phase='preview';
+    const ready=button('覚えた',e=>{
+      if(phase==='complete'){start();if(e?.detail===0)board.querySelector('.recall-ready').focus();return;}
+      if(phase!=='preview')return;
+      phase='input';position=0;ready.hidden=true;choices.forEach(b=>b.disabled=false);
+      status.textContent=`逆から押そう　0 / ${sequence.length}`;
+      if(e?.detail===0)choices[0].focus();
+    });
+    ready.className='recall-ready';
+    const choices=symbols.map((symbol,i)=>{
+      const b=button(symbol,e=>{
+        if(phase!=='input')return;
+        if(i!==sequence[sequence.length-1-position]){
+          mistakes++;showPreview(true);if(e?.detail===0)ready.focus();return;
+        }
+        position++;
+        if(position<sequence.length){status.textContent=`逆から押そう　${position} / ${sequence.length}`;return;}
+        if(sequence.length<5){extend();showPreview(false);if(e?.detail===0)ready.focus();return;}
+        phase='complete';choices.forEach(item=>item.disabled=true);ready.hidden=false;ready.textContent='もう一度';
+        status.textContent=`クリア！ 間違い ${mistakes}回`;if(e?.detail===0)ready.focus();
+      });
+      b.setAttribute('aria-label',names[i]);return b;
+    });
+    function showPreview(retry){
+      phase='preview';ready.hidden=false;ready.textContent='覚えた';choices.forEach(b=>b.disabled=true);
+      status.textContent=`${retry?'もう一度覚えよう':'覚えよう'}：${sequence.map(i=>names[i]).join('・')}`;
+    }
+    showPreview(false);
+  },
+  timing() {
+    category.textContent='時間感覚';
+    board.classList.add('timing');
+    let started=null;
+    const control=button('スタート',()=>{
+      if(started===null){
+        started=performance.now();control.textContent='ストップ';status.textContent='5秒たったらストップ！';
+        copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';
+      } else {
+        const hundredths=Math.round((performance.now()-started)/10);
+        started=null;control.textContent='もう一度';
+        const elapsed=(hundredths/100).toFixed(2),difference=(Math.abs(hundredths-500)/100).toFixed(2);
+        status.textContent=`${elapsed}秒　差 ${difference}秒`;
+        offerCopy(`5秒ぴったり ${elapsed}秒（差 ${difference}秒）\nhttps://game.kihamda.net/play-timing.html`);
+      }
+    });
+    status.textContent='スタートを押してね';
+    const cancel=()=>{
+      if(document.hidden && started!==null){started=null;control.textContent='スタート';status.textContent='計測を中止したよ。もう一度スタートしてね。';}
+    };
+    document.addEventListener('visibilitychange',cancel);
+    cleanup=()=>document.removeEventListener('visibilitychange',cancel);
+  },
   lights(reset) {
     category.textContent = 'パズル';
     let cells = Array(16).fill(false), moves = 0, progress = null, dailyDate = null;
@@ -598,16 +671,20 @@ function refreshDailyDate() {
   isStaleDaily=stale;
 }
 function start(reset=false){
-  runGeneration++;cleanup();cleanup=()=>{};
+  runGeneration++;cleanup();cleanup=()=>{};currentDailyStorage=null;
   if(dailyTimer!==null){window.clearInterval(dailyTimer);dailyTimer=null;}
   activeDailyDate=null;isStaleDaily=false;restart.textContent='もう一度';
   document.body.classList.remove('daily-stale','storage-unavailable');
-  document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit');board.style.display='';controls.hidden=true;
+  document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall');board.style.display='';controls.hidden=true;
   if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}
   title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;board.setAttribute('aria-describedby',Object.hasOwn(gridColumns,id)?'grid-keyboard-help':'');if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
   activeDailyDate=category.textContent.match(/^今日のパズル (\d{4}-\d{2}-\d{2})$/)?.[1] || null;
   if(activeDailyDate){refreshDailyDate();dailyTimer=window.setInterval(refreshDailyDate,30000);}
 }
-restart.addEventListener('click',()=>{refreshDailyDate();start(!isStaleDaily);});
+restart.addEventListener('click',()=>{
+  refreshDailyDate();
+  if(!isStaleDaily && currentDailyStorage && !currentDailyStorage.isCurrent()){recoverDailyConflict();return;}
+  start(!isStaleDaily);
+});
 if(typeof document.addEventListener==='function')document.addEventListener('visibilitychange',refreshDailyDate);
 start();

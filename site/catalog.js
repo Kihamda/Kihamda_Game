@@ -1,4 +1,12 @@
 const gameCatalog = {
+  "recall": {
+    "title": "ぎゃくからメモリー",
+    "instructions": "図形の並びを覚えて、右から逆の順番に押そう。"
+  },
+  "timing": {
+    "title": "5秒ぴったり",
+    "instructions": "スタートを押して、5秒たったと思ったらストップしよう。"
+  },
   "circuit": {
     "title": "くるくる回路",
     "instructions": "マスを押して道を回そう。左の始から右の終まで、すべてのマスをつなげてね。"
