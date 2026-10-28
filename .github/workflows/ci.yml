@@ -18,6 +18,7 @@ jobs:
           node ops/check-games.cjs
           node ops/sum-generator-check.cjs
           node ops/path-check.cjs
+          node ops/circuit-check.cjs
           node ops/sort-check.cjs
           node ops/sort-daily-check.cjs
       - name: Check deployment and rollback
@@ -42,6 +43,7 @@ jobs:
           node ops/nav-browser-check.cjs
           node ops/sum-browser-check.cjs
           node ops/path-browser-check.cjs
+          node ops/circuit-browser-check.cjs
           node ops/sort-browser-check.cjs
           node ops/sort-daily-browser-check.cjs
           python3 ops/build_preview.py

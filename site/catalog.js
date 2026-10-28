@@ -1,4 +1,8 @@
 const gameCatalog = {
+  "circuit": {
+    "title": "くるくる回路",
+    "instructions": "マスを押して道を回そう。左の始から右の終まで、すべてのマスをつなげてね。"
+  },
   "lights": {
     "title": "ひかりのスイッチ",
     "instructions": "押したマスと上下左右の灯りが切り替わるよ。すべて消そう。"

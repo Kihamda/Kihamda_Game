@@ -22,7 +22,7 @@ const server = http.createServer((req, res) => {
       assert.equal(await page.title(),'無料ブラウザゲーム | Kihamda Games');
       assert.equal(await page.locator('link[rel=canonical]').getAttribute('href'),'https://game.kihamda.net/');
       assert((await page.locator('meta[name=description]').getAttribute('content')).includes('日替わりパズル'));
-      const links=page.locator('.daily-link');assert.equal(await links.count(),5);
+      const links=page.locator('.daily-link');assert.equal(await links.count(),6);
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
       const rects=await links.evaluateAll(items=>items.map(el=>{const r=el.getBoundingClientRect();return [r.width,r.height,r.right]}));
       assert(rects.every(([w,h,right])=>w>=44&&h>=44&&right<=width));
@@ -33,7 +33,7 @@ const server = http.createServer((req, res) => {
     assert.equal(new URL(page.url()).pathname, '/play-lights.html');
     assert.equal(new URL(page.url()).searchParams.get('mode'), 'daily');
     await page.waitForFunction(() => document.querySelector('#category').textContent.startsWith('今日のパズル'));
-    for (const [label,id] of [['かずの花壇 ↗','garden'],['ぴったり3枚 ↗','sum'],['まいにち道つなぎ ↗','path'],['いろわけボトル ↗','sort']]) {
+    for (const [label,id] of [['くるくる回路 ↗','circuit'],['かずの花壇 ↗','garden'],['ぴったり3枚 ↗','sum'],['まいにち道つなぎ ↗','path'],['いろわけボトル ↗','sort']]) {
       await page.goto(`${origin}/index.html`);await page.getByRole('link',{name:label}).click();
       assert.equal(new URL(page.url()).pathname,`/play-${id}.html`);
       assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
@@ -50,7 +50,7 @@ const server = http.createServer((req, res) => {
     await page.locator('.card').filter({hasText:'まいにち道つなぎ'}).click();
     assert.equal(new URL(page.url()).pathname, '/play-path.html');
     assert.equal(await page.locator('#board button').count(), 16);
-    for (const [id, title] of [['lights','ひかりのスイッチ'], ['memory','ペアをさがせ'], ['order','数字のかけっこ'], ['dodge','ほしよけステップ'], ['sum','ぴったり3枚'], ['slide','ならべてタイル'], ['garden','かずの花壇'], ['path','まいにち道つなぎ'], ['sort','いろわけボトル']]) {
+    for (const [id, title] of [['circuit','くるくる回路'], ['lights','ひかりのスイッチ'], ['memory','ペアをさがせ'], ['order','数字のかけっこ'], ['dodge','ほしよけステップ'], ['sum','ぴったり3枚'], ['slide','ならべてタイル'], ['garden','かずの花壇'], ['path','まいにち道つなぎ'], ['sort','いろわけボトル']]) {
       await page.goto(`${origin}/play-${id}.html?game=invalid`);
       assert.equal(await page.locator('#title').textContent(), title);
       assert(await page.locator('#board button, #board canvas').count());
@@ -64,7 +64,7 @@ const server = http.createServer((req, res) => {
     assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
     const noJs = await browser.newContext({javaScriptEnabled:false});
     const plain = await noJs.newPage();
-    for (const id of ['lights','memory','order','dodge','slide','sum','garden','path','sort']) {
+    for (const id of ['circuit','lights','memory','order','dodge','slide','sum','garden','path','sort']) {
       await plain.goto(`${origin}/play-${id}.html`);
       assert(await plain.locator('#instructions').isVisible());
       assert(await plain.locator('noscript p').isVisible());
