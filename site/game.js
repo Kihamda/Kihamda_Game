@@ -24,17 +24,22 @@ function offerResultCopy(game, date, moves) {
 // Keep the newest day and one earlier day without letting an old tab replace newer progress.
 function dailyStorage(game, date) {
   const key=`kihamda-daily-${game}`, previousKey=`${key}-previous`;
+  let snapshot=null, tracking=false;
   function read(name) {
     try {return JSON.parse(window.localStorage.getItem(name));} catch (_) {return null;}
   }
   const validDate=value=>typeof value==='string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
+  function currentRecord() {
+    const current=read(key), previous=read(previousKey);
+    return current?.date===date ? current : previous?.date===date ? previous : null;
+  }
   return {
     load() {
-      const current=read(key), previous=read(previousKey);
-      return current?.date===date ? current : previous?.date===date ? previous : null;
+      const saved=currentRecord(); snapshot=JSON.stringify(saved); tracking=true; return saved;
     },
     save(value) {
       try {
+        if(tracking && JSON.stringify(currentRecord())!==snapshot) return false;
         const records=new Map();
         for(const item of [read(previousKey),read(key)]) if(validDate(item?.date)) records.set(item.date,item);
         records.set(date,{...value,date});
@@ -42,7 +47,9 @@ function dailyStorage(game, date) {
         if(newest.length>1) window.localStorage.setItem(previousKey,JSON.stringify(records.get(newest[1])));
         else window.localStorage.removeItem(previousKey);
         window.localStorage.setItem(key,JSON.stringify(records.get(newest[0])));
+        snapshot=JSON.stringify(currentRecord()); tracking=true;
       } catch (_) {}
+      return true;
     },
     clear() {
       try {
@@ -60,7 +67,7 @@ function dailyProgress(game, date, count=16) {
       if (saved && Array.isArray(saved.cells) && saved.cells.length === count && saved.cells.every(value => typeof value === 'boolean') && Number.isSafeInteger(saved.moves) && saved.moves >= 0) return saved;
       return null;
     },
-    save(cells, moves) { storage.save({cells,moves}); },
+    save(cells, moves) { return storage.save({cells,moves}); },
     clear() { storage.clear(); }
   };
 }
@@ -207,7 +214,7 @@ const games = {
       const saved = progress.load();
       if (saved) { cells = saved.cells; moves = saved.moves; }
     }
-    const buttons = cells.map((_,i) => button('', () => { if (!cells.some(Boolean)) return; toggle(i); moves++; progress?.save(cells, moves); render(); }));
+    const buttons = cells.map((_,i) => button('', () => { if (!cells.some(Boolean)) return; toggle(i); moves++; if(progress && !progress.save(cells,moves)){recoverDailyConflict();return;} render(); }));
     function render() { cells.forEach((on,i) => { buttons[i].className = on ? 'on' : ''; buttons[i].textContent = on ? '✦' : '·'; buttons[i].setAttribute('aria-label', `${Math.floor(i/4)+1}行${i%4+1}列 ${on?'点灯':'消灯'}`); }); status.textContent = cells.some(Boolean) ? `${moves}手` : `クリア！ ${moves}手で消せたよ`; if(progress && !cells.some(Boolean)) offerResultCopy('lights', dailyDate, moves); } render();
   },
   memory() {
@@ -267,7 +274,7 @@ const games = {
     board.classList.add('sum');
     const buttons=values.map((value,index)=>button(String(value),()=>{
       if(won || (!selected[index] && selected.filter(Boolean).length===3))return;
-      selected[index]=!selected[index];moves++;progress.save(selected,moves);render();
+      selected[index]=!selected[index];moves++;if(!progress.save(selected,moves)){recoverDailyConflict();return;}render();
     }));
     function render(){
       const chosen=values.filter((_,i)=>selected[i]),total=chosen.reduce((a,n)=>a+n,0);
@@ -317,7 +324,7 @@ const games = {
         route=candidate;
       }
       moves++;
-      storage.save({route,moves});
+      if(!storage.save({route,moves})){recoverDailyConflict();return;}
       render();
     }));
     function render(){
@@ -355,7 +362,7 @@ const games = {
     const buttons=turns.map((_,i)=>button('',()=>{
       if(circuitSolved(masks.map((mask,j)=>rotateCircuit(mask,turns[j])))) return;
       turns[i]=(turns[i]+1)%4; moves++;
-      storage.save({turns,moves});
+      if(!storage.save({turns,moves})){recoverDailyConflict();return;}
       render();
     }));
     function render(){
@@ -407,7 +414,7 @@ const games = {
         }
       }catch(_){}
     }
-    const save=()=>storage?.save({actions});
+    const save=()=>!storage || storage.save({actions});
     const buttons=Array.from({length:4},(_,index)=>button('',()=>{
       if(won)return;
       if(selected===null) {
@@ -417,13 +424,14 @@ const games = {
       else {
         if(!canMove(tubes,selected,index)) {status.textContent='空きか、同じ色の上に移してね';return;}
         history.push(tubes.map(t=>[...t]));actions.push([selected,index]);
-        tubes[index].push(tubes[selected].pop());selected=null;save();
+        tubes[index].push(tubes[selected].pop());selected=null;
+        if(!save()){recoverDailyConflict();return;}
       }
       render();
     }));
     const undo=button('一手戻す',()=>{
       if(!history.length)return;
-      tubes=history.pop();actions.pop();selected=null;save();render();
+      tubes=history.pop();actions.pop();selected=null;if(!save()){recoverDailyConflict();return;}render();
     });
     undo.className='sort-undo';
     function render(){
@@ -500,7 +508,7 @@ const games = {
     const clue=(value,kind,index)=>{const el=document.createElement('span');el.className='garden-clue';el.textContent=value;el.setAttribute('aria-label',`${kind}${index+1}の目標 ${value}`);board.append(el);};
     const corner=document.createElement('span');corner.setAttribute('aria-hidden','true');board.append(corner); cols.forEach((v,i)=>clue(v,'列',i));
     const buttons=[];
-    for(let r=0;r<4;r++) { clue(rows[r],'行',r); for(let c=0;c<4;c++) { const i=r*4+c; buttons.push(button('',()=>{if(won)return;cells[i]=!cells[i];moves++;progress.save(cells,moves);render();})); } }
+    for(let r=0;r<4;r++) { clue(rows[r],'行',r); for(let c=0;c<4;c++) { const i=r*4+c; buttons.push(button('',()=>{if(won)return;cells[i]=!cells[i];moves++;if(!progress.save(cells,moves)){recoverDailyConflict();return;}render();})); } }
     function render() {
       won=cells.every((on,i)=>Number(on)===((solution>>i)&1));
       cells.forEach((on,i)=>{const b=buttons[i];b.className=on?'on':'';b.textContent=on?'✿':'·';b.setAttribute('aria-pressed',String(on));b.setAttribute('aria-label',`${Math.floor(i/4)+1}行${i%4+1}列 ${on?'花あり':'空き'}、行の目標 ${rows[Math.floor(i/4)]}、列の目標 ${cols[i%4]}`);});
@@ -556,6 +564,16 @@ board.addEventListener('keydown',event=>{
     if(target&&!target.disabled){target.focus();return;}
   }
 });
+function recoverDailyConflict() {
+  const cells=Array.from(board.querySelectorAll(':scope > button'));
+  const focused=cells.indexOf(document.activeElement);
+  start(false);
+  status.textContent='別のタブの新しい記録を表示したよ';
+  if(focused>=0) {
+    const target=board.querySelectorAll(':scope > button')[focused];
+    (target&&!target.disabled ? target : restart).focus();
+  }
+}
 let activeDailyDate=null, dailyTimer=null, isStaleDaily=false;
 const restart=document.querySelector('#restart');
 function todayInTokyo() {
