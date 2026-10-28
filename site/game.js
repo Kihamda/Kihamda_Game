@@ -535,5 +535,33 @@ const games = {
     draw();status.textContent='スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;startButton.hidden=true;alive=true;last=0;frame=requestAnimationFrame(loop);});cleanup=()=>{alive=false;startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',stopMoving);window.removeEventListener('pointerup',clearReleased);window.removeEventListener('pointercancel',clearReleased); for(const el of [left,right]){el.replaceWith(el.cloneNode(true));}};
   }
 };
-function start(reset=false){runGeneration++;cleanup();cleanup=()=>{};document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit');board.style.display='';controls.hidden=true;if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;}
-document.querySelector('#restart').addEventListener('click',()=>start(true));start();
+let activeDailyDate=null, dailyTimer=null, isStaleDaily=false;
+const restart=document.querySelector('#restart');
+function todayInTokyo() {
+  const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+  const part=type=>parts.find(item=>item.type===type).value;
+  return `${part('year')}-${part('month')}-${part('day')}`;
+}
+function refreshDailyDate() {
+  if(!activeDailyDate)return;
+  const stale=activeDailyDate!==todayInTokyo();
+  category.textContent=stale ? `${activeDailyDate} の問題` : `今日のパズル ${activeDailyDate}`;
+  document.body.classList.toggle('daily-stale',stale);
+  restart.textContent=stale?'今日の問題へ':'もう一度';
+  if(stale&&!isStaleDaily) announcement.textContent='日付が変わったよ。今日の問題を開けるよ。';
+  isStaleDaily=stale;
+}
+function start(reset=false){
+  runGeneration++;cleanup();cleanup=()=>{};
+  if(dailyTimer!==null){window.clearInterval(dailyTimer);dailyTimer=null;}
+  activeDailyDate=null;isStaleDaily=false;restart.textContent='もう一度';
+  document.body.classList.remove('daily-stale');
+  document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit');board.style.display='';controls.hidden=true;
+  if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}
+  title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
+  activeDailyDate=category.textContent.match(/^今日のパズル (\d{4}-\d{2}-\d{2})$/)?.[1] || null;
+  if(activeDailyDate){refreshDailyDate();dailyTimer=window.setInterval(refreshDailyDate,30000);}
+}
+restart.addEventListener('click',()=>{refreshDailyDate();start(!isStaleDaily);});
+if(typeof document.addEventListener==='function')document.addEventListener('visibilitychange',refreshDailyDate);
+start();
