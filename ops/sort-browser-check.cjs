@@ -23,6 +23,7 @@ function solve(start){
   assert(dims.every(r=>r.w>=44&&r.h>=44),'touch target');assert(Math.max(...dims.map(x=>x.bottom))<=viewport.height,'board fits viewport');assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await buttons.evaluateAll(bs=>{
     window.sortInputTrace=[];
+    for(const type of ['keydown','keyup'])document.addEventListener(type,event=>{window.sortInputTrace.push({type:`document-${type}`,key:event.key,defaultPrevented:event.defaultPrevented,active:bs.indexOf(document.activeElement),documentFocused:document.hasFocus(),time:Math.round(performance.now())})});
     bs.forEach((button,index)=>['pointerdown','pointerup','focus','blur','keydown','keyup','click'].forEach(type=>button.addEventListener(type,event=>{
       window.sortInputTrace.push({type,index,key:event.key||null,pointerType:event.pointerType||null,detail:event.detail,active:bs.indexOf(document.activeElement),selected:bs.map(b=>b.getAttribute('aria-pressed')),documentFocused:document.hasFocus(),visibility:document.visibilityState,disabled:button.disabled,defaultPrevented:event.defaultPrevented,time:Math.round(performance.now())});
     })));
