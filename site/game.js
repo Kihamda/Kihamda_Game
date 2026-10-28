@@ -163,20 +163,22 @@ function generateCircuitPuzzle(year, month, dayOfMonth) {
   if(circuitSolved(masks.map((mask,i)=>rotateCircuit(mask,turns[i])))) turns[0]=(turns[0]+1)%4;
   return {masks,turns};
 }
-function circuitSolved(masks) {
+function circuitTrace(masks) {
   let index=0, incoming=8, visited=0;
+  const reached=[];
   while(true) {
-    if(visited & (1<<index) || !(masks[index]&incoming)) return false;
-    visited|=1<<index;
+    if(visited & (1<<index) || !(masks[index]&incoming)) return {reached,won:false};
+    visited|=1<<index; reached.push(index);
     const outgoing=masks[index]^incoming;
-    if(index===8 && outgoing===2) return visited===511;
+    if(index===8 && outgoing===2) return {reached,won:visited===511};
     const row=Math.floor(index/3), col=index%3;
-    if((outgoing===1&&row===0)||(outgoing===2&&col===2)||(outgoing===4&&row===2)||(outgoing===8&&col===0)) return false;
+    if((outgoing===1&&row===0)||(outgoing===2&&col===2)||(outgoing===4&&row===2)||(outgoing===8&&col===0)) return {reached,won:false};
     const delta={1:-3,2:1,4:3,8:-1}[outgoing];
-    if(delta===undefined) return false;
+    if(delta===undefined) return {reached,won:false};
     index+=delta; incoming=rotateCircuit(outgoing,2);
   }
 }
+function circuitSolved(masks) { return circuitTrace(masks).won; }
 const games = {
   lights(reset) {
     category.textContent = 'パズル';
@@ -357,7 +359,7 @@ const games = {
       render();
     }));
     function render(){
-      const current=masks.map((mask,i)=>rotateCircuit(mask,turns[i])), won=circuitSolved(current);
+      const current=masks.map((mask,i)=>rotateCircuit(mask,turns[i])), {reached,won}=circuitTrace(current);
       buttons.forEach((b,i)=>{
         const mask=current[i], ends=directions.filter(([bit])=>mask&bit).map(([,name])=>name).join('と');
         const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
@@ -368,9 +370,10 @@ const games = {
           svg.append(line);
         }
         b.replaceChildren(svg); b.dataset.endpoint=i===0?'始':i===8?'終':'';
-        b.setAttribute('aria-label',`${Math.floor(i/3)+1}行${i%3+1}列 ${i===0?'始点 ':i===8?'終点 ':''}${ends}につながる道`);
+        b.classList.toggle('circuit-connected',reached.includes(i));
+        b.setAttribute('aria-label',`${Math.floor(i/3)+1}行${i%3+1}列 ${i===0?'始点 ':i===8?'終点 ':''}${ends}につながる道${reached.includes(i)?' 始点から接続':''}`);
       });
-      status.textContent=won?`クリア！ ${moves}手でつながったよ`:`${moves}手`;
+      status.textContent=won?`クリア！ ${moves}手でつながったよ`:`${moves}手　つながり ${reached.length} / 9`;
       if(won) offerResultCopy('circuit',date,moves);
     }
     render();

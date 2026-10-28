@@ -11,5 +11,12 @@ for(let n=0;n<3653;n++){
  assert(p.masks.every(x=>[3,5,6,9,10,12].includes(x)));
  const key=initial.join(',');boards.add(key);assert.notEqual(key,previous);previous=key;
 }
+const solved=context.generateCircuitPuzzle(2026,10,28).masks;
+const full=context.circuitTrace(solved);assert(full.won);assert.equal(full.reached.length,9);
+const disconnected=[...solved];disconnected[0]=context.rotateCircuit(disconnected[0]);
+assert.deepEqual(Array.from(context.circuitTrace(disconnected).reached),[]);
+const second=full.reached[1],broken=[...solved];
+while(context.circuitTrace(broken).reached.includes(second))broken[second]=context.rotateCircuit(broken[second]);
+assert.deepEqual(Array.from(context.circuitTrace(broken).reached),[0]);
 assert(boards.size>1000,`insufficient board variety: ${boards.size}`);
 console.log(`Circuit: 3653 deterministic, solvable, unsolved initial puzzles; ${boards.size} boards`);
