@@ -19,6 +19,7 @@ jobs:
           node ops/sum-generator-check.cjs
           node ops/path-check.cjs
           node ops/circuit-check.cjs
+          node ops/balance-generator-check.cjs
           node ops/daily-storage-check.cjs
           node ops/sort-check.cjs
           node ops/sort-daily-check.cjs
@@ -39,6 +40,9 @@ jobs:
           node ops/timing-browser-check.cjs
           node ops/recall-browser-check.cjs
           node ops/code-browser-check.cjs
+          node ops/balance-browser-check.cjs
+          node ops/balance-daily-check.cjs
+          node ops/balance-storage-check.cjs
           node ops/dodge-browser-check.cjs
           node ops/daily-browser-check.cjs
           node ops/daily-cross-day-check.cjs

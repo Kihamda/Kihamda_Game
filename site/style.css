@@ -120,8 +120,17 @@ header>a,footer a{display:inline-flex;align-items:center;justify-content:center;
   .grid-mode .play-heading h1{font-size:1.15rem}
   .grid-mode .play-heading .eyebrow{font-size:.7rem;letter-spacing:0}
   .grid-mode .play-heading p{font-size:.8rem}
-  .grid-mode .board:not(.garden):not(.sort):not(.circuit):not(.path):not(.code):not(.recall):not(.timing){width:min(100%,380px,max(200px,calc(100svh - 300px)))}
-  .grid-mode .board:not(.timing):not(.recall):not(.code):not(.sort) button{min-height:44px}
+  .grid-mode .board:not(.garden):not(.sort):not(.circuit):not(.path):not(.code):not(.recall):not(.timing):not(.balance){width:min(100%,380px,max(200px,calc(100svh - 300px)))}
+  .grid-mode .board:not(.timing):not(.recall):not(.code):not(.sort):not(.balance) button{min-height:44px}
   .grid-mode .board.garden{width:min(100%,246px)}
   .grid-mode .board.circuit{width:min(100%,380px,max(200px,calc(100svh - 290px)))}
 }
+
+.board.balance{grid-template-columns:repeat(4,minmax(0,1fr));max-width:440px;gap:8px}
+.board.balance .balance-mode{grid-column:span 2;min-height:44px;aspect-ratio:auto;font-size:1rem}
+.board.balance .balance-mode[aria-pressed=true],.board.balance .balance-choice[aria-pressed=true]{outline:3px solid #5323a3;outline-offset:1px}
+.board.balance .balance-prompt,.board.balance .balance-history{grid-column:1 / -1;margin:0;font-size:.9rem;line-height:1.5}
+.board.balance .balance-choice{min-height:48px;aspect-ratio:auto;font-size:1.5rem}
+.board.balance .balance-submit{grid-column:1 / -1;min-height:44px;aspect-ratio:auto;font-size:1rem}
+.board.balance .balance-history{padding-left:1.5em;text-align:left}
+.board.balance [hidden]{display:none}

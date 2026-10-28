@@ -1,4 +1,8 @@
 const gameCatalog = {
+  "balance": {
+    "title": "くらべて順番",
+    "instructions": "形を2つずつくらべて、軽い順に4つ並べよう。"
+  },
   "code": {
     "title": "かたちの暗号",
     "instructions": "4つの形から3つを順に選ぼう。位置も同じ数と形だけ同じ数を手がかりに、6回以内に当てよう。"

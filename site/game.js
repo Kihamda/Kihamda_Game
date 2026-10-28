@@ -205,7 +205,85 @@ function circuitTrace(masks) {
   }
 }
 function circuitSolved(masks) { return circuitTrace(masks).won; }
+function generateDailyBalance(date) {
+  const [year,month,day]=date.split('-').map(Number), dayNumber=Math.floor(Date.UTC(year,month-1,day)/86400000);
+  const cycle=Math.floor(dayNumber/24), dayInCycle=((dayNumber%24)+24)%24;
+  let index=((dayInCycle+7*cycle)%24+24)%24;
+  const pool=[0,1,2,3], result=[];
+  for(const divisor of [6,2,1,1]) {const choice=Math.floor(index/divisor);index%=divisor;result.push(pool.splice(choice,1)[0]);}
+  return result;
+}
 const games = {
+  balance(reset) {
+    const daily=params.get('mode')==='daily', date=daily?todayInTokyo():null;
+    category.textContent=daily?`今日のパズル ${date}`:'推理';board.classList.add('balance');
+    const symbols=['●','▲','◆','■'], names=['まる','さんかく','ひし形','しかく'];
+    const order=daily?generateDailyBalance(date):shuffle([0,1,2,3]), comparisons=new Map(), selected=[], answer=[];
+    const storage=daily?dailyStorage('balance',date):null;
+    let mode='compare', count=0, finished=false;
+    function comparison(first,second) {
+      const light=order.indexOf(first)<order.indexOf(second)?first:second, heavy=light===first?second:first;
+      comparisons.set([first,second].sort().join('-'),`${names[light]} が軽い → ${names[heavy]} が重い`);
+      return `${names[light]} が軽い。${names[heavy]} が重い。`;
+    }
+    if(storage){
+      if(reset)storage.clear();
+      const saved=storage.load();
+      const validIndex=i=>Number.isInteger(i)&&i>=0&&i<4;
+      if(saved && Array.isArray(saved.pairs) && saved.pairs.length<=6 && saved.pairs.every(pair=>Array.isArray(pair)&&pair.length===2&&pair.every(validIndex)&&pair[0]!==pair[1]) && new Set(saved.pairs.map(pair=>[...pair].sort().join('-'))).size===saved.pairs.length && Array.isArray(saved.answer) && saved.answer.length<=4 && saved.answer.every(validIndex) && new Set(saved.answer).size===saved.answer.length && Number.isSafeInteger(saved.count) && saved.count>=saved.pairs.length && typeof saved.finished==='boolean' && (!saved.finished||saved.answer.length===4)) {
+        saved.pairs.forEach(pair=>comparison(...pair));answer.push(...saved.answer);count=saved.count;finished=saved.finished;
+      }
+    }
+    function save() {return !storage || storage.save({pairs:[...comparisons.keys()].map(key=>key.split('-').map(Number)),answer:[...answer],count,finished});}
+    function finishText(){return answer.every((value,i)=>value===order[i])?`正解！ ${count}回くらべたよ`:`おしい！ 答え：${order.map(i=>names[i]).join(' → ')}（${count}回）`;}
+    function offerBalanceCopy(){if(answer.every((value,i)=>value===order[i]))offerCopy(`くらべて順番${daily?` ${date}`:''} ${count}回で正解\nhttps://game.kihamda.net/play-balance.html${daily?'?mode=daily':''}`);}
+
+    const compareMode=button('くらべる',()=>{mode='compare';selected.length=0;render();});
+    const answerMode=button('順番を選ぶ',()=>{mode='answer';selected.length=0;render();});
+    compareMode.className=answerMode.className='balance-mode';
+    const prompt=document.createElement('p');prompt.className='balance-prompt';board.append(prompt);
+    const choices=symbols.map((symbol,i)=>{
+      const b=button(symbol,()=>{
+        if(finished)return;
+        if(mode==='compare'){
+          if(selected.includes(i)) selected.length=0;
+          else if(!selected.length) selected.push(i);
+          else {
+            const first=selected.pop();
+            announcement.textContent=comparison(first,i);count++;
+            if(!save()){recoverDailyConflict();return;}
+          }
+        } else {
+          const at=answer.indexOf(i);
+          if(at>=0)answer.splice(at,1);else if(answer.length<4)answer.push(i);
+          if(!save()){recoverDailyConflict();return;}
+          announcement.textContent=answer.length?`軽い順：${answer.map(value=>names[value]).join(' → ')}`:'選択を解除したよ';
+        }
+        render();
+      });
+      b.className='balance-choice';b.setAttribute('aria-label',names[i]);return b;
+    });
+    const submit=button('答える',e=>{
+      if(finished||answer.length!==4)return;
+      finished=true;
+      if(!save()){recoverDailyConflict();return;}
+      announcement.textContent='';
+      render();if(e?.detail===0)restart.focus();
+    });submit.className='balance-submit';
+    const history=document.createElement('ul');history.className='balance-history';history.setAttribute('aria-label','比較した結果');board.append(history);
+    function render(){
+      compareMode.hidden=answerMode.hidden=finished;
+      compareMode.setAttribute('aria-pressed',String(mode==='compare'));answerMode.setAttribute('aria-pressed',String(mode==='answer'));
+      prompt.hidden=finished;
+      prompt.textContent=mode==='compare'?(selected.length?`${names[selected[0]]} とくらべる形を選ぼう`:'くらべる形を2つ選ぼう'):(answer.length?`軽い順：${answer.map(i=>names[i]).join(' → ')}`:'軽い順に4つ選ぼう');
+      choices.forEach((b,i)=>{b.hidden=finished;b.setAttribute('aria-pressed',String((mode==='compare'?selected:answer).includes(i)));});
+      submit.hidden=finished||mode!=='answer';submit.disabled=answer.length!==4;
+      history.replaceChildren();for(const text of comparisons.values()){const li=document.createElement('li');li.textContent=text;history.append(li);}
+      if(!finished)status.textContent=`${count}回くらべたよ`;
+      else {status.textContent=finishText();offerBalanceCopy();}
+    }
+    render();
+  },
   code() {
     category.textContent='推理';board.classList.add('code');status.setAttribute('aria-live','off');
     const symbols=['●','▲','◆','■'], names=['まる','さんかく','ひし形','しかく'];
@@ -712,9 +790,9 @@ function start(reset=false){
   if(dailyTimer!==null){window.clearInterval(dailyTimer);dailyTimer=null;}
   activeDailyDate=null;isStaleDaily=false;restart.textContent='もう一度';
   document.body.classList.remove('daily-stale','storage-unavailable');
-  document.body.classList.remove('dodge-mode','grid-mode','path-mode','lights-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall','code');board.style.display='';controls.hidden=true;
+  document.body.classList.remove('dodge-mode','grid-mode','path-mode','lights-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall','code','balance');board.style.display='';controls.hidden=true;
   if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}
-  title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;board.setAttribute('aria-describedby',Object.hasOwn(gridColumns,id)?'grid-keyboard-help':'');if(id!=='dodge')document.body.classList.add('grid-mode');if(id==='path')document.body.classList.add('path-mode');if(id==='lights')document.body.classList.add('lights-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
+  title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;const gridHelp=document.querySelector('#grid-keyboard-help'), hasGridKeys=Object.hasOwn(gridColumns,id);if(gridHelp)gridHelp.hidden=!hasGridKeys;board.setAttribute('aria-describedby',hasGridKeys?'grid-keyboard-help':'');if(id!=='dodge')document.body.classList.add('grid-mode');if(id==='path')document.body.classList.add('path-mode');if(id==='lights')document.body.classList.add('lights-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
   activeDailyDate=category.textContent.match(/^今日のパズル (\d{4}-\d{2}-\d{2})$/)?.[1] || null;
   if(activeDailyDate){refreshDailyDate();dailyTimer=window.setInterval(refreshDailyDate,30000);}
 }
