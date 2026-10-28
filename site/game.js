@@ -113,6 +113,41 @@ function generateDailySortPuzzle(year, month, dayOfMonth) {
   tubes.push([]);
   return [...tubes.slice(rotation),...tubes.slice(0,rotation)];
 }
+// Rotate a four-bit mask clockwise: north, east, south, west.
+function rotateCircuit(mask, turns=1) {
+  for(let i=0;i<turns;i++) mask=((mask << 1) & 15) | (mask >> 3);
+  return mask;
+}
+function generateCircuitPuzzle(year, month, dayOfMonth) {
+  const day=Math.floor(Date.UTC(year,month-1,dayOfMonth)/86400000);
+  let seed=(day ^ 0xa5b35705)>>>0;
+  const random=()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return seed>>>0;};
+  const paths=[[0,3,6,7,4,1,2,5,8],[0,1,2,5,4,3,6,7,8]];
+  const path=paths[random()%paths.length], masks=Array(9).fill(0);
+  const directions=[[-3,1],[1,2],[3,4],[-1,8]];
+  for(let i=0;i<path.length-1;i++) {
+    const a=path[i], b=path[i+1], bit=directions.find(([delta])=>delta===b-a)[1];
+    masks[a]|=bit; masks[b]|=rotateCircuit(bit,2);
+  }
+  masks[0]|=8; masks[8]|=2;
+  const turns=masks.map(()=>random()%4);
+  if(circuitSolved(masks.map((mask,i)=>rotateCircuit(mask,turns[i])))) turns[0]=(turns[0]+1)%4;
+  return {masks,turns};
+}
+function circuitSolved(masks) {
+  let index=0, incoming=8, visited=0;
+  while(true) {
+    if(visited & (1<<index) || !(masks[index]&incoming)) return false;
+    visited|=1<<index;
+    const outgoing=masks[index]^incoming;
+    if(index===8 && outgoing===2) return visited===511;
+    const row=Math.floor(index/3), col=index%3;
+    if((outgoing===1&&row===0)||(outgoing===2&&col===2)||(outgoing===4&&row===2)||(outgoing===8&&col===0)) return false;
+    const delta={1:-3,2:1,4:3,8:-1}[outgoing];
+    if(delta===undefined) return false;
+    index+=delta; incoming=rotateCircuit(outgoing,2);
+  }
+}
 const games = {
   lights(reset) {
     category.textContent = 'パズル';
@@ -267,6 +302,47 @@ const games = {
       });
       status.textContent=won?`クリア！ ${moves}手`:`${route.length} / 16マス`;
       if(won)offerResultCopy('path',date,moves);
+    }
+    render();
+  },
+  circuit(reset) {
+    const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+    const part=type=>Number(parts.find(item=>item.type===type).value);
+    const date=`${part('year')}-${String(part('month')).padStart(2,'0')}-${String(part('day')).padStart(2,'0')}`;
+    category.textContent=`今日のパズル ${date}`;
+    const {masks,turns:initial}=generateCircuitPuzzle(part('year'),part('month'),part('day'));
+    const key='kihamda-daily-circuit'; let turns=[...initial], moves=0;
+    try {
+      if(reset) window.localStorage.removeItem(key);
+      const saved=JSON.parse(window.localStorage.getItem(key));
+      if(saved?.date===date && Array.isArray(saved.turns) && saved.turns.length===9 && saved.turns.every(n=>Number.isInteger(n)&&n>=0&&n<4) && Number.isSafeInteger(saved.moves) && saved.moves>=0) {
+        turns=[...saved.turns]; moves=saved.moves;
+      }
+    } catch (_) {}
+    board.classList.add('circuit');
+    const directions=[[1,'上'],[2,'右'],[4,'下'],[8,'左']];
+    const buttons=turns.map((_,i)=>button('',()=>{
+      if(circuitSolved(masks.map((mask,j)=>rotateCircuit(mask,turns[j])))) return;
+      turns[i]=(turns[i]+1)%4; moves++;
+      try {window.localStorage.setItem(key,JSON.stringify({date,turns,moves}));} catch (_) {}
+      render();
+    }));
+    function render(){
+      const current=masks.map((mask,i)=>rotateCircuit(mask,turns[i])), won=circuitSolved(current);
+      buttons.forEach((b,i)=>{
+        const mask=current[i], ends=directions.filter(([bit])=>mask&bit).map(([,name])=>name).join('と');
+        const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+        svg.setAttribute('viewBox','0 0 100 100'); svg.setAttribute('aria-hidden','true');
+        for(const [bit,x,y] of [[1,50,0],[2,100,50],[4,50,100],[8,0,50]]) if(mask&bit){
+          const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+          for(const [name,value] of Object.entries({x1:50,y1:50,x2:x,y2:y})) line.setAttribute(name,String(value));
+          svg.append(line);
+        }
+        b.replaceChildren(svg); b.dataset.endpoint=i===0?'始':i===8?'終':'';
+        b.setAttribute('aria-label',`${Math.floor(i/3)+1}行${i%3+1}列 ${i===0?'始点 ':i===8?'終点 ':''}${ends}につながる道`);
+      });
+      status.textContent=won?`クリア！ ${moves}手でつながったよ`:`${moves}手`;
+      if(won) offerResultCopy('circuit',date,moves);
     }
     render();
   },
@@ -430,5 +506,5 @@ const games = {
     draw();status.textContent='スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;startButton.hidden=true;alive=true;last=0;frame=requestAnimationFrame(loop);});cleanup=()=>{alive=false;startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',stopMoving);window.removeEventListener('pointerup',clearReleased);window.removeEventListener('pointercancel',clearReleased); for(const el of [left,right]){el.replaceWith(el.cloneNode(true));}};
   }
 };
-function start(reset=false){runGeneration++;cleanup();cleanup=()=>{};document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort');board.style.display='';controls.hidden=true;if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;}
+function start(reset=false){runGeneration++;cleanup();cleanup=()=>{};document.body.classList.remove('dodge-mode','grid-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit');board.style.display='';controls.hidden=true;if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;if(id!=='dodge')document.body.classList.add('grid-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;}
 document.querySelector('#restart').addEventListener('click',()=>start(true));start();
