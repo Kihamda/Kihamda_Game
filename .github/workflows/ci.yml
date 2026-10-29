@@ -68,4 +68,5 @@ jobs:
           node ops/sort-browser-check.cjs
           node ops/sort-daily-browser-check.cjs
           python3 ops/build_preview.py
+          SITE_DIR=preview node ops/home-filter-check.cjs
           node ops/fixed-browser-check.cjs
