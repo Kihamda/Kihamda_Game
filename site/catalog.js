@@ -1,4 +1,8 @@
 const gameCatalog = {
+  "mirror": {
+    "title": "かがみのもよう",
+    "instructions": "お手本を左右に反転した模様を、右側のマスで作ろう。"
+  },
   "series": {
     "title": "つぎの数は？",
     "instructions": "ヒントから数の規則を見つけて、次の数を選ぼう。全部で5問あるよ。"

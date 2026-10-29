@@ -18,15 +18,17 @@ const server = http.createServer((req, res) => {
     for (const width of [320, 375, 1280]) {
       const page = await browser.newPage({ viewport: {width, height: width === 320 ? 568 : width === 375 ? 667 : 800}, hasTouch: width <= 375 });
       const errors = []; page.on('pageerror', e => errors.push(e.message));
-      await page.goto(origin); assert.equal(await page.locator('.card').count(), 17);
+      await page.goto(origin); assert.equal(await page.locator('.card').count(), 18);
       await page.getByRole('link', {name:'このサイトについて'}).click();
       assert.equal(await page.getByRole('link', {name:'Kihamda.NETのお問い合わせフォーム'}).getAttribute('href'), 'https://kihamda.net/form');
       assert.equal(await page.getByRole('link', {name:'Kihamda.NETのプライバシーポリシー'}).getAttribute('href'), 'https://kihamda.net/privacy-policy');
       await page.goto(origin);
       await page.getByRole('link',{name:'かずの花壇 ↗'}).click();
+      await page.waitForFunction(()=>document.querySelector('#title').textContent==='かずの花壇');
       assert.equal(await page.locator('#title').textContent(), 'かずの花壇');
       await page.goto(origin);
       await page.getByRole('link',{name:'ひかりのスイッチ ↗'}).click();
+      await page.waitForFunction(()=>document.querySelector('#category').textContent.startsWith('今日のパズル'));
       assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
       const dailyBoard = await page.locator('#board button').allTextContents();
       await page.locator('#board button').first().click();

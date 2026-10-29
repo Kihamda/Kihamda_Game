@@ -40,6 +40,7 @@ jobs:
           node ops/timing-browser-check.cjs
           node ops/recall-browser-check.cjs
           node ops/code-browser-check.cjs
+          node ops/mirror-browser-check.cjs
           node ops/series-browser-check.cjs
           node ops/series-share-check.cjs
           node ops/shift-browser-check.cjs
