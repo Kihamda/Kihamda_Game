@@ -232,7 +232,95 @@ function generateDailySwap(date) {
   let seed=(Math.floor(Date.parse(`${date}T00:00:00Z`)/86400000)^0x7a1234b5)>>>0 || 1;
   return generateSwapPuzzle(()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return (seed>>>0)/4294967296;});
 }
+function shiftLine(values, axis, index) {
+  const next=[...values], cells=axis==='row' ? [index*3,index*3+1,index*3+2] : [index,index+3,index+6];
+  cells.forEach((cell,i)=>{next[cells[(i+1)%3]]=values[cell];});
+  return next;
+}
+function generateShiftPuzzle(random=Math.random) {
+  let values=[1,2,3,4,5,6,7,8,9];const scramble=[];
+  for(let i=0;i<12;i++) {
+    const move=Math.floor(random()*6), axis=move<3?'row':'column', index=move%3;
+    values=shiftLine(values,axis,index);scramble.push([axis,index]);
+  }
+  if(values.every((value,index)=>value===index+1)) {
+    values=shiftLine(values,'row',0);scramble.push(['row',0]);
+  }
+  return {values,scramble};
+}
+function generateNumberQuiz(random=Math.random) {
+  const n=(min,max)=>min+Math.floor(random()*(max-min+1));
+  const arithmetic=()=>{const start=n(1,9),step=n(2,6);return {terms:Array.from({length:4},(_,i)=>start+step*i),answer:start+step*4,hint:'同じ数を足す',explanation:`前の数に${step}を足すよ。`}};
+  const multiply=()=>{const start=n(1,3),factor=n(2,3);return {terms:Array.from({length:4},(_,i)=>start*factor**i),answer:start*factor**4,hint:'同じ数をかける',explanation:`前の数に${factor}をかけるよ。`}};
+  const alternating=()=>{const start=n(1,5),first=n(1,3),second=n(4,6),terms=[start];for(let i=0;i<3;i++)terms.push(terms.at(-1)+(i%2?second:first));return {terms,answer:terms.at(-1)+second,hint:'2つの数を交互に足す',explanation:`${first}と${second}を交互に足すよ。`}};
+  const squares=()=>{const start=n(1,4);return {terms:Array.from({length:4},(_,i)=>(start+i)**2),answer:(start+4)**2,hint:'連続する数の2乗',explanation:`${start}、${start+1}、${start+2}、${start+3}、${start+4}をそれぞれ2乗するよ。`}};
+  const descending=()=>{const step=n(2,5),start=n(4,8)*step;return {terms:Array.from({length:4},(_,i)=>start-step*i),answer:start-step*4,hint:'同じ数を引く',explanation:`前の数から${step}を引くよ。`}};
+  const questions=[arithmetic(),multiply(),alternating(),squares(),descending()];
+  for(const question of questions){const choices=new Set([question.answer]);for(let offset=1;choices.size<4;offset++) {if(question.answer-offset>=0)choices.add(question.answer-offset);if(choices.size<4)choices.add(question.answer+offset)}question.choices=[...choices];for(let i=question.choices.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[question.choices[i],question.choices[j]]=[question.choices[j],question.choices[i]]}}
+  for(let i=questions.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[questions[i],questions[j]]=[questions[j],questions[i]]}
+  return questions;
+}
 const games = {
+  series() {
+    category.textContent='数のクイズ';board.classList.add('series');
+    const questions=generateNumberQuiz();let index=0,score=0;
+    function showQuestion() {
+      board.replaceChildren();announcement.textContent='';let answered=false;const q=questions[index];
+      status.textContent=`${index+1}問目 / 5問`;
+      const hint=document.createElement('p');hint.className='series-hint';hint.textContent=q.hint;board.append(hint);
+      const sequence=document.createElement('p');sequence.className='series-sequence';sequence.textContent=`${q.terms.join('　')}　？`;board.append(sequence);
+      const choices=q.choices.map(value=>{const choice=button(String(value),event=>{
+        if(answered)return;answered=true;const correct=value===q.answer;if(correct)score++;
+        choices.forEach(item=>{item.setAttribute('aria-disabled','true');const choiceValue=Number(item.dataset.value);item.textContent=`${choiceValue}${choiceValue===q.answer?' 正解':choiceValue===value?' 選んだ':''}`;});
+        const feedback=document.createElement('p');feedback.className='series-feedback';feedback.setAttribute('role','status');feedback.textContent=`${correct?'正解！':'おしい！'} 答えは${q.answer}。${q.explanation}`;board.append(feedback);
+        const next=button(index===4?'結果を見る':'次の問題',nextEvent=>{
+          index++;if(index===questions.length){board.replaceChildren();status.textContent=`${score} / 5問正解`;const result=document.createElement('p');result.className='series-feedback';result.textContent='もう一度、別の問題に挑戦しよう。';board.append(result);if(nextEvent?.detail===0)restart.focus();}
+          else {showQuestion();if(nextEvent?.detail===0)board.querySelector('button').focus();}
+        });next.className='series-next';if(event?.detail===0)next.focus();
+      });choice.className='series-choice';choice.dataset.value=String(value);return choice;});
+    }
+    showQuestion();
+  },
+  shift() {
+    category.textContent='パズル';board.classList.add('shift');
+    let values=generateShiftPuzzle().values,won=false;
+    const cells=[], controls=[], history=[];
+    function announceLine(axis,index) {
+      const line=axis==='row' ? values.slice(index*3,index*3+3) : [values[index],values[index+3],values[index+6]];
+      announcement.textContent=`${index+1}${axis==='row'?'行':'列'} ${line.join('、')}`;
+    }
+    function move(axis,index) {
+      if(won)return;
+      history.push({values:[...values],axis,index});values=shiftLine(values,axis,index);render();
+      if(!won)announceLine(axis,index);
+    }
+    for(let row=0;row<3;row++) {
+      for(let col=0;col<3;col++) {
+        const cell=document.createElement('span');cell.className='shift-cell';cell.setAttribute('role','img');
+        cell.style.gridColumn=String(col+1);cell.style.gridRow=String(row+1);board.append(cell);cells.push(cell);
+      }
+      const control=button('→',()=>move('row',row));control.className='shift-control';
+      control.style.gridColumn='4';control.style.gridRow=String(row+1);
+      control.setAttribute('aria-label',`${row+1}行を右へ動かす`);controls.push(control);
+    }
+    for(let col=0;col<3;col++) {
+      const control=button('↓',()=>move('column',col));control.className='shift-control';
+      control.style.gridColumn=String(col+1);control.style.gridRow='4';
+      control.setAttribute('aria-label',`${col+1}列を下へ動かす`);controls.push(control);
+    }
+    const undo=button('戻す',()=>{
+      if(!history.length)return;
+      const previous=history.pop();values=previous.values;render();announceLine(previous.axis,previous.index);
+    });undo.className='shift-undo';undo.style.gridColumn='4';undo.style.gridRow='4';undo.setAttribute('aria-label','一手戻す');
+    function render() {
+      won=values.every((value,index)=>value===index+1);
+      cells.forEach((cell,index)=>{cell.textContent=String(values[index]);cell.setAttribute('aria-label',`${Math.floor(index/3)+1}行${index%3+1}列 ${values[index]}`);});
+      controls.forEach(control=>control.setAttribute('aria-disabled',String(won)));
+      undo.setAttribute('aria-disabled',String(!history.length));
+      status.textContent=won?`クリア！ ${history.length}回で並べたよ`:`${history.length}回　1から9まで並べよう`;
+    }
+    render();
+  },
   swap(reset) {
     const daily=params.get('mode')==='daily', date=daily?todayInTokyo():null;
     category.textContent=daily?`今日のパズル ${date}`:'パズル';board.classList.add('swap');
@@ -855,7 +943,7 @@ function start(reset=false){
   if(dailyTimer!==null){window.clearInterval(dailyTimer);dailyTimer=null;}
   activeDailyDate=null;isStaleDaily=false;restart.textContent='もう一度';
   document.body.classList.remove('daily-stale','storage-unavailable');
-  document.body.classList.remove('dodge-mode','grid-mode','path-mode','lights-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall','code','balance','swap');board.style.display='';controls.hidden=true;
+  document.body.classList.remove('dodge-mode','grid-mode','path-mode','lights-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall','code','balance','swap','shift','series');board.style.display='';controls.hidden=true;
   if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}
   title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;const gridHelp=document.querySelector('#grid-keyboard-help'), hasGridKeys=Object.hasOwn(gridColumns,id);if(gridHelp)gridHelp.hidden=!hasGridKeys;board.setAttribute('aria-describedby',hasGridKeys?'grid-keyboard-help':'');if(id!=='dodge')document.body.classList.add('grid-mode');if(id==='path')document.body.classList.add('path-mode');if(id==='lights')document.body.classList.add('lights-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
   activeDailyDate=category.textContent.match(/^今日のパズル (\d{4}-\d{2}-\d{2})$/)?.[1] || null;

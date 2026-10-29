@@ -18,7 +18,7 @@ const server = http.createServer((req, res) => {
     for (const width of [320, 375, 1280]) {
       const page = await browser.newPage({ viewport: {width, height: width === 320 ? 568 : width === 375 ? 667 : 800}, hasTouch: width <= 375 });
       const errors = []; page.on('pageerror', e => errors.push(e.message));
-      await page.goto(origin); assert.equal(await page.locator('.card').count(), 15);
+      await page.goto(origin); assert.equal(await page.locator('.card').count(), 17);
       await page.getByRole('link', {name:'このサイトについて'}).click();
       assert.equal(await page.getByRole('link', {name:'Kihamda.NETのお問い合わせフォーム'}).getAttribute('href'), 'https://kihamda.net/form');
       assert.equal(await page.getByRole('link', {name:'Kihamda.NETのプライバシーポリシー'}).getAttribute('href'), 'https://kihamda.net/privacy-policy');
