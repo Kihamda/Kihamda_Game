@@ -274,7 +274,7 @@ const games = {
         choices.forEach(item=>{item.setAttribute('aria-disabled','true');const choiceValue=Number(item.dataset.value);item.textContent=`${choiceValue}${choiceValue===q.answer?' 正解':choiceValue===value?' 選んだ':''}`;});
         const feedback=document.createElement('p');feedback.className='series-feedback';feedback.setAttribute('role','status');feedback.textContent=`${correct?'正解！':'おしい！'} 答えは${q.answer}。${q.explanation}`;board.append(feedback);
         const next=button(index===4?'結果を見る':'次の問題',nextEvent=>{
-          index++;if(index===questions.length){board.replaceChildren();status.textContent=`${score} / 5問正解`;const result=document.createElement('p');result.className='series-feedback';result.textContent='もう一度、別の問題に挑戦しよう。';board.append(result);if(nextEvent?.detail===0)restart.focus();}
+          index++;if(index===questions.length){board.replaceChildren();status.textContent=`${score} / 5問正解`;offerCopy(`つぎの数は？ ${score} / 5問正解\nhttps://game.kihamda.net/play-series.html`);const result=document.createElement('p');result.className='series-feedback';result.textContent='もう一度、別の問題に挑戦しよう。';board.append(result);if(nextEvent?.detail===0)restart.focus();}
           else {showQuestion();if(nextEvent?.detail===0)board.querySelector('button').focus();}
         });next.className='series-next';if(event?.detail===0)next.focus();
       });choice.className='series-choice';choice.dataset.value=String(value);return choice;});
