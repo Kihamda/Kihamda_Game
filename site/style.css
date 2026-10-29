@@ -120,7 +120,7 @@ header>a,footer a{display:inline-flex;align-items:center;justify-content:center;
   .grid-mode .play-heading h1{font-size:1.15rem}
   .grid-mode .play-heading .eyebrow{font-size:.7rem;letter-spacing:0}
   .grid-mode .play-heading p{font-size:.8rem}
-  .grid-mode .board:not(.garden):not(.sort):not(.circuit):not(.path):not(.code):not(.recall):not(.timing):not(.balance){width:min(100%,380px,max(200px,calc(100svh - 300px)))}
+  .grid-mode .board:not(.garden):not(.sort):not(.circuit):not(.path):not(.code):not(.recall):not(.timing):not(.balance):not(.swap){width:min(100%,380px,max(200px,calc(100svh - 300px)))}
   .grid-mode .board:not(.timing):not(.recall):not(.code):not(.sort):not(.balance) button{min-height:44px}
   .grid-mode .board.garden{width:min(100%,246px)}
   .grid-mode .board.circuit{width:min(100%,380px,max(200px,calc(100svh - 290px)))}
@@ -134,3 +134,10 @@ header>a,footer a{display:inline-flex;align-items:center;justify-content:center;
 .board.balance .balance-submit{grid-column:1 / -1;min-height:44px;aspect-ratio:auto;font-size:1rem}
 .board.balance .balance-history{padding-left:1.5em;text-align:left}
 .board.balance [hidden]{display:none}
+
+.board.swap{grid-template-columns:repeat(3,minmax(44px,1fr)) 64px;width:min(100%,320px);gap:6px}
+.board.swap button{min-height:44px;aspect-ratio:1;font-size:clamp(1.2rem,6vw,2rem)}
+.board.swap button[aria-pressed=true]{outline:3px solid #5323a3;outline-offset:1px}
+.swap-clue{display:grid;place-items:center;font-size:.8rem;font-weight:800;white-space:nowrap;color:#5e5869}
+.swap-clue.matched{color:#136847}
+.board.swap .swap-clue.matched{background:transparent}

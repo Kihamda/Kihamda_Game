@@ -1,4 +1,8 @@
 const gameCatalog = {
+  "swap": {
+    "title": "たし算スワップ",
+    "instructions": "2マスを入れ替え、行と列の合計を目標に合わせよう。右と下は現在 / 目標だよ。"
+  },
   "balance": {
     "title": "くらべて順番",
     "instructions": "形を2つずつくらべて、軽い順に4つ並べよう。"

@@ -213,7 +213,72 @@ function generateDailyBalance(date) {
   for(const divisor of [6,2,1,1]) {const choice=Math.floor(index/divisor);index%=divisor;result.push(pool.splice(choice,1)[0]);}
   return result;
 }
+function swapSums(values) {
+  return [0,1,2].map(row=>values.slice(row*3,row*3+3).reduce((a,b)=>a+b,0))
+    .concat([0,1,2].map(col=>values[col]+values[col+3]+values[col+6]));
+}
+function generateSwapPuzzle(random=Math.random) {
+  const mix=items=>{const result=[...items];for(let i=result.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[result[i],result[j]]=[result[j],result[i]];}return result;};
+  const goal=mix([1,2,3,4,5,6,7,8,9]), targets=swapSums(goal);
+  let values;
+  for(let attempt=0;attempt<20;attempt++) {
+    values=mix(goal);
+    if(!swapSums(values).every((sum,index)=>sum===targets[index]))return {goal,targets,values};
+  }
+  values=[...goal];[values[0],values[4]]=[values[4],values[0]];
+  return {goal,targets,values};
+}
+function generateDailySwap(date) {
+  let seed=(Math.floor(Date.parse(`${date}T00:00:00Z`)/86400000)^0x7a1234b5)>>>0 || 1;
+  return generateSwapPuzzle(()=>{seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;return (seed>>>0)/4294967296;});
+}
 const games = {
+  swap(reset) {
+    const daily=params.get('mode')==='daily', date=daily?todayInTokyo():null;
+    category.textContent=daily?`今日のパズル ${date}`:'パズル';board.classList.add('swap');
+    const puzzle=daily?generateDailySwap(date):generateSwapPuzzle(), targets=puzzle.targets, values=puzzle.values;
+    const storage=daily?dailyStorage('swap',date):null;
+    let selected=null,moves=0,won=false;
+    if(storage){
+      if(reset)storage.clear();
+      const saved=storage.load();
+      if(saved && Array.isArray(saved.values) && saved.values.length===9 && saved.values.every(n=>Number.isInteger(n)&&n>=1&&n<=9) && new Set(saved.values).size===9 && Number.isSafeInteger(saved.moves) && saved.moves>=0){values.splice(0,9,...saved.values);moves=saved.moves;}
+    }
+    const cells=values.map((_,i)=>{
+      const cell=button('',()=>{
+        if(won)return;
+        if(selected===null){selected=i;}
+        else if(selected===i){selected=null;}
+        else {
+          [values[selected],values[i]]=[values[i],values[selected]];selected=null;moves++;
+          if(storage && !storage.save({values:[...values],moves})){recoverDailyConflict();return;}
+        }
+        render();
+      });
+      cell.style.gridColumn=String(i%3+1);cell.style.gridRow=String(Math.floor(i/3)+1);
+      return cell;
+    });
+    const clues=targets.map((_,i)=>{
+      const clue=document.createElement('span');clue.className='swap-clue';clue.setAttribute('role','img');
+      clue.style.gridColumn=String(i<3?4:i-2);clue.style.gridRow=String(i<3?i+1:4);
+      board.append(clue);return clue;
+    });
+    function render() {
+      const sums=swapSums(values);won=sums.every((sum,i)=>sum===targets[i]);
+      cells.forEach((cell,i)=>{
+        cell.textContent=String(values[i]);cell.setAttribute('aria-pressed',String(selected===i));cell.setAttribute('aria-disabled',String(won));
+        cell.setAttribute('aria-label',`${Math.floor(i/3)+1}行${i%3+1}列 ${values[i]}${selected===i?' 選択中':''}`);
+      });
+      clues.forEach((clue,i)=>{
+        clue.textContent=`${sums[i]} / ${targets[i]}`;
+        clue.setAttribute('aria-label',`${i<3?`${i+1}行`:`${i-2}列`} 合計 ${sums[i]} 目標 ${targets[i]}`);
+        clue.classList.toggle('matched',sums[i]===targets[i]);
+      });
+      status.textContent=won?`クリア！ ${moves}回でそろえたよ`:selected===null?`${moves}回　マスを2つ選んでね`:`${moves}回　入れ替えるマスを選んでね`;
+      if(won)offerCopy(`たし算スワップ${daily?` ${date}`:''} ${moves}回でクリア\nhttps://game.kihamda.net/play-swap.html${daily?'?mode=daily':''}`);
+    }
+    render();
+  },
   balance(reset) {
     const daily=params.get('mode')==='daily', date=daily?todayInTokyo():null;
     category.textContent=daily?`今日のパズル ${date}`:'推理';board.classList.add('balance');
@@ -741,7 +806,7 @@ const games = {
     draw();status.textContent='スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;startButton.hidden=true;alive=true;last=0;frame=requestAnimationFrame(loop);});cleanup=()=>{alive=false;startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',stopMoving);window.removeEventListener('pointerup',clearReleased);window.removeEventListener('pointercancel',clearReleased); for(const el of [left,right]){el.replaceWith(el.cloneNode(true));}};
   }
 };
-const gridColumns={lights:4,memory:4,order:4,garden:4,path:4,sum:3,slide:3,circuit:3};
+const gridColumns={swap:3,lights:4,memory:4,order:4,garden:4,path:4,sum:3,slide:3,circuit:3};
 board.addEventListener('keydown',event=>{
   const columns=Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
   const directions={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
@@ -790,7 +855,7 @@ function start(reset=false){
   if(dailyTimer!==null){window.clearInterval(dailyTimer);dailyTimer=null;}
   activeDailyDate=null;isStaleDaily=false;restart.textContent='もう一度';
   document.body.classList.remove('daily-stale','storage-unavailable');
-  document.body.classList.remove('dodge-mode','grid-mode','path-mode','lights-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall','code','balance');board.style.display='';controls.hidden=true;
+  document.body.classList.remove('dodge-mode','grid-mode','path-mode','lights-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall','code','balance','swap');board.style.display='';controls.hidden=true;
   if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}
   title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;const gridHelp=document.querySelector('#grid-keyboard-help'), hasGridKeys=Object.hasOwn(gridColumns,id);if(gridHelp)gridHelp.hidden=!hasGridKeys;board.setAttribute('aria-describedby',hasGridKeys?'grid-keyboard-help':'');if(id!=='dodge')document.body.classList.add('grid-mode');if(id==='path')document.body.classList.add('path-mode');if(id==='lights')document.body.classList.add('lights-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
   activeDailyDate=category.textContent.match(/^今日のパズル (\d{4}-\d{2}-\d{2})$/)?.[1] || null;
