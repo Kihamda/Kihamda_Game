@@ -57,6 +57,7 @@ const server = http.createServer((req, res) => {
     for (const [label,id] of [['たし算スワップ ↗','swap'],['くらべて順番 ↗','balance'],['くるくる回路 ↗','circuit'],['かずの花壇 ↗','garden'],['ぴったり3枚 ↗','sum'],['まいにち道つなぎ ↗','path'],['いろわけボトル ↗','sort']]) {
       await page.goto(`${origin}/index.html`);await page.getByRole('link',{name:label}).click();
       assert.equal(new URL(page.url()).pathname,`/play-${id}.html`);
+      await page.waitForFunction(() => document.querySelector('#category').textContent.startsWith('今日のパズル'));
       assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
     }
     await page.goto(`${origin}/index.html`);
