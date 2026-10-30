@@ -272,7 +272,90 @@ function generateMirrorPattern(random=Math.random) {
   }
   return pattern;
 }
+let threeMode='solo';
+const threeLines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+function threeWinningLine(cells) {
+  return threeLines.find(([a,b,c])=>cells[a] && cells[a]===cells[b] && cells[b]===cells[c]) ?? null;
+}
+function threeWinner(cells) {
+  const line=threeWinningLine(cells);return line ? cells[line[0]] : null;
+}
+function chooseThreeMove(cells,random=Math.random) {
+  const empty=cells.flatMap((v,i)=>v===null?[i]:[]);
+  for(const mark of ['computer','player']) for(const index of empty) {
+    const trial=[...cells];trial[index]=mark;
+    if(threeWinner(trial)===mark)return index;
+  }
+  return empty.length?empty[Math.floor(random()*empty.length)]:null;
+}
 const games = {
+  three() {
+    category.textContent='対戦パズル';board.classList.add('three');
+    const modeGroup=document.createElement('div');modeGroup.className='three-modes';modeGroup.setAttribute('role','group');modeGroup.setAttribute('aria-label','遊ぶ人数');
+    for(const [value,label] of [['solo','ひとり'],['duo','ふたり']]){
+      const option=document.createElement('button');option.type='button';option.textContent=label;option.dataset.mode=value;option.setAttribute('aria-pressed',String(value===threeMode));
+      option.addEventListener('click',event=>{if(value===threeMode)return;threeMode=value;start();if(event.detail===0)document.querySelector(`.three-modes [data-mode="${value}"]`).focus();});
+      modeGroup.append(option);
+    }
+    status.before(modeGroup);cleanup=()=>modeGroup.remove();
+    const cells=Array(9).fill(null),buttons=[];let finished=false,turn='player';
+    const markName=mark=>mark==='player'?'○':'×';
+    function render() {
+      const line=threeWinningLine(cells),winner=line ? cells[line[0]] : null;finished=!!winner||cells.every(Boolean);
+      buttons.forEach((cell,index)=>{
+        const mark=cells[index];cell.classList.toggle('three-winner',!!line?.includes(index));cell.textContent=mark ? markName(mark) : '';
+        const name=mark==='player'?(threeMode==='duo'?'丸':'あなたの丸'):mark==='computer'?(threeMode==='duo'?'バツ':'コンピューターのバツ'):'空き';
+        cell.setAttribute('aria-label',`${Math.floor(index/3)+1}行${index%3+1}列 ${name}`);
+        cell.setAttribute('aria-disabled',String(finished||!!mark));
+      });
+      let result=winner==='player'?'あなたの勝ち！':winner==='computer'?'コンピューターの勝ち':'引き分け';
+      if(threeMode==='duo' && winner)result=`${markName(winner)}の勝ち！`;
+      status.textContent=finished?result:threeMode==='duo'?`${markName(turn)}の番`:'あなたの番　○を置こう';
+      if(finished)offerCopy(`3つならべ ${threeMode==='duo'?result:(winner==='player'?'勝ち':winner==='computer'?'負け':'引き分け')}\nhttps://game.kihamda.net/play-three.html`);
+    }
+    for(let i=0;i<9;i++)buttons.push(button('',event=>{
+      if(finished||cells[i])return;
+      const placed=turn;cells[i]=placed;let reply=null;
+      if(threeMode==='solo' && !threeWinner(cells)&&cells.some(value=>value===null)){reply=chooseThreeMove(cells);cells[reply]='computer';}
+      if(threeMode==='duo')turn=turn==='player'?'computer':'player';
+      const who=threeMode==='duo'?markName(placed):'あなた';
+      announcement.textContent=`${who}は${Math.floor(i/3)+1}行${i%3+1}列に置いたよ。${reply===null?'':`コンピューターは${Math.floor(reply/3)+1}行${reply%3+1}列に置いたよ。`}`;
+      render();if(finished && event?.detail===0)restart.focus();
+    }));
+    render();
+  },
+  number() {
+    category.textContent='数あて';board.classList.add('number');
+    const answer=1+Math.floor(Math.random()*100);let low=1,high=100,attempts=0,finished=false;
+    const form=document.createElement('form');form.className='number-form';form.noValidate=true;
+    const label=document.createElement('label');label.htmlFor='number-guess';label.textContent='予想する数';
+    const input=document.createElement('input');input.id='number-guess';input.type='text';input.inputMode='numeric';input.autocomplete='off';input.setAttribute('aria-describedby','number-hint number-error');
+    const submit=document.createElement('button');submit.type='submit';submit.textContent='答える';
+    const hint=document.createElement('p');hint.id='number-hint';
+    const error=document.createElement('p');error.id='number-error';error.setAttribute('role','status');
+    const historyTitle=document.createElement('h2');historyTitle.textContent='これまでのヒント';historyTitle.hidden=true;
+    const history=document.createElement('ol');history.className='number-history';
+    form.append(label,input,submit,hint,error);board.append(form,historyTitle,history);
+    function showStatus(message=''){status.textContent=finished?status.textContent:`${message}残り ${7-attempts}回`;hint.textContent=`答えの範囲：${low}〜${high}`;}
+    form.addEventListener('submit',event=>{
+      event.preventDefault();if(finished)return;
+      const text=input.value.normalize('NFKC').trim(),guess=Number(text);
+      if(!/^\d+$/.test(text)||!Number.isSafeInteger(guess)||guess<1||guess>100){error.textContent='1から100の整数を入力してね。';input.setAttribute('aria-invalid','true');return;}
+      if(guess<low||guess>high){error.textContent=`${low}から${high}の数を入力してね。`;input.setAttribute('aria-invalid','true');return;}
+      error.textContent='';input.removeAttribute('aria-invalid');attempts++;
+      const item=document.createElement('li');
+      if(guess===answer){item.textContent=`${guess}：正解！`;finished=true;status.textContent=`正解！ ${attempts}回で当てたよ`;offerCopy(`かくれた数 ${attempts}回で正解\nhttps://game.kihamda.net/play-number.html`);}
+      else {
+        const higher=guess<answer;item.textContent=`${guess}：もっと${higher?'大きい':'小さい'}`;
+        if(higher)low=guess+1;else high=guess-1;
+        if(attempts===7){finished=true;status.textContent=`答えは ${answer} だったよ`;offerCopy('かくれた数 7回で挑戦\nhttps://game.kihamda.net/play-number.html');}
+      }
+      historyTitle.hidden=false;history.append(item);input.value='';
+      if(finished){input.disabled=true;submit.disabled=true;restart.focus();}
+      showStatus(finished ? '' : `${item.textContent}。`);
+    });
+    showStatus();
+  },
   mirror() {
     category.textContent='図形パズル';board.classList.add('mirror');
     const sample=generateMirrorPattern(),cells=Array(9).fill(false),buttons=[];
@@ -927,7 +1010,7 @@ const games = {
     draw();status.textContent='スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;startButton.hidden=true;alive=true;last=0;frame=requestAnimationFrame(loop);});cleanup=()=>{alive=false;startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',stopMoving);window.removeEventListener('pointerup',clearReleased);window.removeEventListener('pointercancel',clearReleased); for(const el of [left,right]){el.replaceWith(el.cloneNode(true));}};
   }
 };
-const gridColumns={mirror:3,swap:3,lights:4,memory:4,order:4,garden:4,path:4,sum:3,slide:3,circuit:3};
+const gridColumns={three:3,mirror:3,swap:3,lights:4,memory:4,order:4,garden:4,path:4,sum:3,slide:3,circuit:3};
 board.addEventListener('keydown',event=>{
   const columns=Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
   const directions={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
@@ -976,7 +1059,7 @@ function start(reset=false){
   if(dailyTimer!==null){window.clearInterval(dailyTimer);dailyTimer=null;}
   activeDailyDate=null;isStaleDaily=false;restart.textContent='もう一度';
   document.body.classList.remove('daily-stale','storage-unavailable');
-  document.body.classList.remove('dodge-mode','grid-mode','path-mode','lights-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall','code','balance','swap','shift','series','mirror');board.style.display='';controls.hidden=true;
+  document.body.classList.remove('dodge-mode','grid-mode','path-mode','lights-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall','code','balance','swap','shift','series','mirror','number','three');board.style.display='';controls.hidden=true;
   if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}
   title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;const gridHelp=document.querySelector('#grid-keyboard-help'), hasGridKeys=Object.hasOwn(gridColumns,id);if(gridHelp)gridHelp.hidden=!hasGridKeys;board.setAttribute('aria-describedby',hasGridKeys?'grid-keyboard-help':'');if(id!=='dodge')document.body.classList.add('grid-mode');if(id==='path')document.body.classList.add('path-mode');if(id==='lights')document.body.classList.add('lights-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
   activeDailyDate=category.textContent.match(/^今日のパズル (\d{4}-\d{2}-\d{2})$/)?.[1] || null;

@@ -1,4 +1,12 @@
 const gameCatalog = {
+  "three": {
+    "title": "3つならべ",
+    "instructions": "交互にマスを押し、先に3つ並べよう。ひとりかふたりで遊べるよ。"
+  },
+  "number": {
+    "title": "かくれた数",
+    "instructions": "1から100の数を、大小のヒントを使って7回以内に当てよう。"
+  },
   "mirror": {
     "title": "かがみのもよう",
     "instructions": "お手本を左右に反転した模様を、右側のマスで作ろう。"

@@ -41,6 +41,9 @@ jobs:
           node ops/recall-browser-check.cjs
           node ops/code-browser-check.cjs
           node ops/mirror-browser-check.cjs
+          node ops/number-browser-check.cjs
+          node ops/three-browser-check.cjs
+          node ops/new-share-check.cjs
           node ops/series-browser-check.cjs
           node ops/series-share-check.cjs
           node ops/shift-browser-check.cjs

@@ -35,6 +35,16 @@ const server = http.createServer((req, res) => {
     await page.locator('.card').filter({hasText:'ぎゃくからメモリー'}).click();
     assert.equal(new URL(page.url()).pathname,'/play-recall.html');
     await page.goto(`${origin}/index.html`);
+    await page.locator('.card').filter({hasText:'3つならべ'}).click();
+    assert.equal(new URL(page.url()).pathname,'/play-three.html');
+    await page.locator('#board > button').first().click();
+    assert.equal(await page.locator('#board > button[aria-disabled=true]').count(),2);
+    await page.goto(`${origin}/index.html`);
+    await page.locator('.card').filter({hasText:'かくれた数'}).click();
+    assert.equal(new URL(page.url()).pathname,'/play-number.html');
+    await page.locator('#number-guess').fill('50');await page.locator('#number-guess').press('Enter');
+    assert.equal(await page.locator('.number-history li').count(),1);
+    await page.goto(`${origin}/index.html`);
     await page.locator('.card').filter({hasText:'かがみのもよう'}).click();
     assert.equal(new URL(page.url()).pathname,'/play-mirror.html');
     await page.waitForFunction(()=>document.querySelectorAll('.mirror-sample').length===9);
@@ -81,7 +91,7 @@ const server = http.createServer((req, res) => {
     assert.equal(new URL(page.url()).pathname, '/play-path.html');
     await page.waitForFunction(()=>document.querySelectorAll('#board button').length===16);
     assert.equal(await page.locator('#board button').count(), 16);
-    for (const [id, title] of [['mirror','かがみのもよう'], ['series','つぎの数は？'], ['shift','たてよこシフト'], ['swap','たし算スワップ'], ['balance','くらべて順番'], ['code','かたちの暗号'], ['recall','ぎゃくからメモリー'], ['timing','5秒ぴったり'], ['circuit','くるくる回路'], ['lights','ひかりのスイッチ'], ['memory','ペアをさがせ'], ['order','数字のかけっこ'], ['dodge','ほしよけステップ'], ['sum','ぴったり3枚'], ['slide','ならべてタイル'], ['garden','かずの花壇'], ['path','まいにち道つなぎ'], ['sort','いろわけボトル']]) {
+    for (const [id, title] of [['three','3つならべ'], ['number','かくれた数'], ['mirror','かがみのもよう'], ['series','つぎの数は？'], ['shift','たてよこシフト'], ['swap','たし算スワップ'], ['balance','くらべて順番'], ['code','かたちの暗号'], ['recall','ぎゃくからメモリー'], ['timing','5秒ぴったり'], ['circuit','くるくる回路'], ['lights','ひかりのスイッチ'], ['memory','ペアをさがせ'], ['order','数字のかけっこ'], ['dodge','ほしよけステップ'], ['sum','ぴったり3枚'], ['slide','ならべてタイル'], ['garden','かずの花壇'], ['path','まいにち道つなぎ'], ['sort','いろわけボトル']]) {
       await page.goto(`${origin}/play-${id}.html?game=invalid`);await checkIcon();
       assert.equal(await page.locator('#title').textContent(), title);
       assert(await page.locator('#board button, #board canvas').count());
@@ -95,7 +105,7 @@ const server = http.createServer((req, res) => {
     assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
     const noJs = await browser.newContext({javaScriptEnabled:false});
     const plain = await noJs.newPage();
-    for (const id of ['mirror','series','shift','swap','balance','code','recall','timing','circuit','lights','memory','order','dodge','slide','sum','garden','path','sort']) {
+    for (const id of ['three','number','mirror','series','shift','swap','balance','code','recall','timing','circuit','lights','memory','order','dodge','slide','sum','garden','path','sort']) {
       await plain.goto(`${origin}/play-${id}.html`);
       assert(await plain.locator('#instructions').isVisible());
       assert(await plain.locator('noscript p').isVisible());
