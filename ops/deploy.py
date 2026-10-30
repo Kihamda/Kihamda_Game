@@ -19,6 +19,7 @@ files = {name: (source / name).read_bytes() for name in ('game.html', 'catalog.j
 pages = fixed_pages(source, commit)
 home = fixed_home(source, commit, pages)
 files['index.html'] = home
+ads = (source / 'ads.txt').read_bytes()
 sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
            + ''.join(f'  <url><loc>https://game.kihamda.net/{name}</loc></url>\n'
@@ -69,5 +70,5 @@ with FTP_TLS(context=ssl.create_default_context(), timeout=30) as ftp:
         verify_http(name, body)
         if name == 'index.html':
             verify_http('', body)
-    promote(ftp, {'site-info.html': fixed_info(source, commit), **pages, 'index.html': home, 'sitemap.xml': sitemap}, verify_root_file, read_ftp)
+    promote(ftp, {'ads.txt': ads, 'site-info.html': fixed_info(source, commit), **pages, 'index.html': home, 'sitemap.xml': sitemap}, verify_root_file, read_ftp)
 print('Published and verified', commit)
