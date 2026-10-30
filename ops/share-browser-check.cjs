@@ -30,7 +30,7 @@ async function solve(page,game){
       await page.locator('#copy-result').click();await page.locator('#copy-feedback').waitFor({state:'visible'});assert.equal(await page.locator('#copy-feedback').textContent(),'結果をコピーしたよ');
       const text=await page.evaluate(()=>navigator.clipboard.readText());
       assert.match(text,/2026-10-27 \d+手\r?\nhttps:\/\/game\.kihamda\.net\/play-/);
-      assert(text.endsWith(`play-${game}.html${game==='lights'?'?mode=daily':''}`));
+      assert(text.endsWith(`play-${game}.html${game==='lights'?'?mode=daily&difficulty=normal&version=2':''}`));
       await page.reload();assert(await page.locator('#copy-result').isVisible());
       await page.locator('#restart').click();assert(await page.locator('#copy-result').isHidden());assert(await page.locator('#copy-feedback').isHidden());
     }
