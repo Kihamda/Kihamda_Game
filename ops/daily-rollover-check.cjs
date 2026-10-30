@@ -9,7 +9,7 @@ for(const game of ['lights','garden','sum','path','sort','circuit']){
  if(game==='path'){const next=await today.evaluate(()=>generatePathPuzzle(2026,10,28).solution[1]);await gameButtons(today).nth(next).tap()}
  else if(game==='sort'){const pair=await today.evaluate(()=>{let t=generateDailySortPuzzle(2026,10,28);for(let i=0;i<4;i++)for(let j=0;j<4;j++)if(i!==j&&t[i].length&&t[j].length<3&&(!t[j].length||t[j].at(-1)===t[i].at(-1)))return [i,j]});for(const i of pair)await gameButtons(today).nth(i).tap()}
  else await gameButtons(today).first().tap();
- const saved=await today.evaluate(g=>localStorage.getItem('kihamda-daily-'+g),game);const labels=await gameButtons(today).evaluateAll(bs=>bs.map(b=>b.getAttribute('aria-label')));
+ const saved=await today.evaluate(g=>localStorage.getItem('kihamda-daily-'+g),game==='circuit'?'circuit-normal-v3':game);const labels=await gameButtons(today).evaluateAll(bs=>bs.map(b=>b.getAttribute('aria-label')));
  // A returning tab updates immediately; a tab left open updates on its timer.
  if(game==='lights')await old.clock.runFor(30000);else await old.evaluate(()=>document.dispatchEvent(new Event('visibilitychange')));
  assert.equal(await old.locator('#category').textContent(),'2026-10-27 の問題');assert.equal(await old.locator('#restart').textContent(),'今日の問題へ');
@@ -17,7 +17,7 @@ for(const game of ['lights','garden','sum','path','sort','circuit']){
  const boardRect=await old.locator('#board').boundingBox();assert(boardRect.y+boardRect.height<=480,`${game}: stale board exceeds viewport`);
  const buttonRect=await old.locator('#restart').boundingBox();assert(buttonRect.width>=44&&buttonRect.height>=44&&buttonRect.x+buttonRect.width<=320);
  await old.locator('#restart').tap();assert.equal(await old.locator('#category').textContent(),'今日のパズル 2026-10-28');assert.equal(await old.locator('#restart').textContent(),'もう一度');
- assert.equal(await old.evaluate(g=>localStorage.getItem('kihamda-daily-'+g),game),saved);assert.deepEqual(await gameButtons(old).evaluateAll(bs=>bs.map(b=>b.getAttribute('aria-label'))),labels);
+ assert.equal(await old.evaluate(g=>localStorage.getItem('kihamda-daily-'+g),game==='circuit'?'circuit-normal-v3':game),saved);assert.deepEqual(await gameButtons(old).evaluateAll(bs=>bs.map(b=>b.getAttribute('aria-label'))),labels);
  console.log(game,'date change, today navigation and saved progress passed');await c.close();
 }
 }finally{await browser.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});

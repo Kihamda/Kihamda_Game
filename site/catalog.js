@@ -41,7 +41,7 @@ const gameCatalog = {
   },
   "circuit": {
     "title": "くるくる回路",
-    "instructions": "マスを押して道を回そう。左の始から右の終まで、すべてのマスをつなげてね。"
+    "instructions": "押したマスと右隣の道が回るよ。始から終まで、すべてのマスをつなげてね。"
   },
   "lights": {
     "title": "ひかりのスイッチ",

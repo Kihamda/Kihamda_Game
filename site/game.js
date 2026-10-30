@@ -1,5 +1,8 @@
 const params = new URLSearchParams(location.search);
-let circuitDifficulty=params.get('difficulty')==='easy'?'easy':'normal';
+let circuitDifficulty=['easy','hard','oni','kiwami','legacy'].includes(params.get('difficulty'))?params.get('difficulty'):'normal';
+const circuitVersions={easy:'2',normal:'3',hard:'2',oni:'2',kiwami:'2',legacy:'1'};
+const circuitRequested=params.get('difficulty')||'normal',circuitVersion=params.get('version');
+const invalidCircuitLink=circuitVersion!==null && (!Object.hasOwn(circuitVersions,circuitRequested)||circuitVersions[circuitRequested]!==circuitVersion);
 const id = document.body.dataset.game || params.get('game');
 const board = document.querySelector('#board'), status = document.querySelector('#status'), announcement = document.querySelector('#announcement');
 const title = document.querySelector('#title'), instructions = document.querySelector('#instructions');
@@ -202,22 +205,42 @@ function generateEasyCircuitPuzzle(year, month, dayOfMonth) {
   const turns=Array(9).fill(0);for(const index of indices)turns[index]=1;
   return {masks:[...layouts[layout]],turns};
 }
-function circuitTrace(masks) {
-  let index=0, incoming=8, visited=0;
+function circuitTemplateIndex(day, count) {
+  const cycle=Math.floor(day/count);return ((day+73*cycle)%count+count)%count;
+}
+function generateNormalCircuitPuzzle(year, month, dayOfMonth) {
+  const templates=["5g","5m9y","78","5mhr","bk","5n4n","td","5nch","zo","62a8","144","62vn","15x","632u","1s1","659c","1x1","6hw7","2o1","6i3k","9ht","6ioo","9pw","6ivo","a9s","6l1o","agg","6lu7","aid","6o7n","b2o","6ogj","b84","6p2j","ba8","6re8","bed","6xrf","bv4","6xyd","c0l","6yjx","c2o","6yr5","c6p","711r","c8k","71n4","cud","71uc","czl","740s","dgk","7ac6","dm9","7al0","do4","7b73","dsx","7dhw","e90","7dpm","eep","7eat","eio","7ehz","ekx","7gu8","f10","7ju8","f79","7kne","fc0","7mzw","fdt","7n92","j01","7nyz","jc5","7q5m","jxs","7qds","kjk","7qyy","kpw","7r64","ks4","7u33","lc5","7woc","lhs","7xgc","ljp","7zp7","lo4","80f3","m9s","80n0","mc1","82u0","mgg","831m","mxt","83mz","n3l","83u7","n7k","86y0","n9t","89d7","npw","8a5k","nw5","8chb","o0w","8d34","o2p","8dbk","oo1","8fm3","oth","8fp3","1eqc","8ga9","1esg","8gh6","1ewl","8iuf","1fed","8jm7","1fk1","8sbs","1fo4","8v9r","1fq8","8w3j","1g6d","8yf3","1gcw","8z67","1gh1","8ze4","1gj5","91ko","1h50","91su","1ha9","92e3","1o84","92lb","1oac","94rz","1oud","94ys","1p04","95k0","1p28","95qy","1p6d","9b3k","1pn4","9bto","1psl","9c1n","1puo","9e8k","1pyp","9eg8","1q0k","9f1m","1ql1","9f8s","1qpw","9hfg","1qro","9hm7","1rdg","9i7f","1rfk","9ied","1rk1","9kr8","1s1h","9liz","1s75","9qw7","1sb8","9r3g","1sdc","9row","1sth","9rw1","1t00","9u6j","1t45","9us1","1t69","9uz7","1ts4","9x5i","1txd","9xec","1xk5","9y0f","1xvo","a0cb","1ych","a9ze","1yio","aalm","1yno","aatr","1z4w","ad0r","1zad","ad81","1zcg","adti","1zh0","ae0q","1zxc","ah4w","202t","ajju","204x","akcf","2091","aps5","20pd","aqdn","20wx","aqks","211x","asr7","21is","asyk","21ol","atjp","21sw","atqo","21v5","attr","22f8","aw45","22h0","awpl","22lc","awwr","22n5","b5eb","237l","b5lq","239t","b66t","23e8","b6ds"], layouts=[[10,10,12,6,10,9,3,10,10],[12,6,12,5,5,5,3,9,3]];
+  const day=Math.floor(Date.UTC(year,month-1,dayOfMonth)/86400000);
+  const encoded=parseInt(templates[circuitTemplateIndex(day,templates.length)],36);
+  return {masks:[...layouts[encoded>>18]],turns:Array.from({length:9},(_,i)=>(encoded>>(2*i))&3)};
+}
+function generateHighCircuitPuzzle(year,month,dayOfMonth,size){
+ const tables={"4":["0003ac6a663c56c53939","0003a36a693356c53939","0003a36a693c56c5c939","0003a36a693c56c53639","0003a36a693c56c539c9","0003a36a693c56c53936","0003ac9a993c56c53939","0003ac9a693c56c5c939","0003ac9a693c56c53639","0003ac9a693c56c539c9","0003ac9a693c56c53936","0003ac6a993356c53939","0003ac6a993c56353939","0003ac6a69cc56c53939","0003ac6a993c56c53639","0003ac6a993c56c539c9","0003ac6a993c56c53936","0003ac6a663c56c5c939","0003ac6a663c56c539c9","0003ac6a663c56c53936","0003ac6a69cc56c5c939","0003ac6a69cc56c53639","0003ac6a69cc56c53936","0003ac6a693359c53939","0003ac6a693356c5c939","0003ac6a693356c53639","0003ac6a693c56c53639","0003ac6a693356c539c9","0003ac6a693c56c5c936","04079c6c955c693c3aa9","04079c6c955369cc3aa9","04079c6c955369333aa9","04079c6c9553693c3aa6","0407636c955369cc3aa9","0407636c955369333aa9","0407636c9553693c3aa6","04076c9c9553993c3aa9","04076c9c9553663c3aa9","04076c9c9553693ccaa9","0003ac6a693c56c539c9","04076c636553693c3aa9","04076c639553993c3aa9","04076c639553663c3aa9","04076c639553693ccaa9","04076c6c655c693c3aa9","04076c6c655369cc3aa9","04076c6c655369333aa9","04076c6c6553693c3aa6","04076c6c955c993c3aa9","04076c6c955c663c3aa9","04076c6c955c693ccaa9","04076c6c9553663c3aa6","04076c6c6553693c3aa9","04076c6c955369cccaa9","04076c6c9553693ccaa6","040f9aa396c569393aaa","040f9aac96c569c93aaa","040f9aac96c569363aaa","040f9aac96c56939caaa","040f6aa366c569393aaa","040f6aa396c599393aaa","040f6aa396c56939caaa","040f6aac66c569c93aaa","040f6aac66c569363aaa","040f6aac99c569363aaa","04076c6c955c693c3aa9","040f6aac963599393aaa","040f6aac96c599363aaa","040f6aac96c569c9caaa","040f6aac96c56936caaa","040f9aa396a9696c3a93","040f9aac96a6696c3a93","040f9aac96a9699c3a93","040f9aac96a969633a93","040f9aac96a9696cca93","040f9aac96a9696c3a63","040f9aac96a9696c3a9c","040f6aa366a9696c3a93","04076c6c955369333aa9","040f6aa399a9696c3a93","040f6aa396a9996c3a93","040f6aa396a9666c3a93","040f6aa396a9699c3a93","040f6aa396a9696cca93","040f6aa396a9696c3a9c","040f6aac66a6696c3a93","040f6aac66a9699c3a93","040f6aac66a969633a93","040f6aac66a9696c3a63","040f6aac66a9696c3a9c","040f6aac99a969633a93","040f6aac66c569393aaa","040f6aac99a9696c3a9c","040f6aac96a6996c3a93","040f6aac96a6666c3a93","040f6aac96a6696cca93","040f6aac96a6696c3a63","040f6aac96a999633a93","040f6aac96a9996c3a63","040f6aac96a9996c3a9c","040f6aac96a9666c3a9c","040f6aac96a9699cca93","040f6aac96a96963ca93","040f6aac96a9696cca9c","040f6aac66a9696c3a93","040f9c6393956aa93aaa","040f9c6c93656aa93aaa","040f9c6c93956aa63aaa","040f9c6c93956aa9caaa","040f636c93959aa93aaa","040f636c93956aa9caaa","040f6c9c63956aa93aaa","040f6c9c93959aa93aaa","040f6c9c93956aa63aaa","040f6c9c93956aa9caaa","040f6c6363956aa93aaa","040f6c639c956aa93aaa","040f6aac96a9996c3a93","040f6c6393959aa93aaa","040f6c6c93659aa93aaa","040f9c6c95556955ca93","040f9c6c955569553a9c","040f636c955569553a63","040f6c9c955599553a93","040f6c9c955566553a93","040f6c63955599553a93","040f6c63955566553a93","040f6c6c655569553a9c","08039ac63c55c555c939","08036a363c55c5553639","08039aaa3c6cc3953aa9","08036ac93c5535553939","08036ac93c55c555c939","08036ac6cc55c55539c9","08036ac6cc55c5553936","08036ac63355c55539c9","08036ac63355c5553936","08039aaa3aacc6c5c939","08039aaa3aacc6c53639","08039aaa3aacc6c539c9","08036aaacaacc6353939","08036aaacaacc6c53639","08036aaacaacc6c539c9","08036aaa3c6c33953aa9","08036aaacaacc6c53936","08036aaa3aa3c6c5c939","08036aaa3aa3c6c539c9","08036aaa3aac36c539c9","08036aaa3aac36c53936","08036aaa3aacc9c53936","08036aaa3aacc635c939","08036aaa3aacc6c5c936","08039aaa3c9cc3953aa9","08039aaa3c63c3953aa9","08039aaa3c6cc395caa9","08039aaa3c6cc3953aa6","08036ac6cc39c3ac3aa9","08036aaacc63c3953aa9","08036aaacc6cc3653aa9","08036aaacc6cc3953aa6","08036aaa3c9c33953aa9","08036aaa3c9cc395caa9","08036aaa3c6333953aa9","08036aaa3c63cc953aa9","08036aaa3c63c395caa9","08036aaa3c6c33953aa6","08036aaa3c6cc395caa6","08039ac93c39c3ac3aa9","08039ac63cc9c3ac3aa9","08036ac63c3933ac3aa9","08039ac63c36c3ac3aa9","08039ac63c39c3a33aa9","08039ac63c39c3accaa9","08039ac63c39c3ac3aa6","08036a36cc39c3ac3aa9","08036a363c3933ac3aa9","08036a363c39c3a33aa9","08036a363c39c3accaa9","08036ac9cc39c3ac3aa9","08036ac93339c3ac3aa9","08036ac93c3933ac3aa9","08036ac93c39ccac3aa9","080b6aac3c66c5563939","08036ac93c39c3accaa9","08036ac93c39c3ac3aa6","08036ac6cc36c3ac3aa9","08036ac6cc39c3a33aa9","08036ac6cc39c3ac3aa6","08036ac63339c3a33aa9","08036ac63339c3ac3aa6","08036ac63cc933ac3aa9","08036ac63cc9c3accaa9","08036ac63cc9c3ac3aa6","08036ac63c3633ac3aa9","08036ac63c36ccac3aa9","080b6aac3c6935563939","08036ac63c36c3accaa9","08036ac63c3933a33aa9","08036ac63c3933ac3aa6","08036ac63c39ccac3aa6","08036ac63c39c3a3caa9","08036ac63c39c3accaa6","080b9aa33c69c5563939","080b9aac3c99c5563939","080b9aac3c69c5593939","080b9aac3c69c55639c9","080b9aac3c69c5563936","080b6aa33369c5563939","0c0f9c6c53953c69a93a","080b6aa33c6935563939","080b6aa33c69c556c939","080b6aa33c69c5563639","080b6aaccc69c5593939","080b6aaccc69c55639c9","080b6aaccc69c5563936","080b6aac3369c5593939","080b6aac3369c55639c9","080b6aac3369c5563936","080b6aac3c9935563939","080b6aac3c99c556c939","080b6aac3c99c5563639","0c0f636c53953c69a93a","080b6aac3c6635563939","080b6aac3c66c556c939","080b6aac3c66c5563639","080b6aac3c6935593939","080b6aac3c6935563936","080b6aac3c69c559c939","0c0f9c6353953c69a93a","0c0f9c6c53953369a93a","0c0f9c6c53953c99a93a","0c0f9c6c53953c66a93a","0c0f9c6c53953c69a63a","0c0f9c6c53953c69a9ca","0c0f6c6353953c69a93a","0c0f636c5395cc69a93a","0c0f636c53953c99a93a","0c0f636c53953c66a93a","0c0f636c53953c69a63a","0c0f636c53953c69a9ca","0c0f6c9c5395cc69a93a","0c0f6c9c53953369a93a","0c0f6c9c53953c66a93a","0c0f6c9c53953c69a63a","0c0f6c9c53953c69a9ca","0c0f6c635395cc69a93a","0c0f6c6353953369a93a","0c0f6c6c53953369a93a","0c0f6c6353953c99a93a","0c0f6c6353953c69a63a","0c0f6c6353953c69a9ca","0c0f6c6c5c953c66a93a","0c0f6c6c5365cc69a93a","0c0f6c6c5395cc66a93a","0c0f6c6c5395cc69a9ca","0c0f6c6c53953c66a63a"],"5":["0004ac6aa633ac3ac696a93c3aaa9","0004ac6aa695cc3c395696c53a939","0004ac6c6695393c6ac696c53a939","0004ac6c6695393c56c633953aaa9","0004c6ac6396956c5695396c3aaa9","0004c6ac6336956a96956c3c393a9","0004c6c6a3956c6c3c553a953aaa9","0004c6c6a3953c6ca695393c3aaa9","0004c6c6a3953c6a9695cc3c393a9","0004c6aaa53c6c3c395696953a939","0004c6ac656c393c3ac696c53a939","0004c6ac653c693c56c693953aaa9","000eac6ac693c53a9536a93c3aaa9","000eac6ac69569569565a695393a9","000ec6aac396a96a96a56c6c393a9","0018aac6c6939553ac556c39393aa","0018aac6c6c335556a95396c3aa93","0018aac6c6c395535a956c6c39393","0018ac6ac695693c53c635693a93a","0018ac6ac693c53c695695c93a93a","0018ac6ac633c53c695693c53aa93","0018ac6ac695c95693c556a9393aa","0018ac6ac695695633c53c693a93a","0018ac6ac693c556a9556c693a93a","0018c6aac396c56c539539cc3aa93","0018c6aac336c56a93956c6c39393","0018c6aac396596a96c56c5539393","0018c6c6c393956ccc5539393aaaa","0018c6c6c393956c6a95696c3aa93","0018c6c6c393956aaa956ccc39393","0018c6aac56c693c53c695693a93a","0018c6aac53a953c695695693a93a","0018c6aac53c693ca3c693c53aa93","0a046aac656c5595395636c53a939","0a046aac656a9593c696a96c3aaa9","0a046ac6a5c93c93ac56aa953aaa9","0a046ac6a5696c93c696a93c3aaa9","0a046ac6a5693c95cc5695553a939","0a046ac6a5693c956a9633ac3aaa9","0a046c6c65395596c55693353aaa9","0a046c6c65695596a95696c53a939","0a046c6aa5535c93c696a93c3aaa9","0a046c6aa5556c95695696c53a939","0a046c6c655539953ac636c53a939","0a046aac63ac39ac3ac696953a939","0a046aac635c39ac56c693953aaa9","0a046aac63c635c53c555695393a9","0a046ac6a3c53cc56c555695393a9","0a046aaaa3c6acc39695cc3c393a9","0a046aac63c695c53c553ca53a939","0a046ac6a3953cc53c553c553a939","0a046aac63ac69c696c53a953aaa9","0a0e6aaac56c6995696696c53a939","0a0e6ac6c5695595693633ac3aaa9","0a0e6c6ac5396996c56693353aaa9","0a0e6c6ac5696996a96696c53a939","0a0e6c6ac5539593c536a93c3aaa9","0a0e6aaac3ac69c635655695393a9","0a0e6aaac3c6c5c39535cc3c393a9","0a0e6ac6c3c395c3ac356c6c393a9","0a0e6aaac396a9c53c653c553a939","0a0e6ac6c3c335c56c35393c3aaa9","0a186aaac56ac5939396a96c3aa93","0a186ac6c5695595695635693a93a","0a186ac6c5695595695693953aa93","0a186c6ac5696996c3c693a93aaaa","0a186c6ac5539595695695693a93a","0a186c6ac553c595c95693c53aa93","0a186aaac3c6c5a95396596c3aa93","0a186ac6c3c395a96a96a9cc3aa93","0a186ac6c39395c56c555539393aa","0a186ac6c3c335c56a95556c39393","0a186aaac3ac69c633c556a9393aa","0a186aaac3c6c5c39555cc5539393","0a186ac6c3c395c3ac556ca539393","0a186aaac396a9c53ac53c693a93a","0a186ac6c3c5a5c539553c693a93a","0a186aaac3ac69c633c53c693a93a","0a186aaac3aac5c6a9556c693a93a","0a186ac6c3c395c56c5539a53aa93","0a186aaac35c69c693c53ac53aa93","14046aac63c635695695693c93aa9","14046ac6a3c53c696c556a9593aa9","14046ac6a3c53c695695c93c93aa9","14046aaaa56c6c393956c69593939","14046aac65cc39393ac6c6c593939","14046c6c6539693aaac6c6c593939","14046aac656c3939a6c6c39593aa9","14046c6c6539393ac6c6939593aa9","14046c6c6539553ac396c35c93aa9","14046ac6a5c93c53ac53c695a93a9","14046ac6a5696c53c693c53ca93a9","14046c6aa553ac539693c53ca93a9","14046aac63c695693c539695a93a9","14046ac6a3c53c693c53c635a93a9","14046ac6a3953c695693c53ca93a9","14046c6aa539cc56a95396c5aa939","14046aac656c39556ac396c5aa939","14046c6c65393956aac336c5aa939","140e6c6ac539693ac3a6c35c93aa9","140e6c6ac5a3c553c533c53ca93a9","140e6aaac3acc96a9563c695a93a9","14186aaac3c6c569a395696c93a93","14186ac6c3c395696c55c93993aaa","14186ac6c3c395696a9569cc93a93","14186aaac5cc693953c6c5699393a","14186aaac56a95396956c5699393a","14186c6ac539693a93c6c5699393a","14186aaac56c693953c693c593a93","14186c6ac539693ac3c6c39593a93","14186aaac396c5695393c56ca9393","14186ac6c3c335696c53c539a93aa","14186ac6c3c39569ca93c56ca9393","14186aaac3ac696a93c396a9a93aa","0004ac6aa693ac3a6696a93c3aaa9","0004ac6aa6956c3c3956c6c53a939","0004ac6c6695393c3ac696653a939","0004ac6c66c5393c56c693953aaa9","0004c6ac6396c56c5695393c3aaa9","0004c6ac6396956ac6956c3c393a9","0004c6c6a3953c6c3c559a953aaa9","0004c6c6a3953c6c5695399c3aaa9","0004c6c6a3c53c6a96956c3c393a9","0004c6aaa53c3c3c395696c53a939","0004c6ac653c393c9ac696c53a939","0004c6ac653c393c56c6c3953aaa9","000eac6ac693c53ac536a99c3aaa9","000eac6ac6c5695695655695393a9","000ec6aac396596a96a56c3c393a9","0018aac6c6c395535c556c39393aa","0018aac6c6c395556a95996c3aa93","0018aac6c6c39553aa956c3c39393","0018ac6ac6c5693c53c695693a93a","0018ac6ac693653c695695693a93a","0018ac6ac693c53c395693c53aa93","0018ac6ac695695693c5a6a9393aa","0018ac6ac695695693c53c393a93a","0018ac6ac6c3c556a9553c693a93a","0018c6aac396656c5395396c3aa93","0018c6aac396c56ac3956c6c39393","0018c6aac396a96a96c53c5539393","0018c6c6c393956c6c5539993aaaa","0018c6c6c3c3956c6a95396c3aa93","0018c6c6c393c56aaa956c6c39393","0018c6aac53c693ca3c695693a93a","0018c6aac53ac53c6956c5693a93a","0018c6aac53c693c53c693653aa93","0a046aac653c5595395696c53a939","0a046aac656ac593c696a93c3aaa9","0a046ac6a5693c935c56aa953aaa9","0a046ac6a5693c93c696593c3aaa9","0a046ac6a5693c956c5695a53a939","0a046ac6a5393c956a9693ac3aaa9","0a046c6c6539a596c55693953aaa9","0a046c6c65395596595696c53a939","0a046c6aa553ac93c696593c3aaa9","0a046c6aa5556c95395696653a939","0a046c6c65a539953ac696c53a939","0a046aac63ac99ac3ac696c53a939","0a046aac63ac39aca6c693953aaa9","0a046aac63c695c53c55a695393a9","0a046ac6a3c53cc53c5556c5393a9","0a046aaaa366acc396956c3c393a9","0a046aac63c6c5c53c553c553a939","0a046ac6a3c53cc59c553c553a939","0a046aac63ac39c696c59a953aaa9","0a0e6aaac56c6995396696653a939","0a0e6ac6c5395595693693ac3aaa9","0a0e6c6ac5393996c56693953aaa9","0a0e6c6ac5396996596696c53a939","0a0e6c6ac553c593c536593c3aaa9","0a0e6aaac3ac69c6956556c5393a9","0a0e6aaac366c5c395356c3c393a9","0a0e6ac6c3c3c5c3ac356c3c393a9","0a0e6aaac3c6a9c59c653c553a939","0a0e6ac6c3c395c56c35993c3aaa9","0a186aaac56ac593c396a93c3aa93","0a186ac6c5395595695695693a93a","0a186ac6c569a595695693c53aa93","0a186c6ac539699663c693a93aaaa","0a186c6ac553c5956956c5693a93a","0a186c6ac553c595695693653aa93","0a186aaac366c5a95396a96c3aa93","0a186ac6c3c3c5a96a96a96c3aa93","0a186ac6c3c395c53c555539393aa","0a186ac6c3c395c56a95a56c39393","0a186aaac3ac69c693c55659393aa","0a186aaac366c5c395556c5539393","0a186ac6c3c3c5c3ac556c5539393","0a186aaac3c6a9c59ac53c693a93a","0a186ac6c3c555c539559c693a93a","0a186aaac3ac69c693c53c393a93a","0a186aaac35ac5c6a9553c693a93a","0a186ac6c3c3c5c56c5539553aa93","0a186aaac3ac69c6c3c53ac53aa93","14046aac63c695695695393c93aa9","14046ac6a3c53c693c556ac593aa9","14046ac6a3653c695695693c93aa9","14046aaaa56c3c393956c6c593939","14046aac656c39399ac6c6c593939","14046c6c6539393aaac666c593939","14046aac656c393956c6c3c593aa9","14046c6c6599393ac6c6c39593aa9","14046c6c6539a53ac396c3ac93aa9","14046ac6a5693c535c53c695a93a9","14046ac6a5693c53c693653ca93a9","14046c6aa553ac53c693c59ca93a9","14046aac636695693c53c695a93a9","14046ac6a3c59c693c53c695a93a9","14046ac6a3c53c69a693c53ca93a9","14046c6aa5396c56a953c6c5aa939","14046aac656c39553ac39665aa939","14046c6c65993956aac396c5aa939","140e6c6ac539393ac3a6c3ac93aa9","140e6c6ac553c5536533c53ca93a9","140e6aaac3ac696a95636695a93a9","14186aaac3c6c5695395693c93a93","14186ac6c36395696c55693993aaa","14186ac6c3c3c5696a95696c93a93","14186aaac56c6939a3c6c5699393a","14186aaac56ac539695665699393a","14186c6ac539693ac3c6c5399393a","14186aaac53c693953c6c3c593a93","14186c6ac539393ac3c6c3c593a93","14186aaac3c6c569a393c56ca9393","14186ac6c3c395696c536539a93aa","14186ac6c3c395696a93c53ca9393","14186aaac35c696a93c3c6a9a93aa","0004ac6aa693ac3ac696a96c3aaa9","0004ac6aa6356c3c395696c53a939","0004ac6c6695693c3ac696c53a939","0004ac6c6695393ca6c693953aaa9","0004c6ac6396956c5695693c3aaa9","0004c6ac6396956a96956c6c393a9","0004c6c6a3353c6c3c553a953aaa9","0004c6c6a3956c6c5695393c3aaa9","0004c6c6a3953c6a36956c3c393a9","0004c6aaa53c6c3c395636c53a939","0004c6ac653c393c3ac696953a939","0004c6ac656c393c56c693953aaa9","000eac6ac693953ac536a93c3aaa9","000eac6ac695695635655695393a9","000ec6aac396a96a96a5cc3c393a9","0018aac6c6c39553ac556c69393aa","0018aac6c69395556a95396c3aa93","0018aac6c6c33553aa956c6c39393","0018ac6ac695693ca3c695693a93a","0018ac6ac693c53c695635693a93a","0018ac6ac693c53c695693953aa93","0018ac6ac635695693c556a9393aa","0018ac6ac695c95693c53c693a93a","0018ac6ac693c55659553c693a93a","0018c6aac396c56c5395696c3aa93","0018c6aac396c56a93956ccc39393","0018c6aac336a96a96c56c5539393","0018c6c6c393356c6c5539393aaaa"]};
+ const day=Math.floor(Date.UTC(year,month-1,dayOfMonth)/86400000),table=tables[size],entry=table[circuitTemplateIndex(day,table.length)];
+ return {size,start:parseInt(entry.slice(0,2),16),end:parseInt(entry.slice(2,4),16),masks:[...entry.slice(4)].map(x=>parseInt(x,16)),turns:Array(size*size).fill(0)};
+}
+function generateHardCircuitPuzzle(year, month, dayOfMonth) {
+  const templates=["1","5m9t","1c","5mag","2p","5mb8","44","5mc4","5s","5md5","74","5mha","80","5mi0","8h","5mis","91","5mk3","ac","5n2y","b5","5n48","cg","5n9i","dc","5nb4","sh","5pg4","ut","5ph0","zk","5pik","10w","5q81","139","5q94","169","5slp","1n4","5smd","1r5","5ssh","1sh","5stv","1vk","5tm8","2dh","5vro","2f4","5vss","2ht","5vth","2jo","5w0g","2kx","5wkc","2nl","5yx0","2q9","5yxk","35w","5yy9","378","5yz0","38k","5z44","3b4","5zpf","3cx","5zqc","3yc","6239","41t","6250","4qo","62v6","4s4","658w","4w4","659s","5j8","6611","5kg","68fk","5n4","6bkd","5ro","6blc","6io","6br7","6kg","6ccg","7b4","6epy","7ww","6equ","8pc","6fi8","8xs","6hwl","9hx","6l1f","9kg","6l3k","9n4","6o7k","9oh","6o89","9ts","6o90","aas","6oei","adg","6ozv","b28","6rcz","b4g","6s74","buo","6uj9","bw4","6ups","c01","6xpc","cnl","70u9","coh","70us","cpt","70w0","cr4","70wk","csh","7130","cu8","71o2","cw0","740p","dg0","747g","dhs","7763","dkg","7775","dmo","7ac5","e9w","7aio","edd","7dhp","f0k","7dj4","f2o","7dpc","f5s","7gni","fwg","7goi","glc","7jt6","hq8","7q4i","iys","7q56","j44","7qbk","jwh","7tar","lcg","7wg4","m4w","7wh6","m9c","82tc","mcg","8fer","mgw","8ffl","n40","8fgu","oow","8fm8","1el1","8g7a","1em8","8iku","1en4","8ilu","1eo1","8lqq","1eph","8ow0","1eq8","8owm","1erk","8oxw","1ev4","8s1u","1fcw","8s2p","1fes","8s3p","1fjk","8v7l","1g74","8w00","1g8w","8yfk","1gas","94pt","1gxt","97us","1h0k","97w1","1h38","9b1u","1hqc","9hcm","1i00","9i4g","1ji8","9qtc","1kw0","9tzh","1l1d","9u0s","1loh","9u1a","1mh0","9u74","1n9g","9usc","1o1w","9x50","1p6o","9xc4","1r7k","a0ar","1rcw","a0bl","1rg4","a0j4","1s01","a3gx","1t10","a48w","1tvk","a7g2","1uhc","aj9o","20ox","amgw","20qp","avy8","229t","b5dt"];
+  const layouts=[[10,10,12,6,10,9,3,10,10],[12,6,12,5,5,5,3,9,3]],day=Math.floor(Date.UTC(year,month-1,dayOfMonth)/86400000);
+  const encoded=parseInt(templates[circuitTemplateIndex(day,templates.length)],36);
+  return {masks:[...layouts[encoded>>18]],turns:Array.from({length:9},(_,i)=>(encoded>>(2*i))&3)};
+}
+function circuitTrace(masks, size=3, start=0, end=8) {
+  let index=start, incoming=8, visited=0;
   const reached=[];
   while(true) {
     if(visited & (1<<index) || !(masks[index]&incoming)) return {reached,won:false};
     visited|=1<<index; reached.push(index);
     const outgoing=masks[index]^incoming;
-    if(index===8 && outgoing===2) return {reached,won:visited===511};
-    const row=Math.floor(index/3), col=index%3;
-    if((outgoing===1&&row===0)||(outgoing===2&&col===2)||(outgoing===4&&row===2)||(outgoing===8&&col===0)) return {reached,won:false};
-    const delta={1:-3,2:1,4:3,8:-1}[outgoing];
+    if(index===end && outgoing===2) return {reached,won:visited===(1<<(size*size))-1};
+    const row=Math.floor(index/size), col=index%size;
+    if((outgoing===1&&row===0)||(outgoing===2&&col===size-1)||(outgoing===4&&row===size-1)||(outgoing===8&&col===0)) return {reached,won:false};
+    const delta={1:-size,2:1,4:size,8:-1}[outgoing];
     if(delta===undefined) return {reached,won:false};
     index+=delta; incoming=rotateCircuit(outgoing,2);
   }
 }
-function circuitSolved(masks) { return circuitTrace(masks).won; }
+function circuitSolved(masks, size=3, start=0, end=8) { return circuitTrace(masks,size,start,end).won; }
 function generateDailyBalance(date) {
   const [year,month,day]=date.split('-').map(Number), dayNumber=Math.floor(Date.UTC(year,month-1,day)/86400000);
   const cycle=Math.floor(dayNumber/24), dayInCycle=((dayNumber%24)+24)%24;
@@ -826,32 +849,78 @@ const games = {
     const date=`${part('year')}-${String(part('month')).padStart(2,'0')}-${String(part('day')).padStart(2,'0')}`;
     category.textContent=`今日のパズル ${date}`;
     const modeGroup=document.createElement('div');modeGroup.className='circuit-modes';modeGroup.setAttribute('role','group');modeGroup.setAttribute('aria-label','難易度');
-    for(const [value,label] of [['easy','かんたん'],['normal','ふつう']]) {
+    for(const [value,label] of [['easy','かんたん'],['normal','ふつう'],['hard','難関'],['oni','鬼'],['kiwami','極']]) {
       const option=document.createElement('button');option.type='button';option.dataset.difficulty=value;option.textContent=label;option.setAttribute('aria-pressed',String(value===circuitDifficulty));
       option.addEventListener('click',event=>{if(value===circuitDifficulty)return;circuitDifficulty=value;start();if(event.detail===0)document.querySelector(`.circuit-modes [data-difficulty="${value}"]`).focus();});
       modeGroup.append(option);
     }
-    status.before(modeGroup);cleanup=()=>modeGroup.remove();
-    const puzzle=circuitDifficulty==='easy'?generateEasyCircuitPuzzle(part('year'),part('month'),part('day')):generateCircuitPuzzle(part('year'),part('month'),part('day'));
-    const {masks,turns:initial}=puzzle;
-    const storage=dailyStorage(circuitDifficulty==='easy'?'circuit-easy-v2':'circuit',date); let turns=[...initial], moves=0;
+    status.before(modeGroup);
+    let oldRecord=false,validOldRecord=false;
+    try {
+      for(const key of ['kihamda-daily-circuit','kihamda-daily-circuit-previous']) {
+        const raw=localStorage.getItem(key);if(raw===null)continue;
+        try { const saved=JSON.parse(raw);if(saved?.date===date){oldRecord=true;validOldRecord ||= Array.isArray(saved.turns)&&saved.turns.length===9&&saved.turns.every(n=>Number.isInteger(n)&&n>=0&&n<4)&&Number.isSafeInteger(saved.moves)&&saved.moves>=0;} }
+        catch (_) { oldRecord=true; }
+      }
+    } catch (_) { oldRecord=true; }
+    let legacyButton=null;
+    if(oldRecord||circuitDifficulty==='legacy') {
+      legacyButton=document.createElement('button');legacyButton.type='button';legacyButton.className='circuit-legacy';
+      legacyButton.textContent=circuitDifficulty==='legacy'?'ふつうに戻る':validOldRecord?'以前の記録を開く':'以前の問題を開く';
+      legacyButton.addEventListener('click',event=>{circuitDifficulty=circuitDifficulty==='legacy'?'normal':'legacy';start();if(event.detail===0){const focus=circuitDifficulty==='legacy'?document.querySelector('.circuit-legacy'):document.querySelector('.circuit-modes [data-difficulty="normal"]');focus?.focus();}});
+      status.before(legacyButton);
+    }
+    let legacyNotice=null;
+    if(circuitVersion===null && circuitRequested==='normal' && circuitDifficulty==='normal') {
+      legacyNotice=document.createElement('details');legacyNotice.className='circuit-notice';
+      const summary=document.createElement('summary');summary.textContent='以前のリンクについて';
+      const text=document.createElement('p');text.textContent='以前の共有リンクでは、今の「ふつう」が開くよ。以前の問題も今日の日付で遊べるよ。';
+      legacyNotice.append(summary,text);
+      if(!legacyButton) {
+        const oldLink=document.createElement('button');oldLink.type='button';oldLink.className='circuit-legacy';oldLink.textContent='以前の問題を開く';
+        oldLink.addEventListener('click',event=>{circuitDifficulty='legacy';start();if(event.detail===0)document.querySelector('.circuit-legacy')?.focus();});
+        legacyNotice.append(oldLink);
+      }
+      board.after(legacyNotice);
+    }
+    cleanup=()=>{modeGroup.remove();legacyButton?.remove();legacyNotice?.remove()};
+    const generator=circuitDifficulty==='easy'?generateEasyCircuitPuzzle:circuitDifficulty==='hard'?generateHardCircuitPuzzle:circuitDifficulty==='legacy'?generateCircuitPuzzle:generateNormalCircuitPuzzle;
+    if(['hard','oni','kiwami'].includes(circuitDifficulty))instructions.textContent='押したマスと上下左右の道が回るよ。始から終まで、すべてのマスをつなげてね。';
+    if(['easy','legacy'].includes(circuitDifficulty))instructions.textContent='マスを押して道を回そう。左の始から右の終まで、すべてのマスをつなげてね。';
+    const size=circuitDifficulty==='oni'?4:circuitDifficulty==='kiwami'?5:3;
+    const puzzle=size===3?generator(part('year'),part('month'),part('day')):generateHighCircuitPuzzle(part('year'),part('month'),part('day'),size);
+    const {masks,turns:initial,start:begin=0,end=8}=puzzle;
+    board.style.setProperty('--circuit-columns',size);board.dataset.circuitSize=size;board.dataset.circuitDifficulty=circuitDifficulty;
+    const storage=dailyStorage(circuitDifficulty==='easy'?'circuit-easy-v2':circuitDifficulty==='hard'?'circuit-linked-v2':circuitDifficulty==='normal'?'circuit-normal-v3':circuitDifficulty==='oni'?'circuit-oni-v2':circuitDifficulty==='kiwami'?'circuit-kiwami-v2':'circuit',date); let turns=[...initial], moves=0;
     try {
       if(reset) storage.clear();
       const saved=storage.load();
-      if(saved && Array.isArray(saved.turns) && saved.turns.length===9 && saved.turns.every(n=>Number.isInteger(n)&&n>=0&&n<4) && Number.isSafeInteger(saved.moves) && saved.moves>=0) {
+      if(saved && Array.isArray(saved.turns) && saved.turns.length===size*size && saved.turns.every(n=>Number.isInteger(n)&&n>=0&&n<4) && Number.isSafeInteger(saved.moves) && saved.moves>=0) {
         turns=[...saved.turns]; moves=saved.moves;
       }
     } catch (_) {}
     board.classList.add('circuit');
     const directions=[[1,'上'],[2,'右'],[4,'下'],[8,'左']];
+    const affected=i=>['hard','oni','kiwami'].includes(circuitDifficulty)?[i,...[-size,size,...(i%size?[-1]:[]),...(i%size<size-1?[1]:[])].map(delta=>i+delta).filter(j=>j>=0&&j<size*size)]:circuitDifficulty==='normal'&&i%3<2?[i,i+1]:[i];
     const buttons=turns.map((_,i)=>button('',()=>{
-      if(circuitSolved(masks.map((mask,j)=>rotateCircuit(mask,turns[j])))) return;
-      turns[i]=(turns[i]+1)%4; moves++;
+      if(circuitSolved(masks.map((mask,j)=>rotateCircuit(mask,turns[j])),size,begin,end)) return;
+      const group=affected(i);
+      for(const j of group)turns[j]=(turns[j]+1)%4; moves++;
       if(!storage.save({turns,moves})){recoverDailyConflict();return;}
       render();
     }));
+    if(['hard','normal','oni','kiwami'].includes(circuitDifficulty)) {
+      const highlight=i=>{const selected=i===null?[]:affected(i);buttons.forEach((b,j)=>b.classList.toggle('circuit-affected',selected.includes(j)));};
+      let lastTouch=null;
+      buttons.forEach((b,i)=>{
+        b.addEventListener('focus',()=>highlight(i));b.addEventListener('blur',()=>highlight(null));
+        b.addEventListener('pointerdown',event=>{if(event.pointerType==='touch'){lastTouch=i;highlight(i);}});
+        b.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')lastTouch=null;const active=document.activeElement;if(!board.contains(active)||!active.matches(':focus-visible'))highlight(i);});
+        b.addEventListener('pointerleave',()=>{const active=document.activeElement;highlight(board.contains(active)&&active.matches(':focus-visible')?buttons.indexOf(active):lastTouch);});
+      });
+    }
     function render(){
-      const current=masks.map((mask,i)=>rotateCircuit(mask,turns[i])), {reached,won}=circuitTrace(current);
+      const current=masks.map((mask,i)=>rotateCircuit(mask,turns[i])), {reached,won}=circuitTrace(current,size,begin,end);
       buttons.forEach((b,i)=>{
         const mask=current[i], ends=directions.filter(([bit])=>mask&bit).map(([,name])=>name).join('と');
         const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
@@ -861,13 +930,16 @@ const games = {
           for(const [name,value] of Object.entries({x1:50,y1:50,x2:x,y2:y})) line.setAttribute(name,String(value));
           svg.append(line);
         }
-        b.replaceChildren(svg); b.dataset.endpoint=i===0?'始':i===8?'終':'';
+        b.replaceChildren(svg); b.dataset.endpoint=i===begin?'始':i===end?'終':'';
         b.classList.toggle('circuit-connected',reached.includes(i));
         b.setAttribute('aria-disabled',String(won));
-        b.setAttribute('aria-label',`${Math.floor(i/3)+1}行${i%3+1}列 ${i===0?'始点 ':i===8?'終点 ':''}${ends}につながる道${reached.includes(i)?' 始点から接続':''}`);
+        const linked=['normal','hard','oni','kiwami'].includes(circuitDifficulty);
+        const neighbors=affected(i).filter(j=>j!==i).map(j=>`${Math.floor(j/size)+1}行${j%size+1}列`);
+        const operation=linked?(neighbors.length?` 押すとこのマスと${neighbors.join('、')}が回る`:' 押すとこのマスが回る'):'';
+        b.setAttribute('aria-label',`${Math.floor(i/size)+1}行${i%size+1}列 ${i===begin?'始点 ':i===end?'終点 ':''}${ends}につながる道${reached.includes(i)?' 始点から接続':''}${operation}`);
       });
-      status.textContent=won?`クリア！ ${moves}手でつながったよ`:`${moves}手　つながり ${reached.length} / 9`;
-      if(won) offerCopy(`くるくる回路 ${circuitDifficulty==='easy'?'かんたん':'ふつう'} ${date} ${moves}手\nhttps://game.kihamda.net/play-circuit.html${circuitDifficulty==='easy'?'?difficulty=easy':''}`);
+      status.textContent=won?`クリア！ ${moves}手でつながったよ`:`${moves}手　つながり ${reached.length} / ${size*size}`;
+      if(won) offerCopy(`くるくる回路 ${circuitDifficulty==='easy'?'かんたん':circuitDifficulty==='hard'?'難関':circuitDifficulty==='legacy'?'以前の問題':circuitDifficulty==='oni'?'鬼':circuitDifficulty==='kiwami'?'極':'ふつう'} ${date} ${moves}手\nhttps://game.kihamda.net/play-circuit.html?difficulty=${circuitDifficulty}&version=${circuitDifficulty==='normal'?'3':circuitDifficulty==='legacy'?'1':'2'}`);
     }
     render();
   },
@@ -1034,7 +1106,7 @@ const games = {
 };
 const gridColumns={three:3,mirror:3,swap:3,lights:4,memory:4,order:4,garden:4,path:4,sum:3,slide:3,circuit:3};
 board.addEventListener('keydown',event=>{
-  const columns=Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
+  const columns=id==='circuit'?Number(board.dataset.circuitSize||3):Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
   const directions={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
   const direction=Object.hasOwn(directions,event.key) ? directions[event.key] : null;
   if(!columns || !direction)return;
@@ -1083,6 +1155,7 @@ function start(reset=false){
   document.body.classList.remove('daily-stale','storage-unavailable');
   document.body.classList.remove('dodge-mode','grid-mode','path-mode','lights-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall','code','balance','swap','shift','series','mirror','number','three');board.style.display='';controls.hidden=true;
   if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}
+  if(id==='circuit'&&invalidCircuitLink){title.textContent='この問題は開けないよ';instructions.textContent='対応していない問題の版だよ。ゲーム一覧から開いてね。';category.textContent='';status.textContent='';restart.hidden=true;return;}
   title.textContent=gameCatalog[id].title;instructions.textContent=gameCatalog[id].instructions;const gridHelp=document.querySelector('#grid-keyboard-help'), hasGridKeys=Object.hasOwn(gridColumns,id);if(gridHelp)gridHelp.hidden=!hasGridKeys;board.setAttribute('aria-describedby',hasGridKeys?'grid-keyboard-help':'');if(id!=='dodge')document.body.classList.add('grid-mode');if(id==='path')document.body.classList.add('path-mode');if(id==='lights')document.body.classList.add('lights-mode');games[id](reset);document.title=`${title.textContent} | Kihamda Games`;
   activeDailyDate=category.textContent.match(/^今日のパズル (\d{4}-\d{2}-\d{2})$/)?.[1] || null;
   if(activeDailyDate){refreshDailyDate();dailyTimer=window.setInterval(refreshDailyDate,30000);}

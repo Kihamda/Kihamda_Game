@@ -19,6 +19,7 @@ jobs:
           node ops/sum-generator-check.cjs
           node ops/path-check.cjs
           node ops/circuit-check.cjs
+          node ops/circuit-five-generator-check.cjs
           node ops/balance-generator-check.cjs
           node ops/daily-storage-check.cjs
           node ops/sort-check.cjs
@@ -69,6 +70,10 @@ jobs:
           node ops/sum-browser-check.cjs
           node ops/path-browser-check.cjs
           node ops/circuit-browser-check.cjs
+          node ops/circuit-five-browser-check.cjs
+          node ops/circuit-five-storage-check.cjs
+          node ops/circuit-notice-check.cjs
+          node ops/circuit-version-check.cjs
           node ops/circuit-difficulty-check.cjs
           node ops/circuit-rollover-switch-check.cjs
           node ops/sort-browser-check.cjs
@@ -76,3 +81,5 @@ jobs:
           python3 ops/build_preview.py
           SITE_DIR=preview node ops/home-filter-check.cjs
           node ops/fixed-browser-check.cjs
+          SITE_DIR=preview node ops/circuit-notice-check.cjs
+          SITE_DIR=preview node ops/circuit-version-check.cjs

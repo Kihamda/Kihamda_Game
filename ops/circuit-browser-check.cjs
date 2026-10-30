@@ -3,7 +3,7 @@ const root=path.resolve('site'), server=http.createServer((req,res)=>{const file
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});try{
 for(const viewport of [{width:320,height:480},{width:375,height:667},{width:568,height:320},{width:1280,height:800}]){
  const ctx=await browser.newContext({viewport,hasTouch:true});await ctx.addInitScript(()=>Object.defineProperty(navigator,'clipboard',{value:{writeText:async s=>window.copied=s}}));const p=await ctx.newPage();await p.clock.install({time:new Date('2026-10-28T03:00:00Z')});const errors=[];p.on('pageerror',e=>errors.push(e.message));
- await p.goto(`http://127.0.0.1:${server.address().port}/game.html?game=circuit`);
+ await p.goto(`http://127.0.0.1:${server.address().port}/game.html?game=circuit&difficulty=legacy&version=1`);
  const buttons=p.locator('#board button'), read=()=>buttons.evaluateAll(bs=>bs.map(b=>b.getAttribute('aria-label'))) ;assert.equal(await buttons.count(),9);assert((await p.locator('#category').textContent()).includes('2026-10-28'));
  const dims=await buttons.evaluateAll(bs=>bs.map(b=>{const r=b.getBoundingClientRect();return [r.width,r.height,r.bottom]}));assert(dims.every(([w,h,b])=>w>=44&&h>=44&&b<=viewport.height),JSON.stringify({viewport,dims}));assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  const initial=await read();await buttons.nth(0).focus();await p.keyboard.press('Space');assert((await p.locator('#status').textContent()).startsWith('1手'));

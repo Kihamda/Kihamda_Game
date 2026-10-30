@@ -25,8 +25,8 @@ const server = http.createServer((req, res) => {
       await page.clock.install({ time: new Date('2026-10-30T14:59:00Z') });
       const url = `http://127.0.0.1:${server.address().port}/game.html?game=circuit`;
       await page.goto(url + (reverse ? '&difficulty=easy' : ''));
-      const firstKey = reverse ? 'kihamda-daily-circuit-easy-v2' : 'kihamda-daily-circuit';
-      const secondKey = reverse ? 'kihamda-daily-circuit' : 'kihamda-daily-circuit-easy-v2';
+      const firstKey = reverse ? 'kihamda-daily-circuit-easy-v2' : 'kihamda-daily-circuit-normal-v3';
+      const secondKey = reverse ? 'kihamda-daily-circuit-normal-v3' : 'kihamda-daily-circuit-easy-v2';
       const read = key => page.evaluate(name => localStorage.getItem(name), key);
 
       await page.locator('#board button').nth(0).click();
