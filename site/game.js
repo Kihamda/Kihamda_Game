@@ -863,6 +863,7 @@ const games = {
         }
         b.replaceChildren(svg); b.dataset.endpoint=i===0?'始':i===8?'終':'';
         b.classList.toggle('circuit-connected',reached.includes(i));
+        b.setAttribute('aria-disabled',String(won));
         b.setAttribute('aria-label',`${Math.floor(i/3)+1}行${i%3+1}列 ${i===0?'始点 ':i===8?'終点 ':''}${ends}につながる道${reached.includes(i)?' 始点から接続':''}`);
       });
       status.textContent=won?`クリア！ ${moves}手でつながったよ`:`${moves}手　つながり ${reached.length} / 9`;
