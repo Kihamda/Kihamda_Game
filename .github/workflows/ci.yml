@@ -69,6 +69,7 @@ jobs:
           node ops/sum-browser-check.cjs
           node ops/path-browser-check.cjs
           node ops/circuit-browser-check.cjs
+          node ops/circuit-difficulty-check.cjs
           node ops/sort-browser-check.cjs
           node ops/sort-daily-browser-check.cjs
           python3 ops/build_preview.py

@@ -1,4 +1,5 @@
 const params = new URLSearchParams(location.search);
+let circuitDifficulty=params.get('difficulty')==='easy'?'easy':'normal';
 const id = document.body.dataset.game || params.get('game');
 const board = document.querySelector('#board'), status = document.querySelector('#status'), announcement = document.querySelector('#announcement');
 const title = document.querySelector('#title'), instructions = document.querySelector('#instructions');
@@ -188,6 +189,18 @@ function generateCircuitPuzzle(year, month, dayOfMonth) {
   const turns=masks.map(()=>random()%4);
   if(circuitSolved(masks.map((mask,i)=>rotateCircuit(mask,turns[i])))) turns[0]=(turns[0]+1)%4;
   return {masks,turns};
+}
+function generateEasyCircuitPuzzle(year, month, dayOfMonth) {
+  const layouts=[[10,10,12,6,10,9,3,10,10],[12,6,12,5,5,5,3,9,3]];
+  const options=layouts.flatMap((masks,layout)=>{
+    const corners=masks.flatMap((mask,i)=>rotateCircuit(mask,2)!==mask?[i]:[]),choices=corners.map(i=>[i]);
+    for(let a=0;a<corners.length;a++)for(let b=a+1;b<corners.length;b++)choices.push([corners[a],corners[b]]);
+    return choices.map(indices=>({layout,indices}));
+  });
+  const day=Math.floor(Date.UTC(year,month-1,dayOfMonth)/86400000);
+  const {layout,indices}=options[((day%options.length)+options.length)%options.length];
+  const turns=Array(9).fill(0);for(const index of indices)turns[index]=1;
+  return {masks:[...layouts[layout]],turns};
 }
 function circuitTrace(masks) {
   let index=0, incoming=8, visited=0;
@@ -812,8 +825,16 @@ const games = {
     const part=type=>Number(parts.find(item=>item.type===type).value);
     const date=`${part('year')}-${String(part('month')).padStart(2,'0')}-${String(part('day')).padStart(2,'0')}`;
     category.textContent=`今日のパズル ${date}`;
-    const {masks,turns:initial}=generateCircuitPuzzle(part('year'),part('month'),part('day'));
-    const storage=dailyStorage('circuit',date); let turns=[...initial], moves=0;
+    const modeGroup=document.createElement('div');modeGroup.className='circuit-modes';modeGroup.setAttribute('role','group');modeGroup.setAttribute('aria-label','難易度');
+    for(const [value,label] of [['easy','かんたん'],['normal','ふつう']]) {
+      const option=document.createElement('button');option.type='button';option.dataset.difficulty=value;option.textContent=label;option.setAttribute('aria-pressed',String(value===circuitDifficulty));
+      option.addEventListener('click',event=>{if(value===circuitDifficulty)return;circuitDifficulty=value;start();if(event.detail===0)document.querySelector(`.circuit-modes [data-difficulty="${value}"]`).focus();});
+      modeGroup.append(option);
+    }
+    status.before(modeGroup);cleanup=()=>modeGroup.remove();
+    const puzzle=circuitDifficulty==='easy'?generateEasyCircuitPuzzle(part('year'),part('month'),part('day')):generateCircuitPuzzle(part('year'),part('month'),part('day'));
+    const {masks,turns:initial}=puzzle;
+    const storage=dailyStorage(circuitDifficulty==='easy'?'circuit-easy-v2':'circuit',date); let turns=[...initial], moves=0;
     try {
       if(reset) storage.clear();
       const saved=storage.load();
@@ -845,7 +866,7 @@ const games = {
         b.setAttribute('aria-label',`${Math.floor(i/3)+1}行${i%3+1}列 ${i===0?'始点 ':i===8?'終点 ':''}${ends}につながる道${reached.includes(i)?' 始点から接続':''}`);
       });
       status.textContent=won?`クリア！ ${moves}手でつながったよ`:`${moves}手　つながり ${reached.length} / 9`;
-      if(won) offerResultCopy('circuit',date,moves);
+      if(won) offerCopy(`くるくる回路 ${circuitDifficulty==='easy'?'かんたん':'ふつう'} ${date} ${moves}手\nhttps://game.kihamda.net/play-circuit.html${circuitDifficulty==='easy'?'?difficulty=easy':''}`);
     }
     render();
   },

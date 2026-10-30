@@ -103,6 +103,9 @@ const server = http.createServer((req, res) => {
     }
     await page.goto(`${origin}/play-lights.html?mode=daily`);
     assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
+    await page.goto(`${origin}/play-circuit.html?difficulty=easy`);
+    assert.equal(await page.getByRole('button',{name:'かんたん'}).getAttribute('aria-pressed'),'true');
+    assert.equal(await page.locator('#board button').count(),9);
     const noJs = await browser.newContext({javaScriptEnabled:false});
     const plain = await noJs.newPage();
     for (const id of ['three','number','mirror','series','shift','swap','balance','code','recall','timing','circuit','lights','memory','order','dodge','slide','sum','garden','path','sort']) {

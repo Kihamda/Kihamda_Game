@@ -184,3 +184,7 @@ header>a,footer a{display:inline-flex;align-items:center;justify-content:center;
 
 .three-modes{display:flex;gap:8px;margin:0 0 12px}.three-modes button{min-height:44px;border:2px solid #81778d;border-radius:999px;background:transparent;color:#24233a;padding:8px 16px;font-weight:700}.three-modes button[aria-pressed=true]{background:#29243e;color:white;border-color:#29243e}
 @media(min-width:481px) and (max-height:500px){.grid-mode .three-modes{grid-column:1;margin:0 0 4px}}
+.circuit-modes{display:flex;gap:8px;margin:0 0 8px}.circuit-modes button{min-height:44px;border:2px solid #81778d;border-radius:999px;background:transparent;color:#24233a;padding:8px 16px;font-weight:700}.circuit-modes button[aria-pressed=true]{background:#29243e;color:white;border-color:#29243e}
+.board.circuit{max-width:320px}
+@media(min-width:481px) and (max-height:500px){.grid-mode .circuit-modes{grid-column:1;margin:0 0 4px}}
+@media(max-width:480px) and (max-height:500px){.grid-mode .board.circuit{width:min(100%,380px,max(150px,calc(100svh - 340px)))}.grid-mode .board.circuit button{min-height:44px}}
