@@ -36,6 +36,8 @@ jobs:
           node ops/slide-candidates-check.cjs
           node ops/slide-milestone-quality.cjs
           node ops/slide-examples-check.cjs
+          node ops/memory-examples-check.cjs
+          node ops/memory-alternating-analysis.cjs
       - name: Check deployment and rollback
         run: |
           python3 ops/test_deploy.py
@@ -78,6 +80,9 @@ jobs:
           node ops/slide-five-storage-check.cjs
           node ops/slide-five-conflict-check.cjs
           node ops/slide-five-limit-check.cjs
+          node ops/memory-five-ui-check.cjs
+          node ops/memory-five-storage-check.cjs
+          node ops/memory-dead-end-check.cjs
           node ops/record-browser-check.cjs
           node ops/share-browser-check.cjs
           node ops/layout-browser-check.cjs
@@ -118,6 +123,7 @@ jobs:
           SITE_DIR=preview node ops/home-filter-check.cjs
           node ops/fixed-browser-check.cjs
           SITE_DIR=preview node ops/slide-five-ui-check.cjs
+          SITE_DIR=preview node ops/memory-five-ui-check.cjs
           SITE_DIR=preview node ops/sum-site-share-rollover-check.cjs
           SITE_DIR=preview node ops/path-five-browser-check.cjs
           SITE_DIR=preview node ops/circuit-notice-check.cjs

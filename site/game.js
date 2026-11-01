@@ -1,3 +1,87 @@
+let memoryDifficulty='normal';
+const memoryStates={};
+const memoryLabels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+const memoryShapes=['●','▲','■','★'],memoryShapeNames=['まる','さんかく','しかく','ほし'];
+const memorySymbolNames={'●':'まる','◆':'ひし形','▲':'さんかく','★':'ほし','♥':'ハート','☀':'たいよう','✿':'はな','■':'しかく'};
+function memoryFive(reset){
+  const mode=memoryDifficulty,size=mode==='easy'?2:4;
+  const storageKey=`kihamda-memory-${mode}-v2`;
+  function pairMatches(a,b,round){return mode==='easy'||mode==='normal'?a.symbol===b.symbol:mode==='hard'?Math.floor((a.number-1)/2)===Math.floor((b.number-1)/2):mode==='oni'?a.shape===b.shape&&a.number+b.number===5:round%2===0?a.number===b.number:a.shape===b.shape}
+  function stateFrom(cards,history,turns,undos){
+    if(!Array.isArray(cards)||cards.length!==size*size||!Array.isArray(history)||!Number.isSafeInteger(turns)||!Number.isSafeInteger(undos)||turns<0||undos<0||turns<history.length+undos)return null;
+    if(mode==='easy'||mode==='normal'){
+      const types=mode==='easy'?['●','▲']:['●','◆','▲','★','♥','☀','✿','■'];
+      if(cards.some(c=>!c||Object.keys(c).length!==1||!types.includes(c.symbol))||types.some(symbol=>cards.filter(c=>c.symbol===symbol).length!==2))return null;
+    }else if(mode==='hard'){
+      if(cards.some(c=>!c||Object.keys(c).length!==1||!Number.isInteger(c.number)||c.number<1||c.number>16)||new Set(cards.map(c=>c.number)).size!==16)return null;
+    }else if(cards.some(c=>!c||Object.keys(c).length!==2||!Number.isInteger(c.shape)||c.shape<0||c.shape>3||!Number.isInteger(c.number)||c.number<1||c.number>4)||new Set(cards.map(c=>`${c.shape}:${c.number}`)).size!==16)return null;
+    const matched=[];
+    for(const [round,pair] of history.entries()){
+      if(!Array.isArray(pair)||pair.length!==2||pair.some(i=>!Number.isInteger(i)||i<0||i>=cards.length||matched.includes(i))||pair[0]===pair[1]||!pairMatches(cards[pair[0]],cards[pair[1]],round))return null;
+      matched.push(...pair);
+    }
+    return {cards,matched,open:[],history:history.map(pair=>[...pair]),turns,undos,locked:false};
+  }
+  function readRaw(){try{return {raw:localStorage.getItem(storageKey),available:true}}catch(_){return {raw:null,available:false}}}
+  function load(){const current=readRaw();try{if(!current.raw)return null;const data=JSON.parse(current.raw);if(data.version!==2)return null;const restored=stateFrom(data.cards,data.history,data.turns,data.undos);if(restored)restored.snapshot=current.raw;return restored}catch(_){return null}}
+  function persist(){try{const raw=JSON.stringify({version:2,cards:state.cards,history:state.history,turns:state.turns,undos:state.undos});localStorage.setItem(storageKey,raw);state.snapshot=raw;return true}catch(_){record.hidden=false;record.textContent='このブラウザでは途中の記録を保存できないよ';return false}}
+  function fresh(){
+    let cards;
+    if(mode==='easy'||mode==='normal'){
+      const symbols=mode==='easy'?['●','▲']:['●','◆','▲','★','♥','☀','✿','■'];
+      cards=shuffle([...symbols,...symbols]).map(symbol=>({symbol}));
+    }else if(mode==='hard')cards=shuffle(Array.from({length:16},(_,i)=>({number:i+1})));
+    else cards=shuffle(Array.from({length:16},(_,i)=>({shape:Math.floor(i/4),number:i%4+1})));
+    return stateFrom(cards,[],0,0);
+  }
+  let conflictOnReset=false;
+  if(reset&&memoryStates[mode]){const current=readRaw();conflictOnReset=current.available&&current.raw!==memoryStates[mode].snapshot}
+  if(conflictOnReset)memoryStates[mode]=load()||fresh();else if(reset)memoryStates[mode]=fresh();else if(!memoryStates[mode])memoryStates[mode]=load()||fresh();
+  const state=memoryStates[mode];if(state.snapshot===undefined)state.snapshot=readRaw().raw;if(reset&&!conflictOnReset)persist();let timer=0;
+  function isCurrent(){const current=readRaw();if(!current.available||current.raw===state.snapshot)return true;memoryStates[mode]=load()||fresh();if(memoryStates[mode].snapshot===undefined)memoryStates[mode].snapshot=current.raw;start();status.textContent='別のタブの新しい記録を表示したよ';return false}
+  category.textContent='記憶';board.classList.add('memory-five');board.dataset.memorySize=size;board.style.setProperty('--memory-size',size);
+  const group=document.createElement('div');group.className='lights-modes memory-modes';group.setAttribute('role','group');group.setAttribute('aria-label','難易度');
+  for(const [value,label] of Object.entries(memoryLabels)){const b=document.createElement('button');b.type='button';b.dataset.difficulty=value;b.textContent=label;b.setAttribute('aria-pressed',String(value===mode));b.addEventListener('click',event=>{if(value===mode)return;memoryDifficulty=value;start();if(event.detail===0)document.querySelector(`.memory-modes [data-difficulty="${value}"]`)?.focus()});group.append(b)}
+  status.before(group);
+  const undo=document.createElement('button');undo.type='button';undo.className='path-undo memory-undo';undo.textContent='1組もどす';
+  const toolbar=document.createElement('div');toolbar.className='memory-toolbar';status.before(toolbar);toolbar.append(status,undo);
+  cleanup=()=>{clearTimeout(timer);state.open=[];state.locked=false;group.remove();toolbar.before(status);toolbar.remove()};
+  const matchedCount=()=>state.matched.length/2;
+  const currentRule=()=>matchedCount()%2===0?'number':'shape';
+  const cardText=card=>card.symbol??(card.shape===undefined?String(card.number):`${memoryShapes[card.shape]}${card.number}`);
+  const cardName=card=>card.symbol?memorySymbolNames[card.symbol]:(card.shape===undefined?`${card.number}`:`${memoryShapeNames[card.shape]} ${card.number}`);
+  const buttons=state.cards.map((card,i)=>button('？',event=>{
+    if(state.locked||state.matched.includes(i)||state.open.includes(i))return;
+    if(!isCurrent()){if(event?.detail===0)(board.querySelector(':scope > button:not(:disabled)')||restart).focus();return}
+    state.open.push(i);
+    if(state.open.length===2){
+      state.turns++;const [a,b]=state.open;
+      if(pairMatches(state.cards[a],state.cards[b],matchedCount())){
+        const focused=buttons.indexOf(document.activeElement),needsFocus=event?.detail===0&&state.open.includes(focused);
+        state.matched.push(a,b);state.history.push([a,b]);state.open=[];persist();render();
+        if(mode==='kiwami'&&state.matched.length<state.cards.length)announcement.textContent=`次は${currentRule()==='number'?'同じ数字':'同じ形'}をそろえよう`;
+        if(needsFocus){const remaining=buttons.slice(focused+1).concat(buttons.slice(0,focused)).find(x=>!x.disabled);(remaining||restart).focus()}
+      }else{state.locked=true;persist();render();timer=setTimeout(()=>{state.open=[];state.locked=false;render()},700)}
+    }else render();
+  }));
+  undo.addEventListener('click',event=>{
+    if(!state.history.length||state.locked)return;
+    if(!isCurrent()){if(event.detail===0)(document.querySelector('.memory-undo:not(:disabled)')||board.querySelector(':scope > button:not(:disabled)')||restart).focus();return}
+    const pair=state.history.pop();state.matched=state.matched.filter(i=>!pair.includes(i));state.open=[];state.undos++;persist();render();
+    if(mode==='kiwami')announcement.textContent=`組を戻したよ。今は${currentRule()==='number'?'同じ数字':'同じ形'}をそろえよう`;
+    if(event.detail===0&&undo.disabled)(buttons.find(x=>!x.disabled)||restart).focus();
+  });
+  function render(){
+    const won=state.matched.length===state.cards.length;
+    instructions.textContent=mode==='easy'||mode==='normal'?'カードを2枚ずつめくって、同じ絵をそろえよう。':mode==='hard'?'奇数とその次の偶数を組にしよう。':mode==='oni'?'同じ形で、数字の合計が5になる組を作ろう。':`今は${currentRule()==='number'?'同じ数字':'同じ形'}。次は${currentRule()==='number'?'同じ形':'同じ数字'}。`;
+    buttons.forEach((b,i)=>{const card=state.cards[i],matched=state.matched.includes(i),open=state.open.includes(i);b.textContent=matched||open?cardText(card):'？';b.className=matched?'matched':open?'flipped':'';b.disabled=matched;b.setAttribute('aria-label',`${Math.floor(i/size)+1}行${i%size+1}列 ${matched?`${cardName(card)} そろったカード`:open?cardName(card):'伏せたカード'}`)});
+    undo.disabled=!state.history.length||state.locked;
+    status.textContent=won?`クリア！ ${state.turns}回・戻す ${state.undos}回`:`${matchedCount()}組 / ${state.cards.length/2}組${state.undos?`　戻す ${state.undos}回`:''}`;
+  }
+  render();
+  if(conflictOnReset)status.textContent='別のタブの新しい記録を表示したよ';
+}
+
 const slideCandidates={"hard":[{"board":"438706215"},{"board":"146058237"},{"board":"852410736"},{"board":"102346875"},{"board":"024651783"},{"board":"017836452"},{"board":"673140285"},{"board":"024875136"},{"board":"623587140"},{"board":"526401378"},{"board":"216470538"},{"board":"613754208"},{"board":"428615703"},{"board":"852316407"},{"board":"726534018"},{"board":"518432670"},{"board":"710654832"},{"board":"475326801"},{"board":"861435270"},{"board":"316052487"},{"board":"726183405"},{"board":"473856120"},{"board":"132054678"},{"board":"521786403"},{"board":"624380715"},{"board":"253401867"},{"board":"326784510"},{"board":"350417286"},{"board":"840256173"},{"board":"472061583"},{"board":"628435710"},{"board":"704532186"},{"board":"074153268"},{"board":"532470816"},{"board":"804136752"},{"board":"675301482"},{"board":"812754036"},{"board":"014327586"},{"board":"023465178"},{"board":"634210785"},{"board":"105326874"},{"board":"458736210"},{"board":"361052478"},{"board":"520817436"},{"board":"721804563"},{"board":"231475608"},{"board":"056423718"},{"board":"721503648"},{"board":"436701285"},{"board":"416057823"},{"board":"462570381"},{"board":"234670185"},{"board":"581206347"},{"board":"156347082"},{"board":"304716825"},{"board":"147320586"},{"board":"635410827"},{"board":"364158720"},{"board":"240186753"},{"board":"013754682"},{"board":"126708354"},{"board":"061458723"},{"board":"348716502"},{"board":"043186527"},{"board":"720186534"},{"board":"326405817"},{"board":"436758021"},{"board":"862157043"},{"board":"128035674"},{"board":"872461503"},{"board":"527613480"},{"board":"157403268"},{"board":"150427863"},{"board":"726158430"},{"board":"042563187"},{"board":"263057814"},{"board":"801426753"},{"board":"104726835"},{"board":"365407218"},{"board":"385460217"},{"board":"027134856"},{"board":"728501436"},{"board":"423760581"},{"board":"243758160"},{"board":"107325486"},{"board":"624135708"},{"board":"182457360"},{"board":"831057462"},{"board":"638405712"},{"board":"108752634"},{"board":"320586417"},{"board":"051462837"},{"board":"126035847"},{"board":"328146075"},{"board":"378406215"},{"board":"405316872"},{"board":"203157648"},{"board":"126873450"},{"board":"281450763"},{"board":"174306582"}],"oni":[{"board":"140268753"},{"board":"750684321"},{"board":"761502834"},{"board":"520768143"},{"board":"158027643"},{"board":"518647023"},{"board":"047586231"},{"board":"763518240"},{"board":"703281546"},{"board":"837640251"},{"board":"675024183"},{"board":"824076531"},{"board":"346852107"},{"board":"683417052"},{"board":"031857246"},{"board":"803174562"},{"board":"608254317"},{"board":"014367852"},{"board":"580471263"},{"board":"438271506"},{"board":"563804127"},{"board":"214837506"},{"board":"385412706"},{"board":"365027148"},{"board":"821375046"},{"board":"673108425"},{"board":"482513670"},{"board":"125764380"},{"board":"618372450"},{"board":"715264038"},{"board":"748561230"},{"board":"258416037"},{"board":"726305481"},{"board":"280615374"},{"board":"825607314"},{"board":"467815032"},{"board":"846057231"},{"board":"410763852"},{"board":"835124607"},{"board":"764351208"},{"board":"387514602"},{"board":"276450381"},{"board":"704132856"},{"board":"815720346"},{"board":"137846025"},{"board":"478213560"},{"board":"536087412"},{"board":"620514783"},{"board":"810356724"},{"board":"487610523"},{"board":"561472380"},{"board":"208463751"},{"board":"204561387"},{"board":"583764021"},{"board":"074863125"},{"board":"672145083"},{"board":"502678134"},{"board":"728143605"},{"board":"612503487"},{"board":"627510384"},{"board":"475608132"},{"board":"261374850"},{"board":"042718653"},{"board":"072651834"},{"board":"740263815"},{"board":"107428635"},{"board":"732015468"},{"board":"560172843"},{"board":"480326571"},{"board":"172483650"},{"board":"312876504"},{"board":"651370482"},{"board":"618753024"},{"board":"563427180"},{"board":"071654832"},{"board":"086547231"},{"board":"835261074"},{"board":"351862740"},{"board":"240653871"},{"board":"472056183"},{"board":"561347820"},{"board":"164538720"},{"board":"312487065"},{"board":"704168325"},{"board":"634582071"},{"board":"378516420"},{"board":"286530417"},{"board":"106852473"},{"board":"568207143"},{"board":"814602735"},{"board":"724850163"},{"board":"137648502"},{"board":"367401582"},{"board":"704635821"},{"board":"043876521"},{"board":"502487136"},{"board":"425683170"},{"board":"624078351"},{"board":"481627350"},{"board":"671205834"}],"kiwami":[{"board":"285304716","limit":43},{"board":"680523174","limit":41},{"board":"562041873","limit":42},{"board":"873250614","limit":40},{"board":"260475138","limit":41},{"board":"071236458","limit":41},{"board":"431706582","limit":41},{"board":"836512470","limit":39},{"board":"407362815","limit":40},{"board":"408312765","limit":42},{"board":"602815743","limit":38},{"board":"078413562","limit":41},{"board":"518263074","limit":41},{"board":"127843065","limit":41},{"board":"750834162","limit":39},{"board":"283451067","limit":41},{"board":"230468157","limit":41},{"board":"234871056","limit":43},{"board":"421087536","limit":40},{"board":"325674180","limit":43},{"board":"247506318","limit":43},{"board":"562031847","limit":42},{"board":"702643815","limit":38},{"board":"014726358","limit":43},{"board":"265348017","limit":41},{"board":"520417386","limit":43},{"board":"027683415","limit":37},{"board":"547216830","limit":41},{"board":"635728104","limit":38},{"board":"205187436","limit":40},{"board":"712435860","limit":41},{"board":"807153642","limit":40},{"board":"625130748","limit":42},{"board":"023874156","limit":41},{"board":"256813704","limit":40},{"board":"120537468","limit":43},{"board":"170253864","limit":43},{"board":"073164258","limit":41},{"board":"620145837","limit":43},{"board":"721683054","limit":43},{"board":"208713645","limit":42},{"board":"106258743","limit":42},{"board":"834251706","limit":42},{"board":"216075438","limit":40},{"board":"813750246","limit":42},{"board":"463820715","limit":38},{"board":"460532718","limit":43},{"board":"287651430","limit":39},{"board":"604213758","limit":42},{"board":"608247315","limit":38},{"board":"158672304","limit":40},{"board":"246038715","limit":42},{"board":"027841653","limit":39},{"board":"623054781","limit":40},{"board":"830754621","limit":43},{"board":"357204186","limit":41},{"board":"482501673","limit":41},{"board":"356807214","limit":39},{"board":"250376148","limit":43},{"board":"512768430","limit":41},{"board":"075418362","limit":41},{"board":"026758143","limit":37},{"board":"085214637","limit":43},{"board":"501682437","limit":40},{"board":"450638712","limit":43},{"board":"163280457","limit":38},{"board":"820716534","limit":41},{"board":"203654781","limit":42},{"board":"571482036","limit":43},{"board":"637185024","limit":37},{"board":"453870216","limit":40},{"board":"280461573","limit":41},{"board":"210436758","limit":43},{"board":"706283415","limit":38},{"board":"237458016","limit":41},{"board":"342658017","limit":43},{"board":"246351780","limit":41},{"board":"230817645","limit":43},{"board":"680451327","limit":43},{"board":"482651703","limit":40},{"board":"430782156","limit":41},{"board":"608752431","limit":38},{"board":"130462785","limit":41},{"board":"518302674","limit":43},{"board":"357814026","limit":39},{"board":"247561083","limit":43},{"board":"042651873","limit":43},{"board":"085134627","limit":41},{"board":"560832147","limit":39},{"board":"618023745","limit":40},{"board":"416537208","limit":42},{"board":"678201453","limit":41},{"board":"263851470","limit":41},{"board":"287051643","limit":40},{"board":"562301847","limit":43},{"board":"045681732","limit":43},{"board":"127653804","limit":40},{"board":"251068437","limit":42},{"board":"027438156","limit":41},{"board":"516203874","limit":41}]};
 let slideDifficulty='normal';
 const slideStates={};
@@ -885,14 +969,7 @@ const games = {
     const buttons=cells.map((_,i)=>button('',()=>{if(!cells.some(Boolean))return;toggle(i);moves++;if(progress&&!progress.save(cells,moves)){recoverDailyConflict();return}render()}));
     function render(){const won=!cells.some(Boolean);cells.forEach((on,i)=>{buttons[i].className=on?'on':'';buttons[i].textContent=on?'✦':'·';buttons[i].setAttribute('aria-disabled',String(won));buttons[i].setAttribute('aria-label',`${Math.floor(i/size)+1}行${i%size+1}列 ${on?'点灯':'消灯'}`)});status.textContent=cells.some(Boolean)?`${moves}手`:`クリア！ ${moves}手で消せたよ`;if(progress&&!cells.some(Boolean))offerCopy(`ひかりのスイッチ ${{easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極',legacy:'以前の問題'}[lightsDifficulty]} ${dailyDate} ${moves}手\nhttps://game.kihamda.net/play-lights.html?mode=daily&difficulty=${lightsDifficulty}&version=${lightsDifficulty==='legacy'?'1':'2'}`)}render();
   },
-  memory() {
-    category.textContent = '記憶';
-    const symbols = shuffle(['●','◆','▲','★','♥','☀','✿','■', '●','◆','▲','★','♥','☀','✿','■']);
-    let open=[], matched=0, turns=0, timer=0, locked=false;
-    const names={'●':'まる','◆':'ひし形','▲':'さんかく','★':'ほし','♥':'ハート','☀':'たいよう','✿':'はな','■':'しかく'};
-    const cardLabel=(i,value)=>`${Math.floor(i/4)+1}行${i%4+1}列 ${value}`;
-    const buttons=symbols.map((s,i)=>button('？',e=>{ if(locked || buttons[i].disabled || open.includes(i)) return; buttons[i].textContent=s; buttons[i].className='flipped'; buttons[i].setAttribute('aria-label',cardLabel(i,names[s])); open.push(i); if(open.length===2){ turns++; if(symbols[open[0]]===symbols[open[1]]) { const focused=buttons.indexOf(document.activeElement); const needsFocus=e?.detail===0 && open.includes(focused); open.forEach(j=>{buttons[j].disabled=true;buttons[j].className='matched';buttons[j].setAttribute('aria-label',cardLabel(j,`${names[symbols[j]]} そろったカード`));}); matched++;open=[];status.textContent=matched===8?`クリア！ ${turns}回でそろえたよ`:`${matched}組 / 8組`; if(needsFocus){const remaining=buttons.slice(focused+1).concat(buttons.slice(0,focused)).find(b=>!b.disabled);(remaining || document.querySelector('#restart')).focus();} } else {locked=true; timer=setTimeout(()=>{open.forEach(j=>{buttons[j].textContent='？';buttons[j].className='';buttons[j].setAttribute('aria-label',cardLabel(j,'伏せたカード'));});open=[];locked=false;},700);} } })); buttons.forEach((b,i)=>b.setAttribute('aria-label',cardLabel(i,'伏せたカード'))); status.textContent='0組 / 8組'; cleanup=()=>clearTimeout(timer);
-  },
+  memory(reset) { return memoryFive(reset); },
   order() {
     category.textContent='スピード';
     let next=1, start=0, best=null;
@@ -1175,7 +1252,7 @@ const games = {
 };
 const gridColumns={three:3,mirror:3,swap:3,lights:4,memory:4,order:4,garden:4,path:4,sum:3,slide:3,circuit:3};
 board.addEventListener('keydown',event=>{
-  const columns=id==='slide'?Number(board.dataset.slideSize||3):id==='path'?Number(board.dataset.pathSize||4):id==='garden'?Number(board.dataset.gardenSize||4):id==='lights'?Number(board.dataset.lightsSize||4):id==='circuit'?Number(board.dataset.circuitSize||3):Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
+  const columns=id==='memory'?Number(board.dataset.memorySize||4):id==='slide'?Number(board.dataset.slideSize||3):id==='path'?Number(board.dataset.pathSize||4):id==='garden'?Number(board.dataset.gardenSize||4):id==='lights'?Number(board.dataset.lightsSize||4):id==='circuit'?Number(board.dataset.circuitSize||3):Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
   const directions={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
   const direction=Object.hasOwn(directions,event.key) ? directions[event.key] : null;
   if(!columns || !direction)return;
