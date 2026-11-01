@@ -1,7 +1,6 @@
-# Seller records inherited from https://kihamda.net/ads.txt
-# Snapshot: 2026-10-30. Refresh when the root seller list changes.
-# The root subdomain referral is intentionally omitted here.
 google.com, pub-4661971036069402, DIRECT, f08c47fec0942fa0
+subdomain=game.kihamda.net
+
 adm.shinobi.jp,223564,DIRECT
 33across.com,0010b00002Mq2FYAAZ,RESELLER,bbea06d9c4d2853c
 33across.com,0013300001r0t9mAAA,RESELLER,bbea06d9c4d2853c
@@ -120,7 +119,7 @@ appnexus.com,11664,RESELLER
 appnexus.com,11786,RESELLER,f5ab79cb980f11d1
 appnexus.com,11924,RESELLER,f5ab79cb980f11d1
 appnexus.com,12223,RESELLER,f5ab79cb980f11d1
-appnexus.com,1226,Reseller
+appnexus.com,1226,RESELLER
 appnexus.com,12290,RESELLER,f5ab79cb980f11d1
 appnexus.com,1356,RESELLER,f5ab79cb980f11d1
 appnexus.com,1360,RESELLER,f5ab79cb980f11d20
@@ -545,6 +544,7 @@ rhythmone.com,78519861,RESELLER,a670c89d4a324e47
 rhythmone.com,79885747,RESELLER,a670c89d4a324e47
 rhythmone.com,964214154,RESELLER,a670c89d4a324e47
 richaudience.com,sZn9xIbZzF,RESELLER
+rtbhouse.com,VwUhkz4IeGJVRXks0xX7,DIRECT
 rubiconproject.com,11006,RESELLER,0bfd66d529a55807
 rubiconproject.com,11534,RESELLER,0bfd66d529a55807
 rubiconproject.com,12130,RESELLER,0bfd66d529a55807
@@ -676,7 +676,7 @@ xandr.com,12701,RESELLER,f5ab79cb980f11d1
 yahoo.com,1761548,RESELLER
 yahoo.com,55029,RESELLER,e1a5b5b6e3255540
 yahoo.com,56692,RESELLER
-yahoo.com,56848,direct
+yahoo.com,56848,DIRECT
 yahoo.com,57289,RESELLER,e1a5b5b6e3255540
 yahoo.com,57501,RESELLER,e1a5b5b6e3255540
 yahoo.com,57872,RESELLER
