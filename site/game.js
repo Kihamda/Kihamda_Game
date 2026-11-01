@@ -1,3 +1,95 @@
+const slideCandidates={"hard":[{"board":"438706215"},{"board":"146058237"},{"board":"852410736"},{"board":"102346875"},{"board":"024651783"},{"board":"017836452"},{"board":"673140285"},{"board":"024875136"},{"board":"623587140"},{"board":"526401378"},{"board":"216470538"},{"board":"613754208"},{"board":"428615703"},{"board":"852316407"},{"board":"726534018"},{"board":"518432670"},{"board":"710654832"},{"board":"475326801"},{"board":"861435270"},{"board":"316052487"},{"board":"726183405"},{"board":"473856120"},{"board":"132054678"},{"board":"521786403"},{"board":"624380715"},{"board":"253401867"},{"board":"326784510"},{"board":"350417286"},{"board":"840256173"},{"board":"472061583"},{"board":"628435710"},{"board":"704532186"},{"board":"074153268"},{"board":"532470816"},{"board":"804136752"},{"board":"675301482"},{"board":"812754036"},{"board":"014327586"},{"board":"023465178"},{"board":"634210785"},{"board":"105326874"},{"board":"458736210"},{"board":"361052478"},{"board":"520817436"},{"board":"721804563"},{"board":"231475608"},{"board":"056423718"},{"board":"721503648"},{"board":"436701285"},{"board":"416057823"},{"board":"462570381"},{"board":"234670185"},{"board":"581206347"},{"board":"156347082"},{"board":"304716825"},{"board":"147320586"},{"board":"635410827"},{"board":"364158720"},{"board":"240186753"},{"board":"013754682"},{"board":"126708354"},{"board":"061458723"},{"board":"348716502"},{"board":"043186527"},{"board":"720186534"},{"board":"326405817"},{"board":"436758021"},{"board":"862157043"},{"board":"128035674"},{"board":"872461503"},{"board":"527613480"},{"board":"157403268"},{"board":"150427863"},{"board":"726158430"},{"board":"042563187"},{"board":"263057814"},{"board":"801426753"},{"board":"104726835"},{"board":"365407218"},{"board":"385460217"},{"board":"027134856"},{"board":"728501436"},{"board":"423760581"},{"board":"243758160"},{"board":"107325486"},{"board":"624135708"},{"board":"182457360"},{"board":"831057462"},{"board":"638405712"},{"board":"108752634"},{"board":"320586417"},{"board":"051462837"},{"board":"126035847"},{"board":"328146075"},{"board":"378406215"},{"board":"405316872"},{"board":"203157648"},{"board":"126873450"},{"board":"281450763"},{"board":"174306582"}],"oni":[{"board":"140268753"},{"board":"750684321"},{"board":"761502834"},{"board":"520768143"},{"board":"158027643"},{"board":"518647023"},{"board":"047586231"},{"board":"763518240"},{"board":"703281546"},{"board":"837640251"},{"board":"675024183"},{"board":"824076531"},{"board":"346852107"},{"board":"683417052"},{"board":"031857246"},{"board":"803174562"},{"board":"608254317"},{"board":"014367852"},{"board":"580471263"},{"board":"438271506"},{"board":"563804127"},{"board":"214837506"},{"board":"385412706"},{"board":"365027148"},{"board":"821375046"},{"board":"673108425"},{"board":"482513670"},{"board":"125764380"},{"board":"618372450"},{"board":"715264038"},{"board":"748561230"},{"board":"258416037"},{"board":"726305481"},{"board":"280615374"},{"board":"825607314"},{"board":"467815032"},{"board":"846057231"},{"board":"410763852"},{"board":"835124607"},{"board":"764351208"},{"board":"387514602"},{"board":"276450381"},{"board":"704132856"},{"board":"815720346"},{"board":"137846025"},{"board":"478213560"},{"board":"536087412"},{"board":"620514783"},{"board":"810356724"},{"board":"487610523"},{"board":"561472380"},{"board":"208463751"},{"board":"204561387"},{"board":"583764021"},{"board":"074863125"},{"board":"672145083"},{"board":"502678134"},{"board":"728143605"},{"board":"612503487"},{"board":"627510384"},{"board":"475608132"},{"board":"261374850"},{"board":"042718653"},{"board":"072651834"},{"board":"740263815"},{"board":"107428635"},{"board":"732015468"},{"board":"560172843"},{"board":"480326571"},{"board":"172483650"},{"board":"312876504"},{"board":"651370482"},{"board":"618753024"},{"board":"563427180"},{"board":"071654832"},{"board":"086547231"},{"board":"835261074"},{"board":"351862740"},{"board":"240653871"},{"board":"472056183"},{"board":"561347820"},{"board":"164538720"},{"board":"312487065"},{"board":"704168325"},{"board":"634582071"},{"board":"378516420"},{"board":"286530417"},{"board":"106852473"},{"board":"568207143"},{"board":"814602735"},{"board":"724850163"},{"board":"137648502"},{"board":"367401582"},{"board":"704635821"},{"board":"043876521"},{"board":"502487136"},{"board":"425683170"},{"board":"624078351"},{"board":"481627350"},{"board":"671205834"}],"kiwami":[{"board":"285304716","limit":43},{"board":"680523174","limit":41},{"board":"562041873","limit":42},{"board":"873250614","limit":40},{"board":"260475138","limit":41},{"board":"071236458","limit":41},{"board":"431706582","limit":41},{"board":"836512470","limit":39},{"board":"407362815","limit":40},{"board":"408312765","limit":42},{"board":"602815743","limit":38},{"board":"078413562","limit":41},{"board":"518263074","limit":41},{"board":"127843065","limit":41},{"board":"750834162","limit":39},{"board":"283451067","limit":41},{"board":"230468157","limit":41},{"board":"234871056","limit":43},{"board":"421087536","limit":40},{"board":"325674180","limit":43},{"board":"247506318","limit":43},{"board":"562031847","limit":42},{"board":"702643815","limit":38},{"board":"014726358","limit":43},{"board":"265348017","limit":41},{"board":"520417386","limit":43},{"board":"027683415","limit":37},{"board":"547216830","limit":41},{"board":"635728104","limit":38},{"board":"205187436","limit":40},{"board":"712435860","limit":41},{"board":"807153642","limit":40},{"board":"625130748","limit":42},{"board":"023874156","limit":41},{"board":"256813704","limit":40},{"board":"120537468","limit":43},{"board":"170253864","limit":43},{"board":"073164258","limit":41},{"board":"620145837","limit":43},{"board":"721683054","limit":43},{"board":"208713645","limit":42},{"board":"106258743","limit":42},{"board":"834251706","limit":42},{"board":"216075438","limit":40},{"board":"813750246","limit":42},{"board":"463820715","limit":38},{"board":"460532718","limit":43},{"board":"287651430","limit":39},{"board":"604213758","limit":42},{"board":"608247315","limit":38},{"board":"158672304","limit":40},{"board":"246038715","limit":42},{"board":"027841653","limit":39},{"board":"623054781","limit":40},{"board":"830754621","limit":43},{"board":"357204186","limit":41},{"board":"482501673","limit":41},{"board":"356807214","limit":39},{"board":"250376148","limit":43},{"board":"512768430","limit":41},{"board":"075418362","limit":41},{"board":"026758143","limit":37},{"board":"085214637","limit":43},{"board":"501682437","limit":40},{"board":"450638712","limit":43},{"board":"163280457","limit":38},{"board":"820716534","limit":41},{"board":"203654781","limit":42},{"board":"571482036","limit":43},{"board":"637185024","limit":37},{"board":"453870216","limit":40},{"board":"280461573","limit":41},{"board":"210436758","limit":43},{"board":"706283415","limit":38},{"board":"237458016","limit":41},{"board":"342658017","limit":43},{"board":"246351780","limit":41},{"board":"230817645","limit":43},{"board":"680451327","limit":43},{"board":"482651703","limit":40},{"board":"430782156","limit":41},{"board":"608752431","limit":38},{"board":"130462785","limit":41},{"board":"518302674","limit":43},{"board":"357814026","limit":39},{"board":"247561083","limit":43},{"board":"042651873","limit":43},{"board":"085134627","limit":41},{"board":"560832147","limit":39},{"board":"618023745","limit":40},{"board":"416537208","limit":42},{"board":"678201453","limit":41},{"board":"263851470","limit":41},{"board":"287051643","limit":40},{"board":"562301847","limit":43},{"board":"045681732","limit":43},{"board":"127653804","limit":40},{"board":"251068437","limit":42},{"board":"027438156","limit":41},{"board":"516203874","limit":41}]};
+let slideDifficulty='normal';
+const slideStates={};
+const slideLabels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+
+function slideFive(reset){
+  const mode=slideDifficulty, size=mode==='easy'?2:3, solved=size===2?'1230':'123456780';
+  const neighbors=i=>[i-size,i+size,...(i%size?[i-1]:[]),...(i%size<size-1?[i+1]:[])].filter(j=>j>=0&&j<size*size);
+  const staged=mode==='oni'||mode==='kiwami',storageKey=`kihamda-slide-${mode}-v2`;
+  function stateFrom(initial,limit,actions){
+    if(typeof initial!=='string'||initial.length!==size*size||[...initial].sort().join('')!==[...solved].sort().join('')||!Array.isArray(actions)||actions.length>10000)return null;
+    if(mode==='hard'||staged){const allowed=slideCandidates[mode].find(p=>p.board===initial);if(!allowed||limit!==(allowed.limit??null))return null}
+    else {
+      if(limit!==null)return null;
+      const a=[...initial].filter(x=>x!=='0').map(Number);let inversions=0;
+      for(let i=0;i<a.length;i++)for(let j=i+1;j<a.length;j++)if(a[i]>a[j])inversions++;
+      if(size===3?inversions%2!==0:(inversions+size-Math.floor(initial.indexOf('0')/size))%2!==1)return null;
+    }
+    const state={initial,tiles:[...initial].map(Number),limit,history:[],actions:[],phase:false};
+    for(const tile of actions){
+      const z=state.tiles.indexOf(0),i=state.tiles.indexOf(tile);
+      if(!Number.isInteger(tile)||tile===0||!neighbors(z).includes(i)||state.limit!==null&&state.actions.length>=state.limit||state.tiles.join('')===solved&&(!staged||state.phase))return null;
+      state.history.push({tiles:[...state.tiles],phase:state.phase});state.actions.push(tile);
+      [state.tiles[z],state.tiles[i]]=[state.tiles[i],state.tiles[z]];
+      if(staged&&!state.phase&&state.tiles.slice(0,3).join('')==='876')state.phase=true;
+    }
+    return state;
+  }
+  function readRaw(){try{return {raw:localStorage.getItem(storageKey),available:true}}catch(_){return {raw:null,available:false}}}
+  function load(){const read=readRaw();try{if(!read.raw)return null;const data=JSON.parse(read.raw);if(data.version!==2)return null;const value=stateFrom(data.initial,data.limit,data.actions);if(value)value.snapshot=read.raw;return value}catch(_){return null}}
+  function persist(){try{const raw=JSON.stringify({version:2,initial:state.initial,limit:state.limit,actions:state.actions});localStorage.setItem(storageKey,raw);state.snapshot=raw;return true}catch(_){record.hidden=false;record.textContent='このブラウザでは途中の記録を保存できないよ';return false}}
+  function fresh(){
+    if(mode==='hard'||mode==='oni'||mode==='kiwami'){
+      const pool=slideCandidates[mode],p=pool[Math.floor(Math.random()*pool.length)];
+      return stateFrom(p.board,p.limit??null,[]);
+    }
+    const tiles=[...solved].map(Number);let empty=tiles.indexOf(0),previous=-1;
+    const count=mode==='easy'?1+Math.floor(Math.random()*3):35;
+    for(let n=0;n<count;n++){const choices=neighbors(empty).filter(i=>i!==previous),next=choices[Math.floor(Math.random()*choices.length)];[tiles[empty],tiles[next]]=[tiles[next],tiles[empty]];previous=empty;empty=next}
+    return stateFrom(tiles.join(''),null,[]);
+  }
+  let conflictOnReset=false;
+  if(reset&&slideStates[mode]){const current=readRaw();conflictOnReset=current.available&&current.raw!==slideStates[mode].snapshot}
+  if(conflictOnReset)slideStates[mode]=load()||fresh();
+  else if(reset)slideStates[mode]=fresh();
+  else if(!slideStates[mode])slideStates[mode]=load()||fresh();
+  let state=slideStates[mode];
+  if(state.snapshot===undefined)state.snapshot=readRaw().raw;
+  if(reset&&!conflictOnReset)persist();
+  function isCurrent(){
+    const current=readRaw();if(!current.available||current.raw===state.snapshot)return true;
+    slideStates[mode]=load()||fresh();if(slideStates[mode].snapshot===undefined)slideStates[mode].snapshot=current.raw;
+    start();status.textContent='別のタブの新しい記録を表示したよ';return false;
+  }
+  category.textContent='パズル';board.classList.add('slide');board.dataset.slideSize=size;board.style.setProperty('--slide-size',size);
+  const modes=document.createElement('div');modes.className='lights-modes slide-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+  for(const [value,label] of Object.entries(slideLabels)){
+    const option=document.createElement('button');option.type='button';option.dataset.difficulty=value;option.textContent=label;option.setAttribute('aria-pressed',String(mode===value));
+    option.addEventListener('click',event=>{if(value===mode)return;slideDifficulty=value;start();if(event.detail===0)document.querySelector(`.slide-modes [data-difficulty="${value}"]`)?.focus()});modes.append(option);
+  }
+  status.before(modes);
+  const undo=document.createElement('button');undo.type='button';undo.className='path-undo slide-undo';undo.textContent='1手もどす';
+  const toolbar=document.createElement('div');toolbar.className='slide-toolbar';status.before(toolbar);toolbar.append(status,undo);
+  cleanup=()=>{modes.remove();toolbar.before(status);toolbar.remove()};
+  const buttons=state.tiles.map((_,i)=>button('',event=>{
+    const empty=state.tiles.indexOf(0), won=isWon();
+    if(won||!neighbors(empty).includes(i)||state.limit!==null&&state.history.length>=state.limit)return;
+    const needsFocus=event?.detail===0&&document.activeElement===buttons[i];
+    if(!isCurrent()){if(needsFocus){const target=board.querySelectorAll(':scope > button')[i];(target&&!target.disabled?target:board.querySelector(':scope > button:not(:disabled)')||restart).focus()}return}
+    state.history.push({tiles:[...state.tiles],phase:state.phase});state.actions.push(state.tiles[i]);
+    [state.tiles[empty],state.tiles[i]]=[state.tiles[i],state.tiles[empty]];
+    if(staged&&!state.phase&&state.tiles.slice(0,3).join('')==='876')state.phase=true;
+    persist();render();if(needsFocus)(isWon()?restart:buttons[empty]).focus();
+  }));
+  function isWon(){return state.tiles.join('')===solved&&(!staged||state.phase)}
+  undo.addEventListener('click',event=>{
+    if(!state.history.length)return;
+    if(!isCurrent()){if(event.detail===0)(document.querySelector('.slide-undo:not(:disabled)')||board.querySelector(':scope > button:not(:disabled)')||restart).focus();return}
+    const previous=state.history.pop();state.actions.pop();state.tiles=previous.tiles;state.phase=previous.phase;persist();render();
+    if(event.detail===0&&undo.disabled)(board.querySelector(':scope > button:not(:disabled)')||restart).focus();
+  });
+  function render(){
+    const empty=state.tiles.indexOf(0),won=isWon(),used=state.history.length;
+    instructions.textContent=mode==='easy'?'数字を空きマスへ動かして、1から3まで並べよう。':staged?(state.phase?'次は1から8まで並べよう。':'まず上の段を8・7・6に並べよう。'):'数字を空きマスへ動かして、1から8まで並べよう。';
+    buttons.forEach((b,i)=>{const v=state.tiles[i],movable=v!==0&&neighbors(empty).includes(i)&&!won&&(state.limit===null||used<state.limit);b.textContent=v||'';b.disabled=v===0;b.className=v===0?'slide-empty':movable?'slide-movable':'';b.setAttribute('aria-label',`${Math.floor(i/size)+1}行${i%size+1}列 ${v||'空き'}${movable?' 動かせる':''}`)});
+    undo.disabled=!state.history.length;
+    status.textContent=won?`クリア！ ${used}手で並べたよ`:state.limit!==null&&used>=state.limit?'手数いっぱい。1手もどしてね':`${used}手${state.limit!==null?` / ${state.limit}手`:''}`;
+  }
+  render();
+  if(conflictOnReset)status.textContent='別のタブの新しい記録を表示したよ';
+}
+
 const params = new URLSearchParams(location.search);
 let circuitDifficulty=['easy','hard','oni','kiwami','legacy'].includes(params.get('difficulty'))?params.get('difficulty'):'normal';
 const circuitVersions={easy:'2',normal:'3',hard:'2',oni:'2',kiwami:'2',legacy:'1'};
@@ -1018,37 +1110,7 @@ const games = {
     }
     render();
   },
-  slide() {
-    category.textContent='パズル';
-    board.classList.add('slide');
-    const solved=[1,2,3,4,5,6,7,8,0];
-    let tiles=[...solved], empty=8, previous=-1, moves=0, won=false;
-    const neighbors=index=>[index-3,index+3,...(index%3?[index-1]:[]),...(index%3<2?[index+1]:[])].filter(i=>i>=0&&i<9);
-    for(let step=0;step<35;step++) {
-      const choices=neighbors(empty).filter(index=>index!==previous);
-      const next=choices[Math.floor(Math.random()*choices.length)];
-      [tiles[empty],tiles[next]]=[tiles[next],tiles[empty]];
-      previous=empty; empty=next;
-    }
-    const buttons=tiles.map((_,index)=>button('',e=>{
-      if(won || !neighbors(empty).includes(index)) return;
-      const needsFocus=e?.detail===0 && document.activeElement===buttons[index], destination=empty;
-      [tiles[empty],tiles[index]]=[tiles[index],tiles[empty]];
-      empty=index; moves++;
-      won=tiles.every((tile,i)=>tile===solved[i]);
-      render();
-      if(needsFocus) (won ? document.querySelector('#restart') : buttons[destination]).focus();
-    }));
-    function render() {
-      buttons.forEach((b,index)=>{
-        const value=tiles[index], movable=value!==0 && neighbors(empty).includes(index) && !won;
-        b.textContent=value || ''; b.disabled=value===0; b.className=value===0?'slide-empty':movable?'slide-movable':'';
-        b.setAttribute('aria-label',`${Math.floor(index/3)+1}行${index%3+1}列 ${value || '空き'}${movable?' 動かせる':''}`);
-      });
-      status.textContent=won?`クリア！ ${moves}手で並べたよ`:`${moves}手`;
-    }
-    render();
-  },
+  slide(reset) { return slideFive(reset); },
   garden(reset) {
     if(gardenDifficulty!=='legacy')return gardenFive(reset);board.dataset.gardenSize=4;board.style.setProperty('--garden-size',4);
     category.textContent='日替わりパズル';
@@ -1113,7 +1175,7 @@ const games = {
 };
 const gridColumns={three:3,mirror:3,swap:3,lights:4,memory:4,order:4,garden:4,path:4,sum:3,slide:3,circuit:3};
 board.addEventListener('keydown',event=>{
-  const columns=id==='path'?Number(board.dataset.pathSize||4):id==='garden'?Number(board.dataset.gardenSize||4):id==='lights'?Number(board.dataset.lightsSize||4):id==='circuit'?Number(board.dataset.circuitSize||3):Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
+  const columns=id==='slide'?Number(board.dataset.slideSize||3):id==='path'?Number(board.dataset.pathSize||4):id==='garden'?Number(board.dataset.gardenSize||4):id==='lights'?Number(board.dataset.lightsSize||4):id==='circuit'?Number(board.dataset.circuitSize||3):Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
   const directions={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
   const direction=Object.hasOwn(directions,event.key) ? directions[event.key] : null;
   if(!columns || !direction)return;

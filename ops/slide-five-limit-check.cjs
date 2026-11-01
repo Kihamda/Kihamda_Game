@@ -1,0 +1,11 @@
+const {chromium}=require('playwright'),assert=require('assert'),http=require('http'),fs=require('fs'),path=require('path');
+const root=path.resolve(process.env.SITE_DIR||'site'),server=http.createServer((req,res)=>{const f=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!f.startsWith(root+path.sep))return res.writeHead(400).end();fs.readFile(f,(e,b)=>{if(e)return res.writeHead(404).end();res.setHeader('Content-Type',f.endsWith('.js')?'text/javascript':f.endsWith('.css')?'text/css':'text/html; charset=utf-8');res.end(b)})});
+(async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});try{
+const page=await browser.newPage();await page.addInitScript(()=>{Math.random=()=>0});await page.goto(`http://127.0.0.1:${server.address().port}/game.html?game=slide`);await page.locator('.slide-modes [data-difficulty=kiwami]').click();
+const cells=page.locator('#board button'),read=async()=>(await cells.allTextContents()).map(x=>x||'0').join('');
+// Move one tile back and forth; this never reaches the checkpoint.
+const initial=await read(),empty=initial.indexOf('0'),tileIndex=await page.locator('#board .slide-movable').first().evaluate(el=>Array.from(el.parentNode.children).indexOf(el));
+await cells.nth(tileIndex).click();const raw=await page.evaluate(()=>JSON.parse(localStorage.getItem('kihamda-slide-kiwami-v2')));assert(raw.limit>1);for(let n=1;n<raw.limit;n++)await cells.nth(n%2?empty:tileIndex).click();
+assert((await page.locator('#status').textContent()).includes('手数いっぱい'));const stuck=await read();await cells.nth(raw.limit%2?empty:tileIndex).click();assert.equal(await read(),stuck);await page.reload();await page.locator('.slide-modes [data-difficulty=kiwami]').click();assert((await page.locator('#status').textContent()).includes('手数いっぱい'));await page.locator('.slide-undo').click();assert(!(await page.locator('#status').textContent()).includes('手数いっぱい'));assert.notEqual(await read(),stuck);
+console.log('Extreme cap: blocks extra moves, survives reload, undo restores play');
+}finally{await browser.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});
