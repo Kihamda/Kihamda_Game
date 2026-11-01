@@ -25,6 +25,7 @@ jobs:
           node ops/daily-storage-check.cjs
           node ops/sort-check.cjs
           node ops/sort-daily-check.cjs
+          node ops/sort-five-generator-check.cjs
       - name: Check deployment and rollback
         run: |
           python3 ops/test_deploy.py
@@ -81,10 +82,15 @@ jobs:
           node ops/circuit-difficulty-check.cjs
           node ops/circuit-rollover-switch-check.cjs
           node ops/sort-browser-check.cjs
+          node ops/sort-keyboard-check.cjs
           node ops/sort-daily-browser-check.cjs
+          node ops/sort-five-browser-check.cjs
+          node ops/sort-five-conflict-check.cjs
+          node ops/sort-five-limit-check.cjs
           python3 ops/build_preview.py
           SITE_DIR=preview node ops/home-filter-check.cjs
           node ops/fixed-browser-check.cjs
           SITE_DIR=preview node ops/circuit-notice-check.cjs
           SITE_DIR=preview node ops/circuit-version-check.cjs
           SITE_DIR=preview node ops/lights-five-browser-check.cjs
+          SITE_DIR=preview node ops/sort-five-browser-check.cjs
