@@ -43,12 +43,13 @@ const server = http.createServer((req,res)=>{
     },puzzle);
     for(const [kind,message] of [['order','数字は1から順番に通ろう。'],['goal','数字とほかのマスをすべて通ってからゴールしよう。'],['visited','通ったマスには戻れないよ。1つ前のマスを押してね。']]){
       assert(fixtures[kind],`Missing ${kind} fixture`);
-      await page.evaluate(({route})=>localStorage.setItem('kihamda-daily-path',JSON.stringify({date:'2026-10-27',route,moves:route.length-1})),fixtures[kind]);
+      await page.evaluate(({route})=>localStorage.setItem('kihamda-daily-path-normal-v2',JSON.stringify({date:'2026-10-27',steps:route.slice(1).map(i=>[i]),moves:route.length-1})),fixtures[kind]);
       if(kind==='visited')await page.setViewportSize({width:320,height:480});
       await page.reload();await cells.nth(fixtures[kind].cell).tap();assert.equal(await page.locator('#status').textContent(),message);
       if(kind==='visited'){
+        await page.locator('#board').evaluate(el=>el.scrollIntoView({block:'center'}));
         const board=await page.locator('#board').boundingBox();
-        assert(board.y+board.height<=480,'Board must fit below the message at 320×480');
+        assert(board.y>=0&&board.y+board.height<=480,'Board must remain reachable at 320×480');
         const sizes=await cells.evaluateAll(items=>items.map(item=>{const rect=item.getBoundingClientRect();return [rect.width,rect.height]}));
         assert(sizes.every(([width,height])=>width>=44&&height>=44),'Touch targets must be at least 44px');
         await page.setViewportSize({width:320,height:568});
@@ -62,7 +63,7 @@ const server = http.createServer((req,res)=>{
       {route:[puzzle.solution[1]],moves:0}
     ];
     for(const saved of invalidSaves){
-      await page.evaluate(saved=>localStorage.setItem('kihamda-daily-path',JSON.stringify({date:'2026-10-27',...saved})),saved);
+      await page.evaluate(({saved,start,goal})=>localStorage.setItem('kihamda-daily-path-normal-v2',JSON.stringify({date:'2026-10-27',steps:saved.route[0]===start?saved.route.slice(1).map(i=>[i]):[[goal]],moves:saved.moves})),{saved,start:puzzle.start,goal:puzzle.goal});
       await page.reload();assert.equal(await page.locator('#status').textContent(),'1 / 16マス');
     }
     await page.locator('#restart').tap();
@@ -81,14 +82,21 @@ const server = http.createServer((req,res)=>{
     await page.setViewportSize({width:320,height:480});
     for(const id of ['lights','memory','order','dodge','sum','slide','garden','path']){
       await page.goto(`http://127.0.0.1:${server.address().port}/game.html?game=${id}`);
+      if(id==='garden'||id==='path') await page.locator('#board').evaluate(el=>el.scrollIntoView({block:'center'}));
       const board=await page.locator('#board').boundingBox();
-      assert(board.y+board.height<=480,`${id} board must fit at 320×480`);
+      assert(board.y>=0&&board.y+board.height<=480,`${id} board must be visible at 320×480`);
       const sizes=await page.locator('#board button').evaluateAll(items=>items.map(item=>{const rect=item.getBoundingClientRect();return [rect.width,rect.height]}));
       assert(sizes.every(([width,height])=>width>=44&&height>=44),`${id} targets must be at least 44px`);
       if(id==='dodge'){
         const controls=await page.locator('#controls').boundingBox();
         assert(controls.y+controls.height<=480,'Dodge controls must fit at 320×480');
       }
+    }
+    for(const height of [480,501,568]){
+      await page.setViewportSize({width:320,height});await page.clock.setFixedTime(new Date('2026-10-27T03:00:00Z'));await page.goto(`http://127.0.0.1:${server.address().port}/game.html?game=path`);await page.locator('#restart').tap();
+      await page.locator('#board').evaluate(el=>el.scrollIntoView({block:'center'}));const rect=await page.locator('#board').boundingBox();assert(rect.y>=0&&rect.y+rect.height<=height,`path not reachable at 320x${height}`);
+      const sizes=await cells.evaluateAll(items=>items.map(el=>{const r=el.getBoundingClientRect();return [r.width,r.height]}));
+      assert(sizes.every(([w,h])=>w>=44&&h>=44));await cells.nth(puzzle.solution[1]).tap();assert((await page.locator('#status').textContent()).includes('2 / 16'));
     }
     assert.deepEqual(errors,[]);await context.close();
     console.log('Daily path: touch, keyboard, invalid move, undo, save, solve, copy, restart and date change passed');

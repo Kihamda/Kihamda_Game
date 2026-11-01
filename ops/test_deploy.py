@@ -13,11 +13,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SHA = 'a' * 40
 OLD_HOME = b'previous home'
 OLD_SITEMAP = b'previous sitemap'
+OLD_ADS = b'previous ads'
 
 
 class FakeFTP:
     def __init__(self, *args, **kwargs):
-        self.files = {'index.html': OLD_HOME, 'sitemap.xml': b'previous sitemap'}
+        self.files = {'index.html': OLD_HOME, 'sitemap.xml': b'previous sitemap', 'ads.txt': OLD_ADS}
         self.events = []
 
     def __enter__(self): return self
@@ -78,6 +79,8 @@ class DeployTest(unittest.TestCase):
         self.assertIn(b'/site-info.html', ftp.files['sitemap.xml'])
         self.assertIn(b'href="/site-info.html"', ftp.files['index.html'])
         self.assertIn('site-info.html', ftp.files)
+        self.assertEqual(ftp.files['ads.txt'], (ROOT / 'site' / 'ads.txt').read_bytes())
+        self.assertNotIn(f'kg-releases/{SHA}/ads.txt', ftp.files)
         for name in ('index.html', 'game.html', 'catalog.js', 'game.js', 'style.css', 'about.html'):
             self.assertIn(f'kg-releases/{SHA}/{name}', ftp.files)
             self.assertIn(('store', f'kg-releases/{SHA}/{name}'), ftp.events[:-1])
@@ -89,6 +92,7 @@ class DeployTest(unittest.TestCase):
         ftp = self.exercise(True)
         self.assertEqual(ftp.files['index.html'], OLD_HOME)
         self.assertEqual(ftp.files['sitemap.xml'], OLD_SITEMAP)
+        self.assertEqual(ftp.files['ads.txt'], OLD_ADS)
         self.assertFalse(any(name.startswith('play-') for name in ftp.files))
         self.assertFalse(any('.pending-' in name or '.restore-' in name for name in ftp.files))
 

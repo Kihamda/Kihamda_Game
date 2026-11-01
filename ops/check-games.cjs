@@ -7,8 +7,8 @@ const source = fs.readFileSync(sourcePath, 'utf8');
 const catalog = fs.readFileSync(path.join(__dirname, '..', 'site', 'catalog.js'), 'utf8');
 function run(game) {
   class Element {
-    constructor(){this.children=[];this.events={};this.style={};this.classList={add(){},remove(){}};this.hidden=false;this.disabled=false;this.textContent='';}
-    addEventListener(n,f){this.events[n]=f} removeEventListener(){} setAttribute(){} append(e){this.children.push(e)} after(e){this.afterElement=e} remove(){} replaceChildren(){this.children=[]} replaceWith(){} cloneNode(){return new Element()} click(){if(!this.disabled)this.events.click?.()} getContext(){return {clearRect(){},beginPath(){},arc(){},fill(){},fillText(){}}}
+    constructor(){this.children=[];this.events={};this.style={setProperty(){}};this.dataset={};this.classList={add(){},remove(){}};this.hidden=false;this.disabled=false;this.textContent='';}
+    addEventListener(n,f){this.events[n]=f} removeEventListener(){} setAttribute(){} append(e){this.children.push(e)} before(){} after(e){this.afterElement=e} remove(){} replaceChildren(){this.children=[]} replaceWith(){} cloneNode(){return new Element()} click(){if(!this.disabled)this.events.click?.()} getContext(){return {clearRect(){},beginPath(){},arc(){},fill(){},fillText(){}}}
   }
   const els=Object.fromEntries(['board','status','announcement','title','instructions','category','controls','record','copy-result','copy-feedback','left','right','restart'].map(x=>[x,new Element()]));
   const document={body:Object.assign(new Element(),{dataset:{}}),querySelector:s=>els[s.slice(1)],createElement:()=>new Element(),addEventListener(){},removeEventListener(){},title:''};

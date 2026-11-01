@@ -18,10 +18,18 @@ jobs:
           node ops/check-games.cjs
           node ops/sum-generator-check.cjs
           node ops/path-check.cjs
+          node ops/path-five-generator-check.cjs
           node ops/circuit-check.cjs
+          node ops/circuit-five-generator-check.cjs
+          node ops/lights-five-generator-check.cjs
+          node ops/garden-basic-generator-check.cjs
+          node ops/garden-five-generator-check.cjs
+          node ops/garden-extreme-generator-check.cjs
+          node ops/balance-generator-check.cjs
           node ops/daily-storage-check.cjs
           node ops/sort-check.cjs
           node ops/sort-daily-check.cjs
+          node ops/sort-five-generator-check.cjs
       - name: Check deployment and rollback
         run: |
           python3 ops/test_deploy.py
@@ -38,6 +46,19 @@ jobs:
           node ops/home-filter-check.cjs
           node ops/timing-browser-check.cjs
           node ops/recall-browser-check.cjs
+          node ops/code-browser-check.cjs
+          node ops/mirror-browser-check.cjs
+          node ops/number-browser-check.cjs
+          node ops/three-browser-check.cjs
+          node ops/new-share-check.cjs
+          node ops/series-browser-check.cjs
+          node ops/series-share-check.cjs
+          node ops/shift-browser-check.cjs
+          node ops/swap-browser-check.cjs
+          node ops/swap-daily-check.cjs
+          node ops/balance-browser-check.cjs
+          node ops/balance-daily-check.cjs
+          node ops/balance-storage-check.cjs
           node ops/dodge-browser-check.cjs
           node ops/daily-browser-check.cjs
           node ops/daily-cross-day-check.cjs
@@ -54,8 +75,37 @@ jobs:
           node ops/grid-keyboard-check.cjs
           node ops/sum-browser-check.cjs
           node ops/path-browser-check.cjs
+          node ops/path-five-browser-check.cjs
+          node ops/path-five-storage-check.cjs
+          node ops/path-five-legacy-check.cjs
+          node ops/path-five-corrupt-check.cjs
+          node ops/path-five-version-share-check.cjs
           node ops/circuit-browser-check.cjs
+          node ops/circuit-five-browser-check.cjs
+          node ops/circuit-five-storage-check.cjs
+          node ops/lights-five-browser-check.cjs
+          node ops/lights-five-random-check.cjs
+          node ops/lights-five-storage-check.cjs
+          node ops/garden-five-browser-check.cjs
+          node ops/garden-five-storage-check.cjs
+          node ops/garden-legacy-check.cjs
+          node ops/circuit-notice-check.cjs
+          node ops/circuit-version-check.cjs
+          node ops/circuit-difficulty-check.cjs
+          node ops/circuit-rollover-switch-check.cjs
           node ops/sort-browser-check.cjs
+          node ops/sort-keyboard-check.cjs
           node ops/sort-daily-browser-check.cjs
+          node ops/sort-five-browser-check.cjs
+          node ops/sort-five-conflict-check.cjs
+          node ops/sort-five-limit-check.cjs
           python3 ops/build_preview.py
+          SITE_DIR=preview node ops/home-filter-check.cjs
           node ops/fixed-browser-check.cjs
+          SITE_DIR=preview node ops/path-five-browser-check.cjs
+          SITE_DIR=preview node ops/circuit-notice-check.cjs
+          SITE_DIR=preview node ops/circuit-version-check.cjs
+          SITE_DIR=preview node ops/lights-five-browser-check.cjs
+          SITE_DIR=preview node ops/garden-five-browser-check.cjs
+          SITE_DIR=preview node ops/garden-legacy-check.cjs
+          SITE_DIR=preview node ops/sort-five-browser-check.cjs

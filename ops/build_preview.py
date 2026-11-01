@@ -13,5 +13,6 @@ for name in ('style.css', 'catalog.js', 'game.js', 'about.html'):
 pages = fixed_pages(site, release)
 (preview / 'index.html').write_bytes(fixed_home(site, release, pages))
 (preview / 'site-info.html').write_bytes(fixed_info(site, release))
+shutil.copyfile(site / 'ads.txt', preview / 'ads.txt')
 for name, content in pages.items():
     (preview / name).write_bytes(content)
