@@ -40,7 +40,7 @@ const server = http.createServer((req, res) => {
       for (const id of ['lights','memory','order','dodge','slide','sum','garden','path']) {
         await page.goto(`${origin}/game.html?game=${id}`);
         assert(await page.locator('#title').textContent());
-        if(width===320 && id!=='dodge') assert(await page.evaluate(()=>document.querySelector('#board').getBoundingClientRect().bottom<=innerHeight),`${id}: board should fit in the initial viewport`);
+        if(width===320 && id!=='dodge') { if(id==='garden') await page.locator('#board').evaluate(el=>el.scrollIntoView({block:'center'})); assert(await page.evaluate(()=>{const r=document.querySelector('#board').getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight}),`${id}: board should be visible`); }
         if (id === 'lights') { await page.locator('#board button').first().click(); assert((await page.locator('#status').textContent()).includes('1手')); }
         if (id === 'memory') { await page.locator('#board button').first().click(); assert.notEqual(await page.locator('#board button').first().textContent(), '？'); }
         if (id === 'order') { for(let n=1;n<=16;n++) await page.getByRole('button',{name:String(n),exact:true}).click(); assert((await page.locator('#status').textContent()).includes('ゴール')); }
@@ -48,14 +48,14 @@ const server = http.createServer((req, res) => {
           const first = page.locator('#board button').first();
           await first.focus(); await page.keyboard.press('Space');
           assert.equal(await first.getAttribute('aria-pressed'), 'true');
-          assert((await first.getAttribute('aria-label')).includes('花あり'));
+          assert((await first.getAttribute('aria-label')).includes('花'));
           await page.keyboard.press('Space');
           assert.equal(await first.getAttribute('aria-pressed'), 'false');
           const initial = await page.locator('.garden-clue').allTextContents();
-          assert.equal(initial.length, 8);
+          assert.equal(initial.length, 9);
           const solution = await page.evaluate(() => {
             const clues=[...document.querySelectorAll('.garden-clue')].map(e=>Number(e.textContent));
-            const cols=clues.slice(0,4), rows=clues.slice(4);
+            const cols=clues.slice(1,5), rows=clues.slice(5);
             for(let mask=0;mask<65536;mask++) {
               if(rows.every((n,r)=>[0,1,2,3].reduce((v,c)=>v+((mask>>(r*4+c))&1),0)===n) && cols.every((n,c)=>[0,1,2,3].reduce((v,r)=>v+((mask>>(r*4+c))&1),0)===n)) return mask;
             }

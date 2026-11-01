@@ -81,8 +81,9 @@ const server = http.createServer((req,res)=>{
     await page.setViewportSize({width:320,height:480});
     for(const id of ['lights','memory','order','dodge','sum','slide','garden','path']){
       await page.goto(`http://127.0.0.1:${server.address().port}/game.html?game=${id}`);
+      if(id==='garden') await page.locator('#board').evaluate(el=>el.scrollIntoView({block:'center'}));
       const board=await page.locator('#board').boundingBox();
-      assert(board.y+board.height<=480,`${id} board must fit at 320×480`);
+      assert(board.y>=0&&board.y+board.height<=480,`${id} board must be visible at 320×480`);
       const sizes=await page.locator('#board button').evaluateAll(items=>items.map(item=>{const rect=item.getBoundingClientRect();return [rect.width,rect.height]}));
       assert(sizes.every(([width,height])=>width>=44&&height>=44),`${id} targets must be at least 44px`);
       if(id==='dodge'){

@@ -10,7 +10,7 @@ async function solve(page,game){
       const flips=[...Array(16).keys()].map(i=>{let m=0,x=i%4,y=Math.floor(i/4);for(const [dx,dy] of [[0,0],[1,0],[-1,0],[0,1],[0,-1]]){const a=x+dx,b=y+dy;if(a>=0&&a<4&&b>=0&&b<4)m^=1<<(b*4+a)}return m});
       for(let v=0;v<65536;v++){let m=initial;for(let i=0;i<16;i++)if((v>>i)&1)m^=flips[i];if(!m)return v}
     }else{
-      const clues=[...document.querySelectorAll('.garden-clue')].map(e=>Number(e.textContent)),cols=clues.slice(0,4),rows=clues.slice(4);
+      const clues=[...document.querySelectorAll('.garden-clue')].map(e=>Number(e.textContent)),cols=clues.slice(1,5),rows=clues.slice(5);
       for(let v=0;v<65536;v++)if(rows.every((n,r)=>[0,1,2,3].reduce((a,c)=>a+((v>>(r*4+c))&1),0)===n)&&cols.every((n,c)=>[0,1,2,3].reduce((a,r)=>a+((v>>(r*4+c))&1),0)===n))return v;
     }
     return null;
@@ -30,7 +30,7 @@ async function solve(page,game){
       await page.locator('#copy-result').click();await page.locator('#copy-feedback').waitFor({state:'visible'});assert.equal(await page.locator('#copy-feedback').textContent(),'結果をコピーしたよ');
       const text=await page.evaluate(()=>navigator.clipboard.readText());
       assert.match(text,/2026-10-27 \d+手\r?\nhttps:\/\/game\.kihamda\.net\/play-/);
-      assert(text.endsWith(`play-${game}.html${game==='lights'?'?mode=daily&difficulty=normal&version=2':''}`));
+      assert(text.endsWith(`play-${game}.html${game==='lights'?'?mode=daily&difficulty=normal&version=2':'?difficulty=normal&version=2'}`));
       await page.reload();assert(await page.locator('#copy-result').isVisible());
       await page.locator('#restart').click();assert(await page.locator('#copy-result').isHidden());assert(await page.locator('#copy-feedback').isHidden());
     }
