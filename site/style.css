@@ -234,3 +234,10 @@ header>a,footer a{display:inline-flex;align-items:center;justify-content:center;
 .memory-toolbar .memory-undo{flex:none;margin:0}
 @media(min-width:481px) and (max-height:500px){.grid-mode .memory-modes,.grid-mode .memory-toolbar{grid-column:1}}
 @media(max-width:480px) and (max-height:700px){.grid-mode .board.memory-five{width:min(100%,380px,max(200px,calc(100svh - 300px)))}}
+
+.board.order-five{grid-template-columns:repeat(var(--order-size,4),minmax(44px,1fr))}
+.order-toolbar{display:flex;align-items:center;gap:8px;width:min(100%,380px)}
+.order-toolbar .status{flex:1;min-width:0}
+.order-toolbar .order-hint{flex:none;margin:0}
+@media(min-width:481px) and (max-height:500px){.grid-mode .order-modes,.grid-mode .order-toolbar{grid-column:1}}
+@media(max-width:480px) and (max-height:700px){.grid-mode .board.order-five{width:min(100%,380px,max(200px,calc(100svh - 300px)))}}

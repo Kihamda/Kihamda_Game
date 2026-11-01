@@ -1,3 +1,49 @@
+let orderDifficulty='normal';
+const orderLabels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+function orderSequence(mode){
+  if(mode==='easy')return [1,2,3,4];
+  if(mode==='normal')return Array.from({length:16},(_,i)=>i+1);
+  if(mode==='hard')return Array.from({length:16},(_,i)=>i%2===0?i/2+1:16-Math.floor(i/2));
+  if(mode==='oni')return Array.from({length:16},(_,i)=>i%2===0?i+1:17-i);
+  let n=1;return Array.from({length:16},()=>{const value=n;n=n*3%17;return value});
+}
+function orderFive(){
+  const mode=orderDifficulty,seq=orderSequence(mode),size=mode==='easy'?2:4,nums=shuffle(seq),legacyKey='kihamda-order-best';
+  let index=0,started=null,errors=0,hints=0,hintValue=null,aborted=false,finished=false;
+  category.textContent=mode==='easy'?'数字':'スピード';board.classList.add('order-five');board.dataset.orderSize=size;board.style.setProperty('--order-size',size);
+  const group=document.createElement('div');group.className='lights-modes order-modes';group.setAttribute('role','group');group.setAttribute('aria-label','難易度');
+  for(const [value,label] of Object.entries(orderLabels)){const b=document.createElement('button');b.type='button';b.dataset.difficulty=value;b.textContent=label;b.setAttribute('aria-pressed',String(mode===value));b.addEventListener('click',event=>{if(mode===value)return;const interrupted=index>0&&!finished;orderDifficulty=value;start();if(interrupted){status.textContent='前のゲームを中止したよ';announcement.textContent=status.textContent}if(event.detail===0)document.querySelector(`.order-modes [data-difficulty="${value}"]`)?.focus()});group.append(b)}status.before(group);
+  const hint=document.createElement('button');hint.type='button';hint.className='path-undo order-hint';hint.textContent='ヒント';const toolbar=document.createElement('div');toolbar.className='order-toolbar';status.before(toolbar);toolbar.append(status,hint);
+  const rules={easy:'1から4まで順番に押そう。',normal:'1から16まで順番に押そう。最初のタップで計測開始！',hard:'残った数の小さい方と大きい方を交互に押そう。',oni:'小さい奇数と大きい偶数を交互に押そう。',kiwami:'1から始め、3倍して17以上なら17未満まで17を引こう。'};instructions.textContent=rules[mode];
+  function readBest(key){try{const raw=localStorage.getItem(key);if(raw===null||!raw.trim())return null;const value=Number(raw);return Number.isFinite(value)&&value>=0?value:null}catch(_){return null}}
+  function updateBest(key,seconds){try{const old=readBest(key);if(old===null||seconds<old)localStorage.setItem(key,String(seconds));return old===null?seconds:Math.min(old,seconds)}catch(_){return null}}
+  if(mode==='normal'){const best=readBest(legacyKey);record.hidden=best===null;record.textContent=best===null?'':`自己ベスト ${best.toFixed(2)}秒`}
+  hint.addEventListener('click',()=>{if(finished||aborted)return;hints++;hintValue=seq[index];announcement.textContent=`次は${hintValue}`;render()});
+  const buttons=nums.map(n=>button(n,event=>{
+    if(aborted||finished)return;
+    if(n!==seq[index]){errors++;announcement.textContent='ちがうよ';render();return}
+    const needsFocus=event?.detail===0&&document.activeElement===buttons[nums.indexOf(n)];
+    if(index===0)started=performance.now();index++;hintValue=null;
+    if(index===seq.length){finished=true;hint.disabled=true;if(mode!=='easy'){
+      const seconds=(performance.now()-started)/1000,key=`kihamda-order-${mode}-v2-${errors?'errors':'perfect'}-${hints?'hint':'plain'}`;
+      const categoryBest=updateBest(key,seconds),condition=`${errors?'まちがいあり':'まちがいなし'}・${hints?'ヒントあり':'ヒントなし'}`;
+      if(mode==='normal'&&!hints)updateBest(legacyKey,seconds);
+      const oldBest=mode==='normal'?readBest(legacyKey):null;
+      record.hidden=false;record.textContent=categoryBest===null?'このブラウザでは記録を保存できないよ':`${condition}の自己ベスト ${categoryBest.toFixed(2)}秒${oldBest===null?'':`（ふつうの従来記録 ${oldBest.toFixed(2)}秒）`}`;
+      status.textContent=`ゴール！ ${seconds.toFixed(2)}秒　まちがい ${errors}回　ヒント ${hints}回`;
+    }else status.textContent=`クリア！ まちがい ${errors}回　ヒント ${hints}回`;}
+    else render();
+    if(needsFocus){const i=nums.indexOf(n),remaining=buttons.slice(i+1).concat(buttons.slice(0,i)).find(b=>!b.disabled);(remaining||restart).focus()}
+  }));
+  function render(){
+    buttons.forEach((b,i)=>{const done=seq.slice(0,index).includes(nums[i]);b.disabled=done;b.className=done?'matched':''});hint.disabled=finished||aborted;
+    if(aborted){status.textContent='計測を中止したよ。もう一度を押してね';return}if(finished)return;
+    status.textContent=hintValue!==null?`次は ${hintValue}`:mode==='easy'||mode==='normal'?`次は ${seq[index]}`:`${index} / ${seq.length}　${index?`前は ${seq[index-1]}`:'1からスタート'}`;
+  }
+  const cancel=()=>{if(mode!=='easy'&&document.hidden&&started!==null&&!finished){aborted=true;hintValue=null;render()}};document.addEventListener('visibilitychange',cancel);
+  cleanup=()=>{document.removeEventListener('visibilitychange',cancel);group.remove();toolbar.before(status);toolbar.remove()};render();
+}
+
 let memoryDifficulty='normal';
 const memoryStates={};
 const memoryLabels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
@@ -970,41 +1016,7 @@ const games = {
     function render(){const won=!cells.some(Boolean);cells.forEach((on,i)=>{buttons[i].className=on?'on':'';buttons[i].textContent=on?'✦':'·';buttons[i].setAttribute('aria-disabled',String(won));buttons[i].setAttribute('aria-label',`${Math.floor(i/size)+1}行${i%size+1}列 ${on?'点灯':'消灯'}`)});status.textContent=cells.some(Boolean)?`${moves}手`:`クリア！ ${moves}手で消せたよ`;if(progress&&!cells.some(Boolean))offerCopy(`ひかりのスイッチ ${{easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極',legacy:'以前の問題'}[lightsDifficulty]} ${dailyDate} ${moves}手\nhttps://game.kihamda.net/play-lights.html?mode=daily&difficulty=${lightsDifficulty}&version=${lightsDifficulty==='legacy'?'1':'2'}`)}render();
   },
   memory(reset) { return memoryFive(reset); },
-  order() {
-    category.textContent='スピード';
-    let next=1, start=0, best=null;
-    try {
-      const saved=window.localStorage.getItem('kihamda-order-best');
-      if(saved!==null && saved.trim()!=='' && Number.isFinite(Number(saved)) && Number(saved)>=0) best=Number(saved);
-    } catch (_) {}
-    const showBest=()=>{record.hidden=best===null;record.textContent=best===null?'':`自己ベスト ${best.toFixed(2)}秒`;};
-    showBest();
-    const nums=shuffle([...Array(16)].map((_,i)=>i+1));
-    const buttons=nums.map(n=>{
-      const b=button(n,e=>{
-        if(n!==next)return;
-        const needsFocus=e?.detail===0 && document.activeElement===b;
-        if(next===1)start=performance.now();
-        b.disabled=true;b.className='matched';next++;
-        if(next===17){
-          const seconds=(performance.now()-start)/1000;
-          status.textContent=`ゴール！ ${seconds.toFixed(2)}秒`;
-          if(best===null || seconds<best){
-            best=seconds;
-            try {window.localStorage.setItem('kihamda-order-best', String(best));} catch (_) {}
-            showBest();
-          }
-        } else status.textContent=`次は ${next}`;
-        if(needsFocus){
-          const index=buttons.indexOf(b);
-          const remaining=buttons.slice(index+1).concat(buttons.slice(0,index)).find(item=>!item.disabled);
-          (remaining || document.querySelector('#restart')).focus();
-        }
-      });
-      return b;
-    });
-    status.textContent='次は 1';
-  },
+  order() { return orderFive(); },
   sum(reset) { sumFive(reset); },
   path(reset) { pathFive(reset); },
   circuit(reset) {
@@ -1252,7 +1264,7 @@ const games = {
 };
 const gridColumns={three:3,mirror:3,swap:3,lights:4,memory:4,order:4,garden:4,path:4,sum:3,slide:3,circuit:3};
 board.addEventListener('keydown',event=>{
-  const columns=id==='memory'?Number(board.dataset.memorySize||4):id==='slide'?Number(board.dataset.slideSize||3):id==='path'?Number(board.dataset.pathSize||4):id==='garden'?Number(board.dataset.gardenSize||4):id==='lights'?Number(board.dataset.lightsSize||4):id==='circuit'?Number(board.dataset.circuitSize||3):Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
+  const columns=id==='order'?Number(board.dataset.orderSize||4):id==='memory'?Number(board.dataset.memorySize||4):id==='slide'?Number(board.dataset.slideSize||3):id==='path'?Number(board.dataset.pathSize||4):id==='garden'?Number(board.dataset.gardenSize||4):id==='lights'?Number(board.dataset.lightsSize||4):id==='circuit'?Number(board.dataset.circuitSize||3):Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
   const directions={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
   const direction=Object.hasOwn(directions,event.key) ? directions[event.key] : null;
   if(!columns || !direction)return;

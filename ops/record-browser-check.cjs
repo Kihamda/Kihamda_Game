@@ -21,12 +21,12 @@ const server = http.createServer((req,res)=>{
     await page.keyboard.press('Space');
     assert(await page.evaluate(()=>document.activeElement.tagName==='BUTTON' && !document.activeElement.disabled));
     await page.locator('#restart').click();
-    await finish(); assert.equal(await page.locator('#record').textContent(),'自己ベスト 1.00秒');
+    await finish(); assert((await page.locator('#record').textContent()).includes('従来記録 1.00秒'));
     assert(await page.locator('#restart').evaluate(el=>el===document.activeElement));
     await page.locator('#restart').click(); await page.evaluate(()=>window.testStep=2000); await finish();
-    assert.equal(await page.locator('#record').textContent(),'自己ベスト 1.00秒');
+    assert((await page.locator('#record').textContent()).includes('従来記録 1.00秒'));
     await page.locator('#restart').click(); await page.evaluate(()=>window.testStep=500); await finish();
-    assert.equal(await page.locator('#record').textContent(),'自己ベスト 0.50秒');
+    assert((await page.locator('#record').textContent()).includes('従来記録 0.50秒'));
     await page.reload(); assert.equal(await page.locator('#record').textContent(),'自己ベスト 0.50秒');
     await page.goto(`${origin}/game.html?game=lights`); assert(await page.locator('#record').isHidden());
     await context.close();
