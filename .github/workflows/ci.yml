@@ -17,6 +17,9 @@ jobs:
           node --check site/game.js
           node ops/check-games.cjs
           node ops/sum-generator-check.cjs
+          node ops/sum-five-independent-check.cjs
+          node ops/sum-extreme-independent-check.cjs
+          node ops/sum-actual-generator-check.cjs
           node ops/path-check.cjs
           node ops/path-five-generator-check.cjs
           node ops/circuit-check.cjs
@@ -74,6 +77,11 @@ jobs:
           node ops/nav-browser-check.cjs
           node ops/grid-keyboard-check.cjs
           node ops/sum-browser-check.cjs
+          node ops/sum-site-prototype-check.cjs
+          node ops/sum-site-storage-check.cjs
+          node ops/sum-site-ux-check.cjs
+          node ops/sum-site-corrupt-check.cjs
+          node ops/sum-site-share-rollover-check.cjs
           node ops/path-browser-check.cjs
           node ops/path-five-browser-check.cjs
           node ops/path-five-storage-check.cjs
@@ -102,6 +110,7 @@ jobs:
           python3 ops/build_preview.py
           SITE_DIR=preview node ops/home-filter-check.cjs
           node ops/fixed-browser-check.cjs
+          SITE_DIR=preview node ops/sum-site-share-rollover-check.cjs
           SITE_DIR=preview node ops/path-five-browser-check.cjs
           SITE_DIR=preview node ops/circuit-notice-check.cjs
           SITE_DIR=preview node ops/circuit-version-check.cjs
