@@ -40,7 +40,7 @@ const server = http.createServer((req, res) => {
       for (const id of ['lights','memory','order','dodge','slide','sum','garden','path']) {
         await page.goto(`${origin}/game.html?game=${id}`);
         assert(await page.locator('#title').textContent());
-        if(width===320 && id!=='dodge') { if(id==='garden') await page.locator('#board').evaluate(el=>el.scrollIntoView({block:'center'})); assert(await page.evaluate(()=>{const r=document.querySelector('#board').getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight}),`${id}: board should be visible`); }
+        if(width===320 && id!=='dodge') { if(id==='garden'||id==='path') await page.locator('#board').evaluate(el=>el.scrollIntoView({block:'center'})); assert(await page.evaluate(()=>{const r=document.querySelector('#board').getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight}),`${id}: board should be visible`); }
         if (id === 'lights') { await page.locator('#board button').first().click(); assert((await page.locator('#status').textContent()).includes('1手')); }
         if (id === 'memory') { await page.locator('#board button').first().click(); assert.notEqual(await page.locator('#board button').first().textContent(), '？'); }
         if (id === 'order') { for(let n=1;n<=16;n++) await page.getByRole('button',{name:String(n),exact:true}).click(); assert((await page.locator('#status').textContent()).includes('ゴール')); }
