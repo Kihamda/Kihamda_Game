@@ -17,6 +17,9 @@ jobs:
           node --check site/game.js
           node ops/check-games.cjs
           node ops/sum-generator-check.cjs
+          node ops/sum-five-independent-check.cjs
+          node ops/sum-extreme-independent-check.cjs
+          node ops/sum-actual-generator-check.cjs
           node ops/path-check.cjs
           node ops/path-five-generator-check.cjs
           node ops/circuit-check.cjs
@@ -30,6 +33,12 @@ jobs:
           node ops/sort-check.cjs
           node ops/sort-daily-check.cjs
           node ops/sort-five-generator-check.cjs
+          node ops/slide-candidates-check.cjs
+          node ops/slide-milestone-quality.cjs
+          node ops/slide-examples-check.cjs
+          node ops/memory-examples-check.cjs
+          node ops/memory-alternating-analysis.cjs
+          node ops/order-independent-check.cjs
       - name: Check deployment and rollback
         run: |
           python3 ops/test_deploy.py
@@ -45,8 +54,14 @@ jobs:
           node ops/browser-check.cjs
           node ops/home-filter-check.cjs
           node ops/timing-browser-check.cjs
+          node ops/timing-five-candidates-check.cjs
+          node ops/timing-five-browser-check.cjs
           node ops/recall-browser-check.cjs
+          node ops/recall-five-candidates-check.cjs
+          node ops/recall-five-browser-check.cjs
           node ops/code-browser-check.cjs
+          node ops/code-five-browser-check.cjs
+          node ops/code-five-storage-check.cjs
           node ops/mirror-browser-check.cjs
           node ops/number-browser-check.cjs
           node ops/three-browser-check.cjs
@@ -60,6 +75,14 @@ jobs:
           node ops/balance-daily-check.cjs
           node ops/balance-storage-check.cjs
           node ops/dodge-browser-check.cjs
+          node ops/dodge-five-general-check.cjs
+          node ops/dodge-five-oni-check.cjs
+          node ops/dodge-five-extreme-check.cjs
+          node ops/dodge-five-dialog-check.cjs
+          node ops/dodge-five-layout-check.cjs
+          node ops/dodge-five-record-check.cjs
+          node ops/dodge-five-storage-check.cjs
+          node ops/dodge-five-visibility-check.cjs
           node ops/daily-browser-check.cjs
           node ops/daily-cross-day-check.cjs
           node ops/daily-same-day-check.cjs
@@ -68,12 +91,25 @@ jobs:
           node ops/daily-storage-error-check.cjs
           node ops/daily-rollover-check.cjs
           node ops/slide-browser-check.cjs
+          node ops/slide-five-ui-check.cjs
+          node ops/slide-five-storage-check.cjs
+          node ops/slide-five-conflict-check.cjs
+          node ops/slide-five-limit-check.cjs
+          node ops/memory-five-ui-check.cjs
+          node ops/memory-five-storage-check.cjs
+          node ops/memory-dead-end-check.cjs
+          node ops/order-five-ui-check.cjs
           node ops/record-browser-check.cjs
           node ops/share-browser-check.cjs
           node ops/layout-browser-check.cjs
           node ops/nav-browser-check.cjs
           node ops/grid-keyboard-check.cjs
           node ops/sum-browser-check.cjs
+          node ops/sum-site-prototype-check.cjs
+          node ops/sum-site-storage-check.cjs
+          node ops/sum-site-ux-check.cjs
+          node ops/sum-site-corrupt-check.cjs
+          node ops/sum-site-share-rollover-check.cjs
           node ops/path-browser-check.cjs
           node ops/path-five-browser-check.cjs
           node ops/path-five-storage-check.cjs
@@ -102,6 +138,14 @@ jobs:
           python3 ops/build_preview.py
           SITE_DIR=preview node ops/home-filter-check.cjs
           node ops/fixed-browser-check.cjs
+          SITE_DIR=preview node ops/timing-five-browser-check.cjs
+          SITE_DIR=preview node ops/recall-five-browser-check.cjs
+          SITE_DIR=preview node ops/code-five-browser-check.cjs
+          SITE_DIR=preview node ops/slide-five-ui-check.cjs
+          SITE_DIR=preview node ops/memory-five-ui-check.cjs
+          SITE_DIR=preview node ops/order-five-ui-check.cjs
+          SITE_DIR=preview node ops/dodge-five-dialog-check.cjs
+          SITE_DIR=preview node ops/sum-site-share-rollover-check.cjs
           SITE_DIR=preview node ops/path-five-browser-check.cjs
           SITE_DIR=preview node ops/circuit-notice-check.cjs
           SITE_DIR=preview node ops/circuit-version-check.cjs

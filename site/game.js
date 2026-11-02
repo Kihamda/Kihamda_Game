@@ -1,3 +1,350 @@
+// Sequential tab conflict detection. It does not make simultaneous writes atomic.
+function createSession(store,key,validate){
+ let snapshot=null,available=false;
+ function read(){try{const raw=store.getItem(key);return {raw,value:raw===null?null:JSON.parse(raw)}}catch(_){return null}}
+ function load(){const state=read();if(!state||state.value!==null&&!validate(state.value)){available=false;return {ok:false}}snapshot=state.raw;available=true;return {ok:true,value:state.value}}
+ function save(value){if(!available||!validate(value))return {ok:false,reason:'unavailable'};const state=read();if(!state||state.value!==null&&!validate(state.value)){available=false;return {ok:false,reason:'unavailable'}}if(state.raw!==snapshot){available=false;return {ok:false,reason:'conflict'}}try{const raw=JSON.stringify(value);store.setItem(key,raw);snapshot=raw;return {ok:true}}catch(_){available=false;return {ok:false,reason:'unavailable'}}}
+ function clear(){if(!available)return {ok:false,reason:'unavailable'};const state=read();if(!state||state.value!==null&&!validate(state.value)){available=false;return {ok:false,reason:'unavailable'}}if(state.raw!==snapshot){available=false;return {ok:false,reason:'conflict'}}try{store.removeItem(key);snapshot=null;return {ok:true}}catch(_){available=false;return {ok:false,reason:'unavailable'}}}
+ return {load,save,clear};
+}
+function makeValidator(mode,{alphabet,length,repeats,limit}){
+ const validCode=code=>Array.isArray(code)&&code.length===length&&code.every(n=>Number.isInteger(n)&&n>=0&&n<alphabet)&&(repeats||new Set(code).size===length);
+ return s=>!!s&&s.version===2&&s.mode===mode&&validCode(s.answer)&&Array.isArray(s.attempts)&&s.attempts.length<=limit&&s.attempts.every((guess,i)=>validCode(guess)&&(i===s.attempts.length-1||guess.some((value,j)=>value!==s.answer[j])));
+}
+
+
+// One storage value holds progress and score so finishing cannot update only one.
+
+function validEnvelope(value,mode,config){
+ if(!value||value.version!==3||value.mode!==mode||!Number.isSafeInteger(value.games)||!Number.isSafeInteger(value.wins)||value.games<0||value.wins<0||value.wins>value.games)return false;
+ if(!(value.best===null||Number.isSafeInteger(value.best)&&value.best>0&&value.best<=config.limit))return false;
+ if((value.wins===0)!==(value.best===null))return false;
+ if(value.session===null)return true;
+ const session=value.session,validSession=makeValidator(mode,config);
+ if(!validSession({...session,version:2,mode}))return false;
+ const solved=session.attempts.some(guess=>guess.every((n,i)=>n===session.answer[i]));
+ const done=solved||session.attempts.length===config.limit;
+ return session.scored===done&&(!done||value.games>0)&&(!solved||value.wins>0&&value.best<=session.attempts.length);
+}
+function submit(value,guess,mode,config){
+ if(!validEnvelope(value,mode,config)||!value.session||value.session.scored)throw Error('invalid session');
+ const next=JSON.parse(JSON.stringify(value));next.session.attempts.push(guess);
+ const validSession=makeValidator(mode,config);if(!validSession({...next.session,version:2,mode}))throw Error('invalid guess');
+ const won=guess.every((n,i)=>n===next.session.answer[i]),done=won||next.session.attempts.length===config.limit;
+ if(done){next.session.scored=true;next.games++;if(won){next.wins++;next.best=next.best===null?next.session.attempts.length:Math.min(next.best,next.session.attempts.length)}}
+ if(!validEnvelope(next,mode,config))throw Error('invalid transition');return next;
+}
+
+
+
+
+function gameAdapter(store,mode,config,answerFactory){
+ const persistence=createSession(store,`kihamda-code-v3-${mode}`,value=>validEnvelope(value,mode,config));
+ let current=null,offline=false;
+ function newSession(){return {answer:answerFactory(),attempts:[],scored:false}}
+ function commit(candidate){
+  if(!validEnvelope(candidate,mode,config))throw Error('invalid state');
+  if(offline){current=candidate;return {ok:true,warning:'unavailable'}}
+  const result=persistence.save(candidate);
+  if(result.ok){current=candidate;return result}
+  if(result.reason==='conflict')return result;
+  offline=true;current=candidate;return {ok:true,warning:'unavailable'};
+ }
+ function load(){
+  const result=persistence.load();offline=!result.ok;
+  if(result.ok&&result.value){current=result.value;if(current.session===null){const saved=commit({...current,session:newSession()});return {...saved,value:current}}return {ok:true,value:current}}
+  const candidate={version:3,mode,games:0,wins:0,best:null,session:newSession()};
+  if(offline){current=candidate;return {ok:true,value:current,warning:'unavailable'}}
+  const saved=commit(candidate);return {...saved,value:current};
+ }
+ function play(guess){const next=submit(current,guess,mode,config);return commit(next)}
+ function restart(){if(!current)throw Error('not loaded');return commit({...current,session:newSession()})}
+ function view(){return JSON.parse(JSON.stringify(current))}
+ return {load,play,restart,view};
+}
+
+
+let codeDifficulty='normal',codeRestartGuard=null;
+let recallDifficulty='normal';
+function recallAnswer(mode,sequence){
+ if(mode==='easy'||mode==='normal')return [...sequence].reverse();
+ if(mode==='hard')return [...sequence].reverse().map(value=>(value+1)%4);
+ if(mode==='oni')return sequence.filter((_,i)=>i%2===1).reverse().concat(sequence.filter((_,i)=>i%2===0).reverse());
+ if(mode==='kiwami')return [...sequence].reverse().filter((value,i,reversed)=>reversed.indexOf(value)===i).map(value=>(value+1)%4);
+ throw Error('unknown mode');
+}
+
+
+function timingCreateSession(mode,clues){
+ let started=null,intervals=[],result=null;
+ return {
+  start(now){if(started!==null||result?.state==='complete')throw Error('cannot start');if(!Number.isFinite(now))throw Error('invalid clock');started=now;},
+  stop(now){if(started===null||!Number.isFinite(now)||now<started)throw Error('invalid stop');const duration=Math.round(now-started);started=null;const candidate=intervals.concat(duration),next=timingEvaluate(mode,candidate,clues);if(next.state==='invalid-reference'){intervals=[];result=next;return next;}intervals=candidate;result=next;return next;},
+  cancel(){started=null;intervals=[];result=null;},
+  snapshot(){return {running:started!==null,intervals:[...intervals],result};}
+ };
+}
+
+
+let timingDifficulty="normal";
+let timingChallenges=null;
+function timingChallengePools(){
+  if(timingChallenges)return timingChallenges;
+  const oni=[],kiwami=[];
+  for(let n=0;n<81;n++){let value=n;const items=Array.from({length:4},()=>{const digit=value%3;value=Math.floor(value/3);return 1000+1000*digit});if(items[0]!==items[3]||items[1]!==items[2])oni.push(items)}
+  for(let n=0;n<3125;n++){let value=n;const items=Array.from({length:5},()=>{const digit=value%5;value=Math.floor(value/5);return 1000+500*digit});const sums=items.map((v,i)=>v+items[(i+1)%5]);if(new Set(items).size>=3&&new Set(sums).size>=4)kiwami.push(items)}
+  return timingChallenges={oni,kiwami};
+}
+// Time measurements are integer milliseconds. No state is stored here.
+function timingInferIntervals([ab,bc,cd,de,ea]){
+  if(![ab,bc,cd,de,ea].every(Number.isSafeInteger))throw Error('invalid clues');
+  const numerator=ab-bc+cd-de+ea;if(numerator%2)throw Error('intervals are not integral milliseconds');
+  const a=numerator/2,b=ab-a,c=bc-b,d=cd-c,e=de-d,answer=[a,b,c,d,e];
+  if(answer.some(n=>n<=0))throw Error('intervals must be positive');
+  return answer;
+}
+function timingEvaluate(mode,durations,clues){
+  if(!Array.isArray(durations)||durations.some(n=>!Number.isSafeInteger(n)||n<0))throw Error('invalid durations');
+  let targets;
+  if(mode==='easy')targets=[3000];
+  else if(mode==='normal')targets=[5000];
+  else if(mode==='hard'){
+    if(!durations.length)return {state:'waiting',targets:[],differences:[]};
+    const base=durations[0];if(base<1000||base>2000)return {state:'invalid-reference',targets:[],differences:[]};
+    targets=[base,base*2,base*3];
+  }else if(mode==='oni')targets=clues.slice().reverse();
+  else if(mode==='kiwami')targets=timingInferIntervals(clues);
+  else throw Error('unknown mode');
+  if(durations.length>targets.length)throw Error('too many intervals');
+  const differences=durations.map((value,i)=>Math.abs(value-targets[i]));
+  const scored=mode==='hard'?differences.slice(1):differences;
+  return {state:durations.length===targets.length?'complete':'waiting',targets,differences,totalError:scored.reduce((a,b)=>a+b,0)};
+}
+
+
+let dodgeDifficulty='normal';
+let orderDifficulty='normal';
+const orderLabels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+function orderSequence(mode){
+  if(mode==='easy')return [1,2,3,4];
+  if(mode==='normal')return Array.from({length:16},(_,i)=>i+1);
+  if(mode==='hard')return Array.from({length:16},(_,i)=>i%2===0?i/2+1:16-Math.floor(i/2));
+  if(mode==='oni')return Array.from({length:16},(_,i)=>i%2===0?i+1:17-i);
+  let n=1;return Array.from({length:16},()=>{const value=n;n=n*3%17;return value});
+}
+function orderFive(){
+  const mode=orderDifficulty,seq=orderSequence(mode),size=mode==='easy'?2:4,nums=shuffle(seq),legacyKey='kihamda-order-best';
+  let index=0,started=null,errors=0,hints=0,hintValue=null,aborted=false,finished=false;
+  category.textContent=mode==='easy'?'数字':'スピード';board.classList.add('order-five');board.dataset.orderSize=size;board.style.setProperty('--order-size',size);
+  const group=document.createElement('div');group.className='lights-modes order-modes';group.setAttribute('role','group');group.setAttribute('aria-label','難易度');
+  for(const [value,label] of Object.entries(orderLabels)){const b=document.createElement('button');b.type='button';b.dataset.difficulty=value;b.textContent=label;b.setAttribute('aria-pressed',String(mode===value));b.addEventListener('click',event=>{if(mode===value)return;const interrupted=index>0&&!finished;orderDifficulty=value;start();if(interrupted){status.textContent='前のゲームを中止したよ';announcement.textContent=status.textContent}if(event.detail===0)document.querySelector(`.order-modes [data-difficulty="${value}"]`)?.focus()});group.append(b)}status.before(group);
+  const hint=document.createElement('button');hint.type='button';hint.className='path-undo order-hint';hint.textContent='ヒント';const toolbar=document.createElement('div');toolbar.className='order-toolbar';status.before(toolbar);toolbar.append(status,hint);
+  const rules={easy:'1から4まで順番に押そう。',normal:'1から16まで順番に押そう。最初のタップで計測開始！',hard:'残った数の小さい方と大きい方を交互に押そう。',oni:'小さい奇数と大きい偶数を交互に押そう。',kiwami:'1から始め、3倍して17以上なら17未満まで17を引こう。'};instructions.textContent=rules[mode];
+  function readBest(key){try{const raw=localStorage.getItem(key);if(raw===null||!raw.trim())return null;const value=Number(raw);return Number.isFinite(value)&&value>=0?value:null}catch(_){return null}}
+  function updateBest(key,seconds){try{const old=readBest(key);if(old===null||seconds<old)localStorage.setItem(key,String(seconds));return old===null?seconds:Math.min(old,seconds)}catch(_){return null}}
+  if(mode==='normal'){const best=readBest(legacyKey);record.hidden=best===null;record.textContent=best===null?'':`自己ベスト ${best.toFixed(2)}秒`}
+  hint.addEventListener('click',()=>{if(finished||aborted)return;hints++;hintValue=seq[index];announcement.textContent=`次は${hintValue}`;render()});
+  const buttons=nums.map(n=>button(n,event=>{
+    if(aborted||finished)return;
+    if(n!==seq[index]){errors++;announcement.textContent='ちがうよ';render();return}
+    const needsFocus=event?.detail===0&&document.activeElement===buttons[nums.indexOf(n)];
+    if(index===0)started=performance.now();index++;hintValue=null;
+    if(index===seq.length){finished=true;hint.disabled=true;if(mode!=='easy'){
+      const seconds=(performance.now()-started)/1000,key=`kihamda-order-${mode}-v2-${errors?'errors':'perfect'}-${hints?'hint':'plain'}`;
+      const categoryBest=updateBest(key,seconds),condition=`${errors?'まちがいあり':'まちがいなし'}・${hints?'ヒントあり':'ヒントなし'}`;
+      if(mode==='normal'&&!hints)updateBest(legacyKey,seconds);
+      const oldBest=mode==='normal'?readBest(legacyKey):null;
+      record.hidden=false;record.textContent=categoryBest===null?'このブラウザでは記録を保存できないよ':`${condition}の自己ベスト ${categoryBest.toFixed(2)}秒${oldBest===null?'':`（ふつうの従来記録 ${oldBest.toFixed(2)}秒）`}`;
+      status.textContent=`ゴール！ ${seconds.toFixed(2)}秒　まちがい ${errors}回　ヒント ${hints}回`;
+    }else status.textContent=`クリア！ まちがい ${errors}回　ヒント ${hints}回`;}
+    else render();
+    if(needsFocus){const i=nums.indexOf(n),remaining=buttons.slice(i+1).concat(buttons.slice(0,i)).find(b=>!b.disabled);(remaining||restart).focus()}
+  }));
+  function render(){
+    buttons.forEach((b,i)=>{const done=seq.slice(0,index).includes(nums[i]);b.disabled=done;b.className=done?'matched':''});hint.disabled=finished||aborted;
+    if(aborted){status.textContent='計測を中止したよ。もう一度を押してね';return}if(finished)return;
+    status.textContent=hintValue!==null?`次は ${hintValue}`:mode==='easy'||mode==='normal'?`次は ${seq[index]}`:`${index} / ${seq.length}　${index?`前は ${seq[index-1]}`:'1からスタート'}`;
+  }
+  const cancel=()=>{if(mode!=='easy'&&document.hidden&&started!==null&&!finished){aborted=true;hintValue=null;render()}};document.addEventListener('visibilitychange',cancel);
+  cleanup=()=>{document.removeEventListener('visibilitychange',cancel);group.remove();toolbar.before(status);toolbar.remove()};render();
+}
+
+let memoryDifficulty='normal';
+const memoryStates={};
+const memoryLabels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+const memoryShapes=['●','▲','■','★'],memoryShapeNames=['まる','さんかく','しかく','ほし'];
+const memorySymbolNames={'●':'まる','◆':'ひし形','▲':'さんかく','★':'ほし','♥':'ハート','☀':'たいよう','✿':'はな','■':'しかく'};
+function memoryFive(reset){
+  const mode=memoryDifficulty,size=mode==='easy'?2:4;
+  const storageKey=`kihamda-memory-${mode}-v2`;
+  function pairMatches(a,b,round){return mode==='easy'||mode==='normal'?a.symbol===b.symbol:mode==='hard'?Math.floor((a.number-1)/2)===Math.floor((b.number-1)/2):mode==='oni'?a.shape===b.shape&&a.number+b.number===5:round%2===0?a.number===b.number:a.shape===b.shape}
+  function stateFrom(cards,history,turns,undos){
+    if(!Array.isArray(cards)||cards.length!==size*size||!Array.isArray(history)||!Number.isSafeInteger(turns)||!Number.isSafeInteger(undos)||turns<0||undos<0||turns<history.length+undos)return null;
+    if(mode==='easy'||mode==='normal'){
+      const types=mode==='easy'?['●','▲']:['●','◆','▲','★','♥','☀','✿','■'];
+      if(cards.some(c=>!c||Object.keys(c).length!==1||!types.includes(c.symbol))||types.some(symbol=>cards.filter(c=>c.symbol===symbol).length!==2))return null;
+    }else if(mode==='hard'){
+      if(cards.some(c=>!c||Object.keys(c).length!==1||!Number.isInteger(c.number)||c.number<1||c.number>16)||new Set(cards.map(c=>c.number)).size!==16)return null;
+    }else if(cards.some(c=>!c||Object.keys(c).length!==2||!Number.isInteger(c.shape)||c.shape<0||c.shape>3||!Number.isInteger(c.number)||c.number<1||c.number>4)||new Set(cards.map(c=>`${c.shape}:${c.number}`)).size!==16)return null;
+    const matched=[];
+    for(const [round,pair] of history.entries()){
+      if(!Array.isArray(pair)||pair.length!==2||pair.some(i=>!Number.isInteger(i)||i<0||i>=cards.length||matched.includes(i))||pair[0]===pair[1]||!pairMatches(cards[pair[0]],cards[pair[1]],round))return null;
+      matched.push(...pair);
+    }
+    return {cards,matched,open:[],history:history.map(pair=>[...pair]),turns,undos,locked:false};
+  }
+  function readRaw(){try{return {raw:localStorage.getItem(storageKey),available:true}}catch(_){return {raw:null,available:false}}}
+  function load(){const current=readRaw();try{if(!current.raw)return null;const data=JSON.parse(current.raw);if(data.version!==2)return null;const restored=stateFrom(data.cards,data.history,data.turns,data.undos);if(restored)restored.snapshot=current.raw;return restored}catch(_){return null}}
+  function persist(){try{const raw=JSON.stringify({version:2,cards:state.cards,history:state.history,turns:state.turns,undos:state.undos});localStorage.setItem(storageKey,raw);state.snapshot=raw;return true}catch(_){record.hidden=false;record.textContent='このブラウザでは途中の記録を保存できないよ';return false}}
+  function fresh(){
+    let cards;
+    if(mode==='easy'||mode==='normal'){
+      const symbols=mode==='easy'?['●','▲']:['●','◆','▲','★','♥','☀','✿','■'];
+      cards=shuffle([...symbols,...symbols]).map(symbol=>({symbol}));
+    }else if(mode==='hard')cards=shuffle(Array.from({length:16},(_,i)=>({number:i+1})));
+    else cards=shuffle(Array.from({length:16},(_,i)=>({shape:Math.floor(i/4),number:i%4+1})));
+    return stateFrom(cards,[],0,0);
+  }
+  let conflictOnReset=false;
+  if(reset&&memoryStates[mode]){const current=readRaw();conflictOnReset=current.available&&current.raw!==memoryStates[mode].snapshot}
+  if(conflictOnReset)memoryStates[mode]=load()||fresh();else if(reset)memoryStates[mode]=fresh();else if(!memoryStates[mode])memoryStates[mode]=load()||fresh();
+  const state=memoryStates[mode];if(state.snapshot===undefined)state.snapshot=readRaw().raw;if(reset&&!conflictOnReset)persist();let timer=0;
+  function isCurrent(){const current=readRaw();if(!current.available||current.raw===state.snapshot)return true;memoryStates[mode]=load()||fresh();if(memoryStates[mode].snapshot===undefined)memoryStates[mode].snapshot=current.raw;start();status.textContent='別のタブの新しい記録を表示したよ';return false}
+  category.textContent='記憶';board.classList.add('memory-five');board.dataset.memorySize=size;board.style.setProperty('--memory-size',size);
+  const group=document.createElement('div');group.className='lights-modes memory-modes';group.setAttribute('role','group');group.setAttribute('aria-label','難易度');
+  for(const [value,label] of Object.entries(memoryLabels)){const b=document.createElement('button');b.type='button';b.dataset.difficulty=value;b.textContent=label;b.setAttribute('aria-pressed',String(value===mode));b.addEventListener('click',event=>{if(value===mode)return;memoryDifficulty=value;start();if(event.detail===0)document.querySelector(`.memory-modes [data-difficulty="${value}"]`)?.focus()});group.append(b)}
+  status.before(group);
+  const undo=document.createElement('button');undo.type='button';undo.className='path-undo memory-undo';undo.textContent='1組もどす';
+  const toolbar=document.createElement('div');toolbar.className='memory-toolbar';status.before(toolbar);toolbar.append(status,undo);
+  cleanup=()=>{clearTimeout(timer);state.open=[];state.locked=false;group.remove();toolbar.before(status);toolbar.remove()};
+  const matchedCount=()=>state.matched.length/2;
+  const currentRule=()=>matchedCount()%2===0?'number':'shape';
+  const cardText=card=>card.symbol??(card.shape===undefined?String(card.number):`${memoryShapes[card.shape]}${card.number}`);
+  const cardName=card=>card.symbol?memorySymbolNames[card.symbol]:(card.shape===undefined?`${card.number}`:`${memoryShapeNames[card.shape]} ${card.number}`);
+  const buttons=state.cards.map((card,i)=>button('？',event=>{
+    if(state.locked||state.matched.includes(i)||state.open.includes(i))return;
+    if(!isCurrent()){if(event?.detail===0)(board.querySelector(':scope > button:not(:disabled)')||restart).focus();return}
+    state.open.push(i);
+    if(state.open.length===2){
+      state.turns++;const [a,b]=state.open;
+      if(pairMatches(state.cards[a],state.cards[b],matchedCount())){
+        const focused=buttons.indexOf(document.activeElement),needsFocus=event?.detail===0&&state.open.includes(focused);
+        state.matched.push(a,b);state.history.push([a,b]);state.open=[];persist();render();
+        if(mode==='kiwami'&&state.matched.length<state.cards.length)announcement.textContent=`次は${currentRule()==='number'?'同じ数字':'同じ形'}をそろえよう`;
+        if(needsFocus){const remaining=buttons.slice(focused+1).concat(buttons.slice(0,focused)).find(x=>!x.disabled);(remaining||restart).focus()}
+      }else{state.locked=true;persist();render();timer=setTimeout(()=>{state.open=[];state.locked=false;render()},700)}
+    }else render();
+  }));
+  undo.addEventListener('click',event=>{
+    if(!state.history.length||state.locked)return;
+    if(!isCurrent()){if(event.detail===0)(document.querySelector('.memory-undo:not(:disabled)')||board.querySelector(':scope > button:not(:disabled)')||restart).focus();return}
+    const pair=state.history.pop();state.matched=state.matched.filter(i=>!pair.includes(i));state.open=[];state.undos++;persist();render();
+    if(mode==='kiwami')announcement.textContent=`組を戻したよ。今は${currentRule()==='number'?'同じ数字':'同じ形'}をそろえよう`;
+    if(event.detail===0&&undo.disabled)(buttons.find(x=>!x.disabled)||restart).focus();
+  });
+  function render(){
+    const won=state.matched.length===state.cards.length;
+    instructions.textContent=mode==='easy'||mode==='normal'?'カードを2枚ずつめくって、同じ絵をそろえよう。':mode==='hard'?'奇数とその次の偶数を組にしよう。':mode==='oni'?'同じ形で、数字の合計が5になる組を作ろう。':`今は${currentRule()==='number'?'同じ数字':'同じ形'}。次は${currentRule()==='number'?'同じ形':'同じ数字'}。`;
+    buttons.forEach((b,i)=>{const card=state.cards[i],matched=state.matched.includes(i),open=state.open.includes(i);b.textContent=matched||open?cardText(card):'？';b.className=matched?'matched':open?'flipped':'';b.disabled=matched;b.setAttribute('aria-label',`${Math.floor(i/size)+1}行${i%size+1}列 ${matched?`${cardName(card)} そろったカード`:open?cardName(card):'伏せたカード'}`)});
+    undo.disabled=!state.history.length||state.locked;
+    status.textContent=won?`クリア！ ${state.turns}回・戻す ${state.undos}回`:`${matchedCount()}組 / ${state.cards.length/2}組${state.undos?`　戻す ${state.undos}回`:''}`;
+  }
+  render();
+  if(conflictOnReset)status.textContent='別のタブの新しい記録を表示したよ';
+}
+
+const slideCandidates={"hard":[{"board":"438706215"},{"board":"146058237"},{"board":"852410736"},{"board":"102346875"},{"board":"024651783"},{"board":"017836452"},{"board":"673140285"},{"board":"024875136"},{"board":"623587140"},{"board":"526401378"},{"board":"216470538"},{"board":"613754208"},{"board":"428615703"},{"board":"852316407"},{"board":"726534018"},{"board":"518432670"},{"board":"710654832"},{"board":"475326801"},{"board":"861435270"},{"board":"316052487"},{"board":"726183405"},{"board":"473856120"},{"board":"132054678"},{"board":"521786403"},{"board":"624380715"},{"board":"253401867"},{"board":"326784510"},{"board":"350417286"},{"board":"840256173"},{"board":"472061583"},{"board":"628435710"},{"board":"704532186"},{"board":"074153268"},{"board":"532470816"},{"board":"804136752"},{"board":"675301482"},{"board":"812754036"},{"board":"014327586"},{"board":"023465178"},{"board":"634210785"},{"board":"105326874"},{"board":"458736210"},{"board":"361052478"},{"board":"520817436"},{"board":"721804563"},{"board":"231475608"},{"board":"056423718"},{"board":"721503648"},{"board":"436701285"},{"board":"416057823"},{"board":"462570381"},{"board":"234670185"},{"board":"581206347"},{"board":"156347082"},{"board":"304716825"},{"board":"147320586"},{"board":"635410827"},{"board":"364158720"},{"board":"240186753"},{"board":"013754682"},{"board":"126708354"},{"board":"061458723"},{"board":"348716502"},{"board":"043186527"},{"board":"720186534"},{"board":"326405817"},{"board":"436758021"},{"board":"862157043"},{"board":"128035674"},{"board":"872461503"},{"board":"527613480"},{"board":"157403268"},{"board":"150427863"},{"board":"726158430"},{"board":"042563187"},{"board":"263057814"},{"board":"801426753"},{"board":"104726835"},{"board":"365407218"},{"board":"385460217"},{"board":"027134856"},{"board":"728501436"},{"board":"423760581"},{"board":"243758160"},{"board":"107325486"},{"board":"624135708"},{"board":"182457360"},{"board":"831057462"},{"board":"638405712"},{"board":"108752634"},{"board":"320586417"},{"board":"051462837"},{"board":"126035847"},{"board":"328146075"},{"board":"378406215"},{"board":"405316872"},{"board":"203157648"},{"board":"126873450"},{"board":"281450763"},{"board":"174306582"}],"oni":[{"board":"140268753"},{"board":"750684321"},{"board":"761502834"},{"board":"520768143"},{"board":"158027643"},{"board":"518647023"},{"board":"047586231"},{"board":"763518240"},{"board":"703281546"},{"board":"837640251"},{"board":"675024183"},{"board":"824076531"},{"board":"346852107"},{"board":"683417052"},{"board":"031857246"},{"board":"803174562"},{"board":"608254317"},{"board":"014367852"},{"board":"580471263"},{"board":"438271506"},{"board":"563804127"},{"board":"214837506"},{"board":"385412706"},{"board":"365027148"},{"board":"821375046"},{"board":"673108425"},{"board":"482513670"},{"board":"125764380"},{"board":"618372450"},{"board":"715264038"},{"board":"748561230"},{"board":"258416037"},{"board":"726305481"},{"board":"280615374"},{"board":"825607314"},{"board":"467815032"},{"board":"846057231"},{"board":"410763852"},{"board":"835124607"},{"board":"764351208"},{"board":"387514602"},{"board":"276450381"},{"board":"704132856"},{"board":"815720346"},{"board":"137846025"},{"board":"478213560"},{"board":"536087412"},{"board":"620514783"},{"board":"810356724"},{"board":"487610523"},{"board":"561472380"},{"board":"208463751"},{"board":"204561387"},{"board":"583764021"},{"board":"074863125"},{"board":"672145083"},{"board":"502678134"},{"board":"728143605"},{"board":"612503487"},{"board":"627510384"},{"board":"475608132"},{"board":"261374850"},{"board":"042718653"},{"board":"072651834"},{"board":"740263815"},{"board":"107428635"},{"board":"732015468"},{"board":"560172843"},{"board":"480326571"},{"board":"172483650"},{"board":"312876504"},{"board":"651370482"},{"board":"618753024"},{"board":"563427180"},{"board":"071654832"},{"board":"086547231"},{"board":"835261074"},{"board":"351862740"},{"board":"240653871"},{"board":"472056183"},{"board":"561347820"},{"board":"164538720"},{"board":"312487065"},{"board":"704168325"},{"board":"634582071"},{"board":"378516420"},{"board":"286530417"},{"board":"106852473"},{"board":"568207143"},{"board":"814602735"},{"board":"724850163"},{"board":"137648502"},{"board":"367401582"},{"board":"704635821"},{"board":"043876521"},{"board":"502487136"},{"board":"425683170"},{"board":"624078351"},{"board":"481627350"},{"board":"671205834"}],"kiwami":[{"board":"285304716","limit":43},{"board":"680523174","limit":41},{"board":"562041873","limit":42},{"board":"873250614","limit":40},{"board":"260475138","limit":41},{"board":"071236458","limit":41},{"board":"431706582","limit":41},{"board":"836512470","limit":39},{"board":"407362815","limit":40},{"board":"408312765","limit":42},{"board":"602815743","limit":38},{"board":"078413562","limit":41},{"board":"518263074","limit":41},{"board":"127843065","limit":41},{"board":"750834162","limit":39},{"board":"283451067","limit":41},{"board":"230468157","limit":41},{"board":"234871056","limit":43},{"board":"421087536","limit":40},{"board":"325674180","limit":43},{"board":"247506318","limit":43},{"board":"562031847","limit":42},{"board":"702643815","limit":38},{"board":"014726358","limit":43},{"board":"265348017","limit":41},{"board":"520417386","limit":43},{"board":"027683415","limit":37},{"board":"547216830","limit":41},{"board":"635728104","limit":38},{"board":"205187436","limit":40},{"board":"712435860","limit":41},{"board":"807153642","limit":40},{"board":"625130748","limit":42},{"board":"023874156","limit":41},{"board":"256813704","limit":40},{"board":"120537468","limit":43},{"board":"170253864","limit":43},{"board":"073164258","limit":41},{"board":"620145837","limit":43},{"board":"721683054","limit":43},{"board":"208713645","limit":42},{"board":"106258743","limit":42},{"board":"834251706","limit":42},{"board":"216075438","limit":40},{"board":"813750246","limit":42},{"board":"463820715","limit":38},{"board":"460532718","limit":43},{"board":"287651430","limit":39},{"board":"604213758","limit":42},{"board":"608247315","limit":38},{"board":"158672304","limit":40},{"board":"246038715","limit":42},{"board":"027841653","limit":39},{"board":"623054781","limit":40},{"board":"830754621","limit":43},{"board":"357204186","limit":41},{"board":"482501673","limit":41},{"board":"356807214","limit":39},{"board":"250376148","limit":43},{"board":"512768430","limit":41},{"board":"075418362","limit":41},{"board":"026758143","limit":37},{"board":"085214637","limit":43},{"board":"501682437","limit":40},{"board":"450638712","limit":43},{"board":"163280457","limit":38},{"board":"820716534","limit":41},{"board":"203654781","limit":42},{"board":"571482036","limit":43},{"board":"637185024","limit":37},{"board":"453870216","limit":40},{"board":"280461573","limit":41},{"board":"210436758","limit":43},{"board":"706283415","limit":38},{"board":"237458016","limit":41},{"board":"342658017","limit":43},{"board":"246351780","limit":41},{"board":"230817645","limit":43},{"board":"680451327","limit":43},{"board":"482651703","limit":40},{"board":"430782156","limit":41},{"board":"608752431","limit":38},{"board":"130462785","limit":41},{"board":"518302674","limit":43},{"board":"357814026","limit":39},{"board":"247561083","limit":43},{"board":"042651873","limit":43},{"board":"085134627","limit":41},{"board":"560832147","limit":39},{"board":"618023745","limit":40},{"board":"416537208","limit":42},{"board":"678201453","limit":41},{"board":"263851470","limit":41},{"board":"287051643","limit":40},{"board":"562301847","limit":43},{"board":"045681732","limit":43},{"board":"127653804","limit":40},{"board":"251068437","limit":42},{"board":"027438156","limit":41},{"board":"516203874","limit":41}]};
+let slideDifficulty='normal';
+const slideStates={};
+const slideLabels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+
+function slideFive(reset){
+  const mode=slideDifficulty, size=mode==='easy'?2:3, solved=size===2?'1230':'123456780';
+  const neighbors=i=>[i-size,i+size,...(i%size?[i-1]:[]),...(i%size<size-1?[i+1]:[])].filter(j=>j>=0&&j<size*size);
+  const staged=mode==='oni'||mode==='kiwami',storageKey=`kihamda-slide-${mode}-v2`;
+  function stateFrom(initial,limit,actions){
+    if(typeof initial!=='string'||initial.length!==size*size||[...initial].sort().join('')!==[...solved].sort().join('')||!Array.isArray(actions)||actions.length>10000)return null;
+    if(mode==='hard'||staged){const allowed=slideCandidates[mode].find(p=>p.board===initial);if(!allowed||limit!==(allowed.limit??null))return null}
+    else {
+      if(limit!==null)return null;
+      const a=[...initial].filter(x=>x!=='0').map(Number);let inversions=0;
+      for(let i=0;i<a.length;i++)for(let j=i+1;j<a.length;j++)if(a[i]>a[j])inversions++;
+      if(size===3?inversions%2!==0:(inversions+size-Math.floor(initial.indexOf('0')/size))%2!==1)return null;
+    }
+    const state={initial,tiles:[...initial].map(Number),limit,history:[],actions:[],phase:false};
+    for(const tile of actions){
+      const z=state.tiles.indexOf(0),i=state.tiles.indexOf(tile);
+      if(!Number.isInteger(tile)||tile===0||!neighbors(z).includes(i)||state.limit!==null&&state.actions.length>=state.limit||state.tiles.join('')===solved&&(!staged||state.phase))return null;
+      state.history.push({tiles:[...state.tiles],phase:state.phase});state.actions.push(tile);
+      [state.tiles[z],state.tiles[i]]=[state.tiles[i],state.tiles[z]];
+      if(staged&&!state.phase&&state.tiles.slice(0,3).join('')==='876')state.phase=true;
+    }
+    return state;
+  }
+  function readRaw(){try{return {raw:localStorage.getItem(storageKey),available:true}}catch(_){return {raw:null,available:false}}}
+  function load(){const read=readRaw();try{if(!read.raw)return null;const data=JSON.parse(read.raw);if(data.version!==2)return null;const value=stateFrom(data.initial,data.limit,data.actions);if(value)value.snapshot=read.raw;return value}catch(_){return null}}
+  function persist(){try{const raw=JSON.stringify({version:2,initial:state.initial,limit:state.limit,actions:state.actions});localStorage.setItem(storageKey,raw);state.snapshot=raw;return true}catch(_){record.hidden=false;record.textContent='このブラウザでは途中の記録を保存できないよ';return false}}
+  function fresh(){
+    if(mode==='hard'||mode==='oni'||mode==='kiwami'){
+      const pool=slideCandidates[mode],p=pool[Math.floor(Math.random()*pool.length)];
+      return stateFrom(p.board,p.limit??null,[]);
+    }
+    const tiles=[...solved].map(Number);let empty=tiles.indexOf(0),previous=-1;
+    const count=mode==='easy'?1+Math.floor(Math.random()*3):35;
+    for(let n=0;n<count;n++){const choices=neighbors(empty).filter(i=>i!==previous),next=choices[Math.floor(Math.random()*choices.length)];[tiles[empty],tiles[next]]=[tiles[next],tiles[empty]];previous=empty;empty=next}
+    return stateFrom(tiles.join(''),null,[]);
+  }
+  let conflictOnReset=false;
+  if(reset&&slideStates[mode]){const current=readRaw();conflictOnReset=current.available&&current.raw!==slideStates[mode].snapshot}
+  if(conflictOnReset)slideStates[mode]=load()||fresh();
+  else if(reset)slideStates[mode]=fresh();
+  else if(!slideStates[mode])slideStates[mode]=load()||fresh();
+  let state=slideStates[mode];
+  if(state.snapshot===undefined)state.snapshot=readRaw().raw;
+  if(reset&&!conflictOnReset)persist();
+  function isCurrent(){
+    const current=readRaw();if(!current.available||current.raw===state.snapshot)return true;
+    slideStates[mode]=load()||fresh();if(slideStates[mode].snapshot===undefined)slideStates[mode].snapshot=current.raw;
+    start();status.textContent='別のタブの新しい記録を表示したよ';return false;
+  }
+  category.textContent='パズル';board.classList.add('slide');board.dataset.slideSize=size;board.style.setProperty('--slide-size',size);
+  const modes=document.createElement('div');modes.className='lights-modes slide-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+  for(const [value,label] of Object.entries(slideLabels)){
+    const option=document.createElement('button');option.type='button';option.dataset.difficulty=value;option.textContent=label;option.setAttribute('aria-pressed',String(mode===value));
+    option.addEventListener('click',event=>{if(value===mode)return;slideDifficulty=value;start();if(event.detail===0)document.querySelector(`.slide-modes [data-difficulty="${value}"]`)?.focus()});modes.append(option);
+  }
+  status.before(modes);
+  const undo=document.createElement('button');undo.type='button';undo.className='path-undo slide-undo';undo.textContent='1手もどす';
+  const toolbar=document.createElement('div');toolbar.className='slide-toolbar';status.before(toolbar);toolbar.append(status,undo);
+  cleanup=()=>{modes.remove();toolbar.before(status);toolbar.remove()};
+  const buttons=state.tiles.map((_,i)=>button('',event=>{
+    const empty=state.tiles.indexOf(0), won=isWon();
+    if(won||!neighbors(empty).includes(i)||state.limit!==null&&state.history.length>=state.limit)return;
+    const needsFocus=event?.detail===0&&document.activeElement===buttons[i];
+    if(!isCurrent()){if(needsFocus){const target=board.querySelectorAll(':scope > button')[i];(target&&!target.disabled?target:board.querySelector(':scope > button:not(:disabled)')||restart).focus()}return}
+    state.history.push({tiles:[...state.tiles],phase:state.phase});state.actions.push(state.tiles[i]);
+    [state.tiles[empty],state.tiles[i]]=[state.tiles[i],state.tiles[empty]];
+    if(staged&&!state.phase&&state.tiles.slice(0,3).join('')==='876')state.phase=true;
+    persist();render();if(needsFocus)(isWon()?restart:buttons[empty]).focus();
+  }));
+  function isWon(){return state.tiles.join('')===solved&&(!staged||state.phase)}
+  undo.addEventListener('click',event=>{
+    if(!state.history.length)return;
+    if(!isCurrent()){if(event.detail===0)(document.querySelector('.slide-undo:not(:disabled)')||board.querySelector(':scope > button:not(:disabled)')||restart).focus();return}
+    const previous=state.history.pop();state.actions.pop();state.tiles=previous.tiles;state.phase=previous.phase;persist();render();
+    if(event.detail===0&&undo.disabled)(board.querySelector(':scope > button:not(:disabled)')||restart).focus();
+  });
+  function render(){
+    const empty=state.tiles.indexOf(0),won=isWon(),used=state.history.length;
+    instructions.textContent=mode==='easy'?'数字を空きマスへ動かして、1から3まで並べよう。':staged?(state.phase?'次は1から8まで並べよう。':'まず上の段を8・7・6に並べよう。'):'数字を空きマスへ動かして、1から8まで並べよう。';
+    buttons.forEach((b,i)=>{const v=state.tiles[i],movable=v!==0&&neighbors(empty).includes(i)&&!won&&(state.limit===null||used<state.limit);b.textContent=v||'';b.disabled=v===0;b.className=v===0?'slide-empty':movable?'slide-movable':'';b.setAttribute('aria-label',`${Math.floor(i/size)+1}行${i%size+1}列 ${v||'空き'}${movable?' 動かせる':''}`)});
+    undo.disabled=!state.history.length;
+    status.textContent=won?`クリア！ ${used}手で並べたよ`:state.limit!==null&&used>=state.limit?'手数いっぱい。1手もどしてね':`${used}手${state.limit!==null?` / ${state.limit}手`:''}`;
+  }
+  render();
+  if(conflictOnReset)status.textContent='別のタブの新しい記録を表示したよ';
+}
+
 const params = new URLSearchParams(location.search);
 let circuitDifficulty=['easy','hard','oni','kiwami','legacy'].includes(params.get('difficulty'))?params.get('difficulty'):'normal';
 const circuitVersions={easy:'2',normal:'3',hard:'2',oni:'2',kiwami:'2',legacy:'1'};
@@ -18,6 +365,9 @@ const title = document.querySelector('#title'), instructions = document.querySel
 const category = document.querySelector('#category'), controls = document.querySelector('#controls'), record = document.querySelector('#record'), copyResult = document.querySelector('#copy-result'), copyFeedback = document.querySelector('#copy-feedback');
 let cleanup = () => {}, runGeneration = 0, currentDailyStorage = null;
 const shuffle = values => { const a = [...values]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+let sumDifficulty=['easy','hard','oni','kiwami'].includes(params.get('difficulty'))?params.get('difficulty'):'normal';
+const sumRequested=params.get('difficulty'),sumVersion=params.get('version'),invalidSumLink=(sumRequested!==null&&!['easy','normal','hard','oni','kiwami'].includes(sumRequested))||(sumVersion!==null&&sumVersion!=='2');
+const sumLabels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'},sumLevels={"easy":[{"values":[1,2,3,6,7,8],"target":6},{"values":[1,3,4,5,6,9],"target":8},{"values":[1,2,4,6,8,9],"target":7},{"values":[1,3,4,6,7,9],"target":8},{"values":[1,3,4,5,7,8],"target":8},{"values":[1,2,4,6,7,8],"target":7},{"values":[2,3,5,6,7,8],"target":10},{"values":[1,3,4,5,6,8],"target":8},{"values":[3,4,5,6,7,8],"target":12},{"values":[1,4,5,6,7,8],"target":10},{"values":[2,4,5,6,8,9],"target":11},{"values":[1,2,6,7,8,9],"target":9},{"values":[2,3,4,5,8,9],"target":9},{"values":[2,3,5,7,8,9],"target":10},{"values":[1,2,3,4,5,9],"target":6},{"values":[1,4,5,6,7,9],"target":10},{"values":[1,2,5,6,7,8],"target":8},{"values":[1,3,4,5,7,9],"target":8},{"values":[3,4,5,6,7,9],"target":12},{"values":[1,2,3,4,5,9],"target":7},{"values":[1,3,4,5,6,7],"target":8},{"values":[1,3,4,5,6,7],"target":9},{"values":[1,2,3,4,7,8],"target":6},{"values":[1,2,4,5,7,9],"target":7},{"values":[2,3,4,5,7,8],"target":9},{"values":[2,3,5,6,7,9],"target":10},{"values":[2,3,4,5,7,8],"target":10},{"values":[2,4,5,6,8,9],"target":12},{"values":[1,2,3,5,6,8],"target":6},{"values":[1,2,4,5,8,9],"target":7},{"values":[1,2,4,5,7,9],"target":8},{"values":[1,2,3,6,7,8],"target":9},{"values":[1,3,5,7,8,9],"target":9},{"values":[1,2,4,5,7,9],"target":10},{"values":[3,4,5,6,8,9],"target":12},{"values":[2,4,6,7,8,9],"target":12},{"values":[1,2,3,4,7,9],"target":6},{"values":[1,3,5,6,7,8],"target":9},{"values":[1,2,6,7,8,9],"target":10},{"values":[1,2,4,5,6,8],"target":7},{"values":[1,3,6,7,8,9],"target":10},{"values":[1,3,4,5,7,8],"target":9},{"values":[2,4,5,6,7,8],"target":11},{"values":[1,3,5,6,8,9],"target":9},{"values":[1,3,4,5,8,9],"target":8},{"values":[2,3,4,5,8,9],"target":10},{"values":[1,2,3,4,5,9],"target":8},{"values":[1,2,3,6,7,8],"target":10},{"values":[1,2,4,5,8,9],"target":8},{"values":[1,3,5,6,7,9],"target":9},{"values":[1,2,3,4,5,8],"target":6},{"values":[1,3,4,6,7,9],"target":10},{"values":[2,3,5,7,8,9],"target":12},{"values":[2,3,4,5,7,9],"target":9},{"values":[2,3,6,7,8,9],"target":11},{"values":[2,3,5,6,7,8],"target":11},{"values":[1,3,4,5,7,8],"target":10},{"values":[1,2,5,7,8,9],"target":8},{"values":[1,2,3,5,6,8],"target":8},{"values":[1,5,6,7,8,9],"target":12},{"values":[1,3,5,7,8,9],"target":11},{"values":[2,3,6,7,8,9],"target":12},{"values":[1,2,4,6,7,9],"target":7},{"values":[1,2,3,4,5,9],"target":9},{"values":[1,3,5,6,8,9],"target":10},{"values":[1,2,4,5,8,9],"target":10},{"values":[1,2,3,4,5,6],"target":6},{"values":[1,2,5,6,8,9],"target":8},{"values":[2,3,5,6,7,9],"target":11},{"values":[1,2,3,6,7,9],"target":6},{"values":[1,2,4,6,8,9],"target":9},{"values":[2,3,4,5,7,8],"target":11},{"values":[1,2,5,6,8,9],"target":9},{"values":[1,2,3,6,7,8],"target":12},{"values":[1,4,5,7,8,9],"target":10},{"values":[1,3,4,5,6,7],"target":10},{"values":[1,2,3,5,6,9],"target":6},{"values":[1,2,3,4,5,9],"target":10},{"values":[1,2,3,4,5,6],"target":7},{"values":[1,2,4,6,7,9],"target":9},{"values":[1,3,6,7,8,9],"target":11},{"values":[2,3,4,5,6,7],"target":9},{"values":[1,2,3,4,5,6],"target":8},{"values":[2,3,5,6,8,9],"target":10},{"values":[1,3,6,7,8,9],"target":12},{"values":[2,4,5,6,7,8],"target":12},{"values":[1,2,5,7,8,9],"target":10},{"values":[1,3,4,5,7,8],"target":11},{"values":[1,2,4,7,8,9],"target":7},{"values":[1,4,5,6,8,9],"target":10},{"values":[1,3,4,6,7,8],"target":8},{"values":[2,3,5,6,7,9],"target":12},{"values":[1,2,4,7,8,9],"target":10},{"values":[3,4,5,7,8,9],"target":12},{"values":[1,2,3,5,6,7],"target":6},{"values":[2,4,5,7,8,9],"target":11},{"values":[1,2,4,7,8,9],"target":11},{"values":[1,2,3,5,7,8],"target":6},{"values":[1,2,5,6,7,8],"target":9},{"values":[1,2,4,5,7,8],"target":7}],"hard":[{"values":[1,2,4,9,12,13,15,16,18],"target":23,"evenSum":22},{"values":[4,5,6,7,8,10,14,19,20],"target":29,"evenSum":10},{"values":[1,2,4,6,13,14,15,17,19],"target":21,"evenSum":20},{"values":[2,4,5,7,9,12,14,15,16],"target":21,"evenSum":6},{"values":[2,3,4,5,6,9,14,16,19],"target":25,"evenSum":6},{"values":[4,5,7,10,11,14,16,19,20],"target":25,"evenSum":20},{"values":[2,4,5,8,10,11,13,16,18],"target":17,"evenSum":6},{"values":[2,7,8,9,10,11,12,13,20],"target":21,"evenSum":14},{"values":[2,5,7,8,13,14,18,19,20],"target":27,"evenSum":20},{"values":[2,4,6,8,11,15,17,18,20],"target":21,"evenSum":6},{"values":[4,5,6,7,12,14,15,16,18],"target":25,"evenSum":10},{"values":[4,5,7,8,9,10,13,17,20],"target":29,"evenSum":24},{"values":[3,4,5,8,11,12,14,18,20],"target":27,"evenSum":24},{"values":[3,4,5,11,12,13,14,15,16],"target":21,"evenSum":18},{"values":[5,6,8,11,12,13,15,16,18],"target":31,"evenSum":26},{"values":[1,6,8,9,11,12,14,16,19],"target":29,"evenSum":28},{"values":[5,7,8,13,14,15,17,18,20],"target":33,"evenSum":28},{"values":[2,5,7,9,13,14,16,18,19],"target":25,"evenSum":20},{"values":[1,2,3,5,7,8,11,12,16],"target":15,"evenSum":14},{"values":[1,2,3,7,8,12,15,16,17],"target":21,"evenSum":20},{"values":[5,8,9,10,12,13,14,15,20],"target":33,"evenSum":28},{"values":[4,5,6,8,10,12,16,17,18],"target":27,"evenSum":10},{"values":[2,7,8,10,14,17,18,19,20],"target":29,"evenSum":10},{"values":[1,2,6,9,10,16,17,18,19],"target":25,"evenSum":24},{"values":[3,4,7,8,13,16,18,19,20],"target":29,"evenSum":26},{"values":[3,4,6,8,9,13,15,16,17],"target":23,"evenSum":20},{"values":[3,6,7,10,13,15,16,18,20],"target":31,"evenSum":28},{"values":[1,2,3,5,6,8,9,15,18],"target":15,"evenSum":14},{"values":[1,2,3,6,7,8,10,15,20],"target":11,"evenSum":10},{"values":[2,4,6,9,10,11,13,14,20],"target":19,"evenSum":6},{"values":[2,3,4,5,6,7,9,14,17],"target":19,"evenSum":16},{"values":[1,2,4,6,8,10,11,15,17],"target":21,"evenSum":6},{"values":[4,6,10,11,13,16,18,19,20],"target":33,"evenSum":14},{"values":[2,5,6,8,9,10,11,14,16],"target":19,"evenSum":8},{"values":[3,8,11,15,16,17,18,19,20],"target":37,"evenSum":34},{"values":[3,5,6,7,9,11,14,18,20],"target":23,"evenSum":20},{"values":[3,4,6,7,9,12,13,16,18],"target":19,"evenSum":16},{"values":[1,4,5,6,8,9,18,19,20],"target":15,"evenSum":14},{"values":[1,4,5,6,9,12,13,17,20],"target":19,"evenSum":18},{"values":[1,2,6,7,10,15,16,17,20],"target":37,"evenSum":36},{"values":[1,2,3,6,8,13,15,16,20],"target":27,"evenSum":26},{"values":[4,5,6,7,8,11,13,16,17],"target":25,"evenSum":20},{"values":[4,5,6,7,9,10,11,16,19],"target":25,"evenSum":20},{"values":[2,4,5,6,10,11,17,18,19],"target":25,"evenSum":6},{"values":[1,6,8,11,12,14,15,16,17],"target":29,"evenSum":28},{"values":[3,4,8,9,10,13,14,16,18],"target":31,"evenSum":28},{"values":[1,3,6,9,13,15,17,18,19],"target":25,"evenSum":24},{"values":[3,4,5,8,10,11,17,19,20],"target":31,"evenSum":28},{"values":[4,5,8,9,15,16,17,18,19],"target":29,"evenSum":12},{"values":[3,5,7,10,11,14,17,19,20],"target":27,"evenSum":24},{"values":[4,5,6,7,11,12,14,15,20],"target":29,"evenSum":24},{"values":[3,7,8,10,11,12,17,19,20],"target":31,"evenSum":28},{"values":[3,4,5,11,12,14,15,16,17],"target":23,"evenSum":20},{"values":[2,4,6,11,13,14,15,16,17],"target":21,"evenSum":6},{"values":[2,3,6,9,12,13,14,16,18],"target":21,"evenSum":8},{"values":[3,5,8,9,11,13,14,17,18],"target":25,"evenSum":22},{"values":[5,6,7,8,13,14,15,16,18],"target":31,"evenSum":26},{"values":[5,6,7,10,12,13,16,17,20],"target":35,"evenSum":30},{"values":[1,4,6,7,10,11,13,18,19],"target":23,"evenSum":22},{"values":[1,4,5,6,8,11,12,16,20],"target":17,"evenSum":16},{"values":[3,7,8,10,12,13,15,16,19],"target":25,"evenSum":22},{"values":[6,9,11,12,13,15,16,18,20],"target":33,"evenSum":24},{"values":[1,5,8,10,11,12,15,19,20],"target":31,"evenSum":30},{"values":[2,3,4,6,8,9,10,11,19],"target":15,"evenSum":6},{"values":[3,4,7,10,11,12,13,17,20],"target":27,"evenSum":24},{"values":[1,4,6,10,11,14,17,19,20],"target":27,"evenSum":26},{"values":[1,4,5,6,12,13,15,16,18],"target":21,"evenSum":20},{"values":[3,4,5,6,7,10,12,14,15],"target":23,"evenSum":20},{"values":[2,3,4,5,6,7,10,11,17],"target":15,"evenSum":12},{"values":[1,2,4,6,7,15,16,17,19],"target":23,"evenSum":22},{"values":[2,7,10,11,12,13,14,16,18],"target":25,"evenSum":18},{"values":[1,2,3,5,10,14,16,18,19],"target":21,"evenSum":20},{"values":[1,2,4,9,10,12,15,18,19],"target":21,"evenSum":20},{"values":[3,4,8,13,16,17,18,19,20],"target":37,"evenSum":34},{"values":[4,7,9,10,11,14,15,16,18],"target":27,"evenSum":20},{"values":[1,2,3,4,6,10,12,15,16],"target":21,"evenSum":20},{"values":[3,4,7,9,11,13,14,15,20],"target":27,"evenSum":24},{"values":[3,6,8,12,13,14,18,19,20],"target":33,"evenSum":30},{"values":[3,4,6,9,10,12,14,17,18],"target":31,"evenSum":28},{"values":[1,2,4,5,11,14,15,16,17],"target":17,"evenSum":16},{"values":[1,2,4,5,9,10,13,16,18],"target":19,"evenSum":18},{"values":[2,3,8,9,12,13,14,15,20],"target":23,"evenSum":10},{"values":[2,5,6,8,13,14,16,18,20],"target":29,"evenSum":16},{"values":[1,2,6,7,9,10,11,19,20],"target":23,"evenSum":22},{"values":[5,6,7,8,12,13,14,16,19],"target":29,"evenSum":24},{"values":[1,2,3,6,8,11,12,16,19],"target":23,"evenSum":22},{"values":[1,2,3,5,6,7,8,13,14],"target":11,"evenSum":10},{"values":[2,3,4,12,13,17,18,19,20],"target":25,"evenSum":6},{"values":[2,3,4,6,8,13,16,17,20],"target":23,"evenSum":6},{"values":[3,7,8,9,11,12,13,17,19],"target":23,"evenSum":20},{"values":[1,4,6,8,11,16,18,19,20],"target":35,"evenSum":34},{"values":[2,4,5,9,11,13,15,17,18],"target":29,"evenSum":20},{"values":[1,3,4,8,13,16,18,19,20],"target":23,"evenSum":22},{"values":[1,3,4,8,11,12,13,18,19],"target":23,"evenSum":22},{"values":[1,4,6,7,10,12,13,16,18],"target":21,"evenSum":20},{"values":[2,6,12,13,14,15,16,17,19],"target":31,"evenSum":14},{"values":[2,6,7,8,11,14,15,19,20],"target":27,"evenSum":8},{"values":[1,3,5,10,11,14,17,18,20],"target":29,"evenSum":28},{"values":[1,2,5,9,10,11,13,16,19],"target":27,"evenSum":26},{"values":[2,4,5,6,9,10,11,13,20],"target":17,"evenSum":6}],"oni":[{"values":[2,4,5,6,9,10,13,15,16],"targets":[19,29]},{"values":[1,4,6,7,12,13,14,15,16],"targets":[25,27]},{"values":[2,3,4,6,7,8,10,15,20],"targets":[18,24]},{"values":[3,6,9,10,11,16,17,18,19],"targets":[34,35]},{"values":[3,5,6,8,12,13,14,17,20],"targets":[30,32]},{"values":[6,7,10,11,13,15,16,19,20],"targets":[35,39]},{"values":[1,2,4,5,9,13,14,16,19],"targets":[24,29]},{"values":[2,3,5,7,11,13,16,17,20],"targets":[30,31]},{"values":[1,2,4,8,10,13,14,18,20],"targets":[26,28]},{"values":[3,6,8,10,11,13,14,18,19],"targets":[29,31]},{"values":[2,4,7,8,9,10,11,15,18],"targets":[23,25]},{"values":[1,4,5,6,7,9,12,15,19],"targets":[23,24]},{"values":[2,4,5,6,9,10,11,15,19],"targets":[23,27]},{"values":[1,2,7,8,10,12,13,14,20],"targets":[25,30]},{"values":[1,2,3,10,12,15,17,18,19],"targets":[28,34]},{"values":[1,2,7,9,12,13,16,19,20],"targets":[28,35]},{"values":[3,6,10,12,13,14,15,16,19],"targets":[30,36]},{"values":[3,6,7,11,14,16,17,18,20],"targets":[33,39]},{"values":[1,2,3,4,6,10,14,15,20],"targets":[22,23]},{"values":[2,4,7,10,11,13,14,15,20],"targets":[27,30]},{"values":[5,7,8,10,15,16,17,19,20],"targets":[35,37]},{"values":[1,2,6,9,10,11,15,16,18],"targets":[23,32]},{"values":[1,3,9,10,15,16,17,18,20],"targets":[29,37]},{"values":[1,3,5,9,10,11,12,15,18],"targets":[23,25]},{"values":[1,4,6,7,11,13,15,17,18],"targets":[26,31]},{"values":[3,5,7,9,13,14,15,16,17],"targets":[29,31]},{"values":[1,2,9,11,12,14,15,16,17],"targets":[25,35]},{"values":[1,2,6,10,11,13,14,17,20],"targets":[27,30]},{"values":[3,5,9,12,14,15,17,18,19],"targets":[31,39]},{"values":[1,5,11,13,14,15,17,19,20],"targets":[36,39]},{"values":[1,2,4,9,13,14,16,17,20],"targets":[27,30]},{"values":[3,4,6,8,11,13,16,17,19],"targets":[23,34]},{"values":[1,2,4,6,7,12,13,16,20],"targets":[22,24]},{"values":[1,2,7,11,12,13,15,17,20],"targets":[26,32]},{"values":[2,3,6,9,11,16,17,19,20],"targets":[30,36]},{"values":[2,6,8,10,11,13,14,18,20],"targets":[27,37]},{"values":[3,6,7,8,10,13,14,16,17],"targets":[28,31]},{"values":[3,4,7,9,10,15,16,17,18],"targets":[26,32]},{"values":[1,4,6,7,8,9,11,12,20],"targets":[23,26]},{"values":[3,5,6,7,8,9,11,14,17],"targets":[21,27]},{"values":[4,5,9,10,13,14,15,17,20],"targets":[31,35]},{"values":[2,3,7,11,12,14,17,18,20],"targets":[27,38]},{"values":[1,8,11,14,16,17,18,19,20],"targets":[39,42]},{"values":[2,5,9,10,11,12,15,17,19],"targets":[29,34]},{"values":[1,2,3,8,12,13,14,15,17],"targets":[24,26]},{"values":[1,4,5,8,12,13,14,17,20],"targets":[23,32]},{"values":[2,3,7,9,12,15,16,17,18],"targets":[30,32]},{"values":[2,5,7,9,11,12,15,19,20],"targets":[26,34]},{"values":[1,2,8,9,10,12,14,15,16],"targets":[23,28]},{"values":[1,7,9,12,13,14,15,16,17],"targets":[28,35]},{"values":[1,5,8,10,11,12,15,18,20],"targets":[29,30]},{"values":[1,6,9,13,14,17,18,19,20],"targets":[32,41]},{"values":[2,3,7,10,13,14,16,17,18],"targets":[29,31]},{"values":[1,3,5,8,13,14,18,19,20],"targets":[26,37]},{"values":[1,2,3,4,5,7,10,15,20],"targets":[20,23]},{"values":[1,4,6,7,8,9,10,15,20],"targets":[19,27]},{"values":[3,6,8,11,12,17,18,19,20],"targets":[33,39]},{"values":[3,5,8,10,12,13,14,15,19],"targets":[31,33]},{"values":[2,5,8,9,10,13,14,17,19],"targets":[27,30]},{"values":[1,3,8,10,12,13,14,16,19],"targets":[28,33]},{"values":[1,2,4,8,9,12,13,14,18],"targets":[25,26]},{"values":[1,4,7,8,9,10,14,19,20],"targets":[27,29]},{"values":[3,5,6,7,9,10,12,18,20],"targets":[26,30]},{"values":[1,4,5,6,7,9,12,16,20],"targets":[20,28]},{"values":[1,4,9,10,11,13,14,17,19],"targets":[27,30]},{"values":[3,5,11,12,14,16,17,19,20],"targets":[35,37]},{"values":[3,4,5,10,12,13,14,17,19],"targets":[29,31]},{"values":[2,4,6,7,9,10,14,16,19],"targets":[23,31]},{"values":[1,2,3,4,8,11,12,14,18],"targets":[19,25]},{"values":[4,6,7,11,12,15,17,19,20],"targets":[32,37]},{"values":[1,2,3,5,7,8,11,13,17],"targets":[18,22]},{"values":[1,6,7,10,11,12,14,17,18],"targets":[27,32]},{"values":[1,2,3,5,9,11,12,15,17],"targets":[19,24]},{"values":[1,3,6,8,11,12,14,17,18],"targets":[25,27]},{"values":[1,2,3,7,10,13,15,18,20],"targets":[26,31]},{"values":[4,5,7,8,10,11,12,16,20],"targets":[26,30]},{"values":[2,6,8,9,10,13,14,15,20],"targets":[27,32]},{"values":[1,2,3,4,11,13,14,18,19],"targets":[26,28]},{"values":[3,4,5,7,9,10,11,18,20],"targets":[21,30]},{"values":[3,11,12,13,16,17,18,19,20],"targets":[41,43]},{"values":[3,4,5,9,10,12,15,16,20],"targets":[25,32]},{"values":[1,6,9,10,11,12,13,15,20],"targets":[28,31]},{"values":[2,3,6,7,9,11,13,19,20],"targets":[24,27]},{"values":[1,2,4,5,9,13,17,18,19],"targets":[22,25]},{"values":[1,6,7,9,11,13,17,19,20],"targets":[32,35]},{"values":[3,7,9,10,12,13,14,15,18],"targets":[29,33]},{"values":[1,3,5,6,7,11,14,17,20],"targets":[23,30]},{"values":[1,2,3,4,5,6,11,14,20],"targets":[12,25]},{"values":[2,8,9,11,12,13,15,16,19],"targets":[32,35]},{"values":[1,6,7,8,11,12,14,16,20],"targets":[24,32]},{"values":[1,2,3,5,9,14,16,17,18],"targets":[23,25]},{"values":[1,7,9,12,13,14,15,16,20],"targets":[29,38]},{"values":[2,4,5,6,7,11,12,17,20],"targets":[26,27]},{"values":[1,3,4,5,9,10,16,18,19],"targets":[25,27]},{"values":[5,8,10,11,14,15,17,18,19],"targets":[35,36]},{"values":[2,3,5,6,9,11,13,16,19],"targets":[25,28]},{"values":[2,4,7,12,14,15,16,18,20],"targets":[29,39]},{"values":[1,6,7,10,12,13,14,15,20],"targets":[29,32]},{"values":[1,2,7,8,9,11,12,15,16],"targets":[20,30]},{"values":[2,5,6,7,8,11,13,15,19],"targets":[21,29]}],"kiwami":[{"values":[2,4,5,6,9,10,13,15,16],"offsets":[10,3],"targets":[19,29,32],"counts":[3,4,3]},{"values":[1,4,6,7,12,13,14,15,16],"offsets":[2,9],"targets":[25,27,36],"counts":[3,3,3]},{"values":[2,3,4,6,7,8,10,15,20],"offsets":[6,9],"targets":[18,24,33],"counts":[3,3,3]},{"values":[3,6,9,10,11,16,17,18,19],"offsets":[1,5],"targets":[34,35,40],"counts":[3,3,3]},{"values":[3,5,6,8,12,13,14,17,20],"offsets":[2,4],"targets":[30,32,36],"counts":[3,3,3]},{"values":[6,7,10,11,13,15,16,19,20],"offsets":[4,4],"targets":[35,39,43],"counts":[3,4,3]},{"values":[1,2,4,5,9,13,14,16,19],"offsets":[5,1],"targets":[24,29,30],"counts":[3,3,3]},{"values":[2,3,5,7,11,13,16,17,20],"offsets":[1,2],"targets":[30,31,33],"counts":[3,3,3]},{"values":[1,2,4,8,10,13,14,18,20],"offsets":[2,8],"targets":[26,28,36],"counts":[3,3,3]},{"values":[3,6,8,10,11,13,14,18,19],"offsets":[2,11],"targets":[29,31,42],"counts":[3,3,3]},{"values":[2,4,7,8,9,10,11,15,18],"offsets":[2,11],"targets":[23,25,36],"counts":[3,3,3]},{"values":[1,4,5,6,7,9,12,15,19],"offsets":[1,7],"targets":[23,24,31],"counts":[3,3,3]},{"values":[2,4,5,6,9,10,11,15,19],"offsets":[4,4],"targets":[23,27,31],"counts":[3,3,3]},{"values":[1,2,7,8,10,12,13,14,20],"offsets":[5,2],"targets":[25,30,32],"counts":[3,3,3]},{"values":[1,2,3,10,12,15,17,18,19],"offsets":[6,1],"targets":[28,34,35],"counts":[3,3,3]},{"values":[1,2,7,9,12,13,16,19,20],"offsets":[7,1],"targets":[28,35,36],"counts":[3,3,3]},{"values":[3,6,10,12,13,14,15,16,19],"offsets":[6,6],"targets":[30,36,42],"counts":[3,3,3]},{"values":[3,6,7,11,14,16,17,18,20],"offsets":[6,1],"targets":[33,39,40],"counts":[3,3,4]},{"values":[1,2,3,4,6,10,14,15,20],"offsets":[1,7],"targets":[22,23,30],"counts":[3,3,3]},{"values":[2,4,7,10,11,13,14,15,20],"offsets":[3,9],"targets":[27,30,39],"counts":[3,3,3]},{"values":[5,7,8,10,15,16,17,19,20],"offsets":[2,8],"targets":[35,37,45],"counts":[3,3,3]},{"values":[1,2,6,9,10,11,15,16,18],"offsets":[9,1],"targets":[23,32,33],"counts":[3,3,3]},{"values":[1,3,9,10,15,16,17,18,20],"offsets":[8,6],"targets":[29,37,43],"counts":[3,3,3]},{"values":[1,3,5,9,10,11,12,15,18],"offsets":[2,11],"targets":[23,25,36],"counts":[3,3,3]},{"values":[1,4,6,7,11,13,15,17,18],"offsets":[5,4],"targets":[26,31,35],"counts":[3,3,4]},{"values":[3,5,7,9,13,14,15,16,17],"offsets":[2,8],"targets":[29,31,39],"counts":[4,3,3]},{"values":[1,2,9,11,12,14,15,16,17],"offsets":[10,2],"targets":[25,35,37],"counts":[3,3,3]},{"values":[1,2,6,10,11,13,14,17,20],"offsets":[3,7],"targets":[27,30,37],"counts":[3,3,3]},{"values":[3,5,9,12,14,15,17,18,19],"offsets":[8,3],"targets":[31,39,42],"counts":[3,3,3]},{"values":[1,5,11,13,14,15,17,19,20],"offsets":[3,1],"targets":[36,39,40],"counts":[3,3,3]},{"values":[1,2,4,9,13,14,16,17,20],"offsets":[3,9],"targets":[27,30,39],"counts":[3,3,3]},{"values":[3,4,6,8,11,13,16,17,19],"offsets":[11,6],"targets":[23,34,40],"counts":[3,3,3]},{"values":[1,2,4,6,7,12,13,16,20],"offsets":[2,11],"targets":[22,24,35],"counts":[3,3,3]},{"values":[1,2,7,11,12,13,15,17,20],"offsets":[6,8],"targets":[26,32,40],"counts":[3,3,3]},{"values":[2,3,6,9,11,16,17,19,20],"offsets":[6,1],"targets":[30,36,37],"counts":[3,3,3]},{"values":[2,6,8,10,11,13,14,18,20],"offsets":[10,1],"targets":[27,37,38],"counts":[3,4,3]},{"values":[3,6,7,8,10,13,14,16,17],"offsets":[3,4],"targets":[28,31,35],"counts":[3,4,3]},{"values":[3,4,7,9,10,15,16,17,18],"offsets":[6,9],"targets":[26,32,41],"counts":[3,3,3]},{"values":[1,4,6,7,8,9,11,12,20],"offsets":[3,3],"targets":[23,26,29],"counts":[3,3,3]},{"values":[3,5,6,7,8,9,11,14,17],"offsets":[6,5],"targets":[21,27,32],"counts":[3,4,3]},{"values":[4,5,9,10,13,14,15,17,20],"offsets":[4,6],"targets":[31,35,41],"counts":[3,3,3]},{"values":[2,3,7,11,12,14,17,18,20],"offsets":[11,1],"targets":[27,38,39],"counts":[3,3,3]},{"values":[1,8,11,14,16,17,18,19,20],"offsets":[3,1],"targets":[39,42,43],"counts":[3,3,3]},{"values":[2,5,9,10,11,12,15,17,19],"offsets":[5,3],"targets":[29,34,37],"counts":[3,4,3]},{"values":[1,2,3,8,12,13,14,15,17],"offsets":[2,9],"targets":[24,26,35],"counts":[3,3,3]},{"values":[1,4,5,8,12,13,14,17,20],"offsets":[9,7],"targets":[23,32,39],"counts":[3,3,3]},{"values":[2,3,7,9,12,15,16,17,18],"offsets":[2,5],"targets":[30,32,37],"counts":[3,3,4]},{"values":[2,5,7,9,11,12,15,19,20],"offsets":[8,6],"targets":[26,34,40],"counts":[3,3,3]},{"values":[1,2,8,9,10,12,14,15,16],"offsets":[5,8],"targets":[23,28,36],"counts":[3,3,3]},{"values":[1,7,9,12,13,14,15,16,17],"offsets":[7,6],"targets":[28,35,41],"counts":[3,3,3]},{"values":[1,5,8,10,11,12,15,18,20],"offsets":[1,11],"targets":[29,30,41],"counts":[3,3,3]},{"values":[1,6,9,13,14,17,18,19,20],"offsets":[9,3],"targets":[32,41,44],"counts":[3,3,3]},{"values":[2,3,7,10,13,14,16,17,18],"offsets":[2,9],"targets":[29,31,40],"counts":[3,3,3]},{"values":[1,3,5,8,13,14,18,19,20],"offsets":[11,1],"targets":[26,37,38],"counts":[3,3,3]},{"values":[1,2,3,4,5,7,10,15,20],"offsets":[3,1],"targets":[20,23,24],"counts":[3,3,3]},{"values":[1,4,6,7,8,9,10,15,20],"offsets":[8,7],"targets":[19,27,34],"counts":[3,3,3]},{"values":[3,6,8,11,12,17,18,19,20],"offsets":[6,3],"targets":[33,39,42],"counts":[3,3,3]},{"values":[3,5,8,10,12,13,14,15,19],"offsets":[2,2],"targets":[31,33,35],"counts":[3,3,4]},{"values":[2,5,8,9,10,13,14,17,19],"offsets":[3,10],"targets":[27,30,40],"counts":[4,3,3]},{"values":[1,3,8,10,12,13,14,16,19],"offsets":[5,2],"targets":[28,33,35],"counts":[3,3,3]},{"values":[1,2,4,8,9,12,13,14,18],"offsets":[1,4],"targets":[25,26,30],"counts":[3,3,3]},{"values":[1,4,7,8,9,10,14,19,20],"offsets":[2,7],"targets":[27,29,36],"counts":[3,3,3]},{"values":[3,5,6,7,9,10,12,18,20],"offsets":[4,4],"targets":[26,30,34],"counts":[3,3,3]},{"values":[1,4,5,6,7,9,12,16,20],"offsets":[8,4],"targets":[20,28,32],"counts":[3,3,3]},{"values":[1,4,9,10,11,13,14,17,19],"offsets":[3,11],"targets":[27,30,41],"counts":[3,3,3]},{"values":[3,5,11,12,14,16,17,19,20],"offsets":[2,8],"targets":[35,37,45],"counts":[3,3,3]},{"values":[3,4,5,10,12,13,14,17,19],"offsets":[2,6],"targets":[29,31,37],"counts":[3,3,3]},{"values":[2,4,6,7,9,10,14,16,19],"offsets":[8,2],"targets":[23,31,33],"counts":[3,3,3]},{"values":[1,2,3,4,8,11,12,14,18],"offsets":[6,4],"targets":[19,25,29],"counts":[3,3,3]},{"values":[4,6,7,11,12,15,17,19,20],"offsets":[5,5],"targets":[32,37,42],"counts":[3,3,3]},{"values":[1,2,3,5,7,8,11,13,17],"offsets":[4,5],"targets":[18,22,27],"counts":[3,4,3]},{"values":[1,6,7,10,11,12,14,17,18],"offsets":[5,5],"targets":[27,32,37],"counts":[3,3,3]},{"values":[1,2,3,5,9,11,12,15,17],"offsets":[5,8],"targets":[19,24,32],"counts":[3,3,3]},{"values":[1,3,6,8,11,12,14,17,18],"offsets":[2,11],"targets":[25,27,38],"counts":[3,3,3]},{"values":[1,2,3,7,10,13,15,18,20],"offsets":[5,1],"targets":[26,31,32],"counts":[3,3,3]},{"values":[4,5,7,8,10,11,12,16,20],"offsets":[4,7],"targets":[26,30,37],"counts":[3,3,3]},{"values":[2,6,8,9,10,13,14,15,20],"offsets":[5,6],"targets":[27,32,38],"counts":[3,4,3]},{"values":[1,2,3,4,11,13,14,18,19],"offsets":[2,3],"targets":[26,28,31],"counts":[3,3,3]},{"values":[3,4,5,7,9,10,11,18,20],"offsets":[9,6],"targets":[21,30,36],"counts":[3,4,3]},{"values":[3,11,12,13,16,17,18,19,20],"offsets":[2,2],"targets":[41,43,45],"counts":[4,3,3]},{"values":[3,4,5,9,10,12,15,16,20],"offsets":[7,5],"targets":[25,32,37],"counts":[3,3,3]},{"values":[1,6,9,10,11,12,13,15,20],"offsets":[3,7],"targets":[28,31,38],"counts":[3,4,3]},{"values":[2,3,6,7,9,11,13,19,20],"offsets":[3,12],"targets":[24,27,39],"counts":[3,3,3]},{"values":[1,2,4,5,9,13,17,18,19],"offsets":[3,16],"targets":[22,25,41],"counts":[3,3,3]},{"values":[1,6,7,9,11,13,17,19,20],"offsets":[3,1],"targets":[32,35,36],"counts":[3,3,3]},{"values":[3,7,9,10,12,13,14,15,18],"offsets":[4,6],"targets":[29,33,39],"counts":[3,3,4]},{"values":[1,3,5,6,7,11,14,17,20],"offsets":[7,1],"targets":[23,30,31],"counts":[3,3,3]},{"values":[1,2,3,4,5,6,11,14,20],"offsets":[13,4],"targets":[12,25,29],"counts":[3,3,3]},{"values":[2,8,9,11,12,13,15,16,19],"offsets":[3,3],"targets":[32,35,38],"counts":[4,3,3]},{"values":[1,6,7,8,11,12,14,16,20],"offsets":[8,7],"targets":[24,32,39],"counts":[3,3,3]},{"values":[1,2,3,5,9,14,16,17,18],"offsets":[2,12],"targets":[23,25,37],"counts":[3,3,3]},{"values":[1,7,9,12,13,14,15,16,20],"offsets":[9,2],"targets":[29,38,40],"counts":[3,3,3]},{"values":[2,4,5,6,7,11,12,17,20],"offsets":[1,4],"targets":[26,27,31],"counts":[3,3,3]},{"values":[1,3,4,5,9,10,16,18,19],"offsets":[2,6],"targets":[25,27,33],"counts":[3,3,3]},{"values":[5,8,10,11,14,15,17,18,19],"offsets":[1,10],"targets":[35,36,46],"counts":[3,4,3]},{"values":[2,3,5,6,9,11,13,16,19],"offsets":[3,3],"targets":[25,28,31],"counts":[3,3,3]},{"values":[2,4,7,12,14,15,16,18,20],"offsets":[10,1],"targets":[29,39,40],"counts":[3,3,3]},{"values":[1,6,7,10,12,13,14,15,20],"offsets":[3,5],"targets":[29,32,37],"counts":[3,3,3]},{"values":[1,2,7,8,9,11,12,15,16],"offsets":[10,1],"targets":[20,30,31],"counts":[3,3,3]},{"values":[2,5,6,7,8,11,13,15,19],"offsets":[8,7],"targets":[21,29,36],"counts":[3,3,3]}]};
 let pathDifficulty=['easy','hard','oni','kiwami'].includes(params.get('difficulty'))?params.get('difficulty'):'normal';
 const pathRequested=params.get('difficulty'),pathVersion=params.get('version'),invalidPathLink=(pathRequested!==null&&!['easy','normal','hard','oni','kiwami'].includes(pathRequested))||(pathVersion!==null&&pathVersion!=='2');
 const pathLabels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'},pathLevels={"easy":[{"size":3,"start":0,"goal":2,"marks":[]},{"size":3,"start":0,"goal":4,"marks":[]},{"size":3,"start":0,"goal":6,"marks":[]},{"size":3,"start":0,"goal":8,"marks":[]},{"size":3,"start":2,"goal":0,"marks":[]},{"size":3,"start":2,"goal":4,"marks":[]},{"size":3,"start":2,"goal":6,"marks":[]},{"size":3,"start":2,"goal":8,"marks":[]},{"size":3,"start":4,"goal":0,"marks":[]},{"size":3,"start":4,"goal":2,"marks":[]},{"size":3,"start":4,"goal":6,"marks":[]},{"size":3,"start":4,"goal":8,"marks":[]},{"size":3,"start":6,"goal":0,"marks":[]},{"size":3,"start":6,"goal":2,"marks":[]},{"size":3,"start":6,"goal":4,"marks":[]},{"size":3,"start":6,"goal":8,"marks":[]},{"size":3,"start":8,"goal":0,"marks":[]},{"size":3,"start":8,"goal":2,"marks":[]},{"size":3,"start":8,"goal":4,"marks":[]},{"size":3,"start":8,"goal":6,"marks":[]}],"hard":[{"size":4,"start":0,"goal":12,"marks":[4,8,5]},{"size":4,"start":3,"goal":0,"marks":[2,1,7]},{"size":4,"start":15,"goal":3,"marks":[11,6,10]},{"size":4,"start":12,"goal":15,"marks":[13,10,8]},{"size":4,"start":3,"goal":15,"marks":[7,9,5]},{"size":4,"start":15,"goal":12,"marks":[14,5,10]},{"size":4,"start":12,"goal":0,"marks":[8,6,13]},{"size":4,"start":0,"goal":3,"marks":[1,10,8]},{"size":4,"start":12,"goal":0,"marks":[3,10,4]},{"size":4,"start":0,"goal":3,"marks":[14,9,2]},{"size":4,"start":3,"goal":15,"marks":[10,9,11]},{"size":4,"start":15,"goal":12,"marks":[8,5,13]},{"size":4,"start":15,"goal":3,"marks":[1,5,7]},{"size":4,"start":12,"goal":15,"marks":[3,6,14]},{"size":4,"start":0,"goal":12,"marks":[11,10,8]},{"size":4,"start":3,"goal":0,"marks":[5,6,2]},{"size":4,"start":0,"goal":12,"marks":[8,9,1]},{"size":4,"start":3,"goal":0,"marks":[1,9,10]},{"size":4,"start":15,"goal":3,"marks":[7,5,10]},{"size":4,"start":12,"goal":15,"marks":[14,6,8]},{"size":4,"start":3,"goal":15,"marks":[11,9,1]},{"size":4,"start":15,"goal":12,"marks":[13,5,3]},{"size":4,"start":12,"goal":0,"marks":[4,6,11]},{"size":4,"start":0,"goal":3,"marks":[2,9,5]},{"size":4,"start":12,"goal":0,"marks":[1,6,8]},{"size":4,"start":0,"goal":3,"marks":[11,10,1]},{"size":4,"start":3,"goal":15,"marks":[12,9,7]},{"size":4,"start":15,"goal":12,"marks":[1,5,14]},{"size":4,"start":15,"goal":3,"marks":[2,6,11]},{"size":4,"start":12,"goal":15,"marks":[7,10,13]},{"size":4,"start":0,"goal":12,"marks":[15,9,4]},{"size":4,"start":3,"goal":0,"marks":[13,5,2]},{"size":4,"start":0,"goal":12,"marks":[8,5,11]},{"size":4,"start":3,"goal":0,"marks":[1,6,12]},{"size":4,"start":15,"goal":3,"marks":[7,10,1]},{"size":4,"start":3,"goal":15,"marks":[11,2,1]},{"size":4,"start":15,"goal":12,"marks":[13,11,3]},{"size":4,"start":12,"goal":0,"marks":[4,13,11]},{"size":4,"start":0,"goal":3,"marks":[2,4,14]},{"size":4,"start":12,"goal":0,"marks":[15,1,8]},{"size":4,"start":0,"goal":3,"marks":[8,7,1]},{"size":4,"start":3,"goal":15,"marks":[2,14,7]},{"size":4,"start":15,"goal":3,"marks":[2,9,10]},{"size":4,"start":0,"goal":12,"marks":[9,6,1]},{"size":4,"start":3,"goal":0,"marks":[5,10,11]},{"size":4,"start":15,"goal":3,"marks":[6,9,12]},{"size":4,"start":12,"goal":15,"marks":[10,5,1]},{"size":4,"start":15,"goal":12,"marks":[9,10,7]},{"size":4,"start":12,"goal":0,"marks":[5,9,15]},{"size":4,"start":0,"goal":3,"marks":[6,5,13]},{"size":4,"start":12,"goal":0,"marks":[11,5,9]},{"size":4,"start":0,"goal":3,"marks":[12,6,5]},{"size":4,"start":3,"goal":15,"marks":[1,10,6]},{"size":4,"start":15,"goal":12,"marks":[11,9,10]},{"size":4,"start":15,"goal":3,"marks":[1,2,10]},{"size":4,"start":12,"goal":15,"marks":[3,11,9]},{"size":4,"start":0,"goal":12,"marks":[11,13,5]},{"size":4,"start":3,"goal":0,"marks":[14,4,6]},{"size":4,"start":0,"goal":12,"marks":[9,1,15]},{"size":4,"start":3,"goal":0,"marks":[5,7,8]},{"size":4,"start":12,"goal":15,"marks":[6,5,8]},{"size":4,"start":3,"goal":15,"marks":[9,5,1]},{"size":4,"start":15,"goal":12,"marks":[5,6,3]},{"size":4,"start":12,"goal":0,"marks":[6,10,11]},{"size":4,"start":0,"goal":3,"marks":[10,9,14]},{"size":4,"start":12,"goal":0,"marks":[15,6,10]},{"size":4,"start":0,"goal":3,"marks":[8,10,9]},{"size":4,"start":3,"goal":15,"marks":[14,10,5]},{"size":4,"start":15,"goal":12,"marks":[4,9,6]},{"size":4,"start":15,"goal":3,"marks":[0,6,9]},{"size":4,"start":12,"goal":15,"marks":[2,10,5]},{"size":4,"start":0,"goal":12,"marks":[7,9,6]},{"size":4,"start":3,"goal":0,"marks":[15,5,10]},{"size":4,"start":0,"goal":12,"marks":[10,5,14]},{"size":4,"start":15,"goal":3,"marks":[5,14,13]},{"size":4,"start":12,"goal":15,"marks":[6,8,0]},{"size":4,"start":3,"goal":15,"marks":[9,2,4]},{"size":4,"start":15,"goal":12,"marks":[5,11,1]},{"size":4,"start":12,"goal":0,"marks":[6,13,3]},{"size":4,"start":0,"goal":3,"marks":[10,4,11]},{"size":4,"start":12,"goal":0,"marks":[13,1,10]},{"size":4,"start":0,"goal":3,"marks":[15,11,9]},{"size":4,"start":3,"goal":15,"marks":[8,13,5]},{"size":4,"start":15,"goal":12,"marks":[2,4,6]},{"size":4,"start":15,"goal":3,"marks":[12,1,9]},{"size":4,"start":12,"goal":15,"marks":[4,7,5]},{"size":4,"start":0,"goal":12,"marks":[1,14,6]},{"size":4,"start":3,"goal":0,"marks":[13,12,10]},{"size":4,"start":0,"goal":12,"marks":[10,3,11]},{"size":4,"start":3,"goal":0,"marks":[9,15,12]},{"size":4,"start":15,"goal":3,"marks":[5,12,1]},{"size":4,"start":12,"goal":15,"marks":[6,0,11]},{"size":4,"start":3,"goal":15,"marks":[9,4,8]},{"size":4,"start":15,"goal":12,"marks":[5,2,0]},{"size":4,"start":12,"goal":0,"marks":[6,11,2]},{"size":4,"start":0,"goal":3,"marks":[10,13,7]},{"size":4,"start":12,"goal":0,"marks":[1,5,6]},{"size":4,"start":0,"goal":3,"marks":[11,6,10]},{"size":4,"start":3,"goal":15,"marks":[12,10,9]},{"size":4,"start":15,"goal":12,"marks":[1,9,5]},{"size":4,"start":15,"goal":3,"marks":[8,6,5]},{"size":4,"start":12,"goal":15,"marks":[0,10,6]},{"size":4,"start":0,"goal":12,"marks":[2,9,10]},{"size":4,"start":3,"goal":0,"marks":[8,4,9]},{"size":4,"start":0,"goal":12,"marks":[6,1,3]},{"size":4,"start":3,"goal":0,"marks":[10,7,14]},{"size":4,"start":15,"goal":3,"marks":[9,14,4]},{"size":4,"start":12,"goal":15,"marks":[5,8,3]},{"size":4,"start":3,"goal":15,"marks":[5,2,13]},{"size":4,"start":15,"goal":12,"marks":[6,11,8]},{"size":4,"start":12,"goal":0,"marks":[10,14,15]},{"size":4,"start":0,"goal":3,"marks":[9,8,13]},{"size":4,"start":12,"goal":0,"marks":[11,2,6]},{"size":4,"start":0,"goal":3,"marks":[12,11,10]},{"size":4,"start":3,"goal":15,"marks":[1,13,9]},{"size":4,"start":15,"goal":12,"marks":[11,4,5]},{"size":4,"start":15,"goal":3,"marks":[4,0,5]},{"size":4,"start":12,"goal":15,"marks":[1,3,6]},{"size":4,"start":0,"goal":12,"marks":[3,15,10]},{"size":4,"start":3,"goal":0,"marks":[11,12,9]},{"size":4,"start":0,"goal":12,"marks":[6,3,13]},{"size":4,"start":3,"goal":0,"marks":[10,14,13]},{"size":4,"start":15,"goal":3,"marks":[9,8,0]},{"size":4,"start":12,"goal":15,"marks":[5,1,7]},{"size":4,"start":3,"goal":15,"marks":[5,4,14]},{"size":4,"start":15,"goal":12,"marks":[14,10,6]},{"size":4,"start":12,"goal":0,"marks":[8,9,6]},{"size":4,"start":0,"goal":3,"marks":[1,4,9]},{"size":4,"start":12,"goal":0,"marks":[10,1,4]},{"size":4,"start":0,"goal":3,"marks":[10,11,2]},{"size":4,"start":3,"goal":15,"marks":[5,13,11]},{"size":4,"start":15,"goal":12,"marks":[5,0,13]},{"size":4,"start":15,"goal":3,"marks":[9,0,7]},{"size":4,"start":12,"goal":15,"marks":[6,2,14]},{"size":4,"start":0,"goal":12,"marks":[6,11,8]},{"size":4,"start":3,"goal":0,"marks":[10,9,1]},{"size":4,"start":0,"goal":12,"marks":[8,5,6]},{"size":4,"start":3,"goal":0,"marks":[1,6,9]},{"size":4,"start":15,"goal":3,"marks":[7,14,9]},{"size":4,"start":12,"goal":15,"marks":[14,8,6]},{"size":4,"start":3,"goal":15,"marks":[11,1,5]},{"size":4,"start":15,"goal":12,"marks":[13,7,5]},{"size":4,"start":12,"goal":0,"marks":[4,15,10]},{"size":4,"start":0,"goal":3,"marks":[2,12,10]},{"size":4,"start":12,"goal":0,"marks":[6,7,8]},{"size":4,"start":0,"goal":3,"marks":[9,14,1]},{"size":4,"start":3,"goal":15,"marks":[5,9,7]},{"size":4,"start":15,"goal":12,"marks":[5,9,10]},{"size":4,"start":15,"goal":3,"marks":[9,6,10]},{"size":4,"start":12,"goal":15,"marks":[6,11,9]},{"size":4,"start":0,"goal":12,"marks":[6,13,5]},{"size":4,"start":3,"goal":0,"marks":[9,8,6]},{"size":4,"start":0,"goal":12,"marks":[9,2,10]},{"size":4,"start":3,"goal":0,"marks":[5,15,10]},{"size":4,"start":15,"goal":3,"marks":[6,12,5]},{"size":4,"start":12,"goal":15,"marks":[10,1,5]},{"size":4,"start":3,"goal":15,"marks":[10,4,9]},{"size":4,"start":15,"goal":12,"marks":[9,6,5]},{"size":4,"start":12,"goal":0,"marks":[9,13,10]},{"size":4,"start":0,"goal":3,"marks":[5,4,10]},{"size":4,"start":12,"goal":0,"marks":[6,2,5]},{"size":4,"start":0,"goal":3,"marks":[9,11,6]},{"size":4,"start":3,"goal":15,"marks":[9,12,10]},{"size":4,"start":15,"goal":12,"marks":[6,0,9]},{"size":4,"start":15,"goal":3,"marks":[5,4,6]},{"size":4,"start":12,"goal":15,"marks":[5,2,10]},{"size":4,"start":0,"goal":12,"marks":[6,10,9]},{"size":4,"start":3,"goal":0,"marks":[6,5,1]},{"size":4,"start":0,"goal":12,"marks":[4,5,8]},{"size":4,"start":3,"goal":0,"marks":[2,7,5]},{"size":4,"start":15,"goal":3,"marks":[11,14,7]},{"size":4,"start":12,"goal":15,"marks":[13,4,10]},{"size":4,"start":3,"goal":15,"marks":[7,1,11]},{"size":4,"start":15,"goal":12,"marks":[14,3,9]},{"size":4,"start":12,"goal":0,"marks":[8,15,4]},{"size":4,"start":0,"goal":3,"marks":[1,13,6]},{"size":4,"start":12,"goal":0,"marks":[8,7,4]},{"size":4,"start":0,"goal":3,"marks":[5,10,2]},{"size":4,"start":3,"goal":15,"marks":[7,9,11]},{"size":4,"start":15,"goal":12,"marks":[10,6,13]},{"size":4,"start":15,"goal":3,"marks":[10,8,7]},{"size":4,"start":12,"goal":15,"marks":[9,0,14]},{"size":4,"start":0,"goal":12,"marks":[5,2,8]},{"size":4,"start":3,"goal":0,"marks":[6,7,1]},{"size":4,"start":0,"goal":12,"marks":[5,1,9]},{"size":4,"start":3,"goal":0,"marks":[6,11,5]},{"size":4,"start":15,"goal":3,"marks":[10,12,6]},{"size":4,"start":12,"goal":15,"marks":[9,1,10]},{"size":4,"start":3,"goal":15,"marks":[6,5,10]},{"size":4,"start":15,"goal":12,"marks":[11,10,5]},{"size":4,"start":12,"goal":0,"marks":[13,9,10]},{"size":4,"start":0,"goal":3,"marks":[4,5,8]},{"size":4,"start":12,"goal":0,"marks":[3,5,1]},{"size":4,"start":0,"goal":3,"marks":[14,6,7]},{"size":4,"start":3,"goal":15,"marks":[4,10,14]},{"size":4,"start":15,"goal":12,"marks":[3,9,8]},{"size":4,"start":15,"goal":3,"marks":[13,6,2]},{"size":4,"start":12,"goal":15,"marks":[5,14,11]},{"size":4,"start":0,"goal":12,"marks":[10,8,13]},{"size":4,"start":3,"goal":0,"marks":[8,1,4]},{"size":4,"start":0,"goal":12,"marks":[1,4,3]},{"size":4,"start":3,"goal":0,"marks":[7,2,14]},{"size":4,"start":15,"goal":3,"marks":[14,11,4]},{"size":4,"start":12,"goal":15,"marks":[8,13,3]},{"size":4,"start":3,"goal":15,"marks":[2,7,13]},{"size":4,"start":15,"goal":12,"marks":[11,13,5]},{"size":4,"start":12,"goal":0,"marks":[13,4,10]},{"size":4,"start":0,"goal":3,"marks":[4,2,8]},{"size":4,"start":12,"goal":0,"marks":[3,8,1]},{"size":4,"start":0,"goal":3,"marks":[14,1,7]},{"size":4,"start":3,"goal":15,"marks":[4,7,14]},{"size":4,"start":15,"goal":12,"marks":[3,14,8]},{"size":4,"start":15,"goal":3,"marks":[13,11,2]},{"size":4,"start":12,"goal":15,"marks":[7,9,11]},{"size":4,"start":0,"goal":12,"marks":[15,5,13]},{"size":4,"start":3,"goal":0,"marks":[13,6,4]},{"size":4,"start":0,"goal":12,"marks":[1,9,11]},{"size":4,"start":3,"goal":0,"marks":[7,5,12]},{"size":4,"start":15,"goal":3,"marks":[14,6,1]},{"size":4,"start":12,"goal":15,"marks":[8,6,4]},{"size":4,"start":3,"goal":15,"marks":[2,9,0]},{"size":4,"start":15,"goal":12,"marks":[11,5,2]},{"size":4,"start":12,"goal":0,"marks":[13,10,14]},{"size":4,"start":0,"goal":3,"marks":[4,9,12]},{"size":4,"start":12,"goal":0,"marks":[7,6,1]},{"size":4,"start":0,"goal":3,"marks":[9,2,6]},{"size":4,"start":3,"goal":15,"marks":[9,11,10]},{"size":4,"start":15,"goal":12,"marks":[4,13,9]},{"size":4,"start":15,"goal":3,"marks":[0,7,6]},{"size":4,"start":12,"goal":15,"marks":[2,14,10]},{"size":4,"start":0,"goal":12,"marks":[7,8,9]},{"size":4,"start":3,"goal":0,"marks":[15,1,5]},{"size":4,"start":0,"goal":12,"marks":[5,4,14]},{"size":4,"start":3,"goal":0,"marks":[6,1,9]},{"size":4,"start":15,"goal":3,"marks":[10,7,9]},{"size":4,"start":12,"goal":15,"marks":[9,14,4]},{"size":4,"start":3,"goal":15,"marks":[6,11,0]},{"size":4,"start":15,"goal":12,"marks":[10,13,2]},{"size":4,"start":12,"goal":0,"marks":[9,4,7]},{"size":4,"start":0,"goal":3,"marks":[5,2,15]},{"size":4,"start":12,"goal":0,"marks":[14,8,5]},{"size":4,"start":0,"goal":3,"marks":[9,5,6]},{"size":4,"start":3,"goal":15,"marks":[9,6,10]},{"size":4,"start":15,"goal":12,"marks":[4,10,9]},{"size":4,"start":15,"goal":3,"marks":[0,10,6]},{"size":4,"start":12,"goal":15,"marks":[2,9,10]},{"size":4,"start":0,"goal":12,"marks":[7,5,9]},{"size":4,"start":3,"goal":0,"marks":[15,6,5]},{"size":4,"start":0,"goal":12,"marks":[5,9,14]},{"size":4,"start":3,"goal":0,"marks":[6,9,10]},{"size":4,"start":15,"goal":3,"marks":[10,5,13]},{"size":4,"start":12,"goal":15,"marks":[9,6,0]},{"size":4,"start":3,"goal":15,"marks":[6,9,4]},{"size":4,"start":15,"goal":12,"marks":[10,6,7]},{"size":4,"start":12,"goal":0,"marks":[9,10,15]},{"size":4,"start":0,"goal":3,"marks":[5,9,13]},{"size":4,"start":12,"goal":0,"marks":[10,5,2]},{"size":4,"start":0,"goal":3,"marks":[13,6,11]},{"size":4,"start":3,"goal":15,"marks":[0,10,13]},{"size":4,"start":15,"goal":12,"marks":[7,9,4]},{"size":4,"start":15,"goal":3,"marks":[9,7,1]},{"size":4,"start":12,"goal":15,"marks":[1,14,7]},{"size":4,"start":0,"goal":12,"marks":[3,8,14]},{"size":4,"start":3,"goal":0,"marks":[11,1,8]},{"size":4,"start":0,"goal":12,"marks":[2,8,10]},{"size":4,"start":3,"goal":0,"marks":[11,1,13]},{"size":4,"start":15,"goal":3,"marks":[13,7,0]},{"size":4,"start":12,"goal":15,"marks":[4,10,2]},{"size":4,"start":3,"goal":15,"marks":[1,10,12]},{"size":4,"start":15,"goal":12,"marks":[3,10,5]},{"size":4,"start":12,"goal":0,"marks":[15,9,7]},{"size":4,"start":0,"goal":3,"marks":[12,5,15]},{"size":4,"start":12,"goal":0,"marks":[10,4,3]},{"size":4,"start":0,"goal":3,"marks":[13,2,15]},{"size":4,"start":3,"goal":15,"marks":[0,11,12]},{"size":4,"start":15,"goal":12,"marks":[6,14,0]},{"size":4,"start":15,"goal":3,"marks":[8,11,0]},{"size":4,"start":12,"goal":15,"marks":[1,9,3]},{"size":4,"start":0,"goal":12,"marks":[6,9,11]},{"size":4,"start":3,"goal":0,"marks":[14,5,13]},{"size":4,"start":0,"goal":12,"marks":[7,4,10]},{"size":4,"start":3,"goal":0,"marks":[14,2,13]},{"size":4,"start":15,"goal":3,"marks":[8,7,5]},{"size":4,"start":12,"goal":15,"marks":[5,9,6]},{"size":4,"start":3,"goal":15,"marks":[5,7,9]}],"oni":[{"size":5,"start":0,"goal":24,"marks":[15,8,16]},{"size":5,"start":4,"goal":20,"marks":[1,13,6]},{"size":5,"start":24,"goal":0,"marks":[4,16,8]},{"size":5,"start":20,"goal":4,"marks":[24,11,18]},{"size":5,"start":4,"goal":20,"marks":[23,6,18]},{"size":5,"start":24,"goal":0,"marks":[15,13,16]},{"size":5,"start":20,"goal":4,"marks":[2,18,7]},{"size":5,"start":0,"goal":24,"marks":[14,16,8]},{"size":5,"start":24,"goal":0,"marks":[17,7,22]},{"size":5,"start":20,"goal":4,"marks":[6,13,10]},{"size":5,"start":0,"goal":24,"marks":[7,16,1]},{"size":5,"start":4,"goal":20,"marks":[18,6,9]},{"size":5,"start":20,"goal":4,"marks":[17,7,21]},{"size":5,"start":0,"goal":24,"marks":[16,13,5]},{"size":5,"start":4,"goal":20,"marks":[18,7,13]},{"size":5,"start":24,"goal":0,"marks":[16,8,17]},{"size":5,"start":0,"goal":24,"marks":[23,3,7]},{"size":5,"start":4,"goal":20,"marks":[15,19,12]},{"size":5,"start":24,"goal":0,"marks":[1,20,17]},{"size":5,"start":20,"goal":4,"marks":[9,0,12]},{"size":5,"start":4,"goal":20,"marks":[21,5,7]},{"size":5,"start":24,"goal":0,"marks":[5,3,12]},{"size":5,"start":20,"goal":4,"marks":[8,23,17]},{"size":5,"start":0,"goal":24,"marks":[18,15,12]},{"size":5,"start":24,"goal":0,"marks":[7,4,18]},{"size":5,"start":20,"goal":4,"marks":[12,24,16]},{"size":5,"start":0,"goal":24,"marks":[17,15,6]},{"size":5,"start":4,"goal":20,"marks":[12,1,8]},{"size":5,"start":20,"goal":4,"marks":[6,15,19]},{"size":5,"start":0,"goal":24,"marks":[13,1,21]},{"size":5,"start":4,"goal":20,"marks":[18,9,0]},{"size":5,"start":24,"goal":0,"marks":[11,23,4]},{"size":5,"start":0,"goal":24,"marks":[21,19,8]},{"size":5,"start":4,"goal":20,"marks":[5,21,13]},{"size":5,"start":24,"goal":0,"marks":[8,5,16]},{"size":5,"start":20,"goal":4,"marks":[18,3,11]}],"kiwami":[{"start":0,"goal":23,"portal":[2,4],"marks":[1,3,12]},{"start":4,"goal":15,"portal":[8,14],"marks":[9,16,17]},{"start":24,"goal":1,"portal":[16,22],"marks":[23,21,12]},{"start":20,"goal":9,"portal":[10,22],"marks":[5,6,7]},{"start":4,"goal":21,"portal":[2,12],"marks":[3,10,5]},{"start":24,"goal":5,"portal":[2,14],"marks":[3,21,16]},{"start":20,"goal":3,"portal":[6,22],"marks":[7,15,11]},{"start":0,"goal":19,"portal":[10,18],"marks":[13,14,12]},{"start":23,"goal":0,"portal":[2,20],"marks":[16,18,21]},{"start":15,"goal":4,"portal":[10,14],"marks":[7,16,5]},{"start":1,"goal":24,"portal":[0,22],"marks":[10,8,5]},{"start":9,"goal":20,"portal":[0,16],"marks":[7,8,15]},{"start":21,"goal":4,"portal":[0,14],"marks":[11,9,5]},{"start":5,"goal":24,"portal":[4,12],"marks":[8,2,19]},{"start":3,"goal":20,"portal":[14,24],"marks":[6,5,22]},{"start":19,"goal":0,"portal":[8,20],"marks":[2,18,3]},{"start":0,"goal":23,"portal":[4,18],"marks":[11,16,10]},{"start":4,"goal":15,"portal":[0,24],"marks":[5,16,6]},{"start":24,"goal":1,"portal":[2,20],"marks":[3,6,13]},{"start":20,"goal":9,"portal":[0,4],"marks":[5,18,6]},{"start":4,"goal":21,"portal":[6,8],"marks":[3,1,12]},{"start":24,"goal":5,"portal":[18,22],"marks":[9,8,7]},{"start":20,"goal":3,"portal":[12,16],"marks":[23,18,13]},{"start":0,"goal":19,"portal":[6,22],"marks":[5,18,13]},{"start":23,"goal":0,"portal":[6,16],"marks":[8,5,10]},{"start":15,"goal":4,"portal":[8,16],"marks":[12,19,3]},{"start":1,"goal":24,"portal":[4,18],"marks":[16,14,8]},{"start":9,"goal":20,"portal":[14,16],"marks":[6,22,18]},{"start":21,"goal":4,"portal":[8,20],"marks":[12,19,11]},{"start":5,"goal":24,"portal":[8,22],"marks":[7,23,9]},{"start":3,"goal":20,"portal":[12,18],"marks":[13,17,23]},{"start":19,"goal":0,"portal":[16,22],"marks":[8,3,10]},{"start":0,"goal":23,"portal":[8,16],"marks":[3,11,13]},{"start":4,"goal":15,"portal":[16,18],"marks":[19,11,12]},{"start":24,"goal":1,"portal":[4,16],"marks":[21,14,11]},{"start":20,"goal":9,"portal":[6,14],"marks":[5,22,19]},{"start":4,"goal":21,"portal":[6,20],"marks":[14,9,18]},{"start":24,"goal":5,"portal":[12,22],"marks":[2,18,23]},{"start":20,"goal":3,"portal":[10,14],"marks":[17,8,16]},{"start":0,"goal":19,"portal":[2,8],"marks":[15,6,17]},{"start":23,"goal":0,"portal":[10,18],"marks":[17,6,3]},{"start":15,"goal":4,"portal":[0,2],"marks":[17,8,19]},{"start":1,"goal":24,"portal":[2,14],"marks":[13,18,10]},{"start":9,"goal":20,"portal":[4,22],"marks":[11,14,6]},{"start":21,"goal":4,"portal":[10,12],"marks":[11,16,2]},{"start":5,"goal":24,"portal":[12,16],"marks":[17,18,2]},{"start":3,"goal":20,"portal":[8,12],"marks":[6,11,14]},{"start":19,"goal":0,"portal":[4,12],"marks":[3,7,22]},{"start":0,"goal":23,"portal":[12,22],"marks":[14,16,15]},{"start":4,"goal":15,"portal":[12,20],"marks":[19,16,22]},{"start":24,"goal":1,"portal":[8,10],"marks":[22,6,11]},{"start":20,"goal":9,"portal":[2,8],"marks":[15,7,12]},{"start":4,"goal":21,"portal":[10,24],"marks":[7,16,8]},{"start":24,"goal":5,"portal":[2,10],"marks":[13,6,18]},{"start":20,"goal":3,"portal":[4,14],"marks":[18,6,17]},{"start":0,"goal":19,"portal":[8,18],"marks":[22,7,12]},{"start":23,"goal":0,"portal":[16,22],"marks":[11,6,14]},{"start":15,"goal":4,"portal":[6,20],"marks":[13,16,18]},{"start":1,"goal":24,"portal":[4,6],"marks":[12,7,21]},{"start":9,"goal":20,"portal":[8,14],"marks":[17,23,2]},{"start":21,"goal":4,"portal":[16,20],"marks":[7,18,6]},{"start":5,"goal":24,"portal":[10,20],"marks":[17,18,2]},{"start":3,"goal":20,"portal":[0,4],"marks":[17,2,18]},{"start":19,"goal":0,"portal":[14,24],"marks":[17,8,18]},{"start":0,"goal":23,"portal":[2,4],"marks":[1,3,7]},{"start":4,"goal":15,"portal":[8,14],"marks":[9,16,12]},{"start":24,"goal":1,"portal":[16,22],"marks":[23,21,17]},{"start":20,"goal":9,"portal":[10,22],"marks":[5,6,2]},{"start":4,"goal":21,"portal":[2,12],"marks":[3,10,0]},{"start":24,"goal":5,"portal":[2,14],"marks":[3,21,17]},{"start":20,"goal":3,"portal":[6,22],"marks":[7,15,12]},{"start":0,"goal":19,"portal":[10,18],"marks":[13,14,17]},{"start":23,"goal":0,"portal":[2,20],"marks":[15,18,21]},{"start":15,"goal":4,"portal":[10,14],"marks":[2,16,5]},{"start":1,"goal":24,"portal":[0,22],"marks":[15,8,5]},{"start":9,"goal":20,"portal":[0,16],"marks":[12,8,15]},{"start":21,"goal":4,"portal":[0,14],"marks":[10,9,5]},{"start":5,"goal":24,"portal":[4,12],"marks":[8,3,19]},{"start":3,"goal":20,"portal":[14,24],"marks":[11,5,22]},{"start":19,"goal":0,"portal":[8,20],"marks":[1,18,3]},{"start":0,"goal":23,"portal":[4,18],"marks":[11,16,5]},{"start":4,"goal":15,"portal":[0,24],"marks":[5,16,1]},{"start":24,"goal":1,"portal":[2,20],"marks":[3,6,14]},{"start":20,"goal":9,"portal":[0,4],"marks":[5,17,6]},{"start":4,"goal":21,"portal":[6,8],"marks":[3,1,7]},{"start":24,"goal":5,"portal":[18,22],"marks":[9,8,2]},{"start":20,"goal":3,"portal":[12,16],"marks":[23,18,14]},{"start":0,"goal":19,"portal":[6,22],"marks":[5,18,14]},{"start":23,"goal":0,"portal":[6,16],"marks":[3,5,10]},{"start":15,"goal":4,"portal":[8,16],"marks":[12,24,3]},{"start":1,"goal":24,"portal":[4,18],"marks":[21,14,8]},{"start":9,"goal":20,"portal":[14,16],"marks":[5,22,18]},{"start":21,"goal":4,"portal":[8,20],"marks":[12,24,11]},{"start":5,"goal":24,"portal":[8,22],"marks":[2,23,9]},{"start":3,"goal":20,"portal":[12,18],"marks":[14,17,23]},{"start":19,"goal":0,"portal":[16,22],"marks":[7,3,10]},{"start":0,"goal":23,"portal":[8,16],"marks":[3,11,14]},{"start":4,"goal":15,"portal":[16,18],"marks":[19,11,17]},{"start":24,"goal":1,"portal":[4,16],"marks":[21,14,10]},{"start":20,"goal":9,"portal":[6,14],"marks":[5,22,24]},{"start":4,"goal":21,"portal":[6,20],"marks":[14,9,19]},{"start":24,"goal":5,"portal":[12,22],"marks":[7,18,23]},{"start":20,"goal":3,"portal":[10,14],"marks":[17,8,15]},{"start":0,"goal":19,"portal":[2,8],"marks":[15,6,22]},{"start":23,"goal":0,"portal":[10,18],"marks":[22,6,3]},{"start":15,"goal":4,"portal":[0,2],"marks":[22,8,19]},{"start":1,"goal":24,"portal":[2,14],"marks":[12,18,10]},{"start":9,"goal":20,"portal":[4,22],"marks":[11,19,6]},{"start":21,"goal":4,"portal":[10,12],"marks":[11,16,1]},{"start":5,"goal":24,"portal":[12,16],"marks":[17,23,2]},{"start":3,"goal":20,"portal":[8,12],"marks":[5,11,14]},{"start":19,"goal":0,"portal":[4,12],"marks":[3,7,17]},{"start":0,"goal":23,"portal":[12,22],"marks":[14,16,20]},{"start":4,"goal":15,"portal":[12,20],"marks":[24,16,22]},{"start":24,"goal":1,"portal":[8,10],"marks":[21,6,11]},{"start":20,"goal":9,"portal":[2,8],"marks":[15,7,16]},{"start":4,"goal":21,"portal":[10,24],"marks":[7,16,9]},{"start":24,"goal":5,"portal":[2,10],"marks":[13,6,23]},{"start":20,"goal":3,"portal":[4,14],"marks":[18,11,17]},{"start":0,"goal":19,"portal":[8,18],"marks":[17,7,12]},{"start":23,"goal":0,"portal":[16,22],"marks":[12,6,14]},{"start":15,"goal":4,"portal":[6,20],"marks":[13,11,18]},{"start":1,"goal":24,"portal":[4,6],"marks":[12,2,21]},{"start":9,"goal":20,"portal":[8,14],"marks":[12,23,2]},{"start":21,"goal":4,"portal":[16,20],"marks":[7,13,6]},{"start":5,"goal":24,"portal":[10,20],"marks":[12,18,2]},{"start":3,"goal":20,"portal":[0,4],"marks":[17,1,18]},{"start":19,"goal":0,"portal":[14,24],"marks":[16,8,18]},{"start":0,"goal":23,"portal":[2,4],"marks":[1,3,6]},{"start":4,"goal":15,"portal":[8,14],"marks":[9,16,13]},{"start":24,"goal":1,"portal":[16,22],"marks":[23,21,18]},{"start":20,"goal":9,"portal":[10,22],"marks":[5,11,7]},{"start":4,"goal":21,"portal":[2,12],"marks":[3,10,1]},{"start":24,"goal":5,"portal":[2,14],"marks":[3,20,16]},{"start":20,"goal":3,"portal":[6,22],"marks":[2,15,11]},{"start":0,"goal":19,"portal":[10,18],"marks":[13,9,12]},{"start":23,"goal":0,"portal":[2,20],"marks":[16,13,21]},{"start":15,"goal":4,"portal":[10,14],"marks":[3,16,5]},{"start":1,"goal":24,"portal":[0,22],"marks":[20,8,5]},{"start":9,"goal":20,"portal":[0,16],"marks":[11,8,15]},{"start":21,"goal":4,"portal":[0,14],"marks":[7,10,2]},{"start":5,"goal":24,"portal":[4,12],"marks":[8,2,14]},{"start":3,"goal":20,"portal":[14,24],"marks":[6,0,22]},{"start":19,"goal":0,"portal":[8,20],"marks":[2,17,3]},{"start":0,"goal":23,"portal":[4,18],"marks":[11,17,22]},{"start":4,"goal":15,"portal":[0,24],"marks":[5,17,6]},{"start":24,"goal":1,"portal":[2,20],"marks":[3,6,19]},{"start":20,"goal":9,"portal":[0,4],"marks":[3,18,2]},{"start":4,"goal":21,"portal":[6,8],"marks":[3,0,12]},{"start":24,"goal":5,"portal":[18,22],"marks":[9,13,7]},{"start":20,"goal":3,"portal":[12,16],"marks":[23,17,13]},{"start":0,"goal":19,"portal":[6,22],"marks":[5,18,9]},{"start":23,"goal":0,"portal":[6,16],"marks":[4,5,10]},{"start":15,"goal":4,"portal":[8,16],"marks":[12,23,3]},{"start":1,"goal":24,"portal":[4,18],"marks":[20,14,8]},{"start":9,"goal":20,"portal":[14,16],"marks":[0,22,18]},{"start":21,"goal":4,"portal":[8,20],"marks":[12,23,11]},{"start":5,"goal":24,"portal":[8,22],"marks":[7,23,4]},{"start":3,"goal":20,"portal":[12,18],"marks":[13,16,23]},{"start":19,"goal":0,"portal":[16,22],"marks":[8,4,10]},{"start":0,"goal":23,"portal":[8,16],"marks":[3,12,13]},{"start":4,"goal":15,"portal":[16,18],"marks":[19,11,22]},{"start":24,"goal":1,"portal":[4,16],"marks":[21,19,11]},{"start":20,"goal":9,"portal":[6,14],"marks":[5,22,23]},{"start":4,"goal":21,"portal":[6,20],"marks":[14,9,24]},{"start":24,"goal":5,"portal":[12,22],"marks":[13,8,23]},{"start":20,"goal":3,"portal":[10,14],"marks":[12,8,16]},{"start":0,"goal":19,"portal":[2,8],"marks":[15,1,17]},{"start":23,"goal":0,"portal":[10,18],"marks":[21,6,3]},{"start":15,"goal":4,"portal":[0,2],"marks":[17,3,19]},{"start":1,"goal":24,"portal":[2,14],"marks":[13,19,10]},{"start":9,"goal":20,"portal":[4,22],"marks":[11,24,6]},{"start":21,"goal":4,"portal":[10,12],"marks":[11,16,0]},{"start":5,"goal":24,"portal":[12,16],"marks":[17,22,2]},{"start":3,"goal":20,"portal":[8,12],"marks":[0,11,14]},{"start":19,"goal":0,"portal":[4,12],"marks":[7,8,22]},{"start":0,"goal":23,"portal":[12,22],"marks":[14,16,21]},{"start":4,"goal":15,"portal":[12,20],"marks":[23,16,22]},{"start":24,"goal":1,"portal":[8,10],"marks":[20,6,11]},{"start":20,"goal":9,"portal":[2,8],"marks":[15,7,21]},{"start":4,"goal":21,"portal":[10,24],"marks":[12,16,8]},{"start":24,"goal":5,"portal":[2,10],"marks":[12,6,18]},{"start":20,"goal":3,"portal":[4,14],"marks":[13,6,17]},{"start":0,"goal":19,"portal":[8,18],"marks":[22,3,12]},{"start":23,"goal":0,"portal":[16,22],"marks":[11,5,14]},{"start":15,"goal":4,"portal":[6,20],"marks":[13,10,18]},{"start":1,"goal":24,"portal":[4,6],"marks":[12,3,21]},{"start":9,"goal":20,"portal":[8,14],"marks":[17,24,2]},{"start":21,"goal":4,"portal":[16,20],"marks":[7,18,11]},{"start":5,"goal":24,"portal":[10,20],"marks":[17,23,2]},{"start":3,"goal":20,"portal":[0,4],"marks":[17,6,18]},{"start":19,"goal":0,"portal":[14,24],"marks":[17,7,18]},{"start":0,"goal":23,"portal":[2,4],"marks":[1,3,5]},{"start":4,"goal":15,"portal":[8,14],"marks":[9,16,18]},{"start":24,"goal":1,"portal":[16,22],"marks":[23,21,19]},{"start":20,"goal":9,"portal":[10,22],"marks":[5,11,2]},{"start":4,"goal":21,"portal":[2,12],"marks":[3,10,6]},{"start":24,"goal":5,"portal":[2,14],"marks":[3,20,17]},{"start":20,"goal":3,"portal":[6,22],"marks":[2,15,12]},{"start":0,"goal":19,"portal":[10,18],"marks":[13,9,17]},{"start":23,"goal":0,"portal":[2,20],"marks":[15,13,21]},{"start":15,"goal":4,"portal":[10,14],"marks":[2,17,5]},{"start":1,"goal":24,"portal":[0,22],"marks":[21,8,5]},{"start":9,"goal":20,"portal":[0,16],"marks":[12,7,15]},{"start":21,"goal":4,"portal":[0,14],"marks":[7,10,11]},{"start":5,"goal":24,"portal":[4,12],"marks":[8,3,14]},{"start":3,"goal":20,"portal":[14,24],"marks":[11,0,22]},{"start":19,"goal":0,"portal":[8,20],"marks":[1,17,3]},{"start":0,"goal":23,"portal":[4,18],"marks":[11,17,21]},{"start":4,"goal":15,"portal":[0,24],"marks":[5,17,1]},{"start":24,"goal":1,"portal":[2,20],"marks":[3,11,14]},{"start":20,"goal":9,"portal":[0,4],"marks":[3,18,1]},{"start":4,"goal":21,"portal":[6,8],"marks":[3,0,7]},{"start":24,"goal":5,"portal":[18,22],"marks":[9,13,2]},{"start":20,"goal":3,"portal":[12,16],"marks":[23,17,14]},{"start":0,"goal":19,"portal":[6,22],"marks":[5,18,4]},{"start":23,"goal":0,"portal":[6,16],"marks":[9,5,10]},{"start":15,"goal":4,"portal":[8,16],"marks":[12,18,3]},{"start":1,"goal":24,"portal":[4,18],"marks":[15,14,8]},{"start":9,"goal":20,"portal":[14,16],"marks":[1,22,18]},{"start":21,"goal":4,"portal":[8,20],"marks":[12,18,11]},{"start":5,"goal":24,"portal":[8,22],"marks":[2,23,4]},{"start":3,"goal":20,"portal":[12,18],"marks":[14,16,23]},{"start":19,"goal":0,"portal":[16,22],"marks":[7,4,10]},{"start":0,"goal":23,"portal":[8,16],"marks":[3,12,14]},{"start":4,"goal":15,"portal":[16,18],"marks":[19,10,12]},{"start":24,"goal":1,"portal":[4,16],"marks":[21,19,10]},{"start":20,"goal":9,"portal":[6,14],"marks":[5,21,19]},{"start":4,"goal":21,"portal":[6,20],"marks":[14,9,23]},{"start":24,"goal":5,"portal":[12,22],"marks":[13,9,23]},{"start":20,"goal":3,"portal":[10,14],"marks":[12,8,15]},{"start":0,"goal":19,"portal":[2,8],"marks":[15,1,22]},{"start":23,"goal":0,"portal":[10,18],"marks":[20,6,3]},{"start":15,"goal":4,"portal":[0,2],"marks":[22,3,19]},{"start":1,"goal":24,"portal":[2,14],"marks":[12,19,10]},{"start":9,"goal":20,"portal":[4,22],"marks":[11,23,6]},{"start":21,"goal":4,"portal":[10,12],"marks":[11,16,5]},{"start":5,"goal":24,"portal":[12,16],"marks":[17,18,7]},{"start":3,"goal":20,"portal":[8,12],"marks":[1,11,14]},{"start":19,"goal":0,"portal":[4,12],"marks":[1,16,11]},{"start":0,"goal":23,"portal":[12,22],"marks":[13,16,15]},{"start":4,"goal":15,"portal":[12,20],"marks":[18,16,22]},{"start":24,"goal":1,"portal":[8,10],"marks":[15,6,11]},{"start":20,"goal":9,"portal":[2,8],"marks":[15,7,22]},{"start":4,"goal":21,"portal":[10,24],"marks":[12,16,9]},{"start":24,"goal":5,"portal":[2,10],"marks":[12,6,23]},{"start":20,"goal":3,"portal":[4,14],"marks":[13,11,17]},{"start":0,"goal":19,"portal":[8,18],"marks":[22,4,12]},{"start":23,"goal":0,"portal":[16,22],"marks":[12,5,14]},{"start":15,"goal":4,"portal":[6,20],"marks":[13,5,18]},{"start":1,"goal":24,"portal":[4,6],"marks":[12,7,20]},{"start":9,"goal":20,"portal":[8,14],"marks":[12,24,2]},{"start":21,"goal":4,"portal":[16,20],"marks":[7,13,11]},{"start":5,"goal":24,"portal":[10,20],"marks":[12,23,2]},{"start":3,"goal":20,"portal":[0,4],"marks":[17,11,18]},{"start":19,"goal":0,"portal":[14,24],"marks":[1,17,8]},{"start":0,"goal":23,"portal":[2,4],"marks":[1,3,10]},{"start":4,"goal":15,"portal":[8,14],"marks":[9,16,19]},{"start":24,"goal":1,"portal":[16,22],"marks":[23,21,14]},{"start":20,"goal":9,"portal":[10,22],"marks":[5,12,7]},{"start":4,"goal":21,"portal":[2,12],"marks":[3,10,7]},{"start":24,"goal":5,"portal":[2,14],"marks":[3,15,16]},{"start":20,"goal":3,"portal":[6,22],"marks":[1,15,11]},{"start":0,"goal":19,"portal":[10,18],"marks":[13,4,12]},{"start":23,"goal":0,"portal":[2,20],"marks":[16,18,22]},{"start":15,"goal":4,"portal":[10,14],"marks":[3,17,5]},{"start":1,"goal":24,"portal":[0,22],"marks":[16,8,5]},{"start":9,"goal":20,"portal":[0,16],"marks":[11,7,15]},{"start":21,"goal":4,"portal":[0,14],"marks":[12,10,11]},{"start":5,"goal":24,"portal":[4,12],"marks":[8,2,9]},{"start":3,"goal":20,"portal":[14,24],"marks":[6,1,22]},{"start":19,"goal":0,"portal":[8,20],"marks":[2,18,4]},{"start":0,"goal":23,"portal":[4,18],"marks":[11,17,20]},{"start":4,"goal":15,"portal":[0,24],"marks":[10,16,6]},{"start":24,"goal":1,"portal":[2,20],"marks":[3,11,19]},{"start":20,"goal":9,"portal":[0,4],"marks":[3,18,6]},{"start":4,"goal":21,"portal":[6,8],"marks":[3,5,12]},{"start":24,"goal":5,"portal":[18,22],"marks":[9,12,7]},{"start":20,"goal":3,"portal":[12,16],"marks":[23,15,13]},{"start":0,"goal":19,"portal":[6,22],"marks":[5,18,3]},{"start":23,"goal":0,"portal":[6,16],"marks":[8,14,5]},{"start":15,"goal":4,"portal":[8,16],"marks":[12,19,2]},{"start":1,"goal":24,"portal":[4,18],"marks":[16,19,8]},{"start":9,"goal":20,"portal":[14,16],"marks":[6,21,18]},{"start":21,"goal":4,"portal":[8,20],"marks":[12,19,16]},{"start":5,"goal":24,"portal":[8,22],"marks":[7,23,3]},{"start":3,"goal":20,"portal":[12,18],"marks":[13,15,23]},{"start":19,"goal":0,"portal":[16,22],"marks":[8,9,10]},{"start":0,"goal":23,"portal":[8,16],"marks":[3,7,13]},{"start":4,"goal":15,"portal":[16,18],"marks":[19,10,17]},{"start":24,"goal":1,"portal":[4,16],"marks":[20,14,11]},{"start":20,"goal":9,"portal":[6,14],"marks":[5,21,24]},{"start":4,"goal":21,"portal":[6,20],"marks":[13,16,9]},{"start":24,"goal":5,"portal":[12,22],"marks":[13,4,23]},{"start":20,"goal":3,"portal":[10,14],"marks":[18,15,17]},{"start":0,"goal":19,"portal":[2,8],"marks":[20,6,17]},{"start":23,"goal":0,"portal":[10,18],"marks":[15,6,3]},{"start":15,"goal":4,"portal":[0,2],"marks":[17,8,24]},{"start":1,"goal":24,"portal":[2,14],"marks":[13,3,10]},{"start":9,"goal":20,"portal":[4,22],"marks":[11,18,6]},{"start":21,"goal":4,"portal":[10,12],"marks":[11,16,6]},{"start":5,"goal":24,"portal":[12,16],"marks":[17,23,7]},{"start":3,"goal":20,"portal":[8,12],"marks":[2,11,14]},{"start":19,"goal":0,"portal":[4,12],"marks":[1,15,11]},{"start":0,"goal":23,"portal":[12,22],"marks":[13,16,20]},{"start":4,"goal":15,"portal":[12,20],"marks":[18,16,13]},{"start":24,"goal":1,"portal":[8,10],"marks":[16,6,11]},{"start":20,"goal":9,"portal":[2,8],"marks":[15,7,17]},{"start":4,"goal":21,"portal":[10,24],"marks":[6,19,7]},{"start":24,"goal":5,"portal":[2,10],"marks":[6,16,12]},{"start":20,"goal":3,"portal":[4,14],"marks":[13,12,8]},{"start":0,"goal":19,"portal":[8,18],"marks":[22,9,12]},{"start":23,"goal":0,"portal":[16,22],"marks":[11,10,14]},{"start":15,"goal":4,"portal":[6,20],"marks":[13,0,18]},{"start":1,"goal":24,"portal":[4,6],"marks":[12,2,20]},{"start":9,"goal":20,"portal":[8,14],"marks":[17,19,2]},{"start":21,"goal":4,"portal":[16,20],"marks":[6,18,1]},{"start":5,"goal":24,"portal":[10,20],"marks":[17,22,2]},{"start":3,"goal":20,"portal":[0,4],"marks":[12,2,13]},{"start":19,"goal":0,"portal":[14,24],"marks":[2,17,8]},{"start":0,"goal":23,"portal":[2,4],"marks":[1,3,11]},{"start":4,"goal":15,"portal":[8,14],"marks":[9,16,24]},{"start":24,"goal":1,"portal":[16,22],"marks":[23,21,13]},{"start":20,"goal":9,"portal":[10,22],"marks":[5,12,2]},{"start":4,"goal":21,"portal":[2,12],"marks":[3,10,8]},{"start":24,"goal":5,"portal":[2,14],"marks":[3,15,17]},{"start":20,"goal":3,"portal":[6,22],"marks":[1,15,12]},{"start":0,"goal":19,"portal":[10,18],"marks":[13,4,17]},{"start":23,"goal":0,"portal":[2,20],"marks":[15,18,22]},{"start":15,"goal":4,"portal":[10,14],"marks":[7,16,0]},{"start":1,"goal":24,"portal":[0,22],"marks":[10,13,5]},{"start":9,"goal":20,"portal":[0,16],"marks":[7,8,10]},{"start":21,"goal":4,"portal":[0,14],"marks":[7,5,11]},{"start":5,"goal":24,"portal":[4,12],"marks":[8,3,9]},{"start":3,"goal":20,"portal":[14,24],"marks":[11,1,22]},{"start":19,"goal":0,"portal":[8,20],"marks":[1,18,4]},{"start":0,"goal":23,"portal":[4,18],"marks":[11,17,15]},{"start":4,"goal":15,"portal":[0,24],"marks":[10,16,1]},{"start":24,"goal":1,"portal":[2,20],"marks":[4,6,13]},{"start":20,"goal":9,"portal":[0,4],"marks":[3,17,2]},{"start":4,"goal":21,"portal":[6,8],"marks":[3,5,7]},{"start":24,"goal":5,"portal":[18,22],"marks":[9,12,2]},{"start":20,"goal":3,"portal":[12,16],"marks":[23,15,14]},{"start":0,"goal":19,"portal":[6,22],"marks":[5,18,8]},{"start":23,"goal":0,"portal":[6,16],"marks":[7,14,5]},{"start":15,"goal":4,"portal":[8,16],"marks":[12,24,2]},{"start":1,"goal":24,"portal":[4,18],"marks":[21,19,8]},{"start":9,"goal":20,"portal":[14,16],"marks":[5,21,18]},{"start":21,"goal":4,"portal":[8,20],"marks":[17,19,16]},{"start":5,"goal":24,"portal":[8,22],"marks":[2,23,3]},{"start":3,"goal":20,"portal":[12,18],"marks":[14,15,23]},{"start":19,"goal":0,"portal":[16,22],"marks":[7,9,10]},{"start":0,"goal":23,"portal":[8,16],"marks":[3,7,14]},{"start":4,"goal":15,"portal":[16,18],"marks":[19,10,22]},{"start":24,"goal":1,"portal":[4,16],"marks":[20,14,10]},{"start":20,"goal":9,"portal":[6,14],"marks":[5,21,23]},{"start":4,"goal":21,"portal":[6,20],"marks":[13,16,14]},{"start":24,"goal":5,"portal":[12,22],"marks":[13,3,23]},{"start":20,"goal":3,"portal":[10,14],"marks":[13,15,17]},{"start":0,"goal":19,"portal":[2,8],"marks":[20,6,22]},{"start":23,"goal":0,"portal":[10,18],"marks":[16,6,3]},{"start":15,"goal":4,"portal":[0,2],"marks":[22,8,24]},{"start":1,"goal":24,"portal":[2,14],"marks":[12,3,10]},{"start":9,"goal":20,"portal":[4,22],"marks":[11,17,6]},{"start":21,"goal":4,"portal":[10,12],"marks":[11,16,7]},{"start":5,"goal":24,"portal":[12,16],"marks":[17,22,7]},{"start":3,"goal":20,"portal":[8,12],"marks":[7,11,14]},{"start":19,"goal":0,"portal":[4,12],"marks":[1,20,11]},{"start":0,"goal":23,"portal":[12,22],"marks":[13,16,21]},{"start":4,"goal":15,"portal":[12,20],"marks":[18,11,13]},{"start":24,"goal":1,"portal":[8,10],"marks":[17,6,11]},{"start":20,"goal":9,"portal":[2,8],"marks":[15,7,18]},{"start":4,"goal":21,"portal":[10,24],"marks":[6,14,7]},{"start":24,"goal":5,"portal":[2,10],"marks":[6,16,13]},{"start":20,"goal":3,"portal":[4,14],"marks":[13,12,9]},{"start":0,"goal":19,"portal":[8,18],"marks":[22,14,12]},{"start":23,"goal":0,"portal":[16,22],"marks":[12,10,14]},{"start":15,"goal":4,"portal":[6,20],"marks":[13,1,18]},{"start":1,"goal":24,"portal":[4,6],"marks":[12,3,20]},{"start":9,"goal":20,"portal":[8,14],"marks":[12,19,2]},{"start":21,"goal":4,"portal":[16,20],"marks":[6,13,1]},{"start":5,"goal":24,"portal":[10,20],"marks":[12,22,2]},{"start":3,"goal":20,"portal":[0,4],"marks":[17,2,13]},{"start":19,"goal":0,"portal":[14,24],"marks":[3,17,8]},{"start":0,"goal":23,"portal":[2,4],"marks":[1,3,16]},{"start":4,"goal":15,"portal":[8,14],"marks":[9,16,23]},{"start":24,"goal":1,"portal":[16,22],"marks":[23,21,8]},{"start":20,"goal":9,"portal":[10,22],"marks":[5,17,7]},{"start":4,"goal":21,"portal":[2,12],"marks":[3,10,9]},{"start":24,"goal":5,"portal":[2,14],"marks":[3,10,16]},{"start":20,"goal":3,"portal":[6,22],"marks":[0,15,11]},{"start":0,"goal":19,"portal":[10,18],"marks":[13,3,12]},{"start":23,"goal":0,"portal":[2,20],"marks":[16,13,22]},{"start":15,"goal":4,"portal":[10,14],"marks":[2,16,0]},{"start":1,"goal":24,"portal":[0,22],"marks":[15,13,5]},{"start":9,"goal":20,"portal":[0,16],"marks":[12,8,10]},{"start":21,"goal":4,"portal":[0,14],"marks":[12,5,11]},{"start":5,"goal":24,"portal":[4,12],"marks":[8,2,7]},{"start":3,"goal":20,"portal":[14,24],"marks":[6,2,22]},{"start":19,"goal":0,"portal":[8,20],"marks":[2,17,4]},{"start":0,"goal":23,"portal":[4,18],"marks":[11,17,10]},{"start":4,"goal":15,"portal":[0,24],"marks":[10,17,6]},{"start":24,"goal":1,"portal":[2,20],"marks":[4,6,14]},{"start":20,"goal":9,"portal":[0,4],"marks":[3,17,1]},{"start":4,"goal":21,"portal":[6,8],"marks":[3,10,12]},{"start":24,"goal":5,"portal":[18,22],"marks":[9,17,7]},{"start":20,"goal":3,"portal":[12,16],"marks":[23,10,13]},{"start":0,"goal":19,"portal":[6,22],"marks":[5,18,7]},{"start":23,"goal":0,"portal":[6,16],"marks":[8,9,5]},{"start":15,"goal":4,"portal":[8,16],"marks":[12,23,2]},{"start":1,"goal":24,"portal":[4,18],"marks":[20,19,8]},{"start":9,"goal":20,"portal":[14,16],"marks":[0,21,18]},{"start":21,"goal":4,"portal":[8,20],"marks":[12,24,16]},{"start":5,"goal":24,"portal":[8,22],"marks":[23,12,9]},{"start":3,"goal":20,"portal":[12,18],"marks":[13,10,23]},{"start":19,"goal":0,"portal":[16,22],"marks":[8,14,10]},{"start":0,"goal":23,"portal":[8,16],"marks":[3,6,13]},{"start":4,"goal":15,"portal":[16,18],"marks":[19,5,12]},{"start":24,"goal":1,"portal":[4,16],"marks":[20,19,11]},{"start":20,"goal":9,"portal":[6,14],"marks":[0,22,19]},{"start":4,"goal":21,"portal":[6,20],"marks":[13,15,9]},{"start":24,"goal":5,"portal":[12,22],"marks":[13,2,23]},{"start":20,"goal":3,"portal":[10,14],"marks":[13,15,12]},{"start":0,"goal":19,"portal":[2,8],"marks":[20,1,17]},{"start":23,"goal":0,"portal":[10,18],"marks":[11,6,3]},{"start":15,"goal":4,"portal":[0,2],"marks":[17,3,24]},{"start":1,"goal":24,"portal":[2,14],"marks":[13,4,10]},{"start":9,"goal":20,"portal":[4,22],"marks":[12,14,7]},{"start":21,"goal":4,"portal":[10,12],"marks":[17,16,3]},{"start":5,"goal":24,"portal":[12,16],"marks":[18,8,13]},{"start":3,"goal":20,"portal":[8,12],"marks":[5,6,14]},{"start":19,"goal":0,"portal":[4,12],"marks":[1,21,11]},{"start":0,"goal":23,"portal":[12,22],"marks":[14,16,11]},{"start":4,"goal":15,"portal":[12,20],"marks":[18,10,5]},{"start":24,"goal":1,"portal":[8,10],"marks":[17,6,12]},{"start":20,"goal":9,"portal":[2,8],"marks":[15,7,23]},{"start":4,"goal":21,"portal":[10,24],"marks":[6,9,7]},{"start":24,"goal":5,"portal":[2,10],"marks":[6,17,12]},{"start":20,"goal":3,"portal":[4,14],"marks":[13,15,8]},{"start":0,"goal":19,"portal":[8,18],"marks":[22,13,12]},{"start":23,"goal":0,"portal":[16,22],"marks":[11,15,14]},{"start":15,"goal":4,"portal":[6,20],"marks":[13,2,18]},{"start":1,"goal":24,"portal":[4,6],"marks":[12,7,15]},{"start":9,"goal":20,"portal":[8,14],"marks":[12,18,2]},{"start":21,"goal":4,"portal":[16,20],"marks":[6,18,0]},{"start":5,"goal":24,"portal":[10,20],"marks":[17,21,2]},{"start":3,"goal":20,"portal":[0,4],"marks":[17,1,13]},{"start":19,"goal":0,"portal":[14,24],"marks":[4,17,8]},{"start":0,"goal":23,"portal":[2,4],"marks":[1,3,15]},{"start":4,"goal":15,"portal":[8,14],"marks":[9,16,22]},{"start":24,"goal":1,"portal":[16,22],"marks":[23,21,9]},{"start":20,"goal":9,"portal":[10,22],"marks":[5,17,2]},{"start":4,"goal":21,"portal":[2,12],"marks":[3,10,14]},{"start":24,"goal":5,"portal":[2,14],"marks":[3,10,17]},{"start":20,"goal":3,"portal":[6,22],"marks":[0,15,12]},{"start":0,"goal":19,"portal":[10,18],"marks":[13,3,17]},{"start":23,"goal":0,"portal":[2,20],"marks":[15,13,22]},{"start":15,"goal":4,"portal":[10,14],"marks":[3,16,0]},{"start":1,"goal":24,"portal":[0,22],"marks":[20,13,5]},{"start":9,"goal":20,"portal":[0,16],"marks":[11,8,10]},{"start":21,"goal":4,"portal":[0,14],"marks":[7,9,11]},{"start":5,"goal":24,"portal":[4,12],"marks":[8,3,7]},{"start":3,"goal":20,"portal":[14,24],"marks":[11,2,22]},{"start":19,"goal":0,"portal":[8,20],"marks":[1,17,4]},{"start":0,"goal":23,"portal":[4,18],"marks":[11,17,5]},{"start":4,"goal":15,"portal":[0,24],"marks":[10,17,1]},{"start":24,"goal":1,"portal":[2,20],"marks":[4,6,19]},{"start":20,"goal":9,"portal":[0,4],"marks":[3,17,6]},{"start":4,"goal":21,"portal":[6,8],"marks":[3,10,7]},{"start":24,"goal":5,"portal":[18,22],"marks":[9,17,2]},{"start":20,"goal":3,"portal":[12,16],"marks":[23,10,14]},{"start":0,"goal":19,"portal":[6,22],"marks":[5,18,2]},{"start":23,"goal":0,"portal":[6,16],"marks":[7,9,5]},{"start":15,"goal":4,"portal":[8,16],"marks":[12,18,2]},{"start":1,"goal":24,"portal":[4,18],"marks":[15,19,8]},{"start":9,"goal":20,"portal":[14,16],"marks":[1,21,18]},{"start":21,"goal":4,"portal":[8,20],"marks":[17,24,16]},{"start":5,"goal":24,"portal":[8,22],"marks":[23,13,9]},{"start":3,"goal":20,"portal":[12,18],"marks":[14,10,23]},{"start":19,"goal":0,"portal":[16,22],"marks":[7,14,10]}]};
@@ -43,6 +393,26 @@ function pathFive(reset) {
   render();
 }
 
+function generateFiveSum(difficulty,date){
+  if(difficulty==='normal'){const [y,m,d]=date.split('-').map(Number);return generateSumPuzzle(y,m,d)}
+  const day=Math.floor(Date.parse(date+'T00:00:00Z')/86400000),items=sumLevels[difficulty];
+  return items[((day+7*Math.floor(day/items.length))%items.length+items.length)%items.length];
+}
+function sumFive(reset){
+  const date=todayInTokyo(),puzzle=generateFiveSum(sumDifficulty,date);
+  const {values,target,targets,evenSum,offsets}=puzzle,count=sumDifficulty==='kiwami'?3:sumDifficulty==='oni'?2:1,names=count===3?['小','中','大']:['1組目','2組目'];category.textContent=`今日のパズル ${date}`;
+  instructions.textContent=sumDifficulty==='hard'?`3枚の合計を${target}にしよう。偶数2枚の合計は${evenSum}だよ。`:sumDifficulty==='oni'?`カードを重ねず、合計${targets[0]}と${targets[1]}の組を作ろう。`:sumDifficulty==='kiwami'?`3枚ずつ分けよう。合計は、中は小より${offsets[0]}、大は中より${offsets[1]}大きくする。`:'3枚の数字を選び、合計を目標の数に合わせよう。';
+  const modes=document.createElement('div');modes.className='lights-modes sum-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');for(const [value,label] of Object.entries(sumLabels)){const b=document.createElement('button');b.type='button';b.dataset.difficulty=value;b.textContent=label;b.setAttribute('aria-pressed',String(value===sumDifficulty));b.addEventListener('click',event=>{if(value===sumDifficulty)return;sumDifficulty=value;start();if(event.detail===0)document.querySelector(`.sum-modes [data-difficulty="${value}"]`)?.focus()});modes.append(b)}status.before(modes);
+  const group=document.createElement('div');group.className='sum-groups';group.setAttribute('role','group');group.setAttribute('aria-label','選ぶ組');let active=0;const groupButtons=[];if(count>1){for(let i=0;i<count;i++){const b=document.createElement('button');b.type='button';b.addEventListener('click',()=>{active=i;render()});group.append(b);groupButtons.push(b)}status.before(group)}cleanup=()=>{modes.remove();group.remove()};
+  board.classList.add('sum');const storage=dailyStorage(`sum-${sumDifficulty}-v2`,date);let owners=Array(values.length).fill(-1),moves=0,won=false;
+  const valid=saved=>saved&&Array.isArray(saved.owners)&&saved.owners.length===values.length&&saved.owners.every(x=>Number.isInteger(x)&&x>=-1&&x<count)&&Array.from({length:count},(_,i)=>saved.owners.filter(x=>x===i).length).every(n=>n<=3)&&Number.isSafeInteger(saved.moves)&&saved.moves>=0;
+  if(reset){storage.load();storage.clear();storage.load();storage.save({owners,moves})}let saved=storage.load();if(!reset&&sumDifficulty==='normal'&&saved===null){const old=dailyStorage('sum',date).load();currentDailyStorage=storage;if(old&&Array.isArray(old.cells)&&old.cells.length===9&&old.cells.every(x=>typeof x==='boolean')&&old.cells.filter(Boolean).length<=3&&Number.isSafeInteger(old.moves)&&old.moves>=0){const candidate={owners:old.cells.map(x=>x?0:-1),moves:old.moves};saved=storage.save(candidate)?candidate:storage.load()}}if(valid(saved)){owners=saved.owners;moves=saved.moves}currentDailyStorage=storage;
+  const buttons=values.map((value,i)=>button(String(value),()=>{if(won)return;const owner=owners[i];if(owner===active)owners[i]=-1;else if(owners.filter(x=>x===active).length<3)owners[i]=active;else return;moves++;if(!storage.save({owners,moves})){recoverDailyConflict();return}render()}));
+  function render(){const groups=Array.from({length:count},(_,i)=>values.filter((_,j)=>owners[j]===i)),sums=groups.map(g=>g.reduce((a,b)=>a+b,0));won=groups.every(g=>g.length===3)&&(sumDifficulty==='hard'?sums[0]===target&&groups[0].filter(x=>x%2===0).length===2&&groups[0].filter(x=>x%2===0).reduce((a,b)=>a+b,0)===evenSum:sumDifficulty==='oni'?sums.every((n,i)=>n===targets[i]):sumDifficulty==='kiwami'?sums[1]-sums[0]===offsets[0]&&sums[2]-sums[1]===offsets[1]:sums[0]===target);
+    buttons.forEach((b,i)=>{const owner=owners[i];b.replaceChildren(document.createTextNode(String(values[i])));if(count>1&&owner>=0){const mark=document.createElement('small');mark.className='sum-group-label';mark.textContent=names[owner];mark.setAttribute('aria-hidden','true');b.append(mark)}b.className=owner<0?'':`sum-group-${owner}`;b.setAttribute('aria-pressed',String(owner>=0));b.setAttribute('aria-disabled',String(won));b.setAttribute('aria-label',`${values[i]}${owner>=0?(count===1?' 選択中':` ${names[owner]}`):''}`)});groupButtons.forEach((b,i)=>{b.textContent=`${names[i]} ${groups[i].length}/3`;b.setAttribute('aria-pressed',String(i===active))});status.textContent=won?`クリア！ ${moves}手`:count===1?`目標 ${target}　選択 ${groups[0].length}枚　合計 ${sums[0]}`:'合計　'+sums.map((n,i)=>`${names[i]} ${n}`).join('　');if(won)offerCopy(`ぴったり3枚 ${sumLabels[sumDifficulty]} ${date} ${moves}手\nhttps://game.kihamda.net/play-sum.html?difficulty=${sumDifficulty}&version=2`);else{copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true}}
+  render();
+}
+
 function button(label, action) { const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.addEventListener('click', action); board.append(b); return b; }
 function offerResultCopy(game, date, moves) {
   const text = `${gameCatalog[game].title} ${date} ${moves}手\nhttps://game.kihamda.net/play-${game}.html${['lights','sort'].includes(game) ? '?mode=daily' : ''}`;
@@ -56,7 +426,7 @@ function offerCopy(text) {
     let message;
     try { await navigator.clipboard.writeText(text); message = '結果をコピーしたよ'; }
     catch (_) { message = 'コピーできなかったよ'; }
-    if (generation !== runGeneration || copyResult.onclick !== copyHandler || copyResult.hidden || (id==='path' && activeDailyDate!==todayInTokyo())) return;
+    if (generation !== runGeneration || copyResult.onclick !== copyHandler || copyResult.hidden || (['path','sum'].includes(id) && activeDailyDate!==todayInTokyo())) return;
     copyFeedback.textContent = message;
     copyFeedback.hidden = false;
   };
@@ -648,103 +1018,137 @@ const games = {
     }
     render();
   },
-  code() {
+  code(reset) {
     category.textContent='推理';board.classList.add('code');status.setAttribute('aria-live','off');
-    const symbols=['●','▲','◆','■'], names=['まる','さんかく','ひし形','しかく'];
-    const answer=shuffle([0,1,2,3]).slice(0,3), selection=[], attempts=[];
-    let finished=false;
-    const selected=document.createElement('p');selected.className='code-selected';board.append(selected);
-    const choices=symbols.map((symbol,i)=>{
-      const b=button(symbol,()=>{
-        if(finished)return;
-        const index=selection.indexOf(i);
-        if(index>=0)selection.splice(index,1);else if(selection.length<3)selection.push(i);
-        render();
-      });
-      b.className='code-choice';b.setAttribute('aria-label',names[i]);return b;
-    });
+    const mode=codeDifficulty,labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+    const config={easy:[3,2,false,4,'both'],normal:[4,3,false,6,'both'],hard:[5,4,false,6,'both'],oni:[4,4,true,10,'exact'],kiwami:[5,4,true,16,'parity']}[mode];
+    const [alphabet,length,repeats,limit,clue]=config;
+    const modes=document.createElement('div');modes.className='lights-modes code-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+    for(const [value,label] of Object.entries(labels)){const option=document.createElement('button');option.type='button';option.dataset.difficulty=value;option.textContent=label;option.setAttribute('aria-pressed',String(mode===value));option.addEventListener('click',event=>{if(value===mode)return;codeDifficulty=value;start();if(event.detail===0)document.querySelector(`.code-modes [data-difficulty="${value}"]`)?.focus()});modes.append(option)}status.before(modes);
+    const symbols=['●','▲','◆','■','★'],names=['まる','さんかく','ひし形','しかく','ほし'];
+    instructions.textContent=mode==='normal'?gameCatalog.code.instructions:clue==='parity'?'同じ形を使えるよ。位置が合う数の偶数・奇数を手がかりに4つ当てよう。0個も偶数だよ。':clue==='exact'?'同じ形を使えるよ。位置も同じ数を手がかりに4つ当てよう。':`${alphabet}種類から${length}つ選ぼう。同じ形は使えないよ。`;
+    const factory=()=>repeats?Array.from({length},()=>Math.floor(Math.random()*alphabet)):shuffle(Array.from({length:alphabet},(_,i)=>i)).slice(0,length);
+    const store={getItem:key=>window.localStorage.getItem(key),setItem:(key,value)=>window.localStorage.setItem(key,value),removeItem:key=>window.localStorage.removeItem(key)};
+    const adapter=gameAdapter(store,mode,{alphabet,length,repeats,limit},factory);let loadResult=adapter.load();if(reset&&loadResult.ok)loadResult=adapter.restart();
+    let state=adapter.view(),answer=state.session.answer,selection=[],attempts=state.session.attempts.map(score),finished=state.session.scored,conflicted=loadResult.reason==='conflict',warning=loadResult.warning||null;
+    function score(values){const exact=values.filter((value,i)=>answer[i]===value).length,counts=Array(alphabet).fill(0),used=Array(alphabet).fill(0);answer.forEach(x=>counts[x]++);values.forEach(x=>used[x]++);return {values:[...values],exact,present:counts.reduce((n,x,i)=>n+Math.min(x,used[i]),0)-exact}}
+    board.after(record);const refresh=document.createElement('button');refresh.type='button';refresh.className='code-refresh';refresh.textContent='最新の記録を読み込む';refresh.hidden=true;refresh.addEventListener('click',()=>start());record.after(refresh);
+    function showRecord(){record.hidden=!warning&&!conflicted&&state.games===0;record.textContent=conflicted?'別のタブで更新されたよ。最新の記録を読み込んでね。':warning?'このブラウザでは記録を保存できないよ':state.games?`正解 ${state.wins} / ${state.games}回${state.best===null?'':`・最少 ${state.best}回`}`:'';refresh.hidden=!conflicted}
+    showRecord();
+    const selected=document.createElement('p');selected.className='code-selected';selected.setAttribute('aria-live','polite');board.append(selected);board.style.setProperty('--code-columns',alphabet);
+    const choices=symbols.slice(0,alphabet).map((symbol,i)=>{const b=button(symbol,()=>{if(finished||conflicted)return;const index=selection.indexOf(i);if(!repeats&&index>=0)selection.splice(index,1);else if(selection.length<length)selection.push(i);render()});b.className='code-choice';b.setAttribute('aria-label',names[i]);return b});
+    const undo=button('1つ戻す',()=>{if(!finished&&!conflicted){selection.pop();render()}});undo.className='code-undo';
     const submit=button('答える',e=>{
-      if(finished||selection.length!==3)return;
-      const exact=selection.filter((value,i)=>answer[i]===value).length;
-      const present=selection.filter(value=>answer.includes(value)).length-exact;
-      attempts.push({values:[...selection],exact,present});selection.length=0;
-      finished=exact===3||attempts.length===6;
-      render();
-      announcement.textContent=`位置も同じ ${exact}、形だけ同じ ${present}。${status.textContent}`;
-      if(e?.detail===0)(finished?restart:choices[0]).focus();
+      if(finished||conflicted||selection.length!==length)return;
+      const attempt=score(selection),result=adapter.play([...selection]);
+      if(!result.ok){conflicted=true;showRecord();render();return}
+      warning=result.warning||warning;state=adapter.view();attempts.push(attempt);selection.length=0;finished=state.session.scored;showRecord();render();
+      const detail=clue==='parity'?`位置が同じ数：${attempt.exact%2?'奇数':'偶数'}`:clue==='exact'?`位置も同じ ${attempt.exact}`:`位置も同じ ${attempt.exact}、形だけ同じ ${attempt.present}`;announcement.textContent=`${detail}。${status.textContent}`;if(e?.detail===0)(finished?restart:choices[0]).focus();
     });submit.className='code-submit';
-    const history=document.createElement('ol');history.className='code-history';history.setAttribute('aria-label','回答の履歴');board.append(history);
-    function render(){
-      selected.hidden=finished;
-      selected.textContent=selection.length?`選んだ順：${selection.map(i=>names[i]).join('・')}`:'形を3つ選んでね';
-      choices.forEach((b,i)=>{b.setAttribute('aria-pressed',String(selection.includes(i)));b.hidden=finished;b.disabled=finished||(selection.length===3&&!selection.includes(i));});
-      submit.hidden=finished;submit.disabled=finished||selection.length!==3;
-      history.replaceChildren();
-      attempts.forEach(({values,exact,present})=>{const li=document.createElement('li');li.textContent=`${values.map(i=>names[i]).join('・')}：位置も同じ ${exact}、形だけ同じ ${present}`;history.append(li)});
-      status.textContent=finished?(attempts.at(-1).exact===3?`正解！ ${attempts.length}回で当てたよ`:`答えは ${answer.map(i=>names[i]).join('・')} だったよ`):`あと ${6-attempts.length}回`;
-    }
-    render();
+    const history=document.createElement('ol');history.className='code-history';history.setAttribute('aria-label','回答の履歴');history.tabIndex=-1;board.append(history);
+    function render(){selected.hidden=finished;selected.textContent=selection.length?`選んだ順：${selection.map(i=>names[i]).join('・')}`:`形を${length}つ選んでね`;choices.forEach((b,i)=>{b.hidden=finished;b.disabled=finished||conflicted||(selection.length===length&&(repeats||!selection.includes(i)));repeats?b.removeAttribute('aria-pressed'):b.setAttribute('aria-pressed',String(selection.includes(i)))});undo.hidden=finished;undo.disabled=conflicted||selection.length===0;submit.hidden=finished;submit.disabled=conflicted||selection.length!==length;history.replaceChildren();history.tabIndex=attempts.length?0:-1;for(const attempt of attempts){const li=document.createElement('li'),feedback=clue==='parity'?`位置が同じ数：${attempt.exact%2?'奇数':'偶数'}`:clue==='exact'?`位置も同じ ${attempt.exact}`:`位置も同じ ${attempt.exact}、形だけ同じ ${attempt.present}`;li.textContent=`${attempt.values.map(i=>names[i]).join('・')}：${feedback}`;history.append(li)}status.textContent=finished?(attempts.at(-1).exact===length?`正解！ ${attempts.length}回で当てたよ`:`答えは ${answer.map(i=>names[i]).join('・')} だったよ`):`あと ${limit-attempts.length}回`}
+    codeRestartGuard=()=>{if(conflicted)return;const result=adapter.restart();if(!result.ok){conflicted=true;showRecord();render();return}start()};
+    cleanup=()=>{codeRestartGuard=null;modes.remove();refresh.remove();status.after(record);board.style.removeProperty('--code-columns')};render();
   },
   recall() {
-    category.textContent='記憶';board.classList.add('recall');
-    const symbols=['●','▲','◆','■'],names=['まる','さんかく','ひし形','しかく'];
+    const mode=recallDifficulty,labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+    category.textContent='記憶';document.body.classList.add('recall-mode');board.classList.add('recall');
+    const heading=document.querySelector('.play-heading'),headingContent=instructions.parentElement;heading.after(instructions);
+    const modes=document.createElement('div');modes.className='lights-modes recall-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+    for(const [value,label] of Object.entries(labels)){const option=document.createElement('button');option.type='button';option.dataset.difficulty=value;option.textContent=label;option.setAttribute('aria-pressed',String(mode===value));option.addEventListener('click',event=>{if(value===mode)return;recallDifficulty=value;start();if(event.detail===0)document.querySelector(`.recall-modes [data-difficulty="${value}"]`)?.focus()});modes.append(option)}
+    status.before(modes);board.after(record);
+    const symbols=['●','▲','◆','■'],names=['まる','さんかく','ひし形','しかく'],recordKey=`kihamda-recall-v2-${mode}`;
+    const descriptions={easy:'覚えた形を、後ろから押そう。',normal:gameCatalog.recall.instructions,hard:'後ろから、次の形に変えて押そう。まる→さんかく→ひし形→しかく→まる。',oni:'偶数番目を後ろから、次に奇数番目を後ろから押そう。',kiwami:'同じ形は最後だけ残す。逆順にして、それぞれ次の形へ。まる→さんかく→ひし形→しかく→まる。'};
+    instructions.textContent=descriptions[mode];
     const sequence=[];
-    function extend(){
-      const previous=sequence.at(-1),choice=Math.floor(Math.random()*(sequence.length?3:4));
-      sequence.push(sequence.length && choice>=previous ? choice+1 : choice);
-    }
-    for(let i=0;i<3;i++)extend();
-    let position=0, mistakes=0, phase='preview';
+    function extend(){const previous=sequence.at(-1),choice=Math.floor(Math.random()*(sequence.length?3:4));sequence.push(sequence.length&&choice>=previous?choice+1:choice)}
+    const first={easy:2,normal:3,hard:3,oni:4,kiwami:6}[mode],last={easy:3,normal:5,hard:5,oni:6,kiwami:8}[mode];
+    if(mode==='kiwami'){
+      const initial=[0,1,2,3];for(let i=3;i>0;i--){const j=Math.floor(Math.random()*(i+1));[initial[i],initial[j]]=[initial[j],initial[i]]}sequence.push(...initial);while(sequence.length<first)extend();
+      for(let i=sequence.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[sequence[i],sequence[j]]=[sequence[j],sequence[i]]}
+    }else for(let i=0;i<first;i++)extend();
+    let position=0,mistakes=0,phase='preview',expected=[];
+    function readBest(){try{const raw=localStorage.getItem(recordKey),value=Number(raw);return raw!==null&&raw.trim()&&Number.isSafeInteger(value)&&value>=0?value:null}catch(_){return null}}
+    function displayBest(){const best=readBest();record.hidden=best===null;record.textContent=best===null?'':`最少の間違い ${best}回`}
+    function saveBest(){try{const best=readBest();if(best===null||mistakes<best)localStorage.setItem(recordKey,String(mistakes));displayBest()}catch(_){record.hidden=false;record.textContent='記録を保存できなかったよ'}}
+    displayBest();
     const ready=button('覚えた',e=>{
-      if(phase==='complete'){start();if(e?.detail===0)board.querySelector('.recall-ready').focus();return;}
+      if(phase==='complete'){start();if(e?.detail===0)board.querySelector('.recall-ready').focus();return}
       if(phase!=='preview')return;
-      phase='input';position=0;ready.hidden=true;choices.forEach(b=>b.disabled=false);
-      status.textContent=`逆から押そう　0 / ${sequence.length}`;
-      if(e?.detail===0)choices[0].focus();
-    });
-    ready.className='recall-ready';
+      expected=recallAnswer(mode,sequence);phase='input';position=0;ready.hidden=true;choices.forEach(b=>b.disabled=false);
+      status.textContent=`順に押そう　0 / ${expected.length}`;if(e?.detail===0)choices[0].focus();
+    });ready.className='recall-ready';
     const choices=symbols.map((symbol,i)=>{
       const b=button(symbol,e=>{
         if(phase!=='input')return;
-        if(i!==sequence[sequence.length-1-position]){
-          mistakes++;showPreview(true);if(e?.detail===0)ready.focus();return;
-        }
+        if(i!==expected[position]){mistakes++;showPreview(true);if(e?.detail===0)ready.focus();return}
         position++;
-        if(position<sequence.length){status.textContent=`逆から押そう　${position} / ${sequence.length}`;return;}
-        if(sequence.length<5){extend();showPreview(false);if(e?.detail===0)ready.focus();return;}
+        if(position<expected.length){status.textContent=`順に押そう　${position} / ${expected.length}`;return}
+        if(sequence.length<last){extend();showPreview(false);if(e?.detail===0)ready.focus();return}
         phase='complete';choices.forEach(item=>item.disabled=true);ready.hidden=false;ready.textContent='もう一度';
-        status.textContent=`クリア！ 間違い ${mistakes}回`;if(e?.detail===0)ready.focus();
-      });
-      b.setAttribute('aria-label',names[i]);return b;
+        status.textContent=`クリア！ 間違い ${mistakes}回`;saveBest();if(e?.detail===0)ready.focus();
+      });b.setAttribute('aria-label',names[i]);return b;
     });
-    function showPreview(retry){
-      phase='preview';ready.hidden=false;ready.textContent='覚えた';choices.forEach(b=>b.disabled=true);
-      status.textContent=`${retry?'もう一度覚えよう':'覚えよう'}：${sequence.map(i=>names[i]).join('・')}`;
-    }
-    showPreview(false);
+    function showPreview(retry){phase='preview';ready.hidden=false;ready.textContent='覚えた';choices.forEach(b=>b.disabled=true);status.textContent=`${retry?'もう一度覚えよう':'覚えよう'}：${sequence.map(i=>names[i]).join('・')}`}
+    cleanup=()=>{modes.remove();status.after(record);headingContent.append(instructions);document.body.classList.remove('recall-mode')};showPreview(false);
   },
   timing() {
-    category.textContent='時間感覚';
-    board.classList.add('timing');
-    let started=null;
+    const mode=timingDifficulty,labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+    const recordKey=`kihamda-timing-v2-${mode}`;category.textContent='時間感覚';document.body.classList.add('timing-mode');board.classList.add('timing');
+    const heading=document.querySelector('.play-heading'),headingContent=instructions.parentElement;heading.after(instructions);
+    let clues,session,sequence;
+    function newChallenge(){
+      const pools=mode==='oni'||mode==='kiwami'?timingChallengePools():null;
+      const intervals=mode==='kiwami'?pools.kiwami[Math.floor(Math.random()*pools.kiwami.length)]:[];
+      clues=intervals.map((value,i)=>value+intervals[(i+1)%intervals.length]);
+      sequence=mode==='oni'?pools.oni[Math.floor(Math.random()*pools.oni.length)]:[];
+      session=timingCreateSession(mode,mode==='oni'?sequence:clues);
+    }
+    newChallenge();
+    const modes=document.createElement('div');modes.className='lights-modes timing-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+    for(const [value,label] of Object.entries(labels)){const b=document.createElement('button');b.type='button';b.dataset.difficulty=value;b.textContent=label;b.setAttribute('aria-pressed',String(value===mode));b.addEventListener('click',event=>{if(value===mode)return;timingDifficulty=value;start();if(event.detail===0)document.querySelector(`.timing-modes [data-difficulty="${value}"]`)?.focus()});modes.append(b)}status.before(modes);modes.after(board);
+    const seconds=n=>String(n/1000);
+    const format=n=>(Math.round(n/10)/100).toFixed(2);
+    function showRules(){const rules={easy:'3秒を目安にストップしよう。',normal:gameCatalog.timing.instructions,hard:'最初に1〜2秒を作り、次は2倍、最後は3倍にしよう。'};instructions.textContent=mode==='oni'?`${sequence.map(seconds).join('、')}秒の間隔を覚えて、逆順に作ろう。`:mode==='kiwami'?`A+B=${seconds(clues[0])}、B+C=${seconds(clues[1])}、C+D=${seconds(clues[2])}、D+E=${seconds(clues[3])}、E+A=${seconds(clues[4])}秒。Aから順に区間を作ろう。`:rules[mode]}
+    showRules();
+    const progress=document.createElement('progress');progress.max=3000;progress.value=0;progress.hidden=true;progress.setAttribute('aria-label','3秒までの目安');
+    let frame=0,startedAt=0;
+    function stopProgress(){cancelAnimationFrame(frame);progress.hidden=true;progress.value=0}
+    function tick(now){progress.value=Math.min(3000,Math.max(0,now-startedAt));if(progress.value<3000)frame=requestAnimationFrame(tick)}
+    function readBest(){try{const raw=localStorage.getItem(recordKey),value=Number(raw);return raw!==null&&raw.trim()&&Number.isFinite(value)&&value>=0?value:null}catch(_){return null}}
+    function showBest(){const best=readBest();record.hidden=best===null;record.textContent=best===null?'':`差の合計のベスト ${format(best)}秒`}
+    function saveBest(value){try{const old=readBest();if(old===null||value<old)localStorage.setItem(recordKey,String(value));showBest()}catch(_){record.hidden=false;record.textContent='記録を保存できなかったよ'}}
+    showBest();
     const control=button('スタート',()=>{
-      if(started===null){
-        started=performance.now();control.textContent='ストップ';status.textContent='5秒たったらストップ！';
+      const current=session.snapshot();
+      if(current.result?.state==='complete'){
+        newChallenge();showRules();
+        if(mode==='oni'||mode==='kiwami'){copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;control.textContent='スタート';status.textContent='スタートを押してね';return}
+      }
+      if(!session.snapshot().running){
         copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';
-      } else {
-        const hundredths=Math.round((performance.now()-started)/10);
-        started=null;control.textContent='もう一度';
-        const elapsed=(hundredths/100).toFixed(2),difference=(Math.abs(hundredths-500)/100).toFixed(2);
-        status.textContent=`${elapsed}秒　差 ${difference}秒`;
-        offerCopy(`5秒ぴったり ${elapsed}秒（差 ${difference}秒）\nhttps://game.kihamda.net/play-timing.html`);
+        startedAt=performance.now();session.start(startedAt);
+        if(mode==='oni'){instructions.style.minHeight=`${instructions.getBoundingClientRect().height}px`;instructions.textContent='覚えた間隔を逆順に作ろう。'}
+        if(mode==='easy'){progress.hidden=false;frame=requestAnimationFrame(tick)}
+        control.textContent='ストップ';status.textContent=`${session.snapshot().intervals.length+1}区間目を計測中`;return;
+      }
+      stopProgress();const result=session.stop(performance.now());
+      if(result.state==='invalid-reference'){control.textContent='スタート';status.textContent='最初は1〜2秒でやり直そう';return}
+      const snapshot=session.snapshot(),last=snapshot.intervals.at(-1),difference=result.differences.at(-1);
+      control.textContent=result.state==='complete'?'もう一度':'次の区間';
+      status.textContent=`${snapshot.intervals.length}区間目 ${format(last)}秒　差 ${format(difference)}秒${result.state==='complete'?`　完了・差の合計 ${format(result.totalError)}秒`:''}`;
+      if(result.state==='complete'){
+        saveBest(result.totalError);showRules();
+        const times=snapshot.intervals.map(format).join('、');
+        const condition=mode==='kiwami'?`（A+B=${seconds(clues[0])}、B+C=${seconds(clues[1])}、C+D=${seconds(clues[2])}、D+E=${seconds(clues[3])}、E+A=${seconds(clues[4])}秒）`:mode==='oni'?`（提示 ${sequence.map(seconds).join('、')}秒）`:'';
+        const text=`5秒ぴったり ${labels[mode]} ${times}秒${condition}（差の合計 ${format(result.totalError)}秒）\nhttps://game.kihamda.net/play-timing.html`;
+        offerCopy(text);
       }
     });
-    status.textContent='スタートを押してね';
-    const cancel=()=>{
-      if(document.hidden && started!==null){started=null;control.textContent='スタート';status.textContent='計測を中止したよ。もう一度スタートしてね。';}
-    };
+    board.append(progress);status.textContent='スタートを押してね';
+    const cancel=()=>{if(document.hidden&&(session.snapshot().running||(session.snapshot().intervals.length&&session.snapshot().result?.state!=='complete'))){stopProgress();session.cancel();showRules();control.textContent='スタート';status.textContent='計測を中止したよ'}};
     document.addEventListener('visibilitychange',cancel);
-    cleanup=()=>document.removeEventListener('visibilitychange',cancel);
+    cleanup=()=>{stopProgress();modes.remove();instructions.style.minHeight='';headingContent.append(instructions);document.body.classList.remove('timing-mode');document.querySelector('#grid-keyboard-help').after(board);document.removeEventListener('visibilitychange',cancel)};
   },
   lights(reset) {
     const daily=params.get('mode')==='daily',size=lightsDifficulty==='kiwami'?5:4;
@@ -770,74 +1174,9 @@ const games = {
     const buttons=cells.map((_,i)=>button('',()=>{if(!cells.some(Boolean))return;toggle(i);moves++;if(progress&&!progress.save(cells,moves)){recoverDailyConflict();return}render()}));
     function render(){const won=!cells.some(Boolean);cells.forEach((on,i)=>{buttons[i].className=on?'on':'';buttons[i].textContent=on?'✦':'·';buttons[i].setAttribute('aria-disabled',String(won));buttons[i].setAttribute('aria-label',`${Math.floor(i/size)+1}行${i%size+1}列 ${on?'点灯':'消灯'}`)});status.textContent=cells.some(Boolean)?`${moves}手`:`クリア！ ${moves}手で消せたよ`;if(progress&&!cells.some(Boolean))offerCopy(`ひかりのスイッチ ${{easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極',legacy:'以前の問題'}[lightsDifficulty]} ${dailyDate} ${moves}手\nhttps://game.kihamda.net/play-lights.html?mode=daily&difficulty=${lightsDifficulty}&version=${lightsDifficulty==='legacy'?'1':'2'}`)}render();
   },
-  memory() {
-    category.textContent = '記憶';
-    const symbols = shuffle(['●','◆','▲','★','♥','☀','✿','■', '●','◆','▲','★','♥','☀','✿','■']);
-    let open=[], matched=0, turns=0, timer=0, locked=false;
-    const names={'●':'まる','◆':'ひし形','▲':'さんかく','★':'ほし','♥':'ハート','☀':'たいよう','✿':'はな','■':'しかく'};
-    const cardLabel=(i,value)=>`${Math.floor(i/4)+1}行${i%4+1}列 ${value}`;
-    const buttons=symbols.map((s,i)=>button('？',e=>{ if(locked || buttons[i].disabled || open.includes(i)) return; buttons[i].textContent=s; buttons[i].className='flipped'; buttons[i].setAttribute('aria-label',cardLabel(i,names[s])); open.push(i); if(open.length===2){ turns++; if(symbols[open[0]]===symbols[open[1]]) { const focused=buttons.indexOf(document.activeElement); const needsFocus=e?.detail===0 && open.includes(focused); open.forEach(j=>{buttons[j].disabled=true;buttons[j].className='matched';buttons[j].setAttribute('aria-label',cardLabel(j,`${names[symbols[j]]} そろったカード`));}); matched++;open=[];status.textContent=matched===8?`クリア！ ${turns}回でそろえたよ`:`${matched}組 / 8組`; if(needsFocus){const remaining=buttons.slice(focused+1).concat(buttons.slice(0,focused)).find(b=>!b.disabled);(remaining || document.querySelector('#restart')).focus();} } else {locked=true; timer=setTimeout(()=>{open.forEach(j=>{buttons[j].textContent='？';buttons[j].className='';buttons[j].setAttribute('aria-label',cardLabel(j,'伏せたカード'));});open=[];locked=false;},700);} } })); buttons.forEach((b,i)=>b.setAttribute('aria-label',cardLabel(i,'伏せたカード'))); status.textContent='0組 / 8組'; cleanup=()=>clearTimeout(timer);
-  },
-  order() {
-    category.textContent='スピード';
-    let next=1, start=0, best=null;
-    try {
-      const saved=window.localStorage.getItem('kihamda-order-best');
-      if(saved!==null && saved.trim()!=='' && Number.isFinite(Number(saved)) && Number(saved)>=0) best=Number(saved);
-    } catch (_) {}
-    const showBest=()=>{record.hidden=best===null;record.textContent=best===null?'':`自己ベスト ${best.toFixed(2)}秒`;};
-    showBest();
-    const nums=shuffle([...Array(16)].map((_,i)=>i+1));
-    const buttons=nums.map(n=>{
-      const b=button(n,e=>{
-        if(n!==next)return;
-        const needsFocus=e?.detail===0 && document.activeElement===b;
-        if(next===1)start=performance.now();
-        b.disabled=true;b.className='matched';next++;
-        if(next===17){
-          const seconds=(performance.now()-start)/1000;
-          status.textContent=`ゴール！ ${seconds.toFixed(2)}秒`;
-          if(best===null || seconds<best){
-            best=seconds;
-            try {window.localStorage.setItem('kihamda-order-best', String(best));} catch (_) {}
-            showBest();
-          }
-        } else status.textContent=`次は ${next}`;
-        if(needsFocus){
-          const index=buttons.indexOf(b);
-          const remaining=buttons.slice(index+1).concat(buttons.slice(0,index)).find(item=>!item.disabled);
-          (remaining || document.querySelector('#restart')).focus();
-        }
-      });
-      return b;
-    });
-    status.textContent='次は 1';
-  },
-  sum(reset) {
-    const parts = new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
-    const part=type=>Number(parts.find(item=>item.type===type).value);
-    const date=`${part('year')}-${String(part('month')).padStart(2,'0')}-${String(part('day')).padStart(2,'0')}`;
-    category.textContent=`今日のパズル ${date}`;
-    const {values,target}=generateSumPuzzle(part('year'),part('month'),part('day'));
-    const progress=dailyProgress('sum',date,9);
-    let selected=Array(9).fill(false),moves=0,won=false;
-    if(reset)progress.clear();
-    const saved=progress.load();
-    if(saved && saved.cells.filter(Boolean).length<=3){selected=saved.cells;moves=saved.moves;}
-    board.classList.add('sum');
-    const buttons=values.map((value,index)=>button(String(value),()=>{
-      if(won || (!selected[index] && selected.filter(Boolean).length===3))return;
-      selected[index]=!selected[index];moves++;if(!progress.save(selected,moves)){recoverDailyConflict();return;}render();
-    }));
-    function render(){
-      const chosen=values.filter((_,i)=>selected[i]),total=chosen.reduce((a,n)=>a+n,0);
-      won=chosen.length===3&&total===target;
-      buttons.forEach((b,i)=>{b.className=selected[i]?'on':'';b.setAttribute('aria-pressed',String(selected[i]));});
-      status.textContent=won?`クリア！ 目標 ${target}`:`目標 ${target}　選択 ${chosen.length}枚　合計 ${total}`;
-      if(won)offerResultCopy('sum',date,moves);
-    }
-    render();
-  },
+  memory(reset) { return memoryFive(reset); },
+  order() { return orderFive(); },
+  sum(reset) { sumFive(reset); },
   path(reset) { pathFive(reset); },
   circuit(reset) {
     const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
@@ -1019,37 +1358,7 @@ const games = {
     }
     render();
   },
-  slide() {
-    category.textContent='パズル';
-    board.classList.add('slide');
-    const solved=[1,2,3,4,5,6,7,8,0];
-    let tiles=[...solved], empty=8, previous=-1, moves=0, won=false;
-    const neighbors=index=>[index-3,index+3,...(index%3?[index-1]:[]),...(index%3<2?[index+1]:[])].filter(i=>i>=0&&i<9);
-    for(let step=0;step<35;step++) {
-      const choices=neighbors(empty).filter(index=>index!==previous);
-      const next=choices[Math.floor(Math.random()*choices.length)];
-      [tiles[empty],tiles[next]]=[tiles[next],tiles[empty]];
-      previous=empty; empty=next;
-    }
-    const buttons=tiles.map((_,index)=>button('',e=>{
-      if(won || !neighbors(empty).includes(index)) return;
-      const needsFocus=e?.detail===0 && document.activeElement===buttons[index], destination=empty;
-      [tiles[empty],tiles[index]]=[tiles[index],tiles[empty]];
-      empty=index; moves++;
-      won=tiles.every((tile,i)=>tile===solved[i]);
-      render();
-      if(needsFocus) (won ? document.querySelector('#restart') : buttons[destination]).focus();
-    }));
-    function render() {
-      buttons.forEach((b,index)=>{
-        const value=tiles[index], movable=value!==0 && neighbors(empty).includes(index) && !won;
-        b.textContent=value || ''; b.disabled=value===0; b.className=value===0?'slide-empty':movable?'slide-movable':'';
-        b.setAttribute('aria-label',`${Math.floor(index/3)+1}行${index%3+1}列 ${value || '空き'}${movable?' 動かせる':''}`);
-      });
-      status.textContent=won?`クリア！ ${moves}手で並べたよ`:`${moves}手`;
-    }
-    render();
-  },
+  slide(reset) { return slideFive(reset); },
   garden(reset) {
     if(gardenDifficulty!=='legacy')return gardenFive(reset);board.dataset.gardenSize=4;board.style.setProperty('--garden-size',4);
     category.textContent='日替わりパズル';
@@ -1085,13 +1394,17 @@ const games = {
   },
   dodge() {
     document.body.classList.add('dodge-mode');status.setAttribute('aria-live','off');category.textContent='アクション'; controls.hidden=false;
+    const mode=dodgeDifficulty;
+    const labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+    const modes=document.createElement('div');modes.className='lights-modes dodge-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+    for(const [value,label] of Object.entries(labels)){const b=document.createElement('button');b.type='button';b.dataset.difficulty=value;b.textContent=label;b.setAttribute('aria-pressed',String(mode===value));b.addEventListener('click',event=>{if(value===mode)return;const interrupted=alive;dodgeDifficulty=value;start();if(interrupted)announcement.textContent='前のゲームを中止したよ';if(event.detail===0)document.querySelector(`.dodge-modes [data-difficulty="${value}"]`)?.focus()});modes.append(b)}status.before(modes);
     const canvas=document.createElement('canvas');canvas.width=400;canvas.height=400;canvas.setAttribute('aria-label','星をよけるゲーム画面'); board.style.display='block'; board.append(canvas); const ctx=canvas.getContext('2d');
     let x=200, items=[], ticks=0, last=0, elapsed=0, frame=0, alive=false, dir=0;
     const keys=new Set(), pointers=new Map(), heldSince=new Map(), longClicks=new Map(); const updateDirection=()=>{const held=[...pointers.values()];dir=held.length?Number(held.includes(1))-Number(held.includes(-1)):Number(keys.has('ArrowRight'))-Number(keys.has('ArrowLeft'));};
-    const startButton=document.createElement('button'); startButton.type='button'; startButton.className='button dodge-start'; startButton.textContent='スタート'; board.append(startButton);
+    const startButton=document.createElement('button'); startButton.type='button'; startButton.className='button dodge-start'; startButton.textContent=mode==='kiwami'?'問題を見る':'スタート'; board.append(startButton);
     function move(e){if(!alive)return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();if(e.type==='keydown')keys.add(e.key);else keys.delete(e.key);updateDirection();}}
     const stopMoving=()=>{keys.clear();pointers.clear();heldSince.clear();longClicks.clear();updateDirection();};
-    document.addEventListener('keydown',move);document.addEventListener('keyup',move);window.addEventListener('blur',stopMoving);document.addEventListener('visibilitychange',stopMoving);
+    const onVisibility=()=>{stopMoving();last=0;};document.addEventListener('keydown',move);document.addEventListener('keyup',move);window.addEventListener('blur',stopMoving);document.addEventListener('visibilitychange',onVisibility);
     const left=document.querySelector('#left'),right=document.querySelector('#right');
     const down=direction=>e=>{if(alive){longClicks.delete(e.currentTarget);heldSince.set(e.pointerId,performance.now());pointers.set(e.pointerId,direction);updateDirection();}};
     const up=e=>{
@@ -1107,14 +1420,50 @@ const games = {
         if(!alive||suppress)return;x=Math.max(15,Math.min(385,x+direction*30));
       });
     }
+    const centers=[50,125,200,275,350];
+    const configurations={
+      easy:{interval:2.2,waves:[[1],[3],[2],[0],[4],[1]]},
+      hard:{interval:1.2,waves:[[0,1,3],[1,2,4],[0,2,3],[1,3,4],[0,1,4],[0,2,4]]},
+      oni:{interval:1.2,waves:[[1,2,3],[1,2,3,4],[0,2,3],[0,1,4],[0,1,2],[0,1,2,3]],targets:[null,0,null,2,null,4]},
+      kiwami:{interval:1.2,waves:[[1,2,3],[1,2,3,4],[0,2,3],[0,1,4],[0,1,2],[0,1,2,3]],targets:[null,0,null,2,null,4]}
+    },config=configurations[mode],fallSpeed=380/3;
+    if(config&&!config.targets){const variant=Math.floor(Math.random()*10);config.waves=config.waves.map(row=>row.map(lane=>((variant>=5?4-lane:lane)+variant%5)%5));}
+    if(config?.targets){const baseWaves=config.waves,baseTargets=config.targets,variant=Math.floor(Math.random()*10),makeTransform=v=>lane=>((v>=5?4-lane:lane)+v%5)%5,transform=makeTransform(variant);config.waves=baseWaves.map(row=>row.map(transform));config.targets=baseTargets.map(lane=>lane===null?null:transform(lane));config.start=transform(2)+1;if(mode==='kiwami'){const second=makeTransform(Math.floor(Math.random()*10));config.waves.push(...baseWaves.map(row=>row.map(second)));config.targets.push(...baseTargets.map(lane=>lane===null?null:second(lane)));}}
+    if(config?.targets){const lanes=document.createElement('div');lanes.className='dodge-lanes';lanes.setAttribute('aria-hidden','true');centers.forEach((pos,index)=>{const label=document.createElement('span');label.style.left=`${pos/4}%`;label.textContent=String(index+1);lanes.append(label)});board.append(lanes);}
+    const recordKey=`kihamda-dodge-v2-${mode}`;
+    function displayRecord(){try{const value=localStorage.getItem(recordKey);let message='';if(mode==='normal'){const seconds=Number(value);if(value!==null&&value.trim()&&Number.isFinite(seconds)&&seconds>=0)message=`ベスト ${seconds.toFixed(1)}秒`;}else if(value==='clear')message='クリア済み';record.hidden=true;record.textContent=message;startButton.replaceChildren(document.createTextNode(mode==='kiwami'?'問題を見る':'スタート'));if(message){startButton.append(document.createElement('br'));const note=document.createElement('small');note.textContent=message;startButton.append(note);}}catch(_){}}
+    function saveRecord(){if(mode!=='normal'&&outcome!=='クリア！')return;try{if(mode==='normal'){const raw=localStorage.getItem(recordKey),value=Number(raw);if(raw===null||!raw.trim()||!Number.isFinite(value)||value<elapsed)localStorage.setItem(recordKey,String(elapsed));}else if(outcome==='クリア！')localStorage.setItem(recordKey,'clear');displayRecord();}catch(_){record.textContent='記録を保存できなかったよ';}}
+    displayRecord();
+    let passed=0,outcome='',spawned=0;
+    const texts={easy:'星をよけよう。6回よけたらクリア。',normal:gameCatalog.dodge.instructions,hard:'星のすき間を通ろう。6回よけたらクリア。',oni:'列は左から1〜5。偶数回は指定の列へ進もう。',kiwami:'偶数回は前の列に表示数を足す。5を超えたら5を引く。'};
+    instructions.textContent=texts[mode];
     function draw(){ctx.clearRect(0,0,400,400);ctx.fillStyle='#a9dfc8';ctx.beginPath();ctx.arc(x,365,14,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f9c96e';ctx.font='26px sans-serif';for(const p of items)ctx.fillText('✦',p.x-12,p.y+8);}
-    function loop(t){if(!alive)return;const dt=last?Math.min((t-last)/1000,.05):0;last=t;elapsed+=dt;ticks+=dt;x=Math.max(15,Math.min(385,x+dir*230*dt));if(ticks>.55){ticks=0;items.push({x:15+Math.random()*370,y:-15,s:110+Math.random()*80+elapsed*2});}for(const p of items){p.y+=p.s*dt;if(Math.abs(p.x-x)<22&&Math.abs(p.y-365)<22)alive=false;}items=items.filter(p=>p.y<420);draw();status.textContent=alive?`${elapsed.toFixed(1)}秒`:`ゲームオーバー！ ${elapsed.toFixed(1)}秒`;if(alive)frame=requestAnimationFrame(loop);else announcement.textContent=status.textContent;}
-    draw();status.textContent='スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;startButton.hidden=true;alive=true;last=0;frame=requestAnimationFrame(loop);});cleanup=()=>{alive=false;startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',stopMoving);window.removeEventListener('pointerup',clearReleased);window.removeEventListener('pointercancel',clearReleased); for(const el of [left,right]){el.replaceWith(el.cloneNode(true));}};
+    function challengeStatus(){if(!config)return `${elapsed.toFixed(1)}秒`;if(!config.targets)return `${passed} / ${config.waves.length} 回`;const cues=[];let previous=config.start,displayPrevious=config.start;for(let i=0;i<config.targets.length;i++){const target=config.targets[i];if(target===null)continue;const destination=target+1,increment=(destination-previous+5)%5;if(i>=passed&&cues.length<2)cues.push(`${i+1}回${mode==='kiwami'?`+${increment}`:` ${destination}列`}`);if(i<passed)displayPrevious=destination;previous=destination;}return `${passed}/${config.waves.length}　${mode==='kiwami'?`前${passed<2?'？':displayPrevious}列　`:''}${cues.join(' → ')}`;}
+    function loop(t){
+      if(!alive)return;if(document.hidden){last=0;frame=requestAnimationFrame(loop);return;}const dt=last?Math.min((t-last)/1000,.05):0;last=t;elapsed+=dt;ticks+=dt;x=Math.max(15,Math.min(385,x+dir*230*dt));
+      if(!config){if(ticks>.55){ticks=0;items.push({x:15+Math.random()*370,y:-15,s:110+Math.random()*80+elapsed*2});}}
+      else {while(spawned<config.waves.length && elapsed>=spawned*config.interval){for(const lane of config.waves[spawned])items.push({x:centers[lane],y:-15,s:fallSpeed,spawn:spawned*config.interval});spawned++;}}
+      for(const p of items){p.y=config?(elapsed-p.spawn)*p.s-15:p.y+p.s*dt;if(Math.abs(p.x-x)<22&&Math.abs(p.y-365)<22){alive=false;outcome='星に当たったよ';}}
+      if(config&&alive){const previousPassed=passed;while(passed<config.waves.length && elapsed>=3+passed*config.interval){const target=config.targets?.[passed];if(target!=null&&Math.abs(x-centers[target])>15){alive=false;outcome='指定の列に届かなかったよ';break;}passed++;}if(alive&&config.targets&&passed!==previousPassed&&passed%2===0&&passed<config.waves.length)announcement.textContent=challengeStatus();if(passed===config.waves.length && elapsed>=3+(config.waves.length-1)*config.interval+.18){alive=false;outcome='クリア！';}}
+      items=items.filter(p=>p.y<420);draw();status.textContent=alive?challengeStatus():config?`${outcome} ${passed} / ${config.waves.length} 回`:`ゲームオーバー！ ${elapsed.toFixed(1)}秒`;if(alive)frame=requestAnimationFrame(loop);else{saveRecord();if(record.textContent)status.textContent+=`　${record.textContent}`;announcement.textContent=status.textContent;}
+    }
+    let prep=null;
+    function launch(){if(alive)return;prep?.close();startButton.hidden=true;alive=true;last=0;if(config?.targets)announcement.textContent=challengeStatus();frame=requestAnimationFrame(loop);if(prep)left.focus();}
+    if(mode==='kiwami'){
+      prep=document.createElement('dialog');prep.className='dodge-prep';prep.setAttribute('aria-labelledby','dodge-prep-title');
+      const heading=document.createElement('h2');heading.id='dodge-prep-title';heading.textContent='最初の基準列を考えよう';
+      const explanation=document.createElement('p');explanation.textContent='偶数回に、前の基準列へ表示数を足した列に進みます。5を超えたら5を引きます。最初の基準列は、最後の列と6回の加算から逆算できます。基準列とスタート位置は別です。';
+      const values=[];let previous=config.start;for(let i=0;i<config.targets.length;i++){const target=config.targets[i];if(target===null)continue;const destination=target+1;values.push(`${i+1}回 +${(destination-previous+5)%5}`);previous=destination;}
+      const clue=document.createElement('p');clue.className='dodge-prep-clue';clue.textContent=`${values.join('、')}。最後は${previous}列。`;
+      const begin=document.createElement('button');begin.type='button';begin.className='button dodge-prep-begin';begin.textContent='スタート';begin.addEventListener('click',launch);
+      const cancel=document.createElement('button');cancel.type='button';cancel.className='button dodge-prep-cancel';cancel.textContent='戻る';cancel.addEventListener('click',()=>prep.close());prep.append(heading,explanation,clue,begin,cancel);document.body.append(prep);
+    }
+    draw();status.textContent=config?.targets?challengeStatus():'スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;if(prep){prep.showModal();prep.querySelector('.dodge-prep-begin').focus();}else launch();});cleanup=()=>{alive=false;prep?.remove();modes.remove();startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',onVisibility);window.removeEventListener('pointerup',clearReleased);window.removeEventListener('pointercancel',clearReleased); for(const el of [left,right]){el.replaceWith(el.cloneNode(true));}};
   }
 };
 const gridColumns={three:3,mirror:3,swap:3,lights:4,memory:4,order:4,garden:4,path:4,sum:3,slide:3,circuit:3};
 board.addEventListener('keydown',event=>{
-  const columns=id==='path'?Number(board.dataset.pathSize||4):id==='garden'?Number(board.dataset.gardenSize||4):id==='lights'?Number(board.dataset.lightsSize||4):id==='circuit'?Number(board.dataset.circuitSize||3):Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
+  const columns=id==='order'?Number(board.dataset.orderSize||4):id==='memory'?Number(board.dataset.memorySize||4):id==='slide'?Number(board.dataset.slideSize||3):id==='path'?Number(board.dataset.pathSize||4):id==='garden'?Number(board.dataset.gardenSize||4):id==='lights'?Number(board.dataset.lightsSize||4):id==='circuit'?Number(board.dataset.circuitSize||3):Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
   const directions={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
   const direction=Object.hasOwn(directions,event.key) ? directions[event.key] : null;
   if(!columns || !direction)return;
@@ -1163,6 +1512,7 @@ function start(reset=false){
   document.body.classList.remove('daily-stale','storage-unavailable');
   document.body.classList.remove('dodge-mode','grid-mode','path-mode','lights-mode','garden-mode');announcement.textContent='';record.hidden=true;record.textContent='';copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';status.setAttribute('aria-live','polite');board.replaceChildren();board.classList.remove('garden','slide','sum','path','sort','circuit','timing','recall','code','balance','swap','shift','series','mirror','number','three');board.style.display='';controls.hidden=true;
   if(!Object.hasOwn(games,id)){title.textContent='ゲームが見つかりません';instructions.textContent='ゲーム一覧から選んでね。';status.textContent='';return;}
+  if(id==='sum'&&invalidSumLink){title.textContent='この問題は開けないよ';instructions.textContent='対応していない問題の版だよ。ゲーム一覧から開いてね。';category.textContent='';status.textContent='';restart.hidden=true;return;}
   if(id==='path'&&invalidPathLink){title.textContent='この問題は開けないよ';instructions.textContent='対応していない問題の版だよ。ゲーム一覧から開いてね。';category.textContent='';status.textContent='';restart.hidden=true;return;}
   if(id==='garden'&&invalidGardenLink){title.textContent='この問題は開けないよ';instructions.textContent='対応していない問題の版だよ。ゲーム一覧から開いてね。';category.textContent='';status.textContent='';restart.hidden=true;return;}
   if(id==='sort'&&invalidSortLink){title.textContent='この問題は開けないよ';instructions.textContent='対応していない問題の版だよ。ゲーム一覧から開いてね。';category.textContent='';status.textContent='';restart.hidden=true;return;}
@@ -1174,6 +1524,7 @@ function start(reset=false){
 }
 restart.addEventListener('click',()=>{
   refreshDailyDate();
+  if(id==='code'&&codeRestartGuard){codeRestartGuard();return;}
   if(!isStaleDaily && currentDailyStorage && !currentDailyStorage.isCurrent()){recoverDailyConflict();return;}
   start(!isStaleDaily);
 });
