@@ -90,8 +90,14 @@ header>a,footer a{display:inline-flex;align-items:center;justify-content:center;
 
 .board.timing{display:block;max-width:300px}
 .board.timing button{width:100%;min-height:88px;aspect-ratio:auto;font-size:1.5rem}
+.board.timing progress{display:block;width:100%;height:1rem;margin:12px 0 0;accent-color:var(--accent,#635bba)}
+.board.timing progress[hidden]{display:none}
+.timing-mode #instructions{margin:0 0 8px}
+@media(min-width:481px) and (max-height:500px){.timing-mode #instructions{grid-column:1;font-size:.8rem;line-height:1.35;margin:2px 0}.timing-mode .play-heading{gap:6px}.timing-mode .play-heading h1{font-size:1rem;white-space:nowrap}.timing-mode .play-heading .button{font-size:.8rem;padding:9px 10px}.timing-mode .status{font-size:.85rem;line-height:1.35;margin:4px 0}}
 
 .board.recall{grid-template-columns:repeat(4,minmax(0,1fr));max-width:400px}
+.recall-mode #instructions{margin:0 0 8px}
+@media(min-width:481px) and (max-height:500px){.recall-mode #instructions{grid-column:1;font-size:.8rem;line-height:1.35;margin:2px 0}.recall-mode .play-heading{gap:6px}.recall-mode .play-heading h1{font-size:1rem;letter-spacing:-.04em;white-space:nowrap}.recall-mode .play-heading .button{font-size:.8rem;padding:9px 10px}.recall-mode .status{font-size:.85rem;line-height:1.35;margin:4px 0}}
 .board.recall .recall-ready{grid-column:1 / -1;aspect-ratio:auto;min-height:48px;font-size:1rem;border-radius:99px}
 .board.recall .recall-ready[hidden]{display:none}
 

@@ -1,3 +1,60 @@
+let recallDifficulty='normal';
+function recallAnswer(mode,sequence){
+ if(mode==='easy'||mode==='normal')return [...sequence].reverse();
+ if(mode==='hard')return [...sequence].reverse().map(value=>(value+1)%4);
+ if(mode==='oni')return sequence.filter((_,i)=>i%2===1).reverse().concat(sequence.filter((_,i)=>i%2===0).reverse());
+ if(mode==='kiwami')return [...sequence].reverse().filter((value,i,reversed)=>reversed.indexOf(value)===i).map(value=>(value+1)%4);
+ throw Error('unknown mode');
+}
+
+
+function timingCreateSession(mode,clues){
+ let started=null,intervals=[],result=null;
+ return {
+  start(now){if(started!==null||result?.state==='complete')throw Error('cannot start');if(!Number.isFinite(now))throw Error('invalid clock');started=now;},
+  stop(now){if(started===null||!Number.isFinite(now)||now<started)throw Error('invalid stop');const duration=Math.round(now-started);started=null;const candidate=intervals.concat(duration),next=timingEvaluate(mode,candidate,clues);if(next.state==='invalid-reference'){intervals=[];result=next;return next;}intervals=candidate;result=next;return next;},
+  cancel(){started=null;intervals=[];result=null;},
+  snapshot(){return {running:started!==null,intervals:[...intervals],result};}
+ };
+}
+
+
+let timingDifficulty="normal";
+let timingChallenges=null;
+function timingChallengePools(){
+  if(timingChallenges)return timingChallenges;
+  const oni=[],kiwami=[];
+  for(let n=0;n<81;n++){let value=n;const items=Array.from({length:4},()=>{const digit=value%3;value=Math.floor(value/3);return 1000+1000*digit});if(items[0]!==items[3]||items[1]!==items[2])oni.push(items)}
+  for(let n=0;n<3125;n++){let value=n;const items=Array.from({length:5},()=>{const digit=value%5;value=Math.floor(value/5);return 1000+500*digit});const sums=items.map((v,i)=>v+items[(i+1)%5]);if(new Set(items).size>=3&&new Set(sums).size>=4)kiwami.push(items)}
+  return timingChallenges={oni,kiwami};
+}
+// Time measurements are integer milliseconds. No state is stored here.
+function timingInferIntervals([ab,bc,cd,de,ea]){
+  if(![ab,bc,cd,de,ea].every(Number.isSafeInteger))throw Error('invalid clues');
+  const numerator=ab-bc+cd-de+ea;if(numerator%2)throw Error('intervals are not integral milliseconds');
+  const a=numerator/2,b=ab-a,c=bc-b,d=cd-c,e=de-d,answer=[a,b,c,d,e];
+  if(answer.some(n=>n<=0))throw Error('intervals must be positive');
+  return answer;
+}
+function timingEvaluate(mode,durations,clues){
+  if(!Array.isArray(durations)||durations.some(n=>!Number.isSafeInteger(n)||n<0))throw Error('invalid durations');
+  let targets;
+  if(mode==='easy')targets=[3000];
+  else if(mode==='normal')targets=[5000];
+  else if(mode==='hard'){
+    if(!durations.length)return {state:'waiting',targets:[],differences:[]};
+    const base=durations[0];if(base<1000||base>2000)return {state:'invalid-reference',targets:[],differences:[]};
+    targets=[base,base*2,base*3];
+  }else if(mode==='oni')targets=clues.slice().reverse();
+  else if(mode==='kiwami')targets=timingInferIntervals(clues);
+  else throw Error('unknown mode');
+  if(durations.length>targets.length)throw Error('too many intervals');
+  const differences=durations.map((value,i)=>Math.abs(value-targets[i]));
+  const scored=mode==='hard'?differences.slice(1):differences;
+  return {state:durations.length===targets.length?'complete':'waiting',targets,differences,totalError:scored.reduce((a,b)=>a+b,0)};
+}
+
+
 let dodgeDifficulty='normal';
 let orderDifficulty='normal';
 const orderLabels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
@@ -932,65 +989,104 @@ const games = {
     render();
   },
   recall() {
-    category.textContent='記憶';board.classList.add('recall');
-    const symbols=['●','▲','◆','■'],names=['まる','さんかく','ひし形','しかく'];
+    const mode=recallDifficulty,labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+    category.textContent='記憶';document.body.classList.add('recall-mode');board.classList.add('recall');
+    const heading=document.querySelector('.play-heading'),headingContent=instructions.parentElement;heading.after(instructions);
+    const modes=document.createElement('div');modes.className='lights-modes recall-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+    for(const [value,label] of Object.entries(labels)){const option=document.createElement('button');option.type='button';option.dataset.difficulty=value;option.textContent=label;option.setAttribute('aria-pressed',String(mode===value));option.addEventListener('click',event=>{if(value===mode)return;recallDifficulty=value;start();if(event.detail===0)document.querySelector(`.recall-modes [data-difficulty="${value}"]`)?.focus()});modes.append(option)}
+    status.before(modes);board.after(record);
+    const symbols=['●','▲','◆','■'],names=['まる','さんかく','ひし形','しかく'],recordKey=`kihamda-recall-v2-${mode}`;
+    const descriptions={easy:'覚えた形を、後ろから押そう。',normal:gameCatalog.recall.instructions,hard:'後ろから、次の形に変えて押そう。まる→さんかく→ひし形→しかく→まる。',oni:'偶数番目を後ろから、次に奇数番目を後ろから押そう。',kiwami:'同じ形は最後だけ残す。逆順にして、それぞれ次の形へ。まる→さんかく→ひし形→しかく→まる。'};
+    instructions.textContent=descriptions[mode];
     const sequence=[];
-    function extend(){
-      const previous=sequence.at(-1),choice=Math.floor(Math.random()*(sequence.length?3:4));
-      sequence.push(sequence.length && choice>=previous ? choice+1 : choice);
-    }
-    for(let i=0;i<3;i++)extend();
-    let position=0, mistakes=0, phase='preview';
+    function extend(){const previous=sequence.at(-1),choice=Math.floor(Math.random()*(sequence.length?3:4));sequence.push(sequence.length&&choice>=previous?choice+1:choice)}
+    const first={easy:2,normal:3,hard:3,oni:4,kiwami:6}[mode],last={easy:3,normal:5,hard:5,oni:6,kiwami:8}[mode];
+    if(mode==='kiwami'){
+      const initial=[0,1,2,3];for(let i=3;i>0;i--){const j=Math.floor(Math.random()*(i+1));[initial[i],initial[j]]=[initial[j],initial[i]]}sequence.push(...initial);while(sequence.length<first)extend();
+      for(let i=sequence.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[sequence[i],sequence[j]]=[sequence[j],sequence[i]]}
+    }else for(let i=0;i<first;i++)extend();
+    let position=0,mistakes=0,phase='preview',expected=[];
+    function readBest(){try{const raw=localStorage.getItem(recordKey),value=Number(raw);return raw!==null&&raw.trim()&&Number.isSafeInteger(value)&&value>=0?value:null}catch(_){return null}}
+    function displayBest(){const best=readBest();record.hidden=best===null;record.textContent=best===null?'':`最少の間違い ${best}回`}
+    function saveBest(){try{const best=readBest();if(best===null||mistakes<best)localStorage.setItem(recordKey,String(mistakes));displayBest()}catch(_){record.hidden=false;record.textContent='記録を保存できなかったよ'}}
+    displayBest();
     const ready=button('覚えた',e=>{
-      if(phase==='complete'){start();if(e?.detail===0)board.querySelector('.recall-ready').focus();return;}
+      if(phase==='complete'){start();if(e?.detail===0)board.querySelector('.recall-ready').focus();return}
       if(phase!=='preview')return;
-      phase='input';position=0;ready.hidden=true;choices.forEach(b=>b.disabled=false);
-      status.textContent=`逆から押そう　0 / ${sequence.length}`;
-      if(e?.detail===0)choices[0].focus();
-    });
-    ready.className='recall-ready';
+      expected=recallAnswer(mode,sequence);phase='input';position=0;ready.hidden=true;choices.forEach(b=>b.disabled=false);
+      status.textContent=`順に押そう　0 / ${expected.length}`;if(e?.detail===0)choices[0].focus();
+    });ready.className='recall-ready';
     const choices=symbols.map((symbol,i)=>{
       const b=button(symbol,e=>{
         if(phase!=='input')return;
-        if(i!==sequence[sequence.length-1-position]){
-          mistakes++;showPreview(true);if(e?.detail===0)ready.focus();return;
-        }
+        if(i!==expected[position]){mistakes++;showPreview(true);if(e?.detail===0)ready.focus();return}
         position++;
-        if(position<sequence.length){status.textContent=`逆から押そう　${position} / ${sequence.length}`;return;}
-        if(sequence.length<5){extend();showPreview(false);if(e?.detail===0)ready.focus();return;}
+        if(position<expected.length){status.textContent=`順に押そう　${position} / ${expected.length}`;return}
+        if(sequence.length<last){extend();showPreview(false);if(e?.detail===0)ready.focus();return}
         phase='complete';choices.forEach(item=>item.disabled=true);ready.hidden=false;ready.textContent='もう一度';
-        status.textContent=`クリア！ 間違い ${mistakes}回`;if(e?.detail===0)ready.focus();
-      });
-      b.setAttribute('aria-label',names[i]);return b;
+        status.textContent=`クリア！ 間違い ${mistakes}回`;saveBest();if(e?.detail===0)ready.focus();
+      });b.setAttribute('aria-label',names[i]);return b;
     });
-    function showPreview(retry){
-      phase='preview';ready.hidden=false;ready.textContent='覚えた';choices.forEach(b=>b.disabled=true);
-      status.textContent=`${retry?'もう一度覚えよう':'覚えよう'}：${sequence.map(i=>names[i]).join('・')}`;
-    }
-    showPreview(false);
+    function showPreview(retry){phase='preview';ready.hidden=false;ready.textContent='覚えた';choices.forEach(b=>b.disabled=true);status.textContent=`${retry?'もう一度覚えよう':'覚えよう'}：${sequence.map(i=>names[i]).join('・')}`}
+    cleanup=()=>{modes.remove();status.after(record);headingContent.append(instructions);document.body.classList.remove('recall-mode')};showPreview(false);
   },
   timing() {
-    category.textContent='時間感覚';
-    board.classList.add('timing');
-    let started=null;
+    const mode=timingDifficulty,labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+    const recordKey=`kihamda-timing-v2-${mode}`;category.textContent='時間感覚';document.body.classList.add('timing-mode');board.classList.add('timing');
+    const heading=document.querySelector('.play-heading'),headingContent=instructions.parentElement;heading.after(instructions);
+    let clues,session,sequence;
+    function newChallenge(){
+      const pools=mode==='oni'||mode==='kiwami'?timingChallengePools():null;
+      const intervals=mode==='kiwami'?pools.kiwami[Math.floor(Math.random()*pools.kiwami.length)]:[];
+      clues=intervals.map((value,i)=>value+intervals[(i+1)%intervals.length]);
+      sequence=mode==='oni'?pools.oni[Math.floor(Math.random()*pools.oni.length)]:[];
+      session=timingCreateSession(mode,mode==='oni'?sequence:clues);
+    }
+    newChallenge();
+    const modes=document.createElement('div');modes.className='lights-modes timing-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+    for(const [value,label] of Object.entries(labels)){const b=document.createElement('button');b.type='button';b.dataset.difficulty=value;b.textContent=label;b.setAttribute('aria-pressed',String(value===mode));b.addEventListener('click',event=>{if(value===mode)return;timingDifficulty=value;start();if(event.detail===0)document.querySelector(`.timing-modes [data-difficulty="${value}"]`)?.focus()});modes.append(b)}status.before(modes);modes.after(board);
+    const seconds=n=>String(n/1000);
+    const format=n=>(Math.round(n/10)/100).toFixed(2);
+    function showRules(){const rules={easy:'3秒を目安にストップしよう。',normal:gameCatalog.timing.instructions,hard:'最初に1〜2秒を作り、次は2倍、最後は3倍にしよう。'};instructions.textContent=mode==='oni'?`${sequence.map(seconds).join('、')}秒の間隔を覚えて、逆順に作ろう。`:mode==='kiwami'?`A+B=${seconds(clues[0])}、B+C=${seconds(clues[1])}、C+D=${seconds(clues[2])}、D+E=${seconds(clues[3])}、E+A=${seconds(clues[4])}秒。Aから順に区間を作ろう。`:rules[mode]}
+    showRules();
+    const progress=document.createElement('progress');progress.max=3000;progress.value=0;progress.hidden=true;progress.setAttribute('aria-label','3秒までの目安');
+    let frame=0,startedAt=0;
+    function stopProgress(){cancelAnimationFrame(frame);progress.hidden=true;progress.value=0}
+    function tick(now){progress.value=Math.min(3000,Math.max(0,now-startedAt));if(progress.value<3000)frame=requestAnimationFrame(tick)}
+    function readBest(){try{const raw=localStorage.getItem(recordKey),value=Number(raw);return raw!==null&&raw.trim()&&Number.isFinite(value)&&value>=0?value:null}catch(_){return null}}
+    function showBest(){const best=readBest();record.hidden=best===null;record.textContent=best===null?'':`差の合計のベスト ${format(best)}秒`}
+    function saveBest(value){try{const old=readBest();if(old===null||value<old)localStorage.setItem(recordKey,String(value));showBest()}catch(_){record.hidden=false;record.textContent='記録を保存できなかったよ'}}
+    showBest();
     const control=button('スタート',()=>{
-      if(started===null){
-        started=performance.now();control.textContent='ストップ';status.textContent='5秒たったらストップ！';
+      const current=session.snapshot();
+      if(current.result?.state==='complete'){
+        newChallenge();showRules();
+        if(mode==='oni'||mode==='kiwami'){copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;control.textContent='スタート';status.textContent='スタートを押してね';return}
+      }
+      if(!session.snapshot().running){
         copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';
-      } else {
-        const hundredths=Math.round((performance.now()-started)/10);
-        started=null;control.textContent='もう一度';
-        const elapsed=(hundredths/100).toFixed(2),difference=(Math.abs(hundredths-500)/100).toFixed(2);
-        status.textContent=`${elapsed}秒　差 ${difference}秒`;
-        offerCopy(`5秒ぴったり ${elapsed}秒（差 ${difference}秒）\nhttps://game.kihamda.net/play-timing.html`);
+        startedAt=performance.now();session.start(startedAt);
+        if(mode==='oni'){instructions.style.minHeight=`${instructions.getBoundingClientRect().height}px`;instructions.textContent='覚えた間隔を逆順に作ろう。'}
+        if(mode==='easy'){progress.hidden=false;frame=requestAnimationFrame(tick)}
+        control.textContent='ストップ';status.textContent=`${session.snapshot().intervals.length+1}区間目を計測中`;return;
+      }
+      stopProgress();const result=session.stop(performance.now());
+      if(result.state==='invalid-reference'){control.textContent='スタート';status.textContent='最初は1〜2秒でやり直そう';return}
+      const snapshot=session.snapshot(),last=snapshot.intervals.at(-1),difference=result.differences.at(-1);
+      control.textContent=result.state==='complete'?'もう一度':'次の区間';
+      status.textContent=`${snapshot.intervals.length}区間目 ${format(last)}秒　差 ${format(difference)}秒${result.state==='complete'?`　完了・差の合計 ${format(result.totalError)}秒`:''}`;
+      if(result.state==='complete'){
+        saveBest(result.totalError);showRules();
+        const times=snapshot.intervals.map(format).join('、');
+        const condition=mode==='kiwami'?`（A+B=${seconds(clues[0])}、B+C=${seconds(clues[1])}、C+D=${seconds(clues[2])}、D+E=${seconds(clues[3])}、E+A=${seconds(clues[4])}秒）`:mode==='oni'?`（提示 ${sequence.map(seconds).join('、')}秒）`:'';
+        const text=`5秒ぴったり ${labels[mode]} ${times}秒${condition}（差の合計 ${format(result.totalError)}秒）\nhttps://game.kihamda.net/play-timing.html`;
+        offerCopy(text);
       }
     });
-    status.textContent='スタートを押してね';
-    const cancel=()=>{
-      if(document.hidden && started!==null){started=null;control.textContent='スタート';status.textContent='計測を中止したよ。もう一度スタートしてね。';}
-    };
+    board.append(progress);status.textContent='スタートを押してね';
+    const cancel=()=>{if(document.hidden&&(session.snapshot().running||(session.snapshot().intervals.length&&session.snapshot().result?.state!=='complete'))){stopProgress();session.cancel();showRules();control.textContent='スタート';status.textContent='計測を中止したよ'}};
     document.addEventListener('visibilitychange',cancel);
-    cleanup=()=>document.removeEventListener('visibilitychange',cancel);
+    cleanup=()=>{stopProgress();modes.remove();instructions.style.minHeight='';headingContent.append(instructions);document.body.classList.remove('timing-mode');document.querySelector('#grid-keyboard-help').after(board);document.removeEventListener('visibilitychange',cancel)};
   },
   lights(reset) {
     const daily=params.get('mode')==='daily',size=lightsDifficulty==='kiwami'?5:4;

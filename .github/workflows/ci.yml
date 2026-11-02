@@ -54,7 +54,11 @@ jobs:
           node ops/browser-check.cjs
           node ops/home-filter-check.cjs
           node ops/timing-browser-check.cjs
+          node ops/timing-five-candidates-check.cjs
+          node ops/timing-five-browser-check.cjs
           node ops/recall-browser-check.cjs
+          node ops/recall-five-candidates-check.cjs
+          node ops/recall-five-browser-check.cjs
           node ops/code-browser-check.cjs
           node ops/mirror-browser-check.cjs
           node ops/number-browser-check.cjs
@@ -132,6 +136,8 @@ jobs:
           python3 ops/build_preview.py
           SITE_DIR=preview node ops/home-filter-check.cjs
           node ops/fixed-browser-check.cjs
+          SITE_DIR=preview node ops/timing-five-browser-check.cjs
+          SITE_DIR=preview node ops/recall-five-browser-check.cjs
           SITE_DIR=preview node ops/slide-five-ui-check.cjs
           SITE_DIR=preview node ops/memory-five-ui-check.cjs
           SITE_DIR=preview node ops/order-five-ui-check.cjs
