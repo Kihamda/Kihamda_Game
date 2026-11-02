@@ -64,7 +64,7 @@ function gameAdapter(store,mode,config,answerFactory){
 }
 
 
-let codeDifficulty='normal';
+let codeDifficulty='normal',codeRestartGuard=null;
 let recallDifficulty='normal';
 function recallAnswer(mode,sequence){
  if(mode==='easy'||mode==='normal')return [...sequence].reverse();
@@ -1047,7 +1047,8 @@ const games = {
     });submit.className='code-submit';
     const history=document.createElement('ol');history.className='code-history';history.setAttribute('aria-label','回答の履歴');history.tabIndex=-1;board.append(history);
     function render(){selected.hidden=finished;selected.textContent=selection.length?`選んだ順：${selection.map(i=>names[i]).join('・')}`:`形を${length}つ選んでね`;choices.forEach((b,i)=>{b.hidden=finished;b.disabled=finished||conflicted||(selection.length===length&&(repeats||!selection.includes(i)));repeats?b.removeAttribute('aria-pressed'):b.setAttribute('aria-pressed',String(selection.includes(i)))});undo.hidden=finished;undo.disabled=conflicted||selection.length===0;submit.hidden=finished;submit.disabled=conflicted||selection.length!==length;history.replaceChildren();history.tabIndex=attempts.length?0:-1;for(const attempt of attempts){const li=document.createElement('li'),feedback=clue==='parity'?`位置が同じ数：${attempt.exact%2?'奇数':'偶数'}`:clue==='exact'?`位置も同じ ${attempt.exact}`:`位置も同じ ${attempt.exact}、形だけ同じ ${attempt.present}`;li.textContent=`${attempt.values.map(i=>names[i]).join('・')}：${feedback}`;history.append(li)}status.textContent=finished?(attempts.at(-1).exact===length?`正解！ ${attempts.length}回で当てたよ`:`答えは ${answer.map(i=>names[i]).join('・')} だったよ`):`あと ${limit-attempts.length}回`}
-    cleanup=()=>{modes.remove();refresh.remove();status.after(record);board.style.removeProperty('--code-columns')};render();
+    codeRestartGuard=()=>{if(conflicted)return;const result=adapter.restart();if(!result.ok){conflicted=true;showRecord();render();return}start()};
+    cleanup=()=>{codeRestartGuard=null;modes.remove();refresh.remove();status.after(record);board.style.removeProperty('--code-columns')};render();
   },
   recall() {
     const mode=recallDifficulty,labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
@@ -1523,6 +1524,7 @@ function start(reset=false){
 }
 restart.addEventListener('click',()=>{
   refreshDailyDate();
+  if(id==='code'&&codeRestartGuard){codeRestartGuard();return;}
   if(!isStaleDaily && currentDailyStorage && !currentDailyStorage.isCurrent()){recoverDailyConflict();return;}
   start(!isStaleDaily);
 });
