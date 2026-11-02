@@ -106,12 +106,13 @@ header>a,footer a{display:inline-flex;align-items:center;justify-content:center;
 .filters button{min-height:44px;padding:8px 15px;border:1px solid #bcb1c5;border-radius:99px;background:#fff;color:#302542;font-weight:700}
 .filters button[aria-pressed=true]{background:#29243e;color:#fff;border-color:#29243e}
 
-.board.code{grid-template-columns:repeat(4,minmax(0,1fr));max-width:440px;gap:8px}
+.board.code{grid-template-columns:repeat(var(--code-columns,4),minmax(0,1fr));max-width:440px;gap:4px}
 .board.code .code-selected,.board.code .code-history{grid-column:1 / -1;margin:0;font-size:.9rem;line-height:1.5}
 .board.code .code-choice{min-height:48px;aspect-ratio:auto;font-size:1.5rem}
 .board.code .code-choice[aria-pressed=true]{outline:3px solid #5323a3;outline-offset:1px}
 .board.code .code-submit{grid-column:1 / -1;aspect-ratio:auto;min-height:44px;font-size:1rem}
-.board.code .code-history{padding-left:1.5em;text-align:left}
+.board.code .code-history{padding-left:1.5em;text-align:left;max-height:12rem;overflow-y:auto}
+.board.code .code-history:focus-visible{outline:3px solid #5323a3;outline-offset:2px}
 .board.code [hidden]{display:none}
 @media(max-width:480px) and (min-height:501px){.dodge-mode .board{width:min(100%,500px,max(150px,calc(100svh - 336px)))}}
 
@@ -257,3 +258,6 @@ header>a,footer a{display:inline-flex;align-items:center;justify-content:center;
 .dodge-prep{max-width:min(32rem,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;border:0;border-radius:18px;padding:20px;background:#fffaf5;color:#29243e}.dodge-prep::backdrop{background:#29243ecc}.dodge-prep h2{font-size:1.2rem;margin:0 0 12px}.dodge-prep p{line-height:1.55;margin:0 0 12px}.dodge-prep-clue{font-weight:700}.dodge-prep button{min-height:44px;margin:4px 8px 0 0}
 @media(max-width:480px) and (max-height:700px){.grid-mode .board.sum{width:min(100%,380px,max(200px,calc(100svh - 330px)))}}
 @media(max-height:500px) and (min-width:481px){.dodge-mode .play-heading{grid-column:1/-1;grid-row:1}.dodge-mode .status{grid-column:1/-1;grid-row:2}.dodge-mode .dodge-modes{grid-column:2;grid-row:3;align-self:start}.dodge-mode .board{grid-column:1;grid-row:3/5;width:100%}.dodge-mode .controls{grid-column:2;grid-row:4}}
+
+.board.code .code-undo{grid-column:1 / -1;aspect-ratio:auto;min-height:44px;font-size:1rem}
+.code-refresh{min-height:44px;max-width:100%;padding:8px 14px;border:2px solid #81778d;border-radius:12px;background:white;color:#24233a;font-weight:700}

@@ -1,3 +1,70 @@
+// Sequential tab conflict detection. It does not make simultaneous writes atomic.
+function createSession(store,key,validate){
+ let snapshot=null,available=false;
+ function read(){try{const raw=store.getItem(key);return {raw,value:raw===null?null:JSON.parse(raw)}}catch(_){return null}}
+ function load(){const state=read();if(!state||state.value!==null&&!validate(state.value)){available=false;return {ok:false}}snapshot=state.raw;available=true;return {ok:true,value:state.value}}
+ function save(value){if(!available||!validate(value))return {ok:false,reason:'unavailable'};const state=read();if(!state||state.value!==null&&!validate(state.value)){available=false;return {ok:false,reason:'unavailable'}}if(state.raw!==snapshot){available=false;return {ok:false,reason:'conflict'}}try{const raw=JSON.stringify(value);store.setItem(key,raw);snapshot=raw;return {ok:true}}catch(_){available=false;return {ok:false,reason:'unavailable'}}}
+ function clear(){if(!available)return {ok:false,reason:'unavailable'};const state=read();if(!state||state.value!==null&&!validate(state.value)){available=false;return {ok:false,reason:'unavailable'}}if(state.raw!==snapshot){available=false;return {ok:false,reason:'conflict'}}try{store.removeItem(key);snapshot=null;return {ok:true}}catch(_){available=false;return {ok:false,reason:'unavailable'}}}
+ return {load,save,clear};
+}
+function makeValidator(mode,{alphabet,length,repeats,limit}){
+ const validCode=code=>Array.isArray(code)&&code.length===length&&code.every(n=>Number.isInteger(n)&&n>=0&&n<alphabet)&&(repeats||new Set(code).size===length);
+ return s=>!!s&&s.version===2&&s.mode===mode&&validCode(s.answer)&&Array.isArray(s.attempts)&&s.attempts.length<=limit&&s.attempts.every((guess,i)=>validCode(guess)&&(i===s.attempts.length-1||guess.some((value,j)=>value!==s.answer[j])));
+}
+
+
+// One storage value holds progress and score so finishing cannot update only one.
+
+function validEnvelope(value,mode,config){
+ if(!value||value.version!==3||value.mode!==mode||!Number.isSafeInteger(value.games)||!Number.isSafeInteger(value.wins)||value.games<0||value.wins<0||value.wins>value.games)return false;
+ if(!(value.best===null||Number.isSafeInteger(value.best)&&value.best>0&&value.best<=config.limit))return false;
+ if((value.wins===0)!==(value.best===null))return false;
+ if(value.session===null)return true;
+ const session=value.session,validSession=makeValidator(mode,config);
+ if(!validSession({...session,version:2,mode}))return false;
+ const solved=session.attempts.some(guess=>guess.every((n,i)=>n===session.answer[i]));
+ const done=solved||session.attempts.length===config.limit;
+ return session.scored===done&&(!done||value.games>0)&&(!solved||value.wins>0&&value.best<=session.attempts.length);
+}
+function submit(value,guess,mode,config){
+ if(!validEnvelope(value,mode,config)||!value.session||value.session.scored)throw Error('invalid session');
+ const next=JSON.parse(JSON.stringify(value));next.session.attempts.push(guess);
+ const validSession=makeValidator(mode,config);if(!validSession({...next.session,version:2,mode}))throw Error('invalid guess');
+ const won=guess.every((n,i)=>n===next.session.answer[i]),done=won||next.session.attempts.length===config.limit;
+ if(done){next.session.scored=true;next.games++;if(won){next.wins++;next.best=next.best===null?next.session.attempts.length:Math.min(next.best,next.session.attempts.length)}}
+ if(!validEnvelope(next,mode,config))throw Error('invalid transition');return next;
+}
+
+
+
+
+function gameAdapter(store,mode,config,answerFactory){
+ const persistence=createSession(store,`kihamda-code-v3-${mode}`,value=>validEnvelope(value,mode,config));
+ let current=null,offline=false;
+ function newSession(){return {answer:answerFactory(),attempts:[],scored:false}}
+ function commit(candidate){
+  if(!validEnvelope(candidate,mode,config))throw Error('invalid state');
+  if(offline){current=candidate;return {ok:true,warning:'unavailable'}}
+  const result=persistence.save(candidate);
+  if(result.ok){current=candidate;return result}
+  if(result.reason==='conflict')return result;
+  offline=true;current=candidate;return {ok:true,warning:'unavailable'};
+ }
+ function load(){
+  const result=persistence.load();offline=!result.ok;
+  if(result.ok&&result.value){current=result.value;if(current.session===null){const saved=commit({...current,session:newSession()});return {...saved,value:current}}return {ok:true,value:current}}
+  const candidate={version:3,mode,games:0,wins:0,best:null,session:newSession()};
+  if(offline){current=candidate;return {ok:true,value:current,warning:'unavailable'}}
+  const saved=commit(candidate);return {...saved,value:current};
+ }
+ function play(guess){const next=submit(current,guess,mode,config);return commit(next)}
+ function restart(){if(!current)throw Error('not loaded');return commit({...current,session:newSession()})}
+ function view(){return JSON.parse(JSON.stringify(current))}
+ return {load,play,restart,view};
+}
+
+
+let codeDifficulty='normal';
 let recallDifficulty='normal';
 function recallAnswer(mode,sequence){
  if(mode==='easy'||mode==='normal')return [...sequence].reverse();
@@ -951,42 +1018,36 @@ const games = {
     }
     render();
   },
-  code() {
+  code(reset) {
     category.textContent='推理';board.classList.add('code');status.setAttribute('aria-live','off');
-    const symbols=['●','▲','◆','■'], names=['まる','さんかく','ひし形','しかく'];
-    const answer=shuffle([0,1,2,3]).slice(0,3), selection=[], attempts=[];
-    let finished=false;
-    const selected=document.createElement('p');selected.className='code-selected';board.append(selected);
-    const choices=symbols.map((symbol,i)=>{
-      const b=button(symbol,()=>{
-        if(finished)return;
-        const index=selection.indexOf(i);
-        if(index>=0)selection.splice(index,1);else if(selection.length<3)selection.push(i);
-        render();
-      });
-      b.className='code-choice';b.setAttribute('aria-label',names[i]);return b;
-    });
+    const mode=codeDifficulty,labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+    const config={easy:[3,2,false,4,'both'],normal:[4,3,false,6,'both'],hard:[5,4,false,6,'both'],oni:[4,4,true,10,'exact'],kiwami:[5,4,true,16,'parity']}[mode];
+    const [alphabet,length,repeats,limit,clue]=config;
+    const modes=document.createElement('div');modes.className='lights-modes code-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+    for(const [value,label] of Object.entries(labels)){const option=document.createElement('button');option.type='button';option.dataset.difficulty=value;option.textContent=label;option.setAttribute('aria-pressed',String(mode===value));option.addEventListener('click',event=>{if(value===mode)return;codeDifficulty=value;start();if(event.detail===0)document.querySelector(`.code-modes [data-difficulty="${value}"]`)?.focus()});modes.append(option)}status.before(modes);
+    const symbols=['●','▲','◆','■','★'],names=['まる','さんかく','ひし形','しかく','ほし'];
+    instructions.textContent=mode==='normal'?gameCatalog.code.instructions:clue==='parity'?'同じ形を使えるよ。位置が合う数の偶数・奇数を手がかりに4つ当てよう。0個も偶数だよ。':clue==='exact'?'同じ形を使えるよ。位置も同じ数を手がかりに4つ当てよう。':`${alphabet}種類から${length}つ選ぼう。同じ形は使えないよ。`;
+    const factory=()=>repeats?Array.from({length},()=>Math.floor(Math.random()*alphabet)):shuffle(Array.from({length:alphabet},(_,i)=>i)).slice(0,length);
+    const store={getItem:key=>window.localStorage.getItem(key),setItem:(key,value)=>window.localStorage.setItem(key,value),removeItem:key=>window.localStorage.removeItem(key)};
+    const adapter=gameAdapter(store,mode,{alphabet,length,repeats,limit},factory);let loadResult=adapter.load();if(reset&&loadResult.ok)loadResult=adapter.restart();
+    let state=adapter.view(),answer=state.session.answer,selection=[],attempts=state.session.attempts.map(score),finished=state.session.scored,conflicted=loadResult.reason==='conflict',warning=loadResult.warning||null;
+    function score(values){const exact=values.filter((value,i)=>answer[i]===value).length,counts=Array(alphabet).fill(0),used=Array(alphabet).fill(0);answer.forEach(x=>counts[x]++);values.forEach(x=>used[x]++);return {values:[...values],exact,present:counts.reduce((n,x,i)=>n+Math.min(x,used[i]),0)-exact}}
+    board.after(record);const refresh=document.createElement('button');refresh.type='button';refresh.className='code-refresh';refresh.textContent='最新の記録を読み込む';refresh.hidden=true;refresh.addEventListener('click',()=>start());record.after(refresh);
+    function showRecord(){record.hidden=!warning&&!conflicted&&state.games===0;record.textContent=conflicted?'別のタブで更新されたよ。最新の記録を読み込んでね。':warning?'このブラウザでは記録を保存できないよ':state.games?`正解 ${state.wins} / ${state.games}回${state.best===null?'':`・最少 ${state.best}回`}`:'';refresh.hidden=!conflicted}
+    showRecord();
+    const selected=document.createElement('p');selected.className='code-selected';selected.setAttribute('aria-live','polite');board.append(selected);board.style.setProperty('--code-columns',alphabet);
+    const choices=symbols.slice(0,alphabet).map((symbol,i)=>{const b=button(symbol,()=>{if(finished||conflicted)return;const index=selection.indexOf(i);if(!repeats&&index>=0)selection.splice(index,1);else if(selection.length<length)selection.push(i);render()});b.className='code-choice';b.setAttribute('aria-label',names[i]);return b});
+    const undo=button('1つ戻す',()=>{if(!finished&&!conflicted){selection.pop();render()}});undo.className='code-undo';
     const submit=button('答える',e=>{
-      if(finished||selection.length!==3)return;
-      const exact=selection.filter((value,i)=>answer[i]===value).length;
-      const present=selection.filter(value=>answer.includes(value)).length-exact;
-      attempts.push({values:[...selection],exact,present});selection.length=0;
-      finished=exact===3||attempts.length===6;
-      render();
-      announcement.textContent=`位置も同じ ${exact}、形だけ同じ ${present}。${status.textContent}`;
-      if(e?.detail===0)(finished?restart:choices[0]).focus();
+      if(finished||conflicted||selection.length!==length)return;
+      const attempt=score(selection),result=adapter.play([...selection]);
+      if(!result.ok){conflicted=true;showRecord();render();return}
+      warning=result.warning||warning;state=adapter.view();attempts.push(attempt);selection.length=0;finished=state.session.scored;showRecord();render();
+      const detail=clue==='parity'?`位置が同じ数：${attempt.exact%2?'奇数':'偶数'}`:clue==='exact'?`位置も同じ ${attempt.exact}`:`位置も同じ ${attempt.exact}、形だけ同じ ${attempt.present}`;announcement.textContent=`${detail}。${status.textContent}`;if(e?.detail===0)(finished?restart:choices[0]).focus();
     });submit.className='code-submit';
-    const history=document.createElement('ol');history.className='code-history';history.setAttribute('aria-label','回答の履歴');board.append(history);
-    function render(){
-      selected.hidden=finished;
-      selected.textContent=selection.length?`選んだ順：${selection.map(i=>names[i]).join('・')}`:'形を3つ選んでね';
-      choices.forEach((b,i)=>{b.setAttribute('aria-pressed',String(selection.includes(i)));b.hidden=finished;b.disabled=finished||(selection.length===3&&!selection.includes(i));});
-      submit.hidden=finished;submit.disabled=finished||selection.length!==3;
-      history.replaceChildren();
-      attempts.forEach(({values,exact,present})=>{const li=document.createElement('li');li.textContent=`${values.map(i=>names[i]).join('・')}：位置も同じ ${exact}、形だけ同じ ${present}`;history.append(li)});
-      status.textContent=finished?(attempts.at(-1).exact===3?`正解！ ${attempts.length}回で当てたよ`:`答えは ${answer.map(i=>names[i]).join('・')} だったよ`):`あと ${6-attempts.length}回`;
-    }
-    render();
+    const history=document.createElement('ol');history.className='code-history';history.setAttribute('aria-label','回答の履歴');history.tabIndex=-1;board.append(history);
+    function render(){selected.hidden=finished;selected.textContent=selection.length?`選んだ順：${selection.map(i=>names[i]).join('・')}`:`形を${length}つ選んでね`;choices.forEach((b,i)=>{b.hidden=finished;b.disabled=finished||conflicted||(selection.length===length&&(repeats||!selection.includes(i)));repeats?b.removeAttribute('aria-pressed'):b.setAttribute('aria-pressed',String(selection.includes(i)))});undo.hidden=finished;undo.disabled=conflicted||selection.length===0;submit.hidden=finished;submit.disabled=conflicted||selection.length!==length;history.replaceChildren();history.tabIndex=attempts.length?0:-1;for(const attempt of attempts){const li=document.createElement('li'),feedback=clue==='parity'?`位置が同じ数：${attempt.exact%2?'奇数':'偶数'}`:clue==='exact'?`位置も同じ ${attempt.exact}`:`位置も同じ ${attempt.exact}、形だけ同じ ${attempt.present}`;li.textContent=`${attempt.values.map(i=>names[i]).join('・')}：${feedback}`;history.append(li)}status.textContent=finished?(attempts.at(-1).exact===length?`正解！ ${attempts.length}回で当てたよ`:`答えは ${answer.map(i=>names[i]).join('・')} だったよ`):`あと ${limit-attempts.length}回`}
+    cleanup=()=>{modes.remove();refresh.remove();status.after(record);board.style.removeProperty('--code-columns')};render();
   },
   recall() {
     const mode=recallDifficulty,labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
