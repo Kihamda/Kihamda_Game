@@ -69,6 +69,14 @@ jobs:
           node ops/balance-daily-check.cjs
           node ops/balance-storage-check.cjs
           node ops/dodge-browser-check.cjs
+          node ops/dodge-five-general-check.cjs
+          node ops/dodge-five-oni-check.cjs
+          node ops/dodge-five-extreme-check.cjs
+          node ops/dodge-five-dialog-check.cjs
+          node ops/dodge-five-layout-check.cjs
+          node ops/dodge-five-record-check.cjs
+          node ops/dodge-five-storage-check.cjs
+          node ops/dodge-five-visibility-check.cjs
           node ops/daily-browser-check.cjs
           node ops/daily-cross-day-check.cjs
           node ops/daily-same-day-check.cjs
@@ -127,6 +135,7 @@ jobs:
           SITE_DIR=preview node ops/slide-five-ui-check.cjs
           SITE_DIR=preview node ops/memory-five-ui-check.cjs
           SITE_DIR=preview node ops/order-five-ui-check.cjs
+          SITE_DIR=preview node ops/dodge-five-dialog-check.cjs
           SITE_DIR=preview node ops/sum-site-share-rollover-check.cjs
           SITE_DIR=preview node ops/path-five-browser-check.cjs
           SITE_DIR=preview node ops/circuit-notice-check.cjs

@@ -1,3 +1,4 @@
+let dodgeDifficulty='normal';
 let orderDifficulty='normal';
 const orderLabels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
 function orderSequence(mode){
@@ -276,7 +277,7 @@ function generateFiveSum(difficulty,date){
 function sumFive(reset){
   const date=todayInTokyo(),puzzle=generateFiveSum(sumDifficulty,date);
   const {values,target,targets,evenSum,offsets}=puzzle,count=sumDifficulty==='kiwami'?3:sumDifficulty==='oni'?2:1,names=count===3?['小','中','大']:['1組目','2組目'];category.textContent=`今日のパズル ${date}`;
-  instructions.textContent=sumDifficulty==='hard'?`3枚の合計を${target}にしよう。偶数2枚の合計は${evenSum}だよ。`:sumDifficulty==='oni'?`カードを重ねず、合計${targets[0]}と${targets[1]}の組を作ろう。`:sumDifficulty==='kiwami'?`9枚を3組に分けよう。中の合計は小より${offsets[0]}大きく、大は中より${offsets[1]}大きいよ。`:'3枚の数字を選び、合計を目標の数に合わせよう。';
+  instructions.textContent=sumDifficulty==='hard'?`3枚の合計を${target}にしよう。偶数2枚の合計は${evenSum}だよ。`:sumDifficulty==='oni'?`カードを重ねず、合計${targets[0]}と${targets[1]}の組を作ろう。`:sumDifficulty==='kiwami'?`3枚ずつ分けよう。合計は、中は小より${offsets[0]}、大は中より${offsets[1]}大きくする。`:'3枚の数字を選び、合計を目標の数に合わせよう。';
   const modes=document.createElement('div');modes.className='lights-modes sum-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');for(const [value,label] of Object.entries(sumLabels)){const b=document.createElement('button');b.type='button';b.dataset.difficulty=value;b.textContent=label;b.setAttribute('aria-pressed',String(value===sumDifficulty));b.addEventListener('click',event=>{if(value===sumDifficulty)return;sumDifficulty=value;start();if(event.detail===0)document.querySelector(`.sum-modes [data-difficulty="${value}"]`)?.focus()});modes.append(b)}status.before(modes);
   const group=document.createElement('div');group.className='sum-groups';group.setAttribute('role','group');group.setAttribute('aria-label','選ぶ組');let active=0;const groupButtons=[];if(count>1){for(let i=0;i<count;i++){const b=document.createElement('button');b.type='button';b.addEventListener('click',()=>{active=i;render()});group.append(b);groupButtons.push(b)}status.before(group)}cleanup=()=>{modes.remove();group.remove()};
   board.classList.add('sum');const storage=dailyStorage(`sum-${sumDifficulty}-v2`,date);let owners=Array(values.length).fill(-1),moves=0,won=false;
@@ -1235,13 +1236,17 @@ const games = {
   },
   dodge() {
     document.body.classList.add('dodge-mode');status.setAttribute('aria-live','off');category.textContent='アクション'; controls.hidden=false;
+    const mode=dodgeDifficulty;
+    const labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+    const modes=document.createElement('div');modes.className='lights-modes dodge-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+    for(const [value,label] of Object.entries(labels)){const b=document.createElement('button');b.type='button';b.dataset.difficulty=value;b.textContent=label;b.setAttribute('aria-pressed',String(mode===value));b.addEventListener('click',event=>{if(value===mode)return;const interrupted=alive;dodgeDifficulty=value;start();if(interrupted)announcement.textContent='前のゲームを中止したよ';if(event.detail===0)document.querySelector(`.dodge-modes [data-difficulty="${value}"]`)?.focus()});modes.append(b)}status.before(modes);
     const canvas=document.createElement('canvas');canvas.width=400;canvas.height=400;canvas.setAttribute('aria-label','星をよけるゲーム画面'); board.style.display='block'; board.append(canvas); const ctx=canvas.getContext('2d');
     let x=200, items=[], ticks=0, last=0, elapsed=0, frame=0, alive=false, dir=0;
     const keys=new Set(), pointers=new Map(), heldSince=new Map(), longClicks=new Map(); const updateDirection=()=>{const held=[...pointers.values()];dir=held.length?Number(held.includes(1))-Number(held.includes(-1)):Number(keys.has('ArrowRight'))-Number(keys.has('ArrowLeft'));};
-    const startButton=document.createElement('button'); startButton.type='button'; startButton.className='button dodge-start'; startButton.textContent='スタート'; board.append(startButton);
+    const startButton=document.createElement('button'); startButton.type='button'; startButton.className='button dodge-start'; startButton.textContent=mode==='kiwami'?'問題を見る':'スタート'; board.append(startButton);
     function move(e){if(!alive)return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();if(e.type==='keydown')keys.add(e.key);else keys.delete(e.key);updateDirection();}}
     const stopMoving=()=>{keys.clear();pointers.clear();heldSince.clear();longClicks.clear();updateDirection();};
-    document.addEventListener('keydown',move);document.addEventListener('keyup',move);window.addEventListener('blur',stopMoving);document.addEventListener('visibilitychange',stopMoving);
+    const onVisibility=()=>{stopMoving();last=0;};document.addEventListener('keydown',move);document.addEventListener('keyup',move);window.addEventListener('blur',stopMoving);document.addEventListener('visibilitychange',onVisibility);
     const left=document.querySelector('#left'),right=document.querySelector('#right');
     const down=direction=>e=>{if(alive){longClicks.delete(e.currentTarget);heldSince.set(e.pointerId,performance.now());pointers.set(e.pointerId,direction);updateDirection();}};
     const up=e=>{
@@ -1257,9 +1262,45 @@ const games = {
         if(!alive||suppress)return;x=Math.max(15,Math.min(385,x+direction*30));
       });
     }
+    const centers=[50,125,200,275,350];
+    const configurations={
+      easy:{interval:2.2,waves:[[1],[3],[2],[0],[4],[1]]},
+      hard:{interval:1.2,waves:[[0,1,3],[1,2,4],[0,2,3],[1,3,4],[0,1,4],[0,2,4]]},
+      oni:{interval:1.2,waves:[[1,2,3],[1,2,3,4],[0,2,3],[0,1,4],[0,1,2],[0,1,2,3]],targets:[null,0,null,2,null,4]},
+      kiwami:{interval:1.2,waves:[[1,2,3],[1,2,3,4],[0,2,3],[0,1,4],[0,1,2],[0,1,2,3]],targets:[null,0,null,2,null,4]}
+    },config=configurations[mode],fallSpeed=380/3;
+    if(config&&!config.targets){const variant=Math.floor(Math.random()*10);config.waves=config.waves.map(row=>row.map(lane=>((variant>=5?4-lane:lane)+variant%5)%5));}
+    if(config?.targets){const baseWaves=config.waves,baseTargets=config.targets,variant=Math.floor(Math.random()*10),makeTransform=v=>lane=>((v>=5?4-lane:lane)+v%5)%5,transform=makeTransform(variant);config.waves=baseWaves.map(row=>row.map(transform));config.targets=baseTargets.map(lane=>lane===null?null:transform(lane));config.start=transform(2)+1;if(mode==='kiwami'){const second=makeTransform(Math.floor(Math.random()*10));config.waves.push(...baseWaves.map(row=>row.map(second)));config.targets.push(...baseTargets.map(lane=>lane===null?null:second(lane)));}}
+    if(config?.targets){const lanes=document.createElement('div');lanes.className='dodge-lanes';lanes.setAttribute('aria-hidden','true');centers.forEach((pos,index)=>{const label=document.createElement('span');label.style.left=`${pos/4}%`;label.textContent=String(index+1);lanes.append(label)});board.append(lanes);}
+    const recordKey=`kihamda-dodge-v2-${mode}`;
+    function displayRecord(){try{const value=localStorage.getItem(recordKey);let message='';if(mode==='normal'){const seconds=Number(value);if(value!==null&&value.trim()&&Number.isFinite(seconds)&&seconds>=0)message=`ベスト ${seconds.toFixed(1)}秒`;}else if(value==='clear')message='クリア済み';record.hidden=true;record.textContent=message;startButton.replaceChildren(document.createTextNode(mode==='kiwami'?'問題を見る':'スタート'));if(message){startButton.append(document.createElement('br'));const note=document.createElement('small');note.textContent=message;startButton.append(note);}}catch(_){}}
+    function saveRecord(){if(mode!=='normal'&&outcome!=='クリア！')return;try{if(mode==='normal'){const raw=localStorage.getItem(recordKey),value=Number(raw);if(raw===null||!raw.trim()||!Number.isFinite(value)||value<elapsed)localStorage.setItem(recordKey,String(elapsed));}else if(outcome==='クリア！')localStorage.setItem(recordKey,'clear');displayRecord();}catch(_){record.textContent='記録を保存できなかったよ';}}
+    displayRecord();
+    let passed=0,outcome='',spawned=0;
+    const texts={easy:'星をよけよう。6回よけたらクリア。',normal:gameCatalog.dodge.instructions,hard:'星のすき間を通ろう。6回よけたらクリア。',oni:'列は左から1〜5。偶数回は指定の列へ進もう。',kiwami:'偶数回は前の列に表示数を足す。5を超えたら5を引く。'};
+    instructions.textContent=texts[mode];
     function draw(){ctx.clearRect(0,0,400,400);ctx.fillStyle='#a9dfc8';ctx.beginPath();ctx.arc(x,365,14,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f9c96e';ctx.font='26px sans-serif';for(const p of items)ctx.fillText('✦',p.x-12,p.y+8);}
-    function loop(t){if(!alive)return;const dt=last?Math.min((t-last)/1000,.05):0;last=t;elapsed+=dt;ticks+=dt;x=Math.max(15,Math.min(385,x+dir*230*dt));if(ticks>.55){ticks=0;items.push({x:15+Math.random()*370,y:-15,s:110+Math.random()*80+elapsed*2});}for(const p of items){p.y+=p.s*dt;if(Math.abs(p.x-x)<22&&Math.abs(p.y-365)<22)alive=false;}items=items.filter(p=>p.y<420);draw();status.textContent=alive?`${elapsed.toFixed(1)}秒`:`ゲームオーバー！ ${elapsed.toFixed(1)}秒`;if(alive)frame=requestAnimationFrame(loop);else announcement.textContent=status.textContent;}
-    draw();status.textContent='スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;startButton.hidden=true;alive=true;last=0;frame=requestAnimationFrame(loop);});cleanup=()=>{alive=false;startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',stopMoving);window.removeEventListener('pointerup',clearReleased);window.removeEventListener('pointercancel',clearReleased); for(const el of [left,right]){el.replaceWith(el.cloneNode(true));}};
+    function challengeStatus(){if(!config)return `${elapsed.toFixed(1)}秒`;if(!config.targets)return `${passed} / ${config.waves.length} 回`;const cues=[];let previous=config.start,displayPrevious=config.start;for(let i=0;i<config.targets.length;i++){const target=config.targets[i];if(target===null)continue;const destination=target+1,increment=(destination-previous+5)%5;if(i>=passed&&cues.length<2)cues.push(`${i+1}回${mode==='kiwami'?`+${increment}`:` ${destination}列`}`);if(i<passed)displayPrevious=destination;previous=destination;}return `${passed}/${config.waves.length}　${mode==='kiwami'?`前${passed<2?'？':displayPrevious}列　`:''}${cues.join(' → ')}`;}
+    function loop(t){
+      if(!alive)return;if(document.hidden){last=0;frame=requestAnimationFrame(loop);return;}const dt=last?Math.min((t-last)/1000,.05):0;last=t;elapsed+=dt;ticks+=dt;x=Math.max(15,Math.min(385,x+dir*230*dt));
+      if(!config){if(ticks>.55){ticks=0;items.push({x:15+Math.random()*370,y:-15,s:110+Math.random()*80+elapsed*2});}}
+      else {while(spawned<config.waves.length && elapsed>=spawned*config.interval){for(const lane of config.waves[spawned])items.push({x:centers[lane],y:-15,s:fallSpeed,spawn:spawned*config.interval});spawned++;}}
+      for(const p of items){p.y=config?(elapsed-p.spawn)*p.s-15:p.y+p.s*dt;if(Math.abs(p.x-x)<22&&Math.abs(p.y-365)<22){alive=false;outcome='星に当たったよ';}}
+      if(config&&alive){const previousPassed=passed;while(passed<config.waves.length && elapsed>=3+passed*config.interval){const target=config.targets?.[passed];if(target!=null&&Math.abs(x-centers[target])>15){alive=false;outcome='指定の列に届かなかったよ';break;}passed++;}if(alive&&config.targets&&passed!==previousPassed&&passed%2===0&&passed<config.waves.length)announcement.textContent=challengeStatus();if(passed===config.waves.length && elapsed>=3+(config.waves.length-1)*config.interval+.18){alive=false;outcome='クリア！';}}
+      items=items.filter(p=>p.y<420);draw();status.textContent=alive?challengeStatus():config?`${outcome} ${passed} / ${config.waves.length} 回`:`ゲームオーバー！ ${elapsed.toFixed(1)}秒`;if(alive)frame=requestAnimationFrame(loop);else{saveRecord();if(record.textContent)status.textContent+=`　${record.textContent}`;announcement.textContent=status.textContent;}
+    }
+    let prep=null;
+    function launch(){if(alive)return;prep?.close();startButton.hidden=true;alive=true;last=0;if(config?.targets)announcement.textContent=challengeStatus();frame=requestAnimationFrame(loop);if(prep)left.focus();}
+    if(mode==='kiwami'){
+      prep=document.createElement('dialog');prep.className='dodge-prep';prep.setAttribute('aria-labelledby','dodge-prep-title');
+      const heading=document.createElement('h2');heading.id='dodge-prep-title';heading.textContent='最初の基準列を考えよう';
+      const explanation=document.createElement('p');explanation.textContent='偶数回に、前の基準列へ表示数を足した列に進みます。5を超えたら5を引きます。最初の基準列は、最後の列と6回の加算から逆算できます。基準列とスタート位置は別です。';
+      const values=[];let previous=config.start;for(let i=0;i<config.targets.length;i++){const target=config.targets[i];if(target===null)continue;const destination=target+1;values.push(`${i+1}回 +${(destination-previous+5)%5}`);previous=destination;}
+      const clue=document.createElement('p');clue.className='dodge-prep-clue';clue.textContent=`${values.join('、')}。最後は${previous}列。`;
+      const begin=document.createElement('button');begin.type='button';begin.className='button dodge-prep-begin';begin.textContent='スタート';begin.addEventListener('click',launch);
+      const cancel=document.createElement('button');cancel.type='button';cancel.className='button dodge-prep-cancel';cancel.textContent='戻る';cancel.addEventListener('click',()=>prep.close());prep.append(heading,explanation,clue,begin,cancel);document.body.append(prep);
+    }
+    draw();status.textContent=config?.targets?challengeStatus():'スタートを押してね';startButton.addEventListener('click',()=>{if(alive)return;if(prep){prep.showModal();prep.querySelector('.dodge-prep-begin').focus();}else launch();});cleanup=()=>{alive=false;prep?.remove();modes.remove();startButton.remove();cancelAnimationFrame(frame);document.removeEventListener('keydown',move);document.removeEventListener('keyup',move);window.removeEventListener('blur',stopMoving);document.removeEventListener('visibilitychange',onVisibility);window.removeEventListener('pointerup',clearReleased);window.removeEventListener('pointercancel',clearReleased); for(const el of [left,right]){el.replaceWith(el.cloneNode(true));}};
   }
 };
 const gridColumns={three:3,mirror:3,swap:3,lights:4,memory:4,order:4,garden:4,path:4,sum:3,slide:3,circuit:3};

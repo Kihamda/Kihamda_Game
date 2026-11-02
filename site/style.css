@@ -240,4 +240,14 @@ header>a,footer a{display:inline-flex;align-items:center;justify-content:center;
 .order-toolbar .status{flex:1;min-width:0}
 .order-toolbar .order-hint{flex:none;margin:0}
 @media(min-width:481px) and (max-height:500px){.grid-mode .order-modes,.grid-mode .order-toolbar{grid-column:1}}
-@media(max-width:480px) and (max-height:700px){.grid-mode .board.order-five{width:min(100%,380px,max(200px,calc(100svh - 300px)))}}
+@media(max-width:480px) and (max-height:700px){.grid-mode .board.order-five{width:min(100%,380px,max(200px,calc(100svh - 310px)))}}
+.dodge-mode .dodge-modes{justify-content:center}
+@media(max-height:500px){.dodge-mode .dodge-modes{grid-column:1 / -1;gap:4px;margin:0}.dodge-mode .dodge-modes button{min-height:44px}.dodge-mode .play{row-gap:0}.dodge-mode .board{width:min(100%,max(100px,calc(100svh - 212px)))} }
+@media(min-height:501px){.dodge-mode .board{width:min(100%,500px,max(100px,calc(100svh - 380px)))}}
+@media(max-width:480px) and (min-height:501px){.dodge-mode .board{width:min(100%,500px,max(100px,calc(100svh - 390px)))}}
+@media(max-width:480px) and (min-height:501px) and (max-height:700px){.dodge-mode .play-heading .eyebrow{display:none}.dodge-mode .play-heading h1{font-size:1.1rem;white-space:nowrap}.dodge-mode .play-heading p{font-size:.72rem;line-height:1.25}.dodge-mode .board{width:min(100%,500px,max(150px,calc(100svh - 340px)))}}
+.dodge-lanes{position:absolute;inset:0;pointer-events:none;color:#fff;font-size:12px;line-height:1;font-weight:700}.dodge-lanes span{position:absolute;bottom:2px;transform:translateX(-50%)}
+.dodge-start small{font-size:.72rem;font-weight:500}
+.dodge-prep{max-width:min(32rem,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;border:0;border-radius:18px;padding:20px;background:#fffaf5;color:#29243e}.dodge-prep::backdrop{background:#29243ecc}.dodge-prep h2{font-size:1.2rem;margin:0 0 12px}.dodge-prep p{line-height:1.55;margin:0 0 12px}.dodge-prep-clue{font-weight:700}.dodge-prep button{min-height:44px;margin:4px 8px 0 0}
+@media(max-width:480px) and (max-height:700px){.grid-mode .board.sum{width:min(100%,380px,max(200px,calc(100svh - 330px)))}}
+@media(max-height:500px) and (min-width:481px){.dodge-mode .play-heading{grid-column:1/-1;grid-row:1}.dodge-mode .status{grid-column:1/-1;grid-row:2}.dodge-mode .dodge-modes{grid-column:2;grid-row:3;align-self:start}.dodge-mode .board{grid-column:1;grid-row:3/5;width:100%}.dodge-mode .controls{grid-column:2;grid-row:4}}
