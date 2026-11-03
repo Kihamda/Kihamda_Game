@@ -730,11 +730,17 @@ function dailyStorage(game, date) {
   function read(name) {
     let raw;
     try {raw=window.localStorage.getItem(name);} catch (_) {readFailed=true;showStorageUnavailable();return null;}
-    try {return JSON.parse(raw);} catch (_) {return null;}
+    if(raw===null) return null;
+    try {
+      const value=JSON.parse(raw);
+      if(!value || typeof value!=='object' || Array.isArray(value) || !validDate(value.date)) throw Error('invalid daily record');
+      return value;
+    } catch (_) {readFailed=true;showStorageUnavailable();return null;}
   }
-  const validDate=value=>typeof value==='string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
+  const validDate=value=>{if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;const time=Date.parse(value+'T00:00:00Z');return Number.isFinite(time)&&new Date(time).toISOString().slice(0,10)===value};
   function currentRecord() {
     const current=read(key), previous=read(previousKey);
+    if(current && previous && current.date===previous.date){readFailed=true;showStorageUnavailable();return null;}
     return current?.date===date ? current : previous?.date===date ? previous : null;
   }
   function hasConflict() {
@@ -766,8 +772,11 @@ function dailyStorage(game, date) {
     },
     clear() {
       try {
-        if(read(key)?.date===date) window.localStorage.removeItem(key);
-        if(read(previousKey)?.date===date) window.localStorage.removeItem(previousKey);
+        readFailed=false;
+        const current=read(key), previous=read(previousKey);
+        if(readFailed || current && previous && current.date===previous.date) {if(!readFailed)showStorageUnavailable();return;}
+        if(current?.date===date) window.localStorage.removeItem(key);
+        if(previous?.date===date) window.localStorage.removeItem(previousKey);
       } catch (_) {showStorageUnavailable();}
     }
   };
