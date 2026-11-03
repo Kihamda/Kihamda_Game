@@ -35,6 +35,12 @@ jobs:
           node ops/swap-five-hard-independent-check.cjs
           node ops/swap-five-extreme-unique-check.cjs
           node ops/swap-five-daily-distribution-check.cjs
+          node ops/three-five-independent-check.cjs
+          node ops/three-five-diverse-independent-check.cjs
+          node ops/three-five-model-check.cjs
+          node ops/three-five-session-check.cjs
+          node ops/number-five-session-check.cjs
+          node ops/mirror-five-session-check.cjs
           node ops/shift-five-model-check.cjs
           node ops/shift-five-candidates-check.cjs
           node ops/shift-five-session-check.cjs
@@ -75,8 +81,16 @@ jobs:
           node ops/code-five-browser-check.cjs
           node ops/code-five-storage-check.cjs
           node ops/mirror-browser-check.cjs
+          node ops/mirror-five-ui-check.cjs
+          node ops/mirror-five-conflict-check.cjs
           node ops/number-browser-check.cjs
+          node ops/number-five-ui-check.cjs
+          node ops/number-five-conflict-check.cjs
           node ops/three-browser-check.cjs
+          node ops/three-five-ui-check.cjs
+          node ops/three-five-symmetry-ui-check.cjs
+          node ops/three-five-diverse-ui-check.cjs
+          node ops/three-five-conflict-check.cjs
           node ops/new-share-check.cjs
           node ops/series-browser-check.cjs
           node ops/series-share-check.cjs
@@ -166,6 +180,14 @@ jobs:
           python3 ops/build_preview.py
           SITE_DIR=preview node ops/home-filter-check.cjs
           node ops/fixed-browser-check.cjs
+          SITE_DIR=preview node ops/mirror-five-ui-check.cjs
+          SITE_DIR=preview node ops/mirror-five-conflict-check.cjs
+          SITE_DIR=preview node ops/number-five-ui-check.cjs
+          SITE_DIR=preview node ops/number-five-conflict-check.cjs
+          SITE_DIR=preview node ops/three-five-ui-check.cjs
+          SITE_DIR=preview node ops/three-five-symmetry-ui-check.cjs
+          SITE_DIR=preview node ops/three-five-diverse-ui-check.cjs
+          SITE_DIR=preview node ops/three-five-conflict-check.cjs
           SITE_DIR=preview node ops/balance-five-fixed-check.cjs
           SITE_DIR=preview node ops/swap-five-daily-check.cjs
           SITE_DIR=preview node ops/swap-five-ui-check.cjs

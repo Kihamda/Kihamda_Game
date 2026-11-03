@@ -1,0 +1,1 @@
+const fs=require('fs'),vm=require('vm');const src=fs.readFileSync('site/game.js','utf8').split('let threeDifficulty=')[0];const context=vm.createContext({});vm.runInContext(src+';globalThis.model=threeFive;',context);module.exports=context.model;

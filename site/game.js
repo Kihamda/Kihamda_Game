@@ -1,3 +1,84 @@
+const threeFive=(()=>{
+const kiwamiBases=['XOX.....O.O...X.',"XXOX.O......O...","XXOX.....O..O...","XXO..OX....O....","XXO....X....O.O.","XXO.OO..X.......","XXO.O...X.O.....","XXOO.O......X...","XXO.O.....O..X.."];
+const configs={easy:{size:3,initial:'.........',limit:null},normal:{size:3,initial:'.........',limit:null},hard:{size:3,initial:'.........',limit:null},oni:{size:3,initial:'..OX.....',limit:3},kiwami:{size:4,initial:'XOX.....O.O...X.',limit:3}};
+function lines(size){const result=[];for(let y=0;y<size;y++)for(let x=0;x<size;x++)for(const [dy,dx] of [[0,1],[1,0],[1,1],[1,-1]]){const q=Array.from({length:3},(_,i)=>[y+dy*i,x+dx*i]);if(q.every(([r,c])=>r>=0&&r<size&&c>=0&&c<size))result.push(q.map(([r,c])=>r*size+c))}return result}
+function line(board,size,mark){return lines(size).find(a=>a.every(i=>board[i]===mark))||null}
+function put(board,i,mark){if(!Number.isInteger(i)||i<0||i>=board.length||board[i]!=='.')throw Error('invalid move');return board.slice(0,i)+mark+board.slice(i+1)}
+function choices(board){return Array.from(board,(_,i)=>i).filter(i=>board[i]==='.')}
+function force(board,size,turn,remaining,memo=new Map()){if(line(board,size,'X'))return true;if(line(board,size,'O')||remaining===0||!board.includes('.'))return false;const key=board+turn+remaining;if(memo.has(key))return memo.get(key);const moves=choices(board);const result=turn==='X'?moves.some(i=>force(put(board,i,turn),size,'O',remaining-1,memo)):moves.every(i=>force(put(board,i,turn),size,'X',remaining,memo));memo.set(key,result);return result}
+function minimax(board,turn,memo=new Map()){if(line(board,3,'X'))return 1;if(line(board,3,'O'))return -1;if(!board.includes('.'))return 0;const key=board+turn;if(memo.has(key))return memo.get(key);const scores=choices(board).map(i=>minimax(put(board,i,turn),turn==='X'?'O':'X',memo));const result=turn==='X'?Math.max(...scores):Math.min(...scores);memo.set(key,result);return result}
+function computer(board,mode,remaining,random=Math.random){const config=configs[mode],moves=choices(board);if(!moves.length)throw Error('no moves');if(mode==='easy')return moves[Math.floor(random()*moves.length)];if(mode==='normal'){for(const p of ['O','X'])for(const i of moves)if(line(put(board,i,p),3,p))return i;return moves[Math.floor(random()*moves.length)]}if(mode==='hard'){const memo=new Map();let best=Infinity,selected=moves[0];for(const i of moves){const score=minimax(put(board,i,'O'),'X',memo);if(score<best){best=score;selected=i}}return selected}const memo=new Map();let best=-1,selected=moves[0];for(const i of moves){const next=put(board,i,'O');let cost;if(line(next,config.size,'O'))cost=Infinity;else{cost=remaining+1;for(let n=1;n<=remaining;n++)if(force(next,config.size,'X',n,memo)){cost=n;break}}if(cost>best){best=cost;selected=i}}return selected}
+function sym(board,size,id){let out=Array(board.length).fill('.');for(let i=0;i<board.length;i++){let y=Math.floor(i/size),x=i%size;if(id>=4)x=size-1-x;for(let j=0;j<id%4;j++)[y,x]=[x,size-1-y];out[y*size+x]=board[i]}return out.join('')}
+function replay(mode,variant,actions){const c=configs[mode];if(!c||!Number.isInteger(variant)||variant<0||variant>(mode==='kiwami'?kiwamiBases.length*8-1:7)||!Array.isArray(actions)||actions.length>9)return null;let board=sym(mode==='kiwami'?kiwamiBases[Math.floor(variant/8)]:c.initial,c.size,variant%8),finished=false,result=null;for(let k=0;k<actions.length;k++){const action=actions[k];if(finished||!action||!Number.isInteger(action.p))return null;try{board=put(board,action.p,'X')}catch(_){return null}if(line(board,c.size,'X')){finished=true;result='win'}else if(!board.includes('.')){finished=true;result='draw'}else if(c.limit!==null&&k+1>=c.limit){finished=true;result='loss'}if(finished){if(action.c!==null)return null;continue}if(!Number.isInteger(action.c))return null;try{board=put(board,action.c,'O')}catch(_){return null}if(line(board,c.size,'O')){finished=true;result='loss'}else if(!board.includes('.')){finished=true;result='draw'}}return {board,finished,result,turns:actions.length}}
+function session(store,mode,{random=Math.random}={}){const config=configs[mode];if(!config)throw Error('unknown mode');const key=`kihamda-three-v1-${mode}`;let snapshot=null,current=null,offline=false;
+  function fresh(games=0,wins=0,draws=0){return {version:1,mode,variant:Math.floor(random()*(mode==='kiwami'?kiwamiBases.length*8:8)),actions:[],games,wins,draws}}
+  function valid(v){if(!v||v.version!==1||v.mode!==mode||![v.games,v.wins,v.draws].every(x=>Number.isSafeInteger(x)&&x>=0)||v.wins+v.draws>v.games)return false;const p=replay(mode,v.variant,v.actions);return !!p&&(!p.finished||v.games>0)&&(!(p.result==='win')||v.wins>0)&&(!(p.result==='draw')||v.draws>0)}
+  function read(){try{const raw=store.getItem(key),value=raw===null?null:JSON.parse(raw);if(value!==null&&!valid(value))return null;return {raw,value}}catch(_){return null}}
+  function save(next){if(!valid(next))throw Error('invalid session');if(offline){current=next;return {ok:true,warning:'unavailable'}}const old=read();if(!old){offline=true;current=next;return {ok:true,warning:'unavailable'}}if(old.raw!==snapshot)return {ok:false,reason:'conflict'};try{const raw=JSON.stringify(next);store.setItem(key,raw);snapshot=raw;current=next;return {ok:true}}catch(_){offline=true;current=next;return {ok:true,warning:'unavailable'}}}
+  function load(){const old=read();if(!old){offline=true;current=fresh();return {ok:true,warning:'unavailable'}}snapshot=old.raw;if(old.value){current=old.value;return {ok:true}}const result=save(fresh());if(result.ok)return result;const latest=read();if(latest&&latest.value){snapshot=latest.raw;current=latest.value;return {ok:true}}offline=true;current=fresh();return {ok:true,warning:'unavailable'}}
+  function move(index){const p=replay(mode,current.variant,current.actions);if(p.finished)throw Error('finished');const placed=put(p.board,index,'X'),last=line(placed,config.size,'X')||!placed.includes('.')||config.limit!==null&&p.turns+1>=config.limit;const reply=last?null:computer(placed,mode,config.limit===null?null:config.limit-p.turns-1,random),actions=[...current.actions,{p:index,c:reply}],next=replay(mode,current.variant,actions);return save({...current,actions,games:current.games+Number(next.finished),wins:current.wins+Number(next.result==='win'),draws:current.draws+Number(next.result==='draw')})}
+  function restart(){return save(fresh(current.games,current.wins,current.draws))}return {load,move,restart,view:()=>({...current,actions:current.actions.map(a=>({...a}))})};
+}
+return {configs,lines,line,put,choices,force,minimax,computer,sym,replay,session};
+
+})();
+let threeDifficulty='normal',threeRestartGuard=null;
+const numberFive=(()=>{
+const configs={easy:{max:10,limit:4,moduli:[]},normal:{max:100,limit:7,moduli:[]},hard:{max:100,limit:5,moduli:[4]},oni:{max:200,limit:5,moduli:[3,4]},kiwami:{max:1000,limit:4,moduli:[3,4,7]}};
+function progress(mode,answer,guesses){const config=configs[mode];if(!config||!Number.isInteger(answer)||answer<1||answer>config.max||!Array.isArray(guesses)||guesses.length>config.limit)return null;let low=1,high=config.max,finished=false,won=false;for(const guess of guesses){if(finished||!Number.isInteger(guess)||guess<low||guess>high)return null;if(guess===answer){won=true;finished=true}else if(guess<answer)low=guess+1;else high=guess-1;}if(guesses.length===config.limit)finished=true;return {low,high,finished,won}}
+function makeSession(store,mode,{random=Math.random}={}){const config=configs[mode];if(!config)throw Error('unknown mode');const key=`kihamda-number-v1-${mode}`;let snapshot=null,current=null,offline=false;
+  function fresh(games=0,wins=0){return {version:1,mode,answer:1+Math.floor(random()*config.max),guesses:[],games,wins}}
+  function valid(v){if(!v||v.version!==1||v.mode!==mode||!Number.isSafeInteger(v.games)||!Number.isSafeInteger(v.wins)||v.games<0||v.wins<0||v.wins>v.games)return false;const p=progress(mode,v.answer,v.guesses);return !!p&&(!p.finished||v.games>0)&&(!p.won||v.wins>0)}
+  function read(){try{const raw=store.getItem(key),value=raw===null?null:JSON.parse(raw);if(value!==null&&!valid(value))return null;return {raw,value}}catch(_){return null}}
+  function save(next){if(!valid(next))throw Error('invalid session');if(offline){current=next;return {ok:true,warning:'unavailable'}}const old=read();if(!old){offline=true;current=next;return {ok:true,warning:'unavailable'}}if(old.raw!==snapshot)return {ok:false,reason:'conflict'};try{const raw=JSON.stringify(next);store.setItem(key,raw);snapshot=raw;current=next;return {ok:true}}catch(_){offline=true;current=next;return {ok:true,warning:'unavailable'}}}
+  function load(){const old=read();if(!old){offline=true;current=fresh();return {ok:true,warning:'unavailable'}}snapshot=old.raw;if(old.value){current=old.value;return {ok:true}}const result=save(fresh());if(result.ok)return result;const latest=read();if(latest&&latest.value){snapshot=latest.raw;current=latest.value;return {ok:true}}offline=true;current=fresh();return {ok:true,warning:'unavailable'}}
+  function guess(value){const next=[...current.guesses,value],p=progress(mode,current.answer,next);if(!p||progress(mode,current.answer,current.guesses).finished)throw Error('invalid guess');return save({...current,guesses:next,games:current.games+Number(p.finished),wins:current.wins+Number(p.won)})}
+  function restart(){return save(fresh(current.games,current.wins))}
+  return {load,guess,restart,view:()=>({...current,guesses:[...current.guesses]})};
+}
+return {configs,progress,makeSession};})();
+let numberDifficulty='normal',numberRestartGuard=null;
+const mirrorFive=(()=>{
+function transform(bits,size,{rotate=false,mirror=true}={}){
+  let result=0;for(let r=0;r<size;r++)for(let c=0;c<size;c++)if(bits&(1<<(r*size+c))){let y=r,x=c;if(rotate)[y,x]=[c,size-1-r];if(mirror)x=size-1-x;result|=1<<(y*size+x)}return result;
+}
+function mask(size,mode,index){
+  const row=Math.floor(index/size),col=index%size;if(!Number.isInteger(index)||index<0||index>=size*size)throw Error('invalid index');let out=0;
+  for(let y=0;y<size;y++)for(let x=0;x<size;x++){const hit=mode==='oni'?Math.abs(y-row)+Math.abs(x-col)<=1:mode==='kiwami'?y===row||x===col:y===row&&x===col;if(hit)out|=1<<(y*size+x)}return out;
+}
+function create(mode,sample){const size=mode==='easy'?2:mode==='kiwami'?4:3;if(!['easy','normal','hard','oni','kiwami'].includes(mode)||!Number.isInteger(sample)||sample<=0||sample>=1<<(size*size))throw Error('invalid puzzle');return {version:1,mode,size,sample,target:transform(sample,size,{rotate:mode==='hard'})};}
+function play(puzzle,board,index){return board^mask(puzzle.size,puzzle.mode,index)}
+function makeSession(store,mode,{random=Math.random,normalPattern=generateMirrorPattern}={}){
+  const key=`kihamda-mirror-v1-${mode}`,size=mode==='easy'?2:mode==='kiwami'?4:3;let snapshot=null,current=null,offline=false;
+  function makeSample(){
+    if(mode==='normal')return normalPattern(random).reduce((bits,on,i)=>bits|(on?1<<i:0),0);
+    if(mode==='hard'||mode==='oni'){
+      const pool=[];for(let selection=1;selection<512;selection++){
+        let count=0,target=0;for(let i=0;i<9;i++)if(selection&(1<<i)){count++;target^=mode==='oni'?mask(3,mode,i):1<<i}
+        if(mode==='hard'?(count<3||count>6):count!==7)continue;
+        const sample=mode==='oni'?transform(target,3):target;
+        if(sample!==transform(sample,3,{rotate:mode==='hard'}))pool.push(sample);
+      }
+      return pool[Math.floor(random()*pool.length)];
+    }
+    const count=mode==='easy'?1+Math.floor(random()*2):11;
+    const indexes=Array.from({length:size*size},(_,i)=>i);let bits=0;
+    for(let i=0;i<count;i++){const j=i+Math.floor(random()*(indexes.length-i));[indexes[i],indexes[j]]=[indexes[j],indexes[i]];bits^=mode==='oni'||mode==='kiwami'?mask(size,mode,indexes[i]):1<<indexes[i]}
+    return mode==='oni'||mode==='kiwami'?transform(bits,size):bits;
+  }
+  function fresh(wins=0){return {version:1,mode,sample:makeSample(),board:0,moves:0,wins,finished:false}}
+  function valid(v){return v&&v.version===1&&v.mode===mode&&Number.isInteger(v.sample)&&v.sample>0&&v.sample<2**(size*size)&&Number.isInteger(v.board)&&v.board>=0&&v.board<2**(size*size)&&Number.isSafeInteger(v.moves)&&v.moves>=0&&Number.isSafeInteger(v.wins)&&v.wins>=0&&typeof v.finished==='boolean'&&v.finished===(v.board===create(mode,v.sample).target)&&(!v.finished||v.wins>0)&&(!v.moves?v.board===0:true)}
+  function read(){try{const raw=store.getItem(key),v=raw===null?null:JSON.parse(raw);if(v!==null&&!valid(v))return null;return {raw,v}}catch(_){return null}}
+  function save(next){if(!valid(next))throw Error('invalid session');if(offline){current=next;return {ok:true,warning:'unavailable'}}const old=read();if(!old){offline=true;current=next;return {ok:true,warning:'unavailable'}}if(old.raw!==snapshot)return {ok:false,reason:'conflict'};try{const raw=JSON.stringify(next);store.setItem(key,raw);snapshot=raw;current=next;return {ok:true}}catch(_){offline=true;current=next;return {ok:true,warning:'unavailable'}}}
+  function load(){const old=read();if(!old){offline=true;current=fresh();return {ok:true,warning:'unavailable'}}snapshot=old.raw;if(old.v){current=old.v;return {ok:true}}const result=save(fresh());if(result.ok)return result;const latest=read();if(latest&&latest.v){snapshot=latest.raw;current=latest.v;return {ok:true}}offline=true;current=fresh();return {ok:true,warning:'unavailable'}}
+  function move(index){if(current.finished)throw Error('finished');const board=play(create(mode,current.sample),current.board,index),finished=board===create(mode,current.sample).target;return save({...current,board,moves:current.moves+1,finished,wins:current.wins+Number(finished)})}
+  function restart(){return save(fresh(current.wins))}
+  return {load,move,restart,view:()=>({...current})};
+}
+return {transform,mask,create,play,makeSession};
+
+})();
+let mirrorDifficulty='normal',mirrorRestartGuard=null;
 const seriesFive=(()=>{
 // Candidate families for the number-sequence game; not yet connected to the site.
 function sequence(mode,params){
@@ -975,8 +1056,24 @@ function gardenFive(reset){
   render();
 }
 
+function threeFiveGame(){
+  const mode=threeDifficulty,config=threeFive.configs[mode],size=config.size,labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
+  category.textContent='対戦パズル';board.classList.add('three');board.dataset.threeSize=String(size);board.style.setProperty('--three-size',size);
+  instructions.textContent=mode==='oni'?'○の番。あと3手以内に3つ並べて勝とう。':mode==='kiwami'?'4×4で○の番。あと3手以内に縦・横・斜めに3つ並べて勝とう。':mode==='hard'?'最善の相手に、引き分け以上を目指そう。':gameCatalog.three.instructions;
+  const players=document.createElement('div');players.className='three-modes';players.setAttribute('role','group');players.setAttribute('aria-label','遊ぶ人数');for(const [value,label] of [['solo','ひとり'],['duo','ふたり']]){const option=document.createElement('button');option.type='button';option.textContent=label;option.dataset.mode=value;option.setAttribute('aria-pressed',String(value===threeMode));option.addEventListener('click',event=>{if(value===threeMode)return;threeMode=value;start();if(event.detail===0)document.querySelector(`.three-modes [data-mode="${value}"]`)?.focus()});players.append(option)}status.before(players);
+  const modes=document.createElement('div');modes.className='three-five-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');for(const [value,label] of Object.entries(labels)){const option=document.createElement('button');option.type='button';option.textContent=label;option.dataset.difficulty=value;option.setAttribute('aria-pressed',String(value===mode));option.addEventListener('click',event=>{if(value===mode)return;threeDifficulty=value;start();if(event.detail===0)document.querySelector(`.three-five-modes [data-difficulty="${value}"]`)?.focus()});modes.append(option)}status.before(modes);
+  const storage={getItem:key=>window.localStorage.getItem(key),setItem:(key,value)=>window.localStorage.setItem(key,value)},session=threeFive.session(storage,mode),loaded=session.load();let warning=loaded.warning||null,conflicted=false,state=session.view();
+  const refresh=document.createElement('button');refresh.type='button';refresh.className='three-five-refresh';refresh.textContent='最新の記録を読み込む';refresh.hidden=true;refresh.addEventListener('click',()=>start());record.after(refresh);const buttons=[];
+  function showRecord(){record.hidden=!warning&&!conflicted&&!state.games;record.textContent=conflicted?'別のタブで更新されたよ。最新の記録を読み込んでね。':warning?'このブラウザでは記録を保存できないよ':`勝ち ${state.wins}回・引き分け ${state.draws}回 / ${state.games}回`;refresh.hidden=!conflicted}
+  function update(next){if(!next.ok){conflicted=true;showRecord();render();return false}warning=next.warning||warning;state=session.view();showRecord();return true}
+  function render(){const p=threeFive.replay(mode,state.variant,state.actions),win=threeFive.line(p.board,size,'X')||threeFive.line(p.board,size,'O');buttons.forEach((b,i)=>{const mark=p.board[i];b.textContent=mark==='X'?'○':mark==='O'?'×':'';b.classList.toggle('three-winner',!!win?.includes(i));b.setAttribute('aria-label',`${Math.floor(i/size)+1}行${i%size+1}列 ${mark==='X'?'あなたの丸':mark==='O'?'コンピューターのバツ':'空き'}`);b.setAttribute('aria-disabled',String(conflicted||p.finished||mark!=='.'))});if(p.finished){const result=p.result==='win'?'あなたの勝ち！':p.result==='draw'?'引き分け':config.limit!==null&&!threeFive.line(p.board,size,'O')?'手数いっぱい':'コンピューターの勝ち';status.textContent=result;offerCopy(`3つならべ${mode==='normal'?'':` ${labels[mode]}`} ${result}\nhttps://game.kihamda.net/play-three.html`)}else status.textContent=config.limit===null?'あなたの番　○を置こう':`あと${config.limit-p.turns}手　○を置こう`}
+  for(let i=0;i<size*size;i++)buttons.push(button('',event=>{const before=threeFive.replay(mode,state.variant,state.actions);if(conflicted||before.finished||before.board[i]!=='.')return;if(update(session.move(i))){const last=state.actions.at(-1);announcement.textContent=`あなたは${Math.floor(i/size)+1}行${i%size+1}列に置いたよ。${last.c===null?'':`コンピューターは${Math.floor(last.c/size)+1}行${last.c%size+1}列に置いたよ。`}`;render();if(threeFive.replay(mode,state.variant,state.actions).finished&&event.detail===0)restart.focus()}}));
+  threeRestartGuard=()=>{if(conflicted)return;if(update(session.restart()))start()};cleanup=()=>{threeRestartGuard=null;players.remove();modes.remove();refresh.remove();board.style.removeProperty('--three-size');delete board.dataset.threeSize};showRecord();render();
+}
+
 const games = {
   three() {
+    if(threeMode==='solo'){threeFiveGame();return;}
     category.textContent='対戦パズル';board.classList.add('three');
     const modeGroup=document.createElement('div');modeGroup.className='three-modes';modeGroup.setAttribute('role','group');modeGroup.setAttribute('aria-label','遊ぶ人数');
     for(const [value,label] of [['solo','ひとり'],['duo','ふたり']]){
@@ -1012,57 +1109,43 @@ const games = {
     render();
   },
   number() {
-    category.textContent='数あて';board.classList.add('number');
-    const answer=1+Math.floor(Math.random()*100);let low=1,high=100,attempts=0,finished=false;
+    const mode=numberDifficulty,labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'},config=numberFive.configs[mode];
+    category.textContent='数あて';board.classList.add('number');instructions.textContent=`1から${config.max}の数を、大小のヒントを使って${config.limit}回以内に当てよう。`;
+    const modes=document.createElement('div');modes.className='number-five-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+    for(const [value,label] of Object.entries(labels)){const option=document.createElement('button');option.type='button';option.dataset.difficulty=value;option.textContent=label;option.setAttribute('aria-pressed',String(value===mode));option.addEventListener('click',event=>{if(value===mode)return;numberDifficulty=value;start();if(event.detail===0)document.querySelector(`.number-five-modes [data-difficulty="${value}"]`)?.focus()});modes.append(option)}status.before(modes);
+    const storage={getItem:key=>window.localStorage.getItem(key),setItem:(key,value)=>window.localStorage.setItem(key,value)},session=numberFive.makeSession(storage,mode),loaded=session.load();let state=session.view(),warning=loaded.warning||null,conflicted=false;
+    const refresh=document.createElement('button');refresh.type='button';refresh.className='number-five-refresh';refresh.textContent='最新の記録を読み込む';refresh.hidden=true;refresh.addEventListener('click',()=>start());record.after(refresh);
+    function showRecord(){record.hidden=!warning&&!conflicted&&!state.games;record.textContent=conflicted?'別のタブで更新されたよ。最新の記録を読み込んでね。':warning?'このブラウザでは記録を保存できないよ':`正解 ${state.wins} / ${state.games}回`;refresh.hidden=!conflicted}
+    function update(next){if(!next.ok){conflicted=true;showRecord();render();return false}warning=next.warning||warning;state=session.view();showRecord();return true}
+    const clues=document.createElement('p');clues.className='number-five-clues';clues.textContent=config.moduli.map(m=>`${m}で割った余りは${state.answer%m}`).join('、');clues.hidden=!config.moduli.length;
     const form=document.createElement('form');form.className='number-form';form.noValidate=true;
     const label=document.createElement('label');label.htmlFor='number-guess';label.textContent='予想する数';
     const input=document.createElement('input');input.id='number-guess';input.type='text';input.inputMode='numeric';input.autocomplete='off';input.setAttribute('aria-describedby','number-hint number-error');
     const submit=document.createElement('button');submit.type='submit';submit.textContent='答える';
-    const hint=document.createElement('p');hint.id='number-hint';
-    const error=document.createElement('p');error.id='number-error';error.setAttribute('role','status');
-    const historyTitle=document.createElement('h2');historyTitle.textContent='これまでのヒント';historyTitle.hidden=true;
-    const history=document.createElement('ol');history.className='number-history';
-    form.append(label,input,submit,hint,error);board.append(form,historyTitle,history);
-    function showStatus(message=''){status.textContent=finished?status.textContent:`${message}残り ${7-attempts}回`;hint.textContent=`答えの範囲：${low}〜${high}`;}
-    form.addEventListener('submit',event=>{
-      event.preventDefault();if(finished)return;
-      const text=input.value.normalize('NFKC').trim(),guess=Number(text);
-      if(!/^\d+$/.test(text)||!Number.isSafeInteger(guess)||guess<1||guess>100){error.textContent='1から100の整数を入力してね。';input.setAttribute('aria-invalid','true');return;}
-      if(guess<low||guess>high){error.textContent=`${low}から${high}の数を入力してね。`;input.setAttribute('aria-invalid','true');return;}
-      error.textContent='';input.removeAttribute('aria-invalid');attempts++;
-      const item=document.createElement('li');
-      if(guess===answer){item.textContent=`${guess}：正解！`;finished=true;status.textContent=`正解！ ${attempts}回で当てたよ`;offerCopy(`かくれた数 ${attempts}回で正解\nhttps://game.kihamda.net/play-number.html`);}
-      else {
-        const higher=guess<answer;item.textContent=`${guess}：もっと${higher?'大きい':'小さい'}`;
-        if(higher)low=guess+1;else high=guess-1;
-        if(attempts===7){finished=true;status.textContent=`答えは ${answer} だったよ`;offerCopy('かくれた数 7回で挑戦\nhttps://game.kihamda.net/play-number.html');}
-      }
-      historyTitle.hidden=false;history.append(item);input.value='';
-      if(finished){input.disabled=true;submit.disabled=true;restart.focus();}
-      showStatus(finished ? '' : `${item.textContent}。`);
-    });
-    showStatus();
+    const hint=document.createElement('p');hint.id='number-hint';const error=document.createElement('p');error.id='number-error';error.setAttribute('role','status');
+    const historyTitle=document.createElement('h2');historyTitle.textContent='これまでのヒント';const history=document.createElement('ol');history.className='number-history';form.append(label,input,submit,hint,error);board.append(clues,form,historyTitle,history);
+    function render(){const p=numberFive.progress(mode,state.answer,state.guesses),last=state.guesses.at(-1);history.replaceChildren();for(const value of state.guesses){const item=document.createElement('li');item.textContent=value===state.answer?`${value}：正解！`:`${value}：もっと${value<state.answer?'大きい':'小さい'}`;history.append(item)}historyTitle.hidden=!state.guesses.length;hint.textContent=`答えの範囲：${p.low}〜${p.high}`;input.disabled=submit.disabled=p.finished||conflicted;if(p.finished){status.textContent=p.won?`正解！ ${state.guesses.length}回で当てたよ`:`答えは ${state.answer} だったよ`;offerCopy(`かくれた数${mode==='normal'?'':` ${labels[mode]}`} ${state.guesses.length}回で${p.won?'正解':'挑戦'}\nhttps://game.kihamda.net/play-number.html`)}else status.textContent=`${last===undefined?'':`${last}：もっと${last<state.answer?'大きい':'小さい'}。`}残り ${config.limit-state.guesses.length}回`}
+    form.addEventListener('submit',event=>{event.preventDefault();const p=numberFive.progress(mode,state.answer,state.guesses);if(p.finished||conflicted)return;const text=input.value.normalize('NFKC').trim(),guess=Number(text);if(!/^\d+$/.test(text)||!Number.isSafeInteger(guess)||guess<1||guess>config.max){error.textContent=`1から${config.max}の整数を入力してね。`;input.setAttribute('aria-invalid','true');return}if(guess<p.low||guess>p.high){error.textContent=`${p.low}から${p.high}の数を入力してね。`;input.setAttribute('aria-invalid','true');return}error.textContent='';input.removeAttribute('aria-invalid');if(update(session.guess(guess))){input.value='';render();if(numberFive.progress(mode,state.answer,state.guesses).finished)restart.focus()}});
+    numberRestartGuard=()=>{if(conflicted)return;if(update(session.restart()))start()};cleanup=()=>{numberRestartGuard=null;modes.remove();refresh.remove()};showRecord();render();
   },
   mirror() {
-    category.textContent='図形パズル';board.classList.add('mirror');
-    const sample=generateMirrorPattern(),cells=Array(9).fill(false),buttons=[];
-    let moves=0,won=false;
-    for(const label of ['お手本','こたえ']){const heading=document.createElement('span');heading.className='mirror-heading';heading.textContent=label;board.append(heading);}
-    for(let row=0;row<3;row++){
-      for(let col=0;col<3;col++){
-        const i=row*3+col,cell=document.createElement('span');cell.className=sample[i]?'mirror-sample on':'mirror-sample';cell.textContent=sample[i]?'●':'・';cell.setAttribute('role','img');cell.setAttribute('aria-label',`お手本 ${row+1}行${col+1}列 ${sample[i]?'ぬり':'空き'}`);board.append(cell);
-      }
-      for(let col=0;col<3;col++){
-        const i=row*3+col,cell=button('',()=>{if(won)return;cells[i]=!cells[i];moves++;render();});buttons.push(cell);
-      }
+    const mode=mirrorDifficulty,labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'},size=mode==='easy'?2:mode==='kiwami'?4:3;
+    const rules={easy:'お手本を左右反転して作ろう。',normal:gameCatalog.mirror.instructions,hard:'お手本を時計回りに90度回してから、左右反転して作ろう。',oni:'お手本を左右反転して作ろう。押したマスと上下左右が切り替わるよ。',kiwami:'お手本を左右反転して作ろう。押したマスの行と列が切り替わるよ。'};
+    instructions.textContent=rules[mode];category.textContent='図形パズル';board.classList.add('mirror');board.dataset.mirrorSize=String(size);board.style.setProperty('--mirror-size',size);
+    const modes=document.createElement('div');modes.className='mirror-five-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+    for(const [value,label] of Object.entries(labels)){const option=document.createElement('button');option.type='button';option.dataset.difficulty=value;option.textContent=label;option.setAttribute('aria-pressed',String(value===mode));option.addEventListener('click',event=>{if(value===mode)return;mirrorDifficulty=value;start();if(event.detail===0)document.querySelector(`.mirror-five-modes [data-difficulty="${value}"]`)?.focus()});modes.append(option)}status.before(modes);
+    const storage={getItem:key=>window.localStorage.getItem(key),setItem:(key,value)=>window.localStorage.setItem(key,value)};
+    const session=mirrorFive.makeSession(storage,mode),loaded=session.load();let warning=loaded.warning||null,conflicted=false,state=session.view();const buttons=[];
+    const refresh=document.createElement('button');refresh.type='button';refresh.className='mirror-five-refresh';refresh.textContent='最新の記録を読み込む';refresh.hidden=true;refresh.addEventListener('click',()=>start());record.after(refresh);
+    function showRecord(){record.hidden=!warning&&!conflicted&&!state.wins;record.textContent=conflicted?'別のタブで更新されたよ。最新の記録を読み込んでね。':warning?'このブラウザでは記録を保存できないよ':`クリア ${state.wins}回`;refresh.hidden=!conflicted}
+    function update(next){if(!next.ok){conflicted=true;showRecord();render();return false}warning=next.warning||warning;state=session.view();showRecord();return true}
+    for(const label of ['お手本','こたえ']){const heading=document.createElement('span');heading.className='mirror-heading';heading.textContent=label;board.append(heading)}
+    for(let row=0;row<size;row++){
+      for(let col=0;col<size;col++){const i=row*size+col,on=Boolean(state.sample&(1<<i)),cell=document.createElement('span');cell.className=on?'mirror-sample on':'mirror-sample';cell.textContent=on?'●':'・';cell.setAttribute('role','img');cell.setAttribute('aria-label',`お手本 ${row+1}行${col+1}列 ${on?'ぬり':'空き'}`);board.append(cell)}
+      for(let col=0;col<size;col++){const i=row*size+col,cell=button('',()=>{if(conflicted||state.finished)return;if(update(session.move(i)))render()});buttons.push(cell)}
     }
-    function render(){
-      won=cells.every((value,i)=>value===sample[Math.floor(i/3)*3+2-i%3]);
-      buttons.forEach((cell,i)=>{cell.className=cells[i]?'on':'';cell.textContent=cells[i]?'●':'・';cell.setAttribute('aria-pressed',String(cells[i]));cell.setAttribute('aria-disabled',String(won));cell.setAttribute('aria-label',`こたえ ${Math.floor(i/3)+1}行${i%3+1}列 ${cells[i]?'ぬり':'空き'}`);});
-      status.textContent=won?`クリア！ ${moves}手でできたよ`:`${moves}手　左右反転して作ろう`;
-      if(won)offerCopy(`かがみのもよう ${moves}手でクリア\nhttps://game.kihamda.net/play-mirror.html`);
-    }
-    render();
+    function render(){buttons.forEach((cell,i)=>{const on=Boolean(state.board&(1<<i));cell.className=on?'on':'';cell.textContent=on?'●':'・';cell.setAttribute('aria-pressed',String(on));cell.setAttribute('aria-disabled',String(state.finished||conflicted));cell.setAttribute('aria-label',`こたえ ${Math.floor(i/size)+1}行${i%size+1}列 ${on?'ぬり':'空き'}`)});status.textContent=state.finished?`クリア！ ${state.moves}手でできたよ`:`${state.moves}手`;if(state.finished)offerCopy(`かがみのもよう${mode==='normal'?'':` ${labels[mode]}`} ${state.moves}手でクリア\nhttps://game.kihamda.net/play-mirror.html`)}
+    mirrorRestartGuard=()=>{if(conflicted)return;if(update(session.restart()))start()};cleanup=()=>{mirrorRestartGuard=null;modes.remove();refresh.remove();board.style.removeProperty('--mirror-size');delete board.dataset.mirrorSize};showRecord();render();
   },
   series() {
     const mode=seriesDifficulty,labels={easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'};
@@ -1765,7 +1848,7 @@ const games = {
 };
 const gridColumns={three:3,mirror:3,swap:3,lights:4,memory:4,order:4,garden:4,path:4,sum:3,slide:3,circuit:3};
 board.addEventListener('keydown',event=>{
-  const columns=id==='swap'?Number(board.dataset.swapSize||3):id==='order'?Number(board.dataset.orderSize||4):id==='memory'?Number(board.dataset.memorySize||4):id==='slide'?Number(board.dataset.slideSize||3):id==='path'?Number(board.dataset.pathSize||4):id==='garden'?Number(board.dataset.gardenSize||4):id==='lights'?Number(board.dataset.lightsSize||4):id==='circuit'?Number(board.dataset.circuitSize||3):Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
+  const columns=id==='three'?Number(board.dataset.threeSize||3):id==='mirror'?Number(board.dataset.mirrorSize||3):id==='swap'?Number(board.dataset.swapSize||3):id==='order'?Number(board.dataset.orderSize||4):id==='memory'?Number(board.dataset.memorySize||4):id==='slide'?Number(board.dataset.slideSize||3):id==='path'?Number(board.dataset.pathSize||4):id==='garden'?Number(board.dataset.gardenSize||4):id==='lights'?Number(board.dataset.lightsSize||4):id==='circuit'?Number(board.dataset.circuitSize||3):Object.hasOwn(gridColumns,id) ? gridColumns[id] : 0;
   const directions={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
   const direction=Object.hasOwn(directions,event.key) ? directions[event.key] : null;
   if(!columns || !direction)return;
@@ -1828,6 +1911,9 @@ function start(reset=false){
 }
 restart.addEventListener('click',()=>{
   refreshDailyDate();
+  if(id==='three'&&threeRestartGuard){threeRestartGuard();return;}
+  if(id==='number'&&numberRestartGuard){numberRestartGuard();return;}
+  if(id==='mirror'&&mirrorRestartGuard){mirrorRestartGuard();return;}
   if(id==='series'&&seriesRestartGuard){seriesRestartGuard();return;}
   if(id==='shift'&&shiftRestartGuard){shiftRestartGuard();return;}
   if(id==='swap'&&swapRestartGuard&&!isStaleDaily){swapRestartGuard();return;}
