@@ -1,0 +1,12 @@
+const {chromium}=require('playwright'),http=require('http'),fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(process.env.SITE_DIR||'site');
+const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(root+path.sep))return res.writeHead(400).end();fs.readFile(file,(err,data)=>err?res.writeHead(404).end():res.writeHead(200,{'Content-Type':{'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css'}[path.extname(file)]||'text/plain'}).end(data))});
+(async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH});try{
+  const c=await browser.newContext(),p=await c.newPage();await p.clock.install({time:new Date('2026-11-03T03:00:00Z')});const base=`http://127.0.0.1:${server.address().port}/`,url=game=>base+(process.env.SITE_DIR?`play-${game}.html?mode=daily`:`game.html?game=${game}&mode=daily`);
+  await p.goto(url('balance'));const order=await p.evaluate(()=>generateDailyBalance('2026-11-03'));
+  async function answer(values){await p.locator('.balance-mode').nth(1).click();for(const n of values)await p.locator('.balance-choice').nth(n).click();await p.locator('.balance-submit').click()}
+  await answer([...order].reverse());assert.equal(await p.locator('#record').textContent(),'今日のベスト 不正解');await p.locator('#restart').click();await answer(order);assert.equal(await p.locator('#record').textContent(),'今日のベスト 正解');await p.locator('#restart').click();await answer([...order].reverse());assert.equal(await p.locator('#record').textContent(),'今日のベスト 正解');
+  await p.evaluate(()=>localStorage.setItem('kihamda-daily-result-v1-swap-2026-11-03','broken'));await p.goto(url('swap'));assert((await p.locator('#record').textContent()).includes('保存できない'));assert.equal(await p.evaluate(()=>localStorage.getItem('kihamda-daily-result-v1-swap-2026-11-03')),'broken');
+  await p.clock.setFixedTime(new Date('2026-11-04T03:00:00Z'));await p.goto(url('balance'));assert(await p.locator('#record').isHidden());assert.equal(await p.evaluate(()=>localStorage.getItem('kihamda-daily-result-v1-balance-2026-11-03')),'1');
+  await c.close();console.log('daily best survives restart, improves only, preserves corrupt data and isolates dates passed');
+}finally{await browser.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});
