@@ -1,0 +1,138 @@
+[
+  {
+    "saved": {
+      "version": 1,
+      "mode": "kiwami",
+      "variant": 0,
+      "actions": [
+        {
+          "p": 9,
+          "c": 4
+        }
+      ],
+      "games": 0,
+      "wins": 0,
+      "draws": 0
+    },
+    "board": "XOX.O...OXO...X."
+  },
+  {
+    "saved": {
+      "version": 1,
+      "mode": "kiwami",
+      "variant": 1,
+      "actions": [
+        {
+          "p": 5,
+          "c": 2
+        }
+      ],
+      "games": 0,
+      "wins": 0,
+      "draws": 0
+    },
+    "board": ".OOX.X.OXO.X...."
+  },
+  {
+    "saved": {
+      "version": 1,
+      "mode": "kiwami",
+      "variant": 2,
+      "actions": [
+        {
+          "p": 6,
+          "c": 11
+        }
+      ],
+      "games": 0,
+      "wins": 0,
+      "draws": 0
+    },
+    "board": ".X...OXO...O.XOX"
+  },
+  {
+    "saved": {
+      "version": 1,
+      "mode": "kiwami",
+      "variant": 3,
+      "actions": [
+        {
+          "p": 10,
+          "c": 13
+        }
+      ],
+      "games": 0,
+      "wins": 0,
+      "draws": 0
+    },
+    "board": "....X.OXO.X.XOO."
+  },
+  {
+    "saved": {
+      "version": 1,
+      "mode": "kiwami",
+      "variant": 4,
+      "actions": [
+        {
+          "p": 10,
+          "c": 7
+        }
+      ],
+      "games": 0,
+      "wins": 0,
+      "draws": 0
+    },
+    "board": ".XOX...O.OXO.X.."
+  },
+  {
+    "saved": {
+      "version": 1,
+      "mode": "kiwami",
+      "variant": 5,
+      "actions": [
+        {
+          "p": 9,
+          "c": 14
+        }
+      ],
+      "games": 0,
+      "wins": 0,
+      "draws": 0
+    },
+    "board": "....XO.X.X.O.OOX"
+  },
+  {
+    "saved": {
+      "version": 1,
+      "mode": "kiwami",
+      "variant": 6,
+      "actions": [
+        {
+          "p": 5,
+          "c": 8
+        }
+      ],
+      "games": 0,
+      "wins": 0,
+      "draws": 0
+    },
+    "board": "..X.OXO.O...XOX."
+  },
+  {
+    "saved": {
+      "version": 1,
+      "mode": "kiwami",
+      "variant": 7,
+      "actions": [
+        {
+          "p": 6,
+          "c": 1
+        }
+      ],
+      "games": 0,
+      "wins": 0,
+      "draws": 0
+    },
+    "board": "XOO.O.X.X.OX...."
+  }
+]

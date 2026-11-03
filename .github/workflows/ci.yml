@@ -29,6 +29,24 @@ jobs:
           node ops/garden-five-generator-check.cjs
           node ops/garden-extreme-generator-check.cjs
           node ops/balance-generator-check.cjs
+          node ops/balance-five-strategy-check.cjs
+          node ops/balance-five-model-check.cjs
+          node ops/balance-five-session-check.cjs
+          node ops/swap-five-hard-independent-check.cjs
+          node ops/swap-five-extreme-unique-check.cjs
+          node ops/swap-five-daily-distribution-check.cjs
+          node ops/three-five-independent-check.cjs
+          node ops/three-five-diverse-independent-check.cjs
+          node ops/three-five-model-check.cjs
+          node ops/three-five-session-check.cjs
+          node ops/number-five-session-check.cjs
+          node ops/mirror-five-session-check.cjs
+          node ops/shift-five-model-check.cjs
+          node ops/shift-five-candidates-check.cjs
+          node ops/shift-five-session-check.cjs
+          node ops/shift-five-normal-valid-check.cjs
+          node ops/series-five-model-check.cjs
+          node ops/series-five-session-check.cjs
           node ops/daily-storage-check.cjs
           node ops/sort-check.cjs
           node ops/sort-daily-check.cjs
@@ -63,17 +81,41 @@ jobs:
           node ops/code-five-browser-check.cjs
           node ops/code-five-storage-check.cjs
           node ops/mirror-browser-check.cjs
+          node ops/mirror-five-ui-check.cjs
+          node ops/mirror-five-conflict-check.cjs
           node ops/number-browser-check.cjs
+          node ops/number-five-ui-check.cjs
+          node ops/number-five-conflict-check.cjs
           node ops/three-browser-check.cjs
+          node ops/three-five-ui-check.cjs
+          node ops/three-five-symmetry-ui-check.cjs
+          node ops/three-five-diverse-ui-check.cjs
+          node ops/three-five-conflict-check.cjs
           node ops/new-share-check.cjs
           node ops/series-browser-check.cjs
           node ops/series-share-check.cjs
+          node ops/series-five-ui-check.cjs
+          node ops/series-five-conflict-check.cjs
           node ops/shift-browser-check.cjs
+          node ops/shift-five-site-check.cjs
+          node ops/shift-five-conflict-check.cjs
+          node ops/shift-five-limit-check.cjs
+          node ops/shift-five-normal-storage-check.cjs
           node ops/swap-browser-check.cjs
           node ops/swap-daily-check.cjs
+          node ops/swap-five-ui-check.cjs
+          node ops/swap-five-daily-check.cjs
+          node ops/swap-five-keyboard-check.cjs
+          node ops/swap-normal-storage-check.cjs
+          node ops/swap-legacy-result-check.cjs
+          node ops/balance-legacy-result-check.cjs
+          node ops/legacy-best-storage-check.cjs
           node ops/balance-browser-check.cjs
           node ops/balance-daily-check.cjs
           node ops/balance-storage-check.cjs
+          node ops/balance-five-ui-check.cjs
+          node ops/balance-five-daily-check.cjs
+          node ops/balance-five-extreme-ui-check.cjs
           node ops/dodge-browser-check.cjs
           node ops/dodge-five-general-check.cjs
           node ops/dodge-five-oni-check.cjs
@@ -138,6 +180,26 @@ jobs:
           python3 ops/build_preview.py
           SITE_DIR=preview node ops/home-filter-check.cjs
           node ops/fixed-browser-check.cjs
+          SITE_DIR=preview node ops/mirror-five-ui-check.cjs
+          SITE_DIR=preview node ops/mirror-five-conflict-check.cjs
+          SITE_DIR=preview node ops/number-five-ui-check.cjs
+          SITE_DIR=preview node ops/number-five-conflict-check.cjs
+          SITE_DIR=preview node ops/three-five-ui-check.cjs
+          SITE_DIR=preview node ops/three-five-symmetry-ui-check.cjs
+          SITE_DIR=preview node ops/three-five-diverse-ui-check.cjs
+          SITE_DIR=preview node ops/three-five-conflict-check.cjs
+          SITE_DIR=preview node ops/balance-five-fixed-check.cjs
+          SITE_DIR=preview node ops/swap-five-daily-check.cjs
+          SITE_DIR=preview node ops/swap-five-ui-check.cjs
+          SITE_DIR=preview node ops/swap-normal-storage-check.cjs
+          SITE_DIR=preview node ops/swap-legacy-result-check.cjs
+          SITE_DIR=preview node ops/balance-legacy-result-check.cjs
+          SITE_DIR=preview node ops/legacy-best-storage-check.cjs
+          SITE_DIR=preview node ops/shift-five-site-check.cjs
+          SITE_DIR=preview node ops/shift-five-conflict-check.cjs
+          SITE_DIR=preview node ops/shift-five-normal-storage-check.cjs
+          SITE_DIR=preview node ops/series-five-ui-check.cjs
+          SITE_DIR=preview node ops/series-five-conflict-check.cjs
           SITE_DIR=preview node ops/timing-five-browser-check.cjs
           SITE_DIR=preview node ops/recall-five-browser-check.cjs
           SITE_DIR=preview node ops/code-five-browser-check.cjs
