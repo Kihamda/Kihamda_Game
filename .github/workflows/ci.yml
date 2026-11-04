@@ -152,6 +152,19 @@ jobs:
           node ops/sum-site-storage-check.cjs
           node ops/sum-site-ux-check.cjs
           node ops/sum-site-corrupt-check.cjs
+          node ops/sum-invalid-record-check.cjs
+          node ops/sum-invalid-record-tabs-check.cjs
+          node ops/garden-invalid-record-check.cjs
+          node ops/garden-invalid-record-tabs-check.cjs
+          node ops/path-invalid-record-check.cjs
+          node ops/path-invalid-record-tabs-check.cjs
+          node ops/path-dated-validity-check.cjs
+          node ops/boolean-invalid-record-check.cjs
+          node ops/circuit-invalid-record-check.cjs
+          node ops/sort-invalid-record-check.cjs
+          node ops/sort-dated-history-check.cjs
+          node ops/legacy-invalid-record-check.cjs
+          node ops/daily-invalid-tab-check.cjs
           node ops/sum-site-share-rollover-check.cjs
           node ops/path-browser-check.cjs
           node ops/path-five-browser-check.cjs

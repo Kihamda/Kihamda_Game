@@ -66,7 +66,11 @@ const server = http.createServer((req,res)=>{
       await page.evaluate(({saved,start,goal})=>localStorage.setItem('kihamda-daily-path-normal-v2',JSON.stringify({date:'2026-10-27',steps:saved.route[0]===start?saved.route.slice(1).map(i=>[i]):[[goal]],moves:saved.moves})),{saved,start:puzzle.start,goal:puzzle.goal});
       await page.reload();assert.equal(await page.locator('#status').textContent(),'1 / 16マス');
     }
+    const invalidBefore=await page.evaluate(()=>localStorage.getItem('kihamda-daily-path-normal-v2'));
     await page.locator('#restart').tap();
+    assert.equal(await page.evaluate(()=>localStorage.getItem('kihamda-daily-path-normal-v2')),invalidBefore);
+    await page.evaluate(()=>localStorage.removeItem('kihamda-daily-path-normal-v2'));
+    await page.reload();
     await cells.nth(puzzle.solution[1]).focus();await page.keyboard.press('Space');
     assert.equal(await page.locator('#status').textContent(),'2 / 16マス');
     await page.reload();assert.equal(await page.locator('#status').textContent(),'2 / 16マス');
