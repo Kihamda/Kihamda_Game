@@ -14,5 +14,13 @@ storage('2026-10-27').clear();assert.equal(get('').date,'2026-10-29');assert.equ
 storage('2026-10-29').clear();assert.equal(get('-previous').date,'2026-10-28');
 storage('2026-10-27').save({moves:8});assert.equal(get('').date,'2026-10-28');assert.equal(get('-previous').date,'2026-10-27');
 storage('2026-10-30').save({moves:9});assert.equal(get('-previous').date,'2026-10-28');
-values.set('kihamda-daily-test','bad json');storage('2026-10-29').save({moves:3});assert.equal(get('').moves,3);
+const badValues=['bad json','null','[]','{}',JSON.stringify({date:'2026-02-30',moves:9})];
+for(const bad of badValues)for(const suffix of ['', '-previous']){
+  values.clear();const key='kihamda-daily-test',previous=key+'-previous';
+  values.set(key,JSON.stringify({date:'2026-10-29',moves:3}));values.set(previous,JSON.stringify({date:'2026-10-28',moves:4}));values.set(key+suffix,bad);
+  const before=[...values.entries()],instance=storage('2026-10-29');instance.load();instance.save({moves:8});instance.clear();
+  assert.deepEqual([...values.entries()],before,`corrupt ${suffix||'current'} must remain intact`);
+}
+values.clear();const duplicate=JSON.stringify({date:'2026-10-29',moves:1});values.set('kihamda-daily-test',duplicate);values.set('kihamda-daily-test-previous',duplicate);
+const before=[...values.entries()],instance=storage('2026-10-29');instance.load();instance.save({moves:2});instance.clear();assert.deepEqual([...values.entries()],before,'duplicate date must remain intact');
 assert(values.size<=2);console.log('Daily storage: legacy data, older tab, bounded records, date-specific reset and corrupt data passed');
