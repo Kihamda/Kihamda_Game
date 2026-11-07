@@ -1,3 +1,445 @@
+const recoveryModules = (() => { const sources={"./idb-versioned-keys-prototype.cjs":function(require,module,exports){
+const modes = ['easy', 'normal', 'hard', 'oni', 'kiwami'];
+const descriptors = [...modes.map(mode=>({id:`sum-${mode}-v2`,game:'sum',mode,version:2})),{id:'sum',game:'sum',mode:'legacy',version:1}];
+const byId = new Map(descriptors.map(item => [item.id, Object.freeze(item)]));
+if (byId.size !== descriptors.length) throw Error('duplicate identifier');
+function identifyDailyStorage(id) {
+  if (typeof id !== 'string' || !byId.has(id)) return null;
+  const descriptor = byId.get(id), key = `kihamda-daily-${id}`;
+  return { ...descriptor, keys: [key, `${key}-previous`] };
+}
+module.exports = { identifyDailyStorage };
+
+},
+"./idb-versioned-guard-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+function observeVersionedStorage(store,events,id,snapshot,onChange){
+ const identity=identifyDailyStorage(id);if(!identity||!Array.isArray(snapshot)||snapshot.length!==2||!snapshot.every(x=>x===null||typeof x==='string')||typeof onChange!=='function')throw Error('invalid baseline');
+ const keys=identity.keys,baseline=[...snapshot];let state='clean';
+ function check(){if(state!=='clean')return state;try{if(keys.some((key,i)=>store.getItem(key)!==baseline[i]))state='changed'}catch(_){state='unavailable'}return state}
+ function onStorage(event){if(event.storageArea!==store||(event.key!==null&&!keys.includes(event.key)))return;const old=state;if(state==='clean'&&(event.key===null||event.newValue!==baseline[keys.indexOf(event.key)]))state='changed';if(old!==state)onChange(state)}
+ events.addEventListener('storage',onStorage);check();return {check,dispose:()=>events.removeEventListener('storage',onStorage)};
+}
+module.exports={observeVersionedStorage};
+
+},
+"./idb-versioned-capture-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+const {observeVersionedStorage}=require('./idb-versioned-guard-prototype.cjs');
+// Reads only the exact selected keys; callers must guard again before any database write.
+function captureVersioned(store,events,parse,id,onChange){
+ const identity=identifyDailyStorage(id);if(!identity||typeof parse!=='function')return {state:'invalid'};
+ let snapshot;try{snapshot=identity.keys.map(key=>store.getItem(key))}catch(_){return {state:'unavailable'}}
+ const guard=observeVersionedStorage(store,events,id,snapshot,onChange),before=guard.check();
+ if(before!=='clean'){guard.dispose();return {state:before}}
+ let result;try{result=parse(id,snapshot)}catch(_){guard.dispose();return {state:'invalid'}}const after=guard.check();
+ if(after!=='clean'||result.state!=='ready'){guard.dispose();return {state:after!=='clean'?after:result.state}}
+ return {state:'ready',identity:result.identity,records:result.records,snapshot:result.snapshot,guard};
+}
+module.exports={captureVersioned};
+
+
+},
+"./idb-versioned-parser-prototype.cjs":function(require,module,exports){
+const {parseImport}=require('./idb-versioned-import-prototype.cjs');
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+const {makeSumRecoveryValidator}=require('./idb-sum-validation-prototype.cjs');
+function createParser({sum}) {
+ const valid=makeSumRecoveryValidator(sum);
+ return (id,snapshot)=>{const identity=identifyDailyStorage(id);if(!identity)return {state:'invalid'};return parseImport(id,snapshot,(record,item)=>{
+  if(item.mode!=='legacy')return valid(record,item);
+  return Number.isSafeInteger(record.moves)&&record.moves>=0&&Array.isArray(record.cells)&&record.cells.length===9&&record.cells.every(x=>typeof x==='boolean')&&record.cells.filter(Boolean).length<=3;
+ })};
+}
+module.exports={createParser};
+},
+"./idb-versioned-import-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage} = require('./idb-versioned-keys-prototype.cjs');
+function validDate(date) {
+  if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  const ms = Date.parse(`${date}T00:00:00Z`);
+  return Number.isFinite(ms) && new Date(ms).toISOString().slice(0, 10) === date;
+}
+function parseImport(id, snapshot, validate) {
+  const identity = identifyDailyStorage(id);
+  if (!identity || !Array.isArray(snapshot) || snapshot.length !== 2 ||
+      !snapshot.every(value => value === null || typeof value === 'string') || typeof validate !== 'function')
+    return {state:'invalid'};
+  const items = [];
+  try {
+    for (const raw of snapshot) {
+      if (raw === null) continue;
+      const item = JSON.parse(raw);
+      if (!item || Array.isArray(item) || typeof item !== 'object' || !validDate(item.date) || validate(item, identity) !== true)
+        return {state:'invalid'};
+      items.push(item);
+    }
+  } catch (_) { return {state:'invalid'}; }
+  if (new Set(items.map(item => item.date)).size !== items.length) return {state:'invalid'};
+  items.sort((a,b) => b.date.localeCompare(a.date));
+  return {state:'ready', identity, records:items, snapshot:[...snapshot]};
+}
+module.exports = {parseImport};
+
+},
+"./idb-sum-validation-prototype.cjs":function(require,module,exports){
+function makeSumRecoveryValidator(generate) {
+  return (record, identity) => {
+    if(identity.game!=='sum' || identity.version!==2 || !['easy','normal','hard','oni','kiwami'].includes(identity.mode))return false;
+    const puzzle=generate(identity.mode,record.date), count=identity.mode==='kiwami'?3:identity.mode==='oni'?2:1;
+    return Array.isArray(puzzle?.values) && Array.isArray(record.owners) && record.owners.length===puzzle.values.length &&
+      record.owners.every(x=>Number.isInteger(x)&&x>=-1&&x<count) &&
+      Array.from({length:count},(_,i)=>record.owners.filter(x=>x===i).length).every(n=>n<=3) &&
+      Number.isSafeInteger(record.moves) && record.moves>=0;
+  };
+}
+module.exports={makeSumRecoveryValidator};
+
+},
+"./multi-change-model.cjs":function(require,module,exports){
+function planChanges(database, sources, valid) {
+  const good=records=>Array.isArray(records) && records.length<=2 && records.every(valid) && new Set(records.map(x=>x.date)).size===records.length;
+  if(typeof valid!=='function' || !good(database) || !Array.isArray(sources) || new Set(sources.map(x=>x?.id)).size!==sources.length)return {state:'invalid'};
+  if(!sources.every(s=>s && typeof s.id==='string' && s.id && s.id!=='database' && good(s.before) && good(s.after)))return {state:'invalid'};
+  const map=records=>new Map(records.map(x=>[x.date,x]));
+  const databaseByDate=map(database), rows=new Map();
+  for(const source of sources){
+    const before=map(source.before),after=map(source.after);
+    for(const date of new Set([...before.keys(),...after.keys()])) {
+      const old=before.get(date)??null, current=after.get(date)??null;
+      if(JSON.stringify(old)===JSON.stringify(current))continue;
+      if(!rows.has(date))rows.set(date,{date,choices:[{source:'database',record:structuredClone(databaseByDate.get(date)??null)}]});
+      rows.get(date).choices.push({source:source.id,record:structuredClone(current)});
+    }
+  }
+  return {state:'ready',rows:[...rows.values()].sort((a,b)=>b.date.localeCompare(a.date)),archive:{database:structuredClone(database),sources:structuredClone(sources)}};
+}
+function selectChanges(plan, choices, valid) {
+  if(plan?.state!=='ready'||!Array.isArray(choices)||choices.length!==plan.rows.length)return {state:'invalid'};
+  const selected=new Map();
+  for(const row of plan.rows){
+    const matching=choices.filter(x=>x.date===row.date);
+    if(matching.length!==1)return {state:'invalid'};
+    const option=row.choices.find(x=>x.source===matching[0].source);
+    if(!option || (option.record!==null && !valid(option.record)))return {state:'invalid'};
+    selected.set(row.date,option.record);
+  }
+  const result=new Map(plan.archive.database.map(x=>[x.date,x]));
+  for(const [date,record] of selected){if(record===null)result.delete(date);else result.set(date,record)}
+  const dates=[...result.keys()].sort().reverse();
+  // Do not silently discard a record that the user explicitly selected.
+  if(dates.slice(2).some(date=>selected.get(date)!==undefined && selected.get(date)!==null))return {state:'too-old'};
+  return {state:'ready',records:structuredClone(dates.slice(0,2).map(date=>result.get(date))),evicted:structuredClone(dates.slice(2).map(date=>result.get(date))),archive:structuredClone(plan.archive)};
+}
+module.exports={planChanges,selectChanges};
+
+},
+"./multi-change-archive.cjs":function(require,module,exports){
+const {planChanges,selectChanges}=require('./multi-change-model.cjs');
+function createMultiArchive(game, plan, choices, valid, createdAt) {
+  if(typeof game!=='string'||!game||typeof createdAt!=='string'||!Number.isFinite(Date.parse(createdAt)))return null;
+  const checked=planChanges(plan?.archive?.database,plan?.archive?.sources,valid);
+  if(checked.state!=='ready'||JSON.stringify(checked.rows)!==JSON.stringify(plan.rows))return null;
+  const result=selectChanges(checked,choices,valid);if(result.state!=='ready')return null;
+  return {version:1,game,createdAt,database:checked.archive.database,sources:checked.archive.sources,choices:structuredClone(choices),result:result.records,evicted:result.evicted};
+}
+function readMultiArchive(archive, game, valid) {
+  if(!archive||archive.version!==1||archive.game!==game||typeof archive.createdAt!=='string'||!Number.isFinite(Date.parse(archive.createdAt)))return null;
+  const plan=planChanges(archive.database,archive.sources,valid);if(plan.state!=='ready')return null;
+  const selected=selectChanges(plan,archive.choices,valid);
+  if(selected.state!=='ready'||JSON.stringify(selected.records)!==JSON.stringify(archive.result)||JSON.stringify(selected.evicted)!==JSON.stringify(archive.evicted))return null;
+  const entries=[];
+  for(const record of archive.database)entries.push({date:record.date,source:'database',record:structuredClone(record)});
+  for(const source of archive.sources)for(const phase of ['before','after'])for(const record of source[phase])entries.push({date:record.date,source:`${source.id}-${phase}`,record:structuredClone(record)});
+  // Absence and deletion are meaningful alternatives even though no record exists.
+  for(const row of plan.rows)for(const choice of row.choices){
+    if(choice.source==='database'){if(choice.record===null)entries.push({date:row.date,source:'database',record:null});continue}
+    const source=archive.sources.find(item=>item.id===choice.source);
+    if(!source.before.some(item=>item.date===row.date))entries.push({date:row.date,source:`${choice.source}-before`,record:null});
+    if(choice.record===null)entries.push({date:row.date,source:`${choice.source}-after`,record:null});
+  }
+  return {entries,plan,selected};
+}
+module.exports={createMultiArchive,readMultiArchive};
+
+}}, cache={}; function require(id){if(cache[id])return cache[id].exports;if(!(id in sources))throw Error('missing module '+id);const module={exports:{}};cache[id]=module;sources[id](require,module,module.exports);return module.exports;} return {capture:require('./idb-versioned-capture-prototype.cjs').captureVersioned, createParser:require('./idb-versioned-parser-prototype.cjs').createParser, ...require('./multi-change-model.cjs'), ...require('./multi-change-archive.cjs')};})();
+async function openDailyDatabase(){return new Promise((resolve,reject)=>{const request=indexedDB.open('kihamda-games-daily',1);request.onupgradeneeded=()=>request.result.createObjectStore('games');request.onerror=()=>reject(request.error);request.onsuccess=()=>resolve(request.result)})}
+function listRecoveryBackups(db,game){return new Promise((resolve,reject)=>{const tx=db.transaction('games','readonly'),prefix=`backup:${game}:`,out=[],req=tx.objectStore('games').openCursor(IDBKeyRange.bound(prefix,prefix+'\uffff'));req.onsuccess=()=>{const cursor=req.result;if(!cursor)return;out.push({id:cursor.key.slice(prefix.length),createdAt:typeof cursor.value?.createdAt==='string'?cursor.value.createdAt:null});cursor.continue()};tx.oncomplete=()=>resolve(out);tx.onabort=()=>reject(tx.error||Error('list aborted'));tx.onerror=()=>reject(tx.error)})}
+function candidatesFromArchive(archive, game, validate) {
+  if (!archive || archive.game !== game || !Array.isArray(archive.records) || typeof validate !== 'function') return null;
+  const candidates=[];
+  for (const record of archive.records) {
+    if (!record || validate(record)!==true) return null;
+    candidates.push({source:'database',date:record.date,record});
+  }
+  if (new Set(candidates.map(item=>item.date)).size!==candidates.length) return null;
+  if (archive.legacy !== null && archive.legacy !== undefined) {
+    if (validate(archive.legacy)!==true) return null;
+    candidates.push({source:'localStorage',date:archive.legacy.date,record:archive.legacy});
+  }
+  return candidates;
+}
+
+function deleteReviewedArchive({db,id,archiveId,kind,expectedArchive,expectedMeta,guard}) {
+  if(!['basic','multi'].includes(kind)||typeof id!=='string'||!id||typeof archiveId!=='string'||!archiveId)return Promise.resolve('invalid');
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction('games','readwrite'),store=tx.objectStore('games'),key=`${kind==='multi'?'multi-backup':'backup'}:${id}:${archiveId}`,archive=store.get(key),meta=store.get(`source:${id}`);let result='changed';
+    meta.onsuccess=()=>{if(!guard()||archive.result===undefined||JSON.stringify(archive.result)!==expectedArchive||JSON.stringify(meta.result)!==expectedMeta)return;store.delete(key);result='deleted'};
+    tx.oncomplete=()=>resolve(result);tx.onabort=()=>reject(tx.error||Error('delete aborted'));tx.onerror=()=>reject(tx.error);
+  });
+}
+
+function offerArchiveDeletion({container,db,id,archiveId,kind,archive,meta,guard,onDeleted,onConfirming=()=>{},archiveLabel='',candidateCount=null}) {
+  const button=document.createElement('button'),notice=document.createElement('p');
+  button.type='button';button.textContent='この退避を整理';notice.setAttribute('role','status');container.append(button,notice);
+  button.onclick=()=>{
+    button.disabled=true;onConfirming(true);const panel=document.createElement('section'),title=document.createElement('h3'),message=document.createElement('p'),confirm=document.createElement('button'),cancel=document.createElement('button');
+    title.textContent='退避を削除';title.tabIndex=-1;message.textContent=`${archiveLabel?archiveLabel+'。':''}${candidateCount===null?'':`この退避の候補${candidateCount}件をまとめて削除するよ。`}削除した退避は元に戻せないよ。現在のゲーム記録とほかの退避は残るよ。`;confirm.type=cancel.type='button';confirm.textContent='この退避を削除';cancel.textContent='やめる';panel.append(title,message,confirm,cancel);container.append(panel);title.focus();
+    cancel.onclick=()=>{panel.remove();button.disabled=false;onConfirming(false);button.focus()};
+    confirm.onclick=async()=>{confirm.disabled=cancel.disabled=true;try{const result=await deleteReviewedArchive({db,id,archiveId,kind,expectedArchive:JSON.stringify(archive),expectedMeta:JSON.stringify(meta),guard});if(result==='deleted'){notice.textContent='退避を削除したよ。';onDeleted();return}notice.textContent='記録が変わったよ。一覧を開き直してね。'}catch(_){notice.textContent='削除できなかったよ。一覧を開き直してね。'}finally{cancel.disabled=false}};
+  };
+}
+
+function archiveReviewRead(db, id, archiveId, kind='basic') {
+  return new Promise((resolve, reject) => {
+    const tx=db.transaction('games','readonly'), store=tx.objectStore('games');
+    const live=store.get(id), meta=store.get(`source:${id}`), archive=store.get(`${kind==='multi'?'multi-backup':'backup'}:${id}:${archiveId}`);
+    tx.oncomplete=()=>resolve({records:live.result, meta:meta.result, archive:archive.result});
+    tx.onabort=()=>reject(tx.error || Error('read aborted'));
+    tx.onerror=()=>reject(tx.error);
+  });
+}
+function archiveReviewRestore(db, id, archiveId, source, date, expectedRecords, expectedArchive, expectedMeta, removeDate, valid, guard, kind='basic', readMulti) {
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction('games','readwrite'),store=tx.objectStore('games');
+    const live=store.get(id),meta=store.get(`source:${id}`),archive=store.get(`${kind==='multi'?'multi-backup':'backup'}:${id}:${archiveId}`);let result='changed';
+    archive.onsuccess=()=>{
+      if(!guard() || JSON.stringify(live.result)!==expectedRecords || JSON.stringify(meta.result)!==expectedMeta || JSON.stringify(archive.result)!==expectedArchive)return;
+      const records=live.result, candidates=kind==='multi'?readMulti(archive.result,id,valid)?.entries:candidatesFromArchive(archive.result,id,valid);
+      if(!Array.isArray(records) || records.length>2 || !records.every(valid) || new Set(records.map(x=>x.date)).size!==records.length || !candidates){result='invalid';return}
+      const matches=candidates.filter(x=>x.source===source && x.date===date);
+      if(matches.length!==1){result='invalid';return}
+      const candidate=matches[0].record, next=new Map(records.map(x=>[x.date,x]));if(candidate===null)next.delete(date);else next.set(date,candidate);
+      let dates=[...next.keys()].sort().reverse().slice(0,2);
+      if(candidate!==null&&!dates.includes(date)){
+        if(!removeDate||removeDate===date||!records.some(item=>item.date===removeDate)){result='too-old';return}
+        next.delete(removeDate);dates=[...next.keys()].sort().reverse().slice(0,2);
+        if(!dates.includes(date)){result='too-old';return}
+      }
+      store.add({game:id,records,legacy:candidate,createdAt:new Date().toISOString()},`backup:${id}:${crypto.randomUUID()}`);
+      store.put(dates.map(key=>next.get(key)),id);result='saved';
+    };
+    tx.oncomplete=()=>resolve(result);tx.onabort=()=>reject(tx.error||Error('restore aborted'));tx.onerror=()=>reject(tx.error);
+  });
+}
+function listMultiRecoveryBackups(db,id) {
+  return new Promise((resolve,reject)=>{const tx=db.transaction('games','readonly'),prefix=`multi-backup:${id}:`,items=[],request=tx.objectStore('games').openCursor(IDBKeyRange.bound(prefix,prefix+'\uffff'));
+    request.onsuccess=()=>{const cursor=request.result;if(!cursor)return;items.push({id:cursor.key.slice(prefix.length),createdAt:typeof cursor.value?.createdAt==='string'?cursor.value.createdAt:null,kind:'multi'});cursor.continue()};
+    tx.oncomplete=()=>resolve(items);tx.onabort=()=>reject(tx.error||Error('list aborted'));tx.onerror=()=>reject(tx.error);
+  });
+}
+async function openSumArchiveReview({db,id,valid,guard,container,onRestored,readMulti,expectedMeta,describe}) {
+  const status=document.createElement('p'), list=document.createElement('div');
+  status.setAttribute('role','status');status.tabIndex=-1;container.replaceChildren(status,list);status.textContent='退避した記録を読み込んでいるよ';
+  try {
+    const items=[...(await listRecoveryBackups(db,id)).map(x=>({...x,kind:'basic'})),...await listMultiRecoveryBackups(db,id)];if(!guard()){status.textContent='記録が変わったよ。画面を開き直してね。';return}
+    items.sort((a,b)=>(b.createdAt??'').localeCompare(a.createdAt??'')||a.id.localeCompare(b.id));
+    list.replaceChildren();status.textContent=items.length?`${items.length}件の退避`:'退避した記録はないよ';let offset=0;
+    async function showNext(focusFirst=false){
+     const previousCount=list.querySelectorAll('button[data-archive-id]').length;
+     for(const item of items.slice(offset,offset+10)){
+      const loaded=await archiveReviewRead(db,id,item.id,item.kind);if(!guard()||JSON.stringify(loaded.meta)!==expectedMeta){status.textContent='記録が変わったよ。画面を開き直してね。';list.replaceChildren();return}
+      const candidates=item.kind==='multi'?readMulti(loaded.archive,id,valid)?.entries:candidatesFromArchive(loaded.archive,id,valid),section=document.createElement('section'),heading=document.createElement('h3');
+      heading.textContent=item.createdAt?`退避日時 ${item.createdAt}`:'退避日時不明';section.append(heading);
+      if(!candidates){const p=document.createElement('p');p.textContent='記録の形式を確認できないよ';section.append(p)}
+      else for(const candidate of candidates){
+        const p=document.createElement('p'),button=document.createElement('button'),labels={database:'端末の記録',localStorage:'別のタブの記録','versioned-before':'版付きの元記録・変更前','versioned-after':'版付きの元記録・変更後','legacy-before':'以前の元記録・変更前','legacy-after':'以前の元記録・変更後'};p.textContent=`${labels[candidate.source]??candidate.source} ${candidate.date} ${describe(candidate.record)}`;
+        button.type='button';button.textContent='この記録を比較';button.dataset.source=candidate.source;button.dataset.date=candidate.date;button.dataset.archiveId=item.id;button.dataset.kind=item.kind;
+        button.onclick=async()=>{
+          list.querySelectorAll('button').forEach(b=>b.disabled=true);
+          try {
+            const reviewed=await archiveReviewRead(db,id,item.id,item.kind);
+            if(!guard()||JSON.stringify(reviewed.meta)!==expectedMeta||!Array.isArray(reviewed.records)||!reviewed.records.every(valid)||new Set(reviewed.records.map(x=>x.date)).size!==reviewed.records.length){status.textContent='記録が変わったか、確認できないよ。画面を開き直してね。';return}
+            const reviewedCandidates=item.kind==='multi'?readMulti(reviewed.archive,id,valid)?.entries:candidatesFromArchive(reviewed.archive,id,valid),found=reviewedCandidates?.filter(x=>x.date===candidate.date&&x.source===candidate.source);
+            if(JSON.stringify(reviewed.archive)!==JSON.stringify(loaded.archive)||found?.length!==1||JSON.stringify(found[0].record)!==JSON.stringify(candidate.record)){status.textContent='退避した記録が変わったよ。画面を開き直してね。';return}
+            const current=reviewed.records.find(x=>x.date===candidate.date)??null, panel=document.createElement('section'),title=document.createElement('h3'),comparison=document.createElement('p'),restore=document.createElement('button'),back=document.createElement('button');
+            title.textContent='記録を比較';title.tabIndex=-1;comparison.textContent=`${candidate.date}　現在：${describe(current)}　復元する記録：${describe(candidate.record)}`;
+            panel.append(title,comparison);let removeSelect=null;const dates=[...new Set([...reviewed.records.map(x=>x.date),candidate.date])].sort().reverse();
+            if(candidate.record!==null&&dates.indexOf(candidate.date)>=2){const label=document.createElement('label'),note=document.createElement('p');label.textContent='保存対象から外す日';removeSelect=document.createElement('select');removeSelect.setAttribute('aria-label',label.textContent);const placeholder=document.createElement('option');placeholder.value='';placeholder.textContent='選んでね';removeSelect.append(placeholder);for(const record of reviewed.records){const option=document.createElement('option');option.value=record.date;option.textContent=record.date;removeSelect.append(option)}label.append(removeSelect);note.textContent='保存できるのは2日分だよ。外した記録も退避に残るよ。';panel.append(note,label)}
+            restore.type=back.type='button';restore.textContent='この記録を復元';back.textContent='一覧に戻る';panel.append(restore,back);list.hidden=true;container.append(panel);title.focus();
+            back.onclick=()=>{panel.remove();list.hidden=false;list.querySelectorAll('button').forEach(b=>b.disabled=false);button.focus()};
+            offerArchiveDeletion({container:panel,db,id,archiveId:item.id,kind:item.kind,archive:reviewed.archive,meta:reviewed.meta,guard,archiveLabel:item.createdAt?`退避日時 ${item.createdAt}`:'退避日時不明',candidateCount:reviewedCandidates.length,onConfirming:active=>{restore.disabled=back.disabled=active},onDeleted:async()=>{await openSumArchiveReview({db,id,valid,guard,container,onRestored,readMulti,expectedMeta,describe});const notice=container.querySelector('[role=status]');if(notice){notice.textContent+='。選んだ退避を削除したよ。';notice.focus()}}});
+            restore.onclick=async()=>{restore.disabled=back.disabled=true;try{
+              const result=await archiveReviewRestore(db,id,item.id,candidate.source,candidate.date,JSON.stringify(reviewed.records),JSON.stringify(reviewed.archive),expectedMeta,removeSelect?.value??null,valid,guard,item.kind,readMulti);
+              if(result==='saved'){status.textContent=guard()?'復元したよ。画面を開き直してね。':'復元後に別のタブの記録が変わったよ。画面を開き直して確認してね。';onRestored();return}
+              status.textContent=result==='too-old'?'保存対象から外す日を選んでね。':'記録が変わったか、確認できないよ。画面を開き直してね。';if(result==='too-old')restore.disabled=false;
+            }catch(_){status.textContent=guard()?'保存できなかったよ。空き容量を確認してね。':'別のタブの記録が変わったよ。画面を開き直してね。'}finally{back.disabled=false}};
+          }catch(_){status.textContent='記録を読み込めなかったよ。画面を開き直してね。'}
+        };section.append(p,button);
+      }list.append(section);
+     }
+     offset=Math.min(offset+10,items.length);if(offset<items.length){const more=document.createElement('button');more.type='button';more.textContent=`続きを表示（残り${items.length-offset}件）`;more.onclick=async event=>{more.disabled=true;more.remove();try{await showNext(event.detail===0)}catch(_){status.textContent='退避した記録を読み込めなかったよ。画面を開き直してね。'}};list.append(more)}
+     if(focusFirst)(list.querySelectorAll('button[data-archive-id]')[previousCount]??list.querySelector('button:last-child'))?.focus();
+    }
+    await showNext();
+  }catch(_){status.textContent='退避した記録を読み込めなかったよ。画面を開き直してね。'}
+}
+
+function commitMultiChanges({db,id,archiveId,archive,expectedRecords,expectedMeta,nextMeta,guard,acceptedEviction,readArchive}) {
+  return new Promise((resolve,reject)=>{
+    const checked=readArchive(archive,id);
+    if(!checked || (checked.selected.evicted.length && !acceptedEviction)){resolve('invalid');return}
+    const tx=db.transaction('games','readwrite'),store=tx.objectStore('games'),records=store.get(id),meta=store.get(`source:${id}`);let result='changed';
+    meta.onsuccess=()=>{
+      if(!guard() || JSON.stringify(records.result)!==expectedRecords || JSON.stringify(meta.result)!==expectedMeta || JSON.stringify(records.result)!==JSON.stringify(archive.database))return;
+      store.add(archive,`multi-backup:${id}:${archiveId}`);store.put(checked.selected.records,id);store.put(nextMeta,`source:${id}`);result='saved';
+    };
+    tx.oncomplete=()=>resolve(result);tx.onabort=()=>reject(tx.error||Error('transaction aborted'));tx.onerror=()=>reject(tx.error);
+  });
+}
+
+function openRecoveryDatabase(onInterrupted, timeoutMs=5000) {
+  return new Promise((resolve,reject)=>{
+    let settled=false;
+    const timer=setTimeout(()=>{settled=true;reject(Error('database open timed out'))},timeoutMs);
+    openDailyDatabase().then(db=>{
+      if(settled){db.close();return}
+      settled=true;clearTimeout(timer);
+      db.onversionchange=()=>{db.close();onInterrupted()};
+      db.onclose=()=>onInterrupted();
+      resolve(db);
+    },error=>{if(settled)return;settled=true;clearTimeout(timer);reject(error)});
+  });
+}
+
+let sumRestartGuard=null;
+async function startRecoverySum(reset) {
+  const generation=runGeneration, mode=sumDifficulty, date=todayInTokyo(), id=`sum-${mode}-v2`;
+  const isCurrent=()=>generation===runGeneration && date===todayInTokyo();
+  const puzzle=generateFiveSum(mode,date), count=mode==='kiwami'?3:mode==='oni'?2:1;
+  const describeSum=record=>{if(!record)return '記録なし';const values=generateFiveSum(mode,record.date).values,names=count===3?['小','中','大']:['1組目','2組目'];const picked=record.owners.map((owner,i)=>owner<0?null:`${values[i]}（${i+1}枚目）${count===1?'':` ${names[owner]}`}`).filter(Boolean);return `${record.moves}手・${picked.join('、')||'選択なし'}`};
+  const parser=recoveryModules.createParser({sum:generateFiveSum});
+  const valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready';
+  const parseRecords=records=>Array.isArray(records) && records.length<=2 && records.every(valid) && new Set(records.map(x=>x.date)).size===records.length;
+  let db, capture, legacyCapture, snapshot='null', record=null, busy=false, stopped=false, group=0;
+  const modes=document.createElement('div');modes.className='lights-modes sum-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');
+  const groupNode=document.createElement('div');groupNode.className='sum-groups';groupNode.setAttribute('role','group');groupNode.setAttribute('aria-label','選ぶ組');
+  const recovery=document.createElement('section');recovery.className='sum-recovery';
+  status.before(modes,groupNode,recovery);
+  category.textContent=`今日のパズル ${date}`;instructions.textContent=mode==='hard'?`3枚の合計を${puzzle.target}にしよう。偶数2枚の合計は${puzzle.evenSum}だよ。`:mode==='oni'?`カードを重ねず、合計${puzzle.targets[0]}と${puzzle.targets[1]}の組を作ろう。`:mode==='kiwami'?`3枚ずつ分けよう。合計は、中は小より${puzzle.offsets[0]}、大は中より${puzzle.offsets[1]}大きくする。`:'3枚の数字を選び、合計を目標の数に合わせよう。';status.textContent='記録を読み込んでいるよ';
+  board.classList.add('sum');restart.disabled=true;
+  let dateExpired=false;
+  function checkDate(){if(date===todayInTokyo()||dateExpired||generation!==runGeneration)return;dateExpired=true;stopped=true;capture?.guard?.dispose();legacyCapture?.guard?.dispose();for(const node of [board,recovery])node.querySelectorAll('button').forEach(b=>b.disabled=true);restart.disabled=false;status.textContent='日付が変わったよ。今日の問題を開いてね。';refreshDailyDate()}
+  const dateTimer=window.setInterval(checkDate,1000);document.addEventListener('visibilitychange',checkDate);
+  cleanup=()=>{sumRestartGuard=null;stopped=true;window.clearInterval(dateTimer);document.removeEventListener('visibilitychange',checkDate);capture?.guard?.dispose();legacyCapture?.guard?.dispose();db?.close();modes.remove();groupNode.remove();recovery.remove();restart.disabled=false};
+  function playWithoutSave(){if(!isCurrent()||stopped)return;cleanup();cleanup=()=>{};sumFiveVolatile(false);const notice=document.querySelector('#record');notice.hidden=false;notice.textContent='記録を読み込めないため、今回の進み具合は保存されないよ。'}
+  function stop(message){if(!isCurrent()||stopped)return;stopped=true;status.textContent=message;for(const node of [board,recovery])node.querySelectorAll('button').forEach(b=>b.disabled=true);restart.disabled=true;}
+  function guard(){return isCurrent()&&!stopped&&capture?.guard.check()==='clean'&&(!legacyCapture||legacyCapture.guard.check()==='clean')}
+  function legacySnapshot(){return legacyCapture?.snapshot??[null,null]}
+  function lock(value){busy=value;restart.disabled=value;for(const node of [modes,groupNode,board,recovery])for(const b of node.querySelectorAll('button'))b.disabled=value;}
+  function read(){return new Promise((resolve,reject)=>{const tx=db.transaction('games','readonly'),store=tx.objectStore('games'),data=store.get(id),meta=store.get(`source:${id}`);tx.oncomplete=()=>resolve({records:data.result,meta:meta.result});tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||Error('read aborted'))})}
+  // The reviewed source snapshot and database snapshot are checked again in the transaction.
+  function transact(expected, replacement, sourceSnapshot, archive){return new Promise((resolve,reject)=>{
+    const tx=db.transaction('games','readwrite'),store=tx.objectStore('games'),get=store.get(id),meta=store.get(`source:${id}`);let result;
+    meta.onsuccess=()=>{if(!guard()){result='changed';return}const records=get.result;
+      if(!parseRecords(records)){result='invalid';return}const current=records.find(x=>x.date===date)??null;
+      if(JSON.stringify(current)!==expected){result='conflict';return}
+      const sourceMeta=meta.result;if(!sourceMeta||JSON.stringify(sourceMeta.snapshot)!==JSON.stringify(sourceSnapshot)||JSON.stringify(sourceMeta.legacySnapshot??[null,null])!==JSON.stringify(legacySnapshot())){result='source-conflict';return}
+      const next=new Map(records.map(x=>[x.date,x]));if(replacement===null)next.delete(date);else if(valid(replacement))next.set(date,replacement);else{result='invalid';return}
+      const keys=[...next.keys()].sort().reverse().slice(0,2);if(replacement&&!keys.includes(date)){result='too-old';return}
+      if(archive)store.add({game:id,records,legacy:replacement,createdAt:new Date().toISOString()},`backup:${id}:${crypto.randomUUID()}`);
+      store.put(keys.map(k=>next.get(k)),id);result='saved';
+    };
+    tx.oncomplete=()=>resolve(result);tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||Error('write aborted'));
+  })}
+  function importFirst(){return new Promise((resolve,reject)=>{const tx=db.transaction('games','readwrite'),store=tx.objectStore('games'),req=store.get(id);let result;
+    req.onsuccess=()=>{if(!guard()){result='changed';return}if(req.result!==undefined){result='exists';return}const merged=new Map((legacyCapture?.records??[]).map(item=>[item.date,{date:item.date,owners:item.cells.map(x=>x?0:-1),moves:item.moves}]));for(const item of capture.records)merged.set(item.date,item);const records=[...merged.keys()].sort().reverse().slice(0,2).map(date=>merged.get(date));if(!parseRecords(records)){result='invalid';return}store.add(records,id);store.add({snapshot:capture.snapshot,legacySnapshot:legacySnapshot()},`source:${id}`);result='imported'};
+    tx.oncomplete=()=>resolve(result);tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||Error('import aborted'));
+  })}
+  function render(preferredCard=-1){if(!guard())return;const focusedCard=preferredCard>=0&&(document.activeElement===document.body||board.contains(document.activeElement))?preferredCard:[...board.querySelectorAll('button')].indexOf(document.activeElement),focusedGroup=[...groupNode.querySelectorAll('button')].indexOf(document.activeElement);board.replaceChildren();groupNode.replaceChildren();const owners=record?.owners??Array(puzzle.values.length).fill(-1),moves=record?.moves??0,names=count===3?['小','中','大']:['1組目','2組目'];
+    const groups=Array.from({length:count},(_,i)=>puzzle.values.filter((_,j)=>owners[j]===i)),sums=groups.map(g=>g.reduce((a,b)=>a+b,0));
+    const won=groups.every(g=>g.length===3)&&(mode==='hard'?sums[0]===puzzle.target&&groups[0].filter(x=>x%2===0).length===2&&groups[0].filter(x=>x%2===0).reduce((a,b)=>a+b,0)===puzzle.evenSum:mode==='oni'?sums.every((n,i)=>n===puzzle.targets[i]):mode==='kiwami'?sums[1]-sums[0]===puzzle.offsets[0]&&sums[2]-sums[1]===puzzle.offsets[1]:sums[0]===puzzle.target);
+    if(count>1)for(let i=0;i<count;i++){const b=document.createElement('button');b.type='button';b.textContent=`${names[i]} ${groups[i].length}/3`;b.setAttribute('aria-pressed',String(group===i));b.onclick=()=>{group=i;render()};groupNode.append(b)}
+    status.textContent=won?`クリア！ ${moves}手`:count===1?`目標 ${puzzle.target}　選択 ${groups[0].length}枚　合計 ${sums[0]}`:'合計　'+sums.map((n,i)=>`${names[i]} ${n}`).join('　');
+    puzzle.values.forEach((value,i)=>{const b=button(String(value),async()=>{if(busy||won||!guard())return;const next=[...owners];if(next[i]===group)next[i]=-1;else if(next.filter(x=>x===group).length<3)next[i]=group;else return;await save({date,owners:next,moves:moves+1},document.activeElement===b?i:-1)});const owner=owners[i];b.className=owner<0?'':`sum-group-${owner}`;if(count>1&&owner>=0){const mark=document.createElement('small');mark.className='sum-group-label';mark.textContent=names[owner];mark.setAttribute('aria-hidden','true');b.append(mark)}b.setAttribute('aria-pressed',String(owner>=0));b.setAttribute('aria-disabled',String(won));b.setAttribute('aria-label',`${value}${owner>=0?(count===1?' 選択中':` ${names[owner]}`):''}`)});
+    if(focusedCard>=0)board.querySelectorAll('button')[focusedCard]?.focus();else if(focusedGroup>=0)groupNode.querySelectorAll('button')[focusedGroup]?.focus();
+    if(won)offerCopy(`ぴったり3枚 ${sumLabels[mode]} ${date} ${moves}手\nhttps://game.kihamda.net/play-sum.html?difficulty=${mode}&version=2`);else{copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true}
+  }
+  async function save(next,focusedCard=-1,resetGroup=false){lock(true);try{const result=await transact(snapshot,next,capture.snapshot,false);if(!isCurrent())return;if(result!=='saved'){stop('記録が変わったか、保存できなかったよ。画面を開き直してね。');return}if(!guard()){stop('別のタブの記録が変わったよ。画面を開き直してね。');return}record=next;snapshot=JSON.stringify(next);if(resetGroup)group=0;render(focusedCard)}catch(_){stop('記録を保存できなかったよ。画面を開き直してね。')}finally{if(isCurrent()&&!stopped)lock(false)}}
+  function setupModes(){for(const [value,label] of Object.entries(sumLabels)){const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.difficulty=value;b.setAttribute('aria-pressed',String(value===mode));b.onclick=event=>{if(value!==mode&&!busy){sumDifficulty=value;start();if(event.detail===0)document.querySelector(`.sum-modes [data-difficulty="${value}"]`)?.focus()}};modes.append(b)}}
+  function showConflict(current,legacy,previousSource,previousLegacy){status.textContent='記録を選んでね';recovery.replaceChildren();
+    for(const [name,label,value] of [['この端末の記録','この端末の記録を使う',current],['別のタブの記録','別のタブの記録を使う',legacy]]){const option=document.createElement('section');option.className='sum-recovery-option';const heading=document.createElement('h2');heading.textContent=name;const detail=document.createElement('p');detail.textContent=value?`${value.moves}手：${value.owners.map((owner,i)=>owner<0?null:`${puzzle.values[i]}（${i+1}枚目） ${count===1?'選択中':`${owner+1}組`}`).filter(Boolean).join('、')||'選択なし'}`:'記録なし';const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=async event=>{if(busy)return;const keyboard=event.detail===0;lock(true);try{const result=await resolveConflict(current,value,legacy,previousSource,previousLegacy);if(!isCurrent())return;if(result!=='saved'||!guard()){stop('記録が変わったよ。画面を開き直してね。');return}recovery.replaceChildren();record=value;snapshot=JSON.stringify(value);render();if(keyboard&&document.activeElement===document.body)board.querySelector('button')?.focus()}catch(_){stop('記録を保存できなかったよ。画面を開き直してね。')}finally{if(isCurrent()&&!stopped)lock(false)}};option.append(heading,detail,b);recovery.append(option)}
+  }
+  function resolveConflict(expected,chosen,legacy,previousSource,previousLegacy){return new Promise((resolve,reject)=>{const tx=db.transaction('games','readwrite'),store=tx.objectStore('games'),req=store.get(id),meta=store.get(`source:${id}`);let result;
+    meta.onsuccess=()=>{if(!guard()){result='changed';return}const records=req.result;if(!parseRecords(records)){result='invalid';return}const current=records.find(x=>x.date===date)??null;if(JSON.stringify(current)!==JSON.stringify(expected)||JSON.stringify(meta.result?.snapshot)!==JSON.stringify(previousSource)||JSON.stringify(meta.result?.legacySnapshot??[null,null])!==JSON.stringify(previousLegacy)){result='conflict';return}
+      const next=new Map(records.map(x=>[x.date,x]));if(chosen===null)next.delete(date);else if(valid(chosen))next.set(date,chosen);else{result='invalid';return}const keys=[...next.keys()].sort().reverse().slice(0,2);if(chosen&&!keys.includes(date)){result='too-old';return}
+      store.add({game:id,records,legacy,createdAt:new Date().toISOString()},`backup:${id}:${crypto.randomUUID()}`);store.put(keys.map(k=>next.get(k)),id);store.put({snapshot:capture.snapshot,legacySnapshot:legacySnapshot()},`source:${id}`);result='saved';
+    };tx.oncomplete=()=>resolve(result);tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||Error('restore aborted'))})}
+  function showMultiConflict(loaded,previousVersion,previousOld){
+    const convert=records=>records.map(item=>({date:item.date,owners:item.cells.map(x=>x?0:-1),moves:item.moves}));
+    const sources=[{id:'versioned',before:previousVersion.records,after:capture.records}];
+    if(legacyCapture)sources.push({id:'legacy',before:convert(previousOld.records),after:convert(legacyCapture.records)});
+    const plan=recoveryModules.planChanges(loaded.records,sources,valid);if(plan.state!=='ready'){stop('記録を確認できないよ。画面を開き直してね。');return}
+    status.textContent='日付ごとに記録を選んでね';recovery.replaceChildren();
+    const selects=[],description=describeSum;
+    for(const row of plan.rows){const section=document.createElement('section'),label=document.createElement('label'),select=document.createElement('select'),detail=document.createElement('p');label.textContent=`${row.date} の記録`;select.setAttribute('aria-label',label.textContent);detail.setAttribute('aria-live','polite');
+      for(const choice of row.choices){const option=document.createElement('option');option.value=choice.source;option.textContent=choice.source==='database'?'この端末':choice.source==='versioned'?'版付きの元記録':'以前の元記録';select.append(option)}
+      const updateDetail=()=>{detail.textContent=description(row.choices.find(x=>x.source===select.value).record)};select.addEventListener('change',updateDetail);updateDetail();label.append(select);section.append(label,detail);recovery.append(section);selects.push({date:row.date,select});}
+    const review=document.createElement('button');review.type='button';review.textContent='選択内容を確認';recovery.append(review);
+    review.onclick=()=>{const choices=selects.map(x=>({date:x.date,source:x.select.value})),result=recoveryModules.selectChanges(plan,choices,valid);
+      if(result.state!=='ready'){status.textContent=result.state==='too-old'?'選んだ記録が保存できる2日より古いよ。選び直してね。':'選択内容を確認できないよ。';return}
+      const panel=document.createElement('section'),heading=document.createElement('h3'),details=document.createElement('p'),confirm=document.createElement('button'),back=document.createElement('button');
+      heading.textContent='保存内容を確認';heading.tabIndex=-1;details.textContent=`保存する記録：${result.records.map(x=>`${x.date} ${description(x)}`).join(' / ')||'なし'}。${result.evicted.length?`保存対象から外れる記録：${result.evicted.map(x=>`${x.date} ${description(x)}`).join(' / ')}。退避には残るよ。`:''}`;
+      confirm.type=back.type='button';confirm.textContent='この内容で保存';back.textContent='選び直す';panel.append(heading,details,confirm,back);for(const x of selects)x.select.disabled=true;review.disabled=true;recovery.append(panel);heading.focus();
+      back.onclick=()=>{panel.remove();for(const x of selects)x.select.disabled=false;review.disabled=false;review.focus()};
+      confirm.onclick=async()=>{confirm.disabled=back.disabled=true;try{
+        const archive=recoveryModules.createMultiArchive(id,plan,choices,valid,new Date().toISOString());if(!archive){status.textContent='選択内容を確認できないよ。';return}
+        const outcome=await commitMultiChanges({db,id,archiveId:crypto.randomUUID(),archive,expectedRecords:JSON.stringify(loaded.records),expectedMeta:JSON.stringify(loaded.meta),nextMeta:{snapshot:capture.snapshot,legacySnapshot:legacySnapshot()},guard,acceptedEviction:true,readArchive:(a,g)=>recoveryModules.readMultiArchive(a,g,valid)});
+        if(!isCurrent())return;if(outcome!=='saved'){stop('記録が変わったよ。画面を開き直してね。');return}if(!guard()){stop('保存後に別のタブの記録が変わったよ。画面を開き直して確認してね。');return}start();
+      }catch(_){if(!guard())stop('別のタブの記録が変わったよ。画面を開き直してね。');else{status.textContent='保存できなかったよ。空き容量を確認してね。';back.disabled=false}}};
+    };
+  }
+  try {
+    setupModes();
+    capture=recoveryModules.capture(localStorage,window,parser,id,()=>stop('別のタブの記録が変わったよ。画面を開き直してね。'));
+    if(capture.state!=='ready'){playWithoutSave();return}
+    if(mode==='normal'){legacyCapture=recoveryModules.capture(localStorage,window,parser,'sum',()=>stop('以前の記録が変わったよ。画面を開き直してね。'));if(legacyCapture.state!=='ready'){playWithoutSave();return}}
+    db=await openRecoveryDatabase(()=>stop('記録の保存先が変わったよ。画面を開き直してね。'));if(!isCurrent()||stopped){db.close();return}
+    const imported=await importFirst();if(!isCurrent()||stopped)return;if(!['imported','exists'].includes(imported)||!guard()){stop('元の記録が変わったよ。画面を開き直してね。');return}
+    const loaded=await read();if(!guard())return;if(!parseRecords(loaded.records)||!loaded.meta||!Array.isArray(loaded.meta.snapshot)){playWithoutSave();return}
+    record=loaded.records.find(x=>x.date===date)??null;snapshot=JSON.stringify(record);
+    const previousLegacy=loaded.meta.legacySnapshot??[null,null];
+    const versionChanged=JSON.stringify(loaded.meta.snapshot)!==JSON.stringify(capture.snapshot),oldChanged=JSON.stringify(previousLegacy)!==JSON.stringify(legacySnapshot());
+    const versionBefore=parser(id,loaded.meta.snapshot),oldBefore=legacyCapture?parser('sum',previousLegacy):null;
+    if(versionBefore.state!=='ready'||(legacyCapture&&oldBefore.state!=='ready')){playWithoutSave();return}
+    const otherDays=items=>items.filter(x=>x.date!==date).sort((a,b)=>a.date.localeCompare(b.date));
+    const versionOther=versionChanged&&JSON.stringify(otherDays(versionBefore.records))!==JSON.stringify(otherDays(capture.records));
+    const oldOther=oldChanged&&JSON.stringify(otherDays(oldBefore.records))!==JSON.stringify(otherDays(legacyCapture.records));
+    if((versionChanged&&oldChanged)||versionOther||oldOther){showMultiConflict(loaded,versionBefore,oldBefore);restart.disabled=true;return}
+    if(JSON.stringify(previousLegacy)!==JSON.stringify(legacySnapshot())){
+      if(JSON.stringify(loaded.meta.snapshot)!==JSON.stringify(capture.snapshot)){stop('複数の記録が変わったよ。復旧画面の対応を待ってね。');return}
+      const previous=parser('sum',previousLegacy);if(previous.state!=='ready'){stop('以前の取込状態を確認できないよ。');return}
+      const otherDays=items=>items.filter(x=>x.date!==date).sort((a,b)=>a.date.localeCompare(b.date));
+      if(JSON.stringify(otherDays(previous.records))!==JSON.stringify(otherDays(legacyCapture.records))){stop('別の日の記録も変わったよ。復旧画面の対応を待ってね。');return}
+      const old=legacyCapture.records.find(x=>x.date===date)??null,legacy=old?{date:old.date,owners:old.cells.map(x=>x?0:-1),moves:old.moves}:null;
+      showConflict(record,legacy,loaded.meta.snapshot,previousLegacy);restart.disabled=true;return
+    }
+    if(JSON.stringify(loaded.meta.snapshot)!==JSON.stringify(capture.snapshot)){
+      const previous=parser(id,loaded.meta.snapshot);if(previous.state!=='ready'){stop('以前の取込状態を確認できないよ。');return}
+      const otherDays=items=>items.filter(x=>x.date!==date).sort((a,b)=>a.date.localeCompare(b.date));
+      if(JSON.stringify(otherDays(previous.records))!==JSON.stringify(otherDays(capture.records))){stop('別の日の記録も変わったよ。復旧画面の対応を待ってね。');return}
+      const legacy=capture.records.find(x=>x.date===date)??null;showConflict(record,legacy,loaded.meta.snapshot,previousLegacy);restart.disabled=true;return
+    }
+    const archiveButton=document.createElement('button');archiveButton.type='button';archiveButton.textContent='退避した記録を見る';
+    archiveButton.onclick=event=>{if(busy||!guard())return;lock(true);status.before(recovery);status.textContent='退避した記録';
+      const back=document.createElement('button'),content=document.createElement('div');back.type='button';back.textContent='ゲームに戻る';back.onclick=()=>start();
+      recovery.replaceChildren(back,content);if(event.detail===0)back.focus();openSumArchiveReview({db,id,valid,guard,container:content,describe:describeSum,readMulti:recoveryModules.readMultiArchive,expectedMeta:JSON.stringify(loaded.meta),onRestored:()=>{back.textContent='復元した記録を開く'}});
+    };board.after(recovery);recovery.append(archiveButton);
+    restart.disabled=false;sumRestartGuard=()=>save({date,owners:Array(puzzle.values.length).fill(-1),moves:0},-1,true);
+    if(reset)await save({date,owners:Array(puzzle.values.length).fill(-1),moves:0});else render();
+  } catch(_){playWithoutSave()}
+}
+
 const threeFive=(()=>{
 const kiwamiBases=['XOX.....O.O...X.',"XXOX.O......O...","XXOX.....O..O...","XXO..OX....O....","XXO....X....O.O.","XXO.OO..X.......","XXO.O...X.O.....","XXOO.O......X...","XXO.O.....O..X.."];
 const configs={easy:{size:3,initial:'.........',limit:null},normal:{size:3,initial:'.........',limit:null},hard:{size:3,initial:'.........',limit:null},oni:{size:3,initial:'..OX.....',limit:3},kiwami:{size:4,initial:'XOX.....O.O...X.',limit:3}};
@@ -699,20 +1141,20 @@ function validDailySumRecord(saved,mode){
   const puzzle=generateFiveSum(mode,saved.date),count=mode==='kiwami'?3:mode==='oni'?2:1;
   return Array.isArray(saved.owners)&&saved.owners.length===puzzle.values.length&&saved.owners.every(x=>Number.isInteger(x)&&x>=-1&&x<count)&&Array.from({length:count},(_,i)=>saved.owners.filter(x=>x===i).length).every(n=>n<=3)&&Number.isSafeInteger(saved.moves)&&saved.moves>=0;
 }
-function sumFive(reset){
+function sumFive(reset){ startRecoverySum(reset); }
+function sumFiveVolatile(reset){
   const date=todayInTokyo(),puzzle=generateFiveSum(sumDifficulty,date);
   const {values,target,targets,evenSum,offsets}=puzzle,count=sumDifficulty==='kiwami'?3:sumDifficulty==='oni'?2:1,names=count===3?['小','中','大']:['1組目','2組目'];category.textContent=`今日のパズル ${date}`;
   instructions.textContent=sumDifficulty==='hard'?`3枚の合計を${target}にしよう。偶数2枚の合計は${evenSum}だよ。`:sumDifficulty==='oni'?`カードを重ねず、合計${targets[0]}と${targets[1]}の組を作ろう。`:sumDifficulty==='kiwami'?`3枚ずつ分けよう。合計は、中は小より${offsets[0]}、大は中より${offsets[1]}大きくする。`:'3枚の数字を選び、合計を目標の数に合わせよう。';
   const modes=document.createElement('div');modes.className='lights-modes sum-modes';modes.setAttribute('role','group');modes.setAttribute('aria-label','難易度');for(const [value,label] of Object.entries(sumLabels)){const b=document.createElement('button');b.type='button';b.dataset.difficulty=value;b.textContent=label;b.setAttribute('aria-pressed',String(value===sumDifficulty));b.addEventListener('click',event=>{if(value===sumDifficulty)return;sumDifficulty=value;start();if(event.detail===0)document.querySelector(`.sum-modes [data-difficulty="${value}"]`)?.focus()});modes.append(b)}status.before(modes);
   const group=document.createElement('div');group.className='sum-groups';group.setAttribute('role','group');group.setAttribute('aria-label','選ぶ組');let active=0;const groupButtons=[];if(count>1){for(let i=0;i<count;i++){const b=document.createElement('button');b.type='button';b.addEventListener('click',()=>{active=i;render()});group.append(b);groupButtons.push(b)}status.before(group)}cleanup=()=>{modes.remove();group.remove()};
-  board.classList.add('sum');const storage=dailyStorage(`sum-${sumDifficulty}-v2`,date,value=>validDailySumRecord(value,sumDifficulty));let owners=Array(values.length).fill(-1),moves=0,won=false;
-  const valid=saved=>saved&&validDailySumRecord({...saved,date},sumDifficulty);
-  if(reset){storage.load();storage.clear();storage.load();storage.save({owners,moves})}let saved=storage.load();if(!reset&&sumDifficulty==='normal'&&saved===null){const old=dailyStorage('sum',date).load();currentDailyStorage=storage;if(old&&Array.isArray(old.cells)&&old.cells.length===9&&old.cells.every(x=>typeof x==='boolean')&&old.cells.filter(Boolean).length<=3&&Number.isSafeInteger(old.moves)&&old.moves>=0){const candidate={owners:old.cells.map(x=>x?0:-1),moves:old.moves};saved=storage.save(candidate)?candidate:storage.load()}}if(valid(saved)){owners=saved.owners;moves=saved.moves}currentDailyStorage=storage;
+  board.classList.add('sum');const storage={save:()=>true};let owners=Array(values.length).fill(-1),moves=0,won=false;
   const buttons=values.map((value,i)=>button(String(value),()=>{if(won)return;const owner=owners[i];if(owner===active)owners[i]=-1;else if(owners.filter(x=>x===active).length<3)owners[i]=active;else return;moves++;if(!storage.save({owners,moves})){recoverDailyConflict();return}render()}));
   function render(){const groups=Array.from({length:count},(_,i)=>values.filter((_,j)=>owners[j]===i)),sums=groups.map(g=>g.reduce((a,b)=>a+b,0));won=groups.every(g=>g.length===3)&&(sumDifficulty==='hard'?sums[0]===target&&groups[0].filter(x=>x%2===0).length===2&&groups[0].filter(x=>x%2===0).reduce((a,b)=>a+b,0)===evenSum:sumDifficulty==='oni'?sums.every((n,i)=>n===targets[i]):sumDifficulty==='kiwami'?sums[1]-sums[0]===offsets[0]&&sums[2]-sums[1]===offsets[1]:sums[0]===target);
     buttons.forEach((b,i)=>{const owner=owners[i];b.replaceChildren(document.createTextNode(String(values[i])));if(count>1&&owner>=0){const mark=document.createElement('small');mark.className='sum-group-label';mark.textContent=names[owner];mark.setAttribute('aria-hidden','true');b.append(mark)}b.className=owner<0?'':`sum-group-${owner}`;b.setAttribute('aria-pressed',String(owner>=0));b.setAttribute('aria-disabled',String(won));b.setAttribute('aria-label',`${values[i]}${owner>=0?(count===1?' 選択中':` ${names[owner]}`):''}`)});groupButtons.forEach((b,i)=>{b.textContent=`${names[i]} ${groups[i].length}/3`;b.setAttribute('aria-pressed',String(i===active))});status.textContent=won?`クリア！ ${moves}手`:count===1?`目標 ${target}　選択 ${groups[0].length}枚　合計 ${sums[0]}`:'合計　'+sums.map((n,i)=>`${names[i]} ${n}`).join('　');if(won)offerCopy(`ぴったり3枚 ${sumLabels[sumDifficulty]} ${date} ${moves}手\nhttps://game.kihamda.net/play-sum.html?difficulty=${sumDifficulty}&version=2`);else{copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true}}
   render();
 }
+
 
 function button(label, action) { const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.addEventListener('click', action); board.append(b); return b; }
 function offerResultCopy(game, date, moves) {
@@ -1939,6 +2381,7 @@ function start(reset=false){
 }
 restart.addEventListener('click',()=>{
   refreshDailyDate();
+  if(id==='sum'&&sumRestartGuard&&!isStaleDaily){sumRestartGuard();return;}
   if(id==='three'&&threeRestartGuard){threeRestartGuard();return;}
   if(id==='number'&&numberRestartGuard){numberRestartGuard();return;}
   if(id==='mirror'&&mirrorRestartGuard){mirrorRestartGuard();return;}

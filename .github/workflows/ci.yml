@@ -150,6 +150,17 @@ jobs:
           node ops/sum-browser-check.cjs
           node ops/sum-site-prototype-check.cjs
           node ops/sum-site-storage-check.cjs
+          node ops/sum-idb-legacy-check.cjs
+          node ops/sum-idb-race-check.cjs
+          node ops/sum-idb-edge-check.cjs
+          node ops/sum-idb-version-check.cjs
+          node ops/sum-idb-unavailable-check.cjs
+          node ops/sum-idb-reset-check.cjs
+          node ops/sum-cross-day-idb-check.cjs
+          node ops/sum-old-tab-retention-check.cjs
+          node ops/sum-idb-archive-delete-check.cjs
+          node ops/sum-idb-recovery-ui-check.cjs
+          node ops/sum-idb-review-rollover-check.cjs
           node ops/sum-site-ux-check.cjs
           node ops/sum-site-corrupt-check.cjs
           node ops/sum-invalid-record-check.cjs
@@ -222,6 +233,7 @@ jobs:
           SITE_DIR=preview node ops/order-five-ui-check.cjs
           SITE_DIR=preview node ops/dodge-five-dialog-check.cjs
           SITE_DIR=preview node ops/sum-site-share-rollover-check.cjs
+          SITE_DIR=preview RECOVERY_FIXED=1 node ops/sum-idb-recovery-ui-check.cjs
           SITE_DIR=preview node ops/path-five-browser-check.cjs
           SITE_DIR=preview node ops/circuit-notice-check.cjs
           SITE_DIR=preview node ops/circuit-version-check.cjs
