@@ -183,6 +183,22 @@ jobs:
           node ops/path-five-legacy-check.cjs
           node ops/path-five-corrupt-check.cjs
           node ops/path-five-version-share-check.cjs
+          node ops/path-idb-source-conflict-check.cjs
+          node ops/path-idb-conflict-layout-check.cjs
+          node ops/path-idb-source-race-check.cjs
+          node ops/path-idb-review-race-check.cjs
+          node ops/path-idb-restore-race-check.cjs
+          node ops/path-idb-undo-race-check.cjs
+          node ops/path-idb-delete-check.cjs
+          node ops/path-idb-unavailable-check.cjs
+          node ops/path-idb-quota-check.cjs
+          node ops/path-idb-version-change-check.cjs
+          node ops/path-idb-review-date-check.cjs
+          node ops/path-idb-simultaneous-check.cjs
+          node ops/path-idb-cross-game-check.cjs
+          node ops/path-idb-mode-isolation-check.cjs
+          node ops/path-idb-too-old-check.cjs
+          node ops/path-idb-focus-check.cjs
           node ops/circuit-browser-check.cjs
           node ops/circuit-five-browser-check.cjs
           node ops/circuit-five-storage-check.cjs
@@ -235,6 +251,7 @@ jobs:
           SITE_DIR=preview node ops/sum-site-share-rollover-check.cjs
           SITE_DIR=preview RECOVERY_FIXED=1 node ops/sum-idb-recovery-ui-check.cjs
           SITE_DIR=preview node ops/path-five-browser-check.cjs
+          node ops/path-idb-fixed-restore-check.cjs
           SITE_DIR=preview node ops/circuit-notice-check.cjs
           SITE_DIR=preview node ops/circuit-version-check.cjs
           SITE_DIR=preview node ops/lights-five-browser-check.cjs

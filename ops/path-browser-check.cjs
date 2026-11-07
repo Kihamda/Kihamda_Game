@@ -16,6 +16,8 @@ const server = http.createServer((req,res)=>{
     const errors=[];page.on('pageerror',error=>errors.push(error.message));
     await page.clock.install({time:new Date('2026-10-27T03:00:00Z')});
     await page.goto(`http://127.0.0.1:${server.address().port}/game.html?game=path`);
+    const ready=()=>page.waitForFunction(()=>document.querySelectorAll('#board button').length&&!document.querySelector('#restart').disabled);
+    const fresh=async value=>{await page.goto(`http://127.0.0.1:${server.address().port}/game.html?game=unknown`);await page.evaluate(async v=>{await new Promise((resolve,reject)=>{const request=indexedDB.deleteDatabase('kihamda-games-daily');request.onsuccess=resolve;request.onerror=()=>reject(request.error);request.onblocked=()=>reject(Error('database delete blocked'))});if(v===null)localStorage.removeItem('kihamda-daily-path-normal-v2');else localStorage.setItem('kihamda-daily-path-normal-v2',JSON.stringify(v))},value);await page.goto(`http://127.0.0.1:${server.address().port}/game.html?game=path`);await ready()};await ready();
     const puzzle=await page.evaluate(()=>generatePathPuzzle(2026,10,27));
     const cells=page.locator('#board button');assert.equal(await cells.count(),16);
     assert.equal(await page.locator('#status').textContent(),'1 / 16マス');
@@ -43,9 +45,9 @@ const server = http.createServer((req,res)=>{
     },puzzle);
     for(const [kind,message] of [['order','数字は1から順番に通ろう。'],['goal','数字とほかのマスをすべて通ってからゴールしよう。'],['visited','通ったマスには戻れないよ。1つ前のマスを押してね。']]){
       assert(fixtures[kind],`Missing ${kind} fixture`);
-      await page.evaluate(({route})=>localStorage.setItem('kihamda-daily-path-normal-v2',JSON.stringify({date:'2026-10-27',steps:route.slice(1).map(i=>[i]),moves:route.length-1})),fixtures[kind]);
+      await fresh({date:'2026-10-27',steps:fixtures[kind].route.slice(1).map(i=>[i]),moves:fixtures[kind].route.length-1});
       if(kind==='visited')await page.setViewportSize({width:320,height:480});
-      await page.reload();await cells.nth(fixtures[kind].cell).tap();assert.equal(await page.locator('#status').textContent(),message);
+      await cells.nth(fixtures[kind].cell).tap();assert.equal(await page.locator('#status').textContent(),message);
       if(kind==='visited'){
         await page.locator('#board').evaluate(el=>el.scrollIntoView({block:'center'}));
         const board=await page.locator('#board').boundingBox();
@@ -63,30 +65,28 @@ const server = http.createServer((req,res)=>{
       {route:[puzzle.solution[1]],moves:0}
     ];
     for(const saved of invalidSaves){
-      await page.evaluate(({saved,start,goal})=>localStorage.setItem('kihamda-daily-path-normal-v2',JSON.stringify({date:'2026-10-27',steps:saved.route[0]===start?saved.route.slice(1).map(i=>[i]):[[goal]],moves:saved.moves})),{saved,start:puzzle.start,goal:puzzle.goal});
-      await page.reload();assert.equal(await page.locator('#status').textContent(),'1 / 16マス');
+      await fresh({date:'2026-10-27',steps:saved.route[0]===puzzle.start?saved.route.slice(1).map(i=>[i]):[[puzzle.goal]],moves:saved.moves});assert.equal(await page.locator('#status').textContent(),'1 / 16マス');
     }
     const invalidBefore=await page.evaluate(()=>localStorage.getItem('kihamda-daily-path-normal-v2'));
     await page.locator('#restart').tap();
     assert.equal(await page.evaluate(()=>localStorage.getItem('kihamda-daily-path-normal-v2')),invalidBefore);
-    await page.evaluate(()=>localStorage.removeItem('kihamda-daily-path-normal-v2'));
-    await page.reload();
-    await cells.nth(puzzle.solution[1]).focus();await page.keyboard.press('Space');
+    await fresh(null);
+    await cells.nth(puzzle.solution[1]).focus();await page.keyboard.press('Space');await ready();
     assert.equal(await page.locator('#status').textContent(),'2 / 16マス');
-    await page.reload();assert.equal(await page.locator('#status').textContent(),'2 / 16マス');
-    await cells.nth(puzzle.start).tap();assert.equal(await page.locator('#status').textContent(),'1 / 16マス');
-    for(const i of puzzle.solution.slice(1))await cells.nth(i).tap();
+    await page.reload();await ready();assert.equal(await page.locator('#status').textContent(),'2 / 16マス');
+    await cells.nth(puzzle.start).tap();await ready();assert.equal(await page.locator('#status').textContent(),'1 / 16マス');
+    for(const i of puzzle.solution.slice(1)){await cells.nth(i).tap();await ready()}
     assert((await page.locator('#status').textContent()).startsWith('クリア！'));
     await page.locator('#copy-result').tap();assert((await page.evaluate(()=>window.copied)).includes('/play-path.html'));
-    await page.reload();assert((await page.locator('#status').textContent()).startsWith('クリア！'));
-    await page.locator('#restart').tap();assert.equal(await page.locator('#status').textContent(),'1 / 16マス');
-    await page.clock.setFixedTime(new Date('2026-10-28T03:00:00Z'));await page.reload();
+    await page.reload();await ready();assert((await page.locator('#status').textContent()).startsWith('クリア！'));
+    await page.locator('#restart').tap();await ready();assert.equal(await page.locator('#status').textContent(),'1 / 16マス');
+    await page.clock.setFixedTime(new Date('2026-10-28T03:00:00Z'));await page.reload();await ready();
     assert((await page.locator('#category').textContent()).includes('2026-10-28'));
     assert.equal(await page.locator('#status').textContent(),'1 / 16マス');
     await page.setViewportSize({width:320,height:480});
     for(const id of ['lights','memory','order','dodge','sum','slide','garden','path']){
       await page.goto(`http://127.0.0.1:${server.address().port}/game.html?game=${id}`);
-      if(id==='garden'||id==='path') await page.locator('#board').evaluate(el=>el.scrollIntoView({block:'center'}));
+      if(id==='path')await ready();if(id==='garden'||id==='path') await page.locator('#board').evaluate(el=>el.scrollIntoView({block:'center'}));
       const board=await page.locator('#board').boundingBox();
       assert(board.y>=0&&board.y+board.height<=480,`${id} board must be visible at 320×480`);
       const sizes=await page.locator('#board button').evaluateAll(items=>items.map(item=>{const rect=item.getBoundingClientRect();return [rect.width,rect.height]}));
@@ -97,10 +97,10 @@ const server = http.createServer((req,res)=>{
       }
     }
     for(const height of [480,501,568]){
-      await page.setViewportSize({width:320,height});await page.clock.setFixedTime(new Date('2026-10-27T03:00:00Z'));await page.goto(`http://127.0.0.1:${server.address().port}/game.html?game=path`);await page.locator('#restart').tap();
+      await page.setViewportSize({width:320,height});await page.clock.setFixedTime(new Date('2026-10-27T03:00:00Z'));await page.goto(`http://127.0.0.1:${server.address().port}/game.html?game=path`);await ready();await page.locator('#restart').tap();await ready();
       await page.locator('#board').evaluate(el=>el.scrollIntoView({block:'center'}));const rect=await page.locator('#board').boundingBox();assert(rect.y>=0&&rect.y+rect.height<=height,`path not reachable at 320x${height}`);
       const sizes=await cells.evaluateAll(items=>items.map(el=>{const r=el.getBoundingClientRect();return [r.width,r.height]}));
-      assert(sizes.every(([w,h])=>w>=44&&h>=44));await cells.nth(puzzle.solution[1]).tap();assert((await page.locator('#status').textContent()).includes('2 / 16'));
+      assert(sizes.every(([w,h])=>w>=44&&h>=44));await cells.nth(puzzle.solution[1]).tap();await ready();assert((await page.locator('#status').textContent()).includes('2 / 16'));
     }
     assert.deepEqual(errors,[]);await context.close();
     console.log('Daily path: touch, keyboard, invalid move, undo, save, solve, copy, restart and date change passed');
