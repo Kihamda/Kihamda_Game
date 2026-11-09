@@ -1,3 +1,179 @@
+const gardenRecoveryModules=(()=>{const sources={"./idb-versioned-keys-prototype.cjs":function(require,module,exports){
+const modes = ['easy', 'normal', 'hard', 'oni', 'kiwami'];
+const descriptors = [
+  ...['path', 'sum', 'garden', 'lights', 'sort'].flatMap(game =>
+    modes.map(mode => ({ id: `${game}-${mode}-v2`, game, mode, version: 2 }))),
+  ...[
+    ['easy', 'easy', 2], ['normal', 'normal', 3], ['hard', 'linked', 2],
+    ['oni', 'oni', 2], ['kiwami', 'kiwami', 2],
+  ].map(([mode, storageMode, version]) => ({
+    id: `circuit-${storageMode}-v${version}`, game: 'circuit', mode, version,
+  })),
+  ...['path', 'sum', 'garden', 'lights', 'circuit', 'sort', 'balance', 'swap']
+    .map(game => ({ id: game, game, mode: 'legacy', version: 1 })),
+];
+const byId = new Map(descriptors.map(item => [item.id, Object.freeze(item)]));
+if (byId.size !== descriptors.length) throw Error('duplicate identifier');
+function identifyDailyStorage(id) {
+  if (typeof id !== 'string' || !byId.has(id)) return null;
+  const descriptor = byId.get(id), key = `kihamda-daily-${id}`;
+  return { ...descriptor, keys: [key, `${key}-previous`] };
+}
+module.exports = { identifyDailyStorage };
+
+},"./idb-versioned-guard-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+function observeVersionedStorage(store,events,id,snapshot,onChange){
+ const identity=identifyDailyStorage(id);if(!identity||!Array.isArray(snapshot)||snapshot.length!==2||!snapshot.every(x=>x===null||typeof x==='string')||typeof onChange!=='function')throw Error('invalid baseline');
+ const keys=identity.keys,baseline=[...snapshot];let state='clean';
+ function check(){if(state!=='clean')return state;try{if(keys.some((key,i)=>store.getItem(key)!==baseline[i]))state='changed'}catch(_){state='unavailable'}return state}
+ function onStorage(event){if(event.storageArea!==store||(event.key!==null&&!keys.includes(event.key)))return;const old=state;if(state==='clean'&&(event.key===null||event.newValue!==baseline[keys.indexOf(event.key)]))state='changed';if(old!==state)onChange(state)}
+ events.addEventListener('storage',onStorage);check();return {check,dispose:()=>events.removeEventListener('storage',onStorage)};
+}
+module.exports={observeVersionedStorage};
+
+},"./idb-versioned-capture-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+const {observeVersionedStorage}=require('./idb-versioned-guard-prototype.cjs');
+// Reads only the exact selected keys; callers must guard again before any database write.
+function captureVersioned(store,events,parse,id,onChange){
+ const identity=identifyDailyStorage(id);if(!identity||typeof parse!=='function')return {state:'invalid'};
+ let snapshot;try{snapshot=identity.keys.map(key=>store.getItem(key))}catch(_){return {state:'unavailable'}}
+ const guard=observeVersionedStorage(store,events,id,snapshot,onChange),before=guard.check();
+ if(before!=='clean'){guard.dispose();return {state:before}}
+ let result;try{result=parse(id,snapshot)}catch(_){guard.dispose();return {state:'invalid'}}const after=guard.check();
+ if(after!=='clean'||result.state!=='ready'){guard.dispose();return {state:after!=='clean'?after:result.state}}
+ return {state:'ready',identity:result.identity,records:result.records,snapshot:result.snapshot,guard};
+}
+module.exports={captureVersioned};
+
+
+},"./idb-versioned-import-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage} = require('./idb-versioned-keys-prototype.cjs');
+function validDate(date) {
+  if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  const ms = Date.parse(`${date}T00:00:00Z`);
+  return Number.isFinite(ms) && new Date(ms).toISOString().slice(0, 10) === date;
+}
+function parseImport(id, snapshot, validate) {
+  const identity = identifyDailyStorage(id);
+  if (!identity || !Array.isArray(snapshot) || snapshot.length !== 2 ||
+      !snapshot.every(value => value === null || typeof value === 'string') || typeof validate !== 'function')
+    return {state:'invalid'};
+  const items = [];
+  try {
+    for (const raw of snapshot) {
+      if (raw === null) continue;
+      const item = JSON.parse(raw);
+      if (!item || Array.isArray(item) || typeof item !== 'object' || !validDate(item.date) || validate(item, identity) !== true)
+        return {state:'invalid'};
+      items.push(item);
+    }
+  } catch (_) { return {state:'invalid'}; }
+  if (new Set(items.map(item => item.date)).size !== items.length) return {state:'invalid'};
+  items.sort((a,b) => b.date.localeCompare(a.date));
+  return {state:'ready', identity, records:items, snapshot:[...snapshot]};
+}
+module.exports = {parseImport};
+
+},"./idb-garden-validation-prototype.cjs":function(require,module,exports){
+function validateGarden(record,identity){
+ if(identity.game!=='garden'||identity.version!==2||!['easy','normal','hard','oni','kiwami'].includes(identity.mode))return false;
+ const size=['oni','kiwami'].includes(identity.mode)?5:4;
+ return Array.isArray(record.cells)&&record.cells.length===size*size&&record.cells.every(value=>[0,1,2].includes(value))&&Number.isSafeInteger(record.moves)&&record.moves>=0;
+}
+module.exports={validateGarden};
+
+},},cache={};function require(id){if(cache[id])return cache[id].exports;if(!sources[id])throw Error('missing '+id);const module={exports:{}};cache[id]=module;sources[id](require,module,module.exports);return module.exports}
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');const {parseImport}=require('./idb-versioned-import-prototype.cjs');const {validateGarden}=require('./idb-garden-validation-prototype.cjs');
+function createParser(){return (id,snapshot)=>{const identity=identifyDailyStorage(id);if(identity?.game!=='garden'||identity.version!==2)return {state:'invalid'};return parseImport(id,snapshot,validateGarden)}}
+return {capture:require('./idb-versioned-capture-prototype.cjs').captureVersioned,createParser}})();
+
+function importGardenIfAbsent({db, id, records, snapshot, guard, valid}) {
+  if (!db || !/^garden-(easy|normal|hard|oni|kiwami)-v2$/.test(id) ||
+      !Array.isArray(records) || records.length > 2 || !Array.isArray(snapshot) ||
+      snapshot.length !== 2 || typeof guard !== 'function' || typeof valid !== 'function' ||
+      !records.every(valid) || new Set(records.map(record => record.date)).size !== records.length) {
+    return Promise.resolve('invalid');
+  }
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('games', 'readwrite'), store = tx.objectStore('games');
+    const request = store.get(id);
+    let outcome = 'changed';
+    request.onsuccess = () => {
+      if (!guard()) return;
+      if (request.result !== undefined) { outcome = 'exists'; return; }
+      try {
+        store.add([...records].sort((a, b) => b.date.localeCompare(a.date)), id);
+        store.add({snapshot}, `source:${id}`);
+        outcome = 'imported';
+      } catch (_) { tx.abort(); }
+    };
+    tx.oncomplete = () => resolve(outcome);
+    tx.onabort = () => reject(tx.error || Error('import aborted'));
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function openGardenProgress({db, mode, date, capture, parser, isCurrent}) {
+  const id=`garden-${mode}-v2`;
+  const valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready';
+  const guard=()=>isCurrent()&&capture.guard.check()==='clean';
+  const imported=await importGardenIfAbsent({db,id,records:capture.records,snapshot:capture.snapshot,guard,valid});
+  if(!['imported','exists'].includes(imported)||!guard())return {state:'changed'};
+  const read=()=>new Promise((resolve,reject)=>{const tx=db.transaction('games','readonly'),store=tx.objectStore('games'),records=store.get(id),meta=store.get(`source:${id}`);tx.oncomplete=()=>resolve({records:records.result,meta:meta.result});tx.onabort=()=>reject(tx.error||Error('read aborted'));tx.onerror=()=>reject(tx.error)});
+  const loaded=await read();
+  if(!guard())return {state:'changed'};
+  if(!Array.isArray(loaded.records)||loaded.records.length>2||!loaded.records.every(valid)||new Set(loaded.records.map(x=>x.date)).size!==loaded.records.length||!loaded.meta)return {state:'invalid'};
+  if(JSON.stringify(loaded.meta.snapshot)!==JSON.stringify(capture.snapshot))return {state:'source-conflict',loaded};
+  let record=loaded.records.find(item=>item.date===date)??null;
+  async function save(next){
+    if(!valid(next)||next.date!==date)return 'invalid';
+    const expected=JSON.stringify(record);
+    const result=await new Promise((resolve,reject)=>{
+      const tx=db.transaction('games','readwrite'),store=tx.objectStore('games'),records=store.get(id),meta=store.get(`source:${id}`);let outcome='changed';
+      meta.onsuccess=()=>{
+        if(!guard())return;
+        const all=records.result;
+        if(!Array.isArray(all)||all.length>2||!all.every(valid)||new Set(all.map(x=>x.date)).size!==all.length){outcome='invalid';return}
+        if(JSON.stringify(meta.result?.snapshot)!==JSON.stringify(capture.snapshot)){outcome='source-conflict';return}
+        if(JSON.stringify(all.find(item=>item.date===date)??null)!==expected){outcome='conflict';return}
+        const merged=new Map(all.map(item=>[item.date,item]));merged.set(date,next);const dates=[...merged.keys()].sort().reverse().slice(0,2);
+        if(!dates.includes(date)){outcome='too-old';return}
+        try{store.put(dates.map(key=>merged.get(key)),id);outcome='saved'}catch(_){tx.abort()}
+      };
+      tx.oncomplete=()=>resolve(outcome);tx.onabort=()=>reject(tx.error||Error('write aborted'));tx.onerror=()=>reject(tx.error);
+    });
+    if(result==='saved'&&guard())record=next;
+    return result==='saved'&&!guard()?'changed-after-save':result;
+  }
+  return {state:'ready',record,save,loaded};
+}
+
+function describeGardenRecord(record,mode){if(!record)return '記録なし';const size=['oni','kiwami'].includes(mode)?5:4,positions=value=>record.cells.map((v,i)=>v===value?(Math.floor(i/size)+1)+'行'+(i%size+1)+'列':null).filter(Boolean).join('、')||'なし';return record.moves+'手・花 '+positions(1)+'・空きメモ '+positions(2)}
+function showGardenConflict({db,id,mode,loaded,capture,legacyCapture,parser,isCurrent,stop,container}) {
+  const valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready';
+  const before=parser(id,loaded.meta.snapshot);
+  if(before.state!=='ready'){stop();return}
+  const sources=[{id:'versioned',before:before.records,after:capture.records}];
+  const plan=recoveryModules.planChanges(loaded.records,sources,valid);if(plan.state!=='ready'){stop();return}
+  const guard=()=>isCurrent()&&capture.guard.check()==='clean';
+  status.textContent='日付ごとに記録を選んでね';container.replaceChildren();const selects=[];
+  const describe=record=>describeGardenRecord(record,mode);
+  for(const row of plan.rows){const section=document.createElement('section'),label=document.createElement('label'),select=document.createElement('select'),detail=document.createElement('p');label.textContent=`${row.date} の記録`;select.setAttribute('aria-label',label.textContent);detail.setAttribute('aria-live','polite');
+    for(const choice of row.choices){const option=document.createElement('option');option.value=choice.source;option.textContent=choice.source==='database'?'この端末':choice.source==='versioned'?'版付きの元記録':'以前の元記録';select.append(option)}
+    const show=()=>{detail.textContent=describe(row.choices.find(x=>x.source===select.value).record)};select.addEventListener('change',show);show();label.append(select);section.append(label,detail);container.append(section);selects.push({date:row.date,select});
+  }
+  const review=document.createElement('button');review.type='button';review.textContent='選択内容を確認';container.append(review);
+  review.onclick=()=>{const choices=selects.map(x=>({date:x.date,source:x.select.value})),selected=recoveryModules.selectChanges(plan,choices,valid);
+    if(selected.state!=='ready'){status.textContent=selected.state==='too-old'?'選んだ記録が保存できる2日より古いよ。選び直してね。':'選択内容を確認できないよ。';return}
+    const panel=document.createElement('section'),heading=document.createElement('h3'),details=document.createElement('p'),confirm=document.createElement('button'),back=document.createElement('button');heading.textContent='保存内容を確認';heading.tabIndex=-1;details.textContent=`保存する記録：${selected.records.map(x=>`${x.date} ${describe(x)}`).join(' / ')||'なし'}。${selected.evicted.length?`保存対象から外れる記録：${selected.evicted.map(x=>`${x.date} ${describe(x)}`).join(' / ')}。退避には残るよ。`:''}`;confirm.type=back.type='button';confirm.textContent='この内容で保存';back.textContent='選び直す';panel.append(heading,details,confirm,back);container.append(panel);for(const x of selects)x.select.disabled=true;review.disabled=true;heading.focus();
+    back.onclick=()=>{panel.remove();for(const x of selects)x.select.disabled=false;review.disabled=false;review.focus()};
+    confirm.onclick=async()=>{confirm.disabled=back.disabled=true;try{const archive=recoveryModules.createMultiArchive(id,plan,choices,valid,new Date().toISOString());if(!archive){status.textContent='選択内容を確認できないよ。';return}const result=await commitMultiChanges({db,id,archiveId:crypto.randomUUID(),archive,expectedRecords:JSON.stringify(loaded.records),expectedMeta:JSON.stringify(loaded.meta),nextMeta:{snapshot:capture.snapshot},guard,acceptedEviction:true,readArchive:(a,g)=>recoveryModules.readMultiArchive(a,g,valid)});if(!isCurrent())return;if(result!=='saved'||!guard()){stop();return}start()}catch(_){status.textContent='保存できなかったよ。空き容量を確認してね。';back.disabled=false}};
+  };
+}
+
+let gardenRestartGuard=null;
 const pathRecoveryModules=(()=>{const sources={"./idb-versioned-keys-prototype.cjs":function(require,module,exports){
 // Isolated inventory: this module does not read or write browser storage.
 const modes = ['easy', 'normal', 'hard', 'oni', 'kiwami'];
@@ -1718,15 +1894,26 @@ function setupGardenUI(date) {
   if(gardenVersion===null&&gardenRequested==='normal'&&gardenDifficulty==='normal'){notice=document.createElement('details');notice.className='circuit-notice';const summary=document.createElement('summary');summary.textContent='以前のリンクについて';const text=document.createElement('p');text.textContent='以前の共有リンクでは、今の「ふつう」が開くよ。以前の問題も今日の日付で遊べるよ。';notice.append(summary,text);if(!legacy){const b=document.createElement('button');b.type='button';b.className='circuit-legacy garden-legacy';b.textContent='以前の問題を開く';b.addEventListener('click',open);notice.append(b)}board.after(notice)}
   return ()=>{group.remove();legacy?.remove();notice?.remove()};
 }
-function gardenFive(reset){
+async function gardenFive(reset){
+  const generation=runGeneration,selected=gardenDifficulty,isCurrent=()=>generation===runGeneration&&date===todayInTokyo();let db,capture,progress,parser,busy=false,stopped=false;
   const date=todayInTokyo(),large=['oni','kiwami'].includes(gardenDifficulty),size=large?5:4,diagonal=['hard','oni','kiwami'].includes(gardenDifficulty),extreme=gardenDifficulty==='kiwami',day=Math.floor(Date.parse(date+'T00:00:00Z')/86400000),options=gardenLevels[gardenDifficulty],n=options.length,solution=options[((day+(large?7:5)*Math.floor(day/n))%n+n)%n],bit=i=>(solution>>>i)&1,rows=Array.from({length:size},(_,r)=>Array.from({length:size},(_,c)=>bit(r*size+c)).reduce((a,b)=>a+b,0)),cols=Array.from({length:size},(_,c)=>Array.from({length:size},(_,r)=>bit(r*size+c)).reduce((a,b)=>a+b,0)),diag=Array.from({length:size},(_,i)=>bit(i*(size+1))).reduce((a,b)=>a+b,0),anti=Array.from({length:size},(_,i)=>bit((i+1)*(size-1))).reduce((a,b)=>a+b,0),region=[0,1,size,size+1].reduce((a,i)=>a+bit(i),0);
   category.textContent=`今日のパズル ${date}`;instructions.textContent=extreme?'行、列、対角線の数を合わせよう。中央以外の点対称の2マスは、どちらか1つに花を置くよ。':diagonal?'行、列、対角線の花の数を合わせよう。':gameCatalog.garden.instructions;const removeModes=setupGardenUI(date);
   const tools=document.createElement('div');tools.className='garden-tools';tools.setAttribute('role','group');tools.setAttribute('aria-label','置くもの');let mode=1;for(const [value,label] of [[1,'花を置く'],[2,'空きをメモ']]){const b=document.createElement('button');b.type='button';b.textContent=label;b.setAttribute('aria-pressed',String(value===mode));b.addEventListener('click',()=>{mode=value;for(const [i,x] of [...tools.children].entries())x.setAttribute('aria-pressed',String(i+1===mode))});tools.append(b)}status.before(tools);let hints=null;if(diagonal){hints=document.createElement('p');hints.className='garden-extra';hints.textContent=`↘ ${diag}個・↙ ${anti}個${extreme?`　枠の4マスは${region}個。選んだマスの対称位置は橙の枠`:''}`;status.before(hints)}cleanup=()=>{removeModes();tools.remove();hints?.remove()};
-  board.classList.add('garden');board.dataset.gardenSize=size;board.style.setProperty('--garden-size',size);let cells=Array(size*size).fill(0),moves=0;const valid=saved=>Array.isArray(saved.cells)&&saved.cells.length===size*size&&saved.cells.every(v=>[0,1,2].includes(v))&&Number.isSafeInteger(saved.moves)&&saved.moves>=0;const storage=dailyStorage(`garden-${gardenDifficulty}-v2`,date,valid);if(reset)storage.clear();const saved=storage.load();if(saved&&valid(saved)){cells=saved.cells;moves=saved.moves}
+  board.classList.add('garden');board.dataset.gardenSize=size;board.style.setProperty('--garden-size',size);let cells=Array(size*size).fill(0),moves=0;const valid=saved=>Array.isArray(saved.cells)&&saved.cells.length===size*size&&saved.cells.every(v=>[0,1,2].includes(v))&&Number.isSafeInteger(saved.moves)&&saved.moves>=0;const stop=()=>{if(stopped||!isCurrent())return;stopped=true;status.textContent='記録が変わったよ。画面を開き直してね。';restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true)};
+  let dateExpired=false;function checkDate(){if(date===todayInTokyo()||dateExpired||generation!==runGeneration)return;dateExpired=true;stopped=true;capture?.guard?.dispose();board.querySelectorAll('button').forEach(b=>b.disabled=true);document.querySelectorAll('.sum-recovery button,.sum-recovery select,.path-archive').forEach(b=>b.disabled=true);restart.disabled=false;status.textContent='日付が変わったよ。今日の問題を開いてね。';refreshDailyDate()}const dateTimer=window.setInterval(checkDate,1000);document.addEventListener('visibilitychange',checkDate);
+  const oldCleanup=cleanup;cleanup=()=>{stopped=true;window.clearInterval(dateTimer);document.removeEventListener('visibilitychange',checkDate);capture?.guard?.dispose();db?.close();gardenRestartGuard=null;restart.disabled=false;oldCleanup()};
+  restart.disabled=true;status.textContent='記録を読み込んでいるよ';
+  try {parser=gardenRecoveryModules.createParser({sum:generateFiveSum,pathLevels,pathGenerator:generatePathPuzzle,sortTrial:generateTrialSortPuzzle,sortLegacy:generateSortPuzzle});capture=gardenRecoveryModules.capture(localStorage,window,parser,`garden-${selected}-v2`,stop);if(capture.state!=='ready')throw Error('source invalid');db=await openRecoveryDatabase(stop);if(!isCurrent()||stopped){db.close();return}progress=await openGardenProgress({db,mode:selected,date,capture,parser,isCurrent});if(!isCurrent()||stopped)return;if(progress.state==='source-conflict'){const container=document.createElement('section');container.className='sum-recovery';status.before(container);const previous=cleanup;cleanup=()=>{container.remove();previous()};showGardenConflict({db,id:["garden",selected,"v2"].join("-"),mode:selected,loaded:progress.loaded,capture,parser,isCurrent,stop,container});return}if(progress.state!=='ready')throw Error(progress.state)}catch(e){if(isCurrent()&&!stopped){cleanup();cleanup=()=>{};gardenFiveVolatile(false);const notice=document.querySelector('#record');notice.hidden=false;notice.textContent='記録を読み込めないため、今回の進み具合は保存されないよ。'}return}
+  const saved=progress.record;if(saved&&valid(saved)){cells=saved.cells.slice();moves=saved.moves}
+  async function persist(){if(busy||stopped||!isCurrent())return false;busy=true;restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);try{const result=await progress.save({date,cells:[...cells],moves});if(result!=='saved'){stop();if(result==='too-old')status.textContent='この日の記録は保存できないよ。新しい2日分の記録を残しているよ。';return false}return isCurrent()&&!stopped}catch(_){if(isCurrent()&&!stopped){stop();status.textContent='保存できなかったよ。画面を開き直してね。'}return false}finally{busy=false;if(isCurrent()&&!stopped){restart.disabled=false;board.querySelectorAll('button').forEach(b=>b.disabled=false)}}}
+  const archiveButton=document.createElement('button');archiveButton.type='button';archiveButton.className='path-archive';archiveButton.textContent='退避した記録を見る';board.after(archiveButton);const priorCleanup=cleanup;cleanup=()=>{archiveButton.remove();priorCleanup()};
+  archiveButton.onclick=event=>{if(busy||stopped||!isCurrent())return;busy=true;restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);document.querySelectorAll('.garden-modes button,.garden-tools button,.garden-legacy').forEach(b=>b.disabled=true);archiveButton.disabled=true;const section=document.createElement('section'),returnButton=document.createElement('button'),content=document.createElement('div');section.className='sum-recovery';returnButton.type='button';returnButton.textContent='ゲームに戻る';returnButton.onclick=()=>start();section.append(returnButton,content);archiveButton.after(section);const prior=cleanup;cleanup=()=>{section.remove();prior()};status.textContent='退避した記録';if(event.detail===0)returnButton.focus();const guard=()=>isCurrent()&&!stopped&&capture.guard.check()==='clean';const valid=record=>parser(['garden',selected,'v2'].join('-'),[JSON.stringify(record),null]).state==='ready';openSumArchiveReview({db,id:['garden',selected,'v2'].join('-'),valid,guard,container:content,describe:record=>describeGardenRecord(record,selected),readMulti:recoveryModules.readMultiArchive,expectedMeta:JSON.stringify(progress.loaded.meta),onRestored:()=>{returnButton.textContent='復元した記録を開く'}})};
+  restart.disabled=false;gardenRestartGuard=async event=>{if(busy||stopped)return;copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;cells=Array(size*size).fill(0);moves=0;if(await persist()){render();if(event?.detail===0)restart.focus()}};
+
   const clue=(value,label)=>{const el=document.createElement('span');el.className='garden-clue';el.textContent=value;el.setAttribute('aria-label',label);board.append(el)};clue('','');cols.forEach((v,c)=>clue(v,`${c+1}列の目標 ${v}`));const buttons=[];
-  for(let r=0;r<size;r++){clue(rows[r],`${r+1}行の目標 ${rows[r]}`);for(let c=0;c<size;c++){const i=r*size+c;buttons.push(button('',()=>{if(cells.every((v,j)=>(v===1)===Boolean(solution&(1<<j))))return;cells[i]=cells[i]===mode?0:mode;moves++;if(!storage.save({cells,moves})){recoverDailyConflict();return}render()}))}}
+  for(let r=0;r<size;r++){clue(rows[r],`${r+1}行の目標 ${rows[r]}`);for(let c=0;c<size;c++){const i=r*size+c;buttons.push(button('',async event=>{if(busy||stopped||cells.every((v,j)=>(v===1)===Boolean(solution&(1<<j))))return;cells[i]=cells[i]===mode?0:mode;moves++;if(await persist()){render();if(event.detail===0)buttons[i].focus()}}))}}
   function render(){const won=cells.every((v,i)=>(v===1)===Boolean(solution&(1<<i)));buttons.forEach((b,i)=>{const r=Math.floor(i/size),c=i%size,mark=diagonal?[r===c?'↘':'',r+c===size-1?'↙':''].join(''):'';b.className=`${cells[i]===1?'on':cells[i]===2?'garden-mark':''}${extreme&&r<2&&c<2?' garden-region':''}`;b.replaceChildren();const text=document.createElement('span');text.textContent=cells[i]===1?'✿':cells[i]===2?'×':'·';b.append(text);if(mark){const tag=document.createElement('span');tag.className='garden-diagonal';tag.textContent=mark;tag.setAttribute('aria-hidden','true');b.append(tag)}b.onfocus=()=>{if(extreme&&i!==12)buttons[size*size-1-i].classList.add('garden-pair')};b.onblur=()=>{buttons.forEach(x=>x.classList.remove('garden-pair'))};b.setAttribute('aria-pressed',String(cells[i]!==0));b.setAttribute('aria-label',`${r+1}行${c+1}列 ${cells[i]===1?'花':cells[i]===2?'空きメモ':'未選択'} 行の目標${rows[r]} 列の目標${cols[c]}${mark?` ${mark}の対角線`:''}${extreme&&i!==12?` 点対称は${size-r}行${size-c}列`:''}`)});const focused=buttons.indexOf(document.activeElement);if(extreme&&focused>=0&&focused!==12)buttons[size*size-1-focused].classList.add('garden-pair');status.textContent=won?`クリア！ ${moves}手で咲かせたよ`:`${moves}手`;if(won)offerCopy(`かずの花壇 ${gardenLabels[gardenDifficulty]} ${date} ${moves}手\nhttps://game.kihamda.net/play-garden.html?difficulty=${gardenDifficulty}&version=2`);else{copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true}}
-  render();
+  if(reset){await gardenRestartGuard();if(!isCurrent()||stopped)return}else render();
 }
 
 function threeFiveGame(){
@@ -2592,6 +2779,7 @@ function start(reset=false){
 }
 restart.addEventListener('click',event=>{
   refreshDailyDate();
+  if(id==='garden'&&gardenRestartGuard&&!isStaleDaily){gardenRestartGuard(event);return;}
   if(id==='path'&&pathRestartGuard&&!isStaleDaily){pathRestartGuard(event);return;}
   if(id==='sum'&&sumRestartGuard&&!isStaleDaily){sumRestartGuard();return;}
   if(id==='three'&&threeRestartGuard){threeRestartGuard();return;}
@@ -2624,5 +2812,16 @@ function pathFiveVolatile(reset) {
   function move(i,event){const previous=steps.length?route[route.length-1-steps.at(-1).length]:null;if(i===previous){undo();return}if(won)return;if(route.includes(i)){status.textContent='通ったマスには戻れないよ。1つ前のマスを押してね。';return}if(!neighbors(route.at(-1)).includes(i)){status.textContent='上下左右の隣のマスを押してね。';return}const next=marks.filter(x=>route.includes(x)).length,mark=marks.indexOf(i);if(mark>=0&&mark!==next){status.textContent='数字は1から順番に通ろう。';return}if(i===goal&&(route.length!==size*size-1||next!==marks.length)){status.textContent='数字とほかのマスをすべて通ってからゴールしよう。';return}const step=[i];if(portals.includes(i)){const other=portals[portals.indexOf(i)^1];if(route.includes(other))return;step.push(other)}route.push(...step);steps.push(step);moves++;won=route.at(-1)===goal;if(!persist())return;render();if(step.length===2){announcement.textContent=`ワープ！ ${Math.floor(step[1]/size)+1}行${step[1]%size+1}列へ`;if(event?.detail===0)buttons[step[1]].focus()}}
   for(let i=0;i<size*size;i++)buttons.push(button('',event=>move(i,event)));
   function render(){const current=route.at(-1),next=marks.filter(i=>route.includes(i)).length,previous=steps.length?route[route.length-1-steps.at(-1).length]:null;buttons.forEach((b,i)=>{const tag=marks.indexOf(i),position=route.indexOf(i),label=i===startCell?'スタート':i===goal?'ゴール':tag>=0?`数字${tag+1}`:portals.includes(i)?'ワープ':'マス';b.textContent=i===startCell?'始':i===goal?'終':tag>=0?String(tag+1):portals.includes(i)?'↔':position>=0?'・':'';b.className=`path-cell${position>=0?' on':''}${i===current?' path-current':''}${portals.includes(i)?' path-portal':''}`;b.dataset.step=position>=0?String(position+1):'';b.setAttribute('aria-label',`${Math.floor(i/size)+1}行${i%size+1}列 ${label}${position>=0?` 通過${position+1}番目`:''}${i===current?' 現在地':''}`);b.setAttribute('aria-pressed',String(position>=0));b.setAttribute('aria-disabled',String(won&&i!==previous))});back.disabled=steps.length===0;status.textContent=won?`クリア！ ${moves}手`:`${route.length} / ${size*size}マス`;if(won)offerCopy(`まいにち道つなぎ ${pathLabels[pathDifficulty]} ${date} ${moves}手\nhttps://game.kihamda.net/play-path.html?difficulty=${pathDifficulty}&version=2`);else{copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true}}
+  render();
+}
+
+function gardenFiveVolatile(reset){
+  const date=todayInTokyo(),large=['oni','kiwami'].includes(gardenDifficulty),size=large?5:4,diagonal=['hard','oni','kiwami'].includes(gardenDifficulty),extreme=gardenDifficulty==='kiwami',day=Math.floor(Date.parse(date+'T00:00:00Z')/86400000),options=gardenLevels[gardenDifficulty],n=options.length,solution=options[((day+(large?7:5)*Math.floor(day/n))%n+n)%n],bit=i=>(solution>>>i)&1,rows=Array.from({length:size},(_,r)=>Array.from({length:size},(_,c)=>bit(r*size+c)).reduce((a,b)=>a+b,0)),cols=Array.from({length:size},(_,c)=>Array.from({length:size},(_,r)=>bit(r*size+c)).reduce((a,b)=>a+b,0)),diag=Array.from({length:size},(_,i)=>bit(i*(size+1))).reduce((a,b)=>a+b,0),anti=Array.from({length:size},(_,i)=>bit((i+1)*(size-1))).reduce((a,b)=>a+b,0),region=[0,1,size,size+1].reduce((a,i)=>a+bit(i),0);
+  category.textContent=`今日のパズル ${date}`;instructions.textContent=extreme?'行、列、対角線の数を合わせよう。中央以外の点対称の2マスは、どちらか1つに花を置くよ。':diagonal?'行、列、対角線の花の数を合わせよう。':gameCatalog.garden.instructions;const removeModes=setupGardenUI(date);
+  const tools=document.createElement('div');tools.className='garden-tools';tools.setAttribute('role','group');tools.setAttribute('aria-label','置くもの');let mode=1;for(const [value,label] of [[1,'花を置く'],[2,'空きをメモ']]){const b=document.createElement('button');b.type='button';b.textContent=label;b.setAttribute('aria-pressed',String(value===mode));b.addEventListener('click',()=>{mode=value;for(const [i,x] of [...tools.children].entries())x.setAttribute('aria-pressed',String(i+1===mode))});tools.append(b)}status.before(tools);let hints=null;if(diagonal){hints=document.createElement('p');hints.className='garden-extra';hints.textContent=`↘ ${diag}個・↙ ${anti}個${extreme?`　枠の4マスは${region}個。選んだマスの対称位置は橙の枠`:''}`;status.before(hints)}cleanup=()=>{removeModes();tools.remove();hints?.remove()};
+  board.classList.add('garden');board.dataset.gardenSize=size;board.style.setProperty('--garden-size',size);let cells=Array(size*size).fill(0),moves=0;const valid=saved=>Array.isArray(saved.cells)&&saved.cells.length===size*size&&saved.cells.every(v=>[0,1,2].includes(v))&&Number.isSafeInteger(saved.moves)&&saved.moves>=0;const storage={load:()=>null,clear:()=>true,save:()=>true,isCurrent:()=>true};
+  const clue=(value,label)=>{const el=document.createElement('span');el.className='garden-clue';el.textContent=value;el.setAttribute('aria-label',label);board.append(el)};clue('','');cols.forEach((v,c)=>clue(v,`${c+1}列の目標 ${v}`));const buttons=[];
+  for(let r=0;r<size;r++){clue(rows[r],`${r+1}行の目標 ${rows[r]}`);for(let c=0;c<size;c++){const i=r*size+c;buttons.push(button('',()=>{if(cells.every((v,j)=>(v===1)===Boolean(solution&(1<<j))))return;cells[i]=cells[i]===mode?0:mode;moves++;if(!storage.save({cells,moves})){recoverDailyConflict();return}render()}))}}
+  function render(){const won=cells.every((v,i)=>(v===1)===Boolean(solution&(1<<i)));buttons.forEach((b,i)=>{const r=Math.floor(i/size),c=i%size,mark=diagonal?[r===c?'↘':'',r+c===size-1?'↙':''].join(''):'';b.className=`${cells[i]===1?'on':cells[i]===2?'garden-mark':''}${extreme&&r<2&&c<2?' garden-region':''}`;b.replaceChildren();const text=document.createElement('span');text.textContent=cells[i]===1?'✿':cells[i]===2?'×':'·';b.append(text);if(mark){const tag=document.createElement('span');tag.className='garden-diagonal';tag.textContent=mark;tag.setAttribute('aria-hidden','true');b.append(tag)}b.onfocus=()=>{if(extreme&&i!==12)buttons[size*size-1-i].classList.add('garden-pair')};b.onblur=()=>{buttons.forEach(x=>x.classList.remove('garden-pair'))};b.setAttribute('aria-pressed',String(cells[i]!==0));b.setAttribute('aria-label',`${r+1}行${c+1}列 ${cells[i]===1?'花':cells[i]===2?'空きメモ':'未選択'} 行の目標${rows[r]} 列の目標${cols[c]}${mark?` ${mark}の対角線`:''}${extreme&&i!==12?` 点対称は${size-r}行${size-c}列`:''}`)});const focused=buttons.indexOf(document.activeElement);if(extreme&&focused>=0&&focused!==12)buttons[size*size-1-focused].classList.add('garden-pair');status.textContent=won?`クリア！ ${moves}手で咲かせたよ`:`${moves}手`;if(won)offerCopy(`かずの花壇 ${gardenLabels[gardenDifficulty]} ${date} ${moves}手\nhttps://game.kihamda.net/play-garden.html?difficulty=${gardenDifficulty}&version=2`);else{copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true}}
   render();
 }

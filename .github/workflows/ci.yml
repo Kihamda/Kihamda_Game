@@ -208,6 +208,25 @@ jobs:
           node ops/garden-five-browser-check.cjs
           node ops/garden-five-storage-check.cjs
           node ops/garden-legacy-check.cjs
+          node ops/garden-idb-ui-races-check.cjs
+          node ops/garden-idb-progress-check-check.cjs
+          node ops/garden-idb-ui-restore-check.cjs
+          node ops/garden-idb-ui-restore-race-check.cjs
+          node ops/garden-idb-ui-delete-check.cjs
+          node ops/garden-idb-ui-source-race-check.cjs
+          node ops/garden-idb-ui-unavailable-check.cjs
+          node ops/garden-idb-retry-start-check.cjs
+          node ops/garden-idb-ui-invalid-db-check.cjs
+          node ops/garden-idb-ui-invalid-meta-check.cjs
+          node ops/garden-idb-ui-import-two-days-check.cjs
+          node ops/garden-idb-ui-invalid-tab-check.cjs
+          node ops/garden-idb-ui-read-failure-check.cjs
+          node ops/garden-idb-ui-pending-check.cjs
+          node ops/garden-idb-ui-quota-check.cjs
+          node ops/garden-idb-ui-version-change-check.cjs
+          node ops/garden-idb-ui-focus-check.cjs
+          node ops/garden-idb-ui-isolation-check.cjs
+          node ops/garden-idb-ui-conflict-layout-check.cjs
           node ops/circuit-notice-check.cjs
           node ops/circuit-version-check.cjs
           node ops/circuit-difficulty-check.cjs
@@ -257,4 +276,5 @@ jobs:
           SITE_DIR=preview node ops/lights-five-browser-check.cjs
           SITE_DIR=preview node ops/garden-five-browser-check.cjs
           SITE_DIR=preview node ops/garden-legacy-check.cjs
+          node ops/garden-idb-fixed-restore-check.cjs
           SITE_DIR=preview node ops/sort-five-browser-check.cjs
