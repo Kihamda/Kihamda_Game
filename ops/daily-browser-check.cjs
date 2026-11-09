@@ -1,3 +1,4 @@
+// Garden IndexedDB coverage is in garden-idb-* and garden-five-browser-check.
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path'), assert = require('assert');
 const root = path.resolve('site');
@@ -15,7 +16,7 @@ const server = http.createServer((req, res) => {
   const browser = await chromium.launch({headless:true, ...(process.env.CHROME_PATH ? {executablePath:process.env.CHROME_PATH} : {})});
   try {
     const origin = `http://127.0.0.1:${server.address().port}`;
-    for (const game of ['lights','garden']) {
+    for (const game of ['lights']) {
       const context = await browser.newContext();
       const page = await context.newPage();
       await page.clock.install({time:new Date('2026-10-27T03:00:00Z')});
@@ -43,7 +44,7 @@ const server = http.createServer((req, res) => {
     await blocked.addInitScript(() => Object.defineProperty(window, 'localStorage', {get() {throw new Error('storage blocked')}}));
     const page = await blocked.newPage();
     const errors = []; page.on('pageerror', error => errors.push(error.message));
-    for (const game of ['lights','garden']) {
+    for (const game of ['lights']) {
       await page.goto(`${origin}/game.html?game=${game}${game === 'lights' ? '&mode=daily' : ''}`);
       await page.locator('#board button').first().click();
       assert((await page.locator('#status').textContent()).includes('1手'));

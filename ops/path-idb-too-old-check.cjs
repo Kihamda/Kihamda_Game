@@ -1,0 +1,12 @@
+const {chromium}=require('playwright'),http=require('node:http'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const root=path.resolve('site');
+const server=http.createServer((q,r)=>{const f=path.resolve(root,'.'+new URL(q.url,'http://local').pathname);if(!f.startsWith(root+path.sep))return r.writeHead(400).end();fs.readFile(f,(e,d)=>{if(e)return r.writeHead(404).end();r.setHeader('Content-Type',f.endsWith('.js')?'text/javascript':f.endsWith('.css')?'text/css':'text/html; charset=utf-8');r.end(d)})});
+(async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const b=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH});try{
+ const c=await b.newContext({viewport:{width:320,height:480}}),p=await c.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.clock.install({time:new Date('2026-10-28T03:00:00Z')});const url=`http://127.0.0.1:${server.address().port}/game.html?game=path`;
+ const ready=()=>p.waitForFunction(()=>document.querySelectorAll('#board button').length&&!document.querySelector('#restart').disabled);
+ const move=async()=>{const i=await p.evaluate(()=>generatePathPuzzle(...todayInTokyo().split('-').map(Number)).solution[1]);await p.locator('#board button').nth(i).click()};
+ for(const date of ['2026-10-28','2026-10-29']){await p.clock.setFixedTime(new Date(date+'T03:00:00Z'));await p.goto(url);await ready();await move();await ready()}
+ const saved=()=>p.evaluate(async()=>{const db=await openDailyDatabase();return new Promise((resolve,reject)=>{const tx=db.transaction('games','readonly'),q=tx.objectStore('games').get('path-normal-v2');tx.oncomplete=()=>{db.close();resolve(q.result)};tx.onabort=()=>reject(tx.error)})});
+ const before=await saved();assert.deepEqual(before.map(x=>x.date),['2026-10-29','2026-10-28']);
+ await p.clock.setFixedTime(new Date('2026-10-27T03:00:00Z'));await p.goto(url);await ready();await move();await p.waitForFunction(()=>document.querySelector('#status').textContent.includes('この日の記録は保存できない'));assert.deepEqual(await saved(),before);assert(await p.locator('#restart').isDisabled());assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);assert.deepEqual(errors,[]);console.log('Older third date: newer two records kept and accurate notice displayed');await c.close();
+}finally{await b.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});

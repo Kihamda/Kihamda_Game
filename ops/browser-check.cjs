@@ -45,11 +45,14 @@ const server = http.createServer((req, res) => {
         if (id === 'memory') { await page.locator('#board button').first().click(); assert.notEqual(await page.locator('#board button').first().textContent(), '？'); }
         if (id === 'order') { for(let n=1;n<=16;n++) await page.getByRole('button',{name:String(n),exact:true}).click(); assert((await page.locator('#status').textContent()).includes('ゴール')); }
         if (id === 'garden') {
+          await page.waitForFunction(()=>document.querySelectorAll('#board button').length&&!document.querySelector('#restart').disabled);
           const first = page.locator('#board button').first();
           await first.focus(); await page.keyboard.press('Space');
+          await page.waitForFunction(()=>!document.querySelector('#restart').disabled);
           assert.equal(await first.getAttribute('aria-pressed'), 'true');
           assert((await first.getAttribute('aria-label')).includes('花'));
           await page.keyboard.press('Space');
+          await page.waitForFunction(()=>!document.querySelector('#restart').disabled);
           assert.equal(await first.getAttribute('aria-pressed'), 'false');
           const initial = await page.locator('.garden-clue').allTextContents();
           assert.equal(initial.length, 9);
@@ -62,7 +65,7 @@ const server = http.createServer((req, res) => {
             return null;
           });
           assert.notEqual(solution, null);
-          for(let i=0;i<16;i++) if((solution>>i)&1) await page.locator('#board button').nth(i).click();
+          for(let i=0;i<16;i++) if((solution>>i)&1){await page.locator('#board button').nth(i).click();await page.waitForFunction(()=>!document.querySelector('#restart').disabled);}
           assert((await page.locator('#status').textContent()).includes('クリア'));
           await page.locator('#restart').click();
           assert.deepEqual(await page.locator('.garden-clue').allTextContents(), initial);

@@ -1,8 +1,10 @@
+// Garden IndexedDB coverage is in garden-idb-* tests.
+// Path uses IndexedDB; see path-five-storage-check.cjs and path-idb-*-check.cjs.
 // Sum uses IndexedDB and is covered by sum-idb-* and sum-cross-day-idb-check.cjs.
 const {chromium}=require('playwright'),http=require('http'),fs=require('fs'),path=require('path'),assert=require('assert');
 const root=path.resolve('site');const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(root+path.sep))return res.writeHead(400).end();fs.readFile(file,(e,d)=>{if(e)return res.writeHead(404).end();res.setHeader('Content-Type',{'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css'}[path.extname(file)]||'text/plain');res.end(d)})});
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});try{
-for(const game of ['lights','garden','path','sort','circuit']){
+for(const game of ['lights','sort','circuit']){
  const c=await browser.newContext({viewport:{width:320,height:480},hasTouch:true}),old=await c.newPage(),today=await c.newPage();
  await old.clock.install({time:new Date('2026-10-27T14:59:45Z')});const mode=['lights','sort'].includes(game)?'&mode=daily':'';const url=`http://127.0.0.1:${server.address().port}/game.html?game=${game}${mode}`;await old.goto(url);assert((await old.locator('#category').textContent()).includes('今日のパズル 2026-10-27'));
  await old.clock.setFixedTime(new Date('2026-10-27T15:00:01Z'));await today.goto(url);

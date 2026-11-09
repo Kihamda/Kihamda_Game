@@ -14,8 +14,8 @@ for(const name of ['garden','sum','lights','path','circuit','sort']) for(const s
 }
 const context=await b.newContext(), a=await context.newPage(), other=await context.newPage();
 await a.clock.install({time:new Date('2026-11-03T03:00:00Z')});const base=`http://127.0.0.1:${server.address().port}`;
-await a.goto(`${base}/game.html?game=garden`);await a.locator('#board button').first().click();await other.goto(`${base}/game.html?game=unknown`);
+await a.goto(`${base}/game.html?game=garden`);await a.waitForFunction(()=>document.querySelectorAll('#board button').length&&!document.querySelector('#restart').disabled);await a.locator('#board button').first().click();await a.waitForFunction(()=>!document.querySelector('#restart').disabled);await other.goto(`${base}/game.html?game=unknown`);
 const key='kihamda-daily-garden-normal-v2';await other.evaluate(k=>localStorage.setItem(k,'{bad from another tab'),key);
-await a.locator('#board button').nth(1).click();await a.locator('#restart').click();assert.equal(await other.evaluate(k=>localStorage.getItem(k),key),'{bad from another tab');assert(await a.locator('#record').isVisible());await context.close();
+await a.waitForFunction(()=>document.querySelector('#status').textContent.includes('記録が変わった'));assert(await a.locator('#board button').nth(1).isDisabled());assert(await a.locator('#restart').isDisabled());assert.equal(await other.evaluate(k=>localStorage.getItem(k),key),'{bad from another tab');assert((await a.locator('#status').textContent()).includes('記録が変わった'));await context.close();
 console.log('Corruption by another tab is not overwritten or removed');
 }finally{await b.close();server.close()}})().catch(e=>{console.error(e);server.close();process.exitCode=1});
