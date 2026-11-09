@@ -205,6 +205,25 @@ jobs:
           node ops/lights-five-browser-check.cjs
           node ops/lights-five-random-check.cjs
           node ops/lights-five-storage-check.cjs
+          node ops/lights-idb-conflict-layout-check.cjs
+          node ops/lights-idb-delete-check.cjs
+          node ops/lights-idb-five-unavailable-check.cjs
+          node ops/lights-idb-focus-check.cjs
+          node ops/lights-idb-import-two-days-check.cjs
+          node ops/lights-idb-invalid-db-check.cjs
+          node ops/lights-idb-invalid-meta-check.cjs
+          node ops/lights-idb-isolation-check.cjs
+          node ops/lights-idb-pending-check.cjs
+          node ops/lights-idb-progress-check.cjs
+          node ops/lights-idb-quota-check.cjs
+          node ops/lights-idb-races-check.cjs
+          node ops/lights-idb-restore-check.cjs
+          node ops/lights-idb-restore-race-check.cjs
+          node ops/lights-idb-retry-start-check.cjs
+          node ops/lights-idb-simultaneous-check.cjs
+          node ops/lights-idb-source-race-check.cjs
+          node ops/lights-idb-unavailable-check.cjs
+          node ops/lights-idb-version-change-check.cjs
           node ops/garden-five-browser-check.cjs
           node ops/garden-five-storage-check.cjs
           node ops/garden-legacy-check.cjs
@@ -274,6 +293,7 @@ jobs:
           SITE_DIR=preview node ops/circuit-notice-check.cjs
           SITE_DIR=preview node ops/circuit-version-check.cjs
           SITE_DIR=preview node ops/lights-five-browser-check.cjs
+          node ops/lights-idb-fixed-restore-check.cjs
           SITE_DIR=preview node ops/garden-five-browser-check.cjs
           SITE_DIR=preview node ops/garden-legacy-check.cjs
           node ops/garden-idb-fixed-restore-check.cjs
