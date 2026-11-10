@@ -202,6 +202,15 @@ jobs:
           node ops/circuit-browser-check.cjs
           node ops/circuit-five-browser-check.cjs
           node ops/circuit-five-storage-check.cjs
+          node ops/circuit-idb-conflict-check.cjs
+          node ops/circuit-idb-delete-check.cjs
+          node ops/circuit-idb-five-conflict-check.cjs
+          node ops/circuit-idb-import-two-days-check.cjs
+          node ops/circuit-idb-invalid-db-check.cjs
+          node ops/circuit-idb-races-check.cjs
+          node ops/circuit-idb-restore-race-check.cjs
+          node ops/circuit-idb-simultaneous-check.cjs
+          node ops/circuit-idb-unavailable-check.cjs
           node ops/lights-five-browser-check.cjs
           node ops/lights-five-random-check.cjs
           node ops/lights-five-storage-check.cjs
@@ -290,6 +299,7 @@ jobs:
           SITE_DIR=preview RECOVERY_FIXED=1 node ops/sum-idb-recovery-ui-check.cjs
           SITE_DIR=preview node ops/path-five-browser-check.cjs
           node ops/path-idb-fixed-restore-check.cjs
+          SITE_DIR=preview node ops/circuit-idb-fixed-restore-check.cjs
           SITE_DIR=preview node ops/circuit-notice-check.cjs
           SITE_DIR=preview node ops/circuit-version-check.cjs
           SITE_DIR=preview node ops/lights-five-browser-check.cjs
