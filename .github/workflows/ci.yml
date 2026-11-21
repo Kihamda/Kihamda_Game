@@ -264,6 +264,15 @@ jobs:
           node ops/sort-daily-browser-check.cjs
           node ops/sort-five-browser-check.cjs
           node ops/sort-five-conflict-check.cjs
+          node ops/sort-progress-actions-check.cjs
+          node ops/sort-progress-ui-check.cjs
+          node ops/sort-progress-conflict-ui-check.cjs
+          node ops/sort-progress-source-ui-check.cjs
+          node ops/sort-progress-unavailable-check.cjs
+          node ops/sort-progress-dates-check.cjs
+          node ops/sort-progress-invalid-tab-check.cjs
+          node ops/sort-progress-quota-check.cjs
+          node ops/sort-progress-review-rollover-check.cjs
           node ops/sort-five-limit-check.cjs
           python3 ops/build_preview.py
           SITE_DIR=preview node ops/home-filter-check.cjs
@@ -308,3 +317,5 @@ jobs:
           SITE_DIR=preview node ops/garden-legacy-check.cjs
           node ops/garden-idb-fixed-restore-check.cjs
           SITE_DIR=preview node ops/sort-five-browser-check.cjs
+          SITE_DIR=preview node ops/sort-progress-actions-check.cjs
+          SITE_DIR=preview node ops/sort-progress-source-ui-check.cjs

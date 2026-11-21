@@ -546,6 +546,30 @@ function showGardenConflict({db,id,mode,loaded,capture,legacyCapture,parser,isCu
   };
 }
 
+function describeSortRecord(record,mode){if(!record)return '記録なし';const tubes=generateTrialSortPuzzle(mode,record.date).tubes.map(t=>[...t]),names=['あか','あお','きいろ'];for(const [from,to] of record.actions)tubes[to].push(tubes[from].pop());return `${record.actions.length}手・`+tubes.map((tube,i)=>`${i+1}番 ${tube.map(color=>names[color]).join('、')||'空'}`).join(' / ')}
+function showSortConflict({db,id,mode,loaded,capture,legacyCapture,parser,isCurrent,stop,container}) {
+  const valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready';
+  const before=parser(id,loaded.meta.snapshot);
+  if(before.state!=='ready'){stop();return}
+  const sources=[{id:'versioned',before:before.records,after:capture.records}];
+  const plan=recoveryModules.planChanges(loaded.records,sources,valid);if(plan.state!=='ready'){stop();return}
+  const guard=()=>isCurrent()&&capture.guard.check()==='clean';
+  status.textContent='日付ごとに記録を選んでね';container.replaceChildren();const selects=[];
+  const describe=record=>describeSortRecord(record,mode);
+  for(const row of plan.rows){const section=document.createElement('section'),label=document.createElement('label'),select=document.createElement('select'),detail=document.createElement('p');label.textContent=`${row.date} の記録`;select.setAttribute('aria-label',label.textContent);detail.setAttribute('aria-live','polite');
+    for(const choice of row.choices){const option=document.createElement('option');option.value=choice.source;option.textContent=choice.source==='database'?'この端末':choice.source==='versioned'?'版付きの元記録':'以前の元記録';select.append(option)}
+    const show=()=>{detail.textContent=describe(row.choices.find(x=>x.source===select.value).record)};select.addEventListener('change',show);show();label.append(select);section.append(label,detail);container.append(section);selects.push({date:row.date,select});
+  }
+  const review=document.createElement('button');review.type='button';review.textContent='選択内容を確認';container.append(review);
+  review.onclick=()=>{const choices=selects.map(x=>({date:x.date,source:x.select.value})),selected=recoveryModules.selectChanges(plan,choices,valid);
+    if(selected.state!=='ready'){status.textContent=selected.state==='too-old'?'選んだ記録が保存できる2日より古いよ。選び直してね。':'選択内容を確認できないよ。';return}
+    const panel=document.createElement('section'),heading=document.createElement('h3'),details=document.createElement('p'),confirm=document.createElement('button'),back=document.createElement('button');heading.textContent='保存内容を確認';heading.tabIndex=-1;details.textContent=`保存する記録：${selected.records.map(x=>`${x.date} ${describe(x)}`).join(' / ')||'なし'}。${selected.evicted.length?`保存対象から外れる記録：${selected.evicted.map(x=>`${x.date} ${describe(x)}`).join(' / ')}。退避には残るよ。`:''}`;confirm.type=back.type='button';confirm.textContent='この内容で保存';back.textContent='選び直す';panel.append(heading,details,confirm,back);container.append(panel);for(const x of selects)x.select.disabled=true;review.disabled=true;heading.focus();
+    back.onclick=()=>{panel.remove();for(const x of selects)x.select.disabled=false;review.disabled=false;review.focus()};
+    confirm.onclick=async()=>{confirm.disabled=back.disabled=true;try{const archive=recoveryModules.createMultiArchive(id,plan,choices,valid,new Date().toISOString());if(!archive){status.textContent='選択内容を確認できないよ。';return}const result=await commitMultiChanges({db,id,archiveId:crypto.randomUUID(),archive,expectedRecords:JSON.stringify(loaded.records),expectedMeta:JSON.stringify(loaded.meta),nextMeta:{snapshot:capture.snapshot},guard,acceptedEviction:true,readArchive:(a,g)=>recoveryModules.readMultiArchive(a,g,valid)});if(!isCurrent())return;if(result!=='saved'||!guard()){stop();return}start()}catch(_){status.textContent='保存できなかったよ。空き容量を確認してね。';back.disabled=false}};
+  };
+}
+
+
 let gardenRestartGuard=null;
 const pathRecoveryModules=(()=>{const sources={"./idb-versioned-keys-prototype.cjs":function(require,module,exports){
 // Isolated inventory: this module does not read or write browser storage.
@@ -1836,7 +1860,7 @@ const id = document.body.dataset.game || params.get('game');
 const board = document.querySelector('#board'), status = document.querySelector('#status'), announcement = document.querySelector('#announcement');
 const title = document.querySelector('#title'), instructions = document.querySelector('#instructions');
 const category = document.querySelector('#category'), controls = document.querySelector('#controls'), record = document.querySelector('#record'), copyResult = document.querySelector('#copy-result'), copyFeedback = document.querySelector('#copy-feedback');
-let cleanup = () => {}, runGeneration = 0, currentDailyStorage = null;
+let cleanup = () => {}, runGeneration = 0, currentDailyStorage = null, sortRestartGuard = null;
 const shuffle = values => { const a = [...values]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 let sumDifficulty=['easy','hard','oni','kiwami'].includes(params.get('difficulty'))?params.get('difficulty'):'normal';
 const sumRequested=params.get('difficulty'),sumVersion=params.get('version'),invalidSumLink=(sumRequested!==null&&!['easy','normal','hard','oni','kiwami'].includes(sumRequested))||(sumVersion!==null&&sumVersion!=='2');
@@ -2901,7 +2925,7 @@ const games = {
     }
     render();
   },
-  sort(reset) {
+  async sort(reset, temporary=false) {
     const daily=params.get('mode')==='daily';
     let date=null, initial,trial=null;const trialMode=sortDifficulty==='legacy'?null:sortDifficulty;
     const group=document.createElement('div');group.className='lights-modes';group.setAttribute('role','group');group.setAttribute('aria-label','難易度');
@@ -2934,19 +2958,47 @@ const games = {
       }
       return {state,past};
     };
-    const storage=daily?dailyStorage(trialMode?`sort-${trialMode}-v2`:'sort',date,value=>{
+    let connected=null, busy=false, stopped=false, db=null, capture=null;
+    const generation=runGeneration, current=()=>generation===runGeneration&&date===todayInTokyo();
+    if(daily&&trialMode&&!temporary){
+      const oldCleanup=cleanup;
+      let expired=false;const checkDate=()=>{if(generation!==runGeneration||date===todayInTokyo()||expired)return;expired=true;stopped=true;capture?.guard?.dispose();board.querySelectorAll('button').forEach(b=>b.disabled=true);document.querySelectorAll('.sum-recovery button,.sum-recovery select,.path-archive').forEach(b=>b.disabled=true);restart.disabled=false;status.textContent='日付が変わったよ。今日の問題を開いてね。';refreshDailyDate()};
+      const timer=window.setInterval(checkDate,1000);document.addEventListener('visibilitychange',checkDate);
+      cleanup=()=>{stopped=true;window.clearInterval(timer);document.removeEventListener('visibilitychange',checkDate);capture?.guard?.dispose();db?.close();sortRestartGuard=null;restart.disabled=false;oldCleanup()};
+      const stop=()=>{if(stopped||!current())return;stopped=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);document.querySelectorAll('.sum-recovery button,.sum-recovery select,.path-archive').forEach(b=>b.disabled=true);restart.disabled=true;status.textContent='記録が変わったよ。画面を開き直してね。'};
+      restart.disabled=true;status.textContent='記録を読み込んでいるよ';
+      try{
+        const parser=sortRecoveryModules.createParser(generateTrialSortPuzzle);
+        capture=sortRecoveryModules.capture(localStorage,window,parser,`sort-${trialMode}-v2`,stop);
+        if(capture.state!=='ready')throw Error(capture.state);
+        db=await openRecoveryDatabase(stop);
+        if(!current()||stopped){db.close();return}
+        connected=await openSortProgress({db,mode:trialMode,date,capture,parser,isCurrent:current});
+        if(!current()||stopped)return;
+        if(connected.state==='source-conflict'){const container=document.createElement('section');container.className='sum-recovery';status.before(container);const previous=cleanup;cleanup=()=>{container.remove();previous()};showSortConflict({db,id:`sort-${trialMode}-v2`,mode:trialMode,loaded:connected.loaded,capture,parser,isCurrent:current,stop,container});return}
+        if(connected.state!=='ready')throw Error(connected.state);
+      }catch(_){if(current()&&!stopped){cleanup();cleanup=()=>{};await games.sort(false,true);record.hidden=false;record.textContent='記録を読み込めないため、今回の進み具合は保存されないよ。'}return}
+      restart.disabled=false;
+    }
+    const storage=temporary?{clear(){},load(){return null},save(){return true}}:daily?dailyStorage(trialMode?`sort-${trialMode}-v2`:'sort',date,value=>{
       const oldTrial=trialMode?generateTrialSortPuzzle(trialMode,value.date):null;
       const base=oldTrial?oldTrial.tubes:generateDailySortPuzzle(...value.date.split('-').map(Number));
       return !!replay(value,base,trialMode==='kiwami'?oldTrial.limit:null,false);
     }):null;
     if(daily){
-      if(reset)storage.clear();
-      const saved=storage.load(),loaded=saved&&replay(saved,initial,moveLimit);
+      if(reset&&!connected)storage.clear();
+      const saved=connected?connected.record:storage.load(),loaded=saved&&replay(saved,initial,moveLimit);
       if(loaded){tubes=loaded.state;history=loaded.past;actions=saved.actions.map(a=>[...a]);}
     }
-    const save=()=>!storage || storage.save({actions});
-    const buttons=Array.from({length:4},(_,index)=>button('',()=>{
-      if(won||moveLimit!==null&&actions.length>=moveLimit)return;
+    const save=async()=>{
+      if(!connected)return !storage || storage.save({actions});
+      if(busy||stopped||!current())return false;
+      busy=true;restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);
+      try{return await connected.save({date,actions:actions.map(a=>[...a])})==='saved'}catch(_){return false}finally{busy=false;if(current()&&!stopped){restart.disabled=false;board.querySelectorAll('button').forEach(b=>b.disabled=false)}}
+    };
+    if(connected)sortRestartGuard=async()=>{if(busy||stopped||!current())return;copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;tubes=initial.map(t=>[...t]);history=[];actions=[];selected=null;if(await save()){if(current()&&!stopped)render()}else if(current()) {stopped=true;status.textContent='記録を保存できないよ。画面を開き直してね。'}};
+    const buttons=Array.from({length:4},(_,index)=>button('',async()=>{
+      if(busy||stopped||(connected&&!current())||won||moveLimit!==null&&actions.length>=moveLimit)return;
       if(selected===null) {
         if(!tubes[index].length){status.textContent='玉のあるボトルを選んでね';return;}
         selected=index;
@@ -2955,14 +3007,14 @@ const games = {
         if(!canMove(tubes,selected,index)) {status.textContent='空きか、同じ色の上に移してね';return;}
         history.push(tubes.map(t=>[...t]));actions.push([selected,index]);
         tubes[index].push(tubes[selected].pop());selected=null;
-        if(!save()){recoverDailyConflict();return;}
+        if(!await save()){if(generation!==runGeneration||(connected&&!current()))return;if(connected){stopped=true;status.textContent='記録を保存できないよ。画面を開き直してね。'}else recoverDailyConflict();return;}
       }
-      render();
+      if(generation===runGeneration&&(!connected||current()))render();
     }));
     buttons.forEach(b=>{let armed=false;b.addEventListener('keydown',event=>{if(event.key===' '){event.preventDefault();if(!event.repeat)armed=true}});b.addEventListener('keyup',event=>{if(event.key===' '&&armed){event.preventDefault();armed=false;if(document.activeElement===b)b.click()}});b.addEventListener('blur',()=>{armed=false})});
-    const undo=button('一手戻す',()=>{
-      if(!history.length)return;
-      tubes=history.pop();actions.pop();selected=null;if(!save()){recoverDailyConflict();return;}render();
+    const undo=button('一手戻す',async()=>{
+      if(busy||stopped||(connected&&!current())||!history.length)return;
+      copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;tubes=history.pop();actions.pop();selected=null;if(!await save()){if(generation!==runGeneration||(connected&&!current()))return;if(connected){stopped=true;status.textContent='記録を保存できないよ。画面を開き直してね。'}else recoverDailyConflict();return;}if(generation===runGeneration&&(!connected||current()))render();
     });
     undo.className='sort-undo';
     function render(){
@@ -2984,7 +3036,11 @@ const games = {
       if(won&&daily){if(trialMode)offerCopy(`いろわけボトル ${{easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'}[trialMode]} ${date} ${actions.length}手\nhttps://game.kihamda.net/play-sort.html?mode=daily&difficulty=${trialMode}&version=2`);else offerCopy(`いろわけボトル 以前の問題 ${date} ${actions.length}手\nhttps://game.kihamda.net/play-sort.html?mode=daily&difficulty=legacy&version=1`);}
       else {copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';}
     }
-    render();
+    if(connected){
+      const archiveButton=document.createElement('button');archiveButton.type='button';archiveButton.className='path-archive';archiveButton.textContent='退避した記録を見る';board.after(archiveButton);const prior=cleanup;cleanup=()=>{archiveButton.remove();prior()};
+      archiveButton.onclick=event=>{if(busy||stopped||!current())return;busy=true;restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);group.querySelectorAll('button').forEach(b=>b.disabled=true);archiveButton.disabled=true;const section=document.createElement('section'),returnButton=document.createElement('button'),content=document.createElement('div');section.className='sum-recovery';returnButton.type='button';returnButton.textContent='ゲームに戻る';returnButton.onclick=()=>start();section.append(returnButton,content);archiveButton.after(section);const previous=cleanup;cleanup=()=>{section.remove();previous()};status.textContent='退避した記録';if(event.detail===0)returnButton.focus();const id=`sort-${trialMode}-v2`,parser=sortRecoveryModules.createParser(generateTrialSortPuzzle),valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready',guard=()=>current()&&!stopped&&capture.guard.check()==='clean';openSumArchiveReview({db,id,valid,guard,container:content,describe:record=>describeSortRecord(record,trialMode),readMulti:recoveryModules.readMultiArchive,expectedMeta:JSON.stringify(connected.loaded.meta),onRestored:()=>{returnButton.textContent='復元した記録を開く'}})};
+    }
+    if(reset&&connected)await sortRestartGuard();else render();
   },
   slide(reset) { return slideFive(reset); },
   garden(reset) {
@@ -3154,6 +3210,7 @@ function start(reset=false){
 }
 restart.addEventListener('click',event=>{
   refreshDailyDate();
+  if(id==='sort'&&sortRestartGuard&&!isStaleDaily){sortRestartGuard(event);return;}
   if(id==='lights'&&lightsRestartGuard&&!isStaleDaily){lightsRestartGuard(event);return;}
   if(id==='circuit'&&circuitRestartGuard&&!isStaleDaily){circuitRestartGuard(event);return;}
   if(id==='garden'&&gardenRestartGuard&&!isStaleDaily){gardenRestartGuard(event);return;}
@@ -3171,6 +3228,118 @@ restart.addEventListener('click',event=>{
   start(!isStaleDaily);
 });
 if(typeof document.addEventListener==='function')document.addEventListener('visibilitychange',refreshDailyDate);
+const sortRecoveryModules=(()=>{const sources={"./idb-versioned-keys-prototype.cjs":function(require,module,exports){
+// Isolated inventory: this module does not read or write browser storage.
+const modes = ['easy', 'normal', 'hard', 'oni', 'kiwami'];
+const descriptors = [
+  ...['path', 'sum', 'garden', 'lights', 'sort'].flatMap(game =>
+    modes.map(mode => ({ id: `${game}-${mode}-v2`, game, mode, version: 2 }))),
+  ...[
+    ['easy', 'easy', 2], ['normal', 'normal', 3], ['hard', 'linked', 2],
+    ['oni', 'oni', 2], ['kiwami', 'kiwami', 2],
+  ].map(([mode, storageMode, version]) => ({
+    id: `circuit-${storageMode}-v${version}`, game: 'circuit', mode, version,
+  })),
+  ...['path', 'sum', 'garden', 'lights', 'circuit', 'sort', 'balance', 'swap']
+    .map(game => ({ id: game, game, mode: 'legacy', version: 1 })),
+];
+const byId = new Map(descriptors.map(item => [item.id, Object.freeze(item)]));
+if (byId.size !== descriptors.length) throw Error('duplicate identifier');
+function identifyDailyStorage(id) {
+  if (typeof id !== 'string' || !byId.has(id)) return null;
+  const descriptor = byId.get(id), key = `kihamda-daily-${id}`;
+  return { ...descriptor, keys: [key, `${key}-previous`] };
+}
+module.exports = { identifyDailyStorage };
+
+},"./idb-versioned-guard-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+function observeVersionedStorage(store,events,id,snapshot,onChange){
+ const identity=identifyDailyStorage(id);if(!identity||!Array.isArray(snapshot)||snapshot.length!==2||!snapshot.every(x=>x===null||typeof x==='string')||typeof onChange!=='function')throw Error('invalid baseline');
+ const keys=identity.keys,baseline=[...snapshot];let state='clean';
+ function check(){if(state!=='clean')return state;try{if(keys.some((key,i)=>store.getItem(key)!==baseline[i]))state='changed'}catch(_){state='unavailable'}return state}
+ function onStorage(event){if(event.storageArea!==store||(event.key!==null&&!keys.includes(event.key)))return;const old=state;if(state==='clean'&&(event.key===null||event.newValue!==baseline[keys.indexOf(event.key)]))state='changed';if(old!==state)onChange(state)}
+ events.addEventListener('storage',onStorage);check();return {check,dispose:()=>events.removeEventListener('storage',onStorage)};
+}
+module.exports={observeVersionedStorage};
+
+},"./idb-versioned-capture-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+const {observeVersionedStorage}=require('./idb-versioned-guard-prototype.cjs');
+// Reads only the exact selected keys; callers must guard again before any database write.
+function captureVersioned(store,events,parse,id,onChange){
+ const identity=identifyDailyStorage(id);if(!identity||typeof parse!=='function')return {state:'invalid'};
+ let snapshot;try{snapshot=identity.keys.map(key=>store.getItem(key))}catch(_){return {state:'unavailable'}}
+ const guard=observeVersionedStorage(store,events,id,snapshot,onChange),before=guard.check();
+ if(before!=='clean'){guard.dispose();return {state:before}}
+ let result;try{result=parse(id,snapshot)}catch(_){guard.dispose();return {state:'invalid'}}const after=guard.check();
+ if(after!=='clean'||result.state!=='ready'){guard.dispose();return {state:after!=='clean'?after:result.state}}
+ return {state:'ready',identity:result.identity,records:result.records,snapshot:result.snapshot,guard};
+}
+module.exports={captureVersioned};
+
+
+},"./idb-versioned-import-prototype.cjs":function(require,module,exports){
+// Isolated import parser. A caller must supply the exact game/version validator.
+const {identifyDailyStorage} = require('./idb-versioned-keys-prototype.cjs');
+function validDate(date) {
+  if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  const ms = Date.parse(`${date}T00:00:00Z`);
+  return Number.isFinite(ms) && new Date(ms).toISOString().slice(0, 10) === date;
+}
+function parseImport(id, snapshot, validate) {
+  const identity = identifyDailyStorage(id);
+  if (!identity || !Array.isArray(snapshot) || snapshot.length !== 2 ||
+      !snapshot.every(value => value === null || typeof value === 'string') || typeof validate !== 'function')
+    return {state:'invalid'};
+  const items = [];
+  try {
+    for (const raw of snapshot) {
+      if (raw === null) continue;
+      const item = JSON.parse(raw);
+      if (!item || Array.isArray(item) || typeof item !== 'object' || !validDate(item.date) || validate(item, identity) !== true)
+        return {state:'invalid'};
+      items.push(item);
+    }
+  } catch (_) { return {state:'invalid'}; }
+  if (new Set(items.map(item => item.date)).size !== items.length) return {state:'invalid'};
+  items.sort((a,b) => b.date.localeCompare(a.date));
+  return {state:'ready', identity, records:items, snapshot:[...snapshot]};
+}
+module.exports = {parseImport};
+
+},"./sort-history-validator-prototype.cjs":function(require,module,exports){
+// Isolated replay validator for versioned daily bottle records.
+function validateSortHistory(initial, actions, fixedTargets, limit) {
+  if (!Array.isArray(actions) || actions.length > 10000 || (limit !== null && actions.length > limit)) return false;
+  const tubes = initial.map(tube => [...tube]);
+  const won = () => fixedTargets ? tubes.every((tube, i) => i === 3 ? tube.length === 0 : tube.length === 3 && tube.every(color => color === i)) : tubes.every(tube => tube.length === 0 || (tube.length === 3 && tube.every(color => color === tube[0])));
+  for (const action of actions) {
+    if (!Array.isArray(action) || action.length !== 2 || won()) return false;
+    const [from, to] = action;
+    if (!Number.isInteger(from) || !Number.isInteger(to) || from < 0 || from >= 4 || to < 0 || to >= 4 || from === to || !tubes[from].length || tubes[to].length >= 3 || (tubes[to].length && tubes[to].at(-1) !== tubes[from].at(-1))) return false;
+    tubes[to].push(tubes[from].pop());
+  }
+  return true;
+}
+if (typeof module !== 'undefined') module.exports = {validateSortHistory};
+
+},"./sort-import-parser-prototype.cjs":function(require,module,exports){
+const {parseImport}=require('./idb-versioned-import-prototype.cjs');
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+const {validateSortHistory}=require('./sort-history-validator-prototype.cjs');
+function parseSortImport(id,snapshot,generate){
+  const identity=identifyDailyStorage(id);
+  if(identity?.game!=='sort'||identity.version!==2||typeof generate!=='function')return {state:'invalid'};
+  return parseImport(id,snapshot,(record,identity)=>{
+    const puzzle=generate(identity.mode,record.date);
+    return validateSortHistory(puzzle.tubes,record.actions,['oni','kiwami'].includes(identity.mode),identity.mode==='kiwami'?puzzle.limit:null);
+  });
+}
+module.exports={parseSortImport};
+
+}},cache={};function require(id){if(cache[id])return cache[id].exports;if(!sources[id])throw Error('missing '+id);const module={exports:{}};cache[id]=module;sources[id](require,module,module.exports);return module.exports}return {capture:require('./idb-versioned-capture-prototype.cjs').captureVersioned,createParser:generate=>(id,snapshot)=>require('./sort-import-parser-prototype.cjs').parseSortImport(id,snapshot,generate)}})();
+
 start();
 
 function pathFiveVolatile(reset) {
@@ -3341,4 +3510,50 @@ async function circuitFive(reset) {
       if(won) offerCopy(`くるくる回路 ${circuitDifficulty==='easy'?'かんたん':circuitDifficulty==='hard'?'難関':circuitDifficulty==='legacy'?'以前の問題':circuitDifficulty==='oni'?'鬼':circuitDifficulty==='kiwami'?'極':'ふつう'} ${date} ${moves}手\nhttps://game.kihamda.net/play-circuit.html?difficulty=${circuitDifficulty}&version=${circuitDifficulty==='normal'?'3':circuitDifficulty==='legacy'?'1':'2'}`);
     }
     if(reset)await circuitRestartGuard();else render();
+}
+
+// Isolated versioned bottle import; legacy records remain separate.
+function importSortIfAbsent({db,id,records,snapshot,guard,valid}) {
+  if (!db || !/^sort-(easy|normal|hard|oni|kiwami)-v2$/.test(id) || !Array.isArray(records) || records.length>2 || !Array.isArray(snapshot) || snapshot.length!==2 || typeof guard!=='function' || typeof valid!=='function' || !records.every(valid) || new Set(records.map(record=>record.date)).size!==records.length) return Promise.resolve('invalid');
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction('games','readwrite'),store=tx.objectStore('games'),request=store.get(id);let outcome='changed';
+    request.onsuccess=()=>{if(!guard())return;if(request.result!==undefined){outcome='exists';return}try{store.add([...records].sort((a,b)=>b.date.localeCompare(a.date)),id);store.add({snapshot},`source:${id}`);outcome='imported'}catch(_){tx.abort()}};
+    tx.oncomplete=()=>resolve(outcome);tx.onabort=()=>reject(tx.error||Error('import aborted'));tx.onerror=()=>reject(tx.error);
+  });
+}
+
+// Versioned bottle progress uses a transaction to protect concurrent tabs.
+async function openSortProgress({db, mode, date, capture, parser, isCurrent}) {
+  const id=(['easy','normal','hard','oni','kiwami'].includes(mode) ? 'sort-'+mode+'-v2' : null);
+  const valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready';
+  const guard=()=>isCurrent()&&capture.guard.check()==='clean';
+  const imported=await importSortIfAbsent({db,id,records:capture.records,snapshot:capture.snapshot,guard,valid});
+  if(!['imported','exists'].includes(imported)||!guard())return {state:'changed'};
+  const read=()=>new Promise((resolve,reject)=>{const tx=db.transaction('games','readonly'),store=tx.objectStore('games'),records=store.get(id),meta=store.get(`source:${id}`);tx.oncomplete=()=>resolve({records:records.result,meta:meta.result});tx.onabort=()=>reject(tx.error||Error('read aborted'));tx.onerror=()=>reject(tx.error)});
+  const loaded=await read();
+  if(!guard())return {state:'changed'};
+  if(!Array.isArray(loaded.records)||loaded.records.length>2||!loaded.records.every(valid)||new Set(loaded.records.map(x=>x.date)).size!==loaded.records.length||!loaded.meta)return {state:'invalid'};
+  if(JSON.stringify(loaded.meta.snapshot)!==JSON.stringify(capture.snapshot))return {state:'source-conflict',loaded};
+  let record=loaded.records.find(item=>item.date===date)??null;
+  async function save(next){
+    if(!valid(next)||next.date!==date)return 'invalid';
+    const expected=JSON.stringify(record);
+    const result=await new Promise((resolve,reject)=>{
+      const tx=db.transaction('games','readwrite'),store=tx.objectStore('games'),records=store.get(id),meta=store.get(`source:${id}`);let outcome='changed';
+      meta.onsuccess=()=>{
+        if(!guard())return;
+        const all=records.result;
+        if(!Array.isArray(all)||all.length>2||!all.every(valid)||new Set(all.map(x=>x.date)).size!==all.length){outcome='invalid';return}
+        if(JSON.stringify(meta.result?.snapshot)!==JSON.stringify(capture.snapshot)){outcome='source-conflict';return}
+        if(JSON.stringify(all.find(item=>item.date===date)??null)!==expected){outcome='conflict';return}
+        const merged=new Map(all.map(item=>[item.date,item]));merged.set(date,next);const dates=[...merged.keys()].sort().reverse().slice(0,2);
+        if(!dates.includes(date)){outcome='too-old';return}
+        try{store.put(dates.map(key=>merged.get(key)),id);outcome='saved'}catch(_){tx.abort()}
+      };
+      tx.oncomplete=()=>resolve(outcome);tx.onabort=()=>reject(tx.error||Error('write aborted'));tx.onerror=()=>reject(tx.error);
+    });
+    if(result==='saved'&&guard())record=next;
+    return result==='saved'&&!guard()?'changed-after-save':result;
+  }
+  return {state:'ready',record,save,loaded};
 }
