@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path'), assert = require('assert');
-const root = path.resolve('preview');
+const root = path.resolve(process.env.SITE_DIR || 'preview');
 const server = http.createServer((req, res) => {
   const file = path.resolve(root, '.' + new URL(req.url, 'http://localhost').pathname);
   if (!file.startsWith(root + path.sep)) return res.writeHead(400).end();

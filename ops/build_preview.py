@@ -1,10 +1,14 @@
 """Build a local copy of the fixed pages for browser verification."""
+import argparse
 from pathlib import Path
 import shutil
 from fixed_pages import fixed_home, fixed_info, fixed_pages
 
 site = Path('site')
-preview = Path('preview')
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--output', type=Path, default=Path('preview'),
+                    help='output directory (default: preview)')
+preview = parser.parse_args().output
 release = 'a' * 40
 assets = preview / 'kg-releases' / release
 assets.mkdir(parents=True, exist_ok=True)

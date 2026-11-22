@@ -30,11 +30,15 @@ const server = http.createServer((req, res) => {
       await page.getByRole('link',{name:'ひかりのスイッチ ↗'}).click();
       await page.waitForFunction(()=>document.querySelector('#category').textContent.startsWith('今日のパズル'));
       assert((await page.locator('#category').textContent()).startsWith('今日のパズル'));
+      await page.waitForFunction(()=>document.querySelectorAll('#board button').length&&!document.querySelector('#restart').disabled);
       const dailyBoard = await page.locator('#board button').allTextContents();
       await page.locator('#board button').first().click();
+      await page.waitForFunction(()=>!document.querySelector('#restart').disabled);
       await page.locator('#restart').click();
+      await page.waitForFunction(()=>!document.querySelector('#restart').disabled);
       assert.deepEqual(await page.locator('#board button').allTextContents(), dailyBoard);
       await page.reload();
+      await page.waitForFunction(()=>document.querySelectorAll('#board button').length&&!document.querySelector('#restart').disabled);
       assert.deepEqual(await page.locator('#board button').allTextContents(), dailyBoard);
       assert.equal(await page.locator('.back').getAttribute('href'), '/#games');
       for (const id of ['lights','memory','order','dodge','slide','sum','garden','path']) {

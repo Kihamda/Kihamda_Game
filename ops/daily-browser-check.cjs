@@ -21,21 +21,29 @@ const server = http.createServer((req, res) => {
       const page = await context.newPage();
       await page.clock.install({time:new Date('2026-10-27T03:00:00Z')});
       await page.goto(`${origin}/game.html?game=${game}${game === 'lights' ? '&mode=daily' : ''}`);
+      const ready=()=>page.waitForFunction(()=>document.querySelectorAll('#board button').length&&!document.querySelector('#restart').disabled);
+      await ready();
       const cells = page.locator('#board button');
       const before = await cells.allTextContents();
       await cells.first().click();
+      await ready();
       const after = await cells.allTextContents();
       assert.notDeepEqual(after, before);
       await page.reload();
+      await ready();
       assert.deepEqual(await cells.allTextContents(), after, `${game}: reload must restore progress`);
       assert((await page.locator('#status').textContent()).includes('1手'));
       await page.locator('#restart').click();
+      await ready();
       assert.deepEqual(await cells.allTextContents(), before, `${game}: restart must clear progress`);
       await page.reload();
+      await ready();
       assert.deepEqual(await cells.allTextContents(), before);
       await cells.first().click();
+      await ready();
       await page.clock.setFixedTime(new Date('2026-10-28T03:00:00Z'));
       await page.reload();
+      await ready();
       assert((await page.locator('#category').textContent()).includes('2026-10-28'));
       assert.equal(await page.locator('#status').textContent(), '0手', `${game}: old progress must not load on a new date`);
       await context.close();
@@ -55,9 +63,10 @@ const server = http.createServer((req, res) => {
     await blocked.close();
     for(const height of [480,501,568]) for(const mode of ['', '&mode=daily']){
       const c=await browser.newContext({viewport:{width:320,height},hasTouch:true}),p=await c.newPage();await p.goto(`${origin}/game.html?game=lights${mode}`);
+      await p.waitForFunction(()=>document.querySelectorAll('#board button').length&&!document.querySelector('#restart').disabled);
       const box=await p.locator('#board').boundingBox();assert(box.y+box.height<=height,`lights exceeds 320x${height}`);
       const sizes=await p.locator('#board button').evaluateAll(items=>items.map(el=>{const r=el.getBoundingClientRect();return [r.width,r.height]}));assert(sizes.every(([w,h])=>w>=44&&h>=44));
-      await p.locator('#board button').first().tap();assert((await p.locator('#status').textContent()).includes('1手'));await c.close();
+      await p.locator('#board button').first().tap();if(mode)await p.waitForFunction(()=>!document.querySelector('#restart').disabled);assert((await p.locator('#status').textContent()).includes('1手'));await c.close();
     }
     console.log('Daily progress: reload, restart, next date and unavailable storage passed');
   } finally { await browser.close(); server.close(); }

@@ -3,7 +3,7 @@ const http=require('http'),fs=require('fs'),path=require('path'),assert=require(
 const root=path.resolve('site');
 const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+new URL(req.url,'http://localhost').pathname);if(!file.startsWith(root+path.sep))return res.writeHead(400).end();fs.readFile(file,(error,data)=>{if(error)return res.writeHead(404).end();res.setHeader('Content-Type',{'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript'}[path.extname(file)]||'application/octet-stream');res.end(data)})});
 async function solve(page,game){
-  if(game==='garden')await page.waitForFunction(()=>document.querySelectorAll('#board button').length&&!document.querySelector('#restart').disabled);
+  if(['garden','lights'].includes(game))await page.waitForFunction(()=>document.querySelectorAll('#board button').length&&!document.querySelector('#restart').disabled);
   const cells=page.locator('#board button');
   const mask=await page.evaluate(game=>{
     if(game==='lights'){
@@ -17,7 +17,7 @@ async function solve(page,game){
     return null;
   },game);
   assert.notEqual(mask,null);
-  for(let i=0;i<16;i++)if((mask>>i)&1){await cells.nth(i).click();if(game==='garden')await page.waitForFunction(()=>!document.querySelector('#restart').disabled)}
+  for(let i=0;i<16;i++)if((mask>>i)&1){await cells.nth(i).click();if(['garden','lights'].includes(game))await page.waitForFunction(()=>!document.querySelector('#restart').disabled)}
   assert((await page.locator('#status').textContent()).includes('クリア'));
 }
 (async()=>{
@@ -32,8 +32,8 @@ async function solve(page,game){
       const text=await page.evaluate(()=>navigator.clipboard.readText());
       assert.match(text,/2026-10-27 \d+手\r?\nhttps:\/\/game\.kihamda\.net\/play-/);
       assert(text.endsWith(`play-${game}.html${game==='lights'?'?mode=daily&difficulty=normal&version=2':'?difficulty=normal&version=2'}`));
-      await page.reload();if(game==='garden')await page.waitForFunction(()=>document.querySelectorAll('#board button').length&&!document.querySelector('#restart').disabled);assert(await page.locator('#copy-result').isVisible());
-      await page.locator('#restart').click();if(game==='garden')await page.waitForFunction(()=>!document.querySelector('#restart').disabled);assert(await page.locator('#copy-result').isHidden());assert(await page.locator('#copy-feedback').isHidden());
+      await page.reload();if(['garden','lights'].includes(game))await page.waitForFunction(()=>document.querySelectorAll('#board button').length&&!document.querySelector('#restart').disabled);assert(await page.locator('#copy-result').isVisible());
+      await page.locator('#restart').click();if(['garden','lights'].includes(game))await page.waitForFunction(()=>!document.querySelector('#restart').disabled);assert(await page.locator('#copy-result').isHidden());assert(await page.locator('#copy-feedback').isHidden());
     }
     await context.close();
     const denied=await browser.newContext();await denied.addInitScript(()=>Object.defineProperty(navigator,'clipboard',{value:{writeText:()=>Promise.reject(new Error('denied'))}}));const p=await denied.newPage();

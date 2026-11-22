@@ -1,3 +1,376 @@
+const circuitRecoveryModules=(()=>{const sources={"./idb-versioned-keys-prototype.cjs":function(require,module,exports){
+// Isolated inventory: this module does not read or write browser storage.
+const modes = ['easy', 'normal', 'hard', 'oni', 'kiwami'];
+const descriptors = [
+  ...['path', 'sum', 'garden', 'lights', 'sort'].flatMap(game =>
+    modes.map(mode => ({ id: `${game}-${mode}-v2`, game, mode, version: 2 }))),
+  ...[
+    ['easy', 'easy', 2], ['normal', 'normal', 3], ['hard', 'linked', 2],
+    ['oni', 'oni', 2], ['kiwami', 'kiwami', 2],
+  ].map(([mode, storageMode, version]) => ({
+    id: `circuit-${storageMode}-v${version}`, game: 'circuit', mode, version,
+  })),
+  ...['path', 'sum', 'garden', 'lights', 'circuit', 'sort', 'balance', 'swap']
+    .map(game => ({ id: game, game, mode: 'legacy', version: 1 })),
+];
+const byId = new Map(descriptors.map(item => [item.id, Object.freeze(item)]));
+if (byId.size !== descriptors.length) throw Error('duplicate identifier');
+function identifyDailyStorage(id) {
+  if (typeof id !== 'string' || !byId.has(id)) return null;
+  const descriptor = byId.get(id), key = `kihamda-daily-${id}`;
+  return { ...descriptor, keys: [key, `${key}-previous`] };
+}
+module.exports = { identifyDailyStorage };
+
+},
+"./idb-versioned-guard-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+function observeVersionedStorage(store,events,id,snapshot,onChange){
+ const identity=identifyDailyStorage(id);if(!identity||!Array.isArray(snapshot)||snapshot.length!==2||!snapshot.every(x=>x===null||typeof x==='string')||typeof onChange!=='function')throw Error('invalid baseline');
+ const keys=identity.keys,baseline=[...snapshot];let state='clean';
+ function check(){if(state!=='clean')return state;try{if(keys.some((key,i)=>store.getItem(key)!==baseline[i]))state='changed'}catch(_){state='unavailable'}return state}
+ function onStorage(event){if(event.storageArea!==store||(event.key!==null&&!keys.includes(event.key)))return;const old=state;if(state==='clean'&&(event.key===null||event.newValue!==baseline[keys.indexOf(event.key)]))state='changed';if(old!==state)onChange(state)}
+ events.addEventListener('storage',onStorage);check();return {check,dispose:()=>events.removeEventListener('storage',onStorage)};
+}
+module.exports={observeVersionedStorage};
+
+},
+"./idb-versioned-capture-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+const {observeVersionedStorage}=require('./idb-versioned-guard-prototype.cjs');
+// Reads only the exact selected keys; callers must guard again before any database write.
+function captureVersioned(store,events,parse,id,onChange){
+ const identity=identifyDailyStorage(id);if(!identity||typeof parse!=='function')return {state:'invalid'};
+ let snapshot;try{snapshot=identity.keys.map(key=>store.getItem(key))}catch(_){return {state:'unavailable'}}
+ const guard=observeVersionedStorage(store,events,id,snapshot,onChange),before=guard.check();
+ if(before!=='clean'){guard.dispose();return {state:before}}
+ let result;try{result=parse(id,snapshot)}catch(_){guard.dispose();return {state:'invalid'}}const after=guard.check();
+ if(after!=='clean'||result.state!=='ready'){guard.dispose();return {state:after!=='clean'?after:result.state}}
+ return {state:'ready',identity:result.identity,records:result.records,snapshot:result.snapshot,guard};
+}
+module.exports={captureVersioned};
+
+
+},
+"./idb-versioned-import-prototype.cjs":function(require,module,exports){
+// Isolated import parser. A caller must supply the exact game/version validator.
+const {identifyDailyStorage} = require('./idb-versioned-keys-prototype.cjs');
+function validDate(date) {
+  if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  const ms = Date.parse(`${date}T00:00:00Z`);
+  return Number.isFinite(ms) && new Date(ms).toISOString().slice(0, 10) === date;
+}
+function parseImport(id, snapshot, validate) {
+  const identity = identifyDailyStorage(id);
+  if (!identity || !Array.isArray(snapshot) || snapshot.length !== 2 ||
+      !snapshot.every(value => value === null || typeof value === 'string') || typeof validate !== 'function')
+    return {state:'invalid'};
+  const items = [];
+  try {
+    for (const raw of snapshot) {
+      if (raw === null) continue;
+      const item = JSON.parse(raw);
+      if (!item || Array.isArray(item) || typeof item !== 'object' || !validDate(item.date) || validate(item, identity) !== true)
+        return {state:'invalid'};
+      items.push(item);
+    }
+  } catch (_) { return {state:'invalid'}; }
+  if (new Set(items.map(item => item.date)).size !== items.length) return {state:'invalid'};
+  items.sort((a,b) => b.date.localeCompare(a.date));
+  return {state:'ready', identity, records:items, snapshot:[...snapshot]};
+}
+module.exports = {parseImport};
+
+},
+"./idb-grid-validation-prototype.cjs":function(require,module,exports){
+// Mirrors current lights/circuit load conditions; no data is written.
+function validateLightsOrCircuit(record,identity){
+ if(identity.game==='lights'&&(identity.version===2||identity.mode==='legacy')){
+  const size=identity.mode==='kiwami'?5:4;return Array.isArray(record.cells)&&record.cells.length===size*size&&record.cells.every(value=>typeof value==='boolean')&&Number.isSafeInteger(record.moves)&&record.moves>=0;
+ }
+ if(identity.game==='circuit'&&((identity.mode==='legacy'&&identity.version===1)||(identity.mode==='normal'&&identity.version===3)||(['easy','hard','oni','kiwami'].includes(identity.mode)&&identity.version===2))){
+  const size=identity.mode==='kiwami'?5:identity.mode==='oni'?4:3;return Array.isArray(record.turns)&&record.turns.length===size*size&&record.turns.every(value=>Number.isInteger(value)&&value>=0&&value<4)&&Number.isSafeInteger(record.moves)&&record.moves>=0;
+ }
+ return false;
+}
+module.exports={validateLightsOrCircuit};
+
+}},cache={};function require(id){if(cache[id])return cache[id].exports;if(!sources[id])throw Error('missing '+id);const module={exports:{}};cache[id]=module;sources[id](require,module,module.exports);return module.exports}const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs'),{parseImport}=require('./idb-versioned-import-prototype.cjs'),{validateLightsOrCircuit}=require('./idb-grid-validation-prototype.cjs');function createParser(){return (id,snapshot)=>{const identity=identifyDailyStorage(id);if(identity?.game!=='circuit'||identity.mode==='legacy')return {state:'invalid'};return parseImport(id,snapshot,validateLightsOrCircuit)}}return {capture:require('./idb-versioned-capture-prototype.cjs').captureVersioned,createParser}})();
+// Isolated versioned-circuit import. Legacy lights records remain separate.
+function importCircuitIfAbsent({db, id, records, snapshot, guard, valid}) {
+  if (!db || !/^circuit-(easy-v2|normal-v3|linked-v2|oni-v2|kiwami-v2)$/.test(id) ||
+      !Array.isArray(records) || records.length > 2 || !Array.isArray(snapshot) ||
+      snapshot.length !== 2 || typeof guard !== 'function' || typeof valid !== 'function' ||
+      !records.every(valid) || new Set(records.map(record => record.date)).size !== records.length) {
+    return Promise.resolve('invalid');
+  }
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('games', 'readwrite'), store = tx.objectStore('games');
+    const request = store.get(id);
+    let outcome = 'changed';
+    request.onsuccess = () => {
+      if (!guard()) return;
+      if (request.result !== undefined) { outcome = 'exists'; return; }
+      try {
+        store.add([...records].sort((a, b) => b.date.localeCompare(a.date)), id);
+        store.add({snapshot}, `source:${id}`);
+        outcome = 'imported';
+      } catch (_) { tx.abort(); }
+    };
+    tx.oncomplete = () => resolve(outcome);
+    tx.onabort = () => reject(tx.error || Error('import aborted'));
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+
+// Isolated adapter for circuit. No production script imports this file.
+async function openCircuitProgress({db, mode, date, capture, parser, isCurrent}) {
+  const id=({easy:'circuit-easy-v2',normal:'circuit-normal-v3',hard:'circuit-linked-v2',oni:'circuit-oni-v2',kiwami:'circuit-kiwami-v2'})[mode];
+  const valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready';
+  const guard=()=>isCurrent()&&capture.guard.check()==='clean';
+  const imported=await importCircuitIfAbsent({db,id,records:capture.records,snapshot:capture.snapshot,guard,valid});
+  if(!['imported','exists'].includes(imported)||!guard())return {state:'changed'};
+  const read=()=>new Promise((resolve,reject)=>{const tx=db.transaction('games','readonly'),store=tx.objectStore('games'),records=store.get(id),meta=store.get(`source:${id}`);tx.oncomplete=()=>resolve({records:records.result,meta:meta.result});tx.onabort=()=>reject(tx.error||Error('read aborted'));tx.onerror=()=>reject(tx.error)});
+  const loaded=await read();
+  if(!guard())return {state:'changed'};
+  if(!Array.isArray(loaded.records)||loaded.records.length>2||!loaded.records.every(valid)||new Set(loaded.records.map(x=>x.date)).size!==loaded.records.length||!loaded.meta)return {state:'invalid'};
+  if(JSON.stringify(loaded.meta.snapshot)!==JSON.stringify(capture.snapshot))return {state:'source-conflict',loaded};
+  let record=loaded.records.find(item=>item.date===date)??null;
+  async function save(next){
+    if(!valid(next)||next.date!==date)return 'invalid';
+    const expected=JSON.stringify(record);
+    const result=await new Promise((resolve,reject)=>{
+      const tx=db.transaction('games','readwrite'),store=tx.objectStore('games'),records=store.get(id),meta=store.get(`source:${id}`);let outcome='changed';
+      meta.onsuccess=()=>{
+        if(!guard())return;
+        const all=records.result;
+        if(!Array.isArray(all)||all.length>2||!all.every(valid)||new Set(all.map(x=>x.date)).size!==all.length){outcome='invalid';return}
+        if(JSON.stringify(meta.result?.snapshot)!==JSON.stringify(capture.snapshot)){outcome='source-conflict';return}
+        if(JSON.stringify(all.find(item=>item.date===date)??null)!==expected){outcome='conflict';return}
+        const merged=new Map(all.map(item=>[item.date,item]));merged.set(date,next);const dates=[...merged.keys()].sort().reverse().slice(0,2);
+        if(!dates.includes(date)){outcome='too-old';return}
+        try{store.put(dates.map(key=>merged.get(key)),id);outcome='saved'}catch(_){tx.abort()}
+      };
+      tx.oncomplete=()=>resolve(outcome);tx.onabort=()=>reject(tx.error||Error('write aborted'));tx.onerror=()=>reject(tx.error);
+    });
+    if(result==='saved'&&guard())record=next;
+    return result==='saved'&&!guard()?'changed-after-save':result;
+  }
+  return {state:'ready',record,save,loaded};
+}
+
+function describeCircuitRecord(record,mode){if(!record)return '記録なし';const size=mode==='kiwami'?5:mode==='oni'?4:3,[year,month,day]=record.date.split('-').map(Number),generator=mode==='easy'?generateEasyCircuitPuzzle:mode==='hard'?generateHardCircuitPuzzle:generateNormalCircuitPuzzle,puzzle=size===3?generator(year,month,day):generateHighCircuitPuzzle(year,month,day,size),directions=[[1,'上'],[2,'右'],[4,'下'],[8,'左']];return record.moves+'手・道の向き '+record.turns.map((turn,i)=>{const mask=rotateCircuit(puzzle.masks[i],turn),ends=directions.filter(([bit])=>mask&bit).map(([,name])=>name).join('と');return (Math.floor(i/size)+1)+'行'+(i%size+1)+'列 '+ends}).join('、')}
+function showCircuitConflict({db,id,mode,loaded,capture,legacyCapture,parser,isCurrent,stop,container}) {
+  const valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready';
+  const before=parser(id,loaded.meta.snapshot);
+  if(before.state!=='ready'){stop();return}
+  const sources=[{id:'versioned',before:before.records,after:capture.records}];
+  const plan=recoveryModules.planChanges(loaded.records,sources,valid);if(plan.state!=='ready'){stop();return}
+  const guard=()=>isCurrent()&&capture.guard.check()==='clean';
+  status.textContent='日付ごとに記録を選んでね';container.replaceChildren();const selects=[];
+  const describe=record=>describeCircuitRecord(record,mode);
+  for(const row of plan.rows){const section=document.createElement('section'),label=document.createElement('label'),select=document.createElement('select'),detail=document.createElement('p');label.textContent=`${row.date} の記録`;select.setAttribute('aria-label',label.textContent);detail.setAttribute('aria-live','polite');
+    for(const choice of row.choices){const option=document.createElement('option');option.value=choice.source;option.textContent=choice.source==='database'?'この端末':choice.source==='versioned'?'版付きの元記録':'以前の元記録';select.append(option)}
+    const show=()=>{detail.textContent=describe(row.choices.find(x=>x.source===select.value).record)};select.addEventListener('change',show);show();label.append(select);section.append(label,detail);container.append(section);selects.push({date:row.date,select});
+  }
+  const review=document.createElement('button');review.type='button';review.textContent='選択内容を確認';container.append(review);
+  review.onclick=()=>{const choices=selects.map(x=>({date:x.date,source:x.select.value})),selected=recoveryModules.selectChanges(plan,choices,valid);
+    if(selected.state!=='ready'){status.textContent=selected.state==='too-old'?'選んだ記録が保存できる2日より古いよ。選び直してね。':'選択内容を確認できないよ。';return}
+    const panel=document.createElement('section'),heading=document.createElement('h3'),details=document.createElement('p'),confirm=document.createElement('button'),back=document.createElement('button');heading.textContent='保存内容を確認';heading.tabIndex=-1;details.textContent=`保存する記録：${selected.records.map(x=>`${x.date} ${describe(x)}`).join(' / ')||'なし'}。${selected.evicted.length?`保存対象から外れる記録：${selected.evicted.map(x=>`${x.date} ${describe(x)}`).join(' / ')}。退避には残るよ。`:''}`;confirm.type=back.type='button';confirm.textContent='この内容で保存';back.textContent='選び直す';panel.append(heading,details,confirm,back);container.append(panel);for(const x of selects)x.select.disabled=true;review.disabled=true;heading.focus({preventScroll:true});heading.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});
+    back.onclick=()=>{panel.remove();for(const x of selects)x.select.disabled=false;review.disabled=false;review.focus()};
+    confirm.onclick=async()=>{confirm.disabled=back.disabled=true;try{const archive=recoveryModules.createMultiArchive(id,plan,choices,valid,new Date().toISOString());if(!archive){status.textContent='選択内容を確認できないよ。';return}const result=await commitMultiChanges({db,id,archiveId:crypto.randomUUID(),archive,expectedRecords:JSON.stringify(loaded.records),expectedMeta:JSON.stringify(loaded.meta),nextMeta:{snapshot:capture.snapshot},guard,acceptedEviction:true,readArchive:(a,g)=>recoveryModules.readMultiArchive(a,g,valid)});if(!isCurrent())return;if(result!=='saved'||!guard()){stop();return}start()}catch(_){status.textContent='保存できなかったよ。空き容量を確認してね。';back.disabled=false}};
+  };
+}
+
+let circuitRestartGuard=null,circuitTemporary=false;
+const lightsRecoveryModules=(()=>{const sources={"./idb-versioned-keys-prototype.cjs":function(require,module,exports){
+// Isolated inventory: this module does not read or write browser storage.
+const modes = ['easy', 'normal', 'hard', 'oni', 'kiwami'];
+const descriptors = [
+  ...['path', 'sum', 'garden', 'lights', 'sort'].flatMap(game =>
+    modes.map(mode => ({ id: `${game}-${mode}-v2`, game, mode, version: 2 }))),
+  ...[
+    ['easy', 'easy', 2], ['normal', 'normal', 3], ['hard', 'linked', 2],
+    ['oni', 'oni', 2], ['kiwami', 'kiwami', 2],
+  ].map(([mode, storageMode, version]) => ({
+    id: `circuit-${storageMode}-v${version}`, game: 'circuit', mode, version,
+  })),
+  ...['path', 'sum', 'garden', 'lights', 'circuit', 'sort', 'balance', 'swap']
+    .map(game => ({ id: game, game, mode: 'legacy', version: 1 })),
+];
+const byId = new Map(descriptors.map(item => [item.id, Object.freeze(item)]));
+if (byId.size !== descriptors.length) throw Error('duplicate identifier');
+function identifyDailyStorage(id) {
+  if (typeof id !== 'string' || !byId.has(id)) return null;
+  const descriptor = byId.get(id), key = `kihamda-daily-${id}`;
+  return { ...descriptor, keys: [key, `${key}-previous`] };
+}
+module.exports = { identifyDailyStorage };
+
+},
+"./idb-versioned-guard-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+function observeVersionedStorage(store,events,id,snapshot,onChange){
+ const identity=identifyDailyStorage(id);if(!identity||!Array.isArray(snapshot)||snapshot.length!==2||!snapshot.every(x=>x===null||typeof x==='string')||typeof onChange!=='function')throw Error('invalid baseline');
+ const keys=identity.keys,baseline=[...snapshot];let state='clean';
+ function check(){if(state!=='clean')return state;try{if(keys.some((key,i)=>store.getItem(key)!==baseline[i]))state='changed'}catch(_){state='unavailable'}return state}
+ function onStorage(event){if(event.storageArea!==store||(event.key!==null&&!keys.includes(event.key)))return;const old=state;if(state==='clean'&&(event.key===null||event.newValue!==baseline[keys.indexOf(event.key)]))state='changed';if(old!==state)onChange(state)}
+ events.addEventListener('storage',onStorage);check();return {check,dispose:()=>events.removeEventListener('storage',onStorage)};
+}
+module.exports={observeVersionedStorage};
+
+},
+"./idb-versioned-capture-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+const {observeVersionedStorage}=require('./idb-versioned-guard-prototype.cjs');
+// Reads only the exact selected keys; callers must guard again before any database write.
+function captureVersioned(store,events,parse,id,onChange){
+ const identity=identifyDailyStorage(id);if(!identity||typeof parse!=='function')return {state:'invalid'};
+ let snapshot;try{snapshot=identity.keys.map(key=>store.getItem(key))}catch(_){return {state:'unavailable'}}
+ const guard=observeVersionedStorage(store,events,id,snapshot,onChange),before=guard.check();
+ if(before!=='clean'){guard.dispose();return {state:before}}
+ let result;try{result=parse(id,snapshot)}catch(_){guard.dispose();return {state:'invalid'}}const after=guard.check();
+ if(after!=='clean'||result.state!=='ready'){guard.dispose();return {state:after!=='clean'?after:result.state}}
+ return {state:'ready',identity:result.identity,records:result.records,snapshot:result.snapshot,guard};
+}
+module.exports={captureVersioned};
+
+
+},
+"./idb-versioned-import-prototype.cjs":function(require,module,exports){
+// Isolated import parser. A caller must supply the exact game/version validator.
+const {identifyDailyStorage} = require('./idb-versioned-keys-prototype.cjs');
+function validDate(date) {
+  if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  const ms = Date.parse(`${date}T00:00:00Z`);
+  return Number.isFinite(ms) && new Date(ms).toISOString().slice(0, 10) === date;
+}
+function parseImport(id, snapshot, validate) {
+  const identity = identifyDailyStorage(id);
+  if (!identity || !Array.isArray(snapshot) || snapshot.length !== 2 ||
+      !snapshot.every(value => value === null || typeof value === 'string') || typeof validate !== 'function')
+    return {state:'invalid'};
+  const items = [];
+  try {
+    for (const raw of snapshot) {
+      if (raw === null) continue;
+      const item = JSON.parse(raw);
+      if (!item || Array.isArray(item) || typeof item !== 'object' || !validDate(item.date) || validate(item, identity) !== true)
+        return {state:'invalid'};
+      items.push(item);
+    }
+  } catch (_) { return {state:'invalid'}; }
+  if (new Set(items.map(item => item.date)).size !== items.length) return {state:'invalid'};
+  items.sort((a,b) => b.date.localeCompare(a.date));
+  return {state:'ready', identity, records:items, snapshot:[...snapshot]};
+}
+module.exports = {parseImport};
+
+},
+"./idb-grid-validation-prototype.cjs":function(require,module,exports){
+// Mirrors current lights/circuit load conditions; no data is written.
+function validateLightsOrCircuit(record,identity){
+ if(identity.game==='lights'&&(identity.version===2||identity.mode==='legacy')){
+  const size=identity.mode==='kiwami'?5:4;return Array.isArray(record.cells)&&record.cells.length===size*size&&record.cells.every(value=>typeof value==='boolean')&&Number.isSafeInteger(record.moves)&&record.moves>=0;
+ }
+ if(identity.game==='circuit'&&((identity.mode==='legacy'&&identity.version===1)||(identity.mode==='normal'&&identity.version===3)||(['easy','hard','oni','kiwami'].includes(identity.mode)&&identity.version===2))){
+  const size=identity.mode==='kiwami'?5:identity.mode==='oni'?4:3;return Array.isArray(record.turns)&&record.turns.length===size*size&&record.turns.every(value=>Number.isInteger(value)&&value>=0&&value<4)&&Number.isSafeInteger(record.moves)&&record.moves>=0;
+ }
+ return false;
+}
+module.exports={validateLightsOrCircuit};
+
+}},cache={};function require(id){if(cache[id])return cache[id].exports;if(!sources[id])throw Error('missing '+id);const module={exports:{}};cache[id]=module;sources[id](require,module,module.exports);return module.exports}const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs'),{parseImport}=require('./idb-versioned-import-prototype.cjs'),{validateLightsOrCircuit}=require('./idb-grid-validation-prototype.cjs');function createParser(){return (id,snapshot)=>{const identity=identifyDailyStorage(id);if(identity?.game!=='lights'||identity.version!==2)return {state:'invalid'};return parseImport(id,snapshot,validateLightsOrCircuit)}}return {capture:require('./idb-versioned-capture-prototype.cjs').captureVersioned,createParser}})();
+// Isolated versioned-lights import. Legacy lights records remain separate.
+function importLightsIfAbsent({db, id, records, snapshot, guard, valid}) {
+  if (!db || !/^lights-(easy|normal|hard|oni|kiwami)-v2$/.test(id) ||
+      !Array.isArray(records) || records.length > 2 || !Array.isArray(snapshot) ||
+      snapshot.length !== 2 || typeof guard !== 'function' || typeof valid !== 'function' ||
+      !records.every(valid) || new Set(records.map(record => record.date)).size !== records.length) {
+    return Promise.resolve('invalid');
+  }
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('games', 'readwrite'), store = tx.objectStore('games');
+    const request = store.get(id);
+    let outcome = 'changed';
+    request.onsuccess = () => {
+      if (!guard()) return;
+      if (request.result !== undefined) { outcome = 'exists'; return; }
+      try {
+        store.add([...records].sort((a, b) => b.date.localeCompare(a.date)), id);
+        store.add({snapshot}, `source:${id}`);
+        outcome = 'imported';
+      } catch (_) { tx.abort(); }
+    };
+    tx.oncomplete = () => resolve(outcome);
+    tx.onabort = () => reject(tx.error || Error('import aborted'));
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+
+// Isolated adapter for lights-v2. No production script imports this file.
+async function openLightsProgress({db, mode, date, capture, parser, isCurrent}) {
+  const id=`lights-${mode}-v2`;
+  const valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready';
+  const guard=()=>isCurrent()&&capture.guard.check()==='clean';
+  const imported=await importLightsIfAbsent({db,id,records:capture.records,snapshot:capture.snapshot,guard,valid});
+  if(!['imported','exists'].includes(imported)||!guard())return {state:'changed'};
+  const read=()=>new Promise((resolve,reject)=>{const tx=db.transaction('games','readonly'),store=tx.objectStore('games'),records=store.get(id),meta=store.get(`source:${id}`);tx.oncomplete=()=>resolve({records:records.result,meta:meta.result});tx.onabort=()=>reject(tx.error||Error('read aborted'));tx.onerror=()=>reject(tx.error)});
+  const loaded=await read();
+  if(!guard())return {state:'changed'};
+  if(!Array.isArray(loaded.records)||loaded.records.length>2||!loaded.records.every(valid)||new Set(loaded.records.map(x=>x.date)).size!==loaded.records.length||!loaded.meta)return {state:'invalid'};
+  if(JSON.stringify(loaded.meta.snapshot)!==JSON.stringify(capture.snapshot))return {state:'source-conflict',loaded};
+  let record=loaded.records.find(item=>item.date===date)??null;
+  async function save(next){
+    if(!valid(next)||next.date!==date)return 'invalid';
+    const expected=JSON.stringify(record);
+    const result=await new Promise((resolve,reject)=>{
+      const tx=db.transaction('games','readwrite'),store=tx.objectStore('games'),records=store.get(id),meta=store.get(`source:${id}`);let outcome='changed';
+      meta.onsuccess=()=>{
+        if(!guard())return;
+        const all=records.result;
+        if(!Array.isArray(all)||all.length>2||!all.every(valid)||new Set(all.map(x=>x.date)).size!==all.length){outcome='invalid';return}
+        if(JSON.stringify(meta.result?.snapshot)!==JSON.stringify(capture.snapshot)){outcome='source-conflict';return}
+        if(JSON.stringify(all.find(item=>item.date===date)??null)!==expected){outcome='conflict';return}
+        const merged=new Map(all.map(item=>[item.date,item]));merged.set(date,next);const dates=[...merged.keys()].sort().reverse().slice(0,2);
+        if(!dates.includes(date)){outcome='too-old';return}
+        try{store.put(dates.map(key=>merged.get(key)),id);outcome='saved'}catch(_){tx.abort()}
+      };
+      tx.oncomplete=()=>resolve(outcome);tx.onabort=()=>reject(tx.error||Error('write aborted'));tx.onerror=()=>reject(tx.error);
+    });
+    if(result==='saved'&&guard())record=next;
+    return result==='saved'&&!guard()?'changed-after-save':result;
+  }
+  return {state:'ready',record,save,loaded};
+}
+
+function describeLightsRecord(record,mode){if(!record)return '記録なし';const size=mode==='kiwami'?5:4,positions=record.cells.map((v,i)=>v?(Math.floor(i/size)+1)+'行'+(i%size+1)+'列':null).filter(Boolean).join('、')||'なし';return record.moves+'手・点灯 '+positions}
+// Isolated lights conflict UI; all choices are reviewed again in the write transaction.
+function showLightsConflict({db,id,mode,loaded,capture,legacyCapture,parser,isCurrent,stop,container}) {
+  const valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready';
+  const before=parser(id,loaded.meta.snapshot);
+  if(before.state!=='ready'){stop();return}
+  const sources=[{id:'versioned',before:before.records,after:capture.records}];
+  const plan=recoveryModules.planChanges(loaded.records,sources,valid);if(plan.state!=='ready'){stop();return}
+  const guard=()=>isCurrent()&&capture.guard.check()==='clean';
+  status.textContent='日付ごとに記録を選んでね';container.replaceChildren();const selects=[];
+  const describe=record=>describeLightsRecord(record,mode);
+  for(const row of plan.rows){const section=document.createElement('section'),label=document.createElement('label'),select=document.createElement('select'),detail=document.createElement('p');label.textContent=`${row.date} の記録`;select.setAttribute('aria-label',label.textContent);detail.setAttribute('aria-live','polite');
+    for(const choice of row.choices){const option=document.createElement('option');option.value=choice.source;option.textContent=choice.source==='database'?'この端末':choice.source==='versioned'?'版付きの元記録':'以前の元記録';select.append(option)}
+    const show=()=>{detail.textContent=describe(row.choices.find(x=>x.source===select.value).record)};select.addEventListener('change',show);show();label.append(select);section.append(label,detail);container.append(section);selects.push({date:row.date,select});
+  }
+  const review=document.createElement('button');review.type='button';review.textContent='選択内容を確認';container.append(review);
+  review.onclick=()=>{const choices=selects.map(x=>({date:x.date,source:x.select.value})),selected=recoveryModules.selectChanges(plan,choices,valid);
+    if(selected.state!=='ready'){status.textContent=selected.state==='too-old'?'選んだ記録が保存できる2日より古いよ。選び直してね。':'選択内容を確認できないよ。';return}
+    const panel=document.createElement('section'),heading=document.createElement('h3'),details=document.createElement('p'),confirm=document.createElement('button'),back=document.createElement('button');heading.textContent='保存内容を確認';heading.tabIndex=-1;details.textContent=`保存する記録：${selected.records.map(x=>`${x.date} ${describe(x)}`).join(' / ')||'なし'}。${selected.evicted.length?`保存対象から外れる記録：${selected.evicted.map(x=>`${x.date} ${describe(x)}`).join(' / ')}。退避には残るよ。`:''}`;confirm.type=back.type='button';confirm.textContent='この内容で保存';back.textContent='選び直す';panel.append(heading,details,confirm,back);container.append(panel);for(const x of selects)x.select.disabled=true;review.disabled=true;heading.focus({preventScroll:true});heading.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'});
+    back.onclick=()=>{panel.remove();for(const x of selects)x.select.disabled=false;review.disabled=false;review.focus()};
+    confirm.onclick=async()=>{confirm.disabled=back.disabled=true;try{const archive=recoveryModules.createMultiArchive(id,plan,choices,valid,new Date().toISOString());if(!archive){status.textContent='選択内容を確認できないよ。';return}const result=await commitMultiChanges({db,id,archiveId:crypto.randomUUID(),archive,expectedRecords:JSON.stringify(loaded.records),expectedMeta:JSON.stringify(loaded.meta),nextMeta:{snapshot:capture.snapshot},guard,acceptedEviction:true,readArchive:(a,g)=>recoveryModules.readMultiArchive(a,g,valid)});if(!isCurrent())return;if(result!=='saved'||!guard()){stop();return}start()}catch(_){status.textContent='保存できなかったよ。空き容量を確認してね。';back.disabled=false}};
+  };
+}
+
+let lightsRestartGuard=null, lightsTemporary=false;
 const gardenRecoveryModules=(()=>{const sources={"./idb-versioned-keys-prototype.cjs":function(require,module,exports){
 const modes = ['easy', 'normal', 'hard', 'oni', 'kiwami'];
 const descriptors = [
@@ -172,6 +545,30 @@ function showGardenConflict({db,id,mode,loaded,capture,legacyCapture,parser,isCu
     confirm.onclick=async()=>{confirm.disabled=back.disabled=true;try{const archive=recoveryModules.createMultiArchive(id,plan,choices,valid,new Date().toISOString());if(!archive){status.textContent='選択内容を確認できないよ。';return}const result=await commitMultiChanges({db,id,archiveId:crypto.randomUUID(),archive,expectedRecords:JSON.stringify(loaded.records),expectedMeta:JSON.stringify(loaded.meta),nextMeta:{snapshot:capture.snapshot},guard,acceptedEviction:true,readArchive:(a,g)=>recoveryModules.readMultiArchive(a,g,valid)});if(!isCurrent())return;if(result!=='saved'||!guard()){stop();return}start()}catch(_){status.textContent='保存できなかったよ。空き容量を確認してね。';back.disabled=false}};
   };
 }
+
+function describeSortRecord(record,mode){if(!record)return '記録なし';const tubes=generateTrialSortPuzzle(mode,record.date).tubes.map(t=>[...t]),names=['あか','あお','きいろ'];for(const [from,to] of record.actions)tubes[to].push(tubes[from].pop());return `${record.actions.length}手・`+tubes.map((tube,i)=>`${i+1}番 ${tube.map(color=>names[color]).join('、')||'空'}`).join(' / ')}
+function showSortConflict({db,id,mode,loaded,capture,legacyCapture,parser,isCurrent,stop,container}) {
+  const valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready';
+  const before=parser(id,loaded.meta.snapshot);
+  if(before.state!=='ready'){stop();return}
+  const sources=[{id:'versioned',before:before.records,after:capture.records}];
+  const plan=recoveryModules.planChanges(loaded.records,sources,valid);if(plan.state!=='ready'){stop();return}
+  const guard=()=>isCurrent()&&capture.guard.check()==='clean';
+  status.textContent='日付ごとに記録を選んでね';container.replaceChildren();const selects=[];
+  const describe=record=>describeSortRecord(record,mode);
+  for(const row of plan.rows){const section=document.createElement('section'),label=document.createElement('label'),select=document.createElement('select'),detail=document.createElement('p');label.textContent=`${row.date} の記録`;select.setAttribute('aria-label',label.textContent);detail.setAttribute('aria-live','polite');
+    for(const choice of row.choices){const option=document.createElement('option');option.value=choice.source;option.textContent=choice.source==='database'?'この端末':choice.source==='versioned'?'版付きの元記録':'以前の元記録';select.append(option)}
+    const show=()=>{detail.textContent=describe(row.choices.find(x=>x.source===select.value).record)};select.addEventListener('change',show);show();label.append(select);section.append(label,detail);container.append(section);selects.push({date:row.date,select});
+  }
+  const review=document.createElement('button');review.type='button';review.textContent='選択内容を確認';container.append(review);
+  review.onclick=()=>{const choices=selects.map(x=>({date:x.date,source:x.select.value})),selected=recoveryModules.selectChanges(plan,choices,valid);
+    if(selected.state!=='ready'){status.textContent=selected.state==='too-old'?'選んだ記録が保存できる2日より古いよ。選び直してね。':'選択内容を確認できないよ。';return}
+    const panel=document.createElement('section'),heading=document.createElement('h3'),details=document.createElement('p'),confirm=document.createElement('button'),back=document.createElement('button');heading.textContent='保存内容を確認';heading.tabIndex=-1;details.textContent=`保存する記録：${selected.records.map(x=>`${x.date} ${describe(x)}`).join(' / ')||'なし'}。${selected.evicted.length?`保存対象から外れる記録：${selected.evicted.map(x=>`${x.date} ${describe(x)}`).join(' / ')}。退避には残るよ。`:''}`;confirm.type=back.type='button';confirm.textContent='この内容で保存';back.textContent='選び直す';panel.append(heading,details,confirm,back);container.append(panel);for(const x of selects)x.select.disabled=true;review.disabled=true;heading.focus();
+    back.onclick=()=>{panel.remove();for(const x of selects)x.select.disabled=false;review.disabled=false;review.focus()};
+    confirm.onclick=async()=>{confirm.disabled=back.disabled=true;try{const archive=recoveryModules.createMultiArchive(id,plan,choices,valid,new Date().toISOString());if(!archive){status.textContent='選択内容を確認できないよ。';return}const result=await commitMultiChanges({db,id,archiveId:crypto.randomUUID(),archive,expectedRecords:JSON.stringify(loaded.records),expectedMeta:JSON.stringify(loaded.meta),nextMeta:{snapshot:capture.snapshot},guard,acceptedEviction:true,readArchive:(a,g)=>recoveryModules.readMultiArchive(a,g,valid)});if(!isCurrent())return;if(result!=='saved'||!guard()){stop();return}start()}catch(_){status.textContent='保存できなかったよ。空き容量を確認してね。';back.disabled=false}};
+  };
+}
+
 
 let gardenRestartGuard=null;
 const pathRecoveryModules=(()=>{const sources={"./idb-versioned-keys-prototype.cjs":function(require,module,exports){
@@ -1036,11 +1433,11 @@ function validState(p,s){if(!s||!Array.isArray(s.moves))return false;let replay=
 
 function createStore(store,mode,date){const key=`kihamda-swap-v1-${mode}`;if(!date)return {store,key};const latest=key+'-daily',previous=latest+'-previous';function records(){const out=new Map();for(const k of [latest,previous]){const raw=store.getItem(k);if(raw===null)continue;const parsed=JSON.parse(raw);if(typeof parsed?.date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(parsed.date))throw Error('invalid daily record');out.set(parsed.date,raw)}return out}return {key:latest,store:{getItem(){return records().get(date)??null},setItem(_,raw){const all=records();all.set(date,raw);const days=[...all.keys()].sort().reverse().slice(0,2);if(!days.includes(date))throw Error('older daily');if(days[1])store.setItem(previous,all.get(days[1]));else store.removeItem(previous);store.setItem(latest,all.get(days[0]))}}}}
 function makeSession(store,mode,{date=null,index=0}={}){const spec=makePuzzle(mode,{date,index}),wrapper=createStore(store,mode,date),key=wrapper.key;store=wrapper.store;let snapshot=null,current=null,offline=false;const allowed=date?[spec]:Array.from({length:mode==='kiwami'||mode==='oni'?128:mode==='hard'?72:easyCandidates.length},(_,index)=>makePuzzle(mode,{index}));
- function valid(x){return !!x&&x.version===1&&x.mode===mode&&x.date===date&&Number.isSafeInteger(x.plays)&&x.plays>=0&&Number.isSafeInteger(x.wins)&&x.wins>=0&&x.wins<=x.plays&&allowed.some(p=>JSON.stringify(x.puzzle)===JSON.stringify(p))&&validState(x.puzzle,x.state)&&(!x.state.finished||x.wins>0&&x.plays>0)}
+ function valid(x){return !!x&&x.version===1&&x.mode===mode&&x.date===date&&Number.isSafeInteger(x.plays)&&x.plays>=0&&Number.isSafeInteger(x.wins)&&x.wins>=0&&x.wins<=x.plays&&allowed.some(p=>JSON.stringify(x.puzzle)===JSON.stringify(p))&&validState(x.puzzle,x.state)&&(!date||x.best===undefined||Number.isSafeInteger(x.best)&&x.best>0)&&(!x.state.finished||x.wins>0&&x.plays>0)}
  function read(){try{const raw=store.getItem(key),value=raw===null?null:JSON.parse(raw);if(value!==null&&!valid(value))return null;return {raw,value}}catch(_){return null}}
  function save(next){if(!valid(next))throw Error('invalid state');if(offline){current=next;return {ok:true,warning:'unavailable'}}const now=read();if(!now){offline=true;current=next;return {ok:true,warning:'unavailable'}}if(now.raw!==snapshot)return {ok:false,reason:'conflict'};try{const raw=JSON.stringify(next);store.setItem(key,raw);snapshot=raw;current=next;return {ok:true}}catch(_){offline=true;current=next;return {ok:true,warning:'unavailable'}}}
- function load(){const result=read();if(!result){offline=true;current={version:1,mode,date,plays:0,wins:0,puzzle:spec,state:newState(spec)};return {ok:true,warning:'unavailable'}}snapshot=result.raw;if(result.value){current=result.value;return {ok:true}}return save({version:1,mode,date,plays:0,wins:0,puzzle:spec,state:newState(spec)})}
- function move(a,b){const state=play(current.puzzle,current.state,a,b),next={...current,state};if(state.finished){next.plays++;next.wins++}return save(next)}
+ function load(){const result=read();if(!result){offline=true;current={version:1,mode,date,plays:0,wins:0,puzzle:spec,state:newState(spec)};return {ok:true,warning:'unavailable'}}snapshot=result.raw;if(result.value){current=result.value;if(date&&current.state.finished&&current.best===undefined)current={...current,best:current.state.moves.length};return {ok:true}}return save({version:1,mode,date,plays:0,wins:0,puzzle:spec,state:newState(spec)})}
+ function move(a,b){const state=play(current.puzzle,current.state,a,b),next={...current,state};if(state.finished){next.plays++;next.wins++;if(date)next.best=Math.min(current.best??Infinity,state.moves.length)}return save(next)}
  function back(){if(current.state.finished)throw Error('finished');return save({...current,state:undo(current.puzzle,current.state)})}
  function restart(){let puzzle=current.puzzle;if(!date){const start=Math.floor(Math.random()*allowed.length);for(let i=0;i<allowed.length;i++){const candidate=allowed[(start+i)%allowed.length];if(JSON.stringify(candidate)!==JSON.stringify(current.puzzle)){puzzle=candidate;break}}}return save({...current,puzzle,state:newState(puzzle)})}
  return {key,load,move,back,restart,view:()=>structuredClone(current)};
@@ -1463,7 +1860,7 @@ const id = document.body.dataset.game || params.get('game');
 const board = document.querySelector('#board'), status = document.querySelector('#status'), announcement = document.querySelector('#announcement');
 const title = document.querySelector('#title'), instructions = document.querySelector('#instructions');
 const category = document.querySelector('#category'), controls = document.querySelector('#controls'), record = document.querySelector('#record'), copyResult = document.querySelector('#copy-result'), copyFeedback = document.querySelector('#copy-feedback');
-let cleanup = () => {}, runGeneration = 0, currentDailyStorage = null;
+let cleanup = () => {}, runGeneration = 0, currentDailyStorage = null, sortRestartGuard = null;
 const shuffle = values => { const a = [...values]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 let sumDifficulty=['easy','hard','oni','kiwami'].includes(params.get('difficulty'))?params.get('difficulty'):'normal';
 const sumRequested=params.get('difficulty'),sumVersion=params.get('version'),invalidSumLink=(sumRequested!==null&&!['easy','normal','hard','oni','kiwami'].includes(sumRequested))||(sumVersion!==null&&sumVersion!=='2');
@@ -2060,7 +2457,7 @@ const games = {
     const session=swapFive.makeSession(store,level,{date,index:Math.floor(Math.random()*(level==='kiwami'||level==='oni'?128:level==='hard'?72:16))});let result=session.load(),warning=result.warning||null,conflicted=false,selected=null,state=session.view();if(reset&&result.ok){result=session.restart();state=session.view()}
     const size=Math.sqrt(state.puzzle.start.length);board.dataset.swapSize=String(size);
     const refresh=document.createElement('button');refresh.type='button';refresh.className='swap-five-refresh';refresh.textContent='最新の記録を読み込む';refresh.hidden=true;refresh.addEventListener('click',()=>start());record.after(refresh);
-    function showRecord(){record.hidden=!warning&&!conflicted&&state.plays===0;record.textContent=conflicted?'別のタブで更新されたよ。最新の記録を読み込んでね。':warning?'このブラウザでは記録を保存できないよ':`クリア ${state.wins}回`;refresh.hidden=!conflicted}
+    function showRecord(){record.hidden=!warning&&!conflicted&&state.plays===0;record.textContent=conflicted?'別のタブで更新されたよ。最新の記録を読み込んでね。':warning?'このブラウザでは記録を保存できないよ':daily&&state.best!==undefined?`今日のベスト ${state.best}回`:`クリア ${state.wins}回`;refresh.hidden=!conflicted}
     function update(next){if(!next.ok){conflicted=true;showRecord();render();return false}warning=next.warning||warning;state=session.view();showRecord();return true}
     const cells=state.state.values.map((_,i)=>{const cell=button('',()=>{if(conflicted||state.state.finished)return;if(selected===null){selected=i;render();return}if(selected===i){selected=null;render();return}const before=selected;selected=null;try{if(update(session.move(before,i)))announcement.textContent='入れ替えたよ'}catch(e){announcement.textContent=e.message==='not adjacent'?'隣り合うマスを選んでね':e.message==='wrong direction'?'横と縦を交互に入れ替えてね':'これ以上入れ替えられないよ'}render()});cell.style.gridColumn=String(i%size+1);cell.style.gridRow=String(Math.floor(i/size)+1);return cell});
     const clues=state.puzzle.targets.map((_,i)=>{const clue=document.createElement('span');clue.className='swap-clue';clue.setAttribute('role','img');clue.style.gridColumn=String(i<size?size+1:i-size+1);clue.style.gridRow=String(i<size?i+1:size+1);board.append(clue);return clue});
@@ -2398,6 +2795,7 @@ const games = {
     cleanup=()=>{stopProgress();modes.remove();instructions.style.minHeight='';headingContent.append(instructions);document.body.classList.remove('timing-mode');document.querySelector('#grid-keyboard-help').after(board);document.removeEventListener('visibilitychange',cancel)};
   },
   lights(reset) {
+    if(params.get('mode')==='daily'&&lightsDifficulty!=='legacy'&&!lightsTemporary)return lightsFive(reset);
     const daily=params.get('mode')==='daily',size=lightsDifficulty==='kiwami'?5:4;
     let cells=Array(size*size).fill(false),moves=0,progress=null,dailyDate=null;
     const toggle=i=>{const x=i%size,y=Math.floor(i/size);for(const [dx,dy] of [[0,0],[1,0],[-1,0],[0,1],[0,-1]]){const a=x+dx,b=y+dy;if(a>=0&&a<size&&b>=0&&b<size)cells[b*size+a]=!cells[b*size+a]}};
@@ -2411,7 +2809,7 @@ const games = {
       let oldRecord=false;try{for(const key of ['kihamda-daily-lights','kihamda-daily-lights-previous']){const raw=localStorage.getItem(key);if(raw===null)continue;try{if(JSON.parse(raw)?.date===date)oldRecord=true}catch(_){oldRecord=true}}}catch(_){oldRecord=true}
       if(oldRecord||lightsDifficulty==='legacy'){legacyButton=document.createElement('button');legacyButton.type='button';legacyButton.className='circuit-legacy';legacyButton.textContent=lightsDifficulty==='legacy'?'ふつうに戻る':'以前の問題を開く';legacyButton.addEventListener('click',event=>{lightsDifficulty=lightsDifficulty==='legacy'?'normal':'legacy';start();if(event.detail===0)(lightsDifficulty==='legacy'?document.querySelector('.circuit-legacy'):document.querySelector('.lights-modes [data-difficulty="normal"]'))?.focus()});board.after(legacyButton)}
       if(lightsVersion===null&&lightsRequested==='normal'&&lightsDifficulty==='normal'){notice=document.createElement('details');notice.className='circuit-notice';const summary=document.createElement('summary');summary.textContent='以前のリンクについて';const text=document.createElement('p');text.textContent='以前の共有リンクでは、今の「ふつう」が開くよ。以前の問題も今日の日付で遊べるよ。';notice.append(summary,text);if(!legacyButton){const open=document.createElement('button');open.type='button';open.className='circuit-legacy';open.textContent='以前の問題を開く';open.addEventListener('click',event=>{lightsDifficulty='legacy';start();if(event.detail===0)document.querySelector('.circuit-legacy')?.focus()});notice.append(open)}board.after(notice)}
-      progress=dailyProgress(lightsDifficulty==='legacy'?'lights':`lights-${lightsDifficulty}-v2`,date,size*size);
+      progress=lightsTemporary?null:dailyProgress(lightsDifficulty==='legacy'?'lights':`lights-${lightsDifficulty}-v2`,date,size*size);
       if(lightsDifficulty==='legacy') {let seed=Number(date.replace(/\D/g,''))>>>0;const indices=[...Array(16).keys()];for(let i=indices.length-1;i>0;i--){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const j=seed%(i+1);[indices[i],indices[j]]=[indices[j],indices[i]]}indices.slice(0,8).forEach(toggle);if(!cells.some(Boolean))toggle(0)}
       else {const day=Math.floor(Date.UTC(Number(part('year')),Number(part('month'))-1,Number(part('day')))/86400000),options=lightsBoards[lightsDifficulty],n=options.length,index=((day+7*Math.floor(day/n))%n+n)%n,bits=options[index];cells=cells.map((_,i)=>Boolean(bits&(1<<i)))}
     }else{category.textContent='パズル';const options=lightsBoards[lightsDifficulty==='legacy'?'normal':lightsDifficulty],bits=options[Math.floor(Math.random()*options.length)];cells=cells.map((_,i)=>Boolean(bits&(1<<i)))}
@@ -2426,6 +2824,7 @@ const games = {
   sum(reset) { sumFive(reset); },
   path(reset) { pathFive(reset); },
   circuit(reset) {
+    if(circuitDifficulty!=='legacy'&&!circuitTemporary)return circuitFive(reset);
     const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
     const part=type=>Number(parts.find(item=>item.type===type).value);
     const date=`${part('year')}-${String(part('month')).padStart(2,'0')}-${String(part('day')).padStart(2,'0')}`;
@@ -2474,7 +2873,7 @@ const games = {
     const {masks,turns:initial,start:begin=0,end=8}=puzzle;
     board.style.setProperty('--circuit-columns',size);board.dataset.circuitSize=size;board.dataset.circuitDifficulty=circuitDifficulty;
     const valid=saved=>Array.isArray(saved.turns)&&saved.turns.length===size*size&&saved.turns.every(n=>Number.isInteger(n)&&n>=0&&n<4)&&Number.isSafeInteger(saved.moves)&&saved.moves>=0;
-    const storage=dailyStorage(circuitDifficulty==='easy'?'circuit-easy-v2':circuitDifficulty==='hard'?'circuit-linked-v2':circuitDifficulty==='normal'?'circuit-normal-v3':circuitDifficulty==='oni'?'circuit-oni-v2':circuitDifficulty==='kiwami'?'circuit-kiwami-v2':'circuit',date,valid); let turns=[...initial], moves=0;
+    const storage=circuitTemporary?{clear(){},load(){return null},save(){return true}}:dailyStorage(circuitDifficulty==='easy'?'circuit-easy-v2':circuitDifficulty==='hard'?'circuit-linked-v2':circuitDifficulty==='normal'?'circuit-normal-v3':circuitDifficulty==='oni'?'circuit-oni-v2':circuitDifficulty==='kiwami'?'circuit-kiwami-v2':'circuit',date,valid); let turns=[...initial], moves=0;
     try {
       if(reset) storage.clear();
       const saved=storage.load();
@@ -2526,7 +2925,7 @@ const games = {
     }
     render();
   },
-  sort(reset) {
+  async sort(reset, temporary=false) {
     const daily=params.get('mode')==='daily';
     let date=null, initial,trial=null;const trialMode=sortDifficulty==='legacy'?null:sortDifficulty;
     const group=document.createElement('div');group.className='lights-modes';group.setAttribute('role','group');group.setAttribute('aria-label','難易度');
@@ -2559,19 +2958,47 @@ const games = {
       }
       return {state,past};
     };
-    const storage=daily?dailyStorage(trialMode?`sort-${trialMode}-v2`:'sort',date,value=>{
+    let connected=null, busy=false, stopped=false, db=null, capture=null;
+    const generation=runGeneration, current=()=>generation===runGeneration&&date===todayInTokyo();
+    if(daily&&trialMode&&!temporary){
+      const oldCleanup=cleanup;
+      let expired=false;const checkDate=()=>{if(generation!==runGeneration||date===todayInTokyo()||expired)return;expired=true;stopped=true;capture?.guard?.dispose();board.querySelectorAll('button').forEach(b=>b.disabled=true);document.querySelectorAll('.sum-recovery button,.sum-recovery select,.path-archive').forEach(b=>b.disabled=true);restart.disabled=false;status.textContent='日付が変わったよ。今日の問題を開いてね。';refreshDailyDate()};
+      const timer=window.setInterval(checkDate,1000);document.addEventListener('visibilitychange',checkDate);
+      cleanup=()=>{stopped=true;window.clearInterval(timer);document.removeEventListener('visibilitychange',checkDate);capture?.guard?.dispose();db?.close();sortRestartGuard=null;restart.disabled=false;oldCleanup()};
+      const stop=()=>{if(stopped||!current())return;stopped=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);document.querySelectorAll('.sum-recovery button,.sum-recovery select,.path-archive').forEach(b=>b.disabled=true);restart.disabled=true;status.textContent='記録が変わったよ。画面を開き直してね。'};
+      restart.disabled=true;status.textContent='記録を読み込んでいるよ';
+      try{
+        const parser=sortRecoveryModules.createParser(generateTrialSortPuzzle);
+        capture=sortRecoveryModules.capture(localStorage,window,parser,`sort-${trialMode}-v2`,stop);
+        if(capture.state!=='ready')throw Error(capture.state);
+        db=await openRecoveryDatabase(stop);
+        if(!current()||stopped){db.close();return}
+        connected=await openSortProgress({db,mode:trialMode,date,capture,parser,isCurrent:current});
+        if(!current()||stopped)return;
+        if(connected.state==='source-conflict'){const container=document.createElement('section');container.className='sum-recovery';status.before(container);const previous=cleanup;cleanup=()=>{container.remove();previous()};showSortConflict({db,id:`sort-${trialMode}-v2`,mode:trialMode,loaded:connected.loaded,capture,parser,isCurrent:current,stop,container});return}
+        if(connected.state!=='ready')throw Error(connected.state);
+      }catch(_){if(current()&&!stopped){cleanup();cleanup=()=>{};await games.sort(false,true);record.hidden=false;record.textContent='記録を読み込めないため、今回の進み具合は保存されないよ。'}return}
+      restart.disabled=false;
+    }
+    const storage=temporary?{clear(){},load(){return null},save(){return true}}:daily?dailyStorage(trialMode?`sort-${trialMode}-v2`:'sort',date,value=>{
       const oldTrial=trialMode?generateTrialSortPuzzle(trialMode,value.date):null;
       const base=oldTrial?oldTrial.tubes:generateDailySortPuzzle(...value.date.split('-').map(Number));
       return !!replay(value,base,trialMode==='kiwami'?oldTrial.limit:null,false);
     }):null;
     if(daily){
-      if(reset)storage.clear();
-      const saved=storage.load(),loaded=saved&&replay(saved,initial,moveLimit);
+      if(reset&&!connected)storage.clear();
+      const saved=connected?connected.record:storage.load(),loaded=saved&&replay(saved,initial,moveLimit);
       if(loaded){tubes=loaded.state;history=loaded.past;actions=saved.actions.map(a=>[...a]);}
     }
-    const save=()=>!storage || storage.save({actions});
-    const buttons=Array.from({length:4},(_,index)=>button('',()=>{
-      if(won||moveLimit!==null&&actions.length>=moveLimit)return;
+    const save=async()=>{
+      if(!connected)return !storage || storage.save({actions});
+      if(busy||stopped||!current())return false;
+      busy=true;restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);
+      try{return await connected.save({date,actions:actions.map(a=>[...a])})==='saved'}catch(_){return false}finally{busy=false;if(current()&&!stopped){restart.disabled=false;board.querySelectorAll('button').forEach(b=>b.disabled=false)}}
+    };
+    if(connected)sortRestartGuard=async()=>{if(busy||stopped||!current())return;copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;tubes=initial.map(t=>[...t]);history=[];actions=[];selected=null;if(await save()){if(current()&&!stopped)render()}else if(current()) {stopped=true;status.textContent='記録を保存できないよ。画面を開き直してね。'}};
+    const buttons=Array.from({length:4},(_,index)=>button('',async()=>{
+      if(busy||stopped||(connected&&!current())||won||moveLimit!==null&&actions.length>=moveLimit)return;
       if(selected===null) {
         if(!tubes[index].length){status.textContent='玉のあるボトルを選んでね';return;}
         selected=index;
@@ -2580,14 +3007,14 @@ const games = {
         if(!canMove(tubes,selected,index)) {status.textContent='空きか、同じ色の上に移してね';return;}
         history.push(tubes.map(t=>[...t]));actions.push([selected,index]);
         tubes[index].push(tubes[selected].pop());selected=null;
-        if(!save()){recoverDailyConflict();return;}
+        if(!await save()){if(generation!==runGeneration||(connected&&!current()))return;if(connected){stopped=true;status.textContent='記録を保存できないよ。画面を開き直してね。'}else recoverDailyConflict();return;}
       }
-      render();
+      if(generation===runGeneration&&(!connected||current()))render();
     }));
     buttons.forEach(b=>{let armed=false;b.addEventListener('keydown',event=>{if(event.key===' '){event.preventDefault();if(!event.repeat)armed=true}});b.addEventListener('keyup',event=>{if(event.key===' '&&armed){event.preventDefault();armed=false;if(document.activeElement===b)b.click()}});b.addEventListener('blur',()=>{armed=false})});
-    const undo=button('一手戻す',()=>{
-      if(!history.length)return;
-      tubes=history.pop();actions.pop();selected=null;if(!save()){recoverDailyConflict();return;}render();
+    const undo=button('一手戻す',async()=>{
+      if(busy||stopped||(connected&&!current())||!history.length)return;
+      copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;tubes=history.pop();actions.pop();selected=null;if(!await save()){if(generation!==runGeneration||(connected&&!current()))return;if(connected){stopped=true;status.textContent='記録を保存できないよ。画面を開き直してね。'}else recoverDailyConflict();return;}if(generation===runGeneration&&(!connected||current()))render();
     });
     undo.className='sort-undo';
     function render(){
@@ -2609,7 +3036,11 @@ const games = {
       if(won&&daily){if(trialMode)offerCopy(`いろわけボトル ${{easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極'}[trialMode]} ${date} ${actions.length}手\nhttps://game.kihamda.net/play-sort.html?mode=daily&difficulty=${trialMode}&version=2`);else offerCopy(`いろわけボトル 以前の問題 ${date} ${actions.length}手\nhttps://game.kihamda.net/play-sort.html?mode=daily&difficulty=legacy&version=1`);}
       else {copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;copyFeedback.textContent='';}
     }
-    render();
+    if(connected){
+      const archiveButton=document.createElement('button');archiveButton.type='button';archiveButton.className='path-archive';archiveButton.textContent='退避した記録を見る';board.after(archiveButton);const prior=cleanup;cleanup=()=>{archiveButton.remove();prior()};
+      archiveButton.onclick=event=>{if(busy||stopped||!current())return;busy=true;restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);group.querySelectorAll('button').forEach(b=>b.disabled=true);archiveButton.disabled=true;const section=document.createElement('section'),returnButton=document.createElement('button'),content=document.createElement('div');section.className='sum-recovery';returnButton.type='button';returnButton.textContent='ゲームに戻る';returnButton.onclick=()=>start();section.append(returnButton,content);archiveButton.after(section);const previous=cleanup;cleanup=()=>{section.remove();previous()};status.textContent='退避した記録';if(event.detail===0)returnButton.focus();const id=`sort-${trialMode}-v2`,parser=sortRecoveryModules.createParser(generateTrialSortPuzzle),valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready',guard=()=>current()&&!stopped&&capture.guard.check()==='clean';openSumArchiveReview({db,id,valid,guard,container:content,describe:record=>describeSortRecord(record,trialMode),readMulti:recoveryModules.readMultiArchive,expectedMeta:JSON.stringify(connected.loaded.meta),onRestored:()=>{returnButton.textContent='復元した記録を開く'}})};
+    }
+    if(reset&&connected)await sortRestartGuard();else render();
   },
   slide(reset) { return slideFive(reset); },
   garden(reset) {
@@ -2779,6 +3210,9 @@ function start(reset=false){
 }
 restart.addEventListener('click',event=>{
   refreshDailyDate();
+  if(id==='sort'&&sortRestartGuard&&!isStaleDaily){sortRestartGuard(event);return;}
+  if(id==='lights'&&lightsRestartGuard&&!isStaleDaily){lightsRestartGuard(event);return;}
+  if(id==='circuit'&&circuitRestartGuard&&!isStaleDaily){circuitRestartGuard(event);return;}
   if(id==='garden'&&gardenRestartGuard&&!isStaleDaily){gardenRestartGuard(event);return;}
   if(id==='path'&&pathRestartGuard&&!isStaleDaily){pathRestartGuard(event);return;}
   if(id==='sum'&&sumRestartGuard&&!isStaleDaily){sumRestartGuard();return;}
@@ -2794,6 +3228,118 @@ restart.addEventListener('click',event=>{
   start(!isStaleDaily);
 });
 if(typeof document.addEventListener==='function')document.addEventListener('visibilitychange',refreshDailyDate);
+const sortRecoveryModules=(()=>{const sources={"./idb-versioned-keys-prototype.cjs":function(require,module,exports){
+// Isolated inventory: this module does not read or write browser storage.
+const modes = ['easy', 'normal', 'hard', 'oni', 'kiwami'];
+const descriptors = [
+  ...['path', 'sum', 'garden', 'lights', 'sort'].flatMap(game =>
+    modes.map(mode => ({ id: `${game}-${mode}-v2`, game, mode, version: 2 }))),
+  ...[
+    ['easy', 'easy', 2], ['normal', 'normal', 3], ['hard', 'linked', 2],
+    ['oni', 'oni', 2], ['kiwami', 'kiwami', 2],
+  ].map(([mode, storageMode, version]) => ({
+    id: `circuit-${storageMode}-v${version}`, game: 'circuit', mode, version,
+  })),
+  ...['path', 'sum', 'garden', 'lights', 'circuit', 'sort', 'balance', 'swap']
+    .map(game => ({ id: game, game, mode: 'legacy', version: 1 })),
+];
+const byId = new Map(descriptors.map(item => [item.id, Object.freeze(item)]));
+if (byId.size !== descriptors.length) throw Error('duplicate identifier');
+function identifyDailyStorage(id) {
+  if (typeof id !== 'string' || !byId.has(id)) return null;
+  const descriptor = byId.get(id), key = `kihamda-daily-${id}`;
+  return { ...descriptor, keys: [key, `${key}-previous`] };
+}
+module.exports = { identifyDailyStorage };
+
+},"./idb-versioned-guard-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+function observeVersionedStorage(store,events,id,snapshot,onChange){
+ const identity=identifyDailyStorage(id);if(!identity||!Array.isArray(snapshot)||snapshot.length!==2||!snapshot.every(x=>x===null||typeof x==='string')||typeof onChange!=='function')throw Error('invalid baseline');
+ const keys=identity.keys,baseline=[...snapshot];let state='clean';
+ function check(){if(state!=='clean')return state;try{if(keys.some((key,i)=>store.getItem(key)!==baseline[i]))state='changed'}catch(_){state='unavailable'}return state}
+ function onStorage(event){if(event.storageArea!==store||(event.key!==null&&!keys.includes(event.key)))return;const old=state;if(state==='clean'&&(event.key===null||event.newValue!==baseline[keys.indexOf(event.key)]))state='changed';if(old!==state)onChange(state)}
+ events.addEventListener('storage',onStorage);check();return {check,dispose:()=>events.removeEventListener('storage',onStorage)};
+}
+module.exports={observeVersionedStorage};
+
+},"./idb-versioned-capture-prototype.cjs":function(require,module,exports){
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+const {observeVersionedStorage}=require('./idb-versioned-guard-prototype.cjs');
+// Reads only the exact selected keys; callers must guard again before any database write.
+function captureVersioned(store,events,parse,id,onChange){
+ const identity=identifyDailyStorage(id);if(!identity||typeof parse!=='function')return {state:'invalid'};
+ let snapshot;try{snapshot=identity.keys.map(key=>store.getItem(key))}catch(_){return {state:'unavailable'}}
+ const guard=observeVersionedStorage(store,events,id,snapshot,onChange),before=guard.check();
+ if(before!=='clean'){guard.dispose();return {state:before}}
+ let result;try{result=parse(id,snapshot)}catch(_){guard.dispose();return {state:'invalid'}}const after=guard.check();
+ if(after!=='clean'||result.state!=='ready'){guard.dispose();return {state:after!=='clean'?after:result.state}}
+ return {state:'ready',identity:result.identity,records:result.records,snapshot:result.snapshot,guard};
+}
+module.exports={captureVersioned};
+
+
+},"./idb-versioned-import-prototype.cjs":function(require,module,exports){
+// Isolated import parser. A caller must supply the exact game/version validator.
+const {identifyDailyStorage} = require('./idb-versioned-keys-prototype.cjs');
+function validDate(date) {
+  if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  const ms = Date.parse(`${date}T00:00:00Z`);
+  return Number.isFinite(ms) && new Date(ms).toISOString().slice(0, 10) === date;
+}
+function parseImport(id, snapshot, validate) {
+  const identity = identifyDailyStorage(id);
+  if (!identity || !Array.isArray(snapshot) || snapshot.length !== 2 ||
+      !snapshot.every(value => value === null || typeof value === 'string') || typeof validate !== 'function')
+    return {state:'invalid'};
+  const items = [];
+  try {
+    for (const raw of snapshot) {
+      if (raw === null) continue;
+      const item = JSON.parse(raw);
+      if (!item || Array.isArray(item) || typeof item !== 'object' || !validDate(item.date) || validate(item, identity) !== true)
+        return {state:'invalid'};
+      items.push(item);
+    }
+  } catch (_) { return {state:'invalid'}; }
+  if (new Set(items.map(item => item.date)).size !== items.length) return {state:'invalid'};
+  items.sort((a,b) => b.date.localeCompare(a.date));
+  return {state:'ready', identity, records:items, snapshot:[...snapshot]};
+}
+module.exports = {parseImport};
+
+},"./sort-history-validator-prototype.cjs":function(require,module,exports){
+// Isolated replay validator for versioned daily bottle records.
+function validateSortHistory(initial, actions, fixedTargets, limit) {
+  if (!Array.isArray(actions) || actions.length > 10000 || (limit !== null && actions.length > limit)) return false;
+  const tubes = initial.map(tube => [...tube]);
+  const won = () => fixedTargets ? tubes.every((tube, i) => i === 3 ? tube.length === 0 : tube.length === 3 && tube.every(color => color === i)) : tubes.every(tube => tube.length === 0 || (tube.length === 3 && tube.every(color => color === tube[0])));
+  for (const action of actions) {
+    if (!Array.isArray(action) || action.length !== 2 || won()) return false;
+    const [from, to] = action;
+    if (!Number.isInteger(from) || !Number.isInteger(to) || from < 0 || from >= 4 || to < 0 || to >= 4 || from === to || !tubes[from].length || tubes[to].length >= 3 || (tubes[to].length && tubes[to].at(-1) !== tubes[from].at(-1))) return false;
+    tubes[to].push(tubes[from].pop());
+  }
+  return true;
+}
+if (typeof module !== 'undefined') module.exports = {validateSortHistory};
+
+},"./sort-import-parser-prototype.cjs":function(require,module,exports){
+const {parseImport}=require('./idb-versioned-import-prototype.cjs');
+const {identifyDailyStorage}=require('./idb-versioned-keys-prototype.cjs');
+const {validateSortHistory}=require('./sort-history-validator-prototype.cjs');
+function parseSortImport(id,snapshot,generate){
+  const identity=identifyDailyStorage(id);
+  if(identity?.game!=='sort'||identity.version!==2||typeof generate!=='function')return {state:'invalid'};
+  return parseImport(id,snapshot,(record,identity)=>{
+    const puzzle=generate(identity.mode,record.date);
+    return validateSortHistory(puzzle.tubes,record.actions,['oni','kiwami'].includes(identity.mode),identity.mode==='kiwami'?puzzle.limit:null);
+  });
+}
+module.exports={parseSortImport};
+
+}},cache={};function require(id){if(cache[id])return cache[id].exports;if(!sources[id])throw Error('missing '+id);const module={exports:{}};cache[id]=module;sources[id](require,module,module.exports);return module.exports}return {capture:require('./idb-versioned-capture-prototype.cjs').captureVersioned,createParser:generate=>(id,snapshot)=>require('./sort-import-parser-prototype.cjs').parseSortImport(id,snapshot,generate)}})();
+
 start();
 
 function pathFiveVolatile(reset) {
@@ -2824,4 +3370,190 @@ function gardenFiveVolatile(reset){
   for(let r=0;r<size;r++){clue(rows[r],`${r+1}行の目標 ${rows[r]}`);for(let c=0;c<size;c++){const i=r*size+c;buttons.push(button('',()=>{if(cells.every((v,j)=>(v===1)===Boolean(solution&(1<<j))))return;cells[i]=cells[i]===mode?0:mode;moves++;if(!storage.save({cells,moves})){recoverDailyConflict();return}render()}))}}
   function render(){const won=cells.every((v,i)=>(v===1)===Boolean(solution&(1<<i)));buttons.forEach((b,i)=>{const r=Math.floor(i/size),c=i%size,mark=diagonal?[r===c?'↘':'',r+c===size-1?'↙':''].join(''):'';b.className=`${cells[i]===1?'on':cells[i]===2?'garden-mark':''}${extreme&&r<2&&c<2?' garden-region':''}`;b.replaceChildren();const text=document.createElement('span');text.textContent=cells[i]===1?'✿':cells[i]===2?'×':'·';b.append(text);if(mark){const tag=document.createElement('span');tag.className='garden-diagonal';tag.textContent=mark;tag.setAttribute('aria-hidden','true');b.append(tag)}b.onfocus=()=>{if(extreme&&i!==12)buttons[size*size-1-i].classList.add('garden-pair')};b.onblur=()=>{buttons.forEach(x=>x.classList.remove('garden-pair'))};b.setAttribute('aria-pressed',String(cells[i]!==0));b.setAttribute('aria-label',`${r+1}行${c+1}列 ${cells[i]===1?'花':cells[i]===2?'空きメモ':'未選択'} 行の目標${rows[r]} 列の目標${cols[c]}${mark?` ${mark}の対角線`:''}${extreme&&i!==12?` 点対称は${size-r}行${size-c}列`:''}`)});const focused=buttons.indexOf(document.activeElement);if(extreme&&focused>=0&&focused!==12)buttons[size*size-1-focused].classList.add('garden-pair');status.textContent=won?`クリア！ ${moves}手で咲かせたよ`:`${moves}手`;if(won)offerCopy(`かずの花壇 ${gardenLabels[gardenDifficulty]} ${date} ${moves}手\nhttps://game.kihamda.net/play-garden.html?difficulty=${gardenDifficulty}&version=2`);else{copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true}}
   render();
+}
+
+async function lightsFive(reset) {
+    const daily=params.get('mode')==='daily',size=lightsDifficulty==='kiwami'?5:4;
+    let cells=Array(size*size).fill(false),moves=0,progress=null,dailyDate=null;const generation=runGeneration,selected=lightsDifficulty;let db,capture,busy=false,stopped=false;const isCurrent=()=>generation===runGeneration&&dailyDate===todayInTokyo();
+    const toggle=i=>{const x=i%size,y=Math.floor(i/size);for(const [dx,dy] of [[0,0],[1,0],[-1,0],[0,1],[0,-1]]){const a=x+dx,b=y+dy;if(a>=0&&a<size&&b>=0&&b<size)cells[b*size+a]=!cells[b*size+a]}};
+    const group=document.createElement('div');group.className='lights-modes';group.setAttribute('role','group');group.setAttribute('aria-label','難易度');
+    for(const [value,label] of [['easy','かんたん'],['normal','ふつう'],['hard','難関'],['oni','鬼'],['kiwami','極']]){const option=document.createElement('button');option.type='button';option.dataset.difficulty=value;option.textContent=label;option.setAttribute('aria-pressed',String(value===lightsDifficulty));option.addEventListener('click',event=>{if(value===lightsDifficulty)return;lightsDifficulty=value;start();if(event.detail===0)document.querySelector(`.lights-modes [data-difficulty="${value}"]`)?.focus()});group.append(option)}
+    status.before(group);
+    let legacyButton=null,notice=null;
+    if(daily){
+      const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()),part=type=>parts.find(item=>item.type===type).value;
+      const date=`${part('year')}-${part('month')}-${part('day')}`;dailyDate=date;category.textContent=`今日のパズル ${date}`;
+      let oldRecord=false;try{for(const key of ['kihamda-daily-lights','kihamda-daily-lights-previous']){const raw=localStorage.getItem(key);if(raw===null)continue;try{if(JSON.parse(raw)?.date===date)oldRecord=true}catch(_){oldRecord=true}}}catch(_){oldRecord=true}
+      if(oldRecord||lightsDifficulty==='legacy'){legacyButton=document.createElement('button');legacyButton.type='button';legacyButton.className='circuit-legacy';legacyButton.textContent=lightsDifficulty==='legacy'?'ふつうに戻る':'以前の問題を開く';legacyButton.addEventListener('click',event=>{lightsDifficulty=lightsDifficulty==='legacy'?'normal':'legacy';start();if(event.detail===0)(lightsDifficulty==='legacy'?document.querySelector('.circuit-legacy'):document.querySelector('.lights-modes [data-difficulty="normal"]'))?.focus()});board.after(legacyButton)}
+      if(lightsVersion===null&&lightsRequested==='normal'&&lightsDifficulty==='normal'){notice=document.createElement('details');notice.className='circuit-notice';const summary=document.createElement('summary');summary.textContent='以前のリンクについて';const text=document.createElement('p');text.textContent='以前の共有リンクでは、今の「ふつう」が開くよ。以前の問題も今日の日付で遊べるよ。';notice.append(summary,text);if(!legacyButton){const open=document.createElement('button');open.type='button';open.className='circuit-legacy';open.textContent='以前の問題を開く';open.addEventListener('click',event=>{lightsDifficulty='legacy';start();if(event.detail===0)document.querySelector('.circuit-legacy')?.focus()});notice.append(open)}board.after(notice)}
+
+      if(lightsDifficulty==='legacy') {let seed=Number(date.replace(/\D/g,''))>>>0;const indices=[...Array(16).keys()];for(let i=indices.length-1;i>0;i--){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const j=seed%(i+1);[indices[i],indices[j]]=[indices[j],indices[i]]}indices.slice(0,8).forEach(toggle);if(!cells.some(Boolean))toggle(0)}
+      else {const day=Math.floor(Date.UTC(Number(part('year')),Number(part('month'))-1,Number(part('day')))/86400000),options=lightsBoards[lightsDifficulty],n=options.length,index=((day+7*Math.floor(day/n))%n+n)%n,bits=options[index];cells=cells.map((_,i)=>Boolean(bits&(1<<i)))}
+    }else{category.textContent='パズル';const options=lightsBoards[lightsDifficulty==='legacy'?'normal':lightsDifficulty],bits=options[Math.floor(Math.random()*options.length)];cells=cells.map((_,i)=>Boolean(bits&(1<<i)))}
+    cleanup=()=>{group.remove();legacyButton?.remove();notice?.remove()};
+    const stop=()=>{if(stopped||!isCurrent())return;stopped=true;status.textContent='記録が変わったよ。画面を開き直してね。';restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true)};
+    let expired=false;function checkDate(){if(dailyDate===todayInTokyo()||expired||generation!==runGeneration)return;expired=true;stopped=true;capture?.guard?.dispose();board.querySelectorAll('button').forEach(b=>b.disabled=true);document.querySelectorAll('.sum-recovery button,.sum-recovery select,.path-archive').forEach(b=>b.disabled=true);restart.disabled=false;status.textContent='日付が変わったよ。今日の問題を開いてね。';refreshDailyDate()}const timer=window.setInterval(checkDate,1000);document.addEventListener('visibilitychange',checkDate);
+    const prior=cleanup;cleanup=()=>{stopped=true;window.clearInterval(timer);document.removeEventListener('visibilitychange',checkDate);capture?.guard?.dispose();db?.close();lightsRestartGuard=null;restart.disabled=false;prior()};restart.disabled=true;status.textContent='記録を読み込んでいるよ';
+    try{const parser=lightsRecoveryModules.createParser();capture=lightsRecoveryModules.capture(localStorage,window,parser,`lights-${selected}-v2`,stop);if(capture.state!=='ready')throw Error('source invalid');db=await openRecoveryDatabase(stop);if(!isCurrent()||stopped){db.close();return}progress=await openLightsProgress({db,mode:selected,date:dailyDate,capture,parser,isCurrent});if(!isCurrent()||stopped)return;if(progress.state==='source-conflict'){const container=document.createElement('section');container.className='sum-recovery';status.before(container);const previous=cleanup;cleanup=()=>{container.remove();previous()};showLightsConflict({db,id:`lights-${selected}-v2`,mode:selected,loaded:progress.loaded,capture,parser,isCurrent,stop,container});return}if(progress.state!=='ready')throw Error(progress.state)}catch(_){if(isCurrent()&&!stopped){cleanup();cleanup=()=>{};lightsTemporary=true;try{games.lights(false)}finally{lightsTemporary=false}record.hidden=false;record.textContent='記録を読み込めないため、今回の進み具合は保存されないよ。'}return}
+    const saved=progress.record;if(saved){cells=saved.cells.slice();moves=saved.moves}
+    const initial=(()=>{const day=Math.floor(Date.parse(dailyDate+'T00:00:00Z')/86400000),options=lightsBoards[selected],n=options.length,bits=options[((day+7*Math.floor(day/n))%n+n)%n];return Array.from({length:size*size},(_,i)=>Boolean(bits&(1<<i)))})();
+    async function persist(){if(busy||stopped||!isCurrent())return false;busy=true;restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);try{const result=await progress.save({date:dailyDate,cells:[...cells],moves});if(result!=='saved'){stop();if(result==='too-old')status.textContent='この日の記録は保存できないよ。新しい2日分の記録を残しているよ。';return false}return isCurrent()&&!stopped}catch(_){stop();status.textContent='保存できなかったよ。画面を開き直してね。';return false}finally{busy=false;if(isCurrent()&&!stopped){restart.disabled=false;board.querySelectorAll('button').forEach(b=>b.disabled=false)}}}
+    const archiveButton=document.createElement('button');archiveButton.type='button';archiveButton.className='path-archive';archiveButton.textContent='退避した記録を見る';board.after(archiveButton);const archiveCleanup=cleanup;cleanup=()=>{archiveButton.remove();archiveCleanup()};
+    archiveButton.onclick=event=>{if(busy||stopped||!isCurrent())return;busy=true;restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);document.querySelectorAll('.lights-modes button,.circuit-legacy').forEach(b=>b.disabled=true);archiveButton.disabled=true;const section=document.createElement('section'),returnButton=document.createElement('button'),content=document.createElement('div');section.className='sum-recovery';returnButton.type='button';returnButton.textContent='ゲームに戻る';returnButton.onclick=()=>start();section.append(returnButton,content);archiveButton.after(section);const prior=cleanup;cleanup=()=>{section.remove();prior()};status.textContent='退避した記録';if(event.detail===0)returnButton.focus();const guard=()=>isCurrent()&&!stopped&&capture.guard.check()==='clean';const valid=record=>lightsRecoveryModules.createParser()(['lights',selected,'v2'].join('-'),[JSON.stringify(record),null]).state==='ready';openSumArchiveReview({db,id:['lights',selected,'v2'].join('-'),valid,guard,container:content,describe:record=>describeLightsRecord(record,selected),readMulti:recoveryModules.readMultiArchive,expectedMeta:JSON.stringify(progress.loaded.meta),onRestored:()=>{returnButton.textContent='復元した記録を開く'}})};
+    restart.disabled=false;lightsRestartGuard=async event=>{if(busy||stopped)return;copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;cells=initial.slice();moves=0;if(await persist()){render();if(event?.detail===0)restart.focus()}};
+    board.dataset.lightsSize=size;board.style.setProperty('--lights-columns',size);
+    const buttons=cells.map((_,i)=>button('',async event=>{if(busy||stopped||!cells.some(Boolean))return;toggle(i);moves++;if(await persist()){render();if(event.detail===0)buttons[i].focus()}}));
+    function render(){const won=!cells.some(Boolean);cells.forEach((on,i)=>{buttons[i].className=on?'on':'';buttons[i].textContent=on?'✦':'·';buttons[i].setAttribute('aria-disabled',String(won));buttons[i].setAttribute('aria-label',`${Math.floor(i/size)+1}行${i%size+1}列 ${on?'点灯':'消灯'}`)});status.textContent=cells.some(Boolean)?`${moves}手`:`クリア！ ${moves}手で消せたよ`;if(progress&&!cells.some(Boolean))offerCopy(`ひかりのスイッチ ${{easy:'かんたん',normal:'ふつう',hard:'難関',oni:'鬼',kiwami:'極',legacy:'以前の問題'}[lightsDifficulty]} ${dailyDate} ${moves}手\nhttps://game.kihamda.net/play-lights.html?mode=daily&difficulty=${lightsDifficulty}&version=${lightsDifficulty==='legacy'?'1':'2'}`)}if(reset)await lightsRestartGuard();else render();
+}
+async function circuitFive(reset) {
+    const generation=runGeneration,selected=circuitDifficulty;let db,capture,progress,busy=false,stopped=false;const isCurrent=()=>generation===runGeneration;
+    const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+    const part=type=>Number(parts.find(item=>item.type===type).value);
+    const date=`${part('year')}-${String(part('month')).padStart(2,'0')}-${String(part('day')).padStart(2,'0')}`;
+    category.textContent=`今日のパズル ${date}`;
+    const modeGroup=document.createElement('div');modeGroup.className='circuit-modes';modeGroup.setAttribute('role','group');modeGroup.setAttribute('aria-label','難易度');
+    for(const [value,label] of [['easy','かんたん'],['normal','ふつう'],['hard','難関'],['oni','鬼'],['kiwami','極']]) {
+      const option=document.createElement('button');option.type='button';option.dataset.difficulty=value;option.textContent=label;option.setAttribute('aria-pressed',String(value===circuitDifficulty));
+      option.addEventListener('click',event=>{if(value===circuitDifficulty)return;circuitDifficulty=value;start();if(event.detail===0)document.querySelector(`.circuit-modes [data-difficulty="${value}"]`).focus();});
+      modeGroup.append(option);
+    }
+    status.before(modeGroup);
+    let oldRecord=false,validOldRecord=false;
+    try {
+      for(const key of ['kihamda-daily-circuit','kihamda-daily-circuit-previous']) {
+        const raw=localStorage.getItem(key);if(raw===null)continue;
+        try { const saved=JSON.parse(raw);if(saved?.date===date){oldRecord=true;validOldRecord ||= Array.isArray(saved.turns)&&saved.turns.length===9&&saved.turns.every(n=>Number.isInteger(n)&&n>=0&&n<4)&&Number.isSafeInteger(saved.moves)&&saved.moves>=0;} }
+        catch (_) { oldRecord=true; }
+      }
+    } catch (_) { oldRecord=true; }
+    let legacyButton=null;
+    if(oldRecord||circuitDifficulty==='legacy') {
+      legacyButton=document.createElement('button');legacyButton.type='button';legacyButton.className='circuit-legacy';
+      legacyButton.textContent=circuitDifficulty==='legacy'?'ふつうに戻る':validOldRecord?'以前の記録を開く':'以前の問題を開く';
+      legacyButton.addEventListener('click',event=>{circuitDifficulty=circuitDifficulty==='legacy'?'normal':'legacy';start();if(event.detail===0){const focus=circuitDifficulty==='legacy'?document.querySelector('.circuit-legacy'):document.querySelector('.circuit-modes [data-difficulty="normal"]');focus?.focus();}});
+      status.before(legacyButton);
+    }
+    let legacyNotice=null;
+    if(circuitVersion===null && circuitRequested==='normal' && circuitDifficulty==='normal') {
+      legacyNotice=document.createElement('details');legacyNotice.className='circuit-notice';
+      const summary=document.createElement('summary');summary.textContent='以前のリンクについて';
+      const text=document.createElement('p');text.textContent='以前の共有リンクでは、今の「ふつう」が開くよ。以前の問題も今日の日付で遊べるよ。';
+      legacyNotice.append(summary,text);
+      if(!legacyButton) {
+        const oldLink=document.createElement('button');oldLink.type='button';oldLink.className='circuit-legacy';oldLink.textContent='以前の問題を開く';
+        oldLink.addEventListener('click',event=>{circuitDifficulty='legacy';start();if(event.detail===0)document.querySelector('.circuit-legacy')?.focus();});
+        legacyNotice.append(oldLink);
+      }
+      board.after(legacyNotice);
+    }
+    cleanup=()=>{modeGroup.remove();legacyButton?.remove();legacyNotice?.remove()};
+    const generator=circuitDifficulty==='easy'?generateEasyCircuitPuzzle:circuitDifficulty==='hard'?generateHardCircuitPuzzle:circuitDifficulty==='legacy'?generateCircuitPuzzle:generateNormalCircuitPuzzle;
+    if(['hard','oni','kiwami'].includes(circuitDifficulty))instructions.textContent='押したマスと上下左右の道が回るよ。始から終まで、すべてのマスをつなげてね。';
+    if(['easy','legacy'].includes(circuitDifficulty))instructions.textContent='マスを押して道を回そう。左の始から右の終まで、すべてのマスをつなげてね。';
+    const size=circuitDifficulty==='oni'?4:circuitDifficulty==='kiwami'?5:3;
+    const puzzle=size===3?generator(part('year'),part('month'),part('day')):generateHighCircuitPuzzle(part('year'),part('month'),part('day'),size);
+    const {masks,turns:initial,start:begin=0,end=8}=puzzle;
+    board.style.setProperty('--circuit-columns',size);board.dataset.circuitSize=size;board.dataset.circuitDifficulty=circuitDifficulty;
+    const valid=saved=>Array.isArray(saved.turns)&&saved.turns.length===size*size&&saved.turns.every(n=>Number.isInteger(n)&&n>=0&&n<4)&&Number.isSafeInteger(saved.moves)&&saved.moves>=0;
+    const id=({easy:'circuit-easy-v2',normal:'circuit-normal-v3',hard:'circuit-linked-v2',oni:'circuit-oni-v2',kiwami:'circuit-kiwami-v2'})[selected];let turns=[...initial],moves=0;
+    const current=()=>isCurrent()&&date===todayInTokyo();
+    const stop=()=>{if(stopped||!isCurrent())return;stopped=true;status.textContent='記録が変わったよ。画面を開き直してね。';restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);document.querySelectorAll('.sum-recovery button,.sum-recovery select,.path-archive').forEach(b=>b.disabled=true)};
+    const checkDate=()=>{if(date===todayInTokyo()||!isCurrent()||stopped)return;stopped=true;capture?.guard?.dispose();board.querySelectorAll('button').forEach(b=>b.disabled=true);document.querySelectorAll('.sum-recovery button,.sum-recovery select,.path-archive').forEach(b=>b.disabled=true);restart.disabled=false;status.textContent='日付が変わったよ。今日の問題を開いてね。';refreshDailyDate()};
+    const timer=window.setInterval(checkDate,1000);document.addEventListener('visibilitychange',checkDate);
+    const oldCleanup=cleanup;cleanup=()=>{stopped=true;clearInterval(timer);document.removeEventListener('visibilitychange',checkDate);capture?.guard?.dispose();db?.close();circuitRestartGuard=null;restart.disabled=false;oldCleanup()};
+    restart.disabled=true;status.textContent='記録を読み込んでいるよ';
+    try{const parser=circuitRecoveryModules.createParser();capture=circuitRecoveryModules.capture(localStorage,window,parser,id,stop);if(capture.state!=='ready')throw Error(capture.state);db=await openRecoveryDatabase(stop);if(!current()||stopped){db.close();return}progress=await openCircuitProgress({db,mode:selected,date,capture,parser,isCurrent:current});if(!current()||stopped)return;if(progress.state==='source-conflict'){const container=document.createElement('section');container.className='sum-recovery';status.before(container);const previous=cleanup;cleanup=()=>{container.remove();previous()};showCircuitConflict({db,id,mode:selected,loaded:progress.loaded,capture,parser,isCurrent:current,stop,container});return}if(progress.state==='changed'){stop();return}if(progress.state!=='ready')throw Error(progress.state)}catch(_){if(current()&&!stopped){cleanup();cleanup=()=>{};circuitTemporary=true;try{games.circuit(false)}finally{circuitTemporary=false}record.hidden=false;record.textContent='記録を読み込めないため、今回の進み具合は保存されないよ。'}return}
+    if(progress.record){turns=[...progress.record.turns];moves=progress.record.moves}
+    async function persist(){if(busy||stopped||!current())return false;busy=true;restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);try{const result=await progress.save({date,turns:[...turns],moves});if(result!=='saved'){stop();if(result==='too-old')status.textContent='この日の記録は保存できないよ。新しい2日分の記録を残しているよ。';return false}return current()&&!stopped}catch(_){stop();status.textContent='保存できなかったよ。画面を開き直してね。';return false}finally{busy=false;if(current()&&!stopped){restart.disabled=false;board.querySelectorAll('button').forEach(b=>b.disabled=false)}}}
+    const archiveButton=document.createElement('button');archiveButton.type='button';archiveButton.className='path-archive';archiveButton.textContent='退避した記録を見る';board.after(archiveButton);const archiveCleanup=cleanup;cleanup=()=>{archiveButton.remove();archiveCleanup()};
+    archiveButton.onclick=event=>{if(busy||stopped||!current())return;busy=true;restart.disabled=true;board.querySelectorAll('button').forEach(b=>b.disabled=true);document.querySelectorAll('.circuit-modes button,.circuit-legacy').forEach(b=>b.disabled=true);archiveButton.disabled=true;const section=document.createElement('section'),returnButton=document.createElement('button'),content=document.createElement('div');section.className='sum-recovery';returnButton.type='button';returnButton.textContent='ゲームに戻る';returnButton.onclick=()=>start();section.append(returnButton,content);archiveButton.after(section);const previous=cleanup;cleanup=()=>{section.remove();previous()};status.textContent='退避した記録';if(event.detail===0)returnButton.focus();const guard=()=>current()&&!stopped&&capture.guard.check()==='clean',parser=circuitRecoveryModules.createParser(),valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready';openSumArchiveReview({db,id,valid,guard,container:content,describe:record=>describeCircuitRecord(record,selected),readMulti:recoveryModules.readMultiArchive,expectedMeta:JSON.stringify(progress.loaded.meta),onRestored:()=>{returnButton.textContent='復元した記録を開く'}})};
+    restart.disabled=false;circuitRestartGuard=async event=>{if(busy||stopped)return;copyResult.hidden=true;copyResult.onclick=null;copyFeedback.hidden=true;turns=[...initial];moves=0;if(await persist()){render();if(event?.detail===0)restart.focus()}};
+    board.classList.add('circuit');
+    const directions=[[1,'上'],[2,'右'],[4,'下'],[8,'左']];
+    const affected=i=>['hard','oni','kiwami'].includes(circuitDifficulty)?[i,...[-size,size,...(i%size?[-1]:[]),...(i%size<size-1?[1]:[])].map(delta=>i+delta).filter(j=>j>=0&&j<size*size)]:circuitDifficulty==='normal'&&i%3<2?[i,i+1]:[i];
+    const buttons=turns.map((_,i)=>button('',async event=>{
+      if(busy||stopped||!current()||circuitSolved(masks.map((mask,j)=>rotateCircuit(mask,turns[j])),size,begin,end)) return;
+      const group=affected(i);
+      for(const j of group)turns[j]=(turns[j]+1)%4; moves++;
+      if(await persist()){render();if(event.detail===0)buttons[i].focus()}
+    }));
+    if(['hard','normal','oni','kiwami'].includes(circuitDifficulty)) {
+      const highlight=i=>{const selected=i===null?[]:affected(i);buttons.forEach((b,j)=>b.classList.toggle('circuit-affected',selected.includes(j)));};
+      let lastTouch=null;
+      buttons.forEach((b,i)=>{
+        b.addEventListener('focus',()=>highlight(i));b.addEventListener('blur',()=>highlight(null));
+        b.addEventListener('pointerdown',event=>{if(event.pointerType==='touch'){lastTouch=i;highlight(i);}});
+        b.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')lastTouch=null;const active=document.activeElement;if(!board.contains(active)||!active.matches(':focus-visible'))highlight(i);});
+        b.addEventListener('pointerleave',()=>{const active=document.activeElement;highlight(board.contains(active)&&active.matches(':focus-visible')?buttons.indexOf(active):lastTouch);});
+      });
+    }
+    function render(){
+      const current=masks.map((mask,i)=>rotateCircuit(mask,turns[i])), {reached,won}=circuitTrace(current,size,begin,end);
+      buttons.forEach((b,i)=>{
+        const mask=current[i], ends=directions.filter(([bit])=>mask&bit).map(([,name])=>name).join('と');
+        const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+        svg.setAttribute('viewBox','0 0 100 100'); svg.setAttribute('aria-hidden','true');
+        for(const [bit,x,y] of [[1,50,0],[2,100,50],[4,50,100],[8,0,50]]) if(mask&bit){
+          const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+          for(const [name,value] of Object.entries({x1:50,y1:50,x2:x,y2:y})) line.setAttribute(name,String(value));
+          svg.append(line);
+        }
+        b.replaceChildren(svg); b.dataset.endpoint=i===begin?'始':i===end?'終':'';
+        b.classList.toggle('circuit-connected',reached.includes(i));
+        b.setAttribute('aria-disabled',String(won));
+        const linked=['normal','hard','oni','kiwami'].includes(circuitDifficulty);
+        const neighbors=affected(i).filter(j=>j!==i).map(j=>`${Math.floor(j/size)+1}行${j%size+1}列`);
+        const operation=linked?(neighbors.length?` 押すとこのマスと${neighbors.join('、')}が回る`:' 押すとこのマスが回る'):'';
+        b.setAttribute('aria-label',`${Math.floor(i/size)+1}行${i%size+1}列 ${i===begin?'始点 ':i===end?'終点 ':''}${ends}につながる道${reached.includes(i)?' 始点から接続':''}${operation}`);
+      });
+      status.textContent=won?`クリア！ ${moves}手でつながったよ`:`${moves}手　つながり ${reached.length} / ${size*size}`;
+      if(won) offerCopy(`くるくる回路 ${circuitDifficulty==='easy'?'かんたん':circuitDifficulty==='hard'?'難関':circuitDifficulty==='legacy'?'以前の問題':circuitDifficulty==='oni'?'鬼':circuitDifficulty==='kiwami'?'極':'ふつう'} ${date} ${moves}手\nhttps://game.kihamda.net/play-circuit.html?difficulty=${circuitDifficulty}&version=${circuitDifficulty==='normal'?'3':circuitDifficulty==='legacy'?'1':'2'}`);
+    }
+    if(reset)await circuitRestartGuard();else render();
+}
+
+// Isolated versioned bottle import; legacy records remain separate.
+function importSortIfAbsent({db,id,records,snapshot,guard,valid}) {
+  if (!db || !/^sort-(easy|normal|hard|oni|kiwami)-v2$/.test(id) || !Array.isArray(records) || records.length>2 || !Array.isArray(snapshot) || snapshot.length!==2 || typeof guard!=='function' || typeof valid!=='function' || !records.every(valid) || new Set(records.map(record=>record.date)).size!==records.length) return Promise.resolve('invalid');
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction('games','readwrite'),store=tx.objectStore('games'),request=store.get(id);let outcome='changed';
+    request.onsuccess=()=>{if(!guard())return;if(request.result!==undefined){outcome='exists';return}try{store.add([...records].sort((a,b)=>b.date.localeCompare(a.date)),id);store.add({snapshot},`source:${id}`);outcome='imported'}catch(_){tx.abort()}};
+    tx.oncomplete=()=>resolve(outcome);tx.onabort=()=>reject(tx.error||Error('import aborted'));tx.onerror=()=>reject(tx.error);
+  });
+}
+
+// Versioned bottle progress uses a transaction to protect concurrent tabs.
+async function openSortProgress({db, mode, date, capture, parser, isCurrent}) {
+  const id=(['easy','normal','hard','oni','kiwami'].includes(mode) ? 'sort-'+mode+'-v2' : null);
+  const valid=record=>parser(id,[JSON.stringify(record),null]).state==='ready';
+  const guard=()=>isCurrent()&&capture.guard.check()==='clean';
+  const imported=await importSortIfAbsent({db,id,records:capture.records,snapshot:capture.snapshot,guard,valid});
+  if(!['imported','exists'].includes(imported)||!guard())return {state:'changed'};
+  const read=()=>new Promise((resolve,reject)=>{const tx=db.transaction('games','readonly'),store=tx.objectStore('games'),records=store.get(id),meta=store.get(`source:${id}`);tx.oncomplete=()=>resolve({records:records.result,meta:meta.result});tx.onabort=()=>reject(tx.error||Error('read aborted'));tx.onerror=()=>reject(tx.error)});
+  const loaded=await read();
+  if(!guard())return {state:'changed'};
+  if(!Array.isArray(loaded.records)||loaded.records.length>2||!loaded.records.every(valid)||new Set(loaded.records.map(x=>x.date)).size!==loaded.records.length||!loaded.meta)return {state:'invalid'};
+  if(JSON.stringify(loaded.meta.snapshot)!==JSON.stringify(capture.snapshot))return {state:'source-conflict',loaded};
+  let record=loaded.records.find(item=>item.date===date)??null;
+  async function save(next){
+    if(!valid(next)||next.date!==date)return 'invalid';
+    const expected=JSON.stringify(record);
+    const result=await new Promise((resolve,reject)=>{
+      const tx=db.transaction('games','readwrite'),store=tx.objectStore('games'),records=store.get(id),meta=store.get(`source:${id}`);let outcome='changed';
+      meta.onsuccess=()=>{
+        if(!guard())return;
+        const all=records.result;
+        if(!Array.isArray(all)||all.length>2||!all.every(valid)||new Set(all.map(x=>x.date)).size!==all.length){outcome='invalid';return}
+        if(JSON.stringify(meta.result?.snapshot)!==JSON.stringify(capture.snapshot)){outcome='source-conflict';return}
+        if(JSON.stringify(all.find(item=>item.date===date)??null)!==expected){outcome='conflict';return}
+        const merged=new Map(all.map(item=>[item.date,item]));merged.set(date,next);const dates=[...merged.keys()].sort().reverse().slice(0,2);
+        if(!dates.includes(date)){outcome='too-old';return}
+        try{store.put(dates.map(key=>merged.get(key)),id);outcome='saved'}catch(_){tx.abort()}
+      };
+      tx.oncomplete=()=>resolve(outcome);tx.onabort=()=>reject(tx.error||Error('write aborted'));tx.onerror=()=>reject(tx.error);
+    });
+    if(result==='saved'&&guard())record=next;
+    return result==='saved'&&!guard()?'changed-after-save':result;
+  }
+  return {state:'ready',record,save,loaded};
 }
