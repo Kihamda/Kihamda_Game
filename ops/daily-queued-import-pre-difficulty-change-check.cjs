@@ -72,6 +72,7 @@ async function play(page, date = '2026-11-08') {
         await older.waitForFunction(({key,initialLegacy})=>localStorage.getItem(key)!==initialLegacy,{key,initialLegacy});
         const legacy=await older.evaluate(key=>localStorage.getItem(key),key);
         await page.getByText(game==='sum'?'以前の記録が変わったよ。画面を開き直してね。':'記録が変わったよ。画面を開き直してね。').waitFor();
+        assert.equal(await page.locator('#restart').isDisabled(),true);
         assert.equal(await page.locator('#board button:enabled').count(),0);
         await blocker.evaluate(()=>{window.releaseWrite=true});
         await blocker.evaluate(()=>window.lockFinished);
