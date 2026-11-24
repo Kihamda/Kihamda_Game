@@ -3,7 +3,7 @@ const {execFileSync} = require('child_process');
 const http = require('http'), fs = require('fs'), path = require('path'), assert = require('assert/strict');
 const revisions = {circuit:'f7574a1', lights:'543fa8d', garden:'a014afd', path:'5b37aec', sort:'aae5968', sum:'cbbcf05'};
 const game = process.argv[2];
-if (!revisions[game]) throw new Error('Specify circuit, lights, garden, path or sort');
+if (!revisions[game]) throw new Error('Specify circuit, lights, garden, path, sort or sum');
 const oldScript = execFileSync('git', ['show', `${revisions[game]}:site/game.js`]);
 const root = path.resolve(process.env.SITE_DIR || 'site'), oldRoot = path.resolve('site');
 const fixed = process.env.RECOVERY_FIXED === '1';
@@ -95,8 +95,20 @@ async function play(page, mode, date = '2026-11-08') {
         assert.deepEqual(recovered.source.snapshot,snapshots);
         assert.deepEqual(recovered.archive,{marker:'existing archive'});
         assert.deepEqual(await page.evaluate(({key,previous})=>[localStorage.getItem(key),localStorage.getItem(previous)],{key,previous}),snapshots);
+        const readAll=()=>page.evaluate(async()=>{
+          const db=await openDailyDatabase();
+          return new Promise((resolve,reject)=>{const tx=db.transaction('games'),store=tx.objectStore('games'),keys=store.getAllKeys(),values=store.getAll();tx.oncomplete=()=>{db.close();resolve(Object.fromEntries(keys.result.map((key,index)=>[key,values.result[index]])))};tx.onabort=()=>reject(tx.error)});
+        });
+        const beforeReload=await readAll();
+        assert.deepEqual(beforeReload[id],recovered.records);
+        assert.deepEqual(beforeReload[`source:${id}`],recovered.source);
+        assert.deepEqual(beforeReload[`multi-backup:${id}:existing`],recovered.archive);
+        await page.reload();
+        await page.waitForFunction(()=>document.querySelectorAll('#board button').length && !document.querySelector('#restart').disabled);
+        assert.deepEqual(await readAll(),beforeReload);
+        assert.deepEqual(await page.evaluate(({key,previous})=>[localStorage.getItem(key),localStorage.getItem(previous)],{key,previous}),snapshots);
         assert.deepEqual(errors,[]);
-        console.log(`${fixed?'fixed':'dynamic'} ${game} ${mode}: queued import stopped after old tab write; both days and archive recovered on reload`);
+        console.log(`${fixed?'fixed':'dynamic'} ${game} ${mode}: queued import stopped after old tab write; both days and archive persisted across reloads`);
       } finally {await context.close()}
     }
   } finally {await browser.close();server.close()}

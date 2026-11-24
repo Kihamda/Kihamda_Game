@@ -15,11 +15,11 @@ const server = http.createServer((req, res) => {
   if (!file.startsWith(base + path.sep)) return res.writeHead(400).end();
   fs.readFile(file, (error, data) => error ? res.writeHead(404).end() : res.writeHead(200, {'Content-Type':{'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css'}[path.extname(file)] || 'text/plain'}).end(data));
 });
-async function play(page, mode) {
+async function play(page, mode, unsaved = false) {
   if (game === 'sum') {
     await page.locator('#board button').first().click();
   } else if (game === 'path') {
-    const index = await page.evaluate(mode => { const p = generateFivePath(mode, '2026-11-08'); const saved=JSON.parse(localStorage.getItem(`kihamda-daily-path-${mode}-v2`) || 'null'); const steps=saved?.steps || []; return Array.from({length:(p.size || 5)**2}, (_, i) => i).find(i => validPathSteps(p, [...steps, p.portal?.includes(i) ? [i,p.portal[p.portal.indexOf(i)^1]] : [i]])); }, mode);
+    const index = await page.evaluate(({mode,unsaved}) => { const p = generateFivePath(mode, '2026-11-08'); const saved=unsaved?null:JSON.parse(localStorage.getItem(`kihamda-daily-path-${mode}-v2`) || 'null'); const steps=saved?.steps || []; return Array.from({length:(p.size || 5)**2}, (_, i) => i).find(i => validPathSteps(p, [...steps, p.portal?.includes(i) ? [i,p.portal[p.portal.indexOf(i)^1]] : [i]])); }, {mode,unsaved});
     assert.notEqual(index, undefined); await page.locator('#board button').nth(index).click();
   } else if (game === 'sort') {
     const move = await page.evaluate(mode => {
@@ -73,11 +73,22 @@ async function play(page, mode) {
         assert.equal(await page.locator('#board button:enabled').count(),0);
         await blocker.evaluate(()=>{window.releaseWrite=true});
         await blocker.evaluate(()=>Promise.all([window.lockFinished,window.upgrade]));
-        const after=await blocker.evaluate(()=>new Promise((resolve,reject)=>{const req=indexedDB.open('kihamda-games-daily',2);req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('games'),s=tx.objectStore('games'),keys=s.getAllKeys(),values=s.getAll();tx.oncomplete=()=>{db.close();resolve({keys:keys.result,values:values.result})};tx.onabort=()=>reject(tx.error)}}));
+        const readAll=()=>blocker.evaluate(()=>new Promise((resolve,reject)=>{const req=indexedDB.open('kihamda-games-daily',2);req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('games'),s=tx.objectStore('games'),keys=s.getAllKeys(),values=s.getAll();tx.oncomplete=()=>{db.close();resolve({keys:keys.result,values:values.result})};tx.onabort=()=>reject(tx.error)}}));
+        const after=await readAll();
         assert.deepEqual(after,{keys:[`multi-backup:${id}:existing`],values:[{marker:'existing archive'}]});
         assert.equal(await page.evaluate(key=>localStorage.getItem(key),key),legacy);
+        for (let attempt=0;attempt<2;attempt++) {
+          await page.reload();
+          await page.getByText('記録を読み込めないため、今回の進み具合は保存されないよ。').waitFor();
+          await page.waitForFunction(()=>document.querySelectorAll('#board button').length && !document.querySelector('#restart').disabled);
+          const boardBefore=await page.locator('#board').innerHTML();
+          await play(page,mode,true);
+          assert.notEqual(await page.locator('#board').innerHTML(),boardBefore);
+          assert.deepEqual(await readAll(),after);
+          assert.equal(await page.evaluate(key=>localStorage.getItem(key),key),legacy);
+        }
         assert.deepEqual(errors,[]);
-        console.log(`${fixed?'fixed':'dynamic'} ${game} ${mode}: queued initial import interrupted; source and archive retained`);
+        console.log(`${fixed?'fixed':'dynamic'} ${game} ${mode}: database upgrade interrupted import; source and archive retained through reloads and unsaved play`);
       } finally {await context.close()}
     }
   } finally {await browser.close();server.close()}

@@ -90,8 +90,20 @@ async function play(page, date) {
       assert.deepEqual(recovered.source.legacySnapshot,updated);
       assert.deepEqual(recovered.archive,{marker:'existing archive'});
       assert.deepEqual(await page.evaluate(({key,previous})=>[localStorage.getItem(key),localStorage.getItem(previous)],{key,previous}),updated);
+      const readAll = () => page.evaluate(async()=>{
+        const db=await openDailyDatabase();
+        return new Promise((resolve,reject)=>{const tx=db.transaction('games'),store=tx.objectStore('games'),keys=store.getAllKeys(),values=store.getAll();tx.oncomplete=()=>{db.close();resolve(Object.fromEntries(keys.result.map((key,index)=>[key,values.result[index]])))};tx.onabort=()=>reject(tx.error)});
+      });
+      const beforeReload=await readAll();
+      assert.deepEqual(beforeReload[id],recovered.records);
+      assert.deepEqual(beforeReload[`source:${id}`],recovered.source);
+      assert.deepEqual(beforeReload[`multi-backup:${id}:existing`],recovered.archive);
+      await page.reload();
+      await page.waitForFunction(()=>document.querySelectorAll('#board button').length && !document.querySelector('#restart').disabled);
+      assert.deepEqual(await readAll(),beforeReload);
+      assert.deepEqual(await page.evaluate(({key,previous})=>[localStorage.getItem(key),localStorage.getItem(previous)],{key,previous}),updated);
       assert.deepEqual(errors,[]);
-      console.log(`${fixed?'fixed':'dynamic'} ${game}: queued import stopped after pre-difficulty previous-day update; both days and archive recovered on reload`);
+      console.log(`${fixed?'fixed':'dynamic'} ${game}: queued import stopped after pre-difficulty previous-day update; both days and archive persisted across reloads`);
     } finally {await context.close()}
   } finally {await browser.close();server.close()}
 })().catch(error=>{console.error(error);server.close();process.exitCode=1});

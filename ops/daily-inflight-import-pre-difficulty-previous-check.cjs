@@ -147,8 +147,8 @@ async function play(page, date) {
       assert.deepEqual(await page.evaluate(({key,previous})=>[localStorage.getItem(key),localStorage.getItem(previous)],{key,previous}),updated);
       await page.reload();
       await page.waitForFunction(()=>document.querySelectorAll('#board button').length && !document.querySelector('#restart').disabled);
-      const afterReload=await page.evaluate(async id=>{const db=await openDailyDatabase();return new Promise((resolve,reject)=>{const tx=db.transaction('games'),records=tx.objectStore('games').get(id);tx.oncomplete=()=>{db.close();resolve(records.result)};tx.onabort=()=>reject(tx.error)})},id);
-      assert.deepEqual(afterReload,records);
+      const afterReload=await page.evaluate(async()=>{const db=await openDailyDatabase();return new Promise((resolve,reject)=>{const tx=db.transaction('games'),store=tx.objectStore('games'),keys=store.getAllKeys(),values=store.getAll();tx.oncomplete=()=>{db.close();resolve(Object.fromEntries(keys.result.map((key,index)=>[key,values.result[index]])))};tx.onabort=()=>reject(tx.error)})});
+      assert.deepEqual(afterReload,recovered);
       if (choice === 'database') {
         await page.getByRole('button',{name:'退避した記録を見る'}).click();
         await page.locator('button[data-kind="multi"][data-source="legacy-after"][data-date="2026-11-07"]').click();
@@ -188,6 +188,30 @@ async function play(page, date) {
         assert.equal(changedRecord.moves,changedOld.moves);
         if (game==='path') assert.deepEqual(changedRecord.steps,changedOld.route.slice(1).map(cell=>[cell]));
         else assert.deepEqual(changedRecord.owners,changedOld.cells.map(cell=>cell?0:-1));
+        const readAll = () => page.evaluate(async()=>{
+          const db=await openDailyDatabase();
+          return new Promise((resolve,reject)=>{const tx=db.transaction('games'),store=tx.objectStore('games'),keys=store.getAllKeys(),values=store.getAll();tx.oncomplete=()=>{db.close();resolve(Object.fromEntries(keys.result.map((key,index)=>[key,values.result[index]])))};tx.onabort=()=>reject(tx.error)});
+        });
+        const beforeFinalReload=await readAll();
+        assert.deepEqual(beforeFinalReload[id],persisted);
+        assert.deepEqual(beforeFinalReload[archives[0][0]],archive);
+        assert.deepEqual(beforeFinalReload[`multi-backup:${id}:existing`],{marker:'existing archive'});
+        for (const [archiveKey,value] of Object.entries(restored).filter(([key])=>key.startsWith(`backup:${id}:`))) assert.deepEqual(beforeFinalReload[archiveKey],value);
+        const newArchives=Object.entries(beforeFinalReload).filter(([key])=>key.startsWith(`multi-backup:${id}:`) && !(key in restored));
+        assert.equal(newArchives.length,1);
+        assert.deepEqual(newArchives[0][1].result,persisted);
+        const readArchiveList = async () => {
+          await page.getByRole('button',{name:'退避した記録を見る'}).click();
+          const section=page.locator('.sum-recovery');
+          await section.getByText('4件の退避',{exact:true}).waitFor();
+          await section.locator(':scope > div > div > section').nth(3).waitFor();
+          return section.innerText();
+        };
+        const listBefore=await readArchiveList();
+        await page.reload();
+        await page.waitForFunction(()=>document.querySelectorAll('#board button').length && !document.querySelector('#restart').disabled);
+        assert.deepEqual(await readAll(),beforeFinalReload);
+        assert.deepEqual(await readArchiveList(),listBefore);
       }
       assert.deepEqual(errors,[]);
       console.log(`${fixed?'fixed':'dynamic'} ${game}: in-flight import detected pre-difficulty previous-day update; ${choice} record recovered with archive${choice==='database'?', restore race detected and updated legacy record reconciled':''}`);
