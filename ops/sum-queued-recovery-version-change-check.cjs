@@ -41,7 +41,14 @@ const server = http.createServer((req, res) => {
           const db = await openDailyDatabase();
           return new Promise((resolve,reject) => { const tx=db.transaction('games'), store=tx.objectStore('games'), keys=store.getAllKeys(), values=store.getAll(); tx.oncomplete=()=>{db.close();resolve({keys:keys.result,values:values.result})}; tx.onabort=()=>reject(tx.error); });
         }, id);
+        await page.evaluate(async id => {
+          const db=await openDailyDatabase();
+          await new Promise((resolve,reject)=>{const tx=db.transaction('games','readwrite');tx.objectStore('games').put({marker:'existing archive'},`multi-backup:${id}:existing`);tx.oncomplete=resolve;tx.onabort=()=>reject(tx.error)});
+          db.close();
+        }, id);
         const before = await read();
+        assert.ok(before.keys.includes(`multi-backup:${id}:existing`));
+        assert.ok(before.keys.includes(id));
         const legacy = await older.evaluate(key => localStorage.getItem(key), key);
         await blocker.goto(fixed ? `${base}/play-sum.html?difficulty=${mode}&version=2` : `${base}/game.html?game=sum&difficulty=${mode}&version=2`);
         await blocker.evaluate(async () => { const db=await openDailyDatabase(); db.onversionchange=()=>db.close(); window.releaseWrite=false; window.lockFinished=new Promise((resolve,reject)=>{ const tx=db.transaction('games','readwrite'), store=tx.objectStore('games'); tx.oncomplete=()=>{db.close();resolve()}; tx.onabort=()=>reject(tx.error); function keep(){const req=store.get('__interleaving_check__');req.onsuccess=()=>{window.lockHeld=true;if(!window.releaseWrite)keep()};} keep(); }); });
@@ -54,15 +61,24 @@ const server = http.createServer((req, res) => {
         assert.equal(await page.locator('.sum-recovery button:enabled, .sum-recovery select:enabled').count(), 0);
         await blocker.evaluate(()=>{window.releaseWrite=true});
         await blocker.evaluate(()=>Promise.all([window.lockFinished,window.upgrade]));
-        const after = await blocker.evaluate(id => new Promise((resolve,reject)=>{
+        const readAll = () => blocker.evaluate(() => new Promise((resolve,reject)=>{
           const request=indexedDB.open('kihamda-games-daily',2);
           request.onerror=()=>reject(request.error);
           request.onsuccess=()=>{const db=request.result,tx=db.transaction('games'),store=tx.objectStore('games'),keys=store.getAllKeys(),values=store.getAll();tx.oncomplete=()=>{db.close();resolve({keys:keys.result,values:values.result})};tx.onabort=()=>reject(tx.error)};
-        }), id);
+        }));
+        const after = await readAll();
         assert.deepEqual(after, before);
         assert.equal(await older.evaluate(key => localStorage.getItem(key), key), legacy);
+        for (let attempt=0; attempt<2; attempt++) {
+          await page.reload();
+          await page.getByText('記録を読み込めないため、今回の進み具合は保存されないよ。').waitFor();
+          await page.locator('#board button').first().click();
+          await page.locator('#board button[aria-pressed=true]').waitFor();
+          assert.deepEqual(await readAll(),before);
+          assert.equal(await page.evaluate(key=>localStorage.getItem(key),key),legacy);
+        }
         assert.deepEqual(errors, []);
-        console.log(`${fixed?'fixed':'dynamic'} ${mode}: queued recovery interrupted by database upgrade; both days and legacy source retained`);
+        console.log(`${fixed?'fixed':'dynamic'} ${mode}: queued recovery interrupted by database upgrade; records retained through reloads and unsaved play`);
       } finally { await context.close(); }
     }
   } finally { await browser.close(); server.close(); }
