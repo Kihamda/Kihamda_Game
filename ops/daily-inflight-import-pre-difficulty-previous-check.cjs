@@ -97,9 +97,12 @@ async function play(page, date) {
       assert.equal(JSON.parse(updated[1]).moves,2);
       await page.getByText(game==='sum'?'以前の記録が変わったよ。画面を開き直してね。':'記録が変わったよ。画面を開き直してね。').waitFor();
       assert.equal(await page.locator('#board button:enabled').count(),0);
+      assert.equal(await page.locator('#restart').isDisabled(),true);
       assert.equal(await page.evaluate(()=>window.importCompleted),false);
       await older.evaluate(()=>localStorage.setItem('import-race-release','yes'));
       await page.waitForFunction(()=>window.importCompleted===true);
+      assert.equal(await page.locator('#restart').isDisabled(),true);
+      assert.equal(await page.locator('#board button:enabled').count(),0);
       const after=await blocker.evaluate(()=>new Promise((resolve,reject)=>{const req=indexedDB.open('kihamda-games-daily',1);req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('games'),s=tx.objectStore('games'),keys=s.getAllKeys(),values=s.getAll();tx.oncomplete=()=>{db.close();resolve({keys:keys.result,values:values.result})};tx.onabort=()=>reject(tx.error)}}));
       const entries = Object.fromEntries(after.keys.map((key,index)=>[key,after.values[index]]));
       assert.deepEqual(entries[`multi-backup:${id}:existing`],{marker:'existing archive'});
@@ -162,9 +165,15 @@ async function play(page, date) {
         const changed=await older.evaluate(({key,previous})=>[localStorage.getItem(key),localStorage.getItem(previous)],{key,previous});
         assert.equal(changed[0],updated[0]);
         assert.equal(await page.evaluate(()=>window.restoreCompleted),false);
+        await page.getByText(game==='sum'?'以前の記録が変わったよ。画面を開き直してね。':'記録が変わったよ。画面を開き直してね。').waitFor();
+        assert.equal(await page.locator('#restart').isDisabled(),true);
+        assert.equal(await page.locator('#board button:enabled').count(),0);
         await older.evaluate(()=>localStorage.setItem('restore-race-release','yes'));
         await page.getByText('復元後に別のタブの記録が変わったよ。画面を開き直して確認してね。').waitFor();
         assert.equal(await page.getByRole('button',{name:'復元した記録を開く'}).isDisabled(),true);
+        assert.equal(await page.locator('#restart').isDisabled(),true);
+        assert.equal(await page.locator('#board button:enabled').count(),0);
+        assert.equal(await page.locator('.sum-recovery button:enabled, .sum-recovery select:enabled').count(),0);
         const restored=await page.evaluate(async()=>{
           const db=await openDailyDatabase();
           return new Promise((resolve,reject)=>{const tx=db.transaction('games'),store=tx.objectStore('games'),keys=store.getAllKeys(),values=store.getAll();tx.oncomplete=()=>{db.close();resolve(Object.fromEntries(keys.result.map((key,index)=>[key,values.result[index]])))};tx.onabort=()=>reject(tx.error)});

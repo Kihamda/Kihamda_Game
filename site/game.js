@@ -960,7 +960,7 @@ function offerArchiveDeletion({container,db,id,archiveId,kind,archive,meta,guard
     button.disabled=true;onConfirming(true);const panel=document.createElement('section'),title=document.createElement('h3'),message=document.createElement('p'),confirm=document.createElement('button'),cancel=document.createElement('button');
     title.textContent='退避を削除';title.tabIndex=-1;message.textContent=`${archiveLabel?archiveLabel+'。':''}${candidateCount===null?'':`この退避の候補${candidateCount}件をまとめて削除するよ。`}削除した退避は元に戻せないよ。現在のゲーム記録とほかの退避は残るよ。`;confirm.type=cancel.type='button';confirm.textContent='この退避を削除';cancel.textContent='やめる';panel.append(title,message,confirm,cancel);container.append(panel);title.focus();
     cancel.onclick=()=>{panel.remove();button.disabled=false;onConfirming(false);button.focus()};
-    confirm.onclick=async()=>{confirm.disabled=cancel.disabled=true;try{const result=await deleteReviewedArchive({db,id,archiveId,kind,expectedArchive:JSON.stringify(archive),expectedMeta:JSON.stringify(meta),guard});if(result==='deleted'){notice.textContent='退避を削除したよ。';onDeleted();return}notice.textContent='記録が変わったよ。一覧を開き直してね。'}catch(_){notice.textContent='削除できなかったよ。一覧を開き直してね。'}finally{cancel.disabled=false}};
+    confirm.onclick=async()=>{confirm.disabled=cancel.disabled=true;try{const result=await deleteReviewedArchive({db,id,archiveId,kind,expectedArchive:JSON.stringify(archive),expectedMeta:JSON.stringify(meta),guard});if(result==='deleted'){notice.textContent='退避を削除したよ。';onDeleted();return}notice.textContent='記録が変わったよ。一覧を開き直してね。'}catch(_){notice.textContent='削除できなかったよ。一覧を開き直してね。'}finally{cancel.disabled=!guard()}};
   };
 }
 

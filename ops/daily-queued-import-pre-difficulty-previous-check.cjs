@@ -68,6 +68,7 @@ async function play(page, date) {
       assert.equal(updated[0],before[0]);
       assert.equal(JSON.parse(updated[1]).moves,2);
       await page.getByText(game==='sum'?'以前の記録が変わったよ。画面を開き直してね。':'記録が変わったよ。画面を開き直してね。').waitFor();
+      assert.equal(await page.locator('#restart').isDisabled(),true);
       assert.equal(await page.locator('#board button:enabled').count(),0);
       await blocker.evaluate(()=>{window.releaseWrite=true});
       await blocker.evaluate(()=>window.lockFinished);

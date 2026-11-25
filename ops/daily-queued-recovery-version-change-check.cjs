@@ -84,6 +84,8 @@ async function play(page, mode, unsaved = false) {
         await blocker.evaluate(()=>{window.upgrade=new Promise((resolve,reject)=>{const request=indexedDB.open('kihamda-games-daily',2);request.onsuccess=()=>{request.result.close();resolve()};request.onerror=()=>reject(request.error)})});
         await page.getByText('記録が変わったよ。画面を開き直してね。').waitFor();
         assert.equal(await page.locator('.sum-recovery button:enabled, .sum-recovery select:enabled').count(), 0);
+        assert.equal(await page.locator('#restart').isDisabled(), true);
+        assert.equal(await page.locator('#board button:enabled').count(), 0);
         await blocker.evaluate(()=>{window.releaseWrite=true});
         await blocker.evaluate(()=>Promise.all([window.lockFinished,window.upgrade]));
         const readAll = () => blocker.evaluate(() => new Promise((resolve,reject)=>{
