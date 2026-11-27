@@ -7,13 +7,17 @@ const assert = require('assert');
 
 // The parent revision is the last implementation that saved these puzzles to localStorage.
 const oldScript = execFileSync('git', ['show', 'aae5968:site/game.js']);
-const root = path.resolve('site');
+const root = path.resolve(process.env.SITE_DIR || 'site');
+const oldRoot = path.resolve('site');
+const fixed = process.env.RECOVERY_FIXED === '1';
 const server = http.createServer((req, res) => {
   let name = new URL(req.url, 'http://localhost').pathname;
   if (name === '/old/game.js') return res.writeHead(200, {'Content-Type':'text/javascript'}).end(oldScript);
-  if (name.startsWith('/old/')) name = name.slice(4);
-  const file = path.resolve(root, '.' + name);
-  if (!file.startsWith(root + path.sep)) return res.writeHead(400).end();
+  const old = name.startsWith('/old/');
+  if (old) name = name.slice(4);
+  const base = old ? oldRoot : root;
+  const file = path.resolve(base, '.' + name);
+  if (!file.startsWith(base + path.sep)) return res.writeHead(400).end();
   fs.readFile(file, (error, data) => error ? res.writeHead(404).end() : res.writeHead(200, {'Content-Type':{'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css'}[path.extname(file)] || 'text/plain'}).end(data));
 });
 
@@ -25,12 +29,24 @@ const server = http.createServer((req, res) => {
       const context = await browser.newContext();
       try {
         const newer = await context.newPage(), older = await context.newPage(), holder = await context.newPage();
+        await newer.addInitScript(() => {
+          const original = IDBObjectStore.prototype.get;
+          IDBObjectStore.prototype.get = function(key) {
+            const request = original.call(this, key);
+            if (window.watchQueuedSave && key === window.saveId && this.transaction.mode === 'readwrite') {
+              window.saveQueued = true;
+              window.watchQueuedSave = false;
+            }
+            return request;
+          };
+        });
         for (const page of [newer, older, holder]) await page.clock.install({time:new Date('2026-10-30T03:00:00Z')});
         const base = `http://127.0.0.1:${server.address().port}`;
         const query = `game=sort&mode=daily&difficulty=${mode}&version=2`;
-        await newer.goto(`${base}/game.html?${query}`);
+        const currentUrl = fixed ? `${base}/play-sort.html?mode=daily&difficulty=${mode}&version=2` : `${base}/game.html?${query}`;
+        await newer.goto(currentUrl);
         await older.goto(`${base}/old/game.html?${query}`);
-        await holder.goto(`${base}/game.html?${query}`);
+        await holder.goto(currentUrl);
         for (const page of [newer, older, holder]) await page.waitForFunction(() => document.querySelectorAll('#board>button').length === 5 && !document.querySelector('#restart').disabled);
         const moves = await newer.evaluate(() => {
           const tubes = [...document.querySelectorAll('#board>button:not(.sort-undo)')].map(el => [...el.querySelectorAll('.sort-slot')].reverse().map(slot => slot.textContent).filter(Boolean));
@@ -55,8 +71,10 @@ const server = http.createServer((req, res) => {
           });
         }, `sort-${mode}-v2`);
         const buttons = page => page.locator('#board>button:not(.sort-undo)');
+        await newer.evaluate(id => { window.saveId = id; window.watchQueuedSave = true; }, `sort-${mode}-v2`);
         await buttons(newer).nth(moves[0][0]).click();
         await buttons(newer).nth(moves[0][1]).click();
+        await newer.waitForFunction(() => window.saveQueued === true);
         for (const index of moves.at(-1)) await buttons(older).nth(index).click();
         await older.waitForFunction(() => document.querySelector('#status').textContent.includes('1手'));
         await newer.getByText('記録が変わったよ。画面を開き直してね。').waitFor();
@@ -71,7 +89,7 @@ const server = http.createServer((req, res) => {
         await newer.getByRole('button', {name:'この内容で保存'}).click();
         await newer.waitForFunction(() => document.querySelector('#status').textContent.includes('1手'));
         assert.strictEqual(await newer.evaluate(key => localStorage.getItem(key), `kihamda-daily-sort-${mode}-v2`), old);
-        console.log(mode + ': queued new save, old tab write, notification and recovery passed');
+        console.log(`${fixed ? 'fixed' : 'dynamic'} ${mode}: queued new save, old tab write, notification and recovery passed`);
 
         // Now allow the new transaction to finish first, then write from the stale old tab.
         const nextMoves = await newer.evaluate(() => {
@@ -82,6 +100,11 @@ const server = http.createServer((req, res) => {
         for (const index of nextMoves[0]) await buttons(newer).nth(index).click();
         try { await newer.waitForFunction(() => document.querySelector('#status').textContent.includes('2手'), null, {timeout:5000}); }
         catch (error) { throw Error(`new save failed: ${await newer.locator('#status').textContent()}; moves=${JSON.stringify(nextMoves)}`, {cause:error}); }
+        const committed = await newer.evaluate(async id => {
+          const db = await openDailyDatabase();
+          return new Promise((resolve, reject) => { const tx = db.transaction('games'), req = tx.objectStore('games').get(id); tx.oncomplete = () => { db.close(); resolve(req.result); }; tx.onabort = () => reject(tx.error); });
+        }, `sort-${mode}-v2`);
+        assert.deepStrictEqual(committed[0].actions, [moves.at(-1), nextMoves[0]]);
         for (const index of nextMoves.at(-1)) await buttons(older).nth(index).click();
         await older.waitForFunction(() => document.querySelector('#status').textContent.includes('2手'));
         await newer.getByText('記録が変わったよ。画面を開き直してね。').waitFor();
@@ -104,7 +127,7 @@ const server = http.createServer((req, res) => {
         }, `sort-${mode}-v2`);
         assert.deepStrictEqual(saved[0].actions, [moves.at(-1), nextMoves[0]]);
         assert.strictEqual(await newer.evaluate(key => localStorage.getItem(key), `kihamda-daily-sort-${mode}-v2`), oldAfter);
-        console.log(mode + ': new commit followed by old write, comparison and archive restore passed');
+        console.log(`${fixed ? 'fixed' : 'dynamic'} ${mode}: new commit followed by old write, comparison and archive restore passed`);
       } finally { await context.close(); }
     }
   } finally { await browser.close(); server.close(); }
