@@ -5,7 +5,20 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+new 
   const c=await browser.newContext(),p=await c.newPage();await p.clock.install({time:new Date('2026-11-03T03:00:00Z')});const base=`http://127.0.0.1:${server.address().port}/`,url=game=>base+(process.env.SITE_DIR?`play-${game}.html?mode=daily`:`game.html?game=${game}&mode=daily`);
   await p.goto(url('balance'));const order=await p.evaluate(()=>generateDailyBalance('2026-11-03'));
   async function answer(values){await p.locator('.balance-mode').nth(1).click();for(const n of values)await p.locator('.balance-choice').nth(n).click();await p.locator('.balance-submit').click()}
-  await answer([...order].reverse());assert.equal(await p.locator('#record').textContent(),'今日のベスト 不正解');await p.locator('#restart').click();await answer(order);assert.equal(await p.locator('#record').textContent(),'今日のベスト 正解');await p.locator('#restart').click();await answer([...order].reverse());assert.equal(await p.locator('#record').textContent(),'今日のベスト 正解');
+  const resultKey='kihamda-daily-result-v1-balance-2026-11-03',progressKey='kihamda-daily-balance';
+  async function checkSavedResult(expected,label){
+    assert.equal(await p.locator('#record').textContent(),`今日のベスト ${label}`);
+    assert.equal(await p.evaluate(key=>localStorage.getItem(key),resultKey),String(expected));
+    const progress=await p.evaluate(key=>localStorage.getItem(key),progressKey);
+    assert.notEqual(progress,null);
+    await p.reload();
+    assert.equal(await p.locator('#record').textContent(),`今日のベスト ${label}`);
+    assert.equal(await p.evaluate(key=>localStorage.getItem(key),resultKey),String(expected));
+    assert.equal(await p.evaluate(key=>localStorage.getItem(key),progressKey),progress);
+  }
+  await answer([...order].reverse());await checkSavedResult(0,'不正解');
+  await p.locator('#restart').click();await answer(order);await checkSavedResult(1,'正解');
+  await p.locator('#restart').click();await answer([...order].reverse());await checkSavedResult(1,'正解');
   await p.evaluate(()=>localStorage.setItem('kihamda-daily-result-v1-swap-2026-11-03','broken'));await p.goto(url('swap'));assert((await p.locator('#record').textContent()).includes('保存できない'));assert.equal(await p.evaluate(()=>localStorage.getItem('kihamda-daily-result-v1-swap-2026-11-03')),'broken');
   await p.clock.setFixedTime(new Date('2026-11-04T03:00:00Z'));await p.goto(url('balance'));assert(await p.locator('#record').isHidden());assert.equal(await p.evaluate(()=>localStorage.getItem('kihamda-daily-result-v1-balance-2026-11-03')),'1');
   await c.close();console.log('daily best survives restart, improves only, preserves corrupt data and isolates dates passed');

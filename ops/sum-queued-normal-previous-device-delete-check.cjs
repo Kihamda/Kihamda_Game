@@ -209,6 +209,58 @@ const server = http.createServer((req, res) => {
         assert.deepEqual(await read(), afterDelete);
         assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
         assert.deepEqual(await page.locator('#board button').evaluateAll(buttons => buttons.map(button => button.getAttribute('aria-pressed') === 'true')), pressed);
+
+        // Restore the original previous-day record from a different surviving backup.
+        assert(afterDelete.keys.includes(newKeys[0]));
+        assert.notDeepEqual(afterDelete.values[afterDelete.keys.indexOf(id)].find(x => x.date === '2026-11-07'), original.find(x => x.date === '2026-11-07'));
+        await page.getByRole('button', {name:'退避した記録を見る'}).click();
+        await page.locator(`button[data-kind=basic][data-source=database][data-date="2026-11-07"][data-archive-id="${newKeys[0].split(':').at(-1)}"]`).click();
+        await page.getByRole('button', {name:'この記録を復元'}).click();
+        await page.getByText('復元したよ。画面を開き直してね。').waitFor();
+        const finalState = await read();
+        assert.deepEqual(finalState.values[finalState.keys.indexOf(id)], expected);
+        assert(!finalState.keys.includes(switchKeys[0]));
+        for (const k of afterDelete.keys.filter(k => k !== id)) {
+          assert.deepEqual(finalState.values[finalState.keys.indexOf(k)], afterDelete.values[afterDelete.keys.indexOf(k)]);
+        }
+        const finalKeys = finalState.keys.filter(k => !afterDelete.keys.includes(k));
+        assert.equal(finalKeys.length, 1);
+        assert(finalKeys[0].startsWith(`backup:${id}:`));
+        const finalBackup = finalState.values[finalState.keys.indexOf(finalKeys[0])];
+        assert.deepEqual(finalBackup.records, afterDelete.values[afterDelete.keys.indexOf(id)]);
+        assert.deepEqual(finalBackup.legacy, original.find(x => x.date === '2026-11-07'));
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
+        await page.reload();
+        await page.locator('#board button[aria-pressed=true]').waitFor();
+        assert.deepEqual(await read(), finalState);
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
+        assert.deepEqual(await page.locator('#board button').evaluateAll(buttons => buttons.map(button => button.getAttribute('aria-pressed') === 'true')), pressed);
+        console.log('previous-day restore from remaining backup after deletion passed');
+
+        // Restore the previous-day record preserved immediately before that restore.
+        await page.getByRole('button', {name:'退避した記録を見る'}).click();
+        await page.locator(`button[data-kind=basic][data-source=database][data-date="2026-11-07"][data-archive-id="${finalKeys[0].split(':').at(-1)}"]`).click();
+        await page.getByRole('button', {name:'この記録を復元'}).click();
+        await page.getByText('復元したよ。画面を開き直してね。').waitFor();
+        const restoredAgain = await read();
+        assert.deepEqual(restoredAgain.values[restoredAgain.keys.indexOf(id)], afterDelete.values[afterDelete.keys.indexOf(id)]);
+        assert(!restoredAgain.keys.includes(switchKeys[0]));
+        for (const k of finalState.keys.filter(k => k !== id)) {
+          assert.deepEqual(restoredAgain.values[restoredAgain.keys.indexOf(k)], finalState.values[finalState.keys.indexOf(k)]);
+        }
+        const againKeys = restoredAgain.keys.filter(k => !finalState.keys.includes(k));
+        assert.equal(againKeys.length, 1);
+        assert(againKeys[0].startsWith(`backup:${id}:`));
+        const againBackup = restoredAgain.values[restoredAgain.keys.indexOf(againKeys[0])];
+        assert.deepEqual(againBackup.records, expected);
+        assert.deepEqual(againBackup.legacy, afterDelete.values[afterDelete.keys.indexOf(id)].find(x => x.date === oldRecord.date));
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
+        await page.reload();
+        await page.locator('#board button[aria-pressed=true]').waitFor();
+        assert.deepEqual(await read(), restoredAgain);
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
+        assert.deepEqual(await page.locator('#board button').evaluateAll(buttons => buttons.map(button => button.getAttribute('aria-pressed') === 'true')), pressed);
+        console.log('previous-day restore from newly created backup and reload passed');
         assert.deepEqual(errors, []);
         console.log(`${fixed ? 'fixed' : 'dynamic'} ${mode}: queued deletion, device selection, archive restoration, pre-restore backup, previous-day record switchback, selected archive deletion and persistence through reload passed`);
       } finally { await context.close(); }

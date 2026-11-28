@@ -7,13 +7,17 @@ const assert = require('assert');
 
 // The parent revision is the last implementation that saved these puzzles to localStorage.
 const oldScript = execFileSync('git', ['show', 'aae5968:site/game.js']);
-const root = path.resolve('site');
+const root = path.resolve(process.env.SITE_DIR || 'site');
+const oldRoot = path.resolve('site');
+const fixed = process.env.RECOVERY_FIXED === '1';
 const server = http.createServer((req, res) => {
   let name = new URL(req.url, 'http://localhost').pathname;
   if (name === '/old/game.js') return res.writeHead(200, {'Content-Type':'text/javascript'}).end(oldScript);
-  if (name.startsWith('/old/')) name = name.slice(4);
-  const file = path.resolve(root, '.' + name);
-  if (!file.startsWith(root + path.sep)) return res.writeHead(400).end();
+  const old = name.startsWith('/old/');
+  if (old) name = name.slice(4);
+  const base = old ? oldRoot : root;
+  const file = path.resolve(base, '.' + name);
+  if (!file.startsWith(base + path.sep)) return res.writeHead(400).end();
   fs.readFile(file, (error, data) => error ? res.writeHead(404).end() : res.writeHead(200, {'Content-Type':{'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css'}[path.extname(file)] || 'text/plain'}).end(data));
 });
 
@@ -44,9 +48,10 @@ const server = http.createServer((req, res) => {
         for (const page of [newer, older, holder]) await page.clock.install({time:new Date('2026-10-30T03:00:00Z')});
         const base = `http://127.0.0.1:${server.address().port}`;
         const query = `game=sort&mode=daily&difficulty=${mode}&version=2`;
-        await newer.goto(`${base}/game.html?${query}`);
+        const currentUrl = fixed ? `${base}/play-sort.html?mode=daily&difficulty=${mode}&version=2` : `${base}/game.html?${query}`;
+        await newer.goto(currentUrl);
         await older.goto(`${base}/old/game.html?${query}`);
-        await holder.goto(`${base}/game.html?${query}`);
+        await holder.goto(currentUrl);
         for (const page of [newer, older, holder]) await page.waitForFunction(() => document.querySelectorAll('#board>button').length === 5 && !document.querySelector('#restart').disabled);
         const moves = await newer.evaluate(() => {
           const tubes = [...document.querySelectorAll('#board>button:not(.sort-undo)')].map(el => [...el.querySelectorAll('.sort-slot')].reverse().map(slot => slot.textContent).filter(Boolean));
@@ -95,7 +100,7 @@ const server = http.createServer((req, res) => {
         }, `sort-${mode}-v2`);
         assert.deepStrictEqual(restored[0].actions, [moves[0]]);
         assert.strictEqual(await newer.evaluate(key => localStorage.getItem(key), `kihamda-daily-sort-${mode}-v2`), old);
-        console.log(mode + ': old write after put request before commit, notification, both records and restore passed');
+        console.log(`${fixed ? 'fixed' : 'dynamic'} ${mode}: old write after put request before commit, notification, both records and restore passed`);
       } finally { await context.close(); }
     }
   } finally { await browser.close(); server.close(); }
