@@ -18,7 +18,7 @@ const server = http.createServer((req, res) => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const browser = await chromium.launch({headless:true, executablePath:process.env.CHROME_PATH});
   try {
-    for (const mode of ['easy','normal','hard','oni','kiwami']) {
+    for (const mode of ['easy','normal','hard','oni','kiwami']) for (const choice of ['versioned','database']) {
       const context = await browser.newContext();
       try {
         const page = await context.newPage(), older = await context.newPage(), errors = [];
@@ -124,8 +124,98 @@ const server = http.createServer((req, res) => {
         assert.deepEqual(await read(), restored);
         assert.equal(await older.evaluate(key => localStorage.getItem(key), key), legacy);
         assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
+        await page.getByLabel(`${candidateDate} の記録`).selectOption(choice);
+        await page.getByRole('button', {name:'選択内容を確認'}).click();
+        await page.getByRole('button', {name:'この内容で保存'}).click();
+        await page.locator('#board button[aria-pressed=true]').waitFor();
+        const selectedRecords = await read();
+        const selectedValue = selectedRecords.values[selectedRecords.keys.indexOf(id)];
+        const expectedPrevious = choice === 'database' ? candidate : JSON.parse(legacy);
+        assert.notDeepEqual(candidate, JSON.parse(legacy));
+        assert.deepEqual(selectedValue.find(record => record.date === candidateDate), expectedPrevious);
+        assert.deepEqual(selectedValue.find(record => record.date === '2026-11-08'), value.find(record => record.date === '2026-11-08'));
+        assert.equal(selectedRecords.values[selectedRecords.keys.indexOf(`source:${id}`)].snapshot[0], legacy);
+        for (const k of restored.keys.filter(k => k !== id && k !== `source:${id}`)) {
+          assert.deepEqual(selectedRecords.values[selectedRecords.keys.indexOf(k)], restored.values[restored.keys.indexOf(k)]);
+        }
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
+        await page.locator('#board button').nth(1).click();
+        await page.waitForFunction(() => document.querySelectorAll('#board button[aria-pressed=true]').length === 2 && !document.querySelector('#restart').disabled);
+        const played = await read();
+        const playedValue = played.values[played.keys.indexOf(id)];
+        assert.deepEqual(playedValue.find(record => record.date === candidateDate), expectedPrevious);
+        assert.equal(playedValue.find(record => record.date === '2026-11-08').moves, 2);
+        for (const k of selectedRecords.keys.filter(k => k !== id)) {
+          assert.deepEqual(played.values[played.keys.indexOf(k)], selectedRecords.values[selectedRecords.keys.indexOf(k)]);
+        }
+        await page.reload();
+        await page.waitForFunction(() => document.querySelectorAll('#board button[aria-pressed=true]').length === 2 && !document.querySelector('#restart').disabled);
+        assert.deepEqual(await read(), played);
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
+        await page.getByRole('button', {name:'退避した記録を見る'}).click();
+        await page.locator(`button[data-kind=basic][data-source=localStorage][data-date="${candidateDate}"][data-archive-id="${added[0].split(':').at(-1)}"]`).click();
+        await page.getByRole('button', {name:'この記録を復元'}).click();
+        await page.getByText('復元したよ。画面を開き直してね。').waitFor();
+        const rerestored = await read();
+        const rerestoredValue = rerestored.values[rerestored.keys.indexOf(id)];
+        assert.deepEqual(rerestoredValue.find(record => record.date === candidateDate), candidate);
+        assert.deepEqual(rerestoredValue.filter(record => record.date !== candidateDate), playedValue.filter(record => record.date !== candidateDate));
+        for (const k of played.keys.filter(k => k !== id)) {
+          assert.deepEqual(rerestored.values[rerestored.keys.indexOf(k)], played.values[played.keys.indexOf(k)]);
+        }
+        const rerestoreKeys = rerestored.keys.filter(k => !played.keys.includes(k));
+        assert.equal(rerestoreKeys.length, 1);
+        assert(String(rerestoreKeys[0]).startsWith(`backup:${id}:`));
+        const rerestoreBackup = rerestored.values[rerestored.keys.indexOf(rerestoreKeys[0])];
+        assert.deepEqual(rerestoreBackup.records, playedValue);
+        assert.deepEqual(rerestoreBackup.legacy, candidate);
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
+        await page.reload();
+        await page.waitForFunction(() => document.querySelectorAll('#board button[aria-pressed=true]').length === 2 && !document.querySelector('#restart').disabled);
+        assert.deepEqual(await read(), rerestored);
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
+        await page.getByRole('button', {name:'退避した記録を見る'}).click();
+        await page.locator(`button[data-kind=basic][data-source=database][data-date="${candidateDate}"][data-archive-id="${rerestoreKeys[0].split(':').at(-1)}"]`).click();
+        await page.getByRole('button', {name:'この記録を復元'}).click();
+        await page.getByText('復元したよ。画面を開き直してね。').waitFor();
+        const switched = await read();
+        assert.deepEqual(switched.values[switched.keys.indexOf(id)], playedValue);
+        for (const k of rerestored.keys.filter(k => k !== id)) {
+          assert.deepEqual(switched.values[switched.keys.indexOf(k)], rerestored.values[rerestored.keys.indexOf(k)]);
+        }
+        const switchKeys = switched.keys.filter(k => !rerestored.keys.includes(k));
+        assert.equal(switchKeys.length, 1);
+        assert(String(switchKeys[0]).startsWith(`backup:${id}:`));
+        const switchBackup = switched.values[switched.keys.indexOf(switchKeys[0])];
+        assert.deepEqual(switchBackup.records, rerestoredValue);
+        assert.deepEqual(switchBackup.legacy, expectedPrevious);
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
+        await page.reload();
+        await page.waitForFunction(() => document.querySelectorAll('#board button[aria-pressed=true]').length === 2 && !document.querySelector('#restart').disabled);
+        assert.deepEqual(await read(), switched);
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
+        await page.getByRole('button', {name:'退避した記録を見る'}).click();
+        await page.locator(`button[data-kind=basic][data-source=database][data-date="${candidateDate}"][data-archive-id="${switchKeys[0].split(':').at(-1)}"]`).click();
+        await page.getByRole('button', {name:'この記録を復元'}).click();
+        await page.getByText('復元したよ。画面を開き直してね。').waitFor();
+        const returned = await read();
+        assert.deepEqual(returned.values[returned.keys.indexOf(id)], rerestoredValue);
+        for (const k of switched.keys.filter(k => k !== id)) {
+          assert.deepEqual(returned.values[returned.keys.indexOf(k)], switched.values[switched.keys.indexOf(k)]);
+        }
+        const returnKeys = returned.keys.filter(k => !switched.keys.includes(k));
+        assert.equal(returnKeys.length, 1);
+        assert(String(returnKeys[0]).startsWith(`backup:${id}:`));
+        const returnBackup = returned.values[returned.keys.indexOf(returnKeys[0])];
+        assert.deepEqual(returnBackup.records, playedValue);
+        assert.deepEqual(returnBackup.legacy, candidate);
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
+        await page.reload();
+        await page.waitForFunction(() => document.querySelectorAll('#board button[aria-pressed=true]').length === 2 && !document.querySelector('#restart').disabled);
+        assert.deepEqual(await read(), returned);
+        assert.equal(await page.evaluate(key => localStorage.getItem(key), key), legacy);
         assert.deepEqual(errors, []);
-        console.log(`${fixed ? 'fixed' : 'dynamic'} ${mode}: in-flight versioned-candidate restore and versioned old-tab write handled; database and legacy retained through reload`);
+        console.log(`${fixed ? 'fixed' : 'dynamic'} ${mode} ${choice}: conflict, resumed play, archive re-restoration, switchback, return and reload passed`);
       } finally { await context.close(); }
     }
   } finally { await browser.close(); server.close(); }
